@@ -22,9 +22,9 @@
 #ifndef ASIOPAL_MOCKTCPSERVER_H
 #define ASIOPAL_MOCKTCPSERVER_H
 
-#include "asiopal/TCPServer.h"
 #include "asiopal/IAsyncChannel.h"
 #include "asiopal/SocketChannel.h"
+#include "asiopal/TCPServer.h"
 
 #include <deque>
 
@@ -35,60 +35,49 @@ class MockTCPServer final : public TCPServer
 {
 
 public:
+    MockTCPServer(const openpal::Logger& logger,
+                  std::shared_ptr<Executor> executor,
+                  IPEndpoint endpoint,
+                  std::error_code& ec)
+        : TCPServer(logger, executor, endpoint, ec)
+    {
+    }
 
-	MockTCPServer(
-	    const openpal::Logger& logger,
-	    std::shared_ptr<Executor> executor,
-	    IPEndpoint endpoint,
-	    std::error_code& ec
-	) : TCPServer(logger, executor, endpoint, ec)
-	{
+    static std::shared_ptr<MockTCPServer> Create(const openpal::Logger& logger,
+                                                 std::shared_ptr<Executor> executor,
+                                                 IPEndpoint endpoint,
+                                                 std::error_code& ec)
+    {
+        auto server = std::make_shared<MockTCPServer>(logger, executor, endpoint, ec);
 
-	}
+        if (!ec)
+        {
+            server->StartAccept();
+        }
 
-	static std::shared_ptr<MockTCPServer> Create(
-	    const openpal::Logger& logger,
-	    std::shared_ptr<Executor> executor,
-	    IPEndpoint endpoint,
-	    std::error_code& ec)
-	{
-		auto server = std::make_shared<MockTCPServer>(logger, executor, endpoint, ec);
+        return server;
+    }
 
-		if (!ec)
-		{
-			server->StartAccept();
-		}
+    virtual void AcceptConnection(uint64_t sessionid,
+                                  const std::shared_ptr<Executor>& executor,
+                                  asio::ip::tcp::socket socket) override
+    {
+        this->channels.push_back(SocketChannel::Create(executor, std::move(socket)));
+    }
 
-		return server;
-	}
+    virtual void OnShutdown() override {}
 
+    ~MockTCPServer()
+    {
+        for (auto& channel : channels)
+        {
+            channel->Shutdown();
+        }
+    }
 
-	virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<Executor>& executor, asio::ip::tcp::socket socket) override
-	{
-		this->channels.push_back(SocketChannel::Create(executor, std::move(socket)));
-	}
-
-	virtual void OnShutdown() override {}
-
-	~MockTCPServer()
-	{
-		for (auto& channel : channels)
-		{
-			channel->Shutdown();
-		}
-	}
-
-	std::deque<std::shared_ptr<IAsyncChannel>> channels;
+    std::deque<std::shared_ptr<IAsyncChannel>> channels;
 };
 
-}
+} // namespace asiopal
 
 #endif
-
-
-
-
-
-
-
-

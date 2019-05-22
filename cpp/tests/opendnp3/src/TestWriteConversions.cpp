@@ -18,10 +18,10 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
-
-#include <opendnp3/app/WriteConversions.h>
 #include <opendnp3/app/QualityMasks.h>
+#include <opendnp3/app/WriteConversions.h>
+
+#include <catch.hpp>
 
 using namespace opendnp3;
 
@@ -29,30 +29,27 @@ using namespace opendnp3;
 
 TEST_CASE(SUITE("Group30Var2ConvertsWithinRange"))
 {
-	Analog a(12);
-	auto gv = ConvertGroup30Var2::Apply(a);
+    Analog a(12);
+    auto gv = ConvertGroup30Var2::Apply(a);
 
-	REQUIRE(gv.value ==  12);
-	REQUIRE(gv.flags ==  ToUnderlying(AnalogQuality::ONLINE));
+    REQUIRE(gv.value == 12);
+    REQUIRE(gv.flags == ToUnderlying(AnalogQuality::ONLINE));
 }
 
 TEST_CASE(SUITE("Group30Var2ConvertsOverrange"))
 {
-	Analog a(32768);
-	auto gv = ConvertGroup30Var2::Apply(a);
+    Analog a(32768);
+    auto gv = ConvertGroup30Var2::Apply(a);
 
-	REQUIRE(gv.value ==  32767);
-	REQUIRE(gv.flags == (ToUnderlying(AnalogQuality::ONLINE) | ToUnderlying(AnalogQuality::OVERRANGE)));
+    REQUIRE(gv.value == 32767);
+    REQUIRE(gv.flags == (ToUnderlying(AnalogQuality::ONLINE) | ToUnderlying(AnalogQuality::OVERRANGE)));
 }
 
 TEST_CASE(SUITE("Group30Var2ConvertsUnderrange"))
 {
-	Analog a(-32769);
-	auto gv = ConvertGroup30Var2::Apply(a);
+    Analog a(-32769);
+    auto gv = ConvertGroup30Var2::Apply(a);
 
-	REQUIRE(gv.value ==  -32768);
-	REQUIRE(gv.flags == (ToUnderlying(AnalogQuality::ONLINE) | ToUnderlying(AnalogQuality::OVERRANGE)));
+    REQUIRE(gv.value == -32768);
+    REQUIRE(gv.flags == (ToUnderlying(AnalogQuality::ONLINE) | ToUnderlying(AnalogQuality::OVERRANGE)));
 }
-
-
-

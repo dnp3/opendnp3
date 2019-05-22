@@ -24,11 +24,11 @@
 #include <openpal/container/RSlice.h>
 #include <openpal/logging/Logger.h>
 
-#include <dnp3decode/IDecoderCallbacks.h>
-
-#include "opendnp3/link/LinkLayerParser.h"
 #include "opendnp3/link/IFrameSink.h"
+#include "opendnp3/link/LinkLayerParser.h"
 #include "opendnp3/transport/TransportRx.h"
+
+#include <dnp3decode/IDecoderCallbacks.h>
 
 namespace opendnp3
 {
@@ -38,27 +38,24 @@ class DecoderImpl;
 class DecoderImpl final : private IFrameSink
 {
 public:
+    DecoderImpl(IDecoderCallbacks& callbacks, const openpal::Logger& logger);
 
-	DecoderImpl(IDecoderCallbacks& callbacks, const openpal::Logger& logger);
-
-	void DecodeLPDU(const openpal::RSlice& data);
-	void DecodeTPDU(const openpal::RSlice& data);
-	void DecodeAPDU(const openpal::RSlice& data);
+    void DecodeLPDU(const openpal::RSlice& data);
+    void DecodeTPDU(const openpal::RSlice& data);
+    void DecodeAPDU(const openpal::RSlice& data);
 
 private:
+    static bool IsResponse(const openpal::RSlice& data);
 
-	static bool IsResponse(const openpal::RSlice& data);
+    /// --- Implement IFrameSink ---
+    virtual bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata) override;
 
-	/// --- Implement IFrameSink ---
-	virtual bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata) override;
-
-	IDecoderCallbacks* callbacks;
-	openpal::Logger logger;
-	LinkLayerParser link;
-	TransportRx transportRx;
+    IDecoderCallbacks* callbacks;
+    openpal::Logger logger;
+    LinkLayerParser link;
+    TransportRx transportRx;
 };
 
-
-}
+} // namespace opendnp3
 
 #endif

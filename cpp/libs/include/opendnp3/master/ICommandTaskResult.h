@@ -22,34 +22,32 @@
 #ifndef OPENDNP3_ICOMMAND_TASK_RESULT_H
 #define OPENDNP3_ICOMMAND_TASK_RESULT_H
 
-#include "opendnp3/master/CommandPointResult.h"
-#include "opendnp3/gen/TaskCompletion.h"
 #include "opendnp3/app/parsing/ICollection.h"
+#include "opendnp3/gen/TaskCompletion.h"
+#include "opendnp3/master/CommandPointResult.h"
 
 namespace opendnp3
 {
 
 /**
-* Abstract result type returned via callback to a command operation.
-*
-* Provides the TaskCompleton summary value and access to a collection
-* of flatten results.
-*
-* A result value is provided for every object in every header specified
-* in the CommandSet used to start the operation.
-*
-*/
+ * Abstract result type returned via callback to a command operation.
+ *
+ * Provides the TaskCompleton summary value and access to a collection
+ * of flatten results.
+ *
+ * A result value is provided for every object in every header specified
+ * in the CommandSet used to start the operation.
+ *
+ */
 class ICommandTaskResult : public ICollection<CommandPointResult>
 {
 public:
+    ICommandTaskResult(TaskCompletion result_) : summary(result_) {}
 
-	ICommandTaskResult(TaskCompletion result_) : summary(result_)
-	{}
-
-	/// A summary result for the entire task
-	TaskCompletion summary;
+    /// A summary result for the entire task
+    TaskCompletion summary;
 };
 
-}
+} // namespace opendnp3
 
 #endif

@@ -21,16 +21,16 @@
 #ifndef OPENDNP3_MASTERTESTFIXTURE_H
 #define OPENDNP3_MASTERTESTFIXTURE_H
 
-#include <testlib/MockExecutor.h>
-#include <testlib/MockLogHandler.h>
-
+#include <opendnp3/LogLevels.h>
 #include <opendnp3/master/MasterContext.h>
 #include <opendnp3/master/MasterSchedulerBackend.h>
-#include <opendnp3/LogLevels.h>
 
 #include <dnp3mocks/MockLowerLayer.h>
-#include <dnp3mocks/MockSOEHandler.h>
 #include <dnp3mocks/MockMasterApplication.h>
+#include <dnp3mocks/MockSOEHandler.h>
+
+#include <testlib/MockExecutor.h>
+#include <testlib/MockLogHandler.h>
 
 namespace opendnp3
 {
@@ -40,31 +40,27 @@ MasterParams NoStartupTasks();
 class MasterTestFixture
 {
 public:
+    MasterTestFixture(const MasterParams& param,
+                      const Addresses& = Addresses(1, 1024),
+                      const std::string& id = "test",
+                      const std::shared_ptr<openpal::ILogHandler>& log = nullptr,
+                      const std::shared_ptr<testlib::MockExecutor>& executor = nullptr,
+                      const std::shared_ptr<IMasterScheduler>& scheduler = nullptr);
+    virtual ~MasterTestFixture();
 
-	MasterTestFixture(
-	    const MasterParams& param,
-	    const Addresses& = Addresses(1, 1024),
-	    const std::string& id = "test",
-	    const std::shared_ptr<openpal::ILogHandler>& log = nullptr,
-	    const std::shared_ptr<testlib::MockExecutor>& executor = nullptr,
-	    const std::shared_ptr<IMasterScheduler>& scheduler = nullptr
-	);
-	virtual ~MasterTestFixture();
+    bool SendToMaster(const std::string& hex);
 
-	bool SendToMaster(const std::string& hex);
+    const Addresses addresses;
 
-	const Addresses addresses;
-
-	const std::shared_ptr<openpal::ILogHandler> log;
-	const std::shared_ptr<testlib::MockExecutor> exe;
-	const std::shared_ptr<MockSOEHandler> meas;
-	const std::shared_ptr<MockLowerLayer> lower;
-	const std::shared_ptr<MockMasterApplication> application;
-	const std::shared_ptr<IMasterScheduler> scheduler;
-	const std::shared_ptr<MContext> context;
+    const std::shared_ptr<openpal::ILogHandler> log;
+    const std::shared_ptr<testlib::MockExecutor> exe;
+    const std::shared_ptr<MockSOEHandler> meas;
+    const std::shared_ptr<MockLowerLayer> lower;
+    const std::shared_ptr<MockMasterApplication> application;
+    const std::shared_ptr<IMasterScheduler> scheduler;
+    const std::shared_ptr<MContext> context;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

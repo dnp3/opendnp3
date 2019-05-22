@@ -18,15 +18,15 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
+#include <openpal/container/Buffer.h>
+#include <openpal/util/ToHex.h>
+
+#include <opendnp3/objects/Group120.h>
 
 #include <testlib/BufferHelpers.h>
 #include <testlib/HexConversions.h>
 
-#include <opendnp3/objects/Group120.h>
-
-#include <openpal/util/ToHex.h>
-#include <openpal/container/Buffer.h>
+#include <catch.hpp>
 
 using namespace openpal;
 using namespace opendnp3;
@@ -36,90 +36,92 @@ using namespace testlib;
 
 TEST_CASE(SUITE("Parser rejects empty buffer"))
 {
-	HexSequence buffer("");
+    HexSequence buffer("");
 
-	Group120Var5 output;
-	REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
+    Group120Var5 output;
+    REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
 }
 
 TEST_CASE(SUITE("Parser accepts empty challenge data and hmac"))
 {
-	// SEQ = 1, USER = 7, KeyWrap = 2 (AES256), KeyStatus = 1 (OK), MacAlgo = 4 (SHA-256 trunc 16), challenge len = 0
-	HexSequence buffer("01 00 00 00 07 00 02 01 04 00 00");
+    // SEQ = 1, USER = 7, KeyWrap = 2 (AES256), KeyStatus = 1 (OK), MacAlgo = 4 (SHA-256 trunc 16), challenge len = 0
+    HexSequence buffer("01 00 00 00 07 00 02 01 04 00 00");
 
-	Group120Var5 output;
-	REQUIRE(output.Read(buffer.ToRSlice()));
-	REQUIRE(output.keyChangeSeqNum == 1);
-	REQUIRE(output.userNum == 7);
-	REQUIRE(output.keyWrapAlgo == KeyWrapAlgorithm::AES_256);
-	REQUIRE(output.keyStatus == KeyStatus::OK);
-	REQUIRE(output.hmacAlgo == HMACType::HMAC_SHA256_TRUNC_16);
-	REQUIRE(output.challengeData.Size() == 0);
-	REQUIRE(output.hmacValue.Size() == 0);
+    Group120Var5 output;
+    REQUIRE(output.Read(buffer.ToRSlice()));
+    REQUIRE(output.keyChangeSeqNum == 1);
+    REQUIRE(output.userNum == 7);
+    REQUIRE(output.keyWrapAlgo == KeyWrapAlgorithm::AES_256);
+    REQUIRE(output.keyStatus == KeyStatus::OK);
+    REQUIRE(output.hmacAlgo == HMACType::HMAC_SHA256_TRUNC_16);
+    REQUIRE(output.challengeData.Size() == 0);
+    REQUIRE(output.hmacValue.Size() == 0);
 }
 
 TEST_CASE(SUITE("Parser correctly interprets challenge data and hmac value"))
 {
-	// SEQ = 1, USER = 7, KeyWrap = 2 (AES256), KeyStatus = 1 (OK), MacAlgo = 4 (SHA-256 trunc 16), challenge len = 3
-	HexSequence buffer("01 00 00 00 07 00 02 01 04 03 00 DE AD BE EF");
+    // SEQ = 1, USER = 7, KeyWrap = 2 (AES256), KeyStatus = 1 (OK), MacAlgo = 4 (SHA-256 trunc 16), challenge len = 3
+    HexSequence buffer("01 00 00 00 07 00 02 01 04 03 00 DE AD BE EF");
 
-	Group120Var5 output;
-	REQUIRE(output.Read(buffer.ToRSlice()));
-	REQUIRE(ToHex(output.challengeData) == "DE AD BE");
-	REQUIRE(ToHex(output.hmacValue) == "EF");
+    Group120Var5 output;
+    REQUIRE(output.Read(buffer.ToRSlice()));
+    REQUIRE(ToHex(output.challengeData) == "DE AD BE");
+    REQUIRE(ToHex(output.hmacValue) == "EF");
 }
 
 TEST_CASE(SUITE("Parser rejects one less than minimum required data"))
 {
-	// SEQ = 1, USER = 7, KeyWrap = 2 (AES256), KeyStatus = 1 (OK), MacAlgo = 4 (SHA-256 trunc 16), challenge len = ??? missing
-	HexSequence buffer("01 00 00 00 07 00 02 01 04 00");
+    // SEQ = 1, USER = 7, KeyWrap = 2 (AES256), KeyStatus = 1 (OK), MacAlgo = 4 (SHA-256 trunc 16), challenge len = ???
+    // missing
+    HexSequence buffer("01 00 00 00 07 00 02 01 04 00");
 
-	Group120Var5 output;
-	REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
+    Group120Var5 output;
+    REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
 }
 
 TEST_CASE(SUITE("Parser rejects if specified challenge data is missing"))
 {
-	// SEQ = 1, USER = 7, KeyWrap = 2 (AES256), KeyStatus = 1 (OK), MacAlgo = 4 (SHA-256 trunc 16), challenge len = 1, missing data
-	HexSequence buffer("01 00 00 00 07 00 02 01 04 01 00");
+    // SEQ = 1, USER = 7, KeyWrap = 2 (AES256), KeyStatus = 1 (OK), MacAlgo = 4 (SHA-256 trunc 16), challenge len = 1,
+    // missing data
+    HexSequence buffer("01 00 00 00 07 00 02 01 04 01 00");
 
-	Group120Var5 output;
-	REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
+    Group120Var5 output;
+    REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
 }
 
 TEST_CASE(SUITE("Formatter correctly writes when sufficient space"))
 {
-	HexSequence challenge("DE AD");
-	HexSequence hmac("BE EF");
+    HexSequence challenge("DE AD");
+    HexSequence hmac("BE EF");
 
-	Group120Var5 status(8, 3, KeyWrapAlgorithm::AES_256, KeyStatus::OK, HMACType::HMAC_SHA1_TRUNC_8, challenge, hmac);
-	const uint32_t SIZE = status.Size();
+    Group120Var5 status(8, 3, KeyWrapAlgorithm::AES_256, KeyStatus::OK, HMACType::HMAC_SHA1_TRUNC_8, challenge, hmac);
+    const uint32_t SIZE = status.Size();
 
-	REQUIRE(SIZE == 15);
+    REQUIRE(SIZE == 15);
 
-	Buffer output(SIZE);
+    Buffer output(SIZE);
 
-	auto dest = output.GetWSlice();
-	REQUIRE(status.Write(dest));
-	uint32_t numWritten = output.Size() - dest.Size();
+    auto dest = output.GetWSlice();
+    REQUIRE(status.Write(dest));
+    uint32_t numWritten = output.Size() - dest.Size();
 
-	REQUIRE(numWritten == SIZE);
-	REQUIRE(ToHex(output.ToRSlice().Take(SIZE)) == "08 00 00 00 03 00 02 01 05 02 00 DE AD BE EF");
+    REQUIRE(numWritten == SIZE);
+    REQUIRE(ToHex(output.ToRSlice().Take(SIZE)) == "08 00 00 00 03 00 02 01 05 02 00 DE AD BE EF");
 }
 
 TEST_CASE(SUITE("Formatter rejects when one less than required space"))
 {
-	HexSequence challenge("DE AD BE EF");
-	HexSequence hmac("AB BA");
+    HexSequence challenge("DE AD BE EF");
+    HexSequence hmac("AB BA");
 
-	Group120Var5 status(8, 3, KeyWrapAlgorithm::AES_256, KeyStatus::OK, HMACType::HMAC_SHA1_TRUNC_8, challenge, hmac);
-	const uint32_t SIZE = status.Size();
+    Group120Var5 status(8, 3, KeyWrapAlgorithm::AES_256, KeyStatus::OK, HMACType::HMAC_SHA1_TRUNC_8, challenge, hmac);
+    const uint32_t SIZE = status.Size();
 
-	REQUIRE(SIZE == 17);
+    REQUIRE(SIZE == 17);
 
-	Buffer output(SIZE - 1);
+    Buffer output(SIZE - 1);
 
-	auto dest = output.GetWSlice();
-	REQUIRE_FALSE(status.Write(dest));
-	REQUIRE(dest.Size() == output.Size());
+    auto dest = output.GetWSlice();
+    REQUIRE_FALSE(status.Write(dest));
+    REQUIRE(dest.Size() == output.Size());
 }

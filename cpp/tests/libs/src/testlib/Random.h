@@ -26,42 +26,33 @@
 namespace testlib
 {
 
-template<class T>
-class Random
+template<class T> class Random
 {
 
 public:
-	Random(T min = std::numeric_limits<T>::min(), T max = std::numeric_limits<T>::max()) :
-		rng(),
-		dist(min, max)
-	{
+    Random(T min = std::numeric_limits<T>::min(), T max = std::numeric_limits<T>::max()) : rng(), dist(min, max) {}
 
-	}
-
-	T Next()
-	{
-		return dist(rng);
-	}
+    T Next()
+    {
+        return dist(rng);
+    }
 
 private:
-	std::mt19937 rng;
-	std::uniform_int_distribution<T> dist;
+    std::mt19937 rng;
+    std::uniform_int_distribution<T> dist;
 };
 
 class RandomBool : private Random<uint32_t>
 {
 public:
-	RandomBool() : Random<uint32_t>(0, 1)
-	{}
+    RandomBool() : Random<uint32_t>(0, 1) {}
 
-	bool NextBool()
-	{
-		return Next() ? true : false;
-	}
+    bool NextBool()
+    {
+        return Next() ? true : false;
+    }
 };
 
-
-}
+} // namespace testlib
 
 #endif
-

@@ -20,7 +20,6 @@
  */
 #include "openpal/serialization/FloatByteOrder.h"
 
-
 namespace openpal
 {
 
@@ -28,41 +27,38 @@ const FloatByteOrder::Value FloatByteOrder::ORDER(GetByteOrder());
 
 union FloatUnion
 {
-	uint8_t bytes[4];
-	float f;
+    uint8_t bytes[4];
+    float f;
 };
 
 static_assert(sizeof(FloatUnion) == 4, "Bad float union size");
 
 bool FloatByteOrder::IsNormalByteOrder()
 {
-	FloatUnion value = {{ 0x00, 0x00, 0xA0, 0xC1 }};
-	return (value.f == -20.0f);
+    FloatUnion value = {{0x00, 0x00, 0xA0, 0xC1}};
+    return (value.f == -20.0f);
 }
 
 bool FloatByteOrder::IsReverseByteOrder()
 {
-	FloatUnion value = {{ 0xC1, 0xA0, 0x00, 0x00 }};
-	return (value.f == -20.0f);
+    FloatUnion value = {{0xC1, 0xA0, 0x00, 0x00}};
+    return (value.f == -20.0f);
 }
 
 FloatByteOrder::Value FloatByteOrder::GetByteOrder()
 {
-	if (IsNormalByteOrder())
-	{
-		return FloatByteOrder::Value::NORMAL;
-	}
-	else if (IsReverseByteOrder())
-	{
-		return FloatByteOrder::Value::REVERSE;
-	}
-	else
-	{
-		return FloatByteOrder::Value::UNSUPPORTED;
-	}
+    if (IsNormalByteOrder())
+    {
+        return FloatByteOrder::Value::NORMAL;
+    }
+    else if (IsReverseByteOrder())
+    {
+        return FloatByteOrder::Value::REVERSE;
+    }
+    else
+    {
+        return FloatByteOrder::Value::UNSUPPORTED;
+    }
 }
 
-
-}
-
-
+} // namespace openpal

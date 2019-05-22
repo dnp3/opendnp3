@@ -21,12 +21,11 @@
 #ifndef OPENDNP3_REQUESTHISTORY_H
 #define OPENDNP3_REQUESTHISTORY_H
 
-#include <cstdint>
+#include <openpal/container/RSlice.h>
 
 #include "opendnp3/app/APDUHeader.h"
 
-#include <openpal/container/RSlice.h>
-
+#include <cstdint>
 
 namespace opendnp3
 {
@@ -35,33 +34,27 @@ namespace opendnp3
 class RequestHistory
 {
 public:
+    RequestHistory();
 
-	RequestHistory();
+    bool HasLastRequest() const
+    {
+        return hasLast;
+    }
 
-	bool HasLastRequest() const
-	{
-		return hasLast;
-	}
+    void Reset();
+    void RecordLastProcessedRequest(const APDUHeader& header, const openpal::RSlice& objects);
 
-	void Reset();
-	void RecordLastProcessedRequest(const APDUHeader& header, const openpal::RSlice& objects);
-
-	APDUHeader GetLastHeader() const;
-	bool EqualsLastObjects(const openpal::RSlice& objects) const;
-	bool FullyEqualsLastRequest(const APDUHeader& header, const openpal::RSlice& objects) const;
+    APDUHeader GetLastHeader() const;
+    bool EqualsLastObjects(const openpal::RSlice& objects) const;
+    bool FullyEqualsLastRequest(const APDUHeader& header, const openpal::RSlice& objects) const;
 
 private:
-
-	bool hasLast;
-	APDUHeader lastHeader;
-	uint16_t lastDigest;
-	uint32_t lastObjectsLength;
+    bool hasLast;
+    APDUHeader lastHeader;
+    uint16_t lastDigest;
+    uint32_t lastObjectsLength;
 };
 
-
-}
-
-
+} // namespace opendnp3
 
 #endif
-

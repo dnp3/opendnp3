@@ -31,47 +31,39 @@ namespace asiopal
 
 class MockIO final : public IO, public std::enable_shared_from_this<MockIO>
 {
-	class Timeout
-	{
+    class Timeout
+    {
 
-	public:
+    public:
+        Timeout(asio::io_context& service, std::chrono::steady_clock::duration timeout);
 
-		Timeout(asio::io_context& service, std::chrono::steady_clock::duration timeout);
+        ~Timeout();
 
-		~Timeout();
-
-	private:
-
-		std::shared_ptr<asio::basic_waitable_timer<std::chrono::steady_clock>> timer;
-	};
+    private:
+        std::shared_ptr<asio::basic_waitable_timer<std::chrono::steady_clock>> timer;
+    };
 
 public:
+    static std::shared_ptr<MockIO> Create()
+    {
+        return std::make_shared<MockIO>();
+    }
 
-	static std::shared_ptr<MockIO> Create()
-	{
-		return std::make_shared<MockIO>();
-	}
+    std::shared_ptr<Executor> GetExecutor()
+    {
+        return Executor::Create(this->shared_from_this());
+    }
 
-	std::shared_ptr<Executor> GetExecutor()
-	{
-		return Executor::Create(this->shared_from_this());
-	}
+    size_t RunUntilTimeout(const std::function<bool()>& condition,
+                           std::chrono::steady_clock::duration timeout = std::chrono::seconds(1));
 
-	size_t RunUntilTimeout(const std::function<bool()>& condition, std::chrono::steady_clock::duration timeout = std::chrono::seconds(1));
+    void CompleteInXIterations(size_t iterations,
+                               const std::function<bool()>& condition,
+                               std::chrono::steady_clock::duration timeout = std::chrono::seconds(1));
 
-	void CompleteInXIterations(size_t iterations, const std::function<bool()>& condition, std::chrono::steady_clock::duration timeout = std::chrono::seconds(1));
-
-	size_t RunUntilOutOfWork();
-
+    size_t RunUntilOutOfWork();
 };
 
-}
+} // namespace asiopal
 
 #endif
-
-
-
-
-
-
-

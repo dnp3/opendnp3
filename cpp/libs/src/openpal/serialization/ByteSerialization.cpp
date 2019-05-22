@@ -20,9 +20,9 @@
  */
 #include "openpal/serialization/ByteSerialization.h"
 
-#include <cstring>
-
 #include "openpal/util/Limits.h"
+
+#include <cstring>
 
 namespace openpal
 {
@@ -30,4 +30,4 @@ namespace openpal
 const uint8_t UInt8Simple::Max = openpal::MaxValue<uint8_t>();
 const uint8_t UInt8Simple::Min = openpal::MinValue<uint8_t>();
 
-}
+} // namespace openpal

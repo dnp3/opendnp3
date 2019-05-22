@@ -20,10 +20,10 @@
  */
 #include "MockTransportLayer.h"
 
+#include <openpal/util/ToHex.h>
+
 #include <testlib/BufferHelpers.h>
 #include <testlib/HexConversions.h>
-
-#include <openpal/util/ToHex.h>
 
 using namespace openpal;
 using namespace testlib;
@@ -31,46 +31,44 @@ using namespace testlib;
 namespace opendnp3
 {
 
-MockTransportLayer::MockTransportLayer() : pLinkLayer(nullptr), isOnline(false)
-{}
+MockTransportLayer::MockTransportLayer() : pLinkLayer(nullptr), isOnline(false) {}
 
 void MockTransportLayer::SetLinkLayer(ILinkLayer& linkLayer)
 {
-	this->pLinkLayer = &linkLayer;
+    this->pLinkLayer = &linkLayer;
 }
 
 bool MockTransportLayer::SendDown(ITransportSegment& segments)
 {
-	return pLinkLayer->Send(segments);
+    return pLinkLayer->Send(segments);
 }
 
 bool MockTransportLayer::OnReceive(const Message& message)
 {
-	receivedQueue.push_back(ToHex(message.payload));
-	return true;
+    receivedQueue.push_back(ToHex(message.payload));
+    return true;
 }
 
 bool MockTransportLayer::OnTxReady()
 {
-	++(this->counters.numTxReady);
-	return true;
+    ++(this->counters.numTxReady);
+    return true;
 }
 
 bool MockTransportLayer::OnLowerLayerUp()
 {
-	assert(!isOnline);
-	isOnline = true;
-	++counters.numLayerUp;
-	return true;
+    assert(!isOnline);
+    isOnline = true;
+    ++counters.numLayerUp;
+    return true;
 }
 
 bool MockTransportLayer::OnLowerLayerDown()
 {
-	assert(isOnline);
-	isOnline = false;
-	++counters.numLayerDown;
-	return true;
+    assert(isOnline);
+    isOnline = false;
+    ++counters.numLayerDown;
+    return true;
 }
 
-}
-
+} // namespace opendnp3

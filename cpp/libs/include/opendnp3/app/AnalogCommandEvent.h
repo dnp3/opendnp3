@@ -21,33 +21,31 @@
 #ifndef OPENDNP3_ANALOGCOMMANDEVENT_H
 #define OPENDNP3_ANALOGCOMMANDEVENT_H
 
-#include "opendnp3/gen/CommandStatus.h"
-
 #include "opendnp3/app/DNPTime.h"
+#include "opendnp3/gen/CommandStatus.h"
 
 namespace opendnp3
 {
 
 /**
-* Occurs when an outstation receives and analog command. Maps to Group43.
-*/
+ * Occurs when an outstation receives and analog command. Maps to Group43.
+ */
 class AnalogCommandEvent
 {
 public:
+    AnalogCommandEvent();
 
-	AnalogCommandEvent();
+    AnalogCommandEvent(double value, CommandStatus status);
 
-	AnalogCommandEvent(double value, CommandStatus status);
+    AnalogCommandEvent(double value, CommandStatus status, DNPTime time);
 
-	AnalogCommandEvent(double value, CommandStatus status, DNPTime time);
+    double value;
+    CommandStatus status;
+    DNPTime time;
 
-	double value;
-	CommandStatus status;
-	DNPTime time;
-
-	bool operator==(const AnalogCommandEvent& rhs) const;
+    bool operator==(const AnalogCommandEvent& rhs) const;
 };
 
-}
+} // namespace opendnp3
 
 #endif

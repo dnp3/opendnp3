@@ -21,71 +21,70 @@
 #ifndef TESTLIB_COPYABLEBUFFER_H
 #define TESTLIB_COPYABLEBUFFER_H
 
+#include <openpal/container/RSlice.h>
+
 #include <stddef.h>
+
 #include <memory>
 #include <sstream>
-
-#include <openpal/container/RSlice.h>
 
 namespace testlib
 {
 
 /**
-	Implements a dynamic buffer with a safe
-	copy constructor. This makes it easier to compose with
-	classes without requiring an explicit copy constructor
+    Implements a dynamic buffer with a safe
+    copy constructor. This makes it easier to compose with
+    classes without requiring an explicit copy constructor
 */
 class CopyableBuffer
 {
 
 public:
-	// Construct null buffer
-	CopyableBuffer();
-	// Construct based on starting size of buffer
-	CopyableBuffer(uint32_t size);
-	CopyableBuffer(const openpal::RSlice&);
-	CopyableBuffer(const uint8_t* data, uint32_t size);
-	CopyableBuffer(const CopyableBuffer&);
-	CopyableBuffer& operator=(const CopyableBuffer&);
-	~CopyableBuffer();
+    // Construct null buffer
+    CopyableBuffer();
+    // Construct based on starting size of buffer
+    CopyableBuffer(uint32_t size);
+    CopyableBuffer(const openpal::RSlice&);
+    CopyableBuffer(const uint8_t* data, uint32_t size);
+    CopyableBuffer(const CopyableBuffer&);
+    CopyableBuffer& operator=(const CopyableBuffer&);
+    ~CopyableBuffer();
 
-	bool operator==( const CopyableBuffer& other) const;
-	bool operator!=( const CopyableBuffer& other) const
-	{
-		return ! (*this == other);
-	}
+    bool operator==(const CopyableBuffer& other) const;
+    bool operator!=(const CopyableBuffer& other) const
+    {
+        return !(*this == other);
+    }
 
-	openpal::RSlice ToRSlice() const
-	{
-		return openpal::RSlice(buffer, size);
-	}
+    openpal::RSlice ToRSlice() const
+    {
+        return openpal::RSlice(buffer, size);
+    }
 
-	operator const uint8_t* () const
-	{
-		return buffer;
-	}
+    operator const uint8_t*() const
+    {
+        return buffer;
+    }
 
-	operator uint8_t* ()
-	{
-		return buffer;
-	}
+    operator uint8_t*()
+    {
+        return buffer;
+    }
 
-	uint32_t Size() const
-	{
-		return size;
-	}
+    uint32_t Size() const
+    {
+        return size;
+    }
 
-	void Zero();
+    void Zero();
 
 protected:
-	uint8_t* buffer;
+    uint8_t* buffer;
 
 private:
-	uint32_t size;
+    uint32_t size;
 };
 
-}
+} // namespace testlib
 
 #endif
-
-

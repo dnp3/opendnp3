@@ -21,15 +21,13 @@
 #ifndef OPENDNP3_ASSIGNCLASSHANDLER_H
 #define OPENDNP3_ASSIGNCLASSHANDLER_H
 
+#include <openpal/executor/IExecutor.h>
+#include <openpal/logging/Logger.h>
+
 #include "opendnp3/app/parsing/IAPDUHandler.h"
-
 #include "opendnp3/gen/AssignClassType.h"
-
 #include "opendnp3/outstation/IClassAssigner.h"
 #include "opendnp3/outstation/IOutstationApplication.h"
-
-#include <openpal/logging/Logger.h>
-#include <openpal/executor/IExecutor.h>
 
 namespace opendnp3
 {
@@ -37,39 +35,36 @@ namespace opendnp3
 class AssignClassHandler : public IAPDUHandler
 {
 public:
+    AssignClassHandler(openpal::IExecutor& executor, IOutstationApplication& application, IClassAssigner& assigner);
 
-	AssignClassHandler(openpal::IExecutor& executor, IOutstationApplication& application, IClassAssigner& assigner);
-
-	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final
-	{
-		return true;
-	}
+    virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final
+    {
+        return true;
+    }
 
 private:
+    virtual IINField ProcessHeader(const AllObjectsHeader& header) override final;
 
-	virtual IINField ProcessHeader(const AllObjectsHeader& header) override final;
+    virtual IINField ProcessHeader(const RangeHeader& header) override final;
 
-	virtual IINField ProcessHeader(const RangeHeader& header) override final;
+    IINField RecordClass(GroupVariation gv);
 
-	IINField RecordClass(GroupVariation gv);
+    bool IsExpectingAssignment();
 
-	bool IsExpectingAssignment();
+    IINField ProcessAssignAll(AssignClassType type, PointClass clazz);
 
-	IINField ProcessAssignAll(AssignClassType type, PointClass clazz);
+    IINField ProcessAssignRange(AssignClassType type, PointClass clazz, const Range& range);
 
-	IINField ProcessAssignRange(AssignClassType type, PointClass clazz, const Range& range);
+    void NotifyApplicationOfAssignment(AssignClassType type, PointClass clazz, const Range& range);
 
-	void NotifyApplicationOfAssignment(AssignClassType type, PointClass clazz, const Range& range);
+    int32_t classHeader;
+    PointClass clazz;
 
-	int32_t classHeader;
-	PointClass clazz;
-
-	openpal::IExecutor* pExecutor;
-	IOutstationApplication* pApplication;
-	IClassAssigner* pAssigner;
+    openpal::IExecutor* pExecutor;
+    IOutstationApplication* pApplication;
+    IClassAssigner* pAssigner;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

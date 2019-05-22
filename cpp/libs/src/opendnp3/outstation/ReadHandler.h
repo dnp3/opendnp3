@@ -21,14 +21,12 @@
 #ifndef OPENDNP3_READHANDLER_H
 #define OPENDNP3_READHANDLER_H
 
+#include <openpal/logging/Logger.h>
 
 #include "opendnp3/app/parsing/IAPDUHandler.h"
-
 #include "opendnp3/outstation/IEventSelector.h"
 #include "opendnp3/outstation/IStaticSelector.h"
 #include "opendnp3/outstation/StaticTypeBitfield.h"
-
-#include <openpal/logging/Logger.h>
 
 namespace opendnp3
 {
@@ -36,30 +34,24 @@ namespace opendnp3
 class ReadHandler : public IAPDUHandler
 {
 public:
+    ReadHandler(IStaticSelector& staticSelector, IEventSelector& eventSelector);
 
-	ReadHandler(IStaticSelector& staticSelector, IEventSelector& eventSelector);
-
-	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final
-	{
-		return true;
-	}
+    virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final
+    {
+        return true;
+    }
 
 private:
+    virtual IINField ProcessHeader(const AllObjectsHeader& header) override final;
 
-	virtual IINField ProcessHeader(const AllObjectsHeader& header) override final;
+    virtual IINField ProcessHeader(const RangeHeader& header) override final;
 
-	virtual IINField ProcessHeader(const RangeHeader& header) override final;
+    virtual IINField ProcessHeader(const CountHeader& header) override final;
 
-	virtual IINField ProcessHeader(const CountHeader& header) override final;
-
-	IStaticSelector* pStaticSelector;
-	IEventSelector* pEventSelector;
-
+    IStaticSelector* pStaticSelector;
+    IEventSelector* pEventSelector;
 };
 
-}
-
-
+} // namespace opendnp3
 
 #endif
-

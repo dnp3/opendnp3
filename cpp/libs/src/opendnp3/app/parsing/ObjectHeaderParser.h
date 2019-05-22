@@ -21,12 +21,11 @@
 #ifndef OPENDNP3_OBJECTHEADERPARSER_H
 #define OPENDNP3_OBJECTHEADERPARSER_H
 
+#include <openpal/container/RSlice.h>
+#include <openpal/logging/Logger.h>
 #include <openpal/util/Uncopyable.h>
 
 #include "opendnp3/app/parsing/ParseResult.h"
-#include <openpal/container/RSlice.h>
-#include <openpal/logging/Logger.h>
-
 #include <opendnp3/gen/GroupVariation.h>
 
 namespace opendnp3
@@ -35,24 +34,23 @@ namespace opendnp3
 class ObjectHeader
 {
 public:
-	ObjectHeader();
+    ObjectHeader();
 
-	uint8_t group;
-	uint8_t variation;
-	uint8_t qualifier;
+    uint8_t group;
+    uint8_t variation;
+    uint8_t qualifier;
 };
 
 class ObjectHeaderParser : private openpal::StaticOnly
 {
 public:
+    static ParseResult ParseObjectHeader(ObjectHeader& header, openpal::RSlice& buffer, openpal::Logger* pLogger);
 
-	static ParseResult ParseObjectHeader(ObjectHeader& header, openpal::RSlice& buffer, openpal::Logger* pLogger);
-
-	// Provides stateless inspection of the first object header, provided that it exists
-	// return false on failure (e.g. < 3 bytes)
-	static bool ReadFirstGroupVariation(const openpal::RSlice& objects, GroupVariation& gv);
+    // Provides stateless inspection of the first object header, provided that it exists
+    // return false on failure (e.g. < 3 bytes)
+    static bool ReadFirstGroupVariation(const openpal::RSlice& objects, GroupVariation& gv);
 };
 
-}
+} // namespace opendnp3
 
 #endif

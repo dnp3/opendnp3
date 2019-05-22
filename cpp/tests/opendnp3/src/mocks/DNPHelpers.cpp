@@ -20,15 +20,15 @@
  */
 #include "DNPHelpers.h"
 
-#include <catch.hpp>
+#include <openpal/util/ToHex.h>
 
 #include <opendnp3/link/CRC.h>
 #include <opendnp3/link/LinkFrame.h>
 
-#include <openpal/util/ToHex.h>
-
 #include <testlib/BufferHelpers.h>
 #include <testlib/HexConversions.h>
+
+#include <catch.hpp>
 
 using namespace testlib;
 
@@ -37,39 +37,39 @@ namespace opendnp3
 
 std::string RepairCRC(const std::string& arData)
 {
-	HexSequence hs(arData);
+    HexSequence hs(arData);
 
-	//validate the size of the data
-	REQUIRE(hs.Size() >= 10);
-	REQUIRE(hs.Size() <= 292);
+    // validate the size of the data
+    REQUIRE(hs.Size() >= 10);
+    REQUIRE(hs.Size() <= 292);
 
-	//first determine how much user data is present
-	uint32_t full_blocks = (hs.Size() - 10) / 18;
-	uint32_t partial_size = (hs.Size() - 10) % 18;
+    // first determine how much user data is present
+    uint32_t full_blocks = (hs.Size() - 10) / 18;
+    uint32_t partial_size = (hs.Size() - 10) % 18;
 
-	//can't have a partial size < 3 since even 1 byte requires 2 CRC bytes
-	if(partial_size > 0)
-	{
-		REQUIRE(partial_size >= 3);
-	}
+    // can't have a partial size < 3 since even 1 byte requires 2 CRC bytes
+    if (partial_size > 0)
+    {
+        REQUIRE(partial_size >= 3);
+    }
 
-	//repair the header crc
-	CRC::AddCrc(hs, 8);
+    // repair the header crc
+    CRC::AddCrc(hs, 8);
 
-	uint8_t* ptr = hs + 10;
+    uint8_t* ptr = hs + 10;
 
-	// repair the full blocks
-	for(size_t i = 0; i < full_blocks; i++)
-	{
-		CRC::AddCrc(ptr, 16);
-		ptr += 18;
-	}
+    // repair the full blocks
+    for (size_t i = 0; i < full_blocks; i++)
+    {
+        CRC::AddCrc(ptr, 16);
+        ptr += 18;
+    }
 
-	//repair the partial block
-	if (partial_size > 0) CRC::AddCrc(ptr, partial_size - 2);
+    // repair the partial block
+    if (partial_size > 0)
+        CRC::AddCrc(ptr, partial_size - 2);
 
-	return testlib::ToHex(hs.ToRSlice(), true);
+    return testlib::ToHex(hs.ToRSlice(), true);
 }
 
-}
-
+} // namespace opendnp3

@@ -20,69 +20,73 @@
  */
 #include "PollTaskBase.h"
 
-#include "opendnp3/master/MeasurementHandler.h"
+#include <openpal/logging/LogMacros.h>
 
 #include "opendnp3/LogLevels.h"
-
-#include <openpal/logging/LogMacros.h>
+#include "opendnp3/master/MeasurementHandler.h"
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-PollTaskBase::PollTaskBase(const std::shared_ptr<TaskContext>& context, IMasterApplication& application, ISOEHandler& handler, const TaskBehavior& behavior, openpal::Logger logger, TaskConfig config) :
-	IMasterTask(context, application, behavior, logger, config),
-	handler(&handler)
+PollTaskBase::PollTaskBase(const std::shared_ptr<TaskContext>& context,
+                           IMasterApplication& application,
+                           ISOEHandler& handler,
+                           const TaskBehavior& behavior,
+                           openpal::Logger logger,
+                           TaskConfig config)
+    : IMasterTask(context, application, behavior, logger, config), handler(&handler)
 {
-
 }
 
 void PollTaskBase::Initialize()
 {
-	this->rxCount = 0;
+    this->rxCount = 0;
 }
 
-IMasterTask::ResponseResult PollTaskBase::ProcessResponse(const APDUResponseHeader& header, const openpal::RSlice& objects)
+IMasterTask::ResponseResult PollTaskBase::ProcessResponse(const APDUResponseHeader& header,
+                                                          const openpal::RSlice& objects)
 {
-	if (header.control.FIR)
-	{
-		if (this->rxCount > 0)
-		{
-			SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected FIR frame");
-			return ResponseResult::ERROR_BAD_RESPONSE;
-		}
-		else
-		{
-			return ProcessMeasurements(header, objects);
-		}
-	}
-	else
-	{
-		if (this->rxCount > 0)
-		{
-			return ProcessMeasurements(header, objects);
-		}
-		else
-		{
-			SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected non-FIR frame");
-			return ResponseResult::ERROR_BAD_RESPONSE;
-		}
-	}
+    if (header.control.FIR)
+    {
+        if (this->rxCount > 0)
+        {
+            SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected FIR frame");
+            return ResponseResult::ERROR_BAD_RESPONSE;
+        }
+        else
+        {
+            return ProcessMeasurements(header, objects);
+        }
+    }
+    else
+    {
+        if (this->rxCount > 0)
+        {
+            return ProcessMeasurements(header, objects);
+        }
+        else
+        {
+            SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected non-FIR frame");
+            return ResponseResult::ERROR_BAD_RESPONSE;
+        }
+    }
 }
 
-IMasterTask::ResponseResult PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, const openpal::RSlice& objects)
+IMasterTask::ResponseResult PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header,
+                                                              const openpal::RSlice& objects)
 {
-	++rxCount;
+    ++rxCount;
 
-	if (MeasurementHandler::ProcessMeasurements(objects, logger, handler) == ParseResult::OK)
-	{
-		return header.control.FIN ? ResponseResult::OK_FINAL : ResponseResult::OK_CONTINUE;
-	}
-	else
-	{
-		return ResponseResult::ERROR_BAD_RESPONSE;
-	}
+    if (MeasurementHandler::ProcessMeasurements(objects, logger, handler) == ParseResult::OK)
+    {
+        return header.control.FIN ? ResponseResult::OK_FINAL : ResponseResult::OK_CONTINUE;
+    }
+    else
+    {
+        return ResponseResult::ERROR_BAD_RESPONSE;
+    }
 }
 
-} //end ns
+} // namespace opendnp3

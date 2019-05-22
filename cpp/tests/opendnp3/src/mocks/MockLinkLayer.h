@@ -21,13 +21,14 @@
 #ifndef __MOCK_LINK_LAYER_H_
 #define __MOCK_LINK_LAYER_H_
 
-#include <vector>
-
 #include <openpal/util/ToHex.h>
+
 #include <opendnp3/link/ILinkLayer.h>
 
 #include <testlib/BufferHelpers.h>
 #include <testlib/HexConversions.h>
+
+#include <vector>
 
 namespace opendnp3
 {
@@ -36,39 +37,38 @@ class MockLinkLayer : public ILinkLayer, public HasUpperLayer
 {
 
 public:
+    virtual bool Send(ITransportSegment& segments) override final
+    {
+        while (segments.HasValue())
+        {
+            sends.push_back(testlib::ToHex(segments.GetSegment()));
+            segments.Advance();
+        }
 
-	virtual bool Send(ITransportSegment& segments) override final
-	{
-		while (segments.HasValue())
-		{
-			sends.push_back(testlib::ToHex(segments.GetSegment()));
-			segments.Advance();
-		}
+        return true;
+    }
 
-		return true;
-	}
+    std::string PopWriteAsHex()
+    {
+        assert(!sends.empty());
+        auto ret = sends.front();
+        sends.erase(sends.begin());
+        return ret;
+    }
 
-	std::string PopWriteAsHex()
-	{
-		assert(!sends.empty());
-		auto ret = sends.front();
-		sends.erase(sends.begin());
-		return ret;
-	}
+    bool SendUp(const std::string& hex, const Addresses& addresses = Addresses())
+    {
+        if (pUpperLayer)
+        {
+            testlib::HexSequence hs(hex);
+            return pUpperLayer->OnReceive(Message(addresses, hs.ToRSlice()));
+        }
+        return false;
+    }
 
-	bool SendUp(const std::string& hex, const Addresses& addresses = Addresses())
-	{
-		if (pUpperLayer)
-		{
-			testlib::HexSequence hs(hex);
-			return pUpperLayer->OnReceive(Message(addresses, hs.ToRSlice()));
-		}
-		return false;
-	}
-
-	std::vector<std::string> sends;
+    std::vector<std::string> sends;
 };
 
-}
+} // namespace opendnp3
 
 #endif

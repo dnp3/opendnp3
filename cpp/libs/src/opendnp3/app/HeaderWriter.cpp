@@ -29,66 +29,65 @@ using namespace openpal;
 namespace opendnp3
 {
 
-HeaderWriter::HeaderWriter(openpal::WSlice* position_) : position(position_)
-{}
+HeaderWriter::HeaderWriter(openpal::WSlice* position_) : position(position_) {}
 
-uint32_t  HeaderWriter::Remaining() const
+uint32_t HeaderWriter::Remaining() const
 {
-	return position->Size();
+    return position->Size();
 }
 
 void HeaderWriter::Mark()
 {
-	mark.Set(*position);
+    mark.Set(*position);
 }
 
 bool HeaderWriter::Rollback()
 {
-	if (mark.IsSet())
-	{
-		*position = mark.Get();
-		mark.Clear();
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+    if (mark.IsSet())
+    {
+        *position = mark.Get();
+        mark.Clear();
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 bool HeaderWriter::WriteHeader(GroupVariationID id, QualifierCode qc)
 {
-	if (position->Size() < 3)
-	{
-		return false;
-	}
-	else
-	{
-		UInt8::WriteBuffer(*position, id.group);
-		UInt8::WriteBuffer(*position, id.variation);
-		UInt8::WriteBuffer(*position, QualifierCodeToType(qc));
-		return true;
-	}
+    if (position->Size() < 3)
+    {
+        return false;
+    }
+    else
+    {
+        UInt8::WriteBuffer(*position, id.group);
+        UInt8::WriteBuffer(*position, id.variation);
+        UInt8::WriteBuffer(*position, QualifierCodeToType(qc));
+        return true;
+    }
 }
 
 bool HeaderWriter::WriteHeaderWithReserve(GroupVariationID id, QualifierCode qc, uint32_t reserve)
 {
-	return (position->Size() < (3 + reserve)) ? false : WriteHeader(id, qc);
+    return (position->Size() < (3 + reserve)) ? false : WriteHeader(id, qc);
 }
 
 bool HeaderWriter::WriteFreeFormat(const IVariableLength& value)
 {
-	uint32_t reserveSize = 1 + openpal::UInt16::SIZE + value.Size();
-	if (this->WriteHeaderWithReserve(value.InstanceID(), QualifierCode::UINT16_FREE_FORMAT, reserveSize))
-	{
-		openpal::UInt8::WriteBuffer(*position, 1);
-		openpal::UInt16::WriteBuffer(*position, value.Size());
-		return value.Write(*position);
-	}
-	else
-	{
-		return false;
-	}
+    uint32_t reserveSize = 1 + openpal::UInt16::SIZE + value.Size();
+    if (this->WriteHeaderWithReserve(value.InstanceID(), QualifierCode::UINT16_FREE_FORMAT, reserveSize))
+    {
+        openpal::UInt8::WriteBuffer(*position, 1);
+        openpal::UInt16::WriteBuffer(*position, value.Size());
+        return value.Write(*position);
+    }
+    else
+    {
+        return false;
+    }
 }
 
-}
+} // namespace opendnp3

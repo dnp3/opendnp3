@@ -25,58 +25,53 @@ namespace openpal
 {
 
 /** represents a sequence number
-*/
-template <class T, T Modulus>
-class SequenceNum
+ */
+template<class T, T Modulus> class SequenceNum
 {
-	inline static T Next(T seq)
-	{
-		return (seq + 1) % Modulus;
-	}
+    inline static T Next(T seq)
+    {
+        return (seq + 1) % Modulus;
+    }
 
 public:
+    uint8_t Get() const
+    {
+        return this->seq;
+    }
 
-	uint8_t Get() const
-	{
-		return this->seq;
-	}
+    operator uint8_t() const
+    {
+        return this->seq;
+    }
 
-	operator uint8_t() const
-	{
-		return this->seq;
-	}
+    SequenceNum() : seq(0) {}
 
-	SequenceNum() : seq(0)
-	{}
+    SequenceNum(T value) : seq(value) {}
 
-	SequenceNum(T value) : seq(value)
-	{}
+    bool Equals(T other) const
+    {
+        return other == this->seq;
+    }
 
-	bool Equals(T other) const
-	{
-		return other == this->seq;
-	}
+    void Increment()
+    {
+        this->seq = Next(this->seq);
+    }
 
-	void Increment()
-	{
-		this->seq = Next(this->seq);
-	}
+    void Reset()
+    {
+        this->seq = 0;
+    }
 
-	void Reset()
-	{
-		this->seq = 0;
-	}
-
-	SequenceNum Next() const
-	{
-		return SequenceNum(Next(seq));
-	}
+    SequenceNum Next() const
+    {
+        return SequenceNum(Next(seq));
+    }
 
 protected:
-
-	T seq;
+    T seq;
 };
 
-}
+} // namespace openpal
 
 #endif

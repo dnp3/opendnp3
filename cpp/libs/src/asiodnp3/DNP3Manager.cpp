@@ -25,129 +25,115 @@
 namespace asiodnp3
 {
 
-DNP3Manager::DNP3Manager(
-    uint32_t concurrencyHint,
-    std::shared_ptr<openpal::ILogHandler> handler,
-    std::function<void()> onThreadStart,
-    std::function<void()> onThreadExit) :
-	impl(std::make_unique<DNP3ManagerImpl>(concurrencyHint, handler, onThreadStart, onThreadExit))
+DNP3Manager::DNP3Manager(uint32_t concurrencyHint,
+                         std::shared_ptr<openpal::ILogHandler> handler,
+                         std::function<void()> onThreadStart,
+                         std::function<void()> onThreadExit)
+    : impl(std::make_unique<DNP3ManagerImpl>(concurrencyHint, handler, onThreadStart, onThreadExit))
 {
-
 }
 
-DNP3Manager::~DNP3Manager()
-{}
+DNP3Manager::~DNP3Manager() {}
 
 void DNP3Manager::Shutdown()
 {
-	impl->Shutdown();
+    impl->Shutdown();
 }
 
-std::shared_ptr<IChannel> DNP3Manager::AddTCPClient(
-    const std::string& id,
-    int32_t levels,
-    const asiopal::ChannelRetry& retry,
-    const std::string& host,
-    const std::string& local,
-    uint16_t port,
-    std::shared_ptr<IChannelListener> listener)
+std::shared_ptr<IChannel> DNP3Manager::AddTCPClient(const std::string& id,
+                                                    int32_t levels,
+                                                    const asiopal::ChannelRetry& retry,
+                                                    const std::string& host,
+                                                    const std::string& local,
+                                                    uint16_t port,
+                                                    std::shared_ptr<IChannelListener> listener)
 {
-	return this->impl->AddTCPClient(id, levels, retry, { asiopal::IPEndpoint(host, port) }, local, listener);
+    return this->impl->AddTCPClient(id, levels, retry, {asiopal::IPEndpoint(host, port)}, local, listener);
 }
 
-std::shared_ptr<IChannel> DNP3Manager::AddTCPClient(
-    const std::string& id,
-    int32_t levels,
-    const asiopal::ChannelRetry& retry,
-    const std::vector<asiopal::IPEndpoint>& hosts,
-    const std::string& local,
-    std::shared_ptr<IChannelListener> listener)
+std::shared_ptr<IChannel> DNP3Manager::AddTCPClient(const std::string& id,
+                                                    int32_t levels,
+                                                    const asiopal::ChannelRetry& retry,
+                                                    const std::vector<asiopal::IPEndpoint>& hosts,
+                                                    const std::string& local,
+                                                    std::shared_ptr<IChannelListener> listener)
 {
-	return this->impl->AddTCPClient(id, levels, retry, hosts, local, listener);
+    return this->impl->AddTCPClient(id, levels, retry, hosts, local, listener);
 }
 
-std::shared_ptr<IChannel> DNP3Manager::AddTCPServer(
-    const std::string& id,
-    int32_t levels,
-    opendnp3::ServerAcceptMode mode,
-    const std::string& endpoint,
-    uint16_t port,
-    std::shared_ptr<IChannelListener> listener)
+std::shared_ptr<IChannel> DNP3Manager::AddTCPServer(const std::string& id,
+                                                    int32_t levels,
+                                                    opendnp3::ServerAcceptMode mode,
+                                                    const std::string& endpoint,
+                                                    uint16_t port,
+                                                    std::shared_ptr<IChannelListener> listener)
 {
-	return this->impl->AddTCPServer(id, levels, mode, endpoint, port, listener);
+    return this->impl->AddTCPServer(id, levels, mode, endpoint, port, listener);
 }
 
-std::shared_ptr<IChannel> DNP3Manager::AddSerial(
-    const std::string& id,
-    int32_t levels,
-    const asiopal::ChannelRetry& retry,
-    asiopal::SerialSettings settings,
-    std::shared_ptr<IChannelListener> listener)
+std::shared_ptr<IChannel> DNP3Manager::AddSerial(const std::string& id,
+                                                 int32_t levels,
+                                                 const asiopal::ChannelRetry& retry,
+                                                 asiopal::SerialSettings settings,
+                                                 std::shared_ptr<IChannelListener> listener)
 {
-	return this->impl->AddSerial(id, levels, retry, settings, listener);
+    return this->impl->AddSerial(id, levels, retry, settings, listener);
 }
 
-std::shared_ptr<IChannel> DNP3Manager::AddTLSClient(
-    const std::string& id,
-    int32_t levels,
-    const asiopal::ChannelRetry& retry,
-    const std::string& host,
-    const std::string& local,
-    uint16_t port,
-    const asiopal::TLSConfig& config,
-    std::shared_ptr<IChannelListener> listener,
-    std::error_code& ec)
+std::shared_ptr<IChannel> DNP3Manager::AddTLSClient(const std::string& id,
+                                                    int32_t levels,
+                                                    const asiopal::ChannelRetry& retry,
+                                                    const std::string& host,
+                                                    const std::string& local,
+                                                    uint16_t port,
+                                                    const asiopal::TLSConfig& config,
+                                                    std::shared_ptr<IChannelListener> listener,
+                                                    std::error_code& ec)
 {
-	return this->impl->AddTLSClient(id, levels, retry, { asiopal::IPEndpoint(host, port) }, local, config, listener, ec);
+    return this->impl->AddTLSClient(id, levels, retry, {asiopal::IPEndpoint(host, port)}, local, config, listener, ec);
 }
 
-std::shared_ptr<IChannel> DNP3Manager::AddTLSClient(
-    const std::string& id,
-    int32_t levels,
-    const asiopal::ChannelRetry& retry,
-    const std::vector<asiopal::IPEndpoint>& hosts,
-    const std::string& local,
-    const asiopal::TLSConfig& config,
-    std::shared_ptr<IChannelListener> listener,
-    std::error_code& ec)
+std::shared_ptr<IChannel> DNP3Manager::AddTLSClient(const std::string& id,
+                                                    int32_t levels,
+                                                    const asiopal::ChannelRetry& retry,
+                                                    const std::vector<asiopal::IPEndpoint>& hosts,
+                                                    const std::string& local,
+                                                    const asiopal::TLSConfig& config,
+                                                    std::shared_ptr<IChannelListener> listener,
+                                                    std::error_code& ec)
 {
-	return this->impl->AddTLSClient(id, levels, retry, hosts, local, config, listener, ec);
+    return this->impl->AddTLSClient(id, levels, retry, hosts, local, config, listener, ec);
 }
 
-std::shared_ptr<IChannel> DNP3Manager::AddTLSServer(
-    const std::string& id,
-    int32_t levels,
-    opendnp3::ServerAcceptMode mode,
-    const std::string& endpoint,
-    uint16_t port,
-    const asiopal::TLSConfig& config,
-    std::shared_ptr<IChannelListener> listener,
-    std::error_code& ec)
+std::shared_ptr<IChannel> DNP3Manager::AddTLSServer(const std::string& id,
+                                                    int32_t levels,
+                                                    opendnp3::ServerAcceptMode mode,
+                                                    const std::string& endpoint,
+                                                    uint16_t port,
+                                                    const asiopal::TLSConfig& config,
+                                                    std::shared_ptr<IChannelListener> listener,
+                                                    std::error_code& ec)
 {
-	return this->impl->AddTLSServer(id, levels, mode, endpoint, port, config, listener, ec);
+    return this->impl->AddTLSServer(id, levels, mode, endpoint, port, config, listener, ec);
 }
 
-std::shared_ptr<asiopal::IListener> DNP3Manager::CreateListener(
-    std::string loggerid,
-    openpal::LogFilters loglevel,
-    asiopal::IPEndpoint endpoint,
-    std::shared_ptr<IListenCallbacks> callbacks,
-    std::error_code& ec
-)
+std::shared_ptr<asiopal::IListener> DNP3Manager::CreateListener(std::string loggerid,
+                                                                openpal::LogFilters loglevel,
+                                                                asiopal::IPEndpoint endpoint,
+                                                                std::shared_ptr<IListenCallbacks> callbacks,
+                                                                std::error_code& ec)
 {
-	return impl->CreateListener(loggerid, loglevel, endpoint, callbacks, ec);
+    return impl->CreateListener(loggerid, loglevel, endpoint, callbacks, ec);
 }
 
-std::shared_ptr<asiopal::IListener> DNP3Manager::CreateListener(
-    std::string loggerid,
-    openpal::LogFilters loglevel,
-    asiopal::IPEndpoint endpoint,
-    const asiopal::TLSConfig& config,
-    std::shared_ptr<IListenCallbacks> callbacks,
-    std::error_code& ec
-)
+std::shared_ptr<asiopal::IListener> DNP3Manager::CreateListener(std::string loggerid,
+                                                                openpal::LogFilters loglevel,
+                                                                asiopal::IPEndpoint endpoint,
+                                                                const asiopal::TLSConfig& config,
+                                                                std::shared_ptr<IListenCallbacks> callbacks,
+                                                                std::error_code& ec)
 {
-	return impl->CreateListener(loggerid, loglevel, endpoint, config, callbacks, ec);
+    return impl->CreateListener(loggerid, loglevel, endpoint, config, callbacks, ec);
 }
 
-}
+} // namespace asiodnp3

@@ -21,39 +21,36 @@
 #ifndef ASIOPAL_TIMER_H
 #define ASIOPAL_TIMER_H
 
-#include <asio.hpp>
-
 #include <openpal/executor/ITimer.h>
 #include <openpal/util/Uncopyable.h>
 
 #include "asiopal/SteadyClock.h"
 
+#include <asio.hpp>
 
 namespace asiopal
 {
 
 /**
-*
-* Implementation of openpal::ITimer backed by asio::basic_waitable_timer<steady_clock>
-*
-*/
+ *
+ * Implementation of openpal::ITimer backed by asio::basic_waitable_timer<steady_clock>
+ *
+ */
 class Timer final : public openpal::ITimer, private openpal::Uncopyable
 {
-	friend class Executor;
+    friend class Executor;
 
 public:
+    Timer(asio::io_context& service);
 
-	Timer(asio::io_context& service);
+    virtual void Cancel() override;
 
-	virtual void Cancel() override;
-
-	virtual openpal::MonotonicTimestamp ExpiresAt() override;
+    virtual openpal::MonotonicTimestamp ExpiresAt() override;
 
 private:
-
-	asio::basic_waitable_timer< asiopal::steady_clock_t > timer;
+    asio::basic_waitable_timer<asiopal::steady_clock_t> timer;
 };
 
-}
+} // namespace asiopal
 
 #endif

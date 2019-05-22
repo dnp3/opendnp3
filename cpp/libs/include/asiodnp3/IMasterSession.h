@@ -27,21 +27,18 @@ namespace asiodnp3
 {
 
 /**
-* Interface that represents an emphemeral master session
-*/
+ * Interface that represents an emphemeral master session
+ */
 class IMasterSession : public IMasterOperations
 {
 public:
+    virtual ~IMasterSession() {}
 
-	virtual ~IMasterSession() {}
+    virtual opendnp3::StackStatistics GetStackStatistics() = 0;
 
-	virtual opendnp3::StackStatistics GetStackStatistics() = 0;
-
-	virtual void BeginShutdown() = 0;
-
+    virtual void BeginShutdown() = 0;
 };
 
-}
+} // namespace asiodnp3
 
 #endif
-

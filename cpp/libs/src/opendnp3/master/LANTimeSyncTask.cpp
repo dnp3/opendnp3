@@ -20,64 +20,69 @@
  */
 #include "LANTimeSyncTask.h"
 
-#include "opendnp3/objects/Group50.h"
-#include "opendnp3/app/APDUBuilders.h"
-
 #include <openpal/serialization/Serialization.h>
+
+#include "opendnp3/app/APDUBuilders.h"
+#include "opendnp3/objects/Group50.h"
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-LANTimeSyncTask::LANTimeSyncTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, openpal::Logger logger) :
-	IMasterTask(context, app, TaskBehavior::ReactsToIINOnly(), logger, TaskConfig::Default())
-{}
+LANTimeSyncTask::LANTimeSyncTask(const std::shared_ptr<TaskContext>& context,
+                                 IMasterApplication& app,
+                                 openpal::Logger logger)
+    : IMasterTask(context, app, TaskBehavior::ReactsToIINOnly(), logger, TaskConfig::Default())
+{
+}
 
 void LANTimeSyncTask::Initialize()
 {
-	this->state = State::RECORD_CURRENT_TIME;
+    this->state = State::RECORD_CURRENT_TIME;
 }
 
 bool LANTimeSyncTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
-	if (state  == State::RECORD_CURRENT_TIME)
-	{
-		this->start = this->application->Now();
-		build::RecordCurrentTime(request, seq);
-		return true;
-	}
-	else
-	{
-		Group50Var3 time;
-		time.time = DNPTime(this->start.msSinceEpoch);
-		request.SetFunction(FunctionCode::WRITE);
-		request.SetControl(AppControlField::Request(seq));
-		auto writer = request.GetWriter();
-		return writer.WriteSingleValue<UInt8, Group50Var3>(QualifierCode::UINT8_CNT, time);
-	}
+    if (state == State::RECORD_CURRENT_TIME)
+    {
+        this->start = this->application->Now();
+        build::RecordCurrentTime(request, seq);
+        return true;
+    }
+    else
+    {
+        Group50Var3 time;
+        time.time = DNPTime(this->start.msSinceEpoch);
+        request.SetFunction(FunctionCode::WRITE);
+        request.SetControl(AppControlField::Request(seq));
+        auto writer = request.GetWriter();
+        return writer.WriteSingleValue<UInt8, Group50Var3>(QualifierCode::UINT8_CNT, time);
+    }
 }
 
-IMasterTask::ResponseResult LANTimeSyncTask::ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects)
+IMasterTask::ResponseResult LANTimeSyncTask::ProcessResponse(const APDUResponseHeader& response,
+                                                             const openpal::RSlice& objects)
 {
-	return (state  == State::RECORD_CURRENT_TIME) ? OnResponseRecordCurrentTime(response, objects) : OnResponseWriteTime(response, objects);
+    return (state == State::RECORD_CURRENT_TIME) ? OnResponseRecordCurrentTime(response, objects)
+                                                 : OnResponseWriteTime(response, objects);
 }
 
-IMasterTask::ResponseResult LANTimeSyncTask::OnResponseRecordCurrentTime(const APDUResponseHeader& response, const openpal::RSlice& objects)
+IMasterTask::ResponseResult LANTimeSyncTask::OnResponseRecordCurrentTime(const APDUResponseHeader& response,
+                                                                         const openpal::RSlice& objects)
 {
-	if (!ValidateNullResponse(response, objects)) return ResponseResult::ERROR_BAD_RESPONSE;
+    if (!ValidateNullResponse(response, objects))
+        return ResponseResult::ERROR_BAD_RESPONSE;
 
-	this->state = State::WRITE_TIME;
+    this->state = State::WRITE_TIME;
 
-	return ResponseResult::OK_REPEAT;
+    return ResponseResult::OK_REPEAT;
 }
 
-IMasterTask::ResponseResult LANTimeSyncTask::OnResponseWriteTime(const APDUResponseHeader& header, const openpal::RSlice& objects)
+IMasterTask::ResponseResult LANTimeSyncTask::OnResponseWriteTime(const APDUResponseHeader& header,
+                                                                 const openpal::RSlice& objects)
 {
-	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
+    return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
 }
 
-} //ens ns
-
-
-
+} // namespace opendnp3

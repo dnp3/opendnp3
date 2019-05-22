@@ -27,78 +27,70 @@ namespace opendnp3
 {
 
 // A facade for writing APDUs to an external buffer
-template <class PrefixType, class WriteType>
-class PrefixedWriteIterator
+template<class PrefixType, class WriteType> class PrefixedWriteIterator
 {
 public:
+    static PrefixedWriteIterator Null()
+    {
+        return PrefixedWriteIterator();
+    }
 
-	static PrefixedWriteIterator Null()
-	{
-		return PrefixedWriteIterator();
-	}
+    PrefixedWriteIterator() : sizeOfTypePlusIndex(0), count(0), isValid(false), pPosition(nullptr) {}
 
-	PrefixedWriteIterator() :
-		sizeOfTypePlusIndex(0),
-		count(0),
-		isValid(false),
-		pPosition(nullptr)
-	{}
+    PrefixedWriteIterator(const openpal::Serializer<WriteType>& serializer_, openpal::WSlice& position)
+        : serializer(serializer_),
+          sizeOfTypePlusIndex(serializer.Size() + PrefixType::SIZE),
+          count(0),
+          isValid(position.Size() >= PrefixType::SIZE),
+          countPosition(position),
+          pPosition(&position)
+    {
+        if (isValid)
+        {
+            pPosition->Advance(PrefixType::SIZE);
+        }
+    }
 
-	PrefixedWriteIterator(const openpal::Serializer<WriteType>& serializer_, openpal::WSlice& position) :
-		serializer(serializer_),
-		sizeOfTypePlusIndex(serializer.Size() + PrefixType::SIZE),
-		count(0),
-		isValid(position.Size() >= PrefixType::SIZE),
-		countPosition(position),
-		pPosition(&position)
-	{
-		if(isValid)
-		{
-			pPosition->Advance(PrefixType::SIZE);
-		}
-	}
+    ~PrefixedWriteIterator()
+    {
+        if (isValid)
+        {
+            PrefixType::Write(countPosition, count);
+        }
+    }
 
-	~PrefixedWriteIterator()
-	{
-		if (isValid)
-		{
-			PrefixType::Write(countPosition, count);
-		}
-	}
+    bool Write(const WriteType& value, typename PrefixType::Type index)
+    {
+        if (isValid && (pPosition->Size() >= sizeOfTypePlusIndex))
+        {
+            PrefixType::WriteBuffer(*pPosition, index);
+            serializer.Write(value, *pPosition);
+            ++count;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	bool Write(const WriteType& value, typename PrefixType::Type index)
-	{
-		if (isValid && (pPosition->Size() >= sizeOfTypePlusIndex))
-		{
-			PrefixType::WriteBuffer(*pPosition, index);
-			serializer.Write(value, *pPosition);
-			++count;
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	bool IsValid() const
-	{
-		return isValid;
-	}
+    bool IsValid() const
+    {
+        return isValid;
+    }
 
 private:
+    openpal::Serializer<WriteType> serializer;
+    uint32_t sizeOfTypePlusIndex;
 
-	openpal::Serializer<WriteType> serializer;
-	uint32_t sizeOfTypePlusIndex;
+    typename PrefixType::Type count;
 
-	typename PrefixType::Type count;
+    bool isValid;
 
-	bool isValid;
-
-	openpal::WSlice countPosition;  // make a copy to record where we write the count
-	openpal::WSlice* pPosition;
+    openpal::WSlice countPosition; // make a copy to record where we write the count
+    openpal::WSlice* pPosition;
 };
 
-}
+} // namespace opendnp3
 
 #endif

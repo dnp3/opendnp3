@@ -21,8 +21,9 @@
 #ifndef OPENDNP3_QUALITYFLAGS_H
 #define OPENDNP3_QUALITYFLAGS_H
 
-#include <cstdint>
 #include "opendnp3/app/Flags.h"
+
+#include <cstdint>
 
 namespace opendnp3
 {
@@ -30,18 +31,18 @@ namespace opendnp3
 namespace flags
 {
 
-enum Quality : uint8_t
-{
-	ONLINE = 0x01,
-	RESTART = 0x02
-};
+    enum Quality : uint8_t
+    {
+        ONLINE = 0x01,
+        RESTART = 0x02
+    };
 
-bool GetBinaryValue(Flags flags);
+    bool GetBinaryValue(Flags flags);
 
-Flags GetBinaryFlags(Flags flags, bool value);
+    Flags GetBinaryFlags(Flags flags, bool value);
 
-}
+} // namespace flags
 
-}
+} // namespace opendnp3
 
 #endif

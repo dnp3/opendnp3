@@ -27,30 +27,35 @@ using namespace openpal;
 namespace opendnp3
 {
 
-EmptyResponseTask::EmptyResponseTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, const std::string& name, FunctionCode func, const std::function<bool(HeaderWriter&)>& format, openpal::MonotonicTimestamp startExpiration, openpal::Logger logger, const TaskConfig& config) :
-	IMasterTask(context, app, TaskBehavior::SingleExecutionNoRetry(startExpiration), logger, config),
-	name(name),
-	func(func),
-	format(format)
+EmptyResponseTask::EmptyResponseTask(const std::shared_ptr<TaskContext>& context,
+                                     IMasterApplication& app,
+                                     const std::string& name,
+                                     FunctionCode func,
+                                     const std::function<bool(HeaderWriter&)>& format,
+                                     openpal::MonotonicTimestamp startExpiration,
+                                     openpal::Logger logger,
+                                     const TaskConfig& config)
+    : IMasterTask(context, app, TaskBehavior::SingleExecutionNoRetry(startExpiration), logger, config),
+      name(name),
+      func(func),
+      format(format)
 {
-
 }
 
 bool EmptyResponseTask::EmptyResponseTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
-	request.SetControl(AppControlField(true, true, false, false, seq));
-	request.SetFunction(this->func);
-	auto writer = request.GetWriter();
-	return format(writer);
+    request.SetControl(AppControlField(true, true, false, false, seq));
+    request.SetFunction(this->func);
+    auto writer = request.GetWriter();
+    return format(writer);
 }
 
 /*func, priority::USER_REQUEST, format*/
 
-IMasterTask::ResponseResult EmptyResponseTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects)
+IMasterTask::ResponseResult EmptyResponseTask::ProcessResponse(const opendnp3::APDUResponseHeader& header,
+                                                               const openpal::RSlice& objects)
 {
-	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
+    return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
 }
 
-
-} //end ns
-
+} // namespace opendnp3

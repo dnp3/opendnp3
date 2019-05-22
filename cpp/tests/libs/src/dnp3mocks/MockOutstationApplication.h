@@ -31,111 +31,108 @@ namespace opendnp3
 class MockOutstationApplication : public IOutstationApplication
 {
 public:
+    MockOutstationApplication()
+        : supportsTimeWrite(true),
+          supportsAssignClass(false),
+          supportsWriteTimeAndInterval(false),
+          allowTimeWrite(true),
+          warmRestartSupport(RestartMode::UNSUPPORTED),
+          coldRestartSupport(RestartMode::UNSUPPORTED),
+          warmRestartTimeDelay(0),
+          coldRestartTimeDelay(0)
+    {
+    }
 
-	MockOutstationApplication() :
-		supportsTimeWrite(true),
-		supportsAssignClass(false),
-		supportsWriteTimeAndInterval(false),
-		allowTimeWrite(true),
-		warmRestartSupport(RestartMode::UNSUPPORTED),
-		coldRestartSupport(RestartMode::UNSUPPORTED),
-		warmRestartTimeDelay(0),
-		coldRestartTimeDelay(0)
-	{}
+    virtual void OnStateChange(LinkStatus value) override final {}
 
-	virtual void OnStateChange(LinkStatus value) override final
-	{}
+    virtual bool SupportsWriteAbsoluteTime() override final
+    {
+        return supportsTimeWrite;
+    }
 
-	virtual bool SupportsWriteAbsoluteTime() override final
-	{
-		return supportsTimeWrite;
-	}
+    virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) override final
+    {
+        if (allowTimeWrite)
+        {
+            timestamps.push_back(timestamp);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) override final
-	{
-		if (allowTimeWrite)
-		{
-			timestamps.push_back(timestamp);
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
+    virtual bool SupportsWriteTimeAndInterval() override final
+    {
+        return supportsWriteTimeAndInterval;
+    }
 
-	virtual bool SupportsWriteTimeAndInterval() override final
-	{
-		return supportsWriteTimeAndInterval;
-	}
+    virtual bool WriteTimeAndInterval(const ICollection<Indexed<TimeAndInterval>>& meas) override final
+    {
+        auto push = [this](const Indexed<TimeAndInterval>& value) { this->timeAndIntervals.push_back(value); };
 
-	virtual bool WriteTimeAndInterval(const ICollection<Indexed<TimeAndInterval>>& meas) override final
-	{
-		auto push = [this](const Indexed<TimeAndInterval>& value)
-		{
-			this->timeAndIntervals.push_back(value);
-		};
+        meas.ForeachItem(push);
+        return true;
+    }
 
-		meas.ForeachItem(push);
-		return true;
-	}
+    virtual bool SupportsAssignClass() override final
+    {
+        return supportsAssignClass;
+    }
 
-	virtual bool SupportsAssignClass() override final
-	{
-		return supportsAssignClass;
-	}
+    virtual void RecordClassAssignment(AssignClassType type,
+                                       PointClass clazz,
+                                       uint16_t start,
+                                       uint16_t stop) override final
+    {
+        this->classAssignments.push_back(std::make_tuple(type, clazz, start, stop));
+    }
 
-	virtual void RecordClassAssignment(AssignClassType type, PointClass clazz, uint16_t start, uint16_t stop) override final
-	{
-		this->classAssignments.push_back(std::make_tuple(type, clazz, start, stop));
-	}
+    virtual ApplicationIIN GetApplicationIIN() const override final
+    {
+        return appIIN;
+    }
 
-	virtual ApplicationIIN GetApplicationIIN() const override final
-	{
-		return appIIN;
-	}
+    virtual RestartMode ColdRestartSupport() const override final
+    {
+        return coldRestartSupport;
+    }
 
-	virtual RestartMode ColdRestartSupport() const override final
-	{
-		return coldRestartSupport;
-	}
+    virtual RestartMode WarmRestartSupport() const override final
+    {
+        return warmRestartSupport;
+    }
 
-	virtual RestartMode WarmRestartSupport() const override final
-	{
-		return warmRestartSupport;
-	}
+    virtual uint16_t ColdRestart() override final
+    {
+        return coldRestartTimeDelay;
+    }
 
-	virtual uint16_t ColdRestart() override final
-	{
-		return coldRestartTimeDelay;
-	}
+    virtual uint16_t WarmRestart() override final
+    {
+        return warmRestartTimeDelay;
+    }
 
-	virtual uint16_t WarmRestart() override final
-	{
-		return warmRestartTimeDelay;
-	}
+    bool supportsTimeWrite;
+    bool supportsAssignClass;
+    bool supportsWriteTimeAndInterval;
 
-	bool supportsTimeWrite;
-	bool supportsAssignClass;
-	bool supportsWriteTimeAndInterval;
+    bool allowTimeWrite;
 
-	bool allowTimeWrite;
+    RestartMode warmRestartSupport;
+    RestartMode coldRestartSupport;
 
-	RestartMode warmRestartSupport;
-	RestartMode coldRestartSupport;
+    uint16_t warmRestartTimeDelay;
+    uint16_t coldRestartTimeDelay;
 
-	uint16_t warmRestartTimeDelay;
-	uint16_t coldRestartTimeDelay;
+    ApplicationIIN appIIN;
 
-	ApplicationIIN appIIN;
-
-	std::deque<openpal::UTCTimestamp> timestamps;
-	std::deque<std::tuple<AssignClassType, PointClass, uint16_t, uint16_t>> classAssignments;
-	std::deque<Indexed<TimeAndInterval>> timeAndIntervals;
-
+    std::deque<openpal::UTCTimestamp> timestamps;
+    std::deque<std::tuple<AssignClassType, PointClass, uint16_t, uint16_t>> classAssignments;
+    std::deque<Indexed<TimeAndInterval>> timeAndIntervals;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

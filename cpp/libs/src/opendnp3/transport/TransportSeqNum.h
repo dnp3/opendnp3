@@ -21,14 +21,14 @@
 #ifndef OPENDNP3_TRANSPORTSEQNUM_H
 #define OPENDNP3_TRANSPORTSEQNUM_H
 
-#include <cstdint>
 #include <openpal/util/SequenceNum.h>
+
+#include <cstdint>
 
 namespace opendnp3
 {
 
 typedef openpal::SequenceNum<uint8_t, 64> TransportSeqNum;
-
 }
 
 #endif

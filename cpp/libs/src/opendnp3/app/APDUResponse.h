@@ -31,18 +31,16 @@ namespace opendnp3
 class APDUResponse : public APDUWrapper
 {
 public:
+    explicit APDUResponse(const openpal::WSlice& buffer);
 
-	explicit APDUResponse(const openpal::WSlice& buffer);
+    void SetIIN(const IINField& indications);
 
-	void SetIIN(const IINField& indications);
-
-	IINField GetIIN() const;
+    IINField GetIIN() const;
 
 private:
-
-	APDUResponse();
+    APDUResponse();
 };
 
-}
+} // namespace opendnp3
 
 #endif

@@ -21,34 +21,31 @@
 #ifndef OPENDNP3_ICLASSASSIGNER_H
 #define OPENDNP3_ICLASSASSIGNER_H
 
-#include "opendnp3/app/Range.h"
 #include "opendnp3/app/GroupVariationRecord.h"
-
-#include "opendnp3/gen/PointClass.h"
+#include "opendnp3/app/Range.h"
 #include "opendnp3/gen/AssignClassType.h"
+#include "opendnp3/gen/PointClass.h"
 
 namespace opendnp3
 {
 
 /**
-* An interface used to process assign class requests
-*/
+ * An interface used to process assign class requests
+ */
 class IClassAssigner
 {
 public:
+    /**
+     *	@return the full range for the actual type, an invalid range if the type doesn't exist
+     */
+    virtual Range AssignClassToAll(AssignClassType type, PointClass clazz) = 0;
 
-	/**
-	*	@return the full range for the actual type, an invalid range if the type doesn't exist
-	*/
-	virtual Range AssignClassToAll(AssignClassType type, PointClass clazz) = 0;
-
-	/**
-	*	@return the portion of the requested range that is valid, an invalid range if the type doesn't exist
-	*/
-	virtual Range AssignClassToRange(AssignClassType type, PointClass clazz, const Range& range) = 0;
+    /**
+     *	@return the portion of the requested range that is valid, an invalid range if the type doesn't exist
+     */
+    virtual Range AssignClassToRange(AssignClassType type, PointClass clazz, const Range& range) = 0;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

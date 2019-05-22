@@ -21,10 +21,10 @@
 #ifndef __HEX_CONVERSIONS_H_
 #define __HEX_CONVERSIONS_H_
 
+#include <openpal/container/RSlice.h>
+
 #include <cstdint>
 #include <string>
-
-#include <openpal/container/RSlice.h>
 
 namespace testlib
 {
@@ -43,6 +43,6 @@ std::string RepeatHex(uint8_t byte, uint16_t count, bool spaced = true);
 
 std::string IncrementHex(uint8_t start, uint16_t count, bool spaced = true);
 
-}
+} // namespace testlib
 
 #endif

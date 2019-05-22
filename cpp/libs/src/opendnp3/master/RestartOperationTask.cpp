@@ -21,121 +21,123 @@
 
 #include "opendnp3/master/RestartOperationTask.h"
 
-#include "opendnp3/master/TaskPriority.h"
-#include "opendnp3/app/parsing/APDUParser.h"
 #include "opendnp3/app/APDUBuilders.h"
+#include "opendnp3/app/parsing/APDUParser.h"
+#include "opendnp3/master/TaskPriority.h"
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-RestartOperationTask::RestartOperationTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, const openpal::MonotonicTimestamp& startTimeout, RestartType operationType, const RestartOperationCallbackT& callback, openpal::Logger logger, const TaskConfig& config) :
-	IMasterTask(context, app, TaskBehavior::SingleExecutionNoRetry(startTimeout), logger, config),
-	function((operationType == RestartType::COLD) ? FunctionCode::COLD_RESTART : FunctionCode::WARM_RESTART),
-	callback(callback)
+RestartOperationTask::RestartOperationTask(const std::shared_ptr<TaskContext>& context,
+                                           IMasterApplication& app,
+                                           const openpal::MonotonicTimestamp& startTimeout,
+                                           RestartType operationType,
+                                           const RestartOperationCallbackT& callback,
+                                           openpal::Logger logger,
+                                           const TaskConfig& config)
+    : IMasterTask(context, app, TaskBehavior::SingleExecutionNoRetry(startTimeout), logger, config),
+      function((operationType == RestartType::COLD) ? FunctionCode::COLD_RESTART : FunctionCode::WARM_RESTART),
+      callback(callback)
 {
-
 }
 
 bool RestartOperationTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
-	request.SetControl(AppControlField(true, true, false, false, seq));
-	request.SetFunction(this->function);
-	return true;
+    request.SetControl(AppControlField(true, true, false, false, seq));
+    request.SetFunction(this->function);
+    return true;
 }
 
 bool RestartOperationTask::IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc)
 {
-	if (headerCount != 0)
-	{
-		return false;
-	}
+    if (headerCount != 0)
+    {
+        return false;
+    }
 
-	switch (gv)
-	{
-	case(GroupVariation::Group52Var1) :
-	case(GroupVariation::Group52Var2) :
-		return true;
-	default:
-		return false;
-	}
+    switch (gv)
+    {
+    case (GroupVariation::Group52Var1):
+    case (GroupVariation::Group52Var2):
+        return true;
+    default:
+        return false;
+    }
 }
 
 MasterTaskType RestartOperationTask::GetTaskType() const
 {
-	return MasterTaskType::USER_TASK;
+    return MasterTaskType::USER_TASK;
 }
 
 char const* RestartOperationTask::Name() const
 {
-	return FunctionCodeToString(this->function);
+    return FunctionCodeToString(this->function);
 }
 
-IMasterTask::ResponseResult RestartOperationTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects)
+IMasterTask::ResponseResult RestartOperationTask::ProcessResponse(const opendnp3::APDUResponseHeader& header,
+                                                                  const openpal::RSlice& objects)
 {
-	if (!(ValidateSingleResponse(header) && ValidateInternalIndications(header)))
-	{
-		return ResponseResult::ERROR_BAD_RESPONSE;
-	}
+    if (!(ValidateSingleResponse(header) && ValidateInternalIndications(header)))
+    {
+        return ResponseResult::ERROR_BAD_RESPONSE;
+    }
 
-	if (objects.IsEmpty())
-	{
-		return ResponseResult::ERROR_BAD_RESPONSE;
-	}
+    if (objects.IsEmpty())
+    {
+        return ResponseResult::ERROR_BAD_RESPONSE;
+    }
 
-	auto result = APDUParser::Parse(objects, *this, &logger);
+    auto result = APDUParser::Parse(objects, *this, &logger);
 
-	return (result == ParseResult::OK) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
+    return (result == ParseResult::OK) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
 }
 
 IINField RestartOperationTask::ProcessHeader(const CountHeader& header, const ICollection<Group52Var1>& values)
 {
-	Group52Var1 value;
-	if (values.ReadOnlyValue(value))
-	{
-		this->duration = TimeDuration::Seconds(value.time);
-		return IINField::Empty();
-	}
-	else
-	{
-		return IINBit::PARAM_ERROR;
-	}
+    Group52Var1 value;
+    if (values.ReadOnlyValue(value))
+    {
+        this->duration = TimeDuration::Seconds(value.time);
+        return IINField::Empty();
+    }
+    else
+    {
+        return IINBit::PARAM_ERROR;
+    }
 }
 
 IINField RestartOperationTask::ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& values)
 {
-	Group52Var2 value;
-	if (values.ReadOnlyValue(value))
-	{
-		this->duration = TimeDuration::Milliseconds(value.time);
-		return IINField::Empty();
-	}
-	else
-	{
-		return IINBit::PARAM_ERROR;
-	}
+    Group52Var2 value;
+    if (values.ReadOnlyValue(value))
+    {
+        this->duration = TimeDuration::Milliseconds(value.time);
+        return IINField::Empty();
+    }
+    else
+    {
+        return IINBit::PARAM_ERROR;
+    }
 }
 
 FunctionCode RestartOperationTask::ToFunctionCode(RestartType op)
 {
-	return (op == RestartType::COLD) ? FunctionCode::COLD_RESTART : FunctionCode::WARM_RESTART;
+    return (op == RestartType::COLD) ? FunctionCode::COLD_RESTART : FunctionCode::WARM_RESTART;
 }
 
 void RestartOperationTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
 {
-	if (this->Errors().Any())
-	{
-		this->callback(RestartOperationResult(TaskCompletion::FAILURE_BAD_RESPONSE, this->duration));
-	}
-	else
-	{
-		this->callback(RestartOperationResult(result, this->duration));
-	}
-
+    if (this->Errors().Any())
+    {
+        this->callback(RestartOperationResult(TaskCompletion::FAILURE_BAD_RESPONSE, this->duration));
+    }
+    else
+    {
+        this->callback(RestartOperationResult(result, this->duration));
+    }
 }
 
-} //end ns
-
-
-
+} // namespace opendnp3

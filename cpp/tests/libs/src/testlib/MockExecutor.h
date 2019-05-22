@@ -23,10 +23,11 @@
 
 #include <openpal/executor/IExecutor.h>
 
+#include <stddef.h>
+
+#include <limits>
 #include <map>
 #include <queue>
-#include <limits>
-#include <stddef.h>
 
 namespace testlib
 {
@@ -36,91 +37,89 @@ class MockTimer;
 /** @section desc Test class that doles out MockTimer* */
 class MockExecutor : public openpal::IExecutor
 {
-	friend class MockTimer;
+    friend class MockTimer;
 
 public:
-	MockExecutor();
-	~MockExecutor();
+    MockExecutor();
+    ~MockExecutor();
 
-	// Implement IExecutor
-	virtual openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const openpal::action_t& runnable) override;
-	virtual openpal::ITimer* Start(const openpal::TimeDuration&, const openpal::action_t& runnable) override;
-	virtual void Post(const openpal::action_t& runnable) override;
-	virtual openpal::MonotonicTimestamp GetTime() override;
+    // Implement IExecutor
+    virtual openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const openpal::action_t& runnable) override;
+    virtual openpal::ITimer* Start(const openpal::TimeDuration&, const openpal::action_t& runnable) override;
+    virtual void Post(const openpal::action_t& runnable) override;
+    virtual openpal::MonotonicTimestamp GetTime() override;
 
-	/** Turns the auto-post feature on/off. When Auto post is on, Post() is executed synchronously */
-	void SetAutoPost(bool aAutoPost)
-	{
-		this->mPostIsSynchronous = aAutoPost;
-	}
+    /** Turns the auto-post feature on/off. When Auto post is on, Post() is executed synchronously */
+    void SetAutoPost(bool aAutoPost)
+    {
+        this->mPostIsSynchronous = aAutoPost;
+    }
 
-	/**	@return true if an action was run. */
-	bool RunOne();
+    /**	@return true if an action was run. */
+    bool RunOne();
 
-	/** Calls RunOne() up to some maximum number of times continuing while
-		there are still events to dispatch
+    /** Calls RunOne() up to some maximum number of times continuing while
+        there are still events to dispatch
 
-		@return the number of events dispatched
-	*/
-	size_t RunMany(size_t aMaximum = std::numeric_limits<size_t>::max());
+        @return the number of events dispatched
+    */
+    size_t RunMany(size_t aMaximum = std::numeric_limits<size_t>::max());
 
-	/** @return The number of active, pending timers and post operations */
-	size_t NumActive() const
-	{
-		return postQueue.size();
-	}
+    /** @return The number of active, pending timers and post operations */
+    size_t NumActive() const
+    {
+        return postQueue.size();
+    }
 
-	size_t NumPendingTimers() const
-	{
-		return timers.size();
-	}
+    size_t NumPendingTimers() const
+    {
+        return timers.size();
+    }
 
-	openpal::MonotonicTimestamp NextTimerExpiration();
+    openpal::MonotonicTimestamp NextTimerExpiration();
 
-	size_t AdvanceTime(openpal::TimeDuration aDuration);
+    size_t AdvanceTime(openpal::TimeDuration aDuration);
 
-	// doesn't check timers
-	void AddTime(openpal::TimeDuration aDuration);
+    // doesn't check timers
+    void AddTime(openpal::TimeDuration aDuration);
 
-	bool AdvanceToNextTimer();
+    bool AdvanceToNextTimer();
 
 private:
+    size_t CheckForExpiredTimers();
 
-	size_t CheckForExpiredTimers();
+    bool FindExpiredTimer();
 
-	bool FindExpiredTimer();
+    void Cancel(openpal::ITimer* apTimer);
 
-	void Cancel(openpal::ITimer* apTimer);
+    typedef std::deque<openpal::action_t> PostQueue;
+    typedef std::vector<MockTimer*> TimerVector;
 
-	typedef std::deque<openpal::action_t> PostQueue;
-	typedef std::vector<MockTimer*> TimerVector;
+    bool mPostIsSynchronous;
+    openpal::MonotonicTimestamp mCurrentTime;
 
-	bool mPostIsSynchronous;
-	openpal::MonotonicTimestamp mCurrentTime;
-
-	PostQueue postQueue;
-	TimerVector timers;
+    PostQueue postQueue;
+    TimerVector timers;
 };
 
 /** @section desc Test timer class used in conjunction with MockExecutor */
 class MockTimer : public openpal::ITimer
 {
-	friend class MockExecutor;
+    friend class MockExecutor;
 
 public:
-	MockTimer(MockExecutor*, const openpal::MonotonicTimestamp&, const openpal::action_t& runnable);
+    MockTimer(MockExecutor*, const openpal::MonotonicTimestamp&, const openpal::action_t& runnable);
 
-	//implement ITimer
-	void Cancel();
-	openpal::MonotonicTimestamp ExpiresAt();
+    // implement ITimer
+    void Cancel();
+    openpal::MonotonicTimestamp ExpiresAt();
 
 private:
-	openpal::MonotonicTimestamp mTime;
-	MockExecutor* mpSource;
-	openpal::action_t runnable;
+    openpal::MonotonicTimestamp mTime;
+    MockExecutor* mpSource;
+    openpal::action_t runnable;
 };
 
-}
+} // namespace testlib
 
 #endif
-

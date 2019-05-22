@@ -21,56 +21,52 @@
 #ifndef OPENDNP3_DATABASECONFIGVIEW_H
 #define OPENDNP3_DATABASECONFIGVIEW_H
 
-#include "opendnp3/app/MeasurementTypeSpecs.h"
-
-#include "opendnp3/outstation/Cell.h"
-
 #include <openpal/container/ArrayView.h>
+
+#include "opendnp3/app/MeasurementTypeSpecs.h"
+#include "opendnp3/outstation/Cell.h"
 
 namespace opendnp3
 {
 
 /**
-* DatabaseConfigView provides abstracted access to the raw buffers in outstation database.
-*
-* Use this object to congfigure:
-*
-*  1) Inital values if you want something besides false/zero with 0x02 restart quality
-*  2) Default static/event reporting variations for each point
-*  3) Class assignments (0,1,2,3) for each point
-*  4) deadbands for analogs / counters / etc
-*
-*/
+ * DatabaseConfigView provides abstracted access to the raw buffers in outstation database.
+ *
+ * Use this object to congfigure:
+ *
+ *  1) Inital values if you want something besides false/zero with 0x02 restart quality
+ *  2) Default static/event reporting variations for each point
+ *  3) Class assignments (0,1,2,3) for each point
+ *  4) deadbands for analogs / counters / etc
+ *
+ */
 class DatabaseConfigView
 {
 
 public:
+    DatabaseConfigView(openpal::ArrayView<Cell<BinarySpec>, uint16_t> binaries,
+                       openpal::ArrayView<Cell<DoubleBitBinarySpec>, uint16_t> doubleBinaries,
+                       openpal::ArrayView<Cell<AnalogSpec>, uint16_t> analogs,
+                       openpal::ArrayView<Cell<CounterSpec>, uint16_t> counters,
+                       openpal::ArrayView<Cell<FrozenCounterSpec>, uint16_t> frozenCounters,
+                       openpal::ArrayView<Cell<BinaryOutputStatusSpec>, uint16_t> binaryOutputStatii,
+                       openpal::ArrayView<Cell<AnalogOutputStatusSpec>, uint16_t> analogOutputStatii,
+                       openpal::ArrayView<Cell<TimeAndIntervalSpec>, uint16_t> timeAndIntervals,
+                       openpal::ArrayView<Cell<OctetStringSpec>, uint16_t> octetStrings);
 
-	DatabaseConfigView(
-	    openpal::ArrayView<Cell<BinarySpec>, uint16_t> binaries,
-	    openpal::ArrayView<Cell<DoubleBitBinarySpec>, uint16_t> doubleBinaries,
-	    openpal::ArrayView<Cell<AnalogSpec>, uint16_t> analogs,
-	    openpal::ArrayView<Cell<CounterSpec>, uint16_t> counters,
-	    openpal::ArrayView<Cell<FrozenCounterSpec>, uint16_t> frozenCounters,
-	    openpal::ArrayView<Cell<BinaryOutputStatusSpec>, uint16_t> binaryOutputStatii,
-	    openpal::ArrayView<Cell<AnalogOutputStatusSpec>, uint16_t> analogOutputStatii,
-	    openpal::ArrayView<Cell<TimeAndIntervalSpec>, uint16_t> timeAndIntervals,
-	    openpal::ArrayView<Cell<OctetStringSpec>, uint16_t> octetStrings
-	);
+    //  ----------- Views of the underlying storage ---------
 
-	//  ----------- Views of the underlying storage ---------
-
-	openpal::ArrayView<Cell<BinarySpec>, uint16_t> binaries;
-	openpal::ArrayView<Cell<DoubleBitBinarySpec>, uint16_t> doubleBinaries;
-	openpal::ArrayView<Cell<AnalogSpec>, uint16_t> analogs;
-	openpal::ArrayView<Cell<CounterSpec>, uint16_t> counters;
-	openpal::ArrayView<Cell<FrozenCounterSpec>, uint16_t> frozenCounters;
-	openpal::ArrayView<Cell<BinaryOutputStatusSpec>, uint16_t> binaryOutputStatii;
-	openpal::ArrayView<Cell<AnalogOutputStatusSpec>, uint16_t> analogOutputStatii;
-	openpal::ArrayView<Cell<TimeAndIntervalSpec>, uint16_t> timeAndIntervals;
-	openpal::ArrayView<Cell<OctetStringSpec>, uint16_t> octetStrings;
+    openpal::ArrayView<Cell<BinarySpec>, uint16_t> binaries;
+    openpal::ArrayView<Cell<DoubleBitBinarySpec>, uint16_t> doubleBinaries;
+    openpal::ArrayView<Cell<AnalogSpec>, uint16_t> analogs;
+    openpal::ArrayView<Cell<CounterSpec>, uint16_t> counters;
+    openpal::ArrayView<Cell<FrozenCounterSpec>, uint16_t> frozenCounters;
+    openpal::ArrayView<Cell<BinaryOutputStatusSpec>, uint16_t> binaryOutputStatii;
+    openpal::ArrayView<Cell<AnalogOutputStatusSpec>, uint16_t> analogOutputStatii;
+    openpal::ArrayView<Cell<TimeAndIntervalSpec>, uint16_t> timeAndIntervals;
+    openpal::ArrayView<Cell<OctetStringSpec>, uint16_t> octetStrings;
 };
 
-}
+} // namespace opendnp3
 
 #endif

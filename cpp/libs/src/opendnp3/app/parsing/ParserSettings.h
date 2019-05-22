@@ -29,43 +29,40 @@ namespace opendnp3
 class ParserSettings
 {
 public:
+    static ParserSettings NoContents(int32_t filters = flags::APP_OBJECT_RX)
+    {
+        return ParserSettings(false, filters);
+    }
 
-	static ParserSettings NoContents(int32_t filters = flags::APP_OBJECT_RX)
-	{
-		return ParserSettings(false, filters);
-	}
+    static ParserSettings Default(int32_t filters = flags::APP_OBJECT_RX)
+    {
+        return ParserSettings(true, filters);
+    }
 
-	static ParserSettings Default(int32_t filters = flags::APP_OBJECT_RX)
-	{
-		return ParserSettings(true, filters);
-	}
+    static ParserSettings Create(bool expectContents = true, int32_t filters = flags::APP_OBJECT_RX)
+    {
+        return ParserSettings(expectContents, filters);
+    }
 
-	static ParserSettings Create(bool expectContents = true, int32_t filters = flags::APP_OBJECT_RX)
-	{
-		return ParserSettings(expectContents, filters);
-	}
+    inline bool ExpectsContents() const
+    {
+        return expectContents;
+    }
 
-	inline bool ExpectsContents() const
-	{
-		return expectContents;
-	}
-
-	inline int32_t Filters() const
-	{
-		return logFilters;
-	}
+    inline int32_t Filters() const
+    {
+        return logFilters;
+    }
 
 private:
+    ParserSettings(bool expectContents_ = true, int32_t logFilters_ = flags::APP_OBJECT_RX)
+        : expectContents(expectContents_), logFilters(logFilters_)
+    {
+    }
 
-	ParserSettings(bool expectContents_ = true, int32_t logFilters_ = flags::APP_OBJECT_RX) :
-		expectContents(expectContents_),
-		logFilters(logFilters_)
-	{}
-
-
-	const bool expectContents;
-	const int32_t logFilters;
+    const bool expectContents;
+    const int32_t logFilters;
 };
-}
+} // namespace opendnp3
 
 #endif

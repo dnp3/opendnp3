@@ -25,29 +25,24 @@ namespace openpal
 
 UInt48Type UInt48LE::Read(const uint8_t* data)
 {
-	return UInt48Type(
-	           (static_cast<int64_t>(data[0]) << 0) |
-	           (static_cast<int64_t>(data[1]) << 8) |
-	           (static_cast<int64_t>(data[2]) << 16) |
-	           (static_cast<int64_t>(data[3]) << 24) |
-	           (static_cast<int64_t>(data[4]) << 32) |
-	           (static_cast<int64_t>(data[5]) << 40));
+    return UInt48Type((static_cast<int64_t>(data[0]) << 0) | (static_cast<int64_t>(data[1]) << 8)
+                      | (static_cast<int64_t>(data[2]) << 16) | (static_cast<int64_t>(data[3]) << 24)
+                      | (static_cast<int64_t>(data[4]) << 32) | (static_cast<int64_t>(data[5]) << 40));
 }
 
 void UInt48LE::Write(uint8_t* data, UInt48Type value)
 {
-	if (value > MAX)
-	{
-		value = UInt48Type(MAX);
-	}
+    if (value > MAX)
+    {
+        value = UInt48Type(MAX);
+    }
 
-	data[0] = static_cast<uint8_t>(value & 0xFF);
-	data[1] = static_cast<uint8_t>((value >> 8) & 0xFF);
-	data[2] = static_cast<uint8_t>((value >> 16) & 0xFF);
-	data[3] = static_cast<uint8_t>((value >> 24) & 0xFF);
-	data[4] = static_cast<uint8_t>((value >> 32) & 0xFF);
-	data[5] = static_cast<uint8_t>((value >> 40) & 0xFF);
+    data[0] = static_cast<uint8_t>(value & 0xFF);
+    data[1] = static_cast<uint8_t>((value >> 8) & 0xFF);
+    data[2] = static_cast<uint8_t>((value >> 16) & 0xFF);
+    data[3] = static_cast<uint8_t>((value >> 24) & 0xFF);
+    data[4] = static_cast<uint8_t>((value >> 32) & 0xFF);
+    data[5] = static_cast<uint8_t>((value >> 40) & 0xFF);
 }
 
-}
-
+} // namespace openpal

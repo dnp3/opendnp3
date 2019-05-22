@@ -23,35 +23,32 @@
 namespace opendnp3
 {
 
-DeferredRequest::DeferredRequest(uint32_t maxAPDUSize) : isSet(false), buffer(maxAPDUSize)
-{}
+DeferredRequest::DeferredRequest(uint32_t maxAPDUSize) : isSet(false), buffer(maxAPDUSize) {}
 
 void DeferredRequest::Reset()
 {
-	isSet = false;
+    isSet = false;
 }
 
 bool DeferredRequest::IsSet() const
 {
-	return isSet;
+    return isSet;
 }
 
 FunctionCode DeferredRequest::GetFunction() const
 {
-	return header.function;
+    return header.function;
 }
 
 void DeferredRequest::Set(const ParsedRequest& request)
 {
-	this->isSet = true;
+    this->isSet = true;
 
-	this->addresses = request.addresses;
-	this->header = request.header;
+    this->addresses = request.addresses;
+    this->header = request.header;
 
-	auto dest = buffer.GetWSlice();
-	this->objects = request.objects.CopyTo(dest);
+    auto dest = buffer.GetWSlice();
+    this->objects = request.objects.CopyTo(dest);
 }
 
-}
-
-
+} // namespace opendnp3

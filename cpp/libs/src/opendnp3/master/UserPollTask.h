@@ -21,10 +21,10 @@
 #ifndef OPENDNP3_USERPOLLTASK_H
 #define OPENDNP3_USERPOLLTASK_H
 
+#include "opendnp3/master/HeaderBuilder.h"
+#include "opendnp3/master/ITaskCallback.h"
 #include "opendnp3/master/PollTaskBase.h"
 #include "opendnp3/master/TaskPriority.h"
-#include "opendnp3/master/ITaskCallback.h"
-#include "opendnp3/master/HeaderBuilder.h"
 
 #include <functional>
 
@@ -41,54 +41,47 @@ class UserPollTask final : public PollTaskBase
 {
 
 public:
+    UserPollTask(const std::shared_ptr<TaskContext>& context,
+                 const HeaderBuilderT& builder,
+                 const TaskBehavior& behavior,
+                 bool recurring,
+                 IMasterApplication& app,
+                 ISOEHandler& soeHandler,
+                 openpal::Logger logger,
+                 TaskConfig config);
 
-	UserPollTask(
-	    const std::shared_ptr<TaskContext>& context,
-	    const HeaderBuilderT& builder,
-	    const TaskBehavior& behavior,
-	    bool recurring,
-	    IMasterApplication& app,
-	    ISOEHandler& soeHandler,
-	    openpal::Logger logger,
-	    TaskConfig config
-	);
+    virtual int Priority() const override
+    {
+        return priority::USER_POLL;
+    }
 
-	virtual int Priority() const override
-	{
-		return priority::USER_POLL;
-	}
+    virtual bool BuildRequest(APDURequest& request, uint8_t seq) override;
 
-	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override;
+    virtual bool BlocksLowerPriority() const override
+    {
+        return false;
+    }
 
-	virtual bool BlocksLowerPriority() const override
-	{
-		return false;
-	}
+    virtual bool IsRecurring() const override
+    {
+        return recurring;
+    }
 
-	virtual bool IsRecurring() const override
-	{
-		return recurring;
-	}
-
-	virtual bool IsEnabled() const override
-	{
-		return true;
-	}
+    virtual bool IsEnabled() const override
+    {
+        return true;
+    }
 
 private:
+    virtual MasterTaskType GetTaskType() const override
+    {
+        return MasterTaskType::USER_TASK;
+    }
 
-	virtual MasterTaskType GetTaskType() const override
-	{
-		return MasterTaskType::USER_TASK;
-	}
-
-
-	HeaderBuilderT builder;
-	const bool recurring;
+    HeaderBuilderT builder;
+    const bool recurring;
 };
 
-
-} //end ns
-
+} // namespace opendnp3
 
 #endif

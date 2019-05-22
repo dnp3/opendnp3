@@ -21,32 +21,29 @@
 #ifndef OPENDNP3_IDATABASE_H
 #define OPENDNP3_IDATABASE_H
 
-#include "opendnp3/outstation/IUpdateHandler.h"
+#include "opendnp3/outstation/IClassAssigner.h"
 #include "opendnp3/outstation/IResponseLoader.h"
 #include "opendnp3/outstation/IStaticSelector.h"
-#include "opendnp3/outstation/IClassAssigner.h"
+#include "opendnp3/outstation/IUpdateHandler.h"
 
 namespace opendnp3
 {
 /**
-* Extends IUpdateHandler with accessors for other required sub-interfaces related to
-* handling various request types
-*/
+ * Extends IUpdateHandler with accessors for other required sub-interfaces related to
+ * handling various request types
+ */
 class IDatabase : public IUpdateHandler
 {
 public:
+    virtual ~IDatabase() {}
 
-	virtual ~IDatabase() {}
+    virtual IResponseLoader& GetResponseLoader() = 0;
 
-	virtual IResponseLoader& GetResponseLoader() = 0;
+    virtual IStaticSelector& GetStaticSelector() = 0;
 
-	virtual IStaticSelector& GetStaticSelector() = 0;
-
-	virtual IClassAssigner& GetClassAssigner() = 0;
-
-
+    virtual IClassAssigner& GetClassAssigner() = 0;
 };
 
-}
+} // namespace opendnp3
 
 #endif

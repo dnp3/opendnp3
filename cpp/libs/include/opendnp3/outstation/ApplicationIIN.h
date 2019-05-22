@@ -29,31 +29,28 @@ namespace opendnp3
 {
 
 /**
-	Some IIN bits are necessarily controlled by the outstation application,
-	not the underlying protocol stack. This structure describes the state of
-	the bits controllable by the application.
+    Some IIN bits are necessarily controlled by the outstation application,
+    not the underlying protocol stack. This structure describes the state of
+    the bits controllable by the application.
 */
 class ApplicationIIN
 {
 
 public:
+    ApplicationIIN() = default;
 
-	ApplicationIIN() = default;
+    // flags normally controlled by the application, not the stack
+    bool needTime = false;
+    bool localControl = false;
+    bool deviceTrouble = false;
+    bool configCorrupt = false;
 
-	// flags normally controlled by the application, not the stack
-	bool needTime = false;
-	bool localControl = false;
-	bool deviceTrouble = false;
-	bool configCorrupt = false;
+    // this is only for appliactions that have an additional external event buffer that can overflow
+    bool eventBufferOverflow = false;
 
-	// this is only for appliactions that have an additional external event buffer that can overflow
-	bool eventBufferOverflow = false;
-
-	IINField ToIIN() const;
-
+    IINField ToIIN() const;
 };
 
-
-}
+} // namespace opendnp3
 
 #endif

@@ -21,14 +21,14 @@
 #ifndef OPENDNP3_EVENTLISTS_H
 #define OPENDNP3_EVENTLISTS_H
 
-#include "opendnp3/outstation/EventBufferConfig.h"
+#include "ClazzCount.h"
+#include "EventRecord.h"
+#include "TypedEventRecord.h"
 
-#include "opendnp3/app/MeasurementTypeSpecs.h"
 #include "openpal/util/Uncopyable.h"
 
-#include "TypedEventRecord.h"
-#include "EventRecord.h"
-#include "ClazzCount.h"
+#include "opendnp3/app/MeasurementTypeSpecs.h"
+#include "opendnp3/outstation/EventBufferConfig.h"
 
 namespace opendnp3
 {
@@ -38,36 +38,31 @@ typedef List<EventRecord>::Iterator event_iter_t;
 class EventLists : private openpal::Uncopyable
 {
 public:
+    EventLists() = delete;
 
-	EventLists() = delete;
+    EventLists(const EventBufferConfig& config);
 
-	EventLists(const EventBufferConfig& config);
+    // master list keeps the aggregate order and generic data
+    List<EventRecord> events;
 
-	// master list keeps the aggregate order and generic data
-	List<EventRecord> events;
+    template<class T> List<TypedEventRecord<T>>& GetList();
 
-	template <class T>
-	List<TypedEventRecord<T>>& GetList();
+    bool IsAnyTypeFull() const;
 
-	bool IsAnyTypeFull() const;
-
-	EventClassCounters counters;
+    EventClassCounters counters;
 
 private:
-
-
-	// sub-lists just act as type-specific storage
-	List<TypedEventRecord<BinarySpec>> binary;
-	List<TypedEventRecord<DoubleBitBinarySpec>> doubleBinary;
-	List<TypedEventRecord<AnalogSpec>> analog;
-	List<TypedEventRecord<CounterSpec>> counter;
-	List<TypedEventRecord<FrozenCounterSpec>> frozenCounter;
-	List<TypedEventRecord<BinaryOutputStatusSpec>> binaryOutputStatus;
-	List<TypedEventRecord<AnalogOutputStatusSpec>> analogOutputStatus;
-	List<TypedEventRecord<OctetStringSpec>> octetString;
+    // sub-lists just act as type-specific storage
+    List<TypedEventRecord<BinarySpec>> binary;
+    List<TypedEventRecord<DoubleBitBinarySpec>> doubleBinary;
+    List<TypedEventRecord<AnalogSpec>> analog;
+    List<TypedEventRecord<CounterSpec>> counter;
+    List<TypedEventRecord<FrozenCounterSpec>> frozenCounter;
+    List<TypedEventRecord<BinaryOutputStatusSpec>> binaryOutputStatus;
+    List<TypedEventRecord<AnalogOutputStatusSpec>> analogOutputStatus;
+    List<TypedEventRecord<OctetStringSpec>> octetString;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

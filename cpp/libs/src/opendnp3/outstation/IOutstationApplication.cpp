@@ -22,5 +22,4 @@
 
 namespace opendnp3
 {
-
 }

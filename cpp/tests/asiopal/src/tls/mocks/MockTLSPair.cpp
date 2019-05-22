@@ -24,62 +24,47 @@
 namespace asiopal
 {
 
-
-MockTLSPair::MockTLSPair(std::shared_ptr<MockIO> io, uint16_t port, const TLSConfig& client, const TLSConfig& server, std::error_code ec) :
-	log(),
-	io(io),
-	port(port),
-	chandler(std::make_shared<MockTLSClientHandler>()),
-	client(TLSClient::Create(log.logger, io->GetExecutor(), "127.0.0.1", client, ec)),
-	server(ec ? nullptr : MockTLSServer::Create(log.logger, io->GetExecutor(), IPEndpoint::Localhost(port), server, ec))
+MockTLSPair::MockTLSPair(
+    std::shared_ptr<MockIO> io, uint16_t port, const TLSConfig& client, const TLSConfig& server, std::error_code ec)
+    : log(),
+      io(io),
+      port(port),
+      chandler(std::make_shared<MockTLSClientHandler>()),
+      client(TLSClient::Create(log.logger, io->GetExecutor(), "127.0.0.1", client, ec)),
+      server(ec ? nullptr
+                : MockTLSServer::Create(log.logger, io->GetExecutor(), IPEndpoint::Localhost(port), server, ec))
 {
-	if (ec)
-	{
-		throw std::logic_error(ec.message());
-	}
+    if (ec)
+    {
+        throw std::logic_error(ec.message());
+    }
 }
 
 MockTLSPair::~MockTLSPair()
 {
-	this->server->Shutdown();
-	this->client->Cancel();
+    this->server->Shutdown();
+    this->client->Cancel();
 }
 
 void MockTLSPair::Connect(size_t num)
 {
-	auto callback = [handler = this->chandler](
-	                    const std::shared_ptr<Executor>& executor,
-	                    const std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>>& stream,
-	                    const std::error_code & ec)
-	{
-		handler->OnConnect(executor, stream, ec);
-	};
+    auto callback = [handler = this->chandler](const std::shared_ptr<Executor>& executor,
+                                               const std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>>& stream,
+                                               const std::error_code& ec) { handler->OnConnect(executor, stream, ec); };
 
-	if (!this->client->BeginConnect(IPEndpoint::Localhost(this->port), callback))
-	{
-		throw std::logic_error("BeginConnect returned false");
-	}
+    if (!this->client->BeginConnect(IPEndpoint::Localhost(this->port), callback))
+    {
+        throw std::logic_error("BeginConnect returned false");
+    }
 
-	auto connected = [this, num]() -> bool
-	{
-		return this->NumConnectionsEqual(num);
-	};
+    auto connected = [this, num]() -> bool { return this->NumConnectionsEqual(num); };
 
-	io->CompleteInXIterations(10, connected);
+    io->CompleteInXIterations(10, connected);
 }
 
 bool MockTLSPair::NumConnectionsEqual(size_t num) const
 {
-	return (this->server->channels.size() == num) && (this->chandler->channels.size() == num);
+    return (this->server->channels.size() == num) && (this->chandler->channels.size() == num);
 }
 
-}
-
-
-
-
-
-
-
-
-
+} // namespace asiopal

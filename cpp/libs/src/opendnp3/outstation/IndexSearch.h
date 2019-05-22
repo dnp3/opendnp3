@@ -21,149 +21,141 @@
 #ifndef OPENDNP3_INDEXSEARCH_H
 #define OPENDNP3_INDEXSEARCH_H
 
-#include "opendnp3/outstation/Cell.h"
-
-#include "opendnp3/app/Range.h"
-#include "opendnp3/app/MeasurementTypes.h"
-
 #include <openpal/container/ArrayView.h>
 #include <openpal/util/Limits.h>
 #include <openpal/util/Uncopyable.h>
+
+#include "opendnp3/app/MeasurementTypes.h"
+#include "opendnp3/app/Range.h"
+#include "opendnp3/outstation/Cell.h"
 
 namespace opendnp3
 {
 
 /**
-* Implements a binary search for virtual indices in a discontiguous database
-*/
+ * Implements a binary search for virtual indices in a discontiguous database
+ */
 class IndexSearch : private openpal::StaticOnly
 {
 
 public:
+    class Result
+    {
+    public:
+        Result(bool match_, uint16_t index_) : match(match_), index(index_) {}
 
-	class Result
-	{
-	public:
+        const bool match;
+        const uint16_t index;
 
-		Result(bool match_, uint16_t index_) : match(match_), index(index_)
-		{}
+    private:
+        Result() = delete;
+    };
 
-		const bool match;
-		const uint16_t index;
+    template<class T> static Range FindRawRange(const openpal::ArrayView<Cell<T>, uint16_t>& view, const Range& range);
 
-	private:
-
-		Result() = delete;
-	};
-
-	template <class T>
-	static Range FindRawRange(const openpal::ArrayView<Cell<T>, uint16_t>& view, const Range& range);
-
-	template <class T>
-	static Result FindClosestRawIndex(const openpal::ArrayView<Cell<T>, uint16_t>& view, uint16_t vIndex);
+    template<class T>
+    static Result FindClosestRawIndex(const openpal::ArrayView<Cell<T>, uint16_t>& view, uint16_t vIndex);
 
 private:
-
-	static uint16_t GetMidpoint(uint16_t lower, uint16_t upper)
-	{
-		return ((upper - lower) / 2) + lower;
-	}
+    static uint16_t GetMidpoint(uint16_t lower, uint16_t upper)
+    {
+        return ((upper - lower) / 2) + lower;
+    }
 };
 
-template <class T>
-Range IndexSearch::FindRawRange(const openpal::ArrayView<Cell<T>, uint16_t>& view, const Range& range)
+template<class T> Range IndexSearch::FindRawRange(const openpal::ArrayView<Cell<T>, uint16_t>& view, const Range& range)
 {
-	if (range.IsValid() && view.IsNotEmpty())
-	{
-		uint16_t start = FindClosestRawIndex(view, range.start).index;
-		uint16_t stop = FindClosestRawIndex(view, range.stop).index;
+    if (range.IsValid() && view.IsNotEmpty())
+    {
+        uint16_t start = FindClosestRawIndex(view, range.start).index;
+        uint16_t stop = FindClosestRawIndex(view, range.stop).index;
 
-		if (view[start].config.vIndex < range.start)
-		{
-			if (start < openpal::MaxValue<uint16_t>())
-			{
-				++start;
-			}
-			else
-			{
-				return Range::Invalid();
-			}
-		}
+        if (view[start].config.vIndex < range.start)
+        {
+            if (start < openpal::MaxValue<uint16_t>())
+            {
+                ++start;
+            }
+            else
+            {
+                return Range::Invalid();
+            }
+        }
 
-		if (view[stop].config.vIndex > range.stop)
-		{
-			if (stop > 0)
-			{
-				--stop;
-			}
-			else
-			{
-				return Range::Invalid();
-			}
-		}
+        if (view[stop].config.vIndex > range.stop)
+        {
+            if (stop > 0)
+            {
+                --stop;
+            }
+            else
+            {
+                return Range::Invalid();
+            }
+        }
 
-		return (view.Contains(start) && view.Contains(stop)) ? Range::From(start, stop) : Range::Invalid();
-	}
-	else
-	{
-		return Range::Invalid();
-	}
+        return (view.Contains(start) && view.Contains(stop)) ? Range::From(start, stop) : Range::Invalid();
+    }
+    else
+    {
+        return Range::Invalid();
+    }
 }
 
-template <class T>
+template<class T>
 IndexSearch::Result IndexSearch::FindClosestRawIndex(const openpal::ArrayView<Cell<T>, uint16_t>& view, uint16_t vIndex)
 {
-	if (view.IsEmpty())
-	{
-		return Result(false, 0);
-	}
+    if (view.IsEmpty())
+    {
+        return Result(false, 0);
+    }
 
-	uint16_t lower = 0;
-	uint16_t upper = view.Size() - 1;
+    uint16_t lower = 0;
+    uint16_t upper = view.Size() - 1;
 
-	uint16_t midpoint = 0;
+    uint16_t midpoint = 0;
 
-	while (lower <= upper)
-	{
-		midpoint = GetMidpoint(lower, upper);
+    while (lower <= upper)
+    {
+        midpoint = GetMidpoint(lower, upper);
 
-		const auto index = view[midpoint].config.vIndex;
+        const auto index = view[midpoint].config.vIndex;
 
-		if (index == vIndex)
-		{
-			// exact match
-			return Result(true, midpoint);
-		}
+        if (index == vIndex)
+        {
+            // exact match
+            return Result(true, midpoint);
+        }
 
-		if (index < vIndex) // search the upper array
-		{
-			if (lower < openpal::MaxValue<uint16_t>())
-			{
-				lower = midpoint + 1;
-			}
-			else
-			{
-				//we're at the upper limit
-				return Result(false, midpoint);
-			}
-		}
-		else               // search the lower array
-		{
-			if (upper > 0 && midpoint > 0)
-			{
-				upper = midpoint - 1;
-			}
-			else
-			{
-				//we're at the lower limit
-				return Result(false, midpoint);
-			}
-		}
-	}
+        if (index < vIndex) // search the upper array
+        {
+            if (lower < openpal::MaxValue<uint16_t>())
+            {
+                lower = midpoint + 1;
+            }
+            else
+            {
+                // we're at the upper limit
+                return Result(false, midpoint);
+            }
+        }
+        else // search the lower array
+        {
+            if (upper > 0 && midpoint > 0)
+            {
+                upper = midpoint - 1;
+            }
+            else
+            {
+                // we're at the lower limit
+                return Result(false, midpoint);
+            }
+        }
+    }
 
-	return Result(false, midpoint);
+    return Result(false, midpoint);
 }
 
-}
+} // namespace opendnp3
 
 #endif

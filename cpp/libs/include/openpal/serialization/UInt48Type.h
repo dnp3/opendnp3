@@ -30,21 +30,18 @@ class UInt48Type
 {
 
 public:
+    explicit UInt48Type(int64_t value) : value(value) {}
 
-	explicit UInt48Type(int64_t value) : value(value)
-	{}
+    UInt48Type() : value(0) {}
 
-	UInt48Type() : value(0)
-	{}
+    operator int64_t() const
+    {
+        return value;
+    }
 
-	operator int64_t() const
-	{
-		return value;
-	}
-
-	int64_t value;
+    int64_t value;
 };
 
-}
+} // namespace openpal
 
 #endif

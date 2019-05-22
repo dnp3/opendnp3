@@ -28,27 +28,21 @@ namespace opendnp3
 class Indent : openpal::Uncopyable
 {
 public:
+    Indent(IDecoderCallbacks& callbacks) : m_callbacks(&callbacks)
+    {
+        m_callbacks->PushIndent();
+    }
 
-	Indent(IDecoderCallbacks& callbacks) : m_callbacks(&callbacks)
-	{
-		m_callbacks->PushIndent();
-	}
-
-	~Indent()
-	{
-		m_callbacks->PopIndent();
-	}
-
+    ~Indent()
+    {
+        m_callbacks->PopIndent();
+    }
 
 private:
+    Indent() = delete;
 
-	Indent() = delete;
-
-	IDecoderCallbacks* m_callbacks;
-
+    IDecoderCallbacks* m_callbacks;
 };
-}
+} // namespace opendnp3
 
 #endif
-
-

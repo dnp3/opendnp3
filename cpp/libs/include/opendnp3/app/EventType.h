@@ -28,23 +28,23 @@ namespace opendnp3
 
 enum class EventType : uint16_t
 {
-	Binary = 0,
-	Analog = 1,
-	Counter = 2,
-	FrozenCounter = 3,
-	DoubleBitBinary = 4,
-	BinaryOutputStatus = 5,
-	AnalogOutputStatus = 6,
-	OctetString = 7
+    Binary = 0,
+    Analog = 1,
+    Counter = 2,
+    FrozenCounter = 3,
+    DoubleBitBinary = 4,
+    BinaryOutputStatus = 5,
+    AnalogOutputStatus = 6,
+    OctetString = 7
 };
 
 enum class EventClass : uint8_t
 {
-	EC1 = 0,
-	EC2 = 1,
-	EC3 = 2
+    EC1 = 0,
+    EC2 = 1,
+    EC3 = 2
 };
 
-}
+} // namespace opendnp3
 
 #endif

@@ -29,20 +29,14 @@ namespace opendnp3
 /// Simple uint8_t/uint8_t tuple for group and variation
 struct GroupVariationID
 {
-	GroupVariationID() : group(0xFF), variation(0xFF)
-	{}
+    GroupVariationID() : group(0xFF), variation(0xFF) {}
 
-	GroupVariationID(uint8_t aGroup, uint8_t aVariation):
-		group(aGroup),
-		variation(aVariation)
-	{
+    GroupVariationID(uint8_t aGroup, uint8_t aVariation) : group(aGroup), variation(aVariation) {}
 
-	}
-
-	uint8_t group;
-	uint8_t variation;
+    uint8_t group;
+    uint8_t variation;
 };
 
-}
+} // namespace opendnp3
 
 #endif

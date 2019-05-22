@@ -21,52 +21,47 @@
 #ifndef OPENDNP3_STATICWRITERS_H
 #define OPENDNP3_STATICWRITERS_H
 
-#include "opendnp3/app/Range.h"
-#include "opendnp3/app/HeaderWriter.h"
-#include "opendnp3/app/MeasurementTypeSpecs.h"
-#include "opendnp3/outstation/Cell.h"
-
-#include "opendnp3/gen/StaticBinaryVariation.h"
-#include "opendnp3/gen/StaticDoubleBinaryVariation.h"
-#include "opendnp3/gen/StaticCounterVariation.h"
-#include "opendnp3/gen/StaticFrozenCounterVariation.h"
-#include "opendnp3/gen/StaticAnalogVariation.h"
-#include "opendnp3/gen/StaticAnalogOutputStatusVariation.h"
-#include "opendnp3/gen/StaticBinaryOutputStatusVariation.h"
-
 #include <openpal/container/ArrayView.h>
 #include <openpal/util/Uncopyable.h>
+
+#include "opendnp3/app/HeaderWriter.h"
+#include "opendnp3/app/MeasurementTypeSpecs.h"
+#include "opendnp3/app/Range.h"
+#include "opendnp3/gen/StaticAnalogOutputStatusVariation.h"
+#include "opendnp3/gen/StaticAnalogVariation.h"
+#include "opendnp3/gen/StaticBinaryOutputStatusVariation.h"
+#include "opendnp3/gen/StaticBinaryVariation.h"
+#include "opendnp3/gen/StaticCounterVariation.h"
+#include "opendnp3/gen/StaticDoubleBinaryVariation.h"
+#include "opendnp3/gen/StaticFrozenCounterVariation.h"
+#include "opendnp3/outstation/Cell.h"
 
 namespace opendnp3
 {
 
-template <class Spec>
-struct StaticWrite : private openpal::StaticOnly
+template<class Spec> struct StaticWrite : private openpal::StaticOnly
 {
-	typedef bool (*func_t)(openpal::ArrayView<Cell<Spec>, uint16_t>& view, HeaderWriter& writer, Range& range);
+    typedef bool (*func_t)(openpal::ArrayView<Cell<Spec>, uint16_t>& view, HeaderWriter& writer, Range& range);
 };
 
 class StaticWriters : private openpal::StaticOnly
 {
 
 public:
-
-	static StaticWrite<BinarySpec>::func_t Get(StaticBinaryVariation variation);
-	static StaticWrite<DoubleBitBinarySpec>::func_t Get(StaticDoubleBinaryVariation variation);
-	static StaticWrite<CounterSpec>::func_t Get(StaticCounterVariation variation);
-	static StaticWrite<FrozenCounterSpec>::func_t Get(StaticFrozenCounterVariation variation);
-	static StaticWrite<AnalogSpec>::func_t Get(StaticAnalogVariation variation);
-	static StaticWrite<AnalogOutputStatusSpec>::func_t Get(StaticAnalogOutputStatusVariation variation);
-	static StaticWrite<BinaryOutputStatusSpec>::func_t Get(StaticBinaryOutputStatusVariation variation);
-	static StaticWrite<OctetStringSpec>::func_t Get(StaticOctetStringVariation variation);
-	static StaticWrite<TimeAndIntervalSpec>::func_t Get(StaticTimeAndIntervalVariation variation);
+    static StaticWrite<BinarySpec>::func_t Get(StaticBinaryVariation variation);
+    static StaticWrite<DoubleBitBinarySpec>::func_t Get(StaticDoubleBinaryVariation variation);
+    static StaticWrite<CounterSpec>::func_t Get(StaticCounterVariation variation);
+    static StaticWrite<FrozenCounterSpec>::func_t Get(StaticFrozenCounterVariation variation);
+    static StaticWrite<AnalogSpec>::func_t Get(StaticAnalogVariation variation);
+    static StaticWrite<AnalogOutputStatusSpec>::func_t Get(StaticAnalogOutputStatusVariation variation);
+    static StaticWrite<BinaryOutputStatusSpec>::func_t Get(StaticBinaryOutputStatusVariation variation);
+    static StaticWrite<OctetStringSpec>::func_t Get(StaticOctetStringVariation variation);
+    static StaticWrite<TimeAndIntervalSpec>::func_t Get(StaticTimeAndIntervalVariation variation);
 
 private:
-
-	static bool Write(openpal::ArrayView<Cell<OctetStringSpec>, uint16_t>& view, HeaderWriter& writer, Range& range);
+    static bool Write(openpal::ArrayView<Cell<OctetStringSpec>, uint16_t>& view, HeaderWriter& writer, Range& range);
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

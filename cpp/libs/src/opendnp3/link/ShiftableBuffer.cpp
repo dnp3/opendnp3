@@ -21,68 +21,65 @@
 #include "ShiftableBuffer.h"
 
 #include <openpal/Configure.h>
+
 #include <assert.h>
+
 #include <cstring>
 #include <iostream>
 
 namespace opendnp3
 {
 
-
-ShiftableBuffer::ShiftableBuffer(uint8_t* pBuffer_, uint32_t size) :
-	pBuffer(pBuffer_),
-	M_SIZE(size),
-	writePos(0),
-	readPos(0)
+ShiftableBuffer::ShiftableBuffer(uint8_t* pBuffer_, uint32_t size)
+    : pBuffer(pBuffer_), M_SIZE(size), writePos(0), readPos(0)
 {
-
 }
 
 void ShiftableBuffer::Shift()
 {
-	auto numRead = this->NumBytesRead();
+    auto numRead = this->NumBytesRead();
 
-	//copy all unread data to the front of the buffer
-	memmove(pBuffer, pBuffer + readPos, numRead);
+    // copy all unread data to the front of the buffer
+    memmove(pBuffer, pBuffer + readPos, numRead);
 
-	readPos = 0;
-	writePos = numRead;
+    readPos = 0;
+    writePos = numRead;
 }
 
 void ShiftableBuffer::Reset()
 {
-	writePos = 0;
-	readPos = 0;
+    writePos = 0;
+    readPos = 0;
 }
 
 void ShiftableBuffer::AdvanceRead(uint32_t numBytes)
 {
-	assert(numBytes <= this->NumBytesRead());
-	readPos += numBytes;
+    assert(numBytes <= this->NumBytesRead());
+    readPos += numBytes;
 }
 
 void ShiftableBuffer::AdvanceWrite(uint32_t aNumBytes)
 {
-	assert(aNumBytes <= this->NumWriteBytes());
-	writePos += aNumBytes;
+    assert(aNumBytes <= this->NumWriteBytes());
+    writePos += aNumBytes;
 }
 
 bool ShiftableBuffer::Sync(uint32_t& skipCount)
 {
-	while (this->NumBytesRead() > 1) // at least 2 bytes
-	{
-		if (this->ReadBuffer()[0] == 0x05 && this->ReadBuffer()[1] == 0x64)
-		{
-			return true;
-		}
-		else
-		{
-			this->AdvanceRead(1); // skip the first byte
-			++skipCount;
-		}
-	}
+    while (this->NumBytesRead() > 1) // at least 2 bytes
+    {
+        if (this->ReadBuffer()[0] == 0x05 && this->ReadBuffer()[1] == 0x64)
+        {
+            return true;
+        }
+        else
+        {
+            this->AdvanceRead(1); // skip the first byte
+            ++skipCount;
+        }
+    }
 
-	return false;
+    return false;
 }
 
-}
+} // namespace opendnp3

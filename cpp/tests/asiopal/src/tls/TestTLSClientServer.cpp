@@ -18,82 +18,69 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
-
 #include "mocks/MockTLSPair.h"
 
-#include <iostream>
+#include <catch.hpp>
+
 #include <fstream>
+#include <iostream>
 
 using namespace asiopal;
 
 #define SUITE(name) "TLS client/server suite - " name
 
-template <class F>
-void WithIO(const F& fun)
+template<class F> void WithIO(const F& fun)
 {
-	auto io = std::make_shared<MockIO>();
-	fun(io);
-	io->RunUntilOutOfWork();
+    auto io = std::make_shared<MockIO>();
+    fun(io);
+    io->RunUntilOutOfWork();
 }
 
 std::string get_path(const std::string& file)
 {
-	std::ostringstream oss;
-	oss << "../cpp/tests/asiopal/tls-certs/" << file;
-	return oss.str();
+    std::ostringstream oss;
+    oss << "../cpp/tests/asiopal/tls-certs/" << file;
+    return oss.str();
 }
 
 bool exists(const std::string& file)
 {
-	std::ifstream infile(file);
-	return infile.good();
+    std::ifstream infile(file);
+    return infile.good();
 }
 
 TEST_CASE(SUITE("client and server can connect"))
 {
-	const auto key1 = get_path("entity1_key.pem");
-	const auto key2 = get_path("entity2_key.pem");
-	const auto cert1 = get_path("entity1_cert.pem");
-	const auto cert2 = get_path("entity2_cert.pem");
+    const auto key1 = get_path("entity1_key.pem");
+    const auto key2 = get_path("entity2_key.pem");
+    const auto cert1 = get_path("entity1_cert.pem");
+    const auto cert2 = get_path("entity2_cert.pem");
 
-	if (!(exists(key1) && exists(key2) && exists(cert1) && exists(cert2)))
-	{
-		std::cout << "Could not locate one or more of the test TLS certificates. Expected to be run from the project root directory." << std::endl;
-		std::cout << "This test will be skipped." << std::endl;
-		return;
-	}
+    if (!(exists(key1) && exists(key2) && exists(cert1) && exists(cert2)))
+    {
+        std::cout << "Could not locate one or more of the test TLS certificates. Expected to be run from the project "
+                     "root directory."
+                  << std::endl;
+        std::cout << "This test will be skipped." << std::endl;
+        return;
+    }
 
-	auto iteration = [ = ]()
-	{
-		auto test = [ = ](const std::shared_ptr<MockIO>& io)
-		{
+    auto iteration = [=]() {
+        auto test = [=](const std::shared_ptr<MockIO>& io) {
+            TLSConfig cfg1(cert2, cert1, key1);
+            TLSConfig cfg2(cert1, cert2, key2);
 
+            MockTLSPair pair(io, 20001, cfg1, cfg2);
 
-			TLSConfig cfg1(cert2, cert1, key1);
-			TLSConfig cfg2(cert1, cert2, key2);
+            pair.Connect(1);
+        };
 
-			MockTLSPair pair(io, 20001, cfg1, cfg2);
+        WithIO(test);
+    };
 
-			pair.Connect(1);
-		};
-
-		WithIO(test);
-	};
-
-	// run multiple times to ensure the test is cleaning up after itself in terms of system resources
-	for (int i = 0; i < 5; ++i)
-	{
-		iteration();
-	}
+    // run multiple times to ensure the test is cleaning up after itself in terms of system resources
+    for (int i = 0; i < 5; ++i)
+    {
+        iteration();
+    }
 }
-
-
-
-
-
-
-
-
-
-

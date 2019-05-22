@@ -23,40 +23,37 @@
 
 #include <openpal/container/RSlice.h>
 #include <openpal/util/Uncopyable.h>
-#include <string>
 
+#include <string>
 
 namespace asiodnp3
 {
 
 /**
-* Select information from a preverified x509 certificate
-* that user can can inspect an optionally reject
-*/
+ * Select information from a preverified x509 certificate
+ * that user can can inspect an optionally reject
+ */
 class X509Info : private openpal::Uncopyable
 {
 public:
+    X509Info(int depth_, const openpal::RSlice sha1thumbprint_, std::string subjectName_)
+        : depth(depth_), sha1thumbprint(sha1thumbprint_), subjectName(subjectName_)
+    {
+    }
 
-	X509Info(int depth_, const openpal::RSlice sha1thumbprint_, std::string subjectName_) :
-		depth(depth_),
-		sha1thumbprint(sha1thumbprint_),
-		subjectName(subjectName_)
-	{}
+    // the depth of the certificate in the chain
+    int depth;
 
-	// the depth of the certificate in the chain
-	int depth;
+    // the sha1 thumbprint
+    openpal::RSlice sha1thumbprint;
 
-	// the sha1 thumbprint
-	openpal::RSlice sha1thumbprint;
-
-	// the extracted subject name
-	std::string subjectName;
+    // the extracted subject name
+    std::string subjectName;
 
 private:
-
-	X509Info();
+    X509Info();
 };
 
-}
+} // namespace asiodnp3
 
 #endif

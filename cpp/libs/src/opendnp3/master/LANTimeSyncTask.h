@@ -33,65 +33,63 @@ namespace opendnp3
 class LANTimeSyncTask : public IMasterTask
 {
 
-	enum State
-	{
-		RECORD_CURRENT_TIME,
-		WRITE_TIME
-	};
+    enum State
+    {
+        RECORD_CURRENT_TIME,
+        WRITE_TIME
+    };
 
 public:
+    LANTimeSyncTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, openpal::Logger logger);
 
-	LANTimeSyncTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, openpal::Logger logger);
+    virtual char const* Name() const override final
+    {
+        return "LAN time sync";
+    }
 
-	virtual char const* Name() const override final
-	{
-		return "LAN time sync";
-	}
+    virtual int Priority() const override final
+    {
+        return priority::TIME_SYNC;
+    }
 
-	virtual int Priority() const override final
-	{
-		return priority::TIME_SYNC;
-	}
+    virtual bool BlocksLowerPriority() const override final
+    {
+        return true;
+    }
 
-	virtual bool BlocksLowerPriority() const override final
-	{
-		return true;
-	}
+    virtual bool IsRecurring() const override final
+    {
+        return true;
+    }
 
-	virtual bool IsRecurring() const override final
-	{
-		return true;
-	}
-
-	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override final;
+    virtual bool BuildRequest(APDURequest& request, uint8_t seq) override final;
 
 private:
+    virtual MasterTaskType GetTaskType() const override final
+    {
+        return MasterTaskType::LAN_TIME_SYNC;
+    }
 
-	virtual MasterTaskType GetTaskType() const override final
-	{
-		return MasterTaskType::LAN_TIME_SYNC;
-	}
+    virtual bool IsEnabled() const override final
+    {
+        return true;
+    }
 
-	virtual bool IsEnabled() const override final
-	{
-		return true;
-	}
+    virtual ResponseResult ProcessResponse(const APDUResponseHeader& response,
+                                           const openpal::RSlice& objects) override final;
 
-	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) override final;
+    ResponseResult OnResponseRecordCurrentTime(const APDUResponseHeader& header, const openpal::RSlice& objects);
 
-	ResponseResult OnResponseRecordCurrentTime(const APDUResponseHeader& header, const openpal::RSlice& objects);
+    ResponseResult OnResponseWriteTime(const APDUResponseHeader& header, const openpal::RSlice& objects);
 
-	ResponseResult OnResponseWriteTime(const APDUResponseHeader& header, const openpal::RSlice& objects);
+    virtual void Initialize() override final;
 
-	virtual void Initialize() override final;
+    State state = State::RECORD_CURRENT_TIME;
 
-	State state = State::RECORD_CURRENT_TIME;
-
-	// what time we sent the delay meas
-	openpal::UTCTimestamp start;
+    // what time we sent the delay meas
+    openpal::UTCTimestamp start;
 };
 
-} //ens ns
+} // namespace opendnp3
 
 #endif
-

@@ -18,12 +18,13 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
-
 #include "mocks/MasterTestFixture.h"
 
-#include <testlib/HexConversions.h>
 #include <dnp3mocks/APDUHexBuilders.h>
+
+#include <testlib/HexConversions.h>
+
+#include <catch.hpp>
 
 using namespace openpal;
 using namespace opendnp3;
@@ -37,158 +38,156 @@ void ExpectRequestAndRespond(MasterTestFixture&, const std::string& expected, co
 
 TEST_CASE(SUITE("Multidrop scheduling is priroity based"))
 {
-	MasterParams params;
-	params.disableUnsolOnStartup = false;
+    MasterParams params;
+    params.disableUnsolOnStartup = false;
 
-	const auto executor = std::make_shared<testlib::MockExecutor>();
-	const auto scheduler = std::make_shared<opendnp3::MasterSchedulerBackend>(executor);
-	const auto log = std::make_shared<testlib::MockLogHandlerImpl>();
+    const auto executor = std::make_shared<testlib::MockExecutor>();
+    const auto scheduler = std::make_shared<opendnp3::MasterSchedulerBackend>(executor);
+    const auto log = std::make_shared<testlib::MockLogHandlerImpl>();
 
-	MasterTestFixture t1(params, Addresses(1, 10), "s1", log, executor, scheduler);
-	MasterTestFixture t2(params, Addresses(1, 11), "s2", log, executor, scheduler);
+    MasterTestFixture t1(params, Addresses(1, 10), "s1", log, executor, scheduler);
+    MasterTestFixture t2(params, Addresses(1, 11), "s2", log, executor, scheduler);
 
-	t1.context->OnLowerLayerUp();
-	t2.context->OnLowerLayerUp();
+    t1.context->OnLowerLayerUp();
+    t2.context->OnLowerLayerUp();
 
-	REQUIRE(executor->RunMany() > 0);
+    REQUIRE(executor->RunMany() > 0);
 
-	REQUIRE(t1.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
-	REQUIRE(t2.lower->PopWriteAsHex() == "");
+    REQUIRE(t1.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
+    REQUIRE(t2.lower->PopWriteAsHex() == "");
 
-	t1.context->OnTxReady();
-	t1.SendToMaster(hex::EmptyResponse(0, IINField(IINBit::DEVICE_RESTART)));
+    t1.context->OnTxReady();
+    t1.SendToMaster(hex::EmptyResponse(0, IINField(IINBit::DEVICE_RESTART)));
 
-	REQUIRE(executor->RunMany() > 0);
+    REQUIRE(executor->RunMany() > 0);
 
-	// The IIN clear has higher priority than the integrity poll, so it is run first
+    // The IIN clear has higher priority than the integrity poll, so it is run first
 
-	REQUIRE(t1.lower->PopWriteAsHex() == hex::ClearRestartIIN(1));
-	REQUIRE(t2.lower->PopWriteAsHex() == "");
+    REQUIRE(t1.lower->PopWriteAsHex() == hex::ClearRestartIIN(1));
+    REQUIRE(t2.lower->PopWriteAsHex() == "");
 
-	t1.context->OnTxReady();
-	t1.SendToMaster(hex::EmptyResponse(1));
+    t1.context->OnTxReady();
+    t1.SendToMaster(hex::EmptyResponse(1));
 
-	REQUIRE(executor->RunMany() > 0);
+    REQUIRE(executor->RunMany() > 0);
 
-	// Finally, the 2nd master gets to run it's integrity poll
+    // Finally, the 2nd master gets to run it's integrity poll
 
-	REQUIRE(t1.lower->PopWriteAsHex() == "");
-	REQUIRE(t2.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
+    REQUIRE(t1.lower->PopWriteAsHex() == "");
+    REQUIRE(t2.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 }
 
 TEST_CASE(SUITE("Shutting down a master causes 2nd master to run scheduled task"))
 {
 
-	MasterParams params;
-	params.disableUnsolOnStartup = false;
+    MasterParams params;
+    params.disableUnsolOnStartup = false;
 
-	const auto executor = std::make_shared<testlib::MockExecutor>();
-	const auto scheduler = std::make_shared<opendnp3::MasterSchedulerBackend>(executor);
-	const auto log = std::make_shared<testlib::MockLogHandlerImpl>();
+    const auto executor = std::make_shared<testlib::MockExecutor>();
+    const auto scheduler = std::make_shared<opendnp3::MasterSchedulerBackend>(executor);
+    const auto log = std::make_shared<testlib::MockLogHandlerImpl>();
 
-	MasterTestFixture t1(params, Addresses(1, 10), "s1", log, executor, scheduler);
-	MasterTestFixture t2(params, Addresses(1, 11), "s2", log, executor, scheduler);
+    MasterTestFixture t1(params, Addresses(1, 10), "s1", log, executor, scheduler);
+    MasterTestFixture t2(params, Addresses(1, 11), "s2", log, executor, scheduler);
 
-	t1.context->OnLowerLayerUp();
-	t2.context->OnLowerLayerUp();
+    t1.context->OnLowerLayerUp();
+    t2.context->OnLowerLayerUp();
 
-	REQUIRE(executor->RunMany() > 0);
+    REQUIRE(executor->RunMany() > 0);
 
-	REQUIRE(t1.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
-	REQUIRE(t2.lower->PopWriteAsHex() == "");
+    REQUIRE(t1.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
+    REQUIRE(t2.lower->PopWriteAsHex() == "");
 
-	t1.context->OnTxReady();
-	// instead of sending a reply, shutdown the first master
-	t1.context->OnLowerLayerDown();
+    t1.context->OnTxReady();
+    // instead of sending a reply, shutdown the first master
+    t1.context->OnLowerLayerDown();
 
-	REQUIRE(executor->RunMany() > 0);
+    REQUIRE(executor->RunMany() > 0);
 
-	REQUIRE(t1.lower->PopWriteAsHex() == "");
-	REQUIRE(t2.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
+    REQUIRE(t1.lower->PopWriteAsHex() == "");
+    REQUIRE(t2.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 }
 
 TEST_CASE(SUITE("Scheduler executes other session's tasks if a session is timing out"))
 {
-	MasterParams params;
+    MasterParams params;
 
-	const auto executor = std::make_shared<testlib::MockExecutor>();
-	const auto scheduler = std::make_shared<opendnp3::MasterSchedulerBackend>(executor);
-	const auto log = std::make_shared<testlib::MockLogHandlerImpl>();
+    const auto executor = std::make_shared<testlib::MockExecutor>();
+    const auto scheduler = std::make_shared<opendnp3::MasterSchedulerBackend>(executor);
+    const auto log = std::make_shared<testlib::MockLogHandlerImpl>();
 
-	MasterTestFixture t1(params, Addresses(1, 10), "s1", log, executor, scheduler);
-	MasterTestFixture t2(params, Addresses(1, 11), "s2", log, executor, scheduler);
+    MasterTestFixture t1(params, Addresses(1, 10), "s1", log, executor, scheduler);
+    MasterTestFixture t2(params, Addresses(1, 11), "s2", log, executor, scheduler);
 
-	t1.context->OnLowerLayerUp();
-	t2.context->OnLowerLayerUp();
+    t1.context->OnLowerLayerUp();
+    t2.context->OnLowerLayerUp();
 
-	REQUIRE(executor->RunMany() > 0);
+    REQUIRE(executor->RunMany() > 0);
 
-	ExpectRequestAndCauseResponseTimeout(t1, hex::DisableUnsol(0));
-	ExpectRequestAndRespond(t2, hex::DisableUnsol(0), hex::EmptyResponse(0));
+    ExpectRequestAndCauseResponseTimeout(t1, hex::DisableUnsol(0));
+    ExpectRequestAndRespond(t2, hex::DisableUnsol(0), hex::EmptyResponse(0));
 
-	// now session 2 should be able to run its integrity poll
-	ExpectRequestAndRespond(t2, hex::IntegrityPoll(1), hex::EmptyResponse(1));
-
+    // now session 2 should be able to run its integrity poll
+    ExpectRequestAndRespond(t2, hex::IntegrityPoll(1), hex::EmptyResponse(1));
 }
 
 TEST_CASE(SUITE("Scheduler still does integrity polls if exception scan set to high interval"))
 {
-	const auto executor = std::make_shared<testlib::MockExecutor>();
-	const auto scheduler = std::make_shared<opendnp3::MasterSchedulerBackend>(executor);
-	const auto log = std::make_shared<testlib::MockLogHandlerImpl>();
+    const auto executor = std::make_shared<testlib::MockExecutor>();
+    const auto scheduler = std::make_shared<opendnp3::MasterSchedulerBackend>(executor);
+    const auto log = std::make_shared<testlib::MockLogHandlerImpl>();
 
+    MasterTestFixture t1(NoStartupTasks(), Addresses(1, 10), "s1", log, executor, scheduler);
+    MasterTestFixture t2(NoStartupTasks(), Addresses(1, 11), "s2", log, executor, scheduler);
 
-	MasterTestFixture t1(NoStartupTasks(), Addresses(1, 10), "s1", log, executor, scheduler);
-	MasterTestFixture t2(NoStartupTasks(), Addresses(1, 11), "s2", log, executor, scheduler);
+    auto integrity1 = t1.context->AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(10));
+    auto event2 = t2.context->AddClassScan(ClassField::AllEventClasses(), TimeDuration::Seconds(100000));
+    auto integrity2 = t2.context->AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(15));
 
-	auto integrity1 = t1.context->AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(10));
-	auto event2 = t2.context->AddClassScan(ClassField::AllEventClasses(), TimeDuration::Seconds(100000));
-	auto integrity2 = t2.context->AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(15));
+    t1.context->OnLowerLayerUp();
+    t2.context->OnLowerLayerUp();
 
+    REQUIRE(executor->RunMany() > 0);
 
-	t1.context->OnLowerLayerUp();
-	t2.context->OnLowerLayerUp();
+    // All of the configured scans should execute immediately, in the order the layers go online, followed by the order
+    // they were added
+    ExpectRequestAndRespond(t1, hex::IntegrityPoll(0), hex::EmptyResponse(0));
+    ExpectRequestAndRespond(t2, hex::EventPoll(0), hex::EmptyResponse(0));
+    ExpectRequestAndRespond(t2, hex::IntegrityPoll(1), hex::EmptyResponse(1));
 
-	REQUIRE(executor->RunMany() > 0);
+    // ---- after all of the initial polls, they should then execute based on the expired periods ----
 
-	// All of the configured scans should execute immediately, in the order the layers go online, followed by the order they were added
-	ExpectRequestAndRespond(t1, hex::IntegrityPoll(0), hex::EmptyResponse(0));
-	ExpectRequestAndRespond(t2, hex::EventPoll(0), hex::EmptyResponse(0));
-	ExpectRequestAndRespond(t2, hex::IntegrityPoll(1), hex::EmptyResponse(1));
+    // first up is the integrity poll for S1
+    REQUIRE(executor->AdvanceToNextTimer());
+    REQUIRE(executor->GetTime().milliseconds == 10000);
+    REQUIRE(executor->RunMany() > 0);
+    ExpectRequestAndRespond(t1, hex::IntegrityPoll(1), hex::EmptyResponse(1));
 
-	// ---- after all of the initial polls, they should then execute based on the expired periods ----
+    // next is the integrity poll for S2
+    REQUIRE(executor->AdvanceToNextTimer());
+    REQUIRE(executor->GetTime().milliseconds == 15000);
+    REQUIRE(executor->RunMany() > 0);
+    ExpectRequestAndRespond(t2, hex::IntegrityPoll(2), hex::EmptyResponse(2));
 
-	// first up is the integrity poll for S1
-	REQUIRE(executor->AdvanceToNextTimer());
-	REQUIRE(executor->GetTime().milliseconds == 10000);
-	REQUIRE(executor->RunMany() > 0);
-	ExpectRequestAndRespond(t1, hex::IntegrityPoll(1), hex::EmptyResponse(1));
-
-	// next is the integrity poll for S2
-	REQUIRE(executor->AdvanceToNextTimer());
-	REQUIRE(executor->GetTime().milliseconds == 15000);
-	REQUIRE(executor->RunMany() > 0);
-	ExpectRequestAndRespond(t2, hex::IntegrityPoll(2), hex::EmptyResponse(2));
-
-	// then the poll for S1 occurs again at t = 20000
-	REQUIRE(executor->AdvanceToNextTimer());
-	REQUIRE(executor->GetTime().milliseconds == 20000);
-	REQUIRE(executor->RunMany() > 0);
-	ExpectRequestAndRespond(t1, hex::IntegrityPoll(2), hex::EmptyResponse(2));
+    // then the poll for S1 occurs again at t = 20000
+    REQUIRE(executor->AdvanceToNextTimer());
+    REQUIRE(executor->GetTime().milliseconds == 20000);
+    REQUIRE(executor->RunMany() > 0);
+    ExpectRequestAndRespond(t1, hex::IntegrityPoll(2), hex::EmptyResponse(2));
 }
 
 void ExpectRequestAndCauseResponseTimeout(MasterTestFixture& session, const std::string& expected)
 {
-	REQUIRE(session.lower->PopWriteAsHex() == expected);
-	REQUIRE(session.context->OnTxReady());
-	REQUIRE(session.exe->AdvanceToNextTimer());
-	REQUIRE(session.exe->RunMany() > 0);
+    REQUIRE(session.lower->PopWriteAsHex() == expected);
+    REQUIRE(session.context->OnTxReady());
+    REQUIRE(session.exe->AdvanceToNextTimer());
+    REQUIRE(session.exe->RunMany() > 0);
 }
 
 void ExpectRequestAndRespond(MasterTestFixture& session, const std::string& expected, const std::string& response)
 {
-	REQUIRE(session.lower->PopWriteAsHex() == expected);
-	REQUIRE(session.context->OnTxReady());
-	session.SendToMaster(response);
-	REQUIRE(session.exe->RunMany() > 0);
+    REQUIRE(session.lower->PopWriteAsHex() == expected);
+    REQUIRE(session.context->OnTxReady());
+    session.SendToMaster(response);
+    REQUIRE(session.exe->RunMany() > 0);
 }

@@ -33,25 +33,15 @@ class MockTCPClientHandler final
 {
 
 public:
+    void OnConnect(const std::shared_ptr<Executor>& executor, asio::ip::tcp::socket socket, const std::error_code& ec);
 
-	void OnConnect(const std::shared_ptr<Executor>& executor, asio::ip::tcp::socket socket, const std::error_code& ec);
+    ~MockTCPClientHandler();
 
-	~MockTCPClientHandler();
+    size_t num_error = 0;
 
-	size_t num_error = 0;
-
-	std::deque<std::shared_ptr<IAsyncChannel>> channels;
-
+    std::deque<std::shared_ptr<IAsyncChannel>> channels;
 };
 
-}
+} // namespace asiopal
 
 #endif
-
-
-
-
-
-
-
-

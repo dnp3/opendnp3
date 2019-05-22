@@ -21,18 +21,18 @@
 #ifndef ASIODNP3_IOHANDLER_H
 #define ASIODNP3_IOHANDLER_H
 
+#include "openpal/logging/Logger.h"
+
+#include "asiopal/IAsyncChannel.h"
+
 #include "opendnp3/Route.h"
 #include "opendnp3/link/ILinkTx.h"
 #include "opendnp3/link/LinkLayerParser.h"
 
 #include "asiodnp3/IChannelListener.h"
 
-#include "openpal/logging/Logger.h"
-
-#include "asiopal/IAsyncChannel.h"
-
-#include <vector>
 #include <deque>
+#include <vector>
 
 namespace asiodnp3
 {
@@ -42,180 +42,174 @@ namespace asiodnp3
 Manages I/O for a number of link contexts
 
 */
-class IOHandler : private opendnp3::IFrameSink, public asiopal::IChannelCallbacks, public std::enable_shared_from_this<IOHandler>
+class IOHandler : private opendnp3::IFrameSink,
+                  public asiopal::IChannelCallbacks,
+                  public std::enable_shared_from_this<IOHandler>
 {
 
 public:
+    IOHandler(const openpal::Logger& logger, bool closeExisting, const std::shared_ptr<IChannelListener>& listener);
 
-	IOHandler(
-	    const openpal::Logger& logger,
-	    bool closeExisting,
-	    const std::shared_ptr<IChannelListener>& listener
-	);
+    virtual ~IOHandler() {}
 
-	virtual ~IOHandler() {}
+    opendnp3::LinkStatistics Statistics() const
+    {
+        return opendnp3::LinkStatistics(this->statistics, this->parser.Statistics());
+    }
 
-	opendnp3::LinkStatistics Statistics() const
-	{
-		return opendnp3::LinkStatistics(this->statistics, this->parser.Statistics());
-	}
+    void Shutdown();
 
-	void Shutdown();
+    /// --- implement ILinkTx ---
 
-	/// --- implement ILinkTx ---
+    void BeginTransmit(const std::shared_ptr<opendnp3::ILinkSession>& session, const openpal::RSlice& data);
 
-	void BeginTransmit(const std::shared_ptr<opendnp3::ILinkSession>& session, const openpal::RSlice& data);
+    // Bind a link layer session to the handler
+    bool AddContext(const std::shared_ptr<opendnp3::ILinkSession>& session, const opendnp3::Route& route);
 
-	// Bind a link layer session to the handler
-	bool AddContext(const std::shared_ptr<opendnp3::ILinkSession>& session, const opendnp3::Route& route);
+    // Begin sending messages to the context
+    bool Enable(const std::shared_ptr<opendnp3::ILinkSession>& session);
 
-	// Begin sending messages to the context
-	bool Enable(const std::shared_ptr<opendnp3::ILinkSession>& session);
+    // Stop sending messages to this session
+    bool Disable(const std::shared_ptr<opendnp3::ILinkSession>& session);
 
-	// Stop sending messages to this session
-	bool Disable(const std::shared_ptr<opendnp3::ILinkSession>& session);
+    // Remove this session entirely
+    bool Remove(const std::shared_ptr<opendnp3::ILinkSession>& session);
 
-	// Remove this session entirely
-	bool Remove(const std::shared_ptr<opendnp3::ILinkSession>& session);
-
-	// Query to see if a route is in use
-	bool IsRouteInUse(const opendnp3::Route& route) const;
+    // Query to see if a route is in use
+    bool IsRouteInUse(const opendnp3::Route& route) const;
 
 protected:
+    // ------ Implement IChannelCallbacks -----
 
-	// ------ Implement IChannelCallbacks -----
+    virtual void OnReadComplete(const std::error_code& ec, size_t num) override final;
 
-	virtual void OnReadComplete(const std::error_code& ec, size_t num) override final;
+    virtual void OnWriteComplete(const std::error_code& ec, size_t num) override final;
 
-	virtual void OnWriteComplete(const std::error_code& ec, size_t num) override final;
+    // ------ Super classes will implement these -----
 
-	// ------ Super classes will implement these -----
+    // start getting a new channel
+    virtual void BeginChannelAccept() = 0;
 
-	// start getting a new channel
-	virtual void BeginChannelAccept() = 0;
+    // stop getting new channels
+    virtual void SuspendChannelAccept() = 0;
 
-	// stop getting new channels
-	virtual void SuspendChannelAccept() = 0;
+    // shutdown any additional state
+    virtual void ShutdownImpl() = 0;
 
-	// shutdown any additional state
-	virtual void ShutdownImpl() = 0;
+    // the current channel has closed, start getting a new one
+    virtual void OnChannelShutdown() = 0;
 
-	// the current channel has closed, start getting a new one
-	virtual void OnChannelShutdown() = 0;
+    // Called by the super class when a new channel is available
+    void OnNewChannel(const std::shared_ptr<asiopal::IAsyncChannel>& channel);
 
-	// Called by the super class when a new channel is available
-	void OnNewChannel(const std::shared_ptr<asiopal::IAsyncChannel>& channel);
-
-	const bool close_existing;
-	openpal::Logger logger;
-	const std::shared_ptr<IChannelListener> listener;
-	opendnp3::LinkStatistics::Channel statistics;
+    const bool close_existing;
+    openpal::Logger logger;
+    const std::shared_ptr<IChannelListener> listener;
+    opendnp3::LinkStatistics::Channel statistics;
 
 private:
+    bool isShutdown = false;
 
-	bool isShutdown = false;
+    inline void UpdateListener(opendnp3::ChannelState state)
+    {
+        if (listener)
+            listener->OnStateChange(state);
+    }
 
-	inline void UpdateListener(opendnp3::ChannelState state)
-	{
-		if (listener) listener->OnStateChange(state);
-	}
+    // called by the parser when a complete frame is read
+    virtual bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata) override final;
 
-	// called by the parser when a complete frame is read
-	virtual bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata) override final;
+    bool IsSessionInUse(const std::shared_ptr<opendnp3::ILinkSession>& session) const;
+    bool IsAnySessionEnabled() const;
+    void Reset();
+    void BeginRead();
+    void CheckForSend();
 
+    bool SendToSession(const opendnp3::Route& route,
+                       const opendnp3::LinkHeaderFields& header,
+                       const openpal::RSlice& userdata);
 
-	bool IsSessionInUse(const std::shared_ptr<opendnp3::ILinkSession>& session) const;
-	bool IsAnySessionEnabled() const;
-	void Reset();
-	void BeginRead();
-	void CheckForSend();
+    class Session
+    {
 
-	bool SendToSession(const opendnp3::Route& route, const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata);
+    public:
+        Session(const std::shared_ptr<opendnp3::ILinkSession>& session, const opendnp3::Route& route)
+            : route(route), session(session)
+        {
+        }
 
-	class Session
-	{
+        Session() = default;
 
-	public:
+        inline bool Matches(const std::shared_ptr<opendnp3::ILinkSession>& session) const
+        {
+            return this->session == session;
+        }
+        inline bool Matches(const opendnp3::Route& route) const
+        {
+            return this->route.Equals(route);
+        }
 
-		Session(const std::shared_ptr<opendnp3::ILinkSession>& session, const opendnp3::Route& route) :
-			route(route),
-			session(session)
-		{}
+        inline bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata)
+        {
+            return this->session->OnFrame(header, userdata);
+        }
 
-		Session() = default;
+        inline bool LowerLayerUp()
+        {
+            if (!online)
+            {
+                online = true;
+                return this->session->OnLowerLayerUp();
+            }
+            else
+            {
+                return false;
+            }
+        }
 
-		inline bool Matches(const std::shared_ptr<opendnp3::ILinkSession>& session) const
-		{
-			return this->session == session;
-		}
-		inline bool Matches(const opendnp3::Route& route) const
-		{
-			return this->route.Equals(route);
-		}
+        inline bool LowerLayerDown()
+        {
+            if (online)
+            {
+                online = false;
+                return this->session->OnLowerLayerDown();
+            }
+            else
+            {
+                return false;
+            }
+        }
 
-		inline bool OnFrame(const opendnp3::LinkHeaderFields& header, const openpal::RSlice& userdata)
-		{
-			return this->session->OnFrame(header, userdata);
-		}
+        bool enabled = false;
 
-		inline bool LowerLayerUp()
-		{
-			if (!online)
-			{
-				online = true;
-				return this->session->OnLowerLayerUp();
-			}
-			else
-			{
-				return false;
-			}
-		}
+    private:
+        opendnp3::Route route;
+        bool online = false;
+        std::shared_ptr<opendnp3::ILinkSession> session;
+    };
 
-		inline bool LowerLayerDown()
-		{
-			if(online)
-			{
-				online = false;
-				return this->session->OnLowerLayerDown();
-			}
-			else
-			{
-				return false;
-			}
-		}
+    struct Transmission
+    {
+        Transmission(const openpal::RSlice& txdata, const std::shared_ptr<opendnp3::ILinkSession>& session)
+            : txdata(txdata), session(session)
+        {
+        }
 
-		bool enabled = false;
+        Transmission() = default;
 
-	private:
+        openpal::RSlice txdata;
+        std::shared_ptr<opendnp3::ILinkSession> session;
+    };
 
-		opendnp3::Route route;
-		bool online = false;
-		std::shared_ptr<opendnp3::ILinkSession> session;
-	};
+    std::vector<Session> sessions;
+    std::deque<Transmission> txQueue;
 
-	struct Transmission
-	{
-		Transmission(const openpal::RSlice& txdata, const std::shared_ptr<opendnp3::ILinkSession>& session) :
-			txdata(txdata),
-			session(session)
-		{}
+    opendnp3::LinkLayerParser parser;
 
-		Transmission() = default;
-
-		openpal::RSlice txdata;
-		std::shared_ptr<opendnp3::ILinkSession> session;
-	};
-
-	std::vector<Session> sessions;
-	std::deque<Transmission>  txQueue;
-
-	opendnp3::LinkLayerParser parser;
-
-	// current value of the channel, may be empty
-	std::shared_ptr<asiopal::IAsyncChannel> channel;
+    // current value of the channel, may be empty
+    std::shared_ptr<asiopal::IAsyncChannel> channel;
 };
 
-}
+} // namespace asiodnp3
 
 #endif
-

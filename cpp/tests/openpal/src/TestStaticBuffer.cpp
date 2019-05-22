@@ -18,47 +18,45 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
-
 #include <openpal/container/StaticBuffer.h>
+
+#include <catch.hpp>
 
 using namespace openpal;
 
 using namespace std;
 
-
 #define SUITE(name) "StaticBuffer - " name
 
 TEST_CASE(SUITE("Static buffers can be copied"))
 {
-	StaticBuffer<4> buffer;
+    StaticBuffer<4> buffer;
 
-	buffer()[0] = 0xDE;
-	buffer()[1] = 0xAD;
-	buffer()[2] = 0xBE;
-	buffer()[3] = 0xEF;
+    buffer()[0] = 0xDE;
+    buffer()[1] = 0xAD;
+    buffer()[2] = 0xBE;
+    buffer()[3] = 0xEF;
 
-	StaticBuffer<4> copy(buffer);
-	REQUIRE(copy()[0] == 0xDE);
-	REQUIRE(copy()[1] == 0xAD);
-	REQUIRE(copy()[2] == 0xBE);
-	REQUIRE(copy()[3] == 0xEF);
+    StaticBuffer<4> copy(buffer);
+    REQUIRE(copy()[0] == 0xDE);
+    REQUIRE(copy()[1] == 0xAD);
+    REQUIRE(copy()[2] == 0xBE);
+    REQUIRE(copy()[3] == 0xEF);
 }
 
 TEST_CASE(SUITE("Static buffers can be assigned"))
 {
-	StaticBuffer<4> buffer;
+    StaticBuffer<4> buffer;
 
-	buffer()[0] = 0xDE;
-	buffer()[1] = 0xAD;
-	buffer()[2] = 0xBE;
-	buffer()[3] = 0xEF;
+    buffer()[0] = 0xDE;
+    buffer()[1] = 0xAD;
+    buffer()[2] = 0xBE;
+    buffer()[3] = 0xEF;
 
-	StaticBuffer<4> copy;
-	copy = buffer;
-	REQUIRE(copy()[0] == 0xDE);
-	REQUIRE(copy()[1] == 0xAD);
-	REQUIRE(copy()[2] == 0xBE);
-	REQUIRE(copy()[3] == 0xEF);
+    StaticBuffer<4> copy;
+    copy = buffer;
+    REQUIRE(copy()[0] == 0xDE);
+    REQUIRE(copy()[1] == 0xAD);
+    REQUIRE(copy()[2] == 0xBE);
+    REQUIRE(copy()[3] == 0xEF);
 }
-

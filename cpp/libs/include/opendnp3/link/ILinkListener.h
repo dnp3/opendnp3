@@ -28,31 +28,30 @@ namespace opendnp3
 {
 
 /**
-* Various optional callbacks that can be received for the link layer
-*/
+ * Various optional callbacks that can be received for the link layer
+ */
 class ILinkListener
 {
 public:
+    /// Called when a the reset/unreset status of the link layer changes
+    virtual void OnStateChange(LinkStatus value) {}
 
-	/// Called when a the reset/unreset status of the link layer changes
-	virtual void OnStateChange(LinkStatus value) {}
+    /// Called when a link-layer frame is received from an unknown destination address
+    virtual void OnUnknownDestinationAddress(uint16_t destination) {}
 
-	/// Called when a link-layer frame is received from an unknown destination address
-	virtual void OnUnknownDestinationAddress(uint16_t destination) {}
+    /// Called when a link-layer frame is received from an unknown source address
+    virtual void OnUnknownSourceAddress(uint16_t source) {}
 
-	/// Called when a link-layer frame is received from an unknown source address
-	virtual void OnUnknownSourceAddress(uint16_t source) {}
+    /// Called when the keep alive timer elapses. This doesn't denote a keep-alive failure, it's just a notification
+    virtual void OnKeepAliveInitiated() {}
 
-	/// Called when the keep alive timer elapses. This doesn't denote a keep-alive failure, it's just a notification
-	virtual void OnKeepAliveInitiated() {}
+    /// Called when a keep alive message (request link status) receives no response
+    virtual void OnKeepAliveFailure() {}
 
-	/// Called when a keep alive message (request link status) receives no response
-	virtual void OnKeepAliveFailure() {}
-
-	/// Called when a keep alive message receives a valid response
-	virtual void OnKeepAliveSuccess() {}
+    /// Called when a keep alive message receives a valid response
+    virtual void OnKeepAliveSuccess() {}
 };
 
-}
+} // namespace opendnp3
 
 #endif

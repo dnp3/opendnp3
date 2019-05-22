@@ -21,10 +21,10 @@
 #ifndef __DATABASE_TEST_OBJECT_H_
 #define __DATABASE_TEST_OBJECT_H_
 
-#include <queue>
-
-#include <opendnp3/outstation/Event.h>
 #include <opendnp3/outstation/Database.h>
+#include <opendnp3/outstation/Event.h>
+
+#include <queue>
 
 namespace opendnp3
 {
@@ -32,75 +32,70 @@ namespace opendnp3
 class MockEventBuffer final : public IEventReceiver
 {
 public:
+    void Update(const Event<BinarySpec>& evt) override
+    {
+        binaryEvents.push_back(evt);
+    }
 
-	void Update(const Event<BinarySpec>& evt) override
-	{
-		binaryEvents.push_back(evt);
-	}
+    void Update(const Event<DoubleBitBinarySpec>& evt) override
+    {
+        doubleBinaryEvents.push_back(evt);
+    }
 
-	void Update(const Event<DoubleBitBinarySpec>& evt) override
-	{
-		doubleBinaryEvents.push_back(evt);
-	}
+    void Update(const Event<AnalogSpec>& evt) override
+    {
+        analogEvents.push_back(evt);
+    }
 
-	void Update(const Event<AnalogSpec>& evt) override
-	{
-		analogEvents.push_back(evt);
-	}
+    void Update(const Event<CounterSpec>& evt) override
+    {
+        counterEvents.push_back(evt);
+    }
 
-	void Update(const Event<CounterSpec>& evt) override
-	{
-		counterEvents.push_back(evt);
-	}
+    void Update(const Event<FrozenCounterSpec>& evt) override
+    {
+        frozenCounterEvents.push_back(evt);
+    }
 
-	void Update(const Event<FrozenCounterSpec>& evt) override
-	{
-		frozenCounterEvents.push_back(evt);
-	}
+    void Update(const Event<BinaryOutputStatusSpec>& evt) override
+    {
+        binaryOutputStatusEvents.push_back(evt);
+    }
 
-	void Update(const Event<BinaryOutputStatusSpec>& evt) override
-	{
-		binaryOutputStatusEvents.push_back(evt);
-	}
+    void Update(const Event<AnalogOutputStatusSpec>& evt) override
+    {
+        analogOutputStatusEvents.push_back(evt);
+    }
 
-	void Update(const Event<AnalogOutputStatusSpec>& evt) override
-	{
-		analogOutputStatusEvents.push_back(evt);
-	}
+    void Update(const Event<OctetStringSpec>& evt) override
+    {
+        octetStringEvents.push_back(evt);
+    }
 
-	void Update(const Event<OctetStringSpec>& evt) override
-	{
-		octetStringEvents.push_back(evt);
-	}
-
-	std::deque<Event<BinarySpec>> binaryEvents;
-	std::deque<Event<DoubleBitBinarySpec>> doubleBinaryEvents;
-	std::deque<Event<AnalogSpec>> analogEvents;
-	std::deque<Event<CounterSpec>> counterEvents;
-	std::deque<Event<FrozenCounterSpec>> frozenCounterEvents;
-	std::deque<Event<BinaryOutputStatusSpec>> binaryOutputStatusEvents;
-	std::deque<Event<AnalogOutputStatusSpec>> analogOutputStatusEvents;
-	std::deque<Event<OctetStringSpec>> octetStringEvents;
-
+    std::deque<Event<BinarySpec>> binaryEvents;
+    std::deque<Event<DoubleBitBinarySpec>> doubleBinaryEvents;
+    std::deque<Event<AnalogSpec>> analogEvents;
+    std::deque<Event<CounterSpec>> counterEvents;
+    std::deque<Event<FrozenCounterSpec>> frozenCounterEvents;
+    std::deque<Event<BinaryOutputStatusSpec>> binaryOutputStatusEvents;
+    std::deque<Event<AnalogOutputStatusSpec>> analogOutputStatusEvents;
+    std::deque<Event<OctetStringSpec>> octetStringEvents;
 };
 
 class DatabaseTestObject
 {
 public:
+    DatabaseTestObject(const DatabaseSizes& dbSizes,
+                       IndexMode mode = IndexMode::Contiguous,
+                       StaticTypeBitField allowedClass0 = StaticTypeBitField::AllTypes())
+        : buffer(), db(dbSizes, buffer, mode, allowedClass0)
+    {
+    }
 
-	DatabaseTestObject(const DatabaseSizes& dbSizes, IndexMode mode = IndexMode::Contiguous, StaticTypeBitField allowedClass0 = StaticTypeBitField::AllTypes()) :
-		buffer(),
-		db(dbSizes, buffer, mode, allowedClass0)
-	{
-
-	}
-
-
-	MockEventBuffer buffer;
-	Database db;
+    MockEventBuffer buffer;
+    Database db;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

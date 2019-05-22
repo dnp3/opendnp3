@@ -21,8 +21,8 @@
 #ifndef OPENDNP3_IEVENTSELECTOR_H
 #define OPENDNP3_IEVENTSELECTOR_H
 
-#include "opendnp3/app/IINField.h"
 #include "opendnp3/app/GroupVariationRecord.h"
+#include "opendnp3/app/IINField.h"
 
 namespace opendnp3
 {
@@ -30,13 +30,11 @@ namespace opendnp3
 class IEventSelector
 {
 public:
+    virtual IINField SelectAll(GroupVariation gv) = 0;
 
-	virtual IINField SelectAll(GroupVariation gv) = 0;
-
-	virtual IINField SelectCount(GroupVariation gv, uint16_t count) = 0;
+    virtual IINField SelectCount(GroupVariation gv, uint16_t count) = 0;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

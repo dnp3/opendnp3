@@ -22,57 +22,48 @@
 #define ASIOPAL_SYNCHRONIZED_H
 
 #include <asio.hpp>
-#include <mutex>
+
 #include <condition_variable>
+#include <mutex>
 
 namespace asiopal
 {
 
 /**
-* Provides thread-safe access to a value that can be set once.
-*/
-template <class T>
-class Synchronized
+ * Provides thread-safe access to a value that can be set once.
+ */
+template<class T> class Synchronized
 {
 public:
+    Synchronized() : value(), isSet(false) {}
 
-	Synchronized() : value(), isSet(false)
-	{}
+    T WaitForValue()
+    {
+        std::unique_lock<std::mutex> lock(mutex);
+        while (!isSet)
+        {
+            auto complete = [this]() { return isSet; };
+            condition.wait(lock, complete);
+        }
+        return value;
+    }
 
-	T WaitForValue()
-	{
-		std::unique_lock<std::mutex> lock(mutex);
-		while (!isSet)
-		{
-			auto complete = [this]()
-			{
-				return isSet;
-			};
-			condition.wait(lock, complete);
-		}
-		return value;
-	}
-
-	void SetValue(T value_)
-	{
-		std::unique_lock<std::mutex> lock(mutex);
-		this->value = value_;
-		isSet = true;
-		condition.notify_all();
-	}
+    void SetValue(T value_)
+    {
+        std::unique_lock<std::mutex> lock(mutex);
+        this->value = value_;
+        isSet = true;
+        condition.notify_all();
+    }
 
 private:
+    T value;
+    bool isSet;
 
-	T value;
-	bool isSet;
-
-	std::mutex mutex;
-	std::condition_variable condition;
+    std::mutex mutex;
+    std::condition_variable condition;
 };
 
-}
+} // namespace asiopal
 
 #endif
-
-
-

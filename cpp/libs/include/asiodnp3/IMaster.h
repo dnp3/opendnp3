@@ -21,24 +21,21 @@
 #ifndef ASIODNP3_IMASTER_H
 #define ASIODNP3_IMASTER_H
 
-#include "asiodnp3/IStack.h"
 #include "asiodnp3/IMasterOperations.h"
+#include "asiodnp3/IStack.h"
 
 namespace asiodnp3
 {
 
 /**
-* Interface that represents a running master session.
-*/
+ * Interface that represents a running master session.
+ */
 class IMaster : public IMasterOperations, public IStack
 {
 public:
-
-	virtual ~IMaster() {}
-
+    virtual ~IMaster() {}
 };
 
-}
+} // namespace asiodnp3
 
 #endif
-

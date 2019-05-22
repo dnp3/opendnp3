@@ -24,13 +24,13 @@
 // maximum number of packets the buffer can hold
 uint32_t CalcMaxPackets(uint32_t aBuffer, uint32_t aPayload)
 {
-	uint32_t remain = aBuffer % aPayload;
-	uint32_t num = aBuffer / aPayload;
-	return (remain == 0) ? num : num + 1;
+    uint32_t remain = aBuffer % aPayload;
+    uint32_t num = aBuffer / aPayload;
+    return (remain == 0) ? num : num + 1;
 }
 
 uint32_t CalcLastPacketSize(uint32_t aBuffer, uint32_t aPayload)
 {
-	uint32_t remain = aBuffer % aPayload;
-	return (remain == 0) ? aPayload : remain;
+    uint32_t remain = aBuffer % aPayload;
+    return (remain == 0) ? aPayload : remain;
 }

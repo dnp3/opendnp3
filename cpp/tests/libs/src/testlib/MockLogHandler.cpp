@@ -30,54 +30,48 @@ using namespace openpal;
 namespace testlib
 {
 
-LogRecord::LogRecord(const LogEntry& entry) :
-	id(entry.loggerid),
-	filters(entry.filters),
-	location(entry.location),
-	message(entry.message)
+LogRecord::LogRecord(const LogEntry& entry)
+    : id(entry.loggerid), filters(entry.filters), location(entry.location), message(entry.message)
 {
-
 }
 
 void MockLogHandlerImpl::Log(const LogEntry& entry)
 {
-	std::lock_guard<std::mutex> lock(this->mutex);
+    std::lock_guard<std::mutex> lock(this->mutex);
 
-	if (outputToStdIO)
-	{
-		std::cout << entry.loggerid << " - " << entry.message << std::endl;
-	}
+    if (outputToStdIO)
+    {
+        std::cout << entry.loggerid << " - " << entry.message << std::endl;
+    }
 
-	this->messages.push_back(entry);
+    this->messages.push_back(entry);
 }
 
 void MockLogHandler::ClearLog()
 {
-	this->impl->messages.clear();
+    this->impl->messages.clear();
 }
 
 void MockLogHandler::Log(const std::string& location, const std::string& message)
 {
-	this->impl->Log(
-	    LogEntry("test", openpal::logflags::EVENT, location.c_str(), message.c_str())
-	);
+    this->impl->Log(LogEntry("test", openpal::logflags::EVENT, location.c_str(), message.c_str()));
 }
 
 void MockLogHandler::WriteToStdIo()
 {
-	this->impl->outputToStdIO = true;
+    this->impl->outputToStdIO = true;
 }
 
 bool MockLogHandler::GetNextEntry(LogRecord& record)
 {
-	if (impl->messages.empty()) return false;
-	else
-	{
-		record = impl->messages.front();
-		impl->messages.pop_front();
-		return true;
-	}
+    if (impl->messages.empty())
+        return false;
+    else
+    {
+        record = impl->messages.front();
+        impl->messages.pop_front();
+        return true;
+    }
 }
 
-}
-
+} // namespace testlib

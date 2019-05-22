@@ -20,50 +20,52 @@
  */
 #include "ClearRestartTask.h"
 
-#include "opendnp3/app/APDUBuilders.h"
-#include "opendnp3/LogLevels.h"
-#include "opendnp3/master/MasterTasks.h"
-
 #include <openpal/logging/LogMacros.h>
+
+#include "opendnp3/LogLevels.h"
+#include "opendnp3/app/APDUBuilders.h"
+#include "opendnp3/master/MasterTasks.h"
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-ClearRestartTask::ClearRestartTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& application, openpal::Logger logger) :
-	IMasterTask(context, application, TaskBehavior::ReactsToIINOnly(), logger, TaskConfig::Default())
+ClearRestartTask::ClearRestartTask(const std::shared_ptr<TaskContext>& context,
+                                   IMasterApplication& application,
+                                   openpal::Logger logger)
+    : IMasterTask(context, application, TaskBehavior::ReactsToIINOnly(), logger, TaskConfig::Default())
 {
-
 }
 
 bool ClearRestartTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
-	build::ClearRestartIIN(request, seq);
-	return true;
+    build::ClearRestartIIN(request, seq);
+    return true;
 }
 
-IMasterTask::ResponseResult ClearRestartTask::ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects)
+IMasterTask::ResponseResult ClearRestartTask::ProcessResponse(const APDUResponseHeader& response,
+                                                              const openpal::RSlice& objects)
 {
-	// we only care that the response to this has FIR/FIN
-	if (ValidateSingleResponse(response))
-	{
-		if (response.IIN.IsSet(IINBit::DEVICE_RESTART))
-		{
-			// we tried to clear the restart, but the device responded with the restart still set
-			SIMPLE_LOG_BLOCK(logger, flags::ERR, "Clear restart task failed to clear restart bit, permanently disabling task");
-			return ResponseResult::ERROR_BAD_RESPONSE;
-		}
-		else
-		{
-			return  ResponseResult::OK_FINAL;
-		}
-	}
-	else
-	{
-		return  ResponseResult::ERROR_BAD_RESPONSE;
-	}
+    // we only care that the response to this has FIR/FIN
+    if (ValidateSingleResponse(response))
+    {
+        if (response.IIN.IsSet(IINBit::DEVICE_RESTART))
+        {
+            // we tried to clear the restart, but the device responded with the restart still set
+            SIMPLE_LOG_BLOCK(logger, flags::ERR,
+                             "Clear restart task failed to clear restart bit, permanently disabling task");
+            return ResponseResult::ERROR_BAD_RESPONSE;
+        }
+        else
+        {
+            return ResponseResult::OK_FINAL;
+        }
+    }
+    else
+    {
+        return ResponseResult::ERROR_BAD_RESPONSE;
+    }
 }
 
-} //end ns
-
+} // namespace opendnp3

@@ -19,29 +19,25 @@
 #ifndef OPENDNP3_CHANNELLISTENERADAPTER_H
 #define OPENDNP3_CHANNELLISTENERADAPTER_H
 
-#include "asiodnp3/IChannelListener.h"
-
+#include "../jni/JCache.h"
 #include "GlobalRef.h"
 
-#include "../jni/JCache.h"
+#include "asiodnp3/IChannelListener.h"
 
 class ChannelListenerAdapter : public asiodnp3::IChannelListener
 {
 public:
+    ChannelListenerAdapter(jobject proxy) : proxy(proxy) {}
 
-	ChannelListenerAdapter(jobject proxy) : proxy(proxy) {}
-
-	virtual void OnStateChange(opendnp3::ChannelState state) override
-	{
-		const auto env = JNI::GetEnv();
-		auto jstate = jni::JCache::ChannelState.fromType(env, static_cast<jint>(state));
-		jni::JCache::ChannelListener.onStateChange(env, proxy, jstate);
-	}
+    virtual void OnStateChange(opendnp3::ChannelState state) override
+    {
+        const auto env = JNI::GetEnv();
+        auto jstate = jni::JCache::ChannelState.fromType(env, static_cast<jint>(state));
+        jni::JCache::ChannelListener.onStateChange(env, proxy, jstate);
+    }
 
 private:
-
-	GlobalRef proxy;
-
+    GlobalRef proxy;
 };
 
 #endif

@@ -40,54 +40,52 @@ namespace opendnp3
 */
 struct EventBufferConfig
 {
-	/**
-		Construct the class using the same maximum for all types. This is mainly used for demo purposes.
-		You probably don't want to use this method unless your implementation actually reports every type.
-	*/
-	static EventBufferConfig AllTypes(uint16_t sizes);
+    /**
+        Construct the class using the same maximum for all types. This is mainly used for demo purposes.
+        You probably don't want to use this method unless your implementation actually reports every type.
+    */
+    static EventBufferConfig AllTypes(uint16_t sizes);
 
-	/**
-		Construct the class specifying the maximum number of events for each type individually.
-	*/
-	EventBufferConfig(
-	    uint16_t maxBinaryEvents = 0,
-	    uint16_t maxDoubleBinaryEvents = 0,
-	    uint16_t maxAnalogEvents = 0,
-	    uint16_t maxCounterEvents = 0,
-	    uint16_t maxFrozenCounterEvents = 0,
-	    uint16_t maxBinaryOutputStatusEvents = 0,
-	    uint16_t maxAnalogOutputStatusEvents = 0,
-	    uint16_t maxOctetStringEvents = 0
-	);
+    /**
+        Construct the class specifying the maximum number of events for each type individually.
+    */
+    EventBufferConfig(uint16_t maxBinaryEvents = 0,
+                      uint16_t maxDoubleBinaryEvents = 0,
+                      uint16_t maxAnalogEvents = 0,
+                      uint16_t maxCounterEvents = 0,
+                      uint16_t maxFrozenCounterEvents = 0,
+                      uint16_t maxBinaryOutputStatusEvents = 0,
+                      uint16_t maxAnalogOutputStatusEvents = 0,
+                      uint16_t maxOctetStringEvents = 0);
 
-	// Returns the sum of all event count maximums (number of elements in preallocated buffer)
-	uint32_t TotalEvents() const;
+    // Returns the sum of all event count maximums (number of elements in preallocated buffer)
+    uint32_t TotalEvents() const;
 
-	// The number of binary events the outstation will buffer before overflowing
-	uint16_t maxBinaryEvents;
+    // The number of binary events the outstation will buffer before overflowing
+    uint16_t maxBinaryEvents;
 
-	// The number of double bit binary events the outstation will buffer before overflowing
-	uint16_t maxDoubleBinaryEvents;
+    // The number of double bit binary events the outstation will buffer before overflowing
+    uint16_t maxDoubleBinaryEvents;
 
-	// The number of analog events the outstation will buffer before overflowing
-	uint16_t maxAnalogEvents;
+    // The number of analog events the outstation will buffer before overflowing
+    uint16_t maxAnalogEvents;
 
-	// The number of counter events the outstation will buffer before overflowing
-	uint16_t maxCounterEvents;
+    // The number of counter events the outstation will buffer before overflowing
+    uint16_t maxCounterEvents;
 
-	// The number of frozen counter events the outstation will buffer before overflowing
-	uint16_t maxFrozenCounterEvents;
+    // The number of frozen counter events the outstation will buffer before overflowing
+    uint16_t maxFrozenCounterEvents;
 
-	// The number of binary output status events the outstation will buffer before overflowing
-	uint16_t maxBinaryOutputStatusEvents;
+    // The number of binary output status events the outstation will buffer before overflowing
+    uint16_t maxBinaryOutputStatusEvents;
 
-	// The number of analog output status events the outstation will buffer before overflowing
-	uint16_t maxAnalogOutputStatusEvents;
+    // The number of analog output status events the outstation will buffer before overflowing
+    uint16_t maxAnalogOutputStatusEvents;
 
-	// The number of analog output status events the outstation will buffer before overflowing
-	uint16_t maxOctetStringEvents;
+    // The number of analog output status events the outstation will buffer before overflowing
+    uint16_t maxOctetStringEvents;
 };
 
-}
+} // namespace opendnp3
 
 #endif

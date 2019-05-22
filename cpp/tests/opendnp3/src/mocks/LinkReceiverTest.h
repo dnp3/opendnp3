@@ -21,16 +21,17 @@
 #ifndef __LINK_PARSER_TEST_H_
 #define __LINK_PARSER_TEST_H_
 
-#include <opendnp3/link/LinkLayerParser.h>
 #include <opendnp3/LogLevels.h>
-
-#include <testlib/MockLogHandler.h>
-#include <testlib/BufferHelpers.h>
+#include <opendnp3/link/LinkLayerParser.h>
 
 #include <dnp3mocks/MockFrameSink.h>
 
-#include <cstring>
+#include <testlib/BufferHelpers.h>
+#include <testlib/MockLogHandler.h>
+
 #include <assert.h>
+
+#include <cstring>
 
 namespace opendnp3
 {
@@ -38,35 +39,30 @@ namespace opendnp3
 class LinkParserTest
 {
 public:
-	LinkParserTest(bool aImmediate = false) :
-		log(),
-		sink(),
-		parser(log.logger)
-	{}
+    LinkParserTest(bool aImmediate = false) : log(), sink(), parser(log.logger) {}
 
-	void WriteData(const openpal::RSlice& input)
-	{
-		auto buff = parser.WriteBuff();
-		assert(input.Size() <= buff.Size());
-		input.CopyTo(buff);
-		parser.OnRead(input.Size(), sink);
-	}
+    void WriteData(const openpal::RSlice& input)
+    {
+        auto buff = parser.WriteBuff();
+        assert(input.Size() <= buff.Size());
+        input.CopyTo(buff);
+        parser.OnRead(input.Size(), sink);
+    }
 
-	void WriteData(const std::string& hex)
-	{
-		testlib::HexSequence hs(hex);
-		auto buff = parser.WriteBuff();
-		assert(hs.Size() <= buff.Size());
-		memcpy(buff, hs, hs.Size());
-		parser.OnRead(hs.Size(), sink);
-	}
+    void WriteData(const std::string& hex)
+    {
+        testlib::HexSequence hs(hex);
+        auto buff = parser.WriteBuff();
+        assert(hs.Size() <= buff.Size());
+        memcpy(buff, hs, hs.Size());
+        parser.OnRead(hs.Size(), sink);
+    }
 
-	testlib::MockLogHandler log;
-	MockFrameSink sink;
-	LinkLayerParser parser;
+    testlib::MockLogHandler log;
+    MockFrameSink sink;
+    LinkLayerParser parser;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

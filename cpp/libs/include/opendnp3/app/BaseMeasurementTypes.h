@@ -21,10 +21,10 @@
 #ifndef OPENDNP3_BASEMEASUREMENTTYPES_H
 #define OPENDNP3_BASEMEASUREMENTTYPES_H
 
-#include <cstdint>
-
 #include "opendnp3/app/DNPTime.h"
 #include "opendnp3/app/Flags.h"
+
+#include <cstdint>
 
 namespace opendnp3
 {
@@ -35,43 +35,32 @@ namespace opendnp3
 class Measurement
 {
 public:
-
-	Flags flags;		//	bitfield that stores type specific quality information
-	DNPTime time;		//	timestamp associated with the measurement
+    Flags flags;  //	bitfield that stores type specific quality information
+    DNPTime time; //	timestamp associated with the measurement
 
 protected:
+    Measurement() {}
 
-	Measurement()
-	{}
+    Measurement(Flags flags) : flags(flags) {}
 
-	Measurement(Flags flags) : flags(flags)
-	{}
-
-	Measurement(Flags flags, DNPTime time) : flags(flags), time(time)
-	{}
-
+    Measurement(Flags flags, DNPTime time) : flags(flags), time(time) {}
 };
-
 
 /// Common subclass to analogs and counters
-template <class T>
-class TypedMeasurement : public Measurement
+template<class T> class TypedMeasurement : public Measurement
 {
 public:
+    T value;
 
-	T value;
-
-	typedef T Type;
+    typedef T Type;
 
 protected:
-
-	TypedMeasurement(): Measurement(), value(0) {}
-	TypedMeasurement(Flags flags) : Measurement(flags), value(0) {}
-	TypedMeasurement(T value, Flags flags) : Measurement(flags), value(value) {}
-	TypedMeasurement(T value, Flags flags, DNPTime time) : Measurement(flags, time), value(value) {}
+    TypedMeasurement() : Measurement(), value(0) {}
+    TypedMeasurement(Flags flags) : Measurement(flags), value(0) {}
+    TypedMeasurement(T value, Flags flags) : Measurement(flags), value(value) {}
+    TypedMeasurement(T value, Flags flags, DNPTime time) : Measurement(flags, time), value(value) {}
 };
 
-}
-
+} // namespace opendnp3
 
 #endif

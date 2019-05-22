@@ -21,113 +21,99 @@
 #ifndef OPENPAL_TIMERREF_H
 #define OPENPAL_TIMERREF_H
 
-#include "openpal/executor/ITimer.h"
 #include "openpal/executor/IExecutor.h"
+#include "openpal/executor/ITimer.h"
 #include "openpal/util/Uncopyable.h"
 
 namespace openpal
 {
 
 /**
-* A management class to make dealing with timer pointers safer a little safer
-*
-* Holds an optional pointer to an active ITimer pointer. Acts as a safe proxy for dealing with a recurring timer instance.
-*/
+ * A management class to make dealing with timer pointers safer a little safer
+ *
+ * Holds an optional pointer to an active ITimer pointer. Acts as a safe proxy for dealing with a recurring timer
+ * instance.
+ */
 class TimerRef : openpal::Uncopyable
 {
 
 public:
-	TimerRef(openpal::IExecutor& executor);
+    TimerRef(openpal::IExecutor& executor);
 
-	// automatically cancels any active timers on destructive
-	~TimerRef();
+    // automatically cancels any active timers on destructive
+    ~TimerRef();
 
-	// Called to see if the timer is currently active
-	bool IsActive() const;
+    // Called to see if the timer is currently active
+    bool IsActive() const;
 
-	// return the expiration time, MonotonticTimestamp::Max() if not active
-	MonotonicTimestamp ExpiresAt() const;
+    // return the expiration time, MonotonticTimestamp::Max() if not active
+    MonotonicTimestamp ExpiresAt() const;
 
-	// cancels any existing timer, returning true if the timer was active, false otherwise
-	bool Cancel();
+    // cancels any existing timer, returning true if the timer was active, false otherwise
+    bool Cancel();
 
-	// Attempts to start a new timer
-	// returns false if timer is already active, true otherwise
-	template <class Lambda>
-	bool Start(const TimeDuration& timeout, const Lambda& action);
+    // Attempts to start a new timer
+    // returns false if timer is already active, true otherwise
+    template<class Lambda> bool Start(const TimeDuration& timeout, const Lambda& action);
 
-	template <class Lambda>
-	bool Start(const MonotonicTimestamp& expiration, const Lambda& action);
+    template<class Lambda> bool Start(const MonotonicTimestamp& expiration, const Lambda& action);
 
-	// Start a new timer, canceling any existing timer
-	template <class Lambda>
-	void Restart(const TimeDuration& expiration, const Lambda& action);
+    // Start a new timer, canceling any existing timer
+    template<class Lambda> void Restart(const TimeDuration& expiration, const Lambda& action);
 
-	template <class Lambda>
-	void Restart(const MonotonicTimestamp& expiration, const Lambda& action);
-
+    template<class Lambda> void Restart(const MonotonicTimestamp& expiration, const Lambda& action);
 
 private:
+    // restart the timer, return false if already active
+    bool StartAction(const TimeDuration& timeout, const action_t& action);
+    bool StartAction(const MonotonicTimestamp& expiration, const action_t& action);
 
-	// restart the timer, return false if already active
-	bool StartAction(const TimeDuration& timeout, const action_t& action);
-	bool StartAction(const MonotonicTimestamp& expiration, const action_t& action);
+    // Start a new timer, canceling any existing timer
+    void RestartAction(const TimeDuration& expiration, const action_t& action);
+    void RestartAction(const MonotonicTimestamp& expiration, const action_t& action);
 
-	// Start a new timer, canceling any existing timer
-	void RestartAction(const TimeDuration& expiration, const action_t& action);
-	void RestartAction(const MonotonicTimestamp& expiration, const action_t& action);
-
-
-	IExecutor* pExecutor;
-	ITimer* pTimer;
+    IExecutor* pExecutor;
+    ITimer* pTimer;
 };
 
 // Attempts to start a new timer
 // returns false if timer is already active, true otherwise
-template <class Lambda>
-bool TimerRef::Start(const TimeDuration& timeout, const Lambda& action)
+template<class Lambda> bool TimerRef::Start(const TimeDuration& timeout, const Lambda& action)
 {
-	auto proxy = [this, action]
-	{
-		pTimer = nullptr;
-		action();
-	};
-	return this->StartAction(timeout, proxy);
+    auto proxy = [this, action] {
+        pTimer = nullptr;
+        action();
+    };
+    return this->StartAction(timeout, proxy);
 }
 
-template <class Lambda>
-bool TimerRef::Start(const MonotonicTimestamp& expiration, const Lambda& action)
+template<class Lambda> bool TimerRef::Start(const MonotonicTimestamp& expiration, const Lambda& action)
 {
-	auto proxy = [this, action]
-	{
-		pTimer = nullptr;
-		action();
-	};
-	return this->StartAction(expiration, proxy);
+    auto proxy = [this, action] {
+        pTimer = nullptr;
+        action();
+    };
+    return this->StartAction(expiration, proxy);
 }
 
-template <class Lambda>
-void TimerRef::Restart(const TimeDuration& timeout, const Lambda& action)
+template<class Lambda> void TimerRef::Restart(const TimeDuration& timeout, const Lambda& action)
 {
-	auto proxy = [this, action]
-	{
-		pTimer = nullptr;
-		action();
-	};
-	this->RestartAction(timeout, proxy);
+    auto proxy = [this, action] {
+        pTimer = nullptr;
+        action();
+    };
+    this->RestartAction(timeout, proxy);
 }
 
-template <class Lambda>
-void TimerRef::Restart(const MonotonicTimestamp& expiration, const Lambda& action)
+template<class Lambda> void TimerRef::Restart(const MonotonicTimestamp& expiration, const Lambda& action)
 {
-	auto proxy = [this, action]
-	{
-		pTimer = nullptr;
-		action();
-	};
-	this->RestartAction(expiration, proxy);
+    auto proxy = [this, action] {
+        pTimer = nullptr;
+        action();
+    };
+    this->RestartAction(expiration, proxy);
 }
 
-}
+} // namespace openpal
 
 #endif

@@ -32,67 +32,56 @@ namespace openpal
 {
 
 /**
-* Template type for a dynamically allocated array
-*/
-template <class T, class W>
-class Array : public HasSize<W>
+ * Template type for a dynamically allocated array
+ */
+template<class T, class W> class Array : public HasSize<W>
 {
 
 public:
+    Array(W size) : HasSize<W>(size), buffer(new T[size]()) {}
 
-	Array(W size) :
-		HasSize<W>(size),
-		buffer(new T[size]())
-	{}
+    Array() : HasSize<W>(0), buffer(nullptr) {}
 
-	Array() :
-		HasSize<W>(0),
-		buffer(nullptr)
-	{}
+    Array(const Array& copy) : HasSize<W>(copy.Size()), buffer(new T[copy.Size()])
+    {
+        for (W i = 0; i < copy.Size(); ++i)
+            buffer[i] = copy.buffer[i];
+    }
 
-	Array(const Array& copy) :
-		HasSize<W>(copy.Size()),
-		buffer(new T[copy.Size()])
-	{
-		for(W i = 0; i < copy.Size(); ++i) buffer[i] = copy.buffer[i];
-	}
+    virtual ~Array()
+    {
+        delete[] buffer;
+    }
 
-	virtual ~Array()
-	{
-		delete[] buffer;
-	}
+    ArrayView<T, W> ToView() const
+    {
+        return ArrayView<T, W>(buffer, this->size);
+    }
 
-	ArrayView<T, W> ToView() const
-	{
-		return ArrayView<T, W>(buffer, this->size);
-	}
+    inline bool Contains(W index) const
+    {
+        return index < this->size;
+    }
 
-	inline bool Contains(W index) const
-	{
-		return index < this->size;
-	}
+    inline T& operator[](W index)
+    {
+        assert(index < this->size);
+        return buffer[index];
+    }
 
-	inline T& operator[](W index)
-	{
-		assert(index < this->size);
-		return buffer[index];
-	}
-
-	const T& operator[](W index) const
-	{
-		assert(index < this->size);
-		return buffer[index];
-	}
+    const T& operator[](W index) const
+    {
+        assert(index < this->size);
+        return buffer[index];
+    }
 
 protected:
-
-	T* buffer;
+    T* buffer;
 
 private:
-
-	Array& operator=(const Array&) = delete;
+    Array& operator=(const Array&) = delete;
 };
 
-}
+} // namespace openpal
 
 #endif

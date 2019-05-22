@@ -21,9 +21,8 @@
 #ifndef OPENDNP3_EVENTWRITING_H
 #define OPENDNP3_EVENTWRITING_H
 
-#include "IEventWriteHandler.h"
-
 #include "EventLists.h"
+#include "IEventWriteHandler.h"
 
 namespace opendnp3
 {
@@ -32,20 +31,17 @@ class EventWriting : private openpal::StaticOnly
 {
 
 public:
+    static uint32_t Write(EventLists& lists, IEventWriteHandler& handler);
 
-	static uint32_t Write(EventLists& lists, IEventWriteHandler& handler);
+    static EventRecord* FindNextSelected(event_iter_t& iter, EventType type);
 
-	static EventRecord* FindNextSelected(event_iter_t& iter, EventType type);
-
-	template <class T>
-	static uint16_t WriteSomeOfType(event_iter_t& iterator, EventLists& lists, IEventWriteHandler& handler);
+    template<class T>
+    static uint16_t WriteSomeOfType(event_iter_t& iterator, EventLists& lists, IEventWriteHandler& handler);
 
 private:
-
-	static uint16_t WriteSome(event_iter_t& iterator, EventLists& lists, IEventWriteHandler& handler);
+    static uint16_t WriteSome(event_iter_t& iterator, EventLists& lists, IEventWriteHandler& handler);
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

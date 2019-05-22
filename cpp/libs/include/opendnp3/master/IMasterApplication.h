@@ -23,14 +23,12 @@
 
 #include <openpal/executor/IUTCTimeSource.h>
 
-#include "opendnp3/master/TaskInfo.h"
-#include "opendnp3/master/HeaderTypes.h"
-
 #include "opendnp3/app/IINField.h"
-#include "opendnp3/link/ILinkListener.h"
-
 #include "opendnp3/gen/MasterTaskType.h"
 #include "opendnp3/gen/TaskCompletion.h"
+#include "opendnp3/link/ILinkListener.h"
+#include "opendnp3/master/HeaderTypes.h"
+#include "opendnp3/master/TaskInfo.h"
 
 #include <functional>
 
@@ -40,42 +38,40 @@ namespace opendnp3
 typedef std::function<void(const Header&)> WriteHeaderFunT;
 
 /**
-* Interface for all master application callback info except for measurement values.
-*/
+ * Interface for all master application callback info except for measurement values.
+ */
 class IMasterApplication : public ILinkListener, public openpal::IUTCTimeSource
 {
 public:
+    virtual ~IMasterApplication() {}
 
-	virtual ~IMasterApplication() {}
+    /// Called when a response or unsolicited response is receive from the outstation
+    virtual void OnReceiveIIN(const IINField& iin) {}
 
-	/// Called when a response or unsolicited response is receive from the outstation
-	virtual void OnReceiveIIN(const IINField& iin) {}
+    /// Task start notification
+    virtual void OnTaskStart(MasterTaskType type, TaskId id) {}
 
-	/// Task start notification
-	virtual void OnTaskStart(MasterTaskType type, TaskId id) {}
+    /// Task completion notification
+    virtual void OnTaskComplete(const TaskInfo& info) {}
 
-	/// Task completion notification
-	virtual void OnTaskComplete(const TaskInfo& info) {}
+    /// Called when the application layer is opened
+    virtual void OnOpen() {}
 
-	/// Called when the application layer is opened
-	virtual void OnOpen() {}
+    /// Called when the application layer is closed
+    virtual void OnClose() {}
 
-	/// Called when the application layer is closed
-	virtual void OnClose() {}
+    /// @return true if the master should do an assign class task during startup handshaking
+    virtual bool AssignClassDuringStartup()
+    {
+        return false;
+    }
 
-	/// @return true if the master should do an assign class task during startup handshaking
-	virtual bool AssignClassDuringStartup()
-	{
-		return false;
-	}
-
-	/// Configure the request headers for assign class. Only called if
-	/// "AssignClassDuringStartup" returns true
-	/// The user only needs to call the function for each header type to be written
-	virtual void ConfigureAssignClassRequest(const WriteHeaderFunT& fun) {}
-
+    /// Configure the request headers for assign class. Only called if
+    /// "AssignClassDuringStartup" returns true
+    /// The user only needs to call the function for each header type to be written
+    virtual void ConfigureAssignClassRequest(const WriteHeaderFunT& fun) {}
 };
 
-}
+} // namespace opendnp3
 
 #endif

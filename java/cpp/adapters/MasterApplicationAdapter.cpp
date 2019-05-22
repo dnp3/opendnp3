@@ -24,87 +24,84 @@ using namespace opendnp3;
 
 openpal::UTCTimestamp MasterApplicationAdapter::Now()
 {
-	const auto env = JNI::GetEnv();
-	const auto ms = jni::JCache::MasterApplication.getMillisecondsSinceEpoch(env, proxy);
-	return openpal::UTCTimestamp(ms);
+    const auto env = JNI::GetEnv();
+    const auto ms = jni::JCache::MasterApplication.getMillisecondsSinceEpoch(env, proxy);
+    return openpal::UTCTimestamp(ms);
 }
 
 void MasterApplicationAdapter::OnReceiveIIN(const IINField& iin)
 {
-	const auto env = JNI::GetEnv();
-	auto jiin = jni::JCache::IINField.init2(env, iin.LSB, iin.MSB);
-	jni::JCache::MasterApplication.onReceiveIIN(env, proxy, jiin);
+    const auto env = JNI::GetEnv();
+    auto jiin = jni::JCache::IINField.init2(env, iin.LSB, iin.MSB);
+    jni::JCache::MasterApplication.onReceiveIIN(env, proxy, jiin);
 }
 
 void MasterApplicationAdapter::OnTaskStart(MasterTaskType type, TaskId id)
 {
-	const auto env = JNI::GetEnv();
-	auto jtasktype = jni::JCache::MasterTaskType.fromType(env, static_cast<jint>(type));
-	auto jtaskid = jni::JCache::TaskId.init2(env, id.GetId(), id.IsDefined());
-	jni::JCache::MasterApplication.onTaskStart(env, proxy, jtasktype, jtaskid);
+    const auto env = JNI::GetEnv();
+    auto jtasktype = jni::JCache::MasterTaskType.fromType(env, static_cast<jint>(type));
+    auto jtaskid = jni::JCache::TaskId.init2(env, id.GetId(), id.IsDefined());
+    jni::JCache::MasterApplication.onTaskStart(env, proxy, jtasktype, jtaskid);
 }
 
 void MasterApplicationAdapter::OnTaskComplete(const TaskInfo& info)
 {
-	const auto env = JNI::GetEnv();
-	auto jtype = jni::JCache::MasterTaskType.fromType(env, static_cast<jint>(info.type));
-	auto jresult = jni::JCache::TaskCompletion.fromType(env, static_cast<jint>(info.result));
-	auto jtaskid = jni::JCache::TaskId.init2(env, info.id.GetId(), info.id.IsDefined());
+    const auto env = JNI::GetEnv();
+    auto jtype = jni::JCache::MasterTaskType.fromType(env, static_cast<jint>(info.type));
+    auto jresult = jni::JCache::TaskCompletion.fromType(env, static_cast<jint>(info.result));
+    auto jtaskid = jni::JCache::TaskId.init2(env, info.id.GetId(), info.id.IsDefined());
 
-	auto jinfo = jni::JCache::TaskInfo.init3(env, jtype, jresult, jtaskid);
-	jni::JCache::MasterApplication.onTaskComplete(env, proxy, jinfo);
+    auto jinfo = jni::JCache::TaskInfo.init3(env, jtype, jresult, jtaskid);
+    jni::JCache::MasterApplication.onTaskComplete(env, proxy, jinfo);
 }
 
 void MasterApplicationAdapter::OnOpen()
 {
-	const auto env = JNI::GetEnv();
-	jni::JCache::MasterApplication.onOpen(env, proxy);
+    const auto env = JNI::GetEnv();
+    jni::JCache::MasterApplication.onOpen(env, proxy);
 }
 
 void MasterApplicationAdapter::OnClose()
 {
-	const auto env = JNI::GetEnv();
-	jni::JCache::MasterApplication.onClose(env, proxy);
+    const auto env = JNI::GetEnv();
+    jni::JCache::MasterApplication.onClose(env, proxy);
 }
 
 bool MasterApplicationAdapter::AssignClassDuringStartup()
 {
-	const auto env = JNI::GetEnv();
-	return !!jni::JCache::MasterApplication.assignClassDuringStartup(env, proxy);
+    const auto env = JNI::GetEnv();
+    return !!jni::JCache::MasterApplication.assignClassDuringStartup(env, proxy);
 }
 
 void MasterApplicationAdapter::ConfigureAssignClassRequest(const WriteHeaderFunT& fun)
 {
-	const auto env = JNI::GetEnv();
+    const auto env = JNI::GetEnv();
 
-	auto jiterable = jni::JCache::MasterApplication.getClassAssignments(env, proxy);
+    auto jiterable = jni::JCache::MasterApplication.getClassAssignments(env, proxy);
 
-	auto write = [&](LocalRef<jobject> assigment)
-	{
-		const auto clazz = static_cast<PointClass>(jni::JCache::PointClass.toType(env, jni::JCache::ClassAssignment.getclazz(env, assigment)));
-		const auto jgroup = jni::JCache::ClassAssignment.getgroup(env, assigment);
-		const auto jvariation = jni::JCache::ClassAssignment.getvariation(env, assigment);
-		const auto jrange = jni::JCache::ClassAssignment.getrange(env, assigment);
+    auto write = [&](LocalRef<jobject> assigment) {
+        const auto clazz = static_cast<PointClass>(
+            jni::JCache::PointClass.toType(env, jni::JCache::ClassAssignment.getclazz(env, assigment)));
+        const auto jgroup = jni::JCache::ClassAssignment.getgroup(env, assigment);
+        const auto jvariation = jni::JCache::ClassAssignment.getvariation(env, assigment);
+        const auto jrange = jni::JCache::ClassAssignment.getrange(env, assigment);
 
-		// write the group 60 header
-		fun(Header::From(clazz));
+        // write the group 60 header
+        fun(Header::From(clazz));
 
-		// write the header for the assigned type
-		if (jni::JCache::Range.isDefined(env, jrange))
-		{
-			const auto jstart = jni::JCache::Range.getstart(env, jrange);
-			const auto jstop = jni::JCache::Range.getstop(env, jrange);
+        // write the header for the assigned type
+        if (jni::JCache::Range.isDefined(env, jrange))
+        {
+            const auto jstart = jni::JCache::Range.getstart(env, jrange);
+            const auto jstop = jni::JCache::Range.getstop(env, jrange);
 
-			fun(Header::Range16(jgroup, jvariation, static_cast<uint16_t>(jstart), static_cast<uint16_t>(jstop)));
-		}
-		else
-		{
-			fun(Header::AllObjects(jgroup, jvariation));
-		}
-	};
+            fun(Header::Range16(jgroup, jvariation, static_cast<uint16_t>(jstart), static_cast<uint16_t>(jstop)));
+        }
+        else
+        {
+            fun(Header::AllObjects(jgroup, jvariation));
+        }
+    };
 
-	JNI::Iterate(env, jiterable, write);
+    JNI::Iterate(env, jiterable, write);
 }
-
-
-

@@ -21,84 +21,77 @@
 #ifndef OPENDNP3_SHIFTABLEBUFFER_H
 #define OPENDNP3_SHIFTABLEBUFFER_H
 
-#include <openpal/container/WSlice.h>
 #include <openpal/container/RSlice.h>
+#include <openpal/container/WSlice.h>
 
 namespace opendnp3
 {
 
-
 /** @section DESCRIPTION
-		Implements a buffer that can shift its contents as it is read */
+        Implements a buffer that can shift its contents as it is read */
 class ShiftableBuffer
 {
 public:
+    /**
+     * Construct the facade over the specified underlying buffer
+     */
+    ShiftableBuffer(uint8_t* pBuffer_, uint32_t size);
 
-	/**
-	 * Construct the facade over the specified underlying buffer
-	 */
-	ShiftableBuffer(uint8_t* pBuffer_, uint32_t size);
+    // ------- Functions related to reading -----------
 
+    uint32_t NumBytesRead() const
+    {
+        return writePos - readPos;
+    }
 
-	// ------- Functions related to reading -----------
+    /// @return Pointer to the next byte to be read in the buffer
+    openpal::RSlice ReadBuffer() const
+    {
+        return openpal::RSlice(pBuffer + readPos, NumBytesRead());
+    }
 
-	uint32_t NumBytesRead() const
-	{
-		return writePos - readPos;
-	}
+    /// Signal that some bytes don't have to be stored any longer. They'll be recovered during the next shift operation.
+    void AdvanceRead(uint32_t aNumBytes);
 
-	/// @return Pointer to the next byte to be read in the buffer
-	openpal::RSlice ReadBuffer() const
-	{
-		return openpal::RSlice(pBuffer + readPos, NumBytesRead());
-	}
+    // ------- Functions related to writing -----------
 
-	/// Signal that some bytes don't have to be stored any longer. They'll be recovered during the next shift operation.
-	void AdvanceRead(uint32_t aNumBytes);
+    /// Shift the buffer back to front, writing over bytes that have already been read. The objective
+    /// being to free space for further writing.
+    void Shift();
 
-	// ------- Functions related to writing -----------
+    /// Reset the buffer to its initial state, empty
+    void Reset();
 
-	/// Shift the buffer back to front, writing over bytes that have already been read. The objective
-	/// being to free space for further writing.
-	void Shift();
+    /// @return Bytes of available for writing
+    uint32_t NumWriteBytes() const
+    {
+        return M_SIZE - writePos;
+    }
 
-	/// Reset the buffer to its initial state, empty
-	void Reset();
+    /// @return Pointer to the position in the buffer available for writing
+    uint8_t* WriteBuff() const
+    {
+        return pBuffer + writePos;
+    }
 
-	/// @return Bytes of available for writing
-	uint32_t NumWriteBytes() const
-	{
-		return M_SIZE - writePos;
-	}
+    /// Signal to the buffer bytes were written to the current write position
+    void AdvanceWrite(uint32_t numBytes);
 
-	/// @return Pointer to the position in the buffer available for writing
-	uint8_t* WriteBuff() const
-	{
-		return pBuffer + writePos;
-	}
+    ////////////////////////////////////////////
+    // Other functions
+    ////////////////////////////////////////////
 
-	/// Signal to the buffer bytes were written to the current write position
-	void AdvanceWrite(uint32_t numBytes);
-
-	////////////////////////////////////////////
-	// Other functions
-	////////////////////////////////////////////
-
-
-	/// Searches the read subsequence for 0x0564 sync bytes
-	/// @return true if both sync bytes were found in the buffer.
-	bool Sync(uint32_t& skipCount);
+    /// Searches the read subsequence for 0x0564 sync bytes
+    /// @return true if both sync bytes were found in the buffer.
+    bool Sync(uint32_t& skipCount);
 
 private:
-
-
-
-	uint8_t* pBuffer;
-	const uint32_t M_SIZE;
-	uint32_t writePos;
-	uint32_t readPos;
+    uint8_t* pBuffer;
+    const uint32_t M_SIZE;
+    uint32_t writePos;
+    uint32_t readPos;
 };
 
-}
+} // namespace opendnp3
 
 #endif

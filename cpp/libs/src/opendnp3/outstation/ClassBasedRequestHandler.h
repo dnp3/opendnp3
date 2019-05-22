@@ -21,12 +21,11 @@
 #ifndef OPENDNP3_CLASSBASEDREQUESTHANDLER_H
 #define OPENDNP3_CLASSBASEDREQUESTHANDLER_H
 
-#include "opendnp3/app/parsing/IAPDUHandler.h"
-
-#include "opendnp3/app/IINField.h"
-#include "opendnp3/app/ClassField.h"
-
 #include <openpal/logging/Logger.h>
+
+#include "opendnp3/app/ClassField.h"
+#include "opendnp3/app/IINField.h"
+#include "opendnp3/app/parsing/IAPDUHandler.h"
 
 namespace opendnp3
 {
@@ -34,29 +33,24 @@ namespace opendnp3
 class ClassBasedRequestHandler : public IAPDUHandler
 {
 public:
+    ClassBasedRequestHandler() {}
 
-	ClassBasedRequestHandler() {}
+    ClassField GetClassField() const
+    {
+        return classField;
+    }
 
-	ClassField GetClassField() const
-	{
-		return classField;
-	}
-
-	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final
-	{
-		return true;
-	}
+    virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final
+    {
+        return true;
+    }
 
 private:
+    virtual IINField ProcessHeader(const AllObjectsHeader& header) override final;
 
-	virtual IINField ProcessHeader(const AllObjectsHeader& header) override final;
-
-	ClassField classField;
+    ClassField classField;
 };
 
-}
-
-
+} // namespace opendnp3
 
 #endif
-

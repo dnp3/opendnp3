@@ -21,48 +21,44 @@
 #ifndef OPENDNP3_DOWNSAMPLING_H
 #define OPENDNP3_DOWNSAMPLING_H
 
-#include <openpal/util/Uncopyable.h>
 #include <openpal/util/Limits.h>
+#include <openpal/util/Uncopyable.h>
 
 #include <cstdint>
 
 namespace opendnp3
 {
 // A safe down sampling class
-template <class Source, class Target>
-class DownSampling : private openpal::Uncopyable
+template<class Source, class Target> class DownSampling : private openpal::Uncopyable
 {
-	static const Target TARGET_MAX;
-	static const Target TARGET_MIN;
+    static const Target TARGET_MAX;
+    static const Target TARGET_MIN;
 
 public:
-
-	static bool Apply(Source src, Target& target)
-	{
-		if(src > TARGET_MAX)
-		{
-			target = TARGET_MAX;
-			return true;
-		}
-		else if( src < TARGET_MIN)
-		{
-			target = TARGET_MIN;
-			return true;
-		}
-		else
-		{
-			target = static_cast<Target>(src);
-			return false;
-		}
-	}
+    static bool Apply(Source src, Target& target)
+    {
+        if (src > TARGET_MAX)
+        {
+            target = TARGET_MAX;
+            return true;
+        }
+        else if (src < TARGET_MIN)
+        {
+            target = TARGET_MIN;
+            return true;
+        }
+        else
+        {
+            target = static_cast<Target>(src);
+            return false;
+        }
+    }
 };
 
-template <class Source, class Target>
-const Target DownSampling<Source, Target>::TARGET_MAX(openpal::MaxValue<Target>());
+template<class Source, class Target> const Target DownSampling<Source, Target>::TARGET_MAX(openpal::MaxValue<Target>());
 
-template <class Source, class Target>
-const Target DownSampling<Source, Target>::TARGET_MIN(openpal::MinValue<Target>());
+template<class Source, class Target> const Target DownSampling<Source, Target>::TARGET_MIN(openpal::MinValue<Target>());
 
-}
+} // namespace opendnp3
 
 #endif

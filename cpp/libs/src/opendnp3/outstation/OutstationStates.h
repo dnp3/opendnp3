@@ -21,9 +21,9 @@
 #ifndef OPENDNP3_OUTSTATIONSTATES_H
 #define OPENDNP3_OUTSTATIONSTATES_H
 
-#include "opendnp3/outstation/ParsedRequest.h"
-
 #include <openpal/util/Uncopyable.h>
+
+#include "opendnp3/outstation/ParsedRequest.h"
 
 namespace opendnp3
 {
@@ -36,148 +36,133 @@ class OContext;
 class OutstationState : private openpal::Uncopyable
 {
 public:
+    virtual bool IsIdle()
+    {
+        return false;
+    }
 
-	virtual bool IsIdle()
-	{
-		return false;
-	}
+    virtual const char* Name() = 0;
 
-	virtual const char* Name() = 0;
+    virtual OutstationState& OnConfirm(OContext&, const ParsedRequest& request) = 0;
 
-	virtual OutstationState& OnConfirm(OContext&, const ParsedRequest& request) = 0;
+    virtual OutstationState& OnConfirmTimeout(OContext&) = 0;
 
-	virtual OutstationState& OnConfirmTimeout(OContext&) = 0;
+    virtual OutstationState& OnNewReadRequest(OContext&, const ParsedRequest& request) = 0;
 
-	virtual OutstationState& OnNewReadRequest(OContext&, const ParsedRequest& request) = 0;
+    virtual OutstationState& OnNewNonReadRequest(OContext&, const ParsedRequest& request) = 0;
 
-	virtual OutstationState& OnNewNonReadRequest(OContext&, const ParsedRequest& request) = 0;
+    virtual OutstationState& OnRepeatNonReadRequest(OContext&, const ParsedRequest& request) = 0;
 
-	virtual OutstationState& OnRepeatNonReadRequest(OContext&, const ParsedRequest& request) = 0;
-
-	virtual OutstationState& OnRepeatReadRequest(OContext&, const ParsedRequest& request) = 0;
-
-
-
+    virtual OutstationState& OnRepeatReadRequest(OContext&, const ParsedRequest& request) = 0;
 };
 
 class StateIdle final : public OutstationState
 {
 
 public:
+    virtual bool IsIdle() override
+    {
+        return true;
+    }
 
-	virtual bool IsIdle() override
-	{
-		return true;
-	}
+    virtual const char* Name() override
+    {
+        return "Idle";
+    }
 
-	virtual const char* Name() override
-	{
-		return "Idle";
-	}
+    inline static OutstationState& Inst()
+    {
+        return instance;
+    }
 
-	inline static OutstationState& Inst()
-	{
-		return instance;
-	}
+    virtual OutstationState& OnConfirm(OContext&, const ParsedRequest& request) override;
 
-	virtual OutstationState& OnConfirm(OContext&, const ParsedRequest& request) override;
+    virtual OutstationState& OnConfirmTimeout(OContext&) override;
 
-	virtual OutstationState& OnConfirmTimeout(OContext&) override;
+    virtual OutstationState& OnNewReadRequest(OContext&, const ParsedRequest& request) override;
 
-	virtual OutstationState& OnNewReadRequest(OContext&, const ParsedRequest& request) override;
+    virtual OutstationState& OnNewNonReadRequest(OContext&, const ParsedRequest& request) override;
 
-	virtual OutstationState& OnNewNonReadRequest(OContext&, const ParsedRequest& request) override;
+    virtual OutstationState& OnRepeatNonReadRequest(OContext&, const ParsedRequest& request) override;
 
-	virtual OutstationState& OnRepeatNonReadRequest(OContext&, const ParsedRequest& request) override;
-
-	virtual OutstationState& OnRepeatReadRequest(OContext&, const ParsedRequest& request) override;
+    virtual OutstationState& OnRepeatReadRequest(OContext&, const ParsedRequest& request) override;
 
 private:
+    static StateIdle instance;
 
-	static StateIdle instance;
-
-	StateIdle() {}
-
+    StateIdle() {}
 };
 
-
 /*
-* waiting for a confirm to a solicited read response
-*/
+ * waiting for a confirm to a solicited read response
+ */
 class StateSolicitedConfirmWait final : public OutstationState
 {
 
 public:
+    inline static OutstationState& Inst()
+    {
+        return instance;
+    }
 
-	inline static OutstationState& Inst()
-	{
-		return instance;
-	}
+    virtual const char* Name() override
+    {
+        return "SolicitedConfirmWait";
+    }
 
-	virtual const char* Name() override
-	{
-		return "SolicitedConfirmWait";
-	}
+    virtual OutstationState& OnConfirm(OContext&, const ParsedRequest& request) override;
 
-	virtual OutstationState& OnConfirm(OContext&, const ParsedRequest& request) override;
+    virtual OutstationState& OnConfirmTimeout(OContext&) override;
 
-	virtual OutstationState& OnConfirmTimeout(OContext&) override;
+    virtual OutstationState& OnNewReadRequest(OContext&, const ParsedRequest& request) override;
 
-	virtual OutstationState& OnNewReadRequest(OContext&, const ParsedRequest& request) override;
+    virtual OutstationState& OnNewNonReadRequest(OContext&, const ParsedRequest& request) override;
 
-	virtual OutstationState& OnNewNonReadRequest(OContext&, const ParsedRequest& request) override;
+    virtual OutstationState& OnRepeatNonReadRequest(OContext&, const ParsedRequest& request) override;
 
-	virtual OutstationState& OnRepeatNonReadRequest(OContext&, const ParsedRequest& request) override;
-
-	virtual OutstationState& OnRepeatReadRequest(OContext&, const ParsedRequest& request) override;
+    virtual OutstationState& OnRepeatReadRequest(OContext&, const ParsedRequest& request) override;
 
 private:
+    static StateSolicitedConfirmWait instance;
 
-	static StateSolicitedConfirmWait instance;
-
-	StateSolicitedConfirmWait() {}
+    StateSolicitedConfirmWait() {}
 };
 
 /*
-* waiting for a confirm to an unsolicited read response
-*/
+ * waiting for a confirm to an unsolicited read response
+ */
 class StateUnsolicitedConfirmWait final : public OutstationState
 {
 
 public:
+    inline static OutstationState& Inst()
+    {
+        return instance;
+    }
 
-	inline static OutstationState& Inst()
-	{
-		return instance;
-	}
+    virtual const char* Name() override
+    {
+        return "UnsolicitedConfirmWait";
+    }
 
-	virtual const char* Name() override
-	{
-		return "UnsolicitedConfirmWait";
-	}
+    virtual OutstationState& OnConfirm(OContext&, const ParsedRequest& request) override;
 
-	virtual OutstationState& OnConfirm(OContext&, const ParsedRequest& request) override;
+    virtual OutstationState& OnConfirmTimeout(OContext&) override;
 
-	virtual OutstationState& OnConfirmTimeout(OContext&) override;
+    virtual OutstationState& OnNewReadRequest(OContext&, const ParsedRequest& request) override;
 
-	virtual OutstationState& OnNewReadRequest(OContext&, const ParsedRequest& request) override;
+    virtual OutstationState& OnNewNonReadRequest(OContext&, const ParsedRequest& request) override;
 
-	virtual OutstationState& OnNewNonReadRequest(OContext&, const ParsedRequest& request) override;
+    virtual OutstationState& OnRepeatNonReadRequest(OContext&, const ParsedRequest& request) override;
 
-	virtual OutstationState& OnRepeatNonReadRequest(OContext&, const ParsedRequest& request) override;
-
-	virtual OutstationState& OnRepeatReadRequest(OContext&, const ParsedRequest& request) override;
+    virtual OutstationState& OnRepeatReadRequest(OContext&, const ParsedRequest& request) override;
 
 private:
+    static StateUnsolicitedConfirmWait instance;
 
-	static StateUnsolicitedConfirmWait instance;
-
-	StateUnsolicitedConfirmWait() {}
+    StateUnsolicitedConfirmWait() {}
 };
 
-} //ens ns
-
-
+} // namespace opendnp3
 
 #endif
-

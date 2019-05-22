@@ -24,24 +24,21 @@
 #include "CopyableBuffer.h"
 #include "Random.h"
 
-namespace  testlib
+namespace testlib
 {
 
 class RandomizedBuffer : public testlib::CopyableBuffer
 {
 
 public:
+    RandomizedBuffer(uint32_t size);
 
-	RandomizedBuffer(uint32_t size);
-
-	void Randomize();
+    void Randomize();
 
 private:
-	Random<uint32_t> rand;
+    Random<uint32_t> rand;
 };
 
-}
+} // namespace testlib
 
 #endif
-
-

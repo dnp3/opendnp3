@@ -20,49 +20,47 @@
  */
 #include "ObjectHeaderParser.h"
 
-#include "opendnp3/LogLevels.h"
-#include "opendnp3/app/GroupVariationRecord.h"
-
 #include <openpal/logging/LogMacros.h>
 #include <openpal/serialization/Serialization.h>
+
+#include "opendnp3/LogLevels.h"
+#include "opendnp3/app/GroupVariationRecord.h"
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-ObjectHeader::ObjectHeader() : group(0), variation(0), qualifier(0)
-{}
+ObjectHeader::ObjectHeader() : group(0), variation(0), qualifier(0) {}
 
 ParseResult ObjectHeaderParser::ParseObjectHeader(ObjectHeader& header, RSlice& buffer, Logger* pLogger)
 {
-	if (buffer.Size() < 3)
-	{
-		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for header");
-		return ParseResult::NOT_ENOUGH_DATA_FOR_HEADER;
-	}
-	else
-	{
-		header.group = UInt8::ReadBuffer(buffer);
-		header.variation = UInt8::ReadBuffer(buffer);
-		header.qualifier = UInt8::ReadBuffer(buffer);
-		return ParseResult::OK;
-	}
+    if (buffer.Size() < 3)
+    {
+        SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for header");
+        return ParseResult::NOT_ENOUGH_DATA_FOR_HEADER;
+    }
+    else
+    {
+        header.group = UInt8::ReadBuffer(buffer);
+        header.variation = UInt8::ReadBuffer(buffer);
+        header.qualifier = UInt8::ReadBuffer(buffer);
+        return ParseResult::OK;
+    }
 }
 
 bool ObjectHeaderParser::ReadFirstGroupVariation(const openpal::RSlice& objects, GroupVariation& gv)
 {
-	RSlice copy(objects);
-	ObjectHeader oheader;
-	if (ObjectHeaderParser::ParseObjectHeader(oheader, copy, nullptr) != ParseResult::OK)
-	{
-		return false;
-	}
+    RSlice copy(objects);
+    ObjectHeader oheader;
+    if (ObjectHeaderParser::ParseObjectHeader(oheader, copy, nullptr) != ParseResult::OK)
+    {
+        return false;
+    }
 
-	gv = GroupVariationRecord::GetRecord(oheader.group, oheader.variation).enumeration;
+    gv = GroupVariationRecord::GetRecord(oheader.group, oheader.variation).enumeration;
 
-	return true;
+    return true;
 }
 
-}
-
+} // namespace opendnp3

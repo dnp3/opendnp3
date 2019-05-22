@@ -28,27 +28,26 @@
 namespace opendnp3
 {
 
-template <class T>
-class DNP3Serializer : public openpal::Serializer<T>
+template<class T> class DNP3Serializer : public openpal::Serializer<T>
 {
 public:
+    DNP3Serializer(GroupVariationID id_,
+                   uint32_t size_,
+                   typename openpal::Serializer<T>::ReadFunc pReadFunc_,
+                   typename openpal::Serializer<T>::WriteFunc pWriteFunc_)
+        : openpal::Serializer<T>(size_, pReadFunc_, pWriteFunc_), id(id_)
+    {
+    }
 
-	DNP3Serializer(GroupVariationID id_, uint32_t size_, typename openpal::Serializer<T>::ReadFunc pReadFunc_, typename openpal::Serializer<T>::WriteFunc pWriteFunc_) :
-		openpal::Serializer<T>(size_, pReadFunc_, pWriteFunc_),
-		id(id_)
-	{}
-
-	GroupVariationID ID() const
-	{
-		return id;
-	}
+    GroupVariationID ID() const
+    {
+        return id;
+    }
 
 private:
-
-	GroupVariationID id;
-
+    GroupVariationID id;
 };
 
-}
+} // namespace opendnp3
 
 #endif

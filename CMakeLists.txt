@@ -14,7 +14,8 @@ endif()
 
 message("CMake build is: ${CMAKE_BUILD_TYPE}")
 
-include(${PROJECT_SOURCE_DIR}/cmake/settings.cmake)
+include(./cmake/settings.cmake)
+include(./cmake/ClangFormat.cmake)
 
 # various optional libraries and projects
 
@@ -103,13 +104,14 @@ file(GLOB_RECURSE openpal_SRC ./cpp/libs/src/openpal/*.cpp ./cpp/libs/src/openpa
 add_library(openpal ${LIB_TYPE} ${openpal_SRC})
 install(TARGETS openpal DESTINATION lib)
 set_target_properties(openpal PROPERTIES FOLDER cpp/libs VERSION ${OPENDNP3_VERSION} SOVERSION ${OPENDNP3_MAJOR_VERSION})
-
+clang_format(openpal)
 # ---- opendnp3 library ----
 file(GLOB_RECURSE opendnp3_SRC ./cpp/libs/src/opendnp3/*.cpp ./cpp/libs/src/opendnp3/*.h ./cpp/libs/include/opendnp3/*.h)
 add_library(opendnp3 ${LIB_TYPE} ${opendnp3_SRC})
 target_link_libraries(opendnp3 openpal)
 install(TARGETS opendnp3 DESTINATION lib)
 set_target_properties(opendnp3 PROPERTIES FOLDER cpp/libs VERSION ${OPENDNP3_VERSION} SOVERSION ${OPENDNP3_MAJOR_VERSION})
+clang_format(opendnp3 EXCLUDES ".*/gen/.*")
 
 if(DNP3_DECODER)
   file(GLOB_RECURSE dnp3decode_SRC ./cpp/libs/src/dnp3decode/*.cpp ./cpp/libs/src/dnp3decode/*.h ./cpp/libs/include/dnp3decode/*.h)
@@ -117,6 +119,7 @@ if(DNP3_DECODER)
   target_link_libraries(dnp3decode opendnp3)
   install(TARGETS dnp3decode DESTINATION lib)
   set_target_properties(dnp3decode PROPERTIES FOLDER cpp/libs VERSION ${OPENDNP3_VERSION} SOVERSION ${OPENDNP3_MAJOR_VERSION})
+  clang_format(dnp3decode)
 endif()
 
 # ---- asiopal library ----
@@ -124,7 +127,7 @@ file(GLOB_RECURSE asiopal_HPP ./cpp/libs/src/asiopal/*.h ./cpp/libs/include/asio
 
 if(DNP3_TLS)
   file(GLOB_RECURSE asiopal_CPP ./cpp/libs/src/asiopal/*.cpp)  
-else()  	
+else()
   file(GLOB asiopal_CPP ./cpp/libs/src/asiopal/*.cpp)
 endif()
 
@@ -137,8 +140,8 @@ endif()
 
 target_link_libraries(asiopal ${asiopal_link_libraries})
 install(TARGETS asiopal DESTINATION lib)
+clang_format(asiopal)
 set_target_properties(asiopal PROPERTIES FOLDER cpp/libs VERSION ${OPENDNP3_VERSION} SOVERSION ${OPENDNP3_MAJOR_VERSION})
-
 if(FLOCK)
   add_definitions(-DUSE_FLOCK)
 endif()
@@ -153,14 +156,15 @@ endif()
 add_library(asiodnp3 ${LIB_TYPE} ${asiodnp3_HPP} ${asiodnp3_CPP})
 target_link_libraries(asiodnp3 asiopal opendnp3)
 install(TARGETS asiodnp3 DESTINATION lib)
+clang_format(asiodnp3)
 set_target_properties(asiodnp3 PROPERTIES FOLDER cpp/libs VERSION ${OPENDNP3_VERSION} SOVERSION ${OPENDNP3_MAJOR_VERSION})
-
 if(DNP3_JAVA)
   file(GLOB_RECURSE opendnp3java_SRC ./java/cpp/*.h ./java/cpp/*.cpp)
   add_library(opendnp3java SHARED ${opendnp3java_SRC})
   target_link_libraries(opendnp3java asiodnp3)
   install(TARGETS opendnp3java DESTINATION lib)
   set_target_properties(opendnp3java PROPERTIES FOLDER java VERSION ${OPENDNP3_VERSION} SOVERSION ${OPENDNP3_MAJOR_VERSION})
+  clang_format(opendnp3java EXCLUDES ".*/jni/.*" "com_automatak_.*h$")
 endif()
 
 # ----- install -----
@@ -175,44 +179,51 @@ if(DNP3_DEMO)
   add_executable(master-demo ./cpp/examples/master/main.cpp)
   target_link_libraries (master-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
   set_target_properties(master-demo PROPERTIES FOLDER cpp/examples)
+  clang_format(master-demo)
 
   # ----- master demo executable -----
-  add_executable(master-gprs-demo ./cpp/examples/master-gprs/main.cpp ./cpp/examples/master-gprs/ExampleListenCallbacks.cpp)
+  add_executable(master-gprs-demo ./cpp/examples/master-gprs/main.cpp ./cpp/examples/master-gprs/ExampleListenCallbacks.cpp ./cpp/examples/master-gprs/ExampleListenCallbacks.h)
   target_link_libraries (master-gprs-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
   set_target_properties(master-gprs-demo PROPERTIES FOLDER cpp/examples)
+  clang_format(master-gprs-demo)
 
   # ----- outstation demo executable -----
   add_executable(outstation-demo ./cpp/examples/outstation/main.cpp)
   target_link_libraries (outstation-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
   set_target_properties(outstation-demo PROPERTIES FOLDER cpp/examples)
-
-  if(DNP3_DECODER)
-
-    # ----- decoder executable -----
-    add_executable(decoder ./cpp/examples/decoder/main.cpp)
-    target_link_libraries (decoder asiodnp3 dnp3decode ${PTHREAD})
-    set_target_properties(decoder PROPERTIES FOLDER cpp/examples)
-
-  endif()
+  clang_format(outstation-demo)
 
   if(DNP3_TLS)
 
-  # ----- master tls executable -----
-  add_executable(master-tls-demo ./cpp/examples/tls/master/main.cpp)
-  target_link_libraries (master-tls-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
-  set_target_properties(master-tls-demo PROPERTIES FOLDER cpp/examples/tls)
+    # ----- master tls executable -----
+    add_executable(master-tls-demo ./cpp/examples/tls/master/main.cpp)
+    target_link_libraries (master-tls-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
+    set_target_properties(master-tls-demo PROPERTIES FOLDER cpp/examples/tls)
+    clang_format(master-tls-demo)
 
-  # ----- outstation tls executable -----
-  add_executable(outstation-tls-demo ./cpp/examples/tls/outstation/main.cpp)
-  target_link_libraries (outstation-tls-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
-  set_target_properties(outstation-tls-demo PROPERTIES FOLDER cpp/examples/tls)
+    # ----- outstation tls executable -----
+    add_executable(outstation-tls-demo ./cpp/examples/tls/outstation/main.cpp)
+    target_link_libraries (outstation-tls-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
+    set_target_properties(outstation-tls-demo PROPERTIES FOLDER cpp/examples/tls)
+    clang_format(outstation-tls-demo)
 
-  # ----- master-gprs tls executable -----
-  add_executable(master-gprs-tls-demo ./cpp/examples/tls/master-gprs/main.cpp)
-  target_link_libraries (master-gprs-tls-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
-  set_target_properties(master-gprs-tls-demo PROPERTIES FOLDER cpp/examples/tls)
+    # ----- master-gprs tls executable -----
+    add_executable(master-gprs-tls-demo ./cpp/examples/tls/master-gprs/main.cpp)
+    target_link_libraries (master-gprs-tls-demo LINK_PUBLIC asiodnp3 ${PTHREAD})
+    set_target_properties(master-gprs-tls-demo PROPERTIES FOLDER cpp/examples/tls)
+    clang_format(master-gprs-tls-demo)
 
-   endif()
+  endif()
+
+endif()
+
+if(DNP3_DECODER)
+
+  # ----- decoder executable -----
+  add_executable(decoder ./cpp/examples/decoder/main.cpp)
+  target_link_libraries (decoder asiodnp3 dnp3decode ${PTHREAD})
+  set_target_properties(decoder PROPERTIES FOLDER cpp/examples)
+  clang_format(decoder)
 
 endif()
 
@@ -225,18 +236,21 @@ if(DNP3_TEST)
   add_library(testlib ${testlib_SRC})
   target_link_libraries(testlib openpal)
   set_target_properties(testlib PROPERTIES FOLDER cpp/tests/unit/mocks)
+  clang_format(testlib)
 
   # ----- dnp3mocks library ------
   file(GLOB_RECURSE dnp3mocks_SRC ./cpp/tests/libs/src/dnp3mocks/*.cpp ./cpp/tests/libs/src/dnp3mocks/*.h)
   add_library(dnp3mocks ${dnp3mocks_SRC})
   target_link_libraries(dnp3mocks opendnp3 testlib)
   set_target_properties(dnp3mocks PROPERTIES FOLDER cpp/tests/unit/mocks)
+  clang_format(dnp3mocks)
 
   # ----- openpal tests -----
   file(GLOB_RECURSE openpal_TESTSRC ./cpp/tests/openpal/src/*.cpp ./cpp/tests/openpal/src/*.h)
   add_executable (testopenpal ${openpal_TESTSRC})
   target_link_libraries (testopenpal LINK_PUBLIC testlib ${PTHREAD})
   set_target_properties(testopenpal PROPERTIES FOLDER cpp/tests/unit)
+  clang_format(testopenpal)
   add_test(testopenpal testopenpal)
 
   # ----- opendnp3 tests -----
@@ -244,6 +258,7 @@ if(DNP3_TEST)
   add_executable (testopendnp3 ${opendnp3_TESTSRC})
   target_link_libraries (testopendnp3 LINK_PUBLIC dnp3mocks ${PTHREAD})
   set_target_properties(testopendnp3 PROPERTIES FOLDER cpp/tests/unit)
+  clang_format(testopendnp3)
   add_test(testopendnp3 testopendnp3)
 
   # ----- asiopal tests -----
@@ -255,6 +270,7 @@ if(DNP3_TEST)
   add_executable (testasiopal ${asiopal_TESTSRC})
   target_link_libraries (testasiopal LINK_PUBLIC asiopal testlib ${PTHREAD})
   set_target_properties(testasiopal PROPERTIES FOLDER cpp/tests/integration)
+  clang_format(testasiopal)
   add_test(testasiopal testasiopal)
 
   # ----- asiodnp3 tests -----
@@ -262,6 +278,7 @@ if(DNP3_TEST)
   add_executable (testasiodnp3 ${asiodnp3_TESTSRC})
   target_link_libraries (testasiodnp3 LINK_PUBLIC asiodnp3 dnp3mocks ${PTHREAD})
   set_target_properties(testasiodnp3 PROPERTIES FOLDER cpp/tests/integration)
+  clang_format(testasiodnp3)
   add_test(testasiodnp3 testasiodnp3)
 
 endif()
@@ -271,14 +288,17 @@ if(DNP3_FUZZING)
   add_executable (fuzzdecoder ./cpp/tests/fuzz/onefile.cpp ./cpp/tests/fuzz/fuzzdecoder.cpp)
   target_link_libraries (fuzzdecoder asiodnp3 dnp3decode ${PTHREAD})
   set_target_properties(fuzzdecoder PROPERTIES FOLDER cpp/tests/fuzzing)
+  clang_format(fuzzdecoder)
 
   add_executable (fuzzoutstation ./cpp/tests/fuzz/onefile.cpp ./cpp/tests/fuzz/fuzzoutstation.cpp)
   target_link_libraries (fuzzoutstation dnp3mocks ${PTHREAD})
   set_target_properties(fuzzoutstation PROPERTIES FOLDER cpp/tests/fuzzing)
+  clang_format(fuzzoutstation)
 
   add_executable (fuzzmaster ./cpp/tests/fuzz/onefile.cpp ./cpp/tests/fuzz/fuzzmaster.cpp)
   target_link_libraries (fuzzmaster dnp3mocks ${PTHREAD})
   set_target_properties(fuzzmaster PROPERTIES FOLDER cpp/tests/fuzzing)
+  clang_format(fuzzmaster)
 endif()
 
 if(WIN32 AND DNP3_DOTNET)
@@ -289,20 +309,23 @@ if(WIN32 AND DNP3_DOTNET)
 
   if(DNP3_DEMO)
     add_subdirectory(./dotnet/examples/master)
-	add_subdirectory(./dotnet/examples/master-gprs)
-	add_subdirectory(./dotnet/examples/master-gprs-tls)
-	add_subdirectory(./dotnet/examples/outstation)
-  endif()  
+    add_subdirectory(./dotnet/examples/master-gprs)
+    add_subdirectory(./dotnet/examples/master-gprs-tls)
+    add_subdirectory(./dotnet/examples/outstation)
+  endif()
 endif()
 
-add_custom_target(
-  format
-  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-  COMMAND astyle -R ./cpp/*.h ./cpp/*.cpp --options=./config/astyle.cfg --exclude=./cpp/libs/include/opendnp3/gen --exclude=./cpp/libs/src/opendnp3/gen --exclude=./cpp/libs/src/opendnp3/objects
-  COMMAND astyle -R ./java/cpp/adapters/*.h ./java/cpp/adapters/*.cpp --options=./config/astyle.cfg
-)
+# ----- Formating -----
+#add_custom_target(
+#	format
+#	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+#	COMMAND astyle -R ./cpp/*.h ./cpp/*.cpp --options=./config/astyle.cfg --exclude=./cpp/libs/include/opendnp3/gen --exclude=./cpp/libs/src/opendnp3/gen --exclude=./cpp/libs/src/opendnp3/objects
+#	COMMAND astyle -R ./java/cpp/adapters/*.h ./java/cpp/adapters/*.cpp --options=./config/astyle.cfg
+#)
 
-# Packaging
+define_clang_format()
+
+# ----- Packaging -----
 set(CPACK_PACKAGE_VERSION_MAJOR ${OPENDNP3_MAJOR_VERSION})
 set(CPACK_PACKAGE_VERSION_MINOR ${OPENDNP3_MINOR_VERSION})
 set(CPACK_PACKAGE_VERSION_PATCH ${OPENDNP3_MICRO_VERSION})

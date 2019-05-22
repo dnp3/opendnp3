@@ -27,19 +27,17 @@ namespace opendnp3
 namespace flags
 {
 
-bool GetBinaryValue(Flags flags)
-{
-	return (flags.value & static_cast<uint8_t>(BinaryQuality::STATE)) != 0;
-}
+    bool GetBinaryValue(Flags flags)
+    {
+        return (flags.value & static_cast<uint8_t>(BinaryQuality::STATE)) != 0;
+    }
 
-Flags GetBinaryFlags(Flags flags, bool value)
-{
-	return (value) ? (flags.value | static_cast<uint8_t>(BinaryQuality::STATE)) : (flags.value & (~static_cast<uint8_t>(BinaryQuality::STATE)));
-}
+    Flags GetBinaryFlags(Flags flags, bool value)
+    {
+        return (value) ? (flags.value | static_cast<uint8_t>(BinaryQuality::STATE))
+                       : (flags.value & (~static_cast<uint8_t>(BinaryQuality::STATE)));
+    }
 
+} // namespace flags
 
-}
-
-}
-
-
+} // namespace opendnp3

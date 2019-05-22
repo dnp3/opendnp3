@@ -21,39 +21,39 @@
 #include "BitReader.h"
 
 #include <openpal/Configure.h>
-#include <assert.h>
 
+#include <assert.h>
 
 namespace opendnp3
 {
 
 uint32_t NumBytesInBits(uint32_t numBits)
 {
-	uint32_t numBytes = numBits / 8;
-	return ((numBits % 8) == 0) ? numBytes : numBytes + 1;
+    uint32_t numBytes = numBits / 8;
+    return ((numBits % 8) == 0) ? numBytes : numBytes + 1;
 }
 
 bool GetBit(const openpal::RSlice& buffer, uint32_t position)
 {
-	uint32_t byte = position / 8;
-	uint32_t bit = position % 8;
-	assert(byte < buffer.Size());
-	return (buffer[byte] & (1 << bit)) != 0;
+    uint32_t byte = position / 8;
+    uint32_t bit = position % 8;
+    assert(byte < buffer.Size());
+    return (buffer[byte] & (1 << bit)) != 0;
 }
 
 uint32_t NumBytesInDoubleBits(uint32_t numBits)
 {
-	uint32_t numBytes = numBits / 4;
-	return ((numBits % 4) == 0) ? numBytes : numBytes + 1;
+    uint32_t numBytes = numBits / 4;
+    return ((numBits % 4) == 0) ? numBytes : numBytes + 1;
 }
 
 DoubleBit GetDoubleBit(const openpal::RSlice& buffer, uint32_t index)
 {
-	uint32_t byteNumber = index / 4;
-	assert(byteNumber < buffer.Size());
-	uint8_t byte = buffer[byteNumber];
-	uint32_t bitshift = 2 * (index % 4);
-	return DoubleBitFromType((byte >> bitshift) & 0x03);
+    uint32_t byteNumber = index / 4;
+    assert(byteNumber < buffer.Size());
+    uint8_t byte = buffer[byteNumber];
+    uint32_t bitshift = 2 * (index % 4);
+    return DoubleBitFromType((byte >> bitshift) & 0x03);
 }
 
-}
+} // namespace opendnp3

@@ -30,274 +30,251 @@ namespace opendnp3
 
 using list_size_type_t = uint32_t;
 
-template <class T>
-class Node
+template<class T> class Node
 {
 public:
-	Node() = default;
+    Node() = default;
 
-	T value;
+    T value;
 
 private:
-	Node* prev = nullptr;
-	Node* next = nullptr;
+    Node* prev = nullptr;
+    Node* next = nullptr;
 
-	template <class U>
-	friend class List;
+    template<class U> friend class List;
 };
 
 // A container adapter for a -linked list
-template <class T>
-class List : public openpal::HasSize<list_size_type_t>
+template<class T> class List : public openpal::HasSize<list_size_type_t>
 {
 public:
+    class Iterator
+    {
+    public:
+        static Iterator From(Node<T>* start)
+        {
+            return Iterator(start);
+        }
 
-	class Iterator
-	{
-	public:
+        template<class U> T* Find(const U& matches);
 
-		static Iterator From(Node<T>* start)
-		{
-			return Iterator(start);
-		}
+        bool HasNext() const
+        {
+            return this->current;
+        }
 
-		template <class U>
-		T* Find(const U& matches);
+        Node<T>* Next()
+        {
+            if (!this->current)
+                return nullptr;
+            auto ret = this->current;
+            this->current = this->current->next;
+            return ret;
+        }
 
-		bool HasNext() const
-		{
-			return this->current;
-		}
+        inline Node<T>* Current()
+        {
+            return this->current;
+        }
 
-		Node<T>* Next()
-		{
-			if (!this->current) return nullptr;
-			auto ret = this->current;
-			this->current = this->current->next;
-			return ret;
-		}
+        inline T* CurrentValue()
+        {
+            return (this->current) ? &(this->current->value) : nullptr;
+        }
 
-		inline Node<T>* Current()
-		{
-			return this->current;
-		}
+    private:
+        Iterator(Node<T>* start) : current(start) {}
 
-		inline T* CurrentValue()
-		{
-			return (this->current) ? &(this->current->value) : nullptr;
-		}
+        Node<T>* current;
+    };
 
-	private:
+    List(list_size_type_t maxSize) : openpal::HasSize<list_size_type_t>(0), underlying(maxSize)
+    {
+        Initialize();
+    }
 
-		Iterator(Node<T>* start) : current(start)
-		{}
+    inline list_size_type_t Capacity() const
+    {
+        return underlying.Size();
+    }
 
-		Node<T>* current;
-	};
+    inline Node<T>* Head()
+    {
+        return this->head;
+    }
 
-	List(list_size_type_t maxSize) :
-		openpal::HasSize<list_size_type_t>(0),
-		underlying(maxSize)
-	{
-		Initialize();
-	}
+    inline Iterator Iterate() const
+    {
+        return Iterator::From(this->head);
+    }
 
-	inline list_size_type_t Capacity() const
-	{
-		return underlying.Size();
-	}
+    Node<T>* Add(const T& value);
 
-	inline Node<T>* Head()
-	{
-		return this->head;
-	}
+    template<class U> void ForeachWhile(const U& select);
 
-	inline Iterator Iterate() const
-	{
-		return Iterator::From(this->head);
-	}
+    template<class U> void Foreach(const U& action);
 
-	Node<T>* Add(const T& value);
+    template<class U> list_size_type_t RemoveAll(const U& match);
 
-	template <class U>
-	void ForeachWhile(const U& select);
+    void Remove(Node<T>* node);
 
-	template <class U>
-	void Foreach(const U& action);
-
-	template <class U>
-	list_size_type_t RemoveAll(const U& match);
-
-	void Remove(Node<T>* node);
-
-	inline bool IsFullAndCapacityNotZero() const;
+    inline bool IsFullAndCapacityNotZero() const;
 
 private:
+    Node<T>* head = nullptr;
+    Node<T>* tail = nullptr;
+    Node<T>* free = nullptr;
 
-	Node<T>* head = nullptr;
-	Node<T>* tail = nullptr;
-	Node<T>* free = nullptr;
+    openpal::Array<Node<T>, list_size_type_t> underlying;
 
-	openpal::Array<Node<T>, list_size_type_t> underlying;
+    Node<T>* Insert(const T& value, Node<T>* left, Node<T>* right);
 
-	Node<T>* Insert(const T& value, Node<T>* left, Node<T>* right);
+    inline static void Link(Node<T>* prev, Node<T>* next);
 
-	inline static void Link(Node<T>* prev, Node<T>* next);
-
-	void Initialize();
+    void Initialize();
 };
 
-template <class T>
-Node<T>* List<T>::Add(const T& value)
+template<class T> Node<T>* List<T>::Add(const T& value)
 {
-	return this->Insert(value, this->tail, nullptr);
+    return this->Insert(value, this->tail, nullptr);
 }
 
-template <class T>
-template <class U>
-void List<T>::ForeachWhile(const U& select)
+template<class T> template<class U> void List<T>::ForeachWhile(const U& select)
 {
-	auto iter = this->Iterate();
-	bool result = true;
-	while (result && iter.HasNext())
-	{
-		result = select(iter.Next()->value);
-	}
+    auto iter = this->Iterate();
+    bool result = true;
+    while (result && iter.HasNext())
+    {
+        result = select(iter.Next()->value);
+    }
 }
 
-template <class T>
-template <class U>
-void List<T>::Foreach(const U& action)
+template<class T> template<class U> void List<T>::Foreach(const U& action)
 {
-	auto iter = this->Iterate();
-	while (iter.HasNext())
-	{
-		action(iter.Next()->value);
-	}
+    auto iter = this->Iterate();
+    while (iter.HasNext())
+    {
+        action(iter.Next()->value);
+    }
 }
 
-template <class T>
-template <class U>
-list_size_type_t List<T>::RemoveAll(const U& match)
+template<class T> template<class U> list_size_type_t List<T>::RemoveAll(const U& match)
 {
-	list_size_type_t count = 0;
+    list_size_type_t count = 0;
 
-	auto iter = this->Iterate();
-	auto current = iter.Next();
-	while (current)
-	{
-		if (match(current->value))
-		{
-			auto removed = current;
-			current = iter.Next();
-			this->Remove(removed);
-			++count;
-		}
-		else
-		{
-			current = iter.Next();
-		}
-	}
+    auto iter = this->Iterate();
+    auto current = iter.Next();
+    while (current)
+    {
+        if (match(current->value))
+        {
+            auto removed = current;
+            current = iter.Next();
+            this->Remove(removed);
+            ++count;
+        }
+        else
+        {
+            current = iter.Next();
+        }
+    }
 
-	return count;
+    return count;
 }
 
-template <class T>
-Node<T>* List<T>::Insert(const T& value, Node<T>* left, Node<T>* right)
+template<class T> Node<T>* List<T>::Insert(const T& value, Node<T>* left, Node<T>* right)
 {
-	if (!this->free) return nullptr;
+    if (!this->free)
+        return nullptr;
 
-	// initialize the new node, and increment the size
-	auto new_node = this->free;
-	this->free = this->free->next;
+    // initialize the new node, and increment the size
+    auto new_node = this->free;
+    this->free = this->free->next;
 
-	new_node->value = value;
-	++(this->size);
+    new_node->value = value;
+    ++(this->size);
 
-	this->Link(left, new_node);
-	this->Link(new_node, right);
+    this->Link(left, new_node);
+    this->Link(new_node, right);
 
-	// change of head
-	if (!left)
-	{
-		this->head = new_node;
-	}
+    // change of head
+    if (!left)
+    {
+        this->head = new_node;
+    }
 
-	// change of tail
-	if (!right)
-	{
-		this->tail = new_node;
-	}
+    // change of tail
+    if (!right)
+    {
+        this->tail = new_node;
+    }
 
-	return new_node;
+    return new_node;
 }
 
-template <class T>
-void List<T>::Remove(Node<T>* node)
+template<class T> void List<T>::Remove(Node<T>* node)
 {
-	if(node == this->head) // change of head
-	{
-		this->head = node->next;
-	}
+    if (node == this->head) // change of head
+    {
+        this->head = node->next;
+    }
 
-	if (node == this->tail) // change of tail
-	{
-		this->tail = this->tail->prev;
-	}
+    if (node == this->tail) // change of tail
+    {
+        this->tail = this->tail->prev;
+    }
 
-	// attach the adjacent nodes to eachother if they exist
-	this->Link(node->prev, node->next);
+    // attach the adjacent nodes to eachother if they exist
+    this->Link(node->prev, node->next);
 
-	// node becomes the head of the free list
-	node->prev = nullptr;
-	this->Link(node, this->free);
-	this->free = node;
+    // node becomes the head of the free list
+    node->prev = nullptr;
+    this->Link(node, this->free);
+    this->free = node;
 
-	--(this->size);
+    --(this->size);
 }
 
-template <class T>
-bool List<T>::IsFullAndCapacityNotZero() const
+template<class T> bool List<T>::IsFullAndCapacityNotZero() const
 {
-	return !(this->free) && Capacity() > 0;
+    return !(this->free) && Capacity() > 0;
 }
 
-template <class T>
-void List<T>::Link(Node<T>* first, Node<T>* second)
+template<class T> void List<T>::Link(Node<T>* first, Node<T>* second)
 {
-	if(first) first->next = second;
-	if(second) second->prev = first;
+    if (first)
+        first->next = second;
+    if (second)
+        second->prev = first;
 }
 
-template <class T>
-void List<T>::Initialize()
+template<class T> void List<T>::Initialize()
 {
-	if (underlying.IsEmpty()) return;
+    if (underlying.IsEmpty())
+        return;
 
-	this->free = &underlying[0];
-	for(list_size_type_t i = 1; i < underlying.Size(); ++i)
-	{
-		Link(&underlying[i - 1], &underlying[i]);
-	}
+    this->free = &underlying[0];
+    for (list_size_type_t i = 1; i < underlying.Size(); ++i)
+    {
+        Link(&underlying[i - 1], &underlying[i]);
+    }
 }
 
-template <class T>
-template <class U>
-T* List<T>::Iterator::Find(const U& matches)
+template<class T> template<class U> T* List<T>::Iterator::Find(const U& matches)
 {
-	while (this->current)
-	{
-		if (matches(this->current->value))
-		{
-			return &(this->current->value);
-		}
+    while (this->current)
+    {
+        if (matches(this->current->value))
+        {
+            return &(this->current->value);
+        }
 
-		this->current = this->current->next;
-	}
+        this->current = this->current->next;
+    }
 
-	return nullptr;
+    return nullptr;
 }
 
-}
+} // namespace opendnp3
 
 #endif

@@ -21,11 +21,12 @@
 #ifndef ASIODNP3_DNP3CHANNEL_H
 #define ASIODNP3_DNP3CHANNEL_H
 
+#include "asiopal/ResourceManager.h"
+
+#include "opendnp3/master/IMasterScheduler.h"
 
 #include "asiodnp3/IChannel.h"
 #include "asiodnp3/IOHandler.h"
-#include "asiopal/ResourceManager.h"
-#include "opendnp3/master/IMasterScheduler.h"
 
 namespace asiodnp3
 {
@@ -34,64 +35,56 @@ class DNP3Channel final : public IChannel, public std::enable_shared_from_this<D
 {
 
 public:
+    DNP3Channel(const openpal::Logger& logger,
+                const std::shared_ptr<asiopal::Executor>& executor,
+                const std::shared_ptr<IOHandler>& iohandler,
+                const std::shared_ptr<asiopal::IResourceManager>& manager);
 
-	DNP3Channel(
-	    const openpal::Logger& logger,
-	    const std::shared_ptr<asiopal::Executor>& executor,
-	    const std::shared_ptr<IOHandler>& iohandler,
-	    const std::shared_ptr<asiopal::IResourceManager>& manager
-	);
+    static std::shared_ptr<DNP3Channel> Create(const openpal::Logger& logger,
+                                               const std::shared_ptr<asiopal::Executor>& executor,
+                                               const std::shared_ptr<IOHandler>& iohandler,
+                                               const std::shared_ptr<asiopal::IResourceManager>& manager)
+    {
+        return std::make_shared<DNP3Channel>(logger, executor, iohandler, manager);
+    }
 
-	static std::shared_ptr<DNP3Channel> Create(
-	    const openpal::Logger& logger,
-	    const std::shared_ptr<asiopal::Executor>& executor,
-	    const std::shared_ptr<IOHandler>& iohandler,
-	    const std::shared_ptr<asiopal::IResourceManager>& manager)
-	{
-		return std::make_shared<DNP3Channel>(logger, executor, iohandler, manager);
-	}
+    ~DNP3Channel();
 
-	~DNP3Channel();
+    // ----------------------- Implement IChannel -----------------------
 
-	// ----------------------- Implement IChannel -----------------------
+    void Shutdown() override;
 
-	void Shutdown() override;
+    virtual opendnp3::LinkStatistics GetStatistics() override;
 
-	virtual opendnp3::LinkStatistics GetStatistics() override;
+    virtual openpal::LogFilters GetLogFilters() const override;
 
-	virtual openpal::LogFilters GetLogFilters() const override;
+    virtual void SetLogFilters(const openpal::LogFilters& filters) override;
 
-	virtual void SetLogFilters(const openpal::LogFilters& filters) override;
+    virtual std::shared_ptr<IMaster> AddMaster(const std::string& id,
+                                               std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
+                                               std::shared_ptr<opendnp3::IMasterApplication> application,
+                                               const MasterStackConfig& config) override;
 
-	virtual std::shared_ptr<IMaster> AddMaster(const std::string& id,
-	        std::shared_ptr<opendnp3::ISOEHandler> SOEHandler,
-	        std::shared_ptr<opendnp3::IMasterApplication> application,
-	        const MasterStackConfig& config) override;
-
-
-	virtual std::shared_ptr<IOutstation> AddOutstation(const std::string& id,
-	        std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
-	        std::shared_ptr<opendnp3::IOutstationApplication> application,
-	        const OutstationStackConfig& config) override;
+    virtual std::shared_ptr<IOutstation> AddOutstation(const std::string& id,
+                                                       std::shared_ptr<opendnp3::ICommandHandler> commandHandler,
+                                                       std::shared_ptr<opendnp3::IOutstationApplication> application,
+                                                       const OutstationStackConfig& config) override;
 
 private:
+    void ShutdownImpl();
 
-	void ShutdownImpl();
+    // ----- generic method for adding a stack ------
+    template<class T> std::shared_ptr<T> AddStack(const opendnp3::LinkConfig& link, const std::shared_ptr<T>& stack);
 
-	// ----- generic method for adding a stack ------
-	template <class T>
-	std::shared_ptr<T> AddStack(const opendnp3::LinkConfig& link, const std::shared_ptr<T>& stack);
+    openpal::Logger logger;
+    const std::shared_ptr<asiopal::Executor> executor;
+    std::shared_ptr<opendnp3::IMasterScheduler> scheduler;
 
-	openpal::Logger logger;
-	const std::shared_ptr<asiopal::Executor> executor;
-	std::shared_ptr<opendnp3::IMasterScheduler> scheduler;
-
-	std::shared_ptr<IOHandler> iohandler;
-	std::shared_ptr<asiopal::IResourceManager> manager;
-	std::shared_ptr<asiopal::ResourceManager> resources;
-
+    std::shared_ptr<IOHandler> iohandler;
+    std::shared_ptr<asiopal::IResourceManager> manager;
+    std::shared_ptr<asiopal::ResourceManager> resources;
 };
 
-}
+} // namespace asiodnp3
 
 #endif

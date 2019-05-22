@@ -21,14 +21,13 @@
 
 #include "DataSink.h"
 
+#include <openpal/util/ToHex.h>
+
 #include <testlib/BufferHelpers.h>
+#include <testlib/HexConversions.h>
 
 #include <memory>
 #include <stdexcept>
-
-#include <testlib/HexConversions.h>
-
-#include <openpal/util/ToHex.h>
 
 using namespace openpal;
 
@@ -37,37 +36,38 @@ namespace opendnp3
 
 void DataSink::Write(const RSlice& data)
 {
-	for (size_t i = 0; i < data.Size(); ++i)
-	{
-		this->buffer.push_back(data[i]);
-	}
+    for (size_t i = 0; i < data.Size(); ++i)
+    {
+        this->buffer.push_back(data[i]);
+    }
 }
 
 void DataSink::Clear()
 {
-	buffer.clear();
+    buffer.clear();
 }
 
 bool DataSink::Equals(const openpal::RSlice& data) const
 {
-	if (data.Size() != this->buffer.size()) return false;
+    if (data.Size() != this->buffer.size())
+        return false;
 
-	for (size_t i = 0; i < this->buffer.size(); i++)
-	{
-		if (data[i] != this->buffer[i])
-		{
-			return false;
-		}
-	}
-	return true;
+    for (size_t i = 0; i < this->buffer.size(); i++)
+    {
+        if (data[i] != this->buffer[i])
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
 std::string DataSink::AsHex(bool spaced) const
 {
-	testlib::CopyableBuffer temp(static_cast<uint32_t>(this->buffer.size()));
-	for(size_t i = 0; i < this->buffer.size(); ++i) temp[i] = this->buffer[i];
-	return testlib::ToHex(temp.ToRSlice(), spaced);
+    testlib::CopyableBuffer temp(static_cast<uint32_t>(this->buffer.size()));
+    for (size_t i = 0; i < this->buffer.size(); ++i)
+        temp[i] = this->buffer[i];
+    return testlib::ToHex(temp.ToRSlice(), spaced);
 }
 
-} //end namespace
-
+} // namespace opendnp3

@@ -18,12 +18,13 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
-
 #include "mocks/OutstationTestObject.h"
 
 #include <dnp3mocks/APDUHexBuilders.h>
+
 #include <testlib/HexConversions.h>
+
+#include <catch.hpp>
 
 using namespace std;
 using namespace opendnp3;
@@ -34,40 +35,35 @@ using namespace testlib;
 
 TEST_CASE(SUITE("Responds to repeat READ request with same octets as last repsond"))
 {
-	OutstationConfig config;
-	OutstationTestObject t(config, DatabaseSizes::AnalogOnly(1));
-	t.LowerLayerUp();
+    OutstationConfig config;
+    OutstationTestObject t(config, DatabaseSizes::AnalogOnly(1));
+    t.LowerLayerUp();
 
-	t.SendToOutstation("C0 01 1E 00 06");
-	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 1E 01 00 00 00 02 00 00 00 00");
-	t.OnTxReady();
+    t.SendToOutstation("C0 01 1E 00 06");
+    REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 1E 01 00 00 00 02 00 00 00 00");
+    t.OnTxReady();
 
-	// change the value in the outstation
-	t.Transaction([](IUpdateHandler & db)
-	{
-		db.Update(Analog(1, 0x01), 0);
-	});
+    // change the value in the outstation
+    t.Transaction([](IUpdateHandler& db) { db.Update(Analog(1, 0x01), 0); });
 
-	// repeat the read request
-	t.SendToOutstation("C0 01 1E 00 06");
-	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 1E 01 00 00 00 02 00 00 00 00");
+    // repeat the read request
+    t.SendToOutstation("C0 01 1E 00 06");
+    REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 1E 01 00 00 00 02 00 00 00 00");
 }
 
 TEST_CASE(SUITE("Responds to non-READ request while waiting for unsolicited confirm"))
 {
-	OutstationConfig config;
-	config.params.allowUnsolicited = true;
-	OutstationTestObject t(config, DatabaseSizes::AnalogOnly(1));
-	t.LowerLayerUp();
+    OutstationConfig config;
+    config.params.allowUnsolicited = true;
+    OutstationTestObject t(config, DatabaseSizes::AnalogOnly(1));
+    t.LowerLayerUp();
 
-	REQUIRE(t.lower->PopWriteAsHex() == "F0 82 80 00");
-	t.OnTxReady();
+    REQUIRE(t.lower->PopWriteAsHex() == "F0 82 80 00");
+    t.OnTxReady();
 
-	t.SendToOutstation("C0 02"); // empty write
-	REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00"); //null response
-	t.OnTxReady();
+    t.SendToOutstation("C0 02");                        // empty write
+    REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00"); // null response
+    t.OnTxReady();
 
-	REQUIRE(t.lower->PopWriteAsHex() == ""); // shouldn't send anything else
-
+    REQUIRE(t.lower->PopWriteAsHex() == ""); // shouldn't send anything else
 }
-

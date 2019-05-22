@@ -21,40 +21,37 @@
 #ifndef ASIODNP3_ISTACK_H
 #define ASIODNP3_ISTACK_H
 
-#include <opendnp3/StackStatistics.h>
-
 #include "asiopal/IResourceManager.h"
+
+#include <opendnp3/StackStatistics.h>
 
 namespace asiodnp3
 {
 
 /**
-* Base class for masters or outstations
-*/
+ * Base class for masters or outstations
+ */
 class IStack : public asiopal::IResource
 {
 public:
+    virtual ~IStack() {}
 
-	virtual ~IStack() {}
+    /**
+     * Synchronously enable communications
+     */
+    virtual bool Enable() = 0;
 
-	/**
-	* Synchronously enable communications
-	*/
-	virtual bool Enable() = 0;
+    /**
+     * Synchronously disable communications
+     */
+    virtual bool Disable() = 0;
 
-	/**
-	* Synchronously disable communications
-	*/
-	virtual bool Disable() = 0;
-
-	/**
-	* @return stack statistics counters
-	*/
-	virtual opendnp3::StackStatistics GetStackStatistics() = 0;
-
+    /**
+     * @return stack statistics counters
+     */
+    virtual opendnp3::StackStatistics GetStackStatistics() = 0;
 };
 
-
-}
+} // namespace asiodnp3
 
 #endif

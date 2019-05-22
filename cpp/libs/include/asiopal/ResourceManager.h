@@ -23,9 +23,9 @@
 
 #include "IResourceManager.h"
 
-#include <set>
-#include <mutex>
 #include <memory>
+#include <mutex>
+#include <set>
 
 namespace asiopal
 {
@@ -34,44 +34,40 @@ class ResourceManager final : public IResourceManager
 {
 
 public:
+    static std::shared_ptr<ResourceManager> Create()
+    {
+        return std::make_shared<ResourceManager>();
+    }
 
-	static std::shared_ptr<ResourceManager> Create()
-	{
-		return std::make_shared<ResourceManager>();
-	}
+    virtual void Detach(const std::shared_ptr<IResource>& resource) override;
 
-	virtual void Detach(const std::shared_ptr<IResource>& resource)  override;
+    void Shutdown();
 
-	void Shutdown();
+    template<class R, class T> std::shared_ptr<R> Bind(const T& create)
+    {
+        std::lock_guard<std::mutex> lock(this->mutex);
 
-	template <class R, class T>
-	std::shared_ptr<R> Bind(const T& create)
-	{
-		std::lock_guard <std::mutex> lock(this->mutex);
-
-		if (this->is_shutting_down)
-		{
-			return nullptr;
-		}
-		else
-		{
-			auto item = create();
-			if (item)
-			{
-				this->resources.insert(item);
-			}
-			return item;
-		}
-	}
+        if (this->is_shutting_down)
+        {
+            return nullptr;
+        }
+        else
+        {
+            auto item = create();
+            if (item)
+            {
+                this->resources.insert(item);
+            }
+            return item;
+        }
+    }
 
 private:
-
-	std::mutex mutex;
-	bool is_shutting_down = false;
-	std::set<std::shared_ptr<asiopal::IResource>> resources;
-
+    std::mutex mutex;
+    bool is_shutting_down = false;
+    std::set<std::shared_ptr<asiopal::IResource>> resources;
 };
 
-}
+} // namespace asiopal
 
 #endif

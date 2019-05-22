@@ -22,29 +22,26 @@
 #ifndef ASIOPAL_TLS_CONTEXT_H
 #define ASIOPAL_TLS_CONTEXT_H
 
-#include <asio/ssl.hpp>
+#include "TLSConfig.h"
 
 #include <openpal/util/Uncopyable.h>
 
-#include "TLSConfig.h"
+#include <asio/ssl.hpp>
 
 namespace asiopal
 {
 
 /**
-* A wrapper type for an ASIO ssl_context
-*/
+ * A wrapper type for an ASIO ssl_context
+ */
 class TLSContext : private openpal::Uncopyable
 {
 public:
-
-	TLSContext(asio::ssl::context_base::method method, const TLSConfig& config, std::error_code& ec);
+    TLSContext(asio::ssl::context_base::method method, const TLSConfig& config, std::error_code& ec);
 
 private:
-
-
 };
 
-}
+} // namespace asiopal
 
 #endif

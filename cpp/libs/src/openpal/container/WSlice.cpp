@@ -20,8 +20,8 @@
  */
 #include "openpal/container/WSlice.h"
 
-#include "openpal/util/Comparisons.h"
 #include "openpal/container/RSlice.h"
+#include "openpal/util/Comparisons.h"
 
 #include <cstring>
 
@@ -30,49 +30,41 @@ namespace openpal
 
 WSlice WSlice::Empty()
 {
-	return WSlice();
+    return WSlice();
 }
 
-WSlice::WSlice():
-	HasSize(0),
-	pBuffer(nullptr)
-{}
+WSlice::WSlice() : HasSize(0), pBuffer(nullptr) {}
 
 void WSlice::SetAllTo(uint8_t value)
 {
-	memset(pBuffer, value, size);
+    memset(pBuffer, value, size);
 }
 
-WSlice::WSlice(uint8_t* pBuffer_, uint32_t size) :
-	HasSize(size),
-	pBuffer(pBuffer_)
-{}
+WSlice::WSlice(uint8_t* pBuffer_, uint32_t size) : HasSize(size), pBuffer(pBuffer_) {}
 
 void WSlice::Clear()
 {
-	pBuffer = nullptr;
-	size = 0;
+    pBuffer = nullptr;
+    size = 0;
 }
 
 uint32_t WSlice::Advance(uint32_t count)
 {
-	auto num = openpal::Min(count, size);
-	pBuffer += num;
-	size -= num;
-	return num;
+    auto num = openpal::Min(count, size);
+    pBuffer += num;
+    size -= num;
+    return num;
 }
 
 WSlice WSlice::Skip(uint32_t count) const
 {
-	auto num = openpal::Min(count, size);
-	return WSlice(pBuffer + num, size - num);
+    auto num = openpal::Min(count, size);
+    return WSlice(pBuffer + num, size - num);
 }
 
 RSlice WSlice::ToRSlice() const
 {
-	return RSlice(pBuffer, size);
+    return RSlice(pBuffer, size);
 }
 
-}
-
-
+} // namespace openpal

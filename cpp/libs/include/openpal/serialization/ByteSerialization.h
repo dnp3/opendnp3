@@ -21,11 +21,11 @@
 #ifndef OPENPAL_BYTESERIALIZATION_H
 #define OPENPAL_BYTESERIALIZATION_H
 
+#include "openpal/container/RSlice.h"
+#include "openpal/container/WSlice.h"
+
 #include <cstdint>
 #include <cstring>
-
-#include "openpal/container/WSlice.h"
-#include "openpal/container/RSlice.h"
 
 namespace openpal
 {
@@ -33,37 +33,36 @@ namespace openpal
 class UInt8Simple
 {
 public:
+    inline static uint8_t Read(const uint8_t* pStart)
+    {
+        return (*pStart);
+    }
 
-	inline static uint8_t Read(const uint8_t* pStart)
-	{
-		return (*pStart);
-	}
+    inline static uint8_t ReadBuffer(RSlice& buffer)
+    {
+        auto ret = Read(buffer);
+        buffer.Advance(SIZE);
+        return ret;
+    }
 
-	inline static uint8_t ReadBuffer(RSlice& buffer)
-	{
-		auto ret = Read(buffer);
-		buffer.Advance(SIZE);
-		return ret;
-	}
+    static void WriteBuffer(WSlice& buffer, uint8_t value)
+    {
+        Write(buffer, value);
+        buffer.Advance(SIZE);
+    }
 
-	static void WriteBuffer(WSlice& buffer, uint8_t value)
-	{
-		Write(buffer, value);
-		buffer.Advance(SIZE);
-	}
+    inline static void Write(uint8_t* pStart, uint8_t value)
+    {
+        *(pStart) = value;
+    }
 
-	inline static void Write(uint8_t* pStart, uint8_t value)
-	{
-		*(pStart) = value;
-	}
+    const static size_t SIZE = 1;
+    const static uint8_t Max;
+    const static uint8_t Min;
 
-	const static size_t SIZE = 1;
-	const static uint8_t Max;
-	const static uint8_t Min;
-
-	typedef uint8_t Type;
+    typedef uint8_t Type;
 };
 
-}
+} // namespace openpal
 
 #endif

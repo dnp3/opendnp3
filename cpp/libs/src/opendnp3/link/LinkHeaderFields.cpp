@@ -22,24 +22,14 @@
 
 namespace opendnp3
 {
-LinkHeaderFields::LinkHeaderFields() :
-	func(LinkFunction::INVALID),
-	isFromMaster(false),
-	fcb(false),
-	fcvdfc(false),
-	dest(0),
-	src(0)
-{}
-
-LinkHeaderFields::LinkHeaderFields(LinkFunction func_, bool isMaster_, bool fcb_, bool fcvdfc_, uint16_t dest_, uint16_t src_) :
-	func(func_),
-	isFromMaster(isMaster_),
-	fcb(fcb_),
-	fcvdfc(fcvdfc_),
-	dest(dest_),
-	src(src_)
-{}
+LinkHeaderFields::LinkHeaderFields()
+    : func(LinkFunction::INVALID), isFromMaster(false), fcb(false), fcvdfc(false), dest(0), src(0)
+{
 }
 
-
-
+LinkHeaderFields::LinkHeaderFields(
+    LinkFunction func_, bool isMaster_, bool fcb_, bool fcvdfc_, uint16_t dest_, uint16_t src_)
+    : func(func_), isFromMaster(isMaster_), fcb(fcb_), fcvdfc(fcvdfc_), dest(dest_), src(src_)
+{
+}
+} // namespace opendnp3

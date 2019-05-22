@@ -28,36 +28,29 @@ namespace opendnp3
 
 struct Addresses
 {
-	Addresses() = default;
+    Addresses() = default;
 
-	Addresses(
-	    uint16_t source,
-	    uint16_t destination
-	) :
-		source(source),
-		destination(destination)
-	{}
+    Addresses(uint16_t source, uint16_t destination) : source(source), destination(destination) {}
 
-	Addresses Reverse() const
-	{
-		return Addresses(this->destination, this->source);
-	}
+    Addresses Reverse() const
+    {
+        return Addresses(this->destination, this->source);
+    }
 
-	inline bool operator==(const Addresses& other) const
-	{
-		return (this->source == other.source) && (this->destination == other.destination);
-	}
+    inline bool operator==(const Addresses& other) const
+    {
+        return (this->source == other.source) && (this->destination == other.destination);
+    }
 
-	inline bool operator!=(const Addresses& other) const
-	{
-		return !((*this) == other);
-	}
+    inline bool operator!=(const Addresses& other) const
+    {
+        return !((*this) == other);
+    }
 
-	uint16_t source = 0;
-	uint16_t destination = 0;
+    uint16_t source = 0;
+    uint16_t destination = 0;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

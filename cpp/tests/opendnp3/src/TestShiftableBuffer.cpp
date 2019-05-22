@@ -18,17 +18,16 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
+#include <openpal/container/Buffer.h>
 
 #include <opendnp3/link/ShiftableBuffer.h>
 
-#include <openpal/container/Buffer.h>
+#include <catch.hpp>
 
 #include <cstring>
 
 using namespace opendnp3;
 using namespace openpal;
-
 
 #define SUITE(name) "ShiftableBufferSuite - " name
 
@@ -36,126 +35,127 @@ const static uint8_t SYNC[] = {0x05, 0x64};
 
 TEST_CASE(SUITE("ConstructDestruct"))
 {
-	Buffer buffer(100);
-	ShiftableBuffer b(buffer(), buffer.Size());
+    Buffer buffer(100);
+    ShiftableBuffer b(buffer(), buffer.Size());
 }
 
 TEST_CASE(SUITE("InitialState"))
 {
-	Buffer buffer(100);
-	ShiftableBuffer b(buffer(), buffer.Size());
+    Buffer buffer(100);
+    ShiftableBuffer b(buffer(), buffer.Size());
 
-	REQUIRE(b.NumBytesRead() == 0);
-	REQUIRE(b.NumWriteBytes() ==  100);
-	REQUIRE(b.ReadBuffer() ==  b.WriteBuff());
+    REQUIRE(b.NumBytesRead() == 0);
+    REQUIRE(b.NumWriteBytes() == 100);
+    REQUIRE(b.ReadBuffer() == b.WriteBuff());
 }
 
 TEST_CASE(SUITE("ReadingWriting"))
 {
-	Buffer buffer(100);
-	ShiftableBuffer b(buffer(), buffer.Size());
+    Buffer buffer(100);
+    ShiftableBuffer b(buffer(), buffer.Size());
 
-	b.AdvanceWrite(40);
-	REQUIRE(b.NumWriteBytes() ==  60);
-	REQUIRE(b.NumBytesRead() == 40);
+    b.AdvanceWrite(40);
+    REQUIRE(b.NumWriteBytes() == 60);
+    REQUIRE(b.NumBytesRead() == 40);
 
-	b.AdvanceWrite(60);
-	REQUIRE(b.NumWriteBytes() ==  0);
-	REQUIRE(b.NumBytesRead() == 100);
+    b.AdvanceWrite(60);
+    REQUIRE(b.NumWriteBytes() == 0);
+    REQUIRE(b.NumBytesRead() == 100);
 
-	b.AdvanceRead(30);
-	REQUIRE(b.NumWriteBytes() ==  0);
-	REQUIRE(b.NumBytesRead() == 70);
+    b.AdvanceRead(30);
+    REQUIRE(b.NumWriteBytes() == 0);
+    REQUIRE(b.NumBytesRead() == 70);
 
-	b.AdvanceRead(70);
-	REQUIRE(b.NumWriteBytes() ==  0);
-	REQUIRE(b.NumBytesRead() == 0);
+    b.AdvanceRead(70);
+    REQUIRE(b.NumWriteBytes() == 0);
+    REQUIRE(b.NumBytesRead() == 0);
 }
 
 TEST_CASE(SUITE("Shifting"))
 {
-	Buffer buffer(100);
-	ShiftableBuffer b(buffer(), buffer.Size());
+    Buffer buffer(100);
+    ShiftableBuffer b(buffer(), buffer.Size());
 
-	//initialize buffer to all zeros
-	for(size_t i = 0; i < b.NumWriteBytes(); ++i) b.WriteBuff()[i] = 0;
-	b.WriteBuff()[97] = 1;
-	b.WriteBuff()[98] = 2;
-	b.WriteBuff()[99] = 3;
+    // initialize buffer to all zeros
+    for (size_t i = 0; i < b.NumWriteBytes(); ++i)
+        b.WriteBuff()[i] = 0;
+    b.WriteBuff()[97] = 1;
+    b.WriteBuff()[98] = 2;
+    b.WriteBuff()[99] = 3;
 
-	b.AdvanceWrite(100);
+    b.AdvanceWrite(100);
 
-	b.AdvanceRead(97);
-	b.Shift();
+    b.AdvanceRead(97);
+    b.Shift();
 }
 
 TEST_CASE(SUITE("SyncNoPattern"))
 {
-	Buffer buffer(100);
-	ShiftableBuffer b(buffer(), buffer.Size());
+    Buffer buffer(100);
+    ShiftableBuffer b(buffer(), buffer.Size());
 
-	for (size_t i = 0; i < b.NumWriteBytes(); ++i)
-	{
-		b.WriteBuff()[i] = 0;
-	}
+    for (size_t i = 0; i < b.NumWriteBytes(); ++i)
+    {
+        b.WriteBuff()[i] = 0;
+    }
 
-	b.AdvanceWrite(100);
+    b.AdvanceWrite(100);
 
-	uint32_t skipBytes = 0;
-	REQUIRE_FALSE(b.Sync(skipBytes));
-	REQUIRE(b.NumBytesRead() == 1); // 1 byte left since need 2 bytes to sync
-	REQUIRE(b.NumWriteBytes() ==  0);
+    uint32_t skipBytes = 0;
+    REQUIRE_FALSE(b.Sync(skipBytes));
+    REQUIRE(b.NumBytesRead() == 1); // 1 byte left since need 2 bytes to sync
+    REQUIRE(b.NumWriteBytes() == 0);
 }
 
 TEST_CASE(SUITE("SyncBeginning"))
 {
-	Buffer buffer(100);
-	ShiftableBuffer b(buffer(), buffer.Size());
+    Buffer buffer(100);
+    ShiftableBuffer b(buffer(), buffer.Size());
 
-	for(size_t i = 0; i < b.NumWriteBytes(); ++i) b.WriteBuff()[i] = 0;
+    for (size_t i = 0; i < b.NumWriteBytes(); ++i)
+        b.WriteBuff()[i] = 0;
 
-	memcpy(b.WriteBuff(), SYNC, 2);
-	b.AdvanceWrite(100);
+    memcpy(b.WriteBuff(), SYNC, 2);
+    b.AdvanceWrite(100);
 
-	uint32_t skipBytes = 0;
-	REQUIRE(b.Sync(skipBytes));
-	REQUIRE(b.NumBytesRead() == 100);
-	REQUIRE(b.NumWriteBytes() ==  0);
-
+    uint32_t skipBytes = 0;
+    REQUIRE(b.Sync(skipBytes));
+    REQUIRE(b.NumBytesRead() == 100);
+    REQUIRE(b.NumWriteBytes() == 0);
 }
 
 TEST_CASE(SUITE("SyncFullPattern"))
 {
-	Buffer buffer(100);
-	ShiftableBuffer b(buffer(), buffer.Size());
+    Buffer buffer(100);
+    ShiftableBuffer b(buffer(), buffer.Size());
 
-	//initialize buffer to all zeros
-	for(size_t i = 0; i < b.NumWriteBytes(); ++i) b.WriteBuff()[i] = 0;
-	uint8_t pattern[] = {0x05, 0x64};
-	memcpy(b.WriteBuff() + 50, pattern, 2); //copy the pattern into the buffer
-	b.AdvanceWrite(100);
+    // initialize buffer to all zeros
+    for (size_t i = 0; i < b.NumWriteBytes(); ++i)
+        b.WriteBuff()[i] = 0;
+    uint8_t pattern[] = {0x05, 0x64};
+    memcpy(b.WriteBuff() + 50, pattern, 2); // copy the pattern into the buffer
+    b.AdvanceWrite(100);
 
-	uint32_t skipBytes = 0;
-	REQUIRE(b.Sync(skipBytes));
-	REQUIRE(b.NumBytesRead() == 50);
-	REQUIRE(b.NumWriteBytes() ==  0);
+    uint32_t skipBytes = 0;
+    REQUIRE(b.Sync(skipBytes));
+    REQUIRE(b.NumBytesRead() == 50);
+    REQUIRE(b.NumWriteBytes() == 0);
 }
 
 TEST_CASE(SUITE("SyncPartialPattern"))
 {
-	Buffer buffer(100);
-	ShiftableBuffer b(buffer(), buffer.Size());
+    Buffer buffer(100);
+    ShiftableBuffer b(buffer(), buffer.Size());
 
-	//initialize buffer to all zeros
-	for(size_t i = 0; i < b.NumWriteBytes(); ++i) b.WriteBuff()[i] = 0;
+    // initialize buffer to all zeros
+    for (size_t i = 0; i < b.NumWriteBytes(); ++i)
+        b.WriteBuff()[i] = 0;
 
-	b.WriteBuff()[97] = 0x05;
-	b.AdvanceWrite(98);
+    b.WriteBuff()[97] = 0x05;
+    b.AdvanceWrite(98);
 
-	uint32_t skipBytes = 0;
-	REQUIRE_FALSE(b.Sync(skipBytes));
-	REQUIRE(b.NumBytesRead() == 1);
-	REQUIRE(b.NumWriteBytes() ==  2);
+    uint32_t skipBytes = 0;
+    REQUIRE_FALSE(b.Sync(skipBytes));
+    REQUIRE(b.NumBytesRead() == 1);
+    REQUIRE(b.NumWriteBytes() == 2);
 }
-
-

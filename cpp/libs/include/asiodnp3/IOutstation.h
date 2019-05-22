@@ -21,42 +21,40 @@
 #ifndef ASIODNP3_IOUTSTATION_H
 #define ASIODNP3_IOUTSTATION_H
 
+#include <openpal/logging/LogFilters.h>
+
 #include "asiodnp3/IStack.h"
 #include "asiodnp3/Updates.h"
-
-#include <openpal/logging/LogFilters.h>
 
 namespace asiodnp3
 {
 
 /**
-* Interface representing a running outstation.
-*/
+ * Interface representing a running outstation.
+ */
 class IOutstation : public IStack
 {
 
 public:
+    ~IOutstation() override = default;
 
-	~IOutstation() override = default;
+    /**
+     *  @param filters Adjust the filters to this value
+     */
+    virtual void SetLogFilters(const openpal::LogFilters& filters) = 0;
 
-	/**
-	*  @param filters Adjust the filters to this value
-	*/
-	virtual void SetLogFilters(const openpal::LogFilters& filters) = 0;
+    /**
+     * Sets the restart IIN bit. Normally applications should not
+     * touch this bit, but it is provided for simulating restarts.
+     */
+    virtual void SetRestartIIN() = 0;
 
-	/**
-	* Sets the restart IIN bit. Normally applications should not
-	* touch this bit, but it is provided for simulating restarts.
-	*/
-	virtual void SetRestartIIN() = 0;
-
-	/**
-	* Apply a set of measurement updates to the outstation
-	*/
-	virtual void Apply(const Updates& updates) = 0;
-
+    /**
+     * Apply a set of measurement updates to the outstation
+     */
+    virtual void Apply(const Updates& updates) = 0;
 };
 
-}
+} // namespace asiodnp3
 
 #endif

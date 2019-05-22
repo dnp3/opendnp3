@@ -21,11 +21,11 @@
 #ifndef OPENDNP3_LINK_HEX_H
 #define OPENDNP3_LINK_HEX_H
 
-#include "opendnp3/gen/FunctionCode.h"
-#include "opendnp3/gen/LinkFunction.h"
-
 #include <openpal/container/RSlice.h>
 #include <openpal/util/Uncopyable.h>
+
+#include "opendnp3/gen/FunctionCode.h"
+#include "opendnp3/gen/LinkFunction.h"
 
 #include <string>
 
@@ -36,28 +36,27 @@ class LinkHex : private openpal::StaticOnly
 {
 
 public:
+    ////////////////////////////////////////////////
+    //	Functions for formatting outgoing Sec to Pri frames
+    ////////////////////////////////////////////////
 
-	////////////////////////////////////////////////
-	//	Functions for formatting outgoing Sec to Pri frames
-	////////////////////////////////////////////////
+    static std::string Ack(bool master, bool isRxBuffFull, uint16_t dest, uint16_t src);
+    static std::string Nack(bool master, bool isRxBuffFull, uint16_t dest, uint16_t src);
+    static std::string LinkStatus(bool master, bool isRxBuffFull, uint16_t dest, uint16_t src);
+    static std::string NotSupported(bool master, bool isRxBuffFull, uint16_t dest, uint16_t src);
 
-	static std::string Ack(bool master, bool isRxBuffFull, uint16_t dest, uint16_t src);
-	static std::string Nack(bool master, bool isRxBuffFull, uint16_t dest, uint16_t src);
-	static std::string LinkStatus(bool master, bool isRxBuffFull, uint16_t dest, uint16_t src);
-	static std::string NotSupported(bool master, bool isRxBuffFull, uint16_t dest, uint16_t src);
+    ////////////////////////////////////////////////
+    //	Functions for formatting outgoing Pri to Sec frames
+    ////////////////////////////////////////////////
 
-	////////////////////////////////////////////////
-	//	Functions for formatting outgoing Pri to Sec frames
-	////////////////////////////////////////////////
-
-	static std::string TestLinkStatus(bool master, bool fcb, uint16_t dest, uint16_t src);
-	static std::string ResetLinkStates(bool master, uint16_t dest, uint16_t src);
-	static std::string RequestLinkStatus(bool master, uint16_t dest, uint16_t src);
-	static std::string ConfirmedUserData(bool master, bool fcb, uint16_t dest, uint16_t src, const std::string& userDataHex);
-	static std::string UnconfirmedUserData(bool master, uint16_t dest, uint16_t src, const std::string& userDataHex);
+    static std::string TestLinkStatus(bool master, bool fcb, uint16_t dest, uint16_t src);
+    static std::string ResetLinkStates(bool master, uint16_t dest, uint16_t src);
+    static std::string RequestLinkStatus(bool master, uint16_t dest, uint16_t src);
+    static std::string ConfirmedUserData(
+        bool master, bool fcb, uint16_t dest, uint16_t src, const std::string& userDataHex);
+    static std::string UnconfirmedUserData(bool master, uint16_t dest, uint16_t src, const std::string& userDataHex);
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

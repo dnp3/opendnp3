@@ -21,9 +21,9 @@
 #ifndef ASIOPAL_LOGGING_CONNECTION_CONDITION_H
 #define ASIOPAL_LOGGING_CONNECTION_CONDITION_H
 
-#include <openpal/logging/Logger.h>
-#include <openpal/logging/LogMacros.h>
 #include <openpal/logging/LogLevels.h>
+#include <openpal/logging/LogMacros.h>
+#include <openpal/logging/Logger.h>
 
 namespace asiopal
 {
@@ -32,26 +32,22 @@ class LoggingConnectionCondition
 {
 
 public:
+    LoggingConnectionCondition(openpal::Logger logger) : logger(logger) {}
 
-	LoggingConnectionCondition(openpal::Logger logger) : logger(logger)
-	{}
+    template<typename Iterator> Iterator operator()(const std::error_code& ec, Iterator next)
+    {
+        if (ec)
+        {
+            FORMAT_LOG_BLOCK(logger, openpal::logflags::WARN, "connection error: %s", ec.message().c_str());
+        }
 
-	template <typename Iterator>
-	Iterator operator()(const std::error_code& ec, Iterator next)
-	{
-		if (ec)
-		{
-			FORMAT_LOG_BLOCK(logger, openpal::logflags::WARN, "connection error: %s", ec.message().c_str());
-		}
-
-		return next;
-	}
+        return next;
+    }
 
 private:
-
-	openpal::Logger logger;
+    openpal::Logger logger;
 };
 
-}
+} // namespace asiopal
 
 #endif

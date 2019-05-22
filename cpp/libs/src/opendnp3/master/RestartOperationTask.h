@@ -21,12 +21,11 @@
 #ifndef OPENDNP3_RESTART_OPERATION_TASK_H
 #define OPENDNP3_RESTART_OPERATION_TASK_H
 
+#include "opendnp3/app/parsing/IAPDUHandler.h"
+#include "opendnp3/gen/RestartType.h"
 #include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/RestartOperationResult.h"
 #include "opendnp3/master/TaskPriority.h"
-#include "opendnp3/app/parsing/IAPDUHandler.h"
-
-#include "opendnp3/gen/RestartType.h"
 
 namespace opendnp3
 {
@@ -35,50 +34,53 @@ class RestartOperationTask final : public IMasterTask, private IAPDUHandler
 {
 
 public:
+    RestartOperationTask(const std::shared_ptr<TaskContext>& context,
+                         IMasterApplication& app,
+                         const openpal::MonotonicTimestamp& startTimeout,
+                         RestartType operationType,
+                         const RestartOperationCallbackT& callback,
+                         openpal::Logger logger,
+                         const TaskConfig& config);
 
-	RestartOperationTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, const openpal::MonotonicTimestamp& startTimeout, RestartType operationType, const RestartOperationCallbackT& callback, openpal::Logger logger, const TaskConfig& config);
+    bool BuildRequest(APDURequest& request, uint8_t seq) override;
 
-	bool BuildRequest(APDURequest& request, uint8_t seq) override;
+    int Priority() const override
+    {
+        return priority::USER_REQUEST;
+    }
 
-	int Priority() const override
-	{
-		return priority::USER_REQUEST;
-	}
+    bool BlocksLowerPriority() const override
+    {
+        return false;
+    }
 
-	bool BlocksLowerPriority() const override
-	{
-		return false;
-	}
+    bool IsRecurring() const override
+    {
+        return false;
+    }
 
-	bool IsRecurring() const override
-	{
-		return false;
-	}
+    char const* Name() const override;
 
-	char const* Name() const override;
-
-	bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override;
+    bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override;
 
 private:
+    MasterTaskType GetTaskType() const override;
 
-	MasterTaskType GetTaskType() const override;
+    IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var1>& values) override;
+    IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& values) override;
 
-	IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var1>& values) override;
-	IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& values) override;
+    static FunctionCode ToFunctionCode(RestartType op);
 
-	static FunctionCode ToFunctionCode(RestartType op);
+    const FunctionCode function;
+    RestartOperationCallbackT callback;
+    openpal::TimeDuration duration = openpal::TimeDuration::Min();
 
-	const FunctionCode function;
-	RestartOperationCallbackT callback;
-	openpal::TimeDuration duration = openpal::TimeDuration::Min();
+    IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header,
+                                                const openpal::RSlice& objects) override;
 
-
-	IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects) override;
-
-	void OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override;
+    void OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override;
 };
 
-} //end ns
-
+} // namespace opendnp3
 
 #endif

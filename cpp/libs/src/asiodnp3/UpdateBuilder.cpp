@@ -28,85 +28,75 @@ namespace asiodnp3
 
 Updates UpdateBuilder::Build()
 {
-	return Updates(std::move(this->updates));
+    return Updates(std::move(this->updates));
 }
 
 UpdateBuilder& UpdateBuilder::Update(const opendnp3::Binary& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	return this->AddMeas(meas, index, mode);
+    return this->AddMeas(meas, index, mode);
 }
 
 UpdateBuilder& UpdateBuilder::Update(const opendnp3::DoubleBitBinary& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	return this->AddMeas(meas, index, mode);
+    return this->AddMeas(meas, index, mode);
 }
 
 UpdateBuilder& UpdateBuilder::Update(const opendnp3::Analog& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	return this->AddMeas(meas, index, mode);
+    return this->AddMeas(meas, index, mode);
 }
 
 UpdateBuilder& UpdateBuilder::Update(const opendnp3::Counter& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	return this->AddMeas(meas, index, mode);
+    return this->AddMeas(meas, index, mode);
 }
 
 UpdateBuilder& UpdateBuilder::Update(const opendnp3::FrozenCounter& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	return this->AddMeas(meas, index, mode);
+    return this->AddMeas(meas, index, mode);
 }
 
 UpdateBuilder& UpdateBuilder::Update(const opendnp3::BinaryOutputStatus& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	return this->AddMeas(meas, index, mode);
+    return this->AddMeas(meas, index, mode);
 }
 
 UpdateBuilder& UpdateBuilder::Update(const opendnp3::AnalogOutputStatus& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	return this->AddMeas(meas, index, mode);
+    return this->AddMeas(meas, index, mode);
 }
 
 UpdateBuilder& UpdateBuilder::Update(const opendnp3::OctetString& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	return this->AddMeas(meas, index, mode);
+    return this->AddMeas(meas, index, mode);
 }
 
 UpdateBuilder& UpdateBuilder::Update(const opendnp3::TimeAndInterval& meas, uint16_t index)
 {
-	this->Add([ = ](IUpdateHandler & handler)
-	{
-		handler.Update(meas, index);
-	});
-	return *this;
+    this->Add([=](IUpdateHandler& handler) { handler.Update(meas, index); });
+    return *this;
 }
 
 UpdateBuilder& UpdateBuilder::Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t flags)
 {
-	this->Add([ = ](IUpdateHandler & handler)
-	{
-		handler.Modify(type, start, stop, flags);
-	});
-	return *this;
+    this->Add([=](IUpdateHandler& handler) { handler.Modify(type, start, stop, flags); });
+    return *this;
 }
 
-template <class T>
-UpdateBuilder& UpdateBuilder::AddMeas(const T& meas, uint16_t index, opendnp3::EventMode mode)
+template<class T> UpdateBuilder& UpdateBuilder::AddMeas(const T& meas, uint16_t index, opendnp3::EventMode mode)
 {
-	this->Add([ = ](IUpdateHandler & handler)
-	{
-		handler.Update(meas, index, mode);
-	});
-	return *this;
+    this->Add([=](IUpdateHandler& handler) { handler.Update(meas, index, mode); });
+    return *this;
 }
 
 void UpdateBuilder::Add(const update_func_t& fun)
 {
-	if (!this->updates)
-	{
-		this->updates = std::make_shared<shared_updates_t>();
-	}
+    if (!this->updates)
+    {
+        this->updates = std::make_shared<shared_updates_t>();
+    }
 
-	updates->push_back(fun);
+    updates->push_back(fun);
 }
 
-}
+} // namespace asiodnp3

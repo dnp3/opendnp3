@@ -21,57 +21,47 @@
 #ifndef OPENDNP3_APDUHEADER_H
 #define OPENDNP3_APDUHEADER_H
 
-#include "opendnp3/gen/FunctionCode.h"
 #include "opendnp3/app/AppControlField.h"
 #include "opendnp3/app/IINField.h"
+#include "opendnp3/gen/FunctionCode.h"
 
 namespace opendnp3
 {
 
 struct APDUHeader
 {
-	static const uint32_t REQUEST_SIZE = 2;
-	static const uint32_t RESPONSE_SIZE = 4;
+    static const uint32_t REQUEST_SIZE = 2;
+    static const uint32_t RESPONSE_SIZE = 4;
 
-	static APDUHeader SolicitedConfirm(uint8_t seq);
-	static APDUHeader UnsolicitedConfirm(uint8_t seq);
-	static APDUHeader Confirm(uint8_t seq, bool unsolicited);
+    static APDUHeader SolicitedConfirm(uint8_t seq);
+    static APDUHeader UnsolicitedConfirm(uint8_t seq);
+    static APDUHeader Confirm(uint8_t seq, bool unsolicited);
 
-	APDUHeader() = default;
+    APDUHeader() = default;
 
-	APDUHeader(
-	    const AppControlField& control,
-	    FunctionCode function
-	) :
-		control(control),
-		function(function)
-	{}
+    APDUHeader(const AppControlField& control, FunctionCode function) : control(control), function(function) {}
 
-	bool Equals(const APDUHeader& header) const
-	{
-		return (header.function == function) && (header.control.ToByte() == control.ToByte());
-	}
+    bool Equals(const APDUHeader& header) const
+    {
+        return (header.function == function) && (header.control.ToByte() == control.ToByte());
+    }
 
-	AppControlField control;
-	FunctionCode function = FunctionCode::UNKNOWN;
+    AppControlField control;
+    FunctionCode function = FunctionCode::UNKNOWN;
 };
 
 struct APDUResponseHeader : public APDUHeader
 {
-	APDUResponseHeader() = default;
+    APDUResponseHeader() = default;
 
-	APDUResponseHeader(
-	    const AppControlField& control,
-	    FunctionCode function,
-	    const IINField& IIN
-	) :
-		APDUHeader(control, function),
-		IIN(IIN)
-	{}
+    APDUResponseHeader(const AppControlField& control, FunctionCode function, const IINField& IIN)
+        : APDUHeader(control, function), IIN(IIN)
+    {
+    }
 
-	IINField IIN;
+    IINField IIN;
 };
 
-}
+} // namespace opendnp3
 
 #endif

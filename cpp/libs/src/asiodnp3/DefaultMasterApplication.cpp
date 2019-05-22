@@ -29,8 +29,10 @@ namespace asiodnp3
 
 openpal::UTCTimestamp DefaultMasterApplication::Now()
 {
-	auto time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-	return openpal::UTCTimestamp(time);
+    auto time
+        = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch())
+              .count();
+    return openpal::UTCTimestamp(time);
 }
 
-}
+} // namespace asiodnp3

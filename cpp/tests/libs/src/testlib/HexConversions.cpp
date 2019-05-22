@@ -22,8 +22,8 @@
 
 #include "BufferHelpers.h"
 
-#include <openpal/util/ToHex.h>
 #include <openpal/container/Buffer.h>
+#include <openpal/util/ToHex.h>
 
 #include <sstream>
 
@@ -35,65 +35,65 @@ namespace testlib
 
 std::string ToHex(const uint8_t* apBuff, size_t aLength, bool spaced)
 {
-	std::ostringstream oss;
-	size_t last = aLength - 1;
-	for (size_t i = 0; i < aLength; i++)
-	{
-		char c = apBuff[i];
-		oss << openpal::ToHexChar((c & 0xf0) >> 4) << openpal::ToHexChar(c & 0xf);
-		if (spaced && i != last)oss << " ";
-	}
-	return oss.str();
+    std::ostringstream oss;
+    size_t last = aLength - 1;
+    for (size_t i = 0; i < aLength; i++)
+    {
+        char c = apBuff[i];
+        oss << openpal::ToHexChar((c & 0xf0) >> 4) << openpal::ToHexChar(c & 0xf);
+        if (spaced && i != last)
+            oss << " ";
+    }
+    return oss.str();
 }
 
 std::string ToHex(const RSlice& buffer, bool spaced)
 {
-	return ToHex(buffer, buffer.Size(), spaced);
+    return ToHex(buffer, buffer.Size(), spaced);
 }
 
 std::string ByteToHex(uint8_t b)
 {
-	std::ostringstream oss;
-	oss << openpal::ToHexChar((b & 0xf0) >> 4) << openpal::ToHexChar(b & 0xf);
-	return oss.str();
+    std::ostringstream oss;
+    oss << openpal::ToHexChar((b & 0xf0) >> 4) << openpal::ToHexChar(b & 0xf);
+    return oss.str();
 }
 
 std::string AppendHex(std::initializer_list<std::string> segments)
 {
-	ostringstream oss;
-	for (auto& str : segments)
-	{
-		oss << str;
-	}
-	HexSequence output(oss.str());
-	return ToHex(output.ToRSlice());
+    ostringstream oss;
+    for (auto& str : segments)
+    {
+        oss << str;
+    }
+    HexSequence output(oss.str());
+    return ToHex(output.ToRSlice());
 }
 
 std::string SkipBytesHex(const std::string& input, uint32_t bytes)
 {
-	HexSequence buffer(input);
-	return ToHex(buffer.ToRSlice().Skip(bytes));
+    HexSequence buffer(input);
+    return ToHex(buffer.ToRSlice().Skip(bytes));
 }
 
 std::string RepeatHex(uint8_t byte, uint16_t count, bool spaced)
 {
-	Buffer buffer(count);
-	buffer.GetWSlice().SetAllTo(byte);
-	return ToHex(buffer.ToRSlice(), spaced);
+    Buffer buffer(count);
+    buffer.GetWSlice().SetAllTo(byte);
+    return ToHex(buffer.ToRSlice(), spaced);
 }
 
 std::string IncrementHex(uint8_t start, uint16_t count, bool spaced)
 {
-	Buffer buffer(count);
+    Buffer buffer(count);
 
-	for (uint16_t i = 0; i < count; ++i)
-	{
-		buffer[i] = start;
-		++start;
-	}
+    for (uint16_t i = 0; i < count; ++i)
+    {
+        buffer[i] = start;
+        ++start;
+    }
 
-	return ToHex(buffer.ToRSlice(), spaced);
+    return ToHex(buffer.ToRSlice(), spaced);
 }
 
-}
-
+} // namespace testlib

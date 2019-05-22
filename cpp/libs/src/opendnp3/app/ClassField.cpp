@@ -25,124 +25,111 @@ namespace opendnp3
 
 ClassField ClassField::None()
 {
-	return ClassField();
+    return ClassField();
 }
 
 ClassField ClassField::AllClasses()
 {
-	return ClassField(ALL_CLASSES);
+    return ClassField(ALL_CLASSES);
 }
 
 ClassField ClassField::AllEventClasses()
 {
-	return ClassField(EVENT_CLASSES);
+    return ClassField(EVENT_CLASSES);
 }
 
-ClassField::ClassField() : bitfield(0)
-{}
+ClassField::ClassField() : bitfield(0) {}
 
-ClassField::ClassField(PointClass pc) : bitfield(static_cast<uint8_t>(pc))
-{}
+ClassField::ClassField(PointClass pc) : bitfield(static_cast<uint8_t>(pc)) {}
 
-ClassField::ClassField(EventClass ec) :
-	ClassField(
-	    false,
-	    ec == EventClass::EC1,
-	    ec == EventClass::EC2,
-	    ec == EventClass::EC3
-	)
+ClassField::ClassField(EventClass ec)
+    : ClassField(false, ec == EventClass::EC1, ec == EventClass::EC2, ec == EventClass::EC3)
 {
-
 }
 
 ClassField::ClassField(bool class0, bool class1, bool class2, bool class3) : bitfield(0)
 {
-	bitfield = class0 ? ClassField::CLASS_0 : 0;
-	bitfield |= class1 ? ClassField::CLASS_1 : 0;
-	bitfield |= class2 ? ClassField::CLASS_2 : 0;
-	bitfield |= class3 ? ClassField::CLASS_3 : 0;
+    bitfield = class0 ? ClassField::CLASS_0 : 0;
+    bitfield |= class1 ? ClassField::CLASS_1 : 0;
+    bitfield |= class2 ? ClassField::CLASS_2 : 0;
+    bitfield |= class3 ? ClassField::CLASS_3 : 0;
 }
 
-ClassField::ClassField(uint8_t mask_) : bitfield(mask_ & ALL_CLASSES)
-{}
+ClassField::ClassField(uint8_t mask_) : bitfield(mask_ & ALL_CLASSES) {}
 
 bool ClassField::IsEmpty() const
 {
-	return (bitfield == 0);
+    return (bitfield == 0);
 }
 
 bool ClassField::Intersects(const ClassField& other) const
 {
-	return (bitfield & other.bitfield) > 0;
+    return (bitfield & other.bitfield) > 0;
 }
 
 ClassField ClassField::OnlyEventClasses() const
 {
-	return ClassField(bitfield & EVENT_CLASSES);
+    return ClassField(bitfield & EVENT_CLASSES);
 }
 
 void ClassField::Set(PointClass pc)
 {
-	bitfield |= static_cast<uint8_t>(pc);
+    bitfield |= static_cast<uint8_t>(pc);
 }
 
 void ClassField::Clear(const ClassField& field)
 {
-	bitfield &= ~(field.bitfield);
+    bitfield &= ~(field.bitfield);
 }
 
 void ClassField::Set(const ClassField& field)
 {
-	bitfield |= field.bitfield;
+    bitfield |= field.bitfield;
 }
 
 bool ClassField::HasEventType(EventClass ec) const
 {
-	switch (ec)
-	{
-	case(EventClass::EC1) :
-		return HasClass1();
-	case(EventClass::EC2) :
-		return HasClass2();
-	case(EventClass::EC3) :
-		return HasClass3();
-	default:
-		return false;
-	}
+    switch (ec)
+    {
+    case (EventClass::EC1):
+        return HasClass1();
+    case (EventClass::EC2):
+        return HasClass2();
+    case (EventClass::EC3):
+        return HasClass3();
+    default:
+        return false;
+    }
 }
 
 bool ClassField::HasClass0() const
 {
-	return (bitfield & CLASS_0) != 0;
+    return (bitfield & CLASS_0) != 0;
 }
 
 bool ClassField::HasClass1() const
 {
-	return (bitfield & CLASS_1) != 0;
+    return (bitfield & CLASS_1) != 0;
 }
 
 bool ClassField::HasClass2() const
 {
-	return (bitfield & CLASS_2) != 0;
+    return (bitfield & CLASS_2) != 0;
 }
 
 bool ClassField::HasClass3() const
 {
-	return (bitfield & CLASS_3) != 0;
+    return (bitfield & CLASS_3) != 0;
 }
 
 bool ClassField::HasEventClass() const
 {
-	return (bitfield & EVENT_CLASSES) != 0;
+    return (bitfield & EVENT_CLASSES) != 0;
 }
 
 bool ClassField::HasAnyClass() const
 {
-	return bitfield != 0;
+    return bitfield != 0;
 }
 
-}
-
-
-
-
+} // namespace opendnp3

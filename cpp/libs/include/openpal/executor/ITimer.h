@@ -32,11 +32,11 @@ namespace openpal
 class ITimer
 {
 public:
-	virtual ~ITimer() {}
-	virtual void Cancel() = 0;
-	virtual MonotonicTimestamp ExpiresAt() = 0;
+    virtual ~ITimer() {}
+    virtual void Cancel() = 0;
+    virtual MonotonicTimestamp ExpiresAt() = 0;
 };
 
-}
+} // namespace openpal
 
 #endif

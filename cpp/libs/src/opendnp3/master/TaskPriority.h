@@ -25,33 +25,33 @@ namespace opendnp3
 {
 namespace priority
 {
-const int USER_STATUS_CHANGE = 20;
+    const int USER_STATUS_CHANGE = 20;
 
-const int UPDATE_KEY_CHANGE = 40;
+    const int UPDATE_KEY_CHANGE = 40;
 
-const int SESSION_KEY = 50;
+    const int SESSION_KEY = 50;
 
-const int COMMAND = 100;
+    const int COMMAND = 100;
 
-const int USER_REQUEST = 110;
+    const int USER_REQUEST = 110;
 
-const int CLEAR_RESTART = 120;
+    const int CLEAR_RESTART = 120;
 
-const int DISABLE_UNSOLICITED = 130;
+    const int DISABLE_UNSOLICITED = 130;
 
-const int ASSIGN_CLASS = 140;
+    const int ASSIGN_CLASS = 140;
 
-const int INTEGRITY_POLL = 150;
+    const int INTEGRITY_POLL = 150;
 
-const int TIME_SYNC = 160;
+    const int TIME_SYNC = 160;
 
-const int ENABLE_UNSOLICITED = 170;
+    const int ENABLE_UNSOLICITED = 170;
 
-const int EVENT_SCAN = 180;
+    const int EVENT_SCAN = 180;
 
-const int USER_POLL = 190;
-}
+    const int USER_POLL = 190;
+} // namespace priority
 
-}
+} // namespace opendnp3
 
 #endif

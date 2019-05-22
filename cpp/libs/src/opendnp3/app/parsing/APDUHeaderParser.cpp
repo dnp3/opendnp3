@@ -20,9 +20,9 @@
  */
 #include "APDUHeaderParser.h"
 
-#include <openpal/util/Uncopyable.h>
 #include <openpal/container/RSlice.h>
 #include <openpal/logging/LogMacros.h>
+#include <openpal/util/Uncopyable.h>
 
 #include "opendnp3/LogLevels.h"
 #include "opendnp3/app/APDUHeader.h"
@@ -30,47 +30,35 @@
 namespace opendnp3
 {
 
-APDUHeaderParser::Result<APDUHeader> APDUHeaderParser::ParseRequest(const openpal::RSlice& apdu, openpal::Logger* logger)
+APDUHeaderParser::Result<APDUHeader> APDUHeaderParser::ParseRequest(const openpal::RSlice& apdu,
+                                                                    openpal::Logger* logger)
 {
-	if (apdu.Size() < APDUHeader::REQUEST_SIZE)
-	{
-		FORMAT_LOGGER_BLOCK(logger, flags::WARN, "Request fragment  with insufficient size of %u bytes", apdu.Size());
-		return Result<APDUHeader>::Error();
-	}
-	else
-	{
-		return Result<APDUHeader>::Ok(
-		           APDUHeader(
-		               AppControlField(apdu[0]),
-		               FunctionCodeFromType(apdu[1])
-		           ),
-		           apdu.Skip(APDUHeader::REQUEST_SIZE)
-		       );
-	}
+    if (apdu.Size() < APDUHeader::REQUEST_SIZE)
+    {
+        FORMAT_LOGGER_BLOCK(logger, flags::WARN, "Request fragment  with insufficient size of %u bytes", apdu.Size());
+        return Result<APDUHeader>::Error();
+    }
+    else
+    {
+        return Result<APDUHeader>::Ok(APDUHeader(AppControlField(apdu[0]), FunctionCodeFromType(apdu[1])),
+                                      apdu.Skip(APDUHeader::REQUEST_SIZE));
+    }
 }
 
-APDUHeaderParser::Result<APDUResponseHeader> APDUHeaderParser::ParseResponse(const openpal::RSlice& apdu, openpal::Logger* logger)
+APDUHeaderParser::Result<APDUResponseHeader> APDUHeaderParser::ParseResponse(const openpal::RSlice& apdu,
+                                                                             openpal::Logger* logger)
 {
-	if (apdu.Size() < APDUHeader::RESPONSE_SIZE)
-	{
-		FORMAT_LOGGER_BLOCK(logger, flags::WARN, "Response fragment  with insufficient size of %u bytes", apdu.Size());
-		return Result<APDUResponseHeader>::Error();
-	}
-	else
-	{
-		return Result<APDUResponseHeader>::Ok(
-		           APDUResponseHeader(
-		               AppControlField(apdu[0]),
-		               FunctionCodeFromType(apdu[1]),
-		               IINField(
-		                   apdu[2],
-		                   apdu[3]
-		               )
-		           ),
-		           apdu.Skip(APDUHeader::RESPONSE_SIZE)
-		       );
-	}
+    if (apdu.Size() < APDUHeader::RESPONSE_SIZE)
+    {
+        FORMAT_LOGGER_BLOCK(logger, flags::WARN, "Response fragment  with insufficient size of %u bytes", apdu.Size());
+        return Result<APDUResponseHeader>::Error();
+    }
+    else
+    {
+        return Result<APDUResponseHeader>::Ok(
+            APDUResponseHeader(AppControlField(apdu[0]), FunctionCodeFromType(apdu[1]), IINField(apdu[2], apdu[3])),
+            apdu.Skip(APDUHeader::RESPONSE_SIZE));
+    }
 }
 
-}
-
+} // namespace opendnp3

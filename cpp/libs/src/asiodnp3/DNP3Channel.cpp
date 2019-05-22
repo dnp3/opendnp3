@@ -20,13 +20,13 @@
  */
 #include "DNP3Channel.h"
 
-#include "opendnp3/LogLevels.h"
-#include "opendnp3/master/MasterSchedulerBackend.h"
+#include "MasterStack.h"
+#include "OutstationStack.h"
 
 #include "openpal/logging/LogMacros.h"
 
-#include "MasterStack.h"
-#include "OutstationStack.h"
+#include "opendnp3/LogLevels.h"
+#include "opendnp3/master/MasterSchedulerBackend.h"
 
 using namespace openpal;
 using namespace asiopal;
@@ -35,122 +35,110 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-DNP3Channel::DNP3Channel(
-    const Logger& logger,
-    const std::shared_ptr<asiopal::Executor>& executor,
-    const std::shared_ptr<IOHandler>& iohandler,
-    const std::shared_ptr<asiopal::IResourceManager>& manager) :
+DNP3Channel::DNP3Channel(const Logger& logger,
+                         const std::shared_ptr<asiopal::Executor>& executor,
+                         const std::shared_ptr<IOHandler>& iohandler,
+                         const std::shared_ptr<asiopal::IResourceManager>& manager)
+    :
 
-	logger(logger),
-	executor(executor),
-	scheduler(std::make_shared<MasterSchedulerBackend>(executor)),
-	iohandler(iohandler),
-	manager(manager),
-	resources(ResourceManager::Create())
+      logger(logger),
+      executor(executor),
+      scheduler(std::make_shared<MasterSchedulerBackend>(executor)),
+      iohandler(iohandler),
+      manager(manager),
+      resources(ResourceManager::Create())
 {
-
 }
 
 DNP3Channel::~DNP3Channel()
 {
-	this->ShutdownImpl();
+    this->ShutdownImpl();
 }
 
 // comes from the outside, so we need to post
 void DNP3Channel::Shutdown()
 {
-	auto shutdown = [self = shared_from_this()]()
-	{
-		self->ShutdownImpl();
-	};
+    auto shutdown = [self = shared_from_this()]() { self->ShutdownImpl(); };
 
-	this->executor->BlockUntilAndFlush(shutdown);
+    this->executor->BlockUntilAndFlush(shutdown);
 }
 
 void DNP3Channel::ShutdownImpl()
 {
-	if (!this->resources) return;
+    if (!this->resources)
+        return;
 
-	// shutdown the IO handler
-	this->iohandler->Shutdown();
-	this->iohandler.reset();
+    // shutdown the IO handler
+    this->iohandler->Shutdown();
+    this->iohandler.reset();
 
-	this->scheduler->Shutdown();
-	this->scheduler.reset();
+    this->scheduler->Shutdown();
+    this->scheduler.reset();
 
-	// shutdown any remaining stacks
-	this->resources->Shutdown();
-	this->resources.reset();
+    // shutdown any remaining stacks
+    this->resources->Shutdown();
+    this->resources.reset();
 
-	// posting ensures that we run this after
-	// and callbacks created by calls above
-	auto detach = [self = shared_from_this()]
-	{
-		self->manager->Detach(self);
-		self->manager.reset();
-	};
+    // posting ensures that we run this after
+    // and callbacks created by calls above
+    auto detach = [self = shared_from_this()] {
+        self->manager->Detach(self);
+        self->manager.reset();
+    };
 
-	this->executor->strand.post(detach);
+    this->executor->strand.post(detach);
 }
 
 LinkStatistics DNP3Channel::GetStatistics()
 {
-	auto get = [this]()
-	{
-		return this->iohandler->Statistics();
-	};
-	return this->executor->ReturnFrom<LinkStatistics>(get);
+    auto get = [this]() { return this->iohandler->Statistics(); };
+    return this->executor->ReturnFrom<LinkStatistics>(get);
 }
 
 LogFilters DNP3Channel::GetLogFilters() const
 {
-	auto get = [this]()
-	{
-		return this->logger.GetFilters();
-	};
-	return this->executor->ReturnFrom<LogFilters>(get);
+    auto get = [this]() { return this->logger.GetFilters(); };
+    return this->executor->ReturnFrom<LogFilters>(get);
 }
 
 void DNP3Channel::SetLogFilters(const LogFilters& filters)
 {
-	auto set = [self = this->shared_from_this(), filters]()
-	{
-		self->logger.SetFilters(filters);
-	};
-	this->executor->strand.post(set);
+    auto set = [self = this->shared_from_this(), filters]() { self->logger.SetFilters(filters); };
+    this->executor->strand.post(set);
 }
 
-std::shared_ptr<IMaster> DNP3Channel::AddMaster(const std::string& id, std::shared_ptr<ISOEHandler> SOEHandler, std::shared_ptr<IMasterApplication> application, const MasterStackConfig& config)
+std::shared_ptr<IMaster> DNP3Channel::AddMaster(const std::string& id,
+                                                std::shared_ptr<ISOEHandler> SOEHandler,
+                                                std::shared_ptr<IMasterApplication> application,
+                                                const MasterStackConfig& config)
 {
-	auto stack = MasterStack::Create(this->logger.Detach(id), this->executor, SOEHandler, application, this->scheduler, this->iohandler, this->resources, config);
+    auto stack = MasterStack::Create(this->logger.Detach(id), this->executor, SOEHandler, application, this->scheduler,
+                                     this->iohandler, this->resources, config);
 
-	return this->AddStack(config.link, stack);
-
+    return this->AddStack(config.link, stack);
 }
 
-std::shared_ptr<IOutstation> DNP3Channel::AddOutstation(const std::string& id, std::shared_ptr<ICommandHandler> commandHandler, std::shared_ptr<IOutstationApplication> application, const OutstationStackConfig& config)
+std::shared_ptr<IOutstation> DNP3Channel::AddOutstation(const std::string& id,
+                                                        std::shared_ptr<ICommandHandler> commandHandler,
+                                                        std::shared_ptr<IOutstationApplication> application,
+                                                        const OutstationStackConfig& config)
 {
-	auto stack = OutstationStack::Create(this->logger.Detach(id), this->executor, commandHandler, application, this->iohandler, this->resources, config);
+    auto stack = OutstationStack::Create(this->logger.Detach(id), this->executor, commandHandler, application,
+                                         this->iohandler, this->resources, config);
 
-	return this->AddStack(config.link, stack);
+    return this->AddStack(config.link, stack);
 }
 
-template <class T>
-std::shared_ptr<T> DNP3Channel::AddStack(const LinkConfig& link, const std::shared_ptr<T>& stack)
+template<class T> std::shared_ptr<T> DNP3Channel::AddStack(const LinkConfig& link, const std::shared_ptr<T>& stack)
 {
 
-	auto create = [stack, route = Route(link.RemoteAddr, link.LocalAddr), self = this->shared_from_this()]()
-	{
+    auto create = [stack, route = Route(link.RemoteAddr, link.LocalAddr), self = this->shared_from_this()]() {
+        auto add = [stack, route, self]() -> bool { return self->iohandler->AddContext(stack, route); };
 
-		auto add = [stack, route, self]() -> bool
-		{
-			return self->iohandler->AddContext(stack, route);
-		};
+        return self->executor->ReturnFrom<bool>(add) ? stack : nullptr;
+    };
 
-		return self->executor->ReturnFrom<bool>(add) ? stack : nullptr;
-	};
-
-	return this->resources->Bind<T>(create);
+    return this->resources->Bind<T>(create);
 }
 
-}
+} // namespace asiodnp3

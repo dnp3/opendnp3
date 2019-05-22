@@ -21,9 +21,9 @@
 #ifndef OPENPAL_SINGLE_FLOAT_H
 #define OPENPAL_SINGLE_FLOAT_H
 
-#include "openpal/util/Uncopyable.h"
 #include "openpal/container/RSlice.h"
 #include "openpal/container/WSlice.h"
+#include "openpal/util/Uncopyable.h"
 
 #include <cstddef>
 
@@ -33,22 +33,21 @@ namespace openpal
 class SingleFloat : private StaticOnly
 {
 public:
+    static_assert(sizeof(float) == 4, "Unexpected size of single float");
 
-	static_assert(sizeof(float) == 4, "Unexpected size of single float");
+    typedef float Type;
 
-	typedef float Type;
+    static float ReadBuffer(RSlice& buffer);
+    static void WriteBuffer(WSlice& buffer, float value);
 
-	static float ReadBuffer(RSlice& buffer);
-	static void WriteBuffer(WSlice& buffer, float value);
+    static float Read(const uint8_t* data);
+    static void Write(uint8_t* data, float value);
 
-	static float Read(const uint8_t* data);
-	static void Write(uint8_t* data, float value);
-
-	const static std::size_t SIZE = sizeof(float);
-	const static float Max;
-	const static float Min;
+    const static std::size_t SIZE = sizeof(float);
+    const static float Max;
+    const static float Min;
 };
 
-}
+} // namespace openpal
 
 #endif

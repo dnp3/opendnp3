@@ -22,59 +22,55 @@
 #ifndef ASIODNP3_ERRORCODES_H
 #define ASIODNP3_ERRORCODES_H
 
-#include <system_error>
 #include <string>
-
+#include <system_error>
 
 namespace asiodnp3
 {
 
 enum class Error : int
 {
-	SHUTTING_DOWN,
-	NO_TLS_SUPPORT,
-	NO_SERIAL_SUPPORT
+    SHUTTING_DOWN,
+    NO_TLS_SUPPORT,
+    NO_SERIAL_SUPPORT
 };
 
 class ErrorCategory final : public std::error_category
 {
 public:
+    static const std::error_category& Instance()
+    {
+        return instance;
+    }
 
-	static const std::error_category& Instance()
-	{
-		return instance;
-	}
+    virtual const char* name() const noexcept
+    {
+        return "dnp3";
+    }
 
-	virtual const char* name() const noexcept
-	{
-		return "dnp3";
-	}
-
-	virtual std::string message(int ev) const;
+    virtual std::string message(int ev) const;
 
 private:
+    ErrorCategory() {}
+    ErrorCategory(const ErrorCategory&) = delete;
 
-	ErrorCategory() {}
-	ErrorCategory(const ErrorCategory&) = delete;
-
-	static ErrorCategory instance;
+    static ErrorCategory instance;
 };
 
 inline std::error_code make_error_code(Error err)
 {
-	return std::error_code(static_cast<int>(err), ErrorCategory::Instance());
+    return std::error_code(static_cast<int>(err), ErrorCategory::Instance());
 }
 
-}
-
+} // namespace asiodnp3
 
 namespace std
 {
 
-template <>
-struct is_error_code_enum<asiodnp3::Error> : public true_type {};
+template<> struct is_error_code_enum<asiodnp3::Error> : public true_type
+{
+};
 
-}
-
+} // namespace std
 
 #endif

@@ -27,26 +27,22 @@ namespace opendnp3
 {
 
 /**
-	Includes additional parameters that should not be externally configurable
+    Includes additional parameters that should not be externally configurable
 */
 struct LinkLayerConfig : public LinkConfig
 {
-	LinkLayerConfig(
-	    const LinkConfig& config,
-	    bool respondToAnySource
-	) :
-		LinkConfig(config),
-		respondToAnySource(respondToAnySource)
-	{}
+    LinkLayerConfig(const LinkConfig& config, bool respondToAnySource)
+        : LinkConfig(config), respondToAnySource(respondToAnySource)
+    {
+    }
 
-	/**
-	* If true, the the link-layer will respond to any source address
-	* user data frames will be passed up to transport reassembly for these frames
-	*/
-	bool respondToAnySource;
+    /**
+     * If true, the the link-layer will respond to any source address
+     * user data frames will be passed up to transport reassembly for these frames
+     */
+    bool respondToAnySource;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

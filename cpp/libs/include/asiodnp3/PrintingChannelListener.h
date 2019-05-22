@@ -21,9 +21,9 @@
 #ifndef ASIODNP3_PRINTINGCHANNELLISTENER_H
 #define ASIODNP3_PRINTINGCHANNELLISTENER_H
 
-#include "asiodnp3/IChannelListener.h"
-
 #include "openpal/util/Uncopyable.h"
+
+#include "asiodnp3/IChannelListener.h"
 
 #include <iostream>
 #include <memory>
@@ -32,26 +32,24 @@ namespace asiodnp3
 {
 
 /**
-* Callback interface for receiving information about a running channel
-*/
+ * Callback interface for receiving information about a running channel
+ */
 class PrintingChannelListener final : public IChannelListener, private openpal::Uncopyable
 {
 public:
+    virtual void OnStateChange(opendnp3::ChannelState state) override
+    {
+        std::cout << "channel state change: " << opendnp3::ChannelStateToString(state) << std::endl;
+    }
 
-	virtual void OnStateChange(opendnp3::ChannelState state) override
-	{
-		std::cout << "channel state change: " << opendnp3::ChannelStateToString(state) << std::endl;
-	}
+    static std::shared_ptr<IChannelListener> Create()
+    {
+        return std::make_shared<PrintingChannelListener>();
+    }
 
-	static std::shared_ptr<IChannelListener> Create()
-	{
-		return std::make_shared<PrintingChannelListener>();
-	}
-
-	PrintingChannelListener() {}
-
+    PrintingChannelListener() {}
 };
 
-}
+} // namespace asiodnp3
 
 #endif

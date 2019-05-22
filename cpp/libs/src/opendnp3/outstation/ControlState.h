@@ -21,13 +21,11 @@
 #ifndef OPENDNP3_CONTROLSTATE_H
 #define OPENDNP3_CONTROLSTATE_H
 
-
 #include <openpal/executor/MonotonicTimestamp.h>
 
+#include "opendnp3/app/AppSeqNum.h"
 #include "opendnp3/gen/CommandStatus.h"
 #include "opendnp3/link/CRC.h"
-#include "opendnp3/app/AppSeqNum.h"
-
 
 namespace opendnp3
 {
@@ -39,62 +37,60 @@ class ControlState
 {
 
 public:
+    ControlState() : digest(0), length(0) {}
 
-	ControlState() : digest(0), length(0)
-	{}
+    CommandStatus ValidateSelection(const AppSeqNum& seq,
+                                    const openpal::MonotonicTimestamp& now,
+                                    const openpal::TimeDuration& timeout,
+                                    const openpal::RSlice& objects) const
+    {
+        if (expectedSeq.Equals(seq))
+        {
+            if (selectTime.milliseconds <= now.milliseconds)
+            {
+                auto elapsed = now.milliseconds - selectTime.milliseconds;
+                if (elapsed < timeout)
+                {
+                    if (length == objects.Size() && digest == CRC::CalcCrc(objects))
+                    {
+                        return CommandStatus::SUCCESS;
+                    }
+                    else
+                    {
+                        return CommandStatus::NO_SELECT;
+                    }
+                }
+                else
+                {
+                    return CommandStatus::TIMEOUT;
+                }
+            }
+            else
+            {
+                return CommandStatus::TIMEOUT;
+            }
+        }
+        else
+        {
+            return CommandStatus::NO_SELECT;
+        }
+    }
 
-	CommandStatus ValidateSelection(const AppSeqNum& seq, const openpal::MonotonicTimestamp& now, const openpal::TimeDuration& timeout, const openpal::RSlice& objects) const
-	{
-		if (expectedSeq.Equals(seq))
-		{
-			if (selectTime.milliseconds <= now.milliseconds)
-			{
-				auto elapsed = now.milliseconds - selectTime.milliseconds;
-				if (elapsed < timeout)
-				{
-					if (length == objects.Size() && digest == CRC::CalcCrc(objects))
-					{
-						return CommandStatus::SUCCESS;
-					}
-					else
-					{
-						return CommandStatus::NO_SELECT;
-					}
-				}
-				else
-				{
-					return CommandStatus::TIMEOUT;
-				}
-			}
-			else
-			{
-				return CommandStatus::TIMEOUT;
-			}
-		}
-		else
-		{
-			return CommandStatus::NO_SELECT;
-		}
-	}
-
-	void Select(const AppSeqNum& currentSeqN, const openpal::MonotonicTimestamp& now, const openpal::RSlice& objects)
-	{
-		selectTime = now;
-		expectedSeq = currentSeqN.Next();
-		digest = CRC::CalcCrc(objects);
-		length = objects.Size();
-	}
+    void Select(const AppSeqNum& currentSeqN, const openpal::MonotonicTimestamp& now, const openpal::RSlice& objects)
+    {
+        selectTime = now;
+        expectedSeq = currentSeqN.Next();
+        digest = CRC::CalcCrc(objects);
+        length = objects.Size();
+    }
 
 private:
-
-	AppSeqNum expectedSeq;
-	openpal::MonotonicTimestamp selectTime;
-	uint16_t digest;
-	uint32_t length;
-
+    AppSeqNum expectedSeq;
+    openpal::MonotonicTimestamp selectTime;
+    uint16_t digest;
+    uint32_t length;
 };
 
-
-}
+} // namespace opendnp3
 
 #endif

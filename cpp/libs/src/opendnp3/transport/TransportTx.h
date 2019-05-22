@@ -21,15 +21,15 @@
 #ifndef OPENDNP3_TRANSPORTTX_H
 #define OPENDNP3_TRANSPORTTX_H
 
-#include <openpal/logging/Logger.h>
 #include <openpal/container/Settable.h>
 #include <openpal/container/StaticBuffer.h>
+#include <openpal/logging/Logger.h>
 
 #include "opendnp3/StackStatistics.h"
+#include "opendnp3/app/Message.h"
 #include "opendnp3/link/ITransportSegment.h"
 #include "opendnp3/transport/TransportConstants.h"
 #include "opendnp3/transport/TransportSeqNum.h"
-#include "opendnp3/app/Message.h"
 
 namespace opendnp3
 {
@@ -41,45 +41,42 @@ class TransportTx final : public ITransportSegment
 {
 
 public:
+    TransportTx(const openpal::Logger& logger);
 
-	TransportTx(const openpal::Logger& logger);
+    void Configure(const Message& message);
 
-	void Configure(const Message& message);
+    // -------  IBufferSegment ------------
 
-	// -------  IBufferSegment ------------
+    virtual const Addresses& GetAddresses() const override
+    {
+        return this->message.addresses;
+    }
 
-	virtual const Addresses& GetAddresses() const override
-	{
-		return this->message.addresses;
-	}
+    virtual bool HasValue() const override;
 
-	virtual bool HasValue() const override;
+    virtual openpal::RSlice GetSegment() override;
 
-	virtual openpal::RSlice GetSegment() override;
+    virtual bool Advance() override;
 
-	virtual bool Advance() override;
-
-	const StackStatistics::Transport::Tx& Statistics() const
-	{
-		return statistics;
-	}
+    const StackStatistics::Transport::Tx& Statistics() const
+    {
+        return statistics;
+    }
 
 private:
+    Message message;
 
-	Message message;
+    openpal::Settable<openpal::RSlice> txSegment;
 
-	openpal::Settable<openpal::RSlice> txSegment;
+    // Static buffer where we store tpdus that are being transmitted
+    openpal::StaticBuffer<MAX_TPDU_LENGTH> tpduBuffer;
 
-	// Static buffer where we store tpdus that are being transmitted
-	openpal::StaticBuffer<MAX_TPDU_LENGTH> tpduBuffer;
-
-	openpal::Logger logger;
-	StackStatistics::Transport::Tx statistics;
-	TransportSeqNum sequence;
-	uint32_t tpduCount = 0;
+    openpal::Logger logger;
+    StackStatistics::Transport::Tx statistics;
+    TransportSeqNum sequence;
+    uint32_t tpduCount = 0;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

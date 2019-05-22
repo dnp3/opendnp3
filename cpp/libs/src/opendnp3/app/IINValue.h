@@ -27,15 +27,12 @@ namespace opendnp3
 class IINValue
 {
 public:
+    IINValue() : value(false) {}
 
-	IINValue() : value(false)
-	{}
+    IINValue(bool value_) : value(value_) {}
 
-	IINValue(bool value_) : value(value_)
-	{}
-
-	bool value;
+    bool value;
 };
-}
+} // namespace opendnp3
 
 #endif

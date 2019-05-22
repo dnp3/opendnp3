@@ -29,58 +29,51 @@ namespace opendnp3
 {
 
 /**
-* Selected ranges for each static datatype
-*/
+ * Selected ranges for each static datatype
+ */
 class SelectedRanges : private openpal::Uncopyable
 {
 
 public:
+    template<class Spec> Range Get()
+    {
+        return GetRangeRef<Spec>();
+    }
 
-	template <class Spec>
-	Range Get()
-	{
-		return GetRangeRef<Spec>();
-	}
+    template<class Spec> void Set(const Range& range)
+    {
+        GetRangeRef<Spec>() = range;
+    }
 
-	template <class Spec>
-	void Set(const Range& range)
-	{
-		GetRangeRef<Spec>() = range;
-	}
+    template<class Spec> void Merge(const Range& range)
+    {
+        auto& ref = GetRangeRef<Spec>();
+        ref = ref.Union(range);
+    }
 
-	template <class Spec>
-	void Merge(const Range& range)
-	{
-		auto& ref = GetRangeRef<Spec>();
-		ref = ref.Union(range);
-	}
+    template<class Spec> void Clear()
+    {
+        Set<Spec>(Range::Invalid());
+    }
 
-	template <class Spec>
-	void Clear()
-	{
-		Set<Spec>(Range::Invalid());
-	}
-
-	bool HasAnySelection() const;
+    bool HasAnySelection() const;
 
 private:
+    // specializations in cpp file
+    template<class Spec> Range& GetRangeRef();
 
-	// specializations in cpp file
-	template <class Spec>
-	Range& GetRangeRef();
-
-	Range binaries;
-	Range doubleBinaries;
-	Range analogs;
-	Range counters;
-	Range frozenCounters;
-	Range binaryOutputStatii;
-	Range analogOutputStatii;
-	Range octetString;
-	Range timeAndIntervals;
-	Range securityStats;
+    Range binaries;
+    Range doubleBinaries;
+    Range analogs;
+    Range counters;
+    Range frozenCounters;
+    Range binaryOutputStatii;
+    Range analogOutputStatii;
+    Range octetString;
+    Range timeAndIntervals;
+    Range securityStats;
 };
 
-}
+} // namespace opendnp3
 
 #endif

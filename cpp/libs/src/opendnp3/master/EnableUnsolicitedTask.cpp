@@ -19,39 +19,42 @@
  * to you under the terms of the License.
  */
 #include "EnableUnsolicitedTask.h"
+
 #include "MasterTasks.h"
 
-#include "opendnp3/app/APDUBuilders.h"
-
 #include <openpal/executor/IExecutor.h>
+
+#include "opendnp3/app/APDUBuilders.h"
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-EnableUnsolicitedTask::EnableUnsolicitedTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, const TaskBehavior& behavior, ClassField enabledClasses, openpal::Logger logger) :
-	IMasterTask(context, app, behavior, logger, TaskConfig::Default()),
-	enabledClasses(enabledClasses)
+EnableUnsolicitedTask::EnableUnsolicitedTask(const std::shared_ptr<TaskContext>& context,
+                                             IMasterApplication& app,
+                                             const TaskBehavior& behavior,
+                                             ClassField enabledClasses,
+                                             openpal::Logger logger)
+    : IMasterTask(context, app, behavior, logger, TaskConfig::Default()), enabledClasses(enabledClasses)
 {
-
 }
 
 bool EnableUnsolicitedTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
-	build::EnableUnsolicited(request, enabledClasses.OnlyEventClasses(), seq);
-	return true;
+    build::EnableUnsolicited(request, enabledClasses.OnlyEventClasses(), seq);
+    return true;
 }
 
 bool EnableUnsolicitedTask::IsEnabled() const
 {
-	return enabledClasses.HasEventClass();
+    return enabledClasses.HasEventClass();
 }
 
-IMasterTask::ResponseResult EnableUnsolicitedTask::ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects)
+IMasterTask::ResponseResult EnableUnsolicitedTask::ProcessResponse(const opendnp3::APDUResponseHeader& header,
+                                                                   const openpal::RSlice& objects)
 {
-	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
+    return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
 }
 
-} //end ns
-
+} // namespace opendnp3

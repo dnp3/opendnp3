@@ -24,103 +24,103 @@
 #include <opendnp3/master/ISOEHandler.h>
 
 #include <iostream>
-#include <sstream>
 #include <memory>
+#include <sstream>
 
 namespace asiodnp3
 {
 
 /**
-*	ISOEHandler singleton that prints to the console.
-*/
+ *	ISOEHandler singleton that prints to the console.
+ */
 class PrintingSOEHandler final : public opendnp3::ISOEHandler
 {
 
 public:
+    PrintingSOEHandler() {}
 
-	PrintingSOEHandler()
-	{}
+    static std::shared_ptr<ISOEHandler> Create()
+    {
+        return std::make_shared<PrintingSOEHandler>();
+    }
 
-	static std::shared_ptr<ISOEHandler> Create()
-	{
-		return std::make_shared<PrintingSOEHandler>();
-	}
-
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Binary>>& values) override;
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::DoubleBitBinary>>& values) override;
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Analog>>& values) override;
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Counter>>& values) override;
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::FrozenCounter>>& values) override;
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryOutputStatus>>& values) override;
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogOutputStatus>>& values) override;
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::OctetString>>& values) override;
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::TimeAndInterval>>& values) override;
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryCommandEvent>>& values) override;
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogCommandEvent>>& values) override;
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::SecurityStat>>& values) override;
-	virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::DNPTime>& values) override;
-
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Binary>>& values) override;
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::Indexed<opendnp3::DoubleBitBinary>>& values) override;
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Analog>>& values) override;
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Counter>>& values) override;
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::Indexed<opendnp3::FrozenCounter>>& values) override;
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryOutputStatus>>& values) override;
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogOutputStatus>>& values) override;
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::Indexed<opendnp3::OctetString>>& values) override;
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::Indexed<opendnp3::TimeAndInterval>>& values) override;
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryCommandEvent>>& values) override;
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogCommandEvent>>& values) override;
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::Indexed<opendnp3::SecurityStat>>& values) override;
+    virtual void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::DNPTime>& values) override;
 
 protected:
-
-	void Start() final {}
-	void End() final {}
+    void Start() final {}
+    void End() final {}
 
 private:
+    template<class T>
+    static void PrintAll(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<T>>& values)
+    {
+        auto print = [&](const opendnp3::Indexed<T>& pair) { Print<T>(info, pair.value, pair.index); };
+        values.ForeachItem(print);
+    }
 
-	template <class T>
-	static void PrintAll(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<T>>& values)
-	{
-		auto print = [&](const opendnp3::Indexed<T>& pair)
-		{
-			Print<T>(info, pair.value, pair.index);
-		};
-		values.ForeachItem(print);
-	}
+    template<class T> static void Print(const opendnp3::HeaderInfo& info, const T& value, uint16_t index)
+    {
+        std::cout << "[" << index << "] : " << ValueToString(value) << " : " << static_cast<int>(value.flags.value)
+                  << " : " << value.time << std::endl;
+    }
 
-	template <class T>
-	static void Print(const opendnp3::HeaderInfo& info, const T& value, uint16_t index)
-	{
-		std::cout << "[" << index << "] : " <<
-		          ValueToString(value) << " : " <<
-		          static_cast<int>(value.flags.value) << " : " <<
-		          value.time << std::endl;
-	}
+    template<class T> static std::string ValueToString(const T& meas)
+    {
+        std::ostringstream oss;
+        oss << meas.value;
+        return oss.str();
+    }
 
-	template <class T>
-	static std::string ValueToString(const T& meas)
-	{
-		std::ostringstream oss;
-		oss << meas.value;
-		return oss.str();
-	}
+    static std::string GetTimeString(opendnp3::TimestampMode tsmode)
+    {
+        std::ostringstream oss;
+        switch (tsmode)
+        {
+        case (opendnp3::TimestampMode::SYNCHRONIZED):
+            return "synchronized";
+            break;
+        case (opendnp3::TimestampMode::UNSYNCHRONIZED):
+            oss << "unsynchronized";
+            break;
+        default:
+            oss << "no timestamp";
+            break;
+        }
 
-	static std::string GetTimeString(opendnp3::TimestampMode tsmode)
-	{
-		std::ostringstream oss;
-		switch (tsmode)
-		{
-		case(opendnp3::TimestampMode::SYNCHRONIZED) :
-			return "synchronized";
-			break;
-		case(opendnp3::TimestampMode::UNSYNCHRONIZED) :
-			oss << "unsynchronized";
-			break;
-		default:
-			oss << "no timestamp";
-			break;
-		}
+        return oss.str();
+    }
 
-		return oss.str();
-	}
-
-	static std::string ValueToString(const opendnp3::DoubleBitBinary& meas)
-	{
-		return opendnp3::DoubleBitToString(meas.value);
-	}
-
+    static std::string ValueToString(const opendnp3::DoubleBitBinary& meas)
+    {
+        return opendnp3::DoubleBitToString(meas.value);
+    }
 };
 
-}
+} // namespace asiodnp3
 
 #endif

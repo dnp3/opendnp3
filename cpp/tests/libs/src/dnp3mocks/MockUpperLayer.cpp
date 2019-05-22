@@ -20,10 +20,10 @@
  */
 #include "MockUpperLayer.h"
 
-#include <testlib/BufferHelpers.h>
-
-#include <openpal/util/ToHex.h>
 #include <openpal/logging/LogMacros.h>
+#include <openpal/util/ToHex.h>
+
+#include <testlib/BufferHelpers.h>
 
 #include <memory>
 
@@ -33,46 +33,43 @@ using namespace testlib;
 namespace opendnp3
 {
 
-MockUpperLayer::MockUpperLayer() : isOnline(false)
-{
-
-}
+MockUpperLayer::MockUpperLayer() : isOnline(false) {}
 
 bool MockUpperLayer::OnReceive(const Message& message)
 {
-	this->received.Write(message.payload);
-	return true;
+    this->received.Write(message.payload);
+    return true;
 }
 
 bool MockUpperLayer::OnTxReady()
 {
-	++counters.numTxReady;
-	return true;
+    ++counters.numTxReady;
+    return true;
 }
 
 bool MockUpperLayer::OnLowerLayerUp()
 {
-	isOnline = true;
-	++counters.numLayerUp;
-	return true;
+    isOnline = true;
+    ++counters.numLayerUp;
+    return true;
 }
 
 bool MockUpperLayer::OnLowerLayerDown()
 {
-	isOnline = false;
-	++counters.numLayerDown;
-	return true;
+    isOnline = false;
+    ++counters.numLayerDown;
+    return true;
 }
 
 bool MockUpperLayer::SendDown(const openpal::RSlice& data, const Addresses& addresses)
 {
-	return this->pLowerLayer ? pLowerLayer->BeginTransmit(Message(addresses, data)) : false;
+    return this->pLowerLayer ? pLowerLayer->BeginTransmit(Message(addresses, data)) : false;
 }
 
 bool MockUpperLayer::SendDown(const std::string& hex, const Addresses& addresses)
 {
-	HexSequence hs(hex);
-	return this->SendDown(hs.ToRSlice(), addresses);
+    HexSequence hs(hex);
+    return this->SendDown(hs.ToRSlice(), addresses);
 }
 
-}
+} // namespace opendnp3

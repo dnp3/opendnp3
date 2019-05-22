@@ -22,7 +22,6 @@
 #define OPENDNP3_MEASUREMENTTYPES_H
 
 #include "opendnp3/app/BaseMeasurementTypes.h"
-
 #include "opendnp3/gen/DoubleBit.h"
 #include "opendnp3/gen/IntervalUnits.h"
 
@@ -30,25 +29,24 @@ namespace opendnp3
 {
 
 /**
-	The Binary data type is for describing on-off (boolean) type values. Good examples of
-	binaries are alarms, mode settings, enabled/disabled flags etc. Think of it as a status
-	LED on a piece of equipment.
+    The Binary data type is for describing on-off (boolean) type values. Good examples of
+    binaries are alarms, mode settings, enabled/disabled flags etc. Think of it as a status
+    LED on a piece of equipment.
 */
 class Binary : public TypedMeasurement<bool>
 {
 public:
+    Binary();
 
-	Binary();
+    Binary(bool value);
 
-	Binary(bool value);
+    Binary(Flags flags);
 
-	Binary(Flags flags);
+    Binary(Flags flags, DNPTime time);
 
-	Binary(Flags flags, DNPTime time);
+    Binary(bool value, Flags flags);
 
-	Binary(bool value, Flags flags);
-
-	Binary(bool value, Flags flags, DNPTime time);
+    Binary(bool value, Flags flags, DNPTime time);
 };
 
 /**
@@ -58,143 +56,132 @@ or binary valves are good examples.
 class DoubleBitBinary : public TypedMeasurement<DoubleBit>
 {
 public:
+    DoubleBitBinary();
 
+    DoubleBitBinary(DoubleBit value);
 
-	DoubleBitBinary();
+    DoubleBitBinary(Flags flags);
 
-	DoubleBitBinary(DoubleBit value);
+    DoubleBitBinary(Flags flags, DNPTime time);
 
-	DoubleBitBinary(Flags flags);
+    DoubleBitBinary(DoubleBit value, Flags flags);
 
-	DoubleBitBinary(Flags flags, DNPTime time);
-
-	DoubleBitBinary(DoubleBit value, Flags flags);
-
-	DoubleBitBinary(DoubleBit value, Flags flags, DNPTime time);
+    DoubleBitBinary(DoubleBit value, Flags flags, DNPTime time);
 
 private:
+    static const uint8_t ValueMask = 0xC0;
+    static const uint8_t QualityMask = 0x3F;
 
-	static const uint8_t ValueMask = 0xC0;
-	static const uint8_t QualityMask = 0x3F;
+    static DoubleBit GetValue(Flags flags);
 
-	static DoubleBit GetValue(Flags flags);
-
-	static Flags GetFlags(Flags flags, DoubleBit state);
+    static Flags GetFlags(Flags flags, DoubleBit state);
 };
 
-
 /**
-	BinaryOutputStatus is used for describing the current state of a control. It is very infrequently
-	used and many masters don't provide any mechanisms for reading these values so their use is
-	strongly discouraged, a Binary should be used instead.
+    BinaryOutputStatus is used for describing the current state of a control. It is very infrequently
+    used and many masters don't provide any mechanisms for reading these values so their use is
+    strongly discouraged, a Binary should be used instead.
 */
 class BinaryOutputStatus : public TypedMeasurement<bool>
 {
 public:
+    BinaryOutputStatus();
 
-	BinaryOutputStatus();
+    BinaryOutputStatus(bool value);
 
-	BinaryOutputStatus(bool value);
+    BinaryOutputStatus(Flags flags);
 
-	BinaryOutputStatus(Flags flags);
+    BinaryOutputStatus(Flags flags, DNPTime time);
 
-	BinaryOutputStatus(Flags flags, DNPTime time);
+    BinaryOutputStatus(bool value, Flags flags);
 
-	BinaryOutputStatus(bool value, Flags flags);
-
-	BinaryOutputStatus(bool value, Flags flags, DNPTime time);
-
+    BinaryOutputStatus(bool value, Flags flags, DNPTime time);
 };
 
 /**
-	Analogs are used for variable data points that usually reflect a real world value.
-	Good examples are current, voltage, sensor readouts, etc. Think of a speedometer guage.
+    Analogs are used for variable data points that usually reflect a real world value.
+    Good examples are current, voltage, sensor readouts, etc. Think of a speedometer guage.
 */
 
 class Analog : public TypedMeasurement<double>
 {
 public:
+    Analog();
 
-	Analog();
+    Analog(double value);
 
-	Analog(double value);
+    Analog(double value, Flags flags);
 
-	Analog(double value, Flags flags);
-
-	Analog(double value, Flags flags, DNPTime time);
+    Analog(double value, Flags flags, DNPTime time);
 };
 
 /**
-	Counters are used for describing generally increasing values (non-negative!). Good examples are
-	total power consumed, max voltage. Think odometer on a car.
+    Counters are used for describing generally increasing values (non-negative!). Good examples are
+    total power consumed, max voltage. Think odometer on a car.
 */
 class Counter : public TypedMeasurement<uint32_t>
 {
 public:
+    Counter();
 
-	Counter();
+    Counter(uint32_t value);
 
-	Counter(uint32_t value);
+    Counter(uint32_t value, Flags flags);
 
-	Counter(uint32_t value, Flags flags);
-
-	Counter(uint32_t value, Flags flags, DNPTime time);
+    Counter(uint32_t value, Flags flags, DNPTime time);
 };
 
 /**
-	Frozen counters are used to report the value of a counter point captured at the instant when the count is frozen.
+    Frozen counters are used to report the value of a counter point captured at the instant when the count is frozen.
 */
 class FrozenCounter : public TypedMeasurement<uint32_t>
 {
 public:
+    FrozenCounter();
 
-	FrozenCounter();
+    FrozenCounter(uint32_t value);
 
-	FrozenCounter(uint32_t value);
+    FrozenCounter(uint32_t value, Flags flags);
 
-	FrozenCounter(uint32_t value, Flags flags);
-
-	FrozenCounter(uint32_t value, Flags flags, DNPTime time);
+    FrozenCounter(uint32_t value, Flags flags, DNPTime time);
 };
 
 /**
-	Describes the last set value of the set-point. Like the BinaryOutputStatus data type it is not
-	well supported and its generally better practice to use an explicit analog.
+    Describes the last set value of the set-point. Like the BinaryOutputStatus data type it is not
+    well supported and its generally better practice to use an explicit analog.
 */
 class AnalogOutputStatus : public TypedMeasurement<double>
 {
 public:
+    AnalogOutputStatus();
 
-	AnalogOutputStatus();
+    AnalogOutputStatus(double value);
 
-	AnalogOutputStatus(double value);
+    AnalogOutputStatus(double value, Flags flags);
 
-	AnalogOutputStatus(double value, Flags flags);
-
-	AnalogOutputStatus(double value, Flags flags, DNPTime time);
+    AnalogOutputStatus(double value, Flags flags, DNPTime time);
 };
 
 /**
-	Maps to Group50Var4
-	This class is a bit of an outlier as an indexed type and is really only used in the DNP3 PV profile
+    Maps to Group50Var4
+    This class is a bit of an outlier as an indexed type and is really only used in the DNP3 PV profile
 */
 class TimeAndInterval
 {
 public:
+    TimeAndInterval();
 
-	TimeAndInterval();
+    TimeAndInterval(DNPTime time, uint32_t interval, uint8_t units);
 
-	TimeAndInterval(DNPTime time, uint32_t interval, uint8_t units);
+    TimeAndInterval(DNPTime time, uint32_t interval, IntervalUnits units);
 
-	TimeAndInterval(DNPTime time, uint32_t interval, IntervalUnits units);
+    IntervalUnits GetUnitsEnum() const;
 
-	IntervalUnits GetUnitsEnum() const;
-
-	DNPTime time;
-	uint32_t interval;
-	uint8_t units;
+    DNPTime time;
+    uint32_t interval;
+    uint8_t units;
 };
 
-}
+} // namespace opendnp3
 
 #endif

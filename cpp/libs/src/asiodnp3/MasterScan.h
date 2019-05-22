@@ -22,8 +22,9 @@
 #define ASIODNP3_MASTERSCAN_H
 
 #include "openpal/executor/IExecutor.h"
-#include "opendnp3/master/IMasterTask.h"
+
 #include "opendnp3/master/IMasterScheduler.h"
+#include "opendnp3/master/IMasterTask.h"
 
 #include "asiodnp3/IMasterScan.h"
 
@@ -33,31 +34,30 @@ namespace asiodnp3
 {
 
 /**
-* Provides access to a permanently bound scan
-*/
+ * Provides access to a permanently bound scan
+ */
 class MasterScan final : public IMasterScan
 {
 public:
+    MasterScan() = default;
 
-	MasterScan() = default;
+    MasterScan(const std::shared_ptr<opendnp3::IMasterTask>& task,
+               const std::shared_ptr<opendnp3::IMasterScheduler>& scheduler);
 
-	MasterScan(const std::shared_ptr<opendnp3::IMasterTask>& task, const std::shared_ptr<opendnp3::IMasterScheduler>& scheduler);
+    static std::shared_ptr<MasterScan> Create(const std::shared_ptr<opendnp3::IMasterTask>& task,
+                                              const std::shared_ptr<opendnp3::IMasterScheduler>& scheduler)
+    {
+        return std::make_shared<MasterScan>(task, scheduler);
+    }
 
-	static std::shared_ptr<MasterScan> Create(const std::shared_ptr<opendnp3::IMasterTask>& task, const std::shared_ptr<opendnp3::IMasterScheduler>& scheduler)
-	{
-		return std::make_shared<MasterScan>(task, scheduler);
-	}
-
-	// Request that the scan be performed as soon as possible
-	virtual void Demand() override;
+    // Request that the scan be performed as soon as possible
+    virtual void Demand() override;
 
 private:
-
-	const std::shared_ptr<opendnp3::IMasterTask> task;
-	const std::shared_ptr<opendnp3::IMasterScheduler> scheduler;
-
+    const std::shared_ptr<opendnp3::IMasterTask> task;
+    const std::shared_ptr<opendnp3::IMasterScheduler> scheduler;
 };
 
-}
+} // namespace asiodnp3
 
 #endif

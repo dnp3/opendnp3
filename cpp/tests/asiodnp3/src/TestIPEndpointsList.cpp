@@ -19,9 +19,9 @@
  * to you under the terms of the License.
  */
 
-#include <catch.hpp>
-
 #include <asiodnp3/IPEndpointsList.h>
+
+#include <catch.hpp>
 
 using namespace asiopal;
 using namespace asiodnp3;
@@ -35,7 +35,7 @@ TEST_CASE("TestIPEndpointsList")
     const uint16_t OTHER_PORT = 20001;
 
     // assert() has different behaviours on different platforms.
-	/*SECTION("throws if list is empty")
+    /*SECTION("throws if list is empty")
     {
         REQUIRE_THROWS(IPEndpointsList({}););
     }*/

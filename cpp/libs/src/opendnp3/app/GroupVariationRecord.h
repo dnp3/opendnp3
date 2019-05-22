@@ -21,74 +21,69 @@
 #ifndef OPENDNP3_GROUPVARIATIONRECORD_H
 #define OPENDNP3_GROUPVARIATIONRECORD_H
 
-#include <cstdint>
-
 #include <openpal/util/Uncopyable.h>
 
+#include "opendnp3/app/Range.h"
+#include "opendnp3/gen/GroupVariation.h"
 #include "opendnp3/gen/QualifierCode.h"
 #include "opendnp3/gen/TimestampMode.h"
-#include "opendnp3/gen/GroupVariation.h"
 
-#include "opendnp3/app/Range.h"
-
+#include <cstdint>
 
 namespace opendnp3
 {
 
 enum class GroupVariationType : int
 {
-	STATIC,
-	EVENT,
-	OTHER
+    STATIC,
+    EVENT,
+    OTHER
 };
 
 struct EnumAndType
 {
-	EnumAndType(GroupVariation enumeration_, GroupVariationType type_) :
-		enumeration(enumeration_), type(type_)
-	{}
+    EnumAndType(GroupVariation enumeration_, GroupVariationType type_) : enumeration(enumeration_), type(type_) {}
 
-	GroupVariation enumeration;
-	GroupVariationType type;
+    GroupVariation enumeration;
+    GroupVariationType type;
 };
 
 class GroupVariationRecord
 {
 
 public:
+    static EnumAndType GetEnumAndType(uint8_t group, uint8_t variation);
 
-	static EnumAndType GetEnumAndType(uint8_t group, uint8_t variation);
+    static uint16_t GetGroupVar(uint8_t group, uint8_t variation);
 
-	static uint16_t GetGroupVar(uint8_t group, uint8_t variation);
+    static GroupVariationRecord GetRecord(uint8_t group, uint8_t variation);
 
-	static GroupVariationRecord GetRecord(uint8_t group, uint8_t variation);
+    static GroupVariationType GetType(uint8_t group, uint8_t variation);
 
-	static GroupVariationType GetType(uint8_t group, uint8_t variation);
+    GroupVariationRecord(uint8_t group_, uint8_t variation_, GroupVariation enumeration_, GroupVariationType type_);
 
-	GroupVariationRecord(uint8_t group_, uint8_t variation_, GroupVariation enumeration_, GroupVariationType type_);
+    GroupVariationRecord()
+        : enumeration(GroupVariation::UNKNOWN), type(GroupVariationType::OTHER), group(0), variation(0)
+    {
+    }
 
-	GroupVariationRecord() : enumeration(GroupVariation::UNKNOWN), type(GroupVariationType::OTHER), group(0), variation(0)
-	{}
-
-	GroupVariation enumeration;
-	GroupVariationType type;
-	uint8_t group;
-	uint8_t variation;
+    GroupVariation enumeration;
+    GroupVariationType type;
+    uint8_t group;
+    uint8_t variation;
 };
 
 class HeaderRecord : public GroupVariationRecord
 {
 public:
+    HeaderRecord() : qualifier(0), headerIndex(0) {}
 
-	HeaderRecord() : qualifier(0), headerIndex(0)
-	{}
+    HeaderRecord(const GroupVariationRecord& gv, uint8_t qualifier, uint32_t headerIndex);
 
-	HeaderRecord(const GroupVariationRecord& gv, uint8_t qualifier, uint32_t headerIndex);
+    QualifierCode GetQualifierCode() const;
 
-	QualifierCode GetQualifierCode() const;
-
-	uint8_t qualifier;
-	uint32_t headerIndex;
+    uint8_t qualifier;
+    uint32_t headerIndex;
 };
 
 // ---- Specific header types  ---
@@ -96,52 +91,41 @@ public:
 class AllObjectsHeader : public HeaderRecord
 {
 public:
-
-	explicit AllObjectsHeader(const HeaderRecord& record) : HeaderRecord(record)
-	{}
-
+    explicit AllObjectsHeader(const HeaderRecord& record) : HeaderRecord(record) {}
 };
 
 class CountHeader : public HeaderRecord
 {
 public:
+    CountHeader(const HeaderRecord& record, uint16_t count_) : HeaderRecord(record), count(count_) {}
 
-	CountHeader(const HeaderRecord& record, uint16_t count_) : HeaderRecord(record), count(count_)
-	{}
-
-	uint16_t count;
+    uint16_t count;
 };
 
 class FreeFormatHeader : public HeaderRecord
 {
 public:
+    FreeFormatHeader(const HeaderRecord& record, uint16_t count_) : HeaderRecord(record), count(count_) {}
 
-	FreeFormatHeader(const HeaderRecord& record, uint16_t count_) : HeaderRecord(record), count(count_)
-	{}
-
-	uint16_t count;
+    uint16_t count;
 };
 
 class RangeHeader : public HeaderRecord
 {
 public:
+    RangeHeader(const HeaderRecord& record, const Range& range_) : HeaderRecord(record), range(range_) {}
 
-	RangeHeader(const HeaderRecord& record, const Range& range_) : HeaderRecord(record), range(range_)
-	{}
-
-	Range range;
+    Range range;
 };
 
 class PrefixHeader : public HeaderRecord
 {
 public:
+    PrefixHeader(const HeaderRecord& record, uint16_t count_) : HeaderRecord(record), count(count_) {}
 
-	PrefixHeader(const HeaderRecord& record, uint16_t count_) : HeaderRecord(record), count(count_)
-	{}
-
-	uint16_t count;
+    uint16_t count;
 };
 
-}
+} // namespace opendnp3
 
 #endif

@@ -21,24 +21,22 @@
 #ifndef OPENDNP3_QUALITYMASKS_H
 #define OPENDNP3_QUALITYMASKS_H
 
-#include "opendnp3/gen/BinaryQuality.h"
-#include "opendnp3/gen/DoubleBitBinaryQuality.h"
-#include "opendnp3/gen/CounterQuality.h"
-#include "opendnp3/gen/FrozenCounterQuality.h"
-#include "opendnp3/gen/AnalogQuality.h"
-
 #include "opendnp3/gen/AnalogOutputStatusQuality.h"
+#include "opendnp3/gen/AnalogQuality.h"
 #include "opendnp3/gen/BinaryOutputStatusQuality.h"
+#include "opendnp3/gen/BinaryQuality.h"
+#include "opendnp3/gen/CounterQuality.h"
+#include "opendnp3/gen/DoubleBitBinaryQuality.h"
+#include "opendnp3/gen/FrozenCounterQuality.h"
 
 namespace opendnp3
 {
 
-template <class T>
-inline uint8_t ToUnderlying(T flag)
+template<class T> inline uint8_t ToUnderlying(T flag)
 {
-	return static_cast<uint8_t>(flag);
+    return static_cast<uint8_t>(flag);
 }
 
-}
+} // namespace opendnp3
 
 #endif

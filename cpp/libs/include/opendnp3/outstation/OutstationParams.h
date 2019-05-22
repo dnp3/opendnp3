@@ -23,58 +23,57 @@
 
 #include <openpal/executor/TimeDuration.h>
 
-#include "opendnp3/gen/IndexMode.h"
-
-#include "opendnp3/app/ClassField.h"
 #include "opendnp3/app/AppConstants.h"
-
+#include "opendnp3/app/ClassField.h"
+#include "opendnp3/gen/IndexMode.h"
 #include "opendnp3/outstation/StaticTypeBitfield.h"
 
 namespace opendnp3
 {
 
 /**
-*	Static configuration parameters for an outstation session
-*/
+ *	Static configuration parameters for an outstation session
+ */
 struct OutstationParams
 {
-	/// Controls the index mode (defaults to contiguous)
-	IndexMode indexMode = IndexMode::Contiguous;
+    /// Controls the index mode (defaults to contiguous)
+    IndexMode indexMode = IndexMode::Contiguous;
 
-	/// The maximum number of controls the outstation will attempt to process from a single APDU
-	uint8_t maxControlsPerRequest = 16;
+    /// The maximum number of controls the outstation will attempt to process from a single APDU
+    uint8_t maxControlsPerRequest = 16;
 
-	/// How long the outstation will allow an operate to proceed after a prior select
-	openpal::TimeDuration selectTimeout = openpal::TimeDuration::Seconds(10);
+    /// How long the outstation will allow an operate to proceed after a prior select
+    openpal::TimeDuration selectTimeout = openpal::TimeDuration::Seconds(10);
 
-	/// Timeout for solicited confirms
-	openpal::TimeDuration solConfirmTimeout = DEFAULT_APP_TIMEOUT;
+    /// Timeout for solicited confirms
+    openpal::TimeDuration solConfirmTimeout = DEFAULT_APP_TIMEOUT;
 
-	/// Timeout for unsolicited confirms
-	openpal::TimeDuration unsolConfirmTimeout = DEFAULT_APP_TIMEOUT;
+    /// Timeout for unsolicited confirms
+    openpal::TimeDuration unsolConfirmTimeout = DEFAULT_APP_TIMEOUT;
 
-	/// Timeout for unsolicited retries
-	openpal::TimeDuration unsolRetryTimeout = DEFAULT_APP_TIMEOUT;
+    /// Timeout for unsolicited retries
+    openpal::TimeDuration unsolRetryTimeout = DEFAULT_APP_TIMEOUT;
 
-	/// The maximum fragment size the outstation will use for fragments it sends
-	uint32_t maxTxFragSize = DEFAULT_MAX_APDU_SIZE;
+    /// The maximum fragment size the outstation will use for fragments it sends
+    uint32_t maxTxFragSize = DEFAULT_MAX_APDU_SIZE;
 
-	/// The maximum fragment size the outstation will be able to receive
-	uint32_t maxRxFragSize = DEFAULT_MAX_APDU_SIZE;
+    /// The maximum fragment size the outstation will be able to receive
+    uint32_t maxRxFragSize = DEFAULT_MAX_APDU_SIZE;
 
-	/// Global enabled / disable for unsolicited messages. If false, the NULL unsolicited message is not even sent
-	bool allowUnsolicited = false;
+    /// Global enabled / disable for unsolicited messages. If false, the NULL unsolicited message is not even sent
+    bool allowUnsolicited = false;
 
-	/// A bitmask type that specifies the types allowed in a class 0 reponse
-	StaticTypeBitField typesAllowedInClass0 = StaticTypeBitField::AllTypes();
+    /// A bitmask type that specifies the types allowed in a class 0 reponse
+    StaticTypeBitField typesAllowedInClass0 = StaticTypeBitField::AllTypes();
 
-	/// Class mask for unsolicted, default to 0 as unsolicited has to be enabled
-	ClassField unsolClassMask = ClassField::None();
+    /// Class mask for unsolicted, default to 0 as unsolicited has to be enabled
+    ClassField unsolClassMask = ClassField::None();
 
-	/// If true, the outstation processes responds to any request/confirmation as if it came from the expected master address
-	bool respondToAnyMaster = false;
+    /// If true, the outstation processes responds to any request/confirmation as if it came from the expected master
+    /// address
+    bool respondToAnyMaster = false;
 };
 
-}
+} // namespace opendnp3
 
 #endif

@@ -18,12 +18,13 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
-
 #include "mocks/MasterTestFixture.h"
 
 #include <dnp3mocks/APDUHexBuilders.h>
+
 #include <testlib/HexConversions.h>
+
+#include <catch.hpp>
 
 using namespace std;
 using namespace opendnp3;
@@ -33,45 +34,45 @@ using namespace openpal;
 
 TEST_CASE(SUITE("AssignsClassAfterConnect"))
 {
-	MasterTestFixture t(NoStartupTasks());
+    MasterTestFixture t(NoStartupTasks());
 
-	// configure the mock application to do assign class on startup
-	t.application->assignClassHeaders.push_back(Header::AllObjects(60, 2));
-	t.application->assignClassHeaders.push_back(Header::AllObjects(3, 0));
+    // configure the mock application to do assign class on startup
+    t.application->assignClassHeaders.push_back(Header::AllObjects(60, 2));
+    t.application->assignClassHeaders.push_back(Header::AllObjects(3, 0));
 
-	t.context->OnLowerLayerUp();
+    t.context->OnLowerLayerUp();
 
-	REQUIRE(t.exe->RunMany() > 0);
+    REQUIRE(t.exe->RunMany() > 0);
 
-	REQUIRE(t.lower->PopWriteAsHex() == "C0 16 3C 02 06 03 00 06");
-	t.context->OnTxReady();
-	t.SendToMaster("C0 81 00 00");
-	t.exe->RunMany();
+    REQUIRE(t.lower->PopWriteAsHex() == "C0 16 3C 02 06 03 00 06");
+    t.context->OnTxReady();
+    t.SendToMaster("C0 81 00 00");
+    t.exe->RunMany();
 
-	REQUIRE(t.context->tstate == MContext::TaskState::IDLE);
-	REQUIRE(t.lower->PopWriteAsHex() == "");
+    REQUIRE(t.context->tstate == MContext::TaskState::IDLE);
+    REQUIRE(t.lower->PopWriteAsHex() == "");
 
-	REQUIRE(t.application->taskStartEvents.size() == 1);
-	REQUIRE(t.application->taskStartEvents[0] == MasterTaskType::ASSIGN_CLASS);
+    REQUIRE(t.application->taskStartEvents.size() == 1);
+    REQUIRE(t.application->taskStartEvents[0] == MasterTaskType::ASSIGN_CLASS);
 
-	REQUIRE(t.application->taskCompletionEvents.size() == 1);
-	REQUIRE(t.application->taskCompletionEvents[0].result == TaskCompletion::SUCCESS);
+    REQUIRE(t.application->taskCompletionEvents.size() == 1);
+    REQUIRE(t.application->taskCompletionEvents[0].result == TaskCompletion::SUCCESS);
 }
 
 TEST_CASE(SUITE("DisableUnsolBeforeAssignClass"))
 {
-	auto params = NoStartupTasks();
-	params.disableUnsolOnStartup = true;
-	MasterTestFixture t(params);
+    auto params = NoStartupTasks();
+    params.disableUnsolOnStartup = true;
+    MasterTestFixture t(params);
 
-	// configure the mock application to do assign class on startup
-	t.application->assignClassHeaders.push_back(Header::AllObjects(60, 2));
-	t.application->assignClassHeaders.push_back(Header::AllObjects(3, 0));
+    // configure the mock application to do assign class on startup
+    t.application->assignClassHeaders.push_back(Header::AllObjects(60, 2));
+    t.application->assignClassHeaders.push_back(Header::AllObjects(3, 0));
 
-	t.context->OnLowerLayerUp();
+    t.context->OnLowerLayerUp();
 
-	REQUIRE(t.exe->RunMany() > 0);
+    REQUIRE(t.exe->RunMany() > 0);
 
-	REQUIRE(t.lower->PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
-
+    REQUIRE(t.lower->PopWriteAsHex()
+            == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
 }

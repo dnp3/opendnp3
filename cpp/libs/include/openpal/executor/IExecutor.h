@@ -21,12 +21,11 @@
 #ifndef OPENPAL_IEXECUTOR_H
 #define OPENPAL_IEXECUTOR_H
 
+#include "IMonotonicTimeSource.h"
 #include "ITimer.h"
 #include "TimeDuration.h"
-#include "IMonotonicTimeSource.h"
 
 #include <functional>
-
 
 namespace openpal
 {
@@ -43,20 +42,18 @@ class IExecutor : public IMonotonicTimeSource
 {
 
 public:
+    virtual ~IExecutor() {}
 
-	virtual ~IExecutor() {}
+    /// @return a new timer based on a relative time duration
+    virtual ITimer* Start(const TimeDuration& duration, const action_t& action) = 0;
 
-	/// @return a new timer based on a relative time duration
-	virtual ITimer* Start(const TimeDuration& duration, const action_t& action) = 0;
+    /// @return a new timer based on an absolute timestamp of the monotonic clock
+    virtual ITimer* Start(const MonotonicTimestamp& expiration, const action_t& action) = 0;
 
-	/// @return a new timer based on an absolute timestamp of the monotonic clock
-	virtual ITimer* Start(const MonotonicTimestamp& expiration, const action_t& action) = 0;
-
-	/// @return Thread-safe way to post an event to be handled asynchronously
-	virtual void Post(const action_t& action) = 0;
-
+    /// @return Thread-safe way to post an event to be handled asynchronously
+    virtual void Post(const action_t& action) = 0;
 };
 
-}
+} // namespace openpal
 
 #endif

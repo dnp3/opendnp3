@@ -27,83 +27,89 @@ using namespace openpal;
 namespace opendnp3
 {
 
-WriteHandler::WriteHandler(IOutstationApplication& application, TimeSyncState& timeSyncState, AppSeqNum seq, openpal::MonotonicTimestamp now, IINField* writeIIN) :
-	application(&application),
-	timeSyncState(&timeSyncState),
-	seq(seq),
-	now(now),
-	writeIIN(writeIIN)
-{}
+WriteHandler::WriteHandler(IOutstationApplication& application,
+                           TimeSyncState& timeSyncState,
+                           AppSeqNum seq,
+                           openpal::MonotonicTimestamp now,
+                           IINField* writeIIN)
+    : application(&application), timeSyncState(&timeSyncState), seq(seq), now(now), writeIIN(writeIIN)
+{
+}
 
 IINField WriteHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values)
 {
-	Indexed<IINValue> pair;
+    Indexed<IINValue> pair;
 
-	if (!values.ReadOnlyValue(pair))
-	{
-		return IINBit::PARAM_ERROR;
-	}
+    if (!values.ReadOnlyValue(pair))
+    {
+        return IINBit::PARAM_ERROR;
+    }
 
-	if (wroteIIN)
-	{
-		return IINBit::PARAM_ERROR;
-	}
+    if (wroteIIN)
+    {
+        return IINBit::PARAM_ERROR;
+    }
 
-	if (pair.index != static_cast<uint16_t>(IINBit::DEVICE_RESTART))
-	{
-		return IINBit::PARAM_ERROR;
-	}
+    if (pair.index != static_cast<uint16_t>(IINBit::DEVICE_RESTART))
+    {
+        return IINBit::PARAM_ERROR;
+    }
 
-	if (pair.value.value)
-	{
-		return IINBit::PARAM_ERROR;
-	}
+    if (pair.value.value)
+    {
+        return IINBit::PARAM_ERROR;
+    }
 
-	wroteIIN = true;
-	writeIIN->ClearBit(IINBit::DEVICE_RESTART);
-	return IINField();
+    wroteIIN = true;
+    writeIIN->ClearBit(IINBit::DEVICE_RESTART);
+    return IINField();
 }
 
 IINField WriteHandler::ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& values)
 {
-	if (this->wroteTime) return IINBit::PARAM_ERROR;
+    if (this->wroteTime)
+        return IINBit::PARAM_ERROR;
 
-	if(!application->SupportsWriteAbsoluteTime()) return IINBit::FUNC_NOT_SUPPORTED;
+    if (!application->SupportsWriteAbsoluteTime())
+        return IINBit::FUNC_NOT_SUPPORTED;
 
-	Group50Var1 value;
-	if (!values.ReadOnlyValue(value)) return IINBit::PARAM_ERROR;
+    Group50Var1 value;
+    if (!values.ReadOnlyValue(value))
+        return IINBit::PARAM_ERROR;
 
-	this->wroteTime = true;
-	return application->WriteAbsoluteTime(UTCTimestamp(value.time)) ? IINField::Empty() : IINBit::PARAM_ERROR;
+    this->wroteTime = true;
+    return application->WriteAbsoluteTime(UTCTimestamp(value.time)) ? IINField::Empty() : IINBit::PARAM_ERROR;
 }
 
 IINField WriteHandler::ProcessHeader(const CountHeader& header, const ICollection<Group50Var3>& values)
 {
-	if (this->wroteTime) return IINBit::PARAM_ERROR;
+    if (this->wroteTime)
+        return IINBit::PARAM_ERROR;
 
-	if (!application->SupportsWriteAbsoluteTime()) return IINBit::FUNC_NOT_SUPPORTED;
+    if (!application->SupportsWriteAbsoluteTime())
+        return IINBit::FUNC_NOT_SUPPORTED;
 
-	Group50Var3 value;
-	if (!values.ReadOnlyValue(value)) return IINBit::PARAM_ERROR;
+    Group50Var3 value;
+    if (!values.ReadOnlyValue(value))
+        return IINBit::PARAM_ERROR;
 
-	if(!this->timeSyncState->CalcTimeDifference(this->seq, this->now)) return IINBit::PARAM_ERROR;
+    if (!this->timeSyncState->CalcTimeDifference(this->seq, this->now))
+        return IINBit::PARAM_ERROR;
 
-	const UTCTimestamp time(value.time + this->timeSyncState->GetDifference().milliseconds);
+    const UTCTimestamp time(value.time + this->timeSyncState->GetDifference().milliseconds);
 
-	this->wroteTime = true;
-	return application->WriteAbsoluteTime(time) ? IINField::Empty() : IINBit::PARAM_ERROR;
+    this->wroteTime = true;
+    return application->WriteAbsoluteTime(time) ? IINField::Empty() : IINBit::PARAM_ERROR;
 }
 
-IINField  WriteHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values)
+IINField WriteHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values)
 {
-	if (!application->SupportsWriteTimeAndInterval())
-	{
-		return IINBit::FUNC_NOT_SUPPORTED;
-	}
+    if (!application->SupportsWriteTimeAndInterval())
+    {
+        return IINBit::FUNC_NOT_SUPPORTED;
+    }
 
-	return application->WriteTimeAndInterval(values) ? IINField::Empty() : IINBit::PARAM_ERROR;
+    return application->WriteTimeAndInterval(values) ? IINField::Empty() : IINBit::PARAM_ERROR;
 }
 
-}
-
-
+} // namespace opendnp3

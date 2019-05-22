@@ -18,50 +18,46 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
-
 #include <testlib/BufferHelpers.h>
+
+#include <catch.hpp>
 
 using namespace std;
 using namespace testlib;
 
-
 #define SUITE(name) "UtilSuite - " name
-template <int N>
-void TestHex(const std::string& hex, uint8_t* compareBytes, size_t count)
+template<int N> void TestHex(const std::string& hex, uint8_t* compareBytes, size_t count)
 {
-	HexSequence hs(hex);
+    HexSequence hs(hex);
 
-	REQUIRE(hs.Size() <= N);
+    REQUIRE(hs.Size() <= N);
 
-	REQUIRE((hs.Size() ==  count));
-	for ( size_t i = 0; i < count; i++ )
-	{
-		REQUIRE((hs[i] ==  compareBytes[i]));
-	}
+    REQUIRE((hs.Size() == count));
+    for (size_t i = 0; i < count; i++)
+    {
+        REQUIRE((hs[i] == compareBytes[i]));
+    }
 }
 
 TEST_CASE(SUITE("HexToBytes2TestSmall"))
 {
-	uint8_t values[] = { 0xAF, 0x23 };
-	TestHex<2>( "AF23", values, 2 );
+    uint8_t values[] = {0xAF, 0x23};
+    TestHex<2>("AF23", values, 2);
 }
 TEST_CASE(SUITE("HexToBytes2Test64"))
 {
-	uint8_t values[] = { 0x13, 0xA2, 0x00, 0x40, 0x56, 0x1D, 0x08 };
-	TestHex<7>( "13A20040561D08", values, 7 );
+    uint8_t values[] = {0x13, 0xA2, 0x00, 0x40, 0x56, 0x1D, 0x08};
+    TestHex<7>("13A20040561D08", values, 7);
 }
 
 TEST_CASE(SUITE("HexToBytes2Test64TooBig"))
 {
-	uint8_t values[] = { 0x13, 0xA2, 0x00, 0x40, 0x56, 0x1D, 0x08 };
-	TestHex<8>( "13A20040561D08", values, 7 );
+    uint8_t values[] = {0x13, 0xA2, 0x00, 0x40, 0x56, 0x1D, 0x08};
+    TestHex<8>("13A20040561D08", values, 7);
 }
 
 TEST_CASE(SUITE("HexToBytes2Test64Hole"))
 {
-	uint8_t values[] = { 0x13, 0xA2, 0x00, 0x40, 0x56, 0x1D, 0x08 };
-	TestHex<8>( "13A200 40561   D08", values, 7 );
+    uint8_t values[] = {0x13, 0xA2, 0x00, 0x40, 0x56, 0x1D, 0x08};
+    TestHex<8>("13A200 40561   D08", values, 7);
 }
-
-

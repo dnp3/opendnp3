@@ -27,20 +27,17 @@ namespace asiopal
 {
 
 /**
-*	Container class for an asio::io_context
-*/
+ *	Container class for an asio::io_context
+ */
 class IO
 {
 
 public:
+    virtual ~IO() {}
 
-	virtual ~IO() {}
-
-	asio::io_context service;
-
+    asio::io_context service;
 };
 
-}
-
+} // namespace asiopal
 
 #endif

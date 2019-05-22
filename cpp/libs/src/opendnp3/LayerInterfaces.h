@@ -29,93 +29,83 @@ namespace opendnp3
 {
 
 /**
-* Describes a layer that can be opened or closed in response to the
-* availability of the layer below it.
-*/
+ * Describes a layer that can be opened or closed in response to the
+ * availability of the layer below it.
+ */
 class IUpDown
 {
 
 public:
+    virtual ~IUpDown() {}
 
-	virtual ~IUpDown() {}
+    // Called by a lower Layer when it is available to this layer
+    // return false if the layer is already up
+    virtual bool OnLowerLayerUp() = 0;
 
-	// Called by a lower Layer when it is available to this layer
-	// return false if the layer is already up
-	virtual bool OnLowerLayerUp() = 0;
-
-	// Called by a lower layer when it is no longer available to this layer
-	// return false if the layer is already down
-	virtual bool OnLowerLayerDown() = 0;
+    // Called by a lower layer when it is no longer available to this layer
+    // return false if the layer is already down
+    virtual bool OnLowerLayerDown() = 0;
 };
-
 
 class IUpperLayer : public IUpDown
 {
 
 public:
+    virtual ~IUpperLayer() {}
 
-	virtual ~IUpperLayer() {}
+    // Called by the lower layer when data arrives
+    // return false if the layer is down
+    virtual bool OnReceive(const Message& message) = 0;
 
-	// Called by the lower layer when data arrives
-	// return false if the layer is down
-	virtual bool OnReceive(const Message& message) = 0;
-
-	// Called by the lower layer when it is ready to transmit more data
-	virtual bool OnTxReady() = 0;
-
+    // Called by the lower layer when it is ready to transmit more data
+    virtual bool OnTxReady() = 0;
 };
 
 class ILowerLayer
 {
 
 public:
+    virtual ~ILowerLayer() {}
 
-	virtual ~ILowerLayer() {}
-
-	virtual bool BeginTransmit(const Message& message) = 0;
+    virtual bool BeginTransmit(const Message& message) = 0;
 };
 
 class HasLowerLayer
 {
 
 public:
+    HasLowerLayer() : pLowerLayer(nullptr) {}
 
-	HasLowerLayer() : pLowerLayer(nullptr) {}
+    // Called by the lower layer when data arrives
 
-	// Called by the lower layer when data arrives
-
-	void SetLowerLayer(ILowerLayer& lowerLayer)
-	{
-		assert(pLowerLayer == nullptr);
-		pLowerLayer = &lowerLayer;
-	}
+    void SetLowerLayer(ILowerLayer& lowerLayer)
+    {
+        assert(pLowerLayer == nullptr);
+        pLowerLayer = &lowerLayer;
+    }
 
 protected:
-
-	ILowerLayer* pLowerLayer;
+    ILowerLayer* pLowerLayer;
 };
 
 class HasUpperLayer
 {
 
 public:
+    HasUpperLayer() : pUpperLayer(nullptr) {}
 
-	HasUpperLayer() : pUpperLayer(nullptr) {}
+    // Called by the lower layer when data arrives
 
-	// Called by the lower layer when data arrives
-
-	void SetUpperLayer(IUpperLayer& upperLayer)
-	{
-		assert(pUpperLayer == nullptr);
-		pUpperLayer = &upperLayer;
-	}
+    void SetUpperLayer(IUpperLayer& upperLayer)
+    {
+        assert(pUpperLayer == nullptr);
+        pUpperLayer = &upperLayer;
+    }
 
 protected:
-
-	IUpperLayer* pUpperLayer;
+    IUpperLayer* pUpperLayer;
 };
 
-
-}
+} // namespace opendnp3
 
 #endif

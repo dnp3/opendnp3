@@ -32,39 +32,43 @@ class NullSOEHandler : public ISOEHandler
 {
 
 public:
+    NullSOEHandler() = default;
 
-	NullSOEHandler() = default;
+    static std::shared_ptr<ISOEHandler> Create()
+    {
+        return std::make_shared<NullSOEHandler>();
+    }
 
-	static std::shared_ptr<ISOEHandler> Create()
-	{
-		return std::make_shared<NullSOEHandler>();
-	}
-
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) override final {}
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values) override final {}
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Analog>>& values) override final {}
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Counter>>& values) override final {}
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<FrozenCounter>>& values) override final {}
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryOutputStatus>>& values) override final {}
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputStatus>>& values) override final {}
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values) override final {}
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<TimeAndInterval>>& values) override final {}
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values) override final {}
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) override final {}
-	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values) override final {}
-	virtual void Process(const HeaderInfo& info, const ICollection<DNPTime>& values) override final {}
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) override final {}
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values) override final {}
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Analog>>& values) override final {}
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Counter>>& values) override final {}
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<FrozenCounter>>& values) override final {}
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryOutputStatus>>& values) override final
+    {
+    }
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputStatus>>& values) override final
+    {
+    }
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values) override final {}
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<TimeAndInterval>>& values) override final {}
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values) override final
+    {
+    }
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) override final
+    {
+    }
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values) override final {}
+    virtual void Process(const HeaderInfo& info, const ICollection<DNPTime>& values) override final {}
 
 protected:
-
-	void Start() override final {}
-	void End() override final {}
+    void Start() override final {}
+    void End() override final {}
 
 private:
-
-
-	static NullSOEHandler instance;
+    static NullSOEHandler instance;
 };
 
-}
+} // namespace opendnp3
 
 #endif

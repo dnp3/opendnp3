@@ -21,79 +21,74 @@
 #ifndef OPENDNP3_EVENTCOLLECTION_H
 #define OPENDNP3_EVENTCOLLECTION_H
 
-#include "IEventWriteHandler.h"
 #include "EventWriting.h"
+#include "IEventWriteHandler.h"
 #include "TypedStorage.h"
 
 namespace opendnp3
 {
 
-template <class T>
-class EventCollection final : public IEventCollection<typename T::meas_t>
+template<class T> class EventCollection final : public IEventCollection<typename T::meas_t>
 {
 private:
-	List<EventRecord>::Iterator& iterator;
-	EventClassCounters& counters;
-	typename T::event_variation_t variation;
+    List<EventRecord>::Iterator& iterator;
+    EventClassCounters& counters;
+    typename T::event_variation_t variation;
 
 public:
+    EventCollection(List<EventRecord>::Iterator& iterator,
+                    EventClassCounters& counters,
+                    typename T::event_variation_t variation)
+        : iterator(iterator), counters(counters), variation(variation)
+    {
+    }
 
-	EventCollection(
-	    List<EventRecord>::Iterator& iterator,
-	    EventClassCounters& counters,
-	    typename T::event_variation_t variation
-	) :
-		iterator(iterator),
-		counters(counters),
-		variation(variation)
-	{}
-
-	virtual uint16_t WriteSome(IEventWriter<typename T::meas_t>& writer) override;
+    virtual uint16_t WriteSome(IEventWriter<typename T::meas_t>& writer) override;
 
 private:
-
-	bool WriteOne(IEventWriter<typename T::meas_t>& writer);
+    bool WriteOne(IEventWriter<typename T::meas_t>& writer);
 };
 
-template <class T>
-uint16_t EventCollection<T>::WriteSome(IEventWriter<typename T::meas_t>& writer)
+template<class T> uint16_t EventCollection<T>::WriteSome(IEventWriter<typename T::meas_t>& writer)
 {
-	uint16_t num_written = 0;
-	while (WriteOne(writer))
-	{
-		++num_written;
-	}
-	return num_written;
+    uint16_t num_written = 0;
+    while (WriteOne(writer))
+    {
+        ++num_written;
+    }
+    return num_written;
 }
 
-template <class T>
-bool EventCollection<T>::WriteOne(IEventWriter<typename T::meas_t>& writer)
+template<class T> bool EventCollection<T>::WriteOne(IEventWriter<typename T::meas_t>& writer)
 {
-	// don't bother searching
-	if (this->counters.selected == 0) return false;
+    // don't bother searching
+    if (this->counters.selected == 0)
+        return false;
 
-	// find the next event with the same type and variation
-	EventRecord* record = EventWriting::FindNextSelected(this->iterator, T::EventTypeEnum);
+    // find the next event with the same type and variation
+    EventRecord* record = EventWriting::FindNextSelected(this->iterator, T::EventTypeEnum);
 
-	// nothing left to write
-	if (!record) return false;
+    // nothing left to write
+    if (!record)
+        return false;
 
-	const auto data = TypedStorage<T>::Retrieve(*record);
+    const auto data = TypedStorage<T>::Retrieve(*record);
 
-	// wrong variation
-	if (data->value.selectedVariation != this->variation) return false;
+    // wrong variation
+    if (data->value.selectedVariation != this->variation)
+        return false;
 
-	// unable to write
-	if (!writer.Write(data->value.value, record->index)) return false;
+    // unable to write
+    if (!writer.Write(data->value.value, record->index))
+        return false;
 
-	// success!
-	this->counters.OnWrite(record->clazz);
-	record->state = EventState::written;
-	this->iterator.Next();
-	return true;
+    // success!
+    this->counters.OnWrite(record->clazz);
+    record->state = EventState::written;
+    this->iterator.Next();
+    return true;
 }
 
-}
+} // namespace opendnp3
 
 #endif
-

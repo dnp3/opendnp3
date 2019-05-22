@@ -21,96 +21,91 @@
 #ifndef OPENDNP3_OCTETDATA_H
 #define OPENDNP3_OCTETDATA_H
 
-#include <cstdint>
-
 #include <openpal/container/RSlice.h>
 #include <openpal/container/StaticBuffer.h>
+
+#include <cstdint>
 
 namespace opendnp3
 {
 
 /**
-* A base-class for bitstrings containing up to 255 bytes
-*/
+ * A base-class for bitstrings containing up to 255 bytes
+ */
 class OctetData
 {
 public:
+    const static uint8_t MAX_SIZE = 255;
 
-	const static uint8_t MAX_SIZE = 255;
+    /**
+     * Construct with a default value of [0x00] (length == 1)
+     */
+    OctetData();
 
-	/**
-	* Construct with a default value of [0x00] (length == 1)
-	*/
-	OctetData();
+    /**
+     * Construct from a c-style string
+     *
+     * strlen() is used internally to determine the length
+     *
+     * If the length is 0, the default value of [0x00] is assigned
+     * If the length is > 255, only the first 255 bytes are copied.
+     *
+     * The null terminator is NOT copied as part of buffer
+     */
+    OctetData(const char* input);
 
-	/**
-	* Construct from a c-style string
-	*
-	* strlen() is used internally to determine the length
-	*
-	* If the length is 0, the default value of [0x00] is assigned
-	* If the length is > 255, only the first 255 bytes are copied.
-	*
-	* The null terminator is NOT copied as part of buffer
-	*/
-	OctetData(const char* input);
+    /**
+     * Construct from read-only buffer slice
+     *
+     *
+     * If the length is 0, the default value of [0x00] is assigned
+     * If the length is > 255, only the first 255 bytes are copied.
+     *
+     * The null terminator is NOT copied as part of buffer
+     */
+    OctetData(const openpal::RSlice& input);
 
-	/**
-	* Construct from read-only buffer slice
-	*
-	*
-	* If the length is 0, the default value of [0x00] is assigned
-	* If the length is > 255, only the first 255 bytes are copied.
-	*
-	* The null terminator is NOT copied as part of buffer
-	*/
-	OctetData(const openpal::RSlice& input);
+    inline uint8_t Size() const
+    {
+        return size;
+    }
 
-	inline uint8_t Size() const
-	{
-		return size;
-	}
+    /**
+     * Set the octet data to the input buffer
+     *
+     * If the length is 0, the default value of [0x00] is assigned
+     * If the length is > 255, only the first 255 bytes are copied
+     *
+     * @param input the input data to copy into this object
+     *
+     * @return true if the input meets the length requirements, false otherwise
+     */
+    bool Set(const openpal::RSlice& input);
 
-	/**
-	* Set the octet data to the input buffer
-	*
-	* If the length is 0, the default value of [0x00] is assigned
-	* If the length is > 255, only the first 255 bytes are copied
-	*
-	* @param input the input data to copy into this object
-	*
-	* @return true if the input meets the length requirements, false otherwise
-	*/
-	bool Set(const openpal::RSlice& input);
+    /**
+     * Set the buffer equal to the supplied c-string
+     *
+     * If the length is 0, the default value of [0x00] is assigned
+     * If the length is > 255, only the first 255 bytes are copied
+     *
+     * @param input c-style string to copy into this object
+     *
+     * @return true if the input meets the length requirements, false otherwise
+     */
+    bool Set(const char* input);
 
-	/**
-	* Set the buffer equal to the supplied c-string
-	*
-	* If the length is 0, the default value of [0x00] is assigned
-	* If the length is > 255, only the first 255 bytes are copied
-	*
-	* @param input c-style string to copy into this object
-	*
-	* @return true if the input meets the length requirements, false otherwise
-	*/
-	bool Set(const char* input);
-
-	/**
-	* @return a view of the current data as a read-only slice
-	*/
-	openpal::RSlice ToRSlice() const;
+    /**
+     * @return a view of the current data as a read-only slice
+     */
+    openpal::RSlice ToRSlice() const;
 
 private:
+    static openpal::RSlice ToSlice(const char* input);
 
-	static openpal::RSlice ToSlice(const char* input);
-
-	openpal::StaticBuffer<MAX_SIZE> buffer;
-	uint8_t size;
+    openpal::StaticBuffer<MAX_SIZE> buffer;
+    uint8_t size;
 };
 
-}
-
-
+} // namespace opendnp3
 
 #endif
-

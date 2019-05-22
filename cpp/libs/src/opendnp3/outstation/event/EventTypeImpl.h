@@ -22,58 +22,55 @@
 #ifndef OPENDNP3_EVENTTYPEIMPL_H
 #define OPENDNP3_EVENTTYPEIMPL_H
 
+#include "EventCollection.h"
+#include "EventWriting.h"
 #include "IEventType.h"
 #include "TypedEventRecord.h"
-#include "EventWriting.h"
-#include "EventCollection.h"
 
 namespace opendnp3
 {
 
-template <class T>
-class EventTypeImpl final : public IEventType
+template<class T> class EventTypeImpl final : public IEventType
 {
 
 private:
+    EventTypeImpl() : IEventType(T::EventTypeEnum) {}
 
-	EventTypeImpl() : IEventType(T::EventTypeEnum) {}
-
-	static EventTypeImpl instance;
+    static EventTypeImpl instance;
 
 public:
+    static IEventType* Instance()
+    {
+        return &instance;
+    }
 
-	static IEventType* Instance()
-	{
-		return &instance;
-	}
+    virtual void SelectDefaultVariation(EventRecord& record) const override
+    {
+        auto node = TypedStorage<T>::Retrieve(record);
+        node->value.selectedVariation = node->value.defaultVariation;
+    }
 
-	virtual void SelectDefaultVariation(EventRecord& record) const override
-	{
-		auto node = TypedStorage<T>::Retrieve(record);
-		node->value.selectedVariation = node->value.defaultVariation;
-	}
+    virtual uint16_t WriteSome(List<EventRecord>::Iterator& iterator,
+                               EventLists& lists,
+                               IEventWriteHandler& handler) const override
+    {
+        const auto pos = iterator.CurrentValue();
+        const auto type = TypedStorage<T>::Retrieve(*pos);
 
-	virtual uint16_t WriteSome(List<EventRecord>::Iterator& iterator, EventLists& lists, IEventWriteHandler& handler) const override
-	{
-		const auto pos = iterator.CurrentValue();
-		const auto type = TypedStorage<T>::Retrieve(*pos);
+        EventCollection<T> collection(iterator, lists.counters, type->value.selectedVariation);
 
-		EventCollection<T> collection(iterator, lists.counters, type->value.selectedVariation);
+        return handler.Write(type->value.selectedVariation, type->value.value, collection);
+    }
 
-		return handler.Write(type->value.selectedVariation, type->value.value, collection);
-	}
-
-	virtual void RemoveTypeFromStorage(EventRecord& record, EventLists& lists) const override
-	{
-		auto node = TypedStorage<T>::Retrieve(record);
-		lists.GetList<T>().Remove(node);
-	}
+    virtual void RemoveTypeFromStorage(EventRecord& record, EventLists& lists) const override
+    {
+        auto node = TypedStorage<T>::Retrieve(record);
+        lists.GetList<T>().Remove(node);
+    }
 };
 
-template <class T>
-EventTypeImpl<T> EventTypeImpl<T>::instance;
+template<class T> EventTypeImpl<T> EventTypeImpl<T>::instance;
 
-}
+} // namespace opendnp3
 
 #endif
-

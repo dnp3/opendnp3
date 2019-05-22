@@ -21,28 +21,26 @@
 #ifndef ASIODNP3_MASTERSTACKCONFIG_H
 #define ASIODNP3_MASTERSTACKCONFIG_H
 
-#include "opendnp3/master/MasterParams.h"
 #include "opendnp3/link/LinkConfig.h"
+#include "opendnp3/master/MasterParams.h"
 
 namespace asiodnp3
 {
 
 /** A composite configuration struct that contains all the config
-	information for a dnp3 master stack
+    information for a dnp3 master stack
 */
 struct MasterStackConfig
 {
-	MasterStackConfig() : link(true, false)
-	{}
+    MasterStackConfig() : link(true, false) {}
 
-	/// Master config
-	opendnp3::MasterParams master;
+    /// Master config
+    opendnp3::MasterParams master;
 
-	/// Link layer config
-	opendnp3::LinkConfig link;
+    /// Link layer config
+    opendnp3::LinkConfig link;
 };
 
-}
+} // namespace asiodnp3
 
 #endif
-

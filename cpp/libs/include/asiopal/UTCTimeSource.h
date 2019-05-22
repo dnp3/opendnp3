@@ -27,22 +27,20 @@ namespace asiopal
 {
 
 /**
-*  Interface that defines a method to get UTC timestamps
-*/
+ *  Interface that defines a method to get UTC timestamps
+ */
 class UTCTimeSource : public openpal::IUTCTimeSource
 {
 
 public:
-	static openpal::IUTCTimeSource& Instance();
-	openpal::UTCTimestamp Now();
+    static openpal::IUTCTimeSource& Instance();
+    openpal::UTCTimestamp Now();
 
 private:
-	UTCTimeSource() {}
-	static UTCTimeSource instance;
+    UTCTimeSource() {}
+    static UTCTimeSource instance;
 };
 
-
-}
+} // namespace asiopal
 
 #endif
-

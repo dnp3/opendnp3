@@ -21,43 +21,37 @@
 #ifndef OPENDNP3_OUTSTATIONSTACKCONFIG_H
 #define OPENDNP3_OUTSTATIONSTACKCONFIG_H
 
-#include "opendnp3/outstation/OutstationConfig.h"
-#include "opendnp3/outstation/EventBufferConfig.h"
-#include "opendnp3/outstation/DatabaseSizes.h"
-#include "asiodnp3/DatabaseConfig.h"
 #include "opendnp3/link/LinkConfig.h"
+#include "opendnp3/outstation/DatabaseSizes.h"
+#include "opendnp3/outstation/EventBufferConfig.h"
+#include "opendnp3/outstation/OutstationConfig.h"
+
+#include "asiodnp3/DatabaseConfig.h"
 
 namespace asiodnp3
 {
 
 /**
-	A composite configuration struct that contains all the config
-	information for a dnp3 outstation stack
+    A composite configuration struct that contains all the config
+    information for a dnp3 outstation stack
 */
 struct OutstationStackConfig
 {
 
-	OutstationStackConfig(const opendnp3::DatabaseSizes& dbSizes) :
-		dbConfig(dbSizes),
-		link(false, false)
-	{
+    OutstationStackConfig(const opendnp3::DatabaseSizes& dbSizes) : dbConfig(dbSizes), link(false, false) {}
 
-	}
+    OutstationStackConfig() = delete;
 
-	OutstationStackConfig() = delete;
+    // Configuration of the database
+    DatabaseConfig dbConfig;
 
-	// Configuration of the database
-	DatabaseConfig dbConfig;
+    /// Outstation config
+    opendnp3::OutstationConfig outstation;
 
-	/// Outstation config
-	opendnp3::OutstationConfig outstation;
-
-	/// Link layer config
-	opendnp3::LinkConfig link;
-
+    /// Link layer config
+    opendnp3::LinkConfig link;
 };
 
-}
+} // namespace asiodnp3
 
 #endif
-

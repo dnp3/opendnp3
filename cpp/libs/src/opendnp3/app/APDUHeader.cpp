@@ -25,21 +25,20 @@ namespace opendnp3
 
 APDUHeader APDUHeader::SolicitedConfirm(uint8_t seq)
 {
-	return Confirm(seq, false);
+    return Confirm(seq, false);
 }
 
 APDUHeader APDUHeader::UnsolicitedConfirm(uint8_t seq)
 {
-	return Confirm(seq, true);
+    return Confirm(seq, true);
 }
 
 APDUHeader APDUHeader::Confirm(uint8_t seq, bool unsolicited)
 {
-	APDUHeader header;
-	header.function = FunctionCode::CONFIRM;
-	header.control = AppControlField(true, true, false, unsolicited, seq);
-	return header;
+    APDUHeader header;
+    header.function = FunctionCode::CONFIRM;
+    header.control = AppControlField(true, true, false, unsolicited, seq);
+    return header;
 }
 
-}
-
+} // namespace opendnp3

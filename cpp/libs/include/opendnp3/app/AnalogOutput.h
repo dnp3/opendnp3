@@ -30,98 +30,80 @@ namespace opendnp3
  * The object to represent a setpoint request from the master. Think of
  * this like turning a dial on the front of a machine to desired setting.
  */
-template <class T>
-class AnalogOutput
+template<class T> class AnalogOutput
 {
 public:
+    AnalogOutput() : value(0), status(CommandStatus::SUCCESS) {}
 
-	AnalogOutput() :
-		value(0),
-		status(CommandStatus::SUCCESS)
-	{}
+    AnalogOutput(T value_) : value(value_), status(CommandStatus::SUCCESS) {}
 
-	AnalogOutput(T value_) :
-		value(value_),
-		status(CommandStatus::SUCCESS)
-	{}
+    AnalogOutput(T value_, CommandStatus status_) : value(value_), status(status_) {}
 
-	AnalogOutput(T value_, CommandStatus status_) :
-		value(value_),
-		status(status_)
-	{}
+    bool ValuesEqual(const AnalogOutput<T>& lhs) const
+    {
+        return value == lhs.value;
+    }
 
-	bool ValuesEqual(const AnalogOutput<T>& lhs) const
-	{
-		return value == lhs.value;
-	}
+    T value;
 
-	T value;
-
-	/**
-	* The status value defaults to CS_SUCCESS for requests
-	*/
-	CommandStatus status;
+    /**
+     * The status value defaults to CS_SUCCESS for requests
+     */
+    CommandStatus status;
 };
 
 /**
-*	16-bit signed integer analog output. The underlying serialization is Group41, Variation 2
-*/
+ *	16-bit signed integer analog output. The underlying serialization is Group41, Variation 2
+ */
 class AnalogOutputInt16 : public AnalogOutput<int16_t>
 {
 public:
+    AnalogOutputInt16();
+    AnalogOutputInt16(int16_t);
+    AnalogOutputInt16(int16_t, CommandStatus);
 
-	AnalogOutputInt16();
-	AnalogOutputInt16(int16_t);
-	AnalogOutputInt16(int16_t, CommandStatus);
-
-	bool operator==(const AnalogOutputInt16& arRHS) const;
+    bool operator==(const AnalogOutputInt16& arRHS) const;
 };
 
 /**
-*	32-bit signed integer analog output. The underlying serialization is Group41, Variation 1
-*/
+ *	32-bit signed integer analog output. The underlying serialization is Group41, Variation 1
+ */
 class AnalogOutputInt32 : public AnalogOutput<int32_t>
 {
 public:
+    AnalogOutputInt32();
+    AnalogOutputInt32(int32_t);
+    AnalogOutputInt32(int32_t, CommandStatus);
 
-	AnalogOutputInt32();
-	AnalogOutputInt32(int32_t);
-	AnalogOutputInt32(int32_t, CommandStatus);
-
-	bool operator==(const AnalogOutputInt32& arRHS) const;
+    bool operator==(const AnalogOutputInt32& arRHS) const;
 };
 
 /**
-*	Single precision analog output. The underlying serialization is Group41, Variation 3
-*/
+ *	Single precision analog output. The underlying serialization is Group41, Variation 3
+ */
 class AnalogOutputFloat32 : public AnalogOutput<float>
 {
 public:
+    AnalogOutputFloat32();
+    AnalogOutputFloat32(float);
+    AnalogOutputFloat32(float, CommandStatus);
 
-	AnalogOutputFloat32();
-	AnalogOutputFloat32(float);
-	AnalogOutputFloat32(float, CommandStatus);
-
-	bool operator==(const AnalogOutputFloat32& arRHS) const;
+    bool operator==(const AnalogOutputFloat32& arRHS) const;
 };
 
 /**
-*	Double precision analog output. The underlying serialization is Group41, Variation 3
-*/
+ *	Double precision analog output. The underlying serialization is Group41, Variation 3
+ */
 class AnalogOutputDouble64 : public AnalogOutput<double>
 {
 public:
+    AnalogOutputDouble64();
+    AnalogOutputDouble64(double);
+    AnalogOutputDouble64(double, CommandStatus);
 
-	AnalogOutputDouble64();
-	AnalogOutputDouble64(double);
-	AnalogOutputDouble64(double, CommandStatus);
-
-	bool operator==(const AnalogOutputDouble64& arRHS) const;
+    bool operator==(const AnalogOutputDouble64& arRHS) const;
 };
 
-
-}
-
-
+} // namespace opendnp3
 
 #endif

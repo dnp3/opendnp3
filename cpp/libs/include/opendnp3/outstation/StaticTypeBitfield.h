@@ -29,36 +29,33 @@ namespace opendnp3
 {
 
 /**
-* A bitfield that describes a subset of all static types, e.g. { Binary, Analog } or {Analog, Counter, FrozenCounter }
-*/
+ * A bitfield that describes a subset of all static types, e.g. { Binary, Analog } or {Analog, Counter, FrozenCounter }
+ */
 struct StaticTypeBitField
 {
-	StaticTypeBitField() : mask(0)
-	{}
+    StaticTypeBitField() : mask(0) {}
 
-	StaticTypeBitField(uint16_t mask) : mask(mask)
-	{}
+    StaticTypeBitField(uint16_t mask) : mask(mask) {}
 
-	static StaticTypeBitField AllTypes()
-	{
-		return StaticTypeBitField(~0);
-	}
+    static StaticTypeBitField AllTypes()
+    {
+        return StaticTypeBitField(~0);
+    }
 
-	bool IsSet(StaticTypeBitmask type) const
-	{
-		return (mask & static_cast<uint16_t>(type)) != 0;
-	}
+    bool IsSet(StaticTypeBitmask type) const
+    {
+        return (mask & static_cast<uint16_t>(type)) != 0;
+    }
 
-	StaticTypeBitField Except(StaticTypeBitmask type) const
-	{
-		return StaticTypeBitField(mask & ~static_cast<uint16_t>(type));
-	}
+    StaticTypeBitField Except(StaticTypeBitmask type) const
+    {
+        return StaticTypeBitField(mask & ~static_cast<uint16_t>(type));
+    }
 
 private:
-
-	uint16_t mask;
+    uint16_t mask;
 };
 
-}
+} // namespace opendnp3
 
 #endif

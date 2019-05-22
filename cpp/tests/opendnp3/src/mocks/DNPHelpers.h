@@ -23,7 +23,6 @@
 
 #include <string>
 
-
 namespace opendnp3
 {
 
@@ -33,7 +32,6 @@ std::string RepairCRC(const std::string& arData);
 
 std::string ToHex(LinkFrame& frame);
 
-}
+} // namespace opendnp3
 
 #endif
-

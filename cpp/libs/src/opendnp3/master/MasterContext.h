@@ -21,178 +21,185 @@
 #ifndef OPENDNP3_MASTERCONTEXT_H
 #define OPENDNP3_MASTERCONTEXT_H
 
-#include <openpal/executor/IExecutor.h>
-#include <openpal/logging/Logger.h>
 #include <openpal/container/Buffer.h>
+#include <openpal/executor/IExecutor.h>
 #include <openpal/executor/TimerRef.h>
+#include <openpal/logging/Logger.h>
 
 #include "opendnp3/LayerInterfaces.h"
-
 #include "opendnp3/app/AppSeqNum.h"
 #include "opendnp3/app/MeasurementTypes.h"
-
 #include "opendnp3/gen/RestartType.h"
-#include "opendnp3/master/MasterTasks.h"
+#include "opendnp3/master/CommandCallbackT.h"
+#include "opendnp3/master/CommandSet.h"
+#include "opendnp3/master/HeaderBuilder.h"
 #include "opendnp3/master/IMasterApplication.h"
 #include "opendnp3/master/IMasterScheduler.h"
-#include "opendnp3/master/HeaderBuilder.h"
+#include "opendnp3/master/MasterTasks.h"
 #include "opendnp3/master/RestartOperationResult.h"
-#include "opendnp3/master/CommandSet.h"
-#include "opendnp3/master/CommandCallbackT.h"
 
 #include <deque>
 
 namespace opendnp3
 {
 /*
-	All of the mutable state and configuration for a master
+    All of the mutable state and configuration for a master
 */
 class MContext final : public IUpperLayer, private IMasterTaskRunner, private openpal::Uncopyable
 {
 
 public:
+    enum class TaskState
+    {
+        IDLE,
+        TASK_READY,
+        WAIT_FOR_RESPONSE
+    };
 
-	enum class TaskState
-	{
-		IDLE,
-		TASK_READY,
-		WAIT_FOR_RESPONSE
-	};
+    MContext(const Addresses& addresses,
+             const openpal::Logger& logger,
+             const std::shared_ptr<openpal::IExecutor>& executor,
+             const std::shared_ptr<ILowerLayer>& lower,
+             const std::shared_ptr<ISOEHandler>& SOEHandler,
+             const std::shared_ptr<IMasterApplication>& application,
+             const std::shared_ptr<IMasterScheduler>& scheduler,
+             const MasterParams& params);
 
-	MContext(
-	    const Addresses& addresses,
-	    const openpal::Logger& logger,
-	    const std::shared_ptr<openpal::IExecutor>& executor,
-	    const std::shared_ptr<ILowerLayer>& lower,
-	    const std::shared_ptr<ISOEHandler>& SOEHandler,
-	    const std::shared_ptr<IMasterApplication>& application,
-	    const std::shared_ptr<IMasterScheduler>& scheduler,
-	    const MasterParams& params
-	);
+    openpal::Logger logger;
+    const std::shared_ptr<openpal::IExecutor> executor;
+    const std::shared_ptr<ILowerLayer> lower;
 
-	openpal::Logger logger;
-	const std::shared_ptr<openpal::IExecutor> executor;
-	const std::shared_ptr<ILowerLayer> lower;
+    // ------- configuration --------
+    const Addresses addresses;
+    const MasterParams params;
+    const std::shared_ptr<ISOEHandler> SOEHandler;
+    const std::shared_ptr<IMasterApplication> application;
+    const std::shared_ptr<IMasterScheduler> scheduler;
 
-	// ------- configuration --------
-	const Addresses addresses;
-	const MasterParams params;
-	const std::shared_ptr<ISOEHandler> SOEHandler;
-	const std::shared_ptr<IMasterApplication> application;
-	const std::shared_ptr<IMasterScheduler> scheduler;
+    // ------- dynamic state ---------
+    bool isOnline = false;
+    bool isSending = false;
+    AppSeqNum solSeq;
+    AppSeqNum unsolSeq;
+    std::shared_ptr<IMasterTask> activeTask;
+    openpal::TimerRef responseTimer;
 
+    MasterTasks tasks;
+    std::deque<APDUHeader> confirmQueue;
+    openpal::Buffer txBuffer;
+    TaskState tstate;
 
-	// ------- dynamic state ---------
-	bool isOnline = false;
-	bool isSending = false;
-	AppSeqNum solSeq;
-	AppSeqNum unsolSeq;
-	std::shared_ptr<IMasterTask> activeTask;
-	openpal::TimerRef responseTimer;
+    // --- implement  IUpperLayer ------
 
-	MasterTasks tasks;
-	std::deque<APDUHeader> confirmQueue;
-	openpal::Buffer txBuffer;
-	TaskState tstate;
+    virtual bool OnLowerLayerUp() override;
 
-	// --- implement  IUpperLayer ------
+    virtual bool OnLowerLayerDown() override;
 
-	virtual bool OnLowerLayerUp() override;
+    virtual bool OnReceive(const Message& message) override;
 
-	virtual bool OnLowerLayerDown() override;
+    virtual bool OnTxReady() override final;
 
-	virtual bool OnReceive(const Message& message) override;
+    // additional virtual methods that can be overriden to implement secure authentication
 
-	virtual bool OnTxReady() override final;
+    virtual void OnParsedHeader(const openpal::RSlice& apdu,
+                                const APDUResponseHeader& header,
+                                const openpal::RSlice& objects);
 
-	// additional virtual methods that can be overriden to implement secure authentication
+    virtual void RecordLastRequest(const openpal::RSlice& apdu) {}
 
-	virtual void OnParsedHeader(const openpal::RSlice& apdu, const APDUResponseHeader& header, const openpal::RSlice& objects);
+    // methods for initiating command sequences
 
-	virtual void RecordLastRequest(const openpal::RSlice& apdu) {}
+    void DirectOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config);
 
-	// methods for initiating command sequences
+    void SelectAndOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config);
 
-	void DirectOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config);
+    // -----  public methods used to add tasks -----
 
-	void SelectAndOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config);
+    std::shared_ptr<IMasterTask> AddScan(openpal::TimeDuration period,
+                                         const HeaderBuilderT& builder,
+                                         TaskConfig config = TaskConfig::Default());
 
-	// -----  public methods used to add tasks -----
+    std::shared_ptr<IMasterTask> AddAllObjectsScan(GroupVariationID gvId,
+                                                   openpal::TimeDuration period,
+                                                   TaskConfig config = TaskConfig::Default());
 
-	std::shared_ptr<IMasterTask> AddScan(openpal::TimeDuration period, const HeaderBuilderT& builder, TaskConfig config = TaskConfig::Default());
+    std::shared_ptr<IMasterTask> AddClassScan(const ClassField& field,
+                                              openpal::TimeDuration period,
+                                              TaskConfig config = TaskConfig::Default());
 
-	std::shared_ptr<IMasterTask> AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
+    std::shared_ptr<IMasterTask> AddRangeScan(GroupVariationID gvId,
+                                              uint16_t start,
+                                              uint16_t stop,
+                                              openpal::TimeDuration period,
+                                              TaskConfig config = TaskConfig::Default());
 
-	std::shared_ptr<IMasterTask> AddClassScan(const ClassField& field, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
+    // ---- Single shot immediate scans ----
 
-	std::shared_ptr<IMasterTask> AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, TaskConfig config = TaskConfig::Default());
+    void Scan(const HeaderBuilderT& builder, TaskConfig config = TaskConfig::Default());
 
-	// ---- Single shot immediate scans ----
+    void ScanAllObjects(GroupVariationID gvId, TaskConfig config = TaskConfig::Default());
 
-	void Scan(const HeaderBuilderT& builder, TaskConfig config = TaskConfig::Default());
+    void ScanClasses(const ClassField& field, TaskConfig config = TaskConfig::Default());
 
-	void ScanAllObjects(GroupVariationID gvId, TaskConfig config = TaskConfig::Default());
+    void ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, TaskConfig config = TaskConfig::Default());
 
-	void ScanClasses(const ClassField& field, TaskConfig config = TaskConfig::Default());
+    /// ---- Write tasks -----
 
-	void ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, TaskConfig config = TaskConfig::Default());
+    void Write(const TimeAndInterval& value, uint16_t index, TaskConfig config = TaskConfig::Default());
 
-	/// ---- Write tasks -----
+    void Restart(RestartType op, const RestartOperationCallbackT& callback, TaskConfig config = TaskConfig::Default());
 
-	void Write(const TimeAndInterval& value, uint16_t index, TaskConfig config = TaskConfig::Default());
+    void PerformFunction(const std::string& name,
+                         opendnp3::FunctionCode func,
+                         const HeaderBuilderT& builder,
+                         TaskConfig config = TaskConfig::Default());
 
-	void Restart(RestartType op, const RestartOperationCallbackT& callback, TaskConfig config = TaskConfig::Default());
+    /// public state manipulation actions
 
-	void PerformFunction(const std::string& name, opendnp3::FunctionCode func, const HeaderBuilderT& builder, TaskConfig config = TaskConfig::Default());
+    TaskState ResumeActiveTask();
 
-	/// public state manipulation actions
+    void CompleteActiveTask();
 
-	TaskState ResumeActiveTask();
+    void QueueConfirm(const APDUHeader& header);
 
-	void CompleteActiveTask();
+    void StartResponseTimer();
 
-	void QueueConfirm(const APDUHeader& header);
+    void ProcessAPDU(const APDUResponseHeader& header, const openpal::RSlice& objects);
 
-	void StartResponseTimer();
+    bool CheckConfirmTransmit();
 
-	void ProcessAPDU(const APDUResponseHeader& header, const openpal::RSlice& objects);
+    void ProcessResponse(const APDUResponseHeader& header, const openpal::RSlice& objects);
 
-	bool CheckConfirmTransmit();
+    void ProcessUnsolicitedResponse(const APDUResponseHeader& header, const openpal::RSlice& objects);
 
-	void ProcessResponse(const APDUResponseHeader& header, const openpal::RSlice& objects);
-
-	void ProcessUnsolicitedResponse(const APDUResponseHeader& header, const openpal::RSlice& objects);
-
-	void Transmit(const openpal::RSlice& data);
+    void Transmit(const openpal::RSlice& data);
 
 private:
+    // --- implement  IMasterTaskRunner ------
 
-	// --- implement  IMasterTaskRunner ------
+    virtual bool Run(const std::shared_ptr<IMasterTask>& task) override;
 
-	virtual bool Run(const std::shared_ptr<IMasterTask>& task) override;
+    void ScheduleRecurringPollTask(const std::shared_ptr<IMasterTask>& task);
 
-	void ScheduleRecurringPollTask(const std::shared_ptr<IMasterTask>& task);
+    void ProcessIIN(const IINField& iin);
 
-	void ProcessIIN(const IINField& iin);
-
-	void OnResponseTimeout();
+    void OnResponseTimeout();
 
 protected:
+    void ScheduleAdhocTask(const std::shared_ptr<IMasterTask>& task);
 
-	void ScheduleAdhocTask(const std::shared_ptr<IMasterTask>& task);
+    // state switch lookups
 
-	// state switch lookups
+    TaskState OnTransmitComplete();
+    TaskState OnResponseEvent(const APDUResponseHeader& header, const openpal::RSlice& objects);
+    TaskState OnResponseTimeoutEvent();
 
-	TaskState OnTransmitComplete();
-	TaskState OnResponseEvent(const APDUResponseHeader& header, const openpal::RSlice& objects);
-	TaskState OnResponseTimeoutEvent();
-
-	// --- state handling functions ----
-	TaskState StartTask_TaskReady();
-	TaskState OnResponse_WaitForResponse(const APDUResponseHeader& header, const openpal::RSlice& objects);
-	TaskState OnResponseTimeout_WaitForResponse();
+    // --- state handling functions ----
+    TaskState StartTask_TaskReady();
+    TaskState OnResponse_WaitForResponse(const APDUResponseHeader& header, const openpal::RSlice& objects);
+    TaskState OnResponseTimeout_WaitForResponse();
 };
 
-}
+} // namespace opendnp3
 
 #endif

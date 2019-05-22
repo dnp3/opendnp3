@@ -27,60 +27,57 @@ using namespace std;
 #undef max
 #undef min
 
-template<class T>
-void TestType(T min, T max, size_t numBytes)
+template<class T> void TestType(T min, T max, size_t numBytes)
 {
-	REQUIRE((sizeof(T) == numBytes));
+    REQUIRE((sizeof(T) == numBytes));
 
-	T val = min;
-	T limit = numeric_limits<T>::min();
-	REQUIRE((val == limit));
+    T val = min;
+    T limit = numeric_limits<T>::min();
+    REQUIRE((val == limit));
 
-	val = max;
-	limit = numeric_limits<T>::max();
-	REQUIRE((val == limit));
+    val = max;
+    limit = numeric_limits<T>::max();
+    REQUIRE((val == limit));
 }
 
 #define SUITE(name) "TestTypes - " name
 
 TEST_CASE(SUITE(" UByte "))
 {
-	TestType<uint8_t>(0, 255, 1);
+    TestType<uint8_t>(0, 255, 1);
 }
 
 TEST_CASE(SUITE(" Int16 "))
 {
-	TestType<int16_t>(-32768, 32767, 2);
+    TestType<int16_t>(-32768, 32767, 2);
 }
 
 TEST_CASE(SUITE(" UInt16 "))
 {
-	TestType<uint16_t>(0, 65535, 2);
+    TestType<uint16_t>(0, 65535, 2);
 }
 
 TEST_CASE(SUITE(" Int32 "))
 {
-	TestType<int32_t>(0x80000000, 2147483647L, 4);
+    TestType<int32_t>(0x80000000, 2147483647L, 4);
 }
 
 TEST_CASE(SUITE(" UInt32 "))
 {
-	TestType<uint32_t>(0, 4294967295UL, 4);
+    TestType<uint32_t>(0, 4294967295UL, 4);
 }
 
 TEST_CASE(SUITE(" Int64"))
 {
-	TestType<int64_t>(0x8000000000000000LL, 9223372036854775807LL, 8);
+    TestType<int64_t>(0x8000000000000000LL, 9223372036854775807LL, 8);
 }
 
 TEST_CASE(SUITE("Float"))
 {
-	REQUIRE(4 ==  sizeof(float));
+    REQUIRE(4 == sizeof(float));
 }
 
 TEST_CASE(SUITE("Double"))
 {
-	REQUIRE(8 ==  sizeof(double));
+    REQUIRE(8 == sizeof(double));
 }
-
-

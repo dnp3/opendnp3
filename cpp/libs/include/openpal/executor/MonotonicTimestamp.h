@@ -21,42 +21,40 @@
 #ifndef OPENPAL_MONOTONICTIMESTAMP_H
 #define OPENPAL_MONOTONICTIMESTAMP_H
 
-#include <cstdint>
-
 #include "TimeDuration.h"
+
+#include <cstdint>
 
 namespace openpal
 {
 
 /**
-*  Strong typing for millisecond-based monotonic timestamps
-*/
+ *  Strong typing for millisecond-based monotonic timestamps
+ */
 class MonotonicTimestamp
 {
 
 public:
+    static MonotonicTimestamp Max();
+    static MonotonicTimestamp Min();
 
-	static MonotonicTimestamp Max();
-	static MonotonicTimestamp Min();
+    bool IsMax() const;
+    bool IsMin() const;
 
-	bool IsMax() const;
-	bool IsMin() const;
+    MonotonicTimestamp();
 
-	MonotonicTimestamp();
+    explicit MonotonicTimestamp(int64_t milliseconds);
 
-	explicit MonotonicTimestamp(int64_t milliseconds);
+    // overflow capped to maximum value
+    MonotonicTimestamp Add(const TimeDuration& duration) const;
 
-	// overflow capped to maximum value
-	MonotonicTimestamp Add(const TimeDuration& duration) const;
-
-	int64_t milliseconds;
+    int64_t milliseconds;
 };
 
 bool operator==(const MonotonicTimestamp& first, const MonotonicTimestamp& second);
 bool operator<(const MonotonicTimestamp& first, const MonotonicTimestamp& second);
 bool operator>(const MonotonicTimestamp& first, const MonotonicTimestamp& second);
 
-
-}
+} // namespace openpal
 
 #endif

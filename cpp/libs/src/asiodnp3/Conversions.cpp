@@ -25,22 +25,17 @@ namespace asiodnp3
 
 opendnp3::HeaderBuilderT ConvertToLambda(const std::vector<opendnp3::Header>& headers)
 {
-	return[headers](opendnp3::HeaderWriter & writer) -> bool
-	{
+    return [headers](opendnp3::HeaderWriter& writer) -> bool {
+        for (auto& header : headers)
+        {
+            if (!header.WriteTo(writer))
+            {
+                return false;
+            }
+        }
 
-		for (auto& header : headers)
-		{
-			if (!header.WriteTo(writer))
-			{
-				return false;
-			}
-		}
-
-		return true;
-	};
+        return true;
+    };
 }
 
-}
-
-
-
+} // namespace asiodnp3

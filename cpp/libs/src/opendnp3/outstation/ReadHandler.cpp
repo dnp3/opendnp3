@@ -23,36 +23,32 @@
 namespace opendnp3
 {
 
-ReadHandler::ReadHandler(IStaticSelector& staticSelector, IEventSelector& eventSelector) :
-	pStaticSelector(&staticSelector),
-	pEventSelector(&eventSelector)
+ReadHandler::ReadHandler(IStaticSelector& staticSelector, IEventSelector& eventSelector)
+    : pStaticSelector(&staticSelector), pEventSelector(&eventSelector)
 {
-
 }
 
 IINField ReadHandler::ProcessHeader(const AllObjectsHeader& header)
 {
-	switch (header.type)
-	{
-	case(GroupVariationType::STATIC) :
-		return pStaticSelector->SelectAll(header.enumeration);
-	case(GroupVariationType::EVENT) :
-		return pEventSelector->SelectAll(header.enumeration);
-	default:
-		return IINField(IINBit::FUNC_NOT_SUPPORTED);
-	}
+    switch (header.type)
+    {
+    case (GroupVariationType::STATIC):
+        return pStaticSelector->SelectAll(header.enumeration);
+    case (GroupVariationType::EVENT):
+        return pEventSelector->SelectAll(header.enumeration);
+    default:
+        return IINField(IINBit::FUNC_NOT_SUPPORTED);
+    }
 }
 
 IINField ReadHandler::ProcessHeader(const RangeHeader& header)
 {
-	return pStaticSelector->SelectRange(header.enumeration, header.range);
+    return pStaticSelector->SelectRange(header.enumeration, header.range);
 }
 
 IINField ReadHandler::ProcessHeader(const CountHeader& header)
 {
-	return pEventSelector->SelectCount(header.enumeration, header.count);
+    return pEventSelector->SelectCount(header.enumeration, header.count);
 }
 
-}
-
-
+} // namespace opendnp3

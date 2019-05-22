@@ -28,7 +28,6 @@ namespace opendnp3
 {
 
 IINField IINFromParseResult(ParseResult result);
-
 }
 
 #endif

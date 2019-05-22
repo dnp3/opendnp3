@@ -24,52 +24,50 @@
 #include <openpal/container/RSlice.h>
 #include <openpal/container/WSlice.h>
 
-#include "opendnp3/gen/FunctionCode.h"
 #include "opendnp3/app/AppControlField.h"
 #include "opendnp3/app/HeaderWriter.h"
+#include "opendnp3/gen/FunctionCode.h"
 
 namespace opendnp3
 {
 
 enum class APDUEquality
 {
-	FULL_EQUALITY,
-	OBJECT_HEADERS_EQUAL,
-	NONE
+    FULL_EQUALITY,
+    OBJECT_HEADERS_EQUAL,
+    NONE
 };
 
 // This class is used to write to an underlying buffer
 class APDUWrapper
 {
 public:
+    APDUWrapper();
 
-	APDUWrapper();
+    explicit APDUWrapper(const openpal::WSlice& aBuffer);
 
-	explicit APDUWrapper(const openpal::WSlice& aBuffer);
+    bool IsValid() const;
 
-	bool IsValid() const;
+    void SetFunction(FunctionCode code);
+    FunctionCode GetFunction() const;
 
-	void SetFunction(FunctionCode code);
-	FunctionCode GetFunction() const;
+    AppControlField GetControl() const;
+    void SetControl(AppControlField control);
 
-	AppControlField GetControl() const;
-	void SetControl(AppControlField control);
+    uint32_t Size() const;
 
-	uint32_t Size() const;
+    openpal::RSlice ToRSlice() const;
 
-	openpal::RSlice ToRSlice() const;
+    HeaderWriter GetWriter();
 
-	HeaderWriter GetWriter();
-
-	uint32_t Remaining() const;
+    uint32_t Remaining() const;
 
 protected:
-
-	bool valid;
-	openpal::WSlice buffer;
-	openpal::WSlice remaining;
+    bool valid;
+    openpal::WSlice buffer;
+    openpal::WSlice remaining;
 };
 
-}
+} // namespace opendnp3
 
 #endif

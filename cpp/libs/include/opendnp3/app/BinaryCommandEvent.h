@@ -22,10 +22,9 @@
 #ifndef OPENDNP3_BINARYCOMMANDEVENT_H
 #define OPENDNP3_BINARYCOMMANDEVENT_H
 
-#include "opendnp3/gen/CommandStatus.h"
-
-#include "opendnp3/app/Flags.h"
 #include "opendnp3/app/DNPTime.h"
+#include "opendnp3/app/Flags.h"
+#include "opendnp3/gen/CommandStatus.h"
 
 namespace opendnp3
 {
@@ -36,34 +35,32 @@ Maps to Group13Var1/2
 class BinaryCommandEvent
 {
 public:
+    BinaryCommandEvent();
 
-	BinaryCommandEvent();
+    BinaryCommandEvent(Flags flags);
 
-	BinaryCommandEvent(Flags flags);
+    BinaryCommandEvent(Flags flags, DNPTime time);
 
-	BinaryCommandEvent(Flags flags, DNPTime time);
+    BinaryCommandEvent(bool value, CommandStatus status);
 
-	BinaryCommandEvent(bool value, CommandStatus status);
+    BinaryCommandEvent(bool value, CommandStatus status, DNPTime time);
 
-	BinaryCommandEvent(bool value, CommandStatus status, DNPTime time);
+    bool value;
+    CommandStatus status;
+    DNPTime time;
 
-	bool value;
-	CommandStatus status;
-	DNPTime time;
+    Flags GetFlags() const;
 
-	Flags GetFlags() const;
-
-	bool operator==(const BinaryCommandEvent& rhs) const;
+    bool operator==(const BinaryCommandEvent& rhs) const;
 
 private:
+    static const uint8_t ValueMask = 0x80;
+    static const uint8_t StatusMask = 0x7F;
 
-	static const uint8_t ValueMask = 0x80;
-	static const uint8_t StatusMask = 0x7F;
-
-	static bool GetValueFromFlags(Flags flags);
-	static CommandStatus GetStatusFromFlags(Flags flags);
+    static bool GetValueFromFlags(Flags flags);
+    static CommandStatus GetStatusFromFlags(Flags flags);
 };
 
-}
+} // namespace opendnp3
 
 #endif

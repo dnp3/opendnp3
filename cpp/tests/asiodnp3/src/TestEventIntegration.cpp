@@ -19,16 +19,16 @@
  * to you under the terms of the License.
  */
 
+#include "mocks/StackPair.h"
+
+#include <asiodnp3/ConsoleLogger.h>
+#include <asiodnp3/DNP3Manager.h>
+
 #include <catch.hpp>
 
-#include <asiodnp3/DNP3Manager.h>
-#include <asiodnp3/ConsoleLogger.h>
-
-#include <memory>
 #include <iostream>
+#include <memory>
 #include <thread>
-
-#include "mocks/StackPair.h"
 
 using namespace opendnp3;
 using namespace asiodnp3;
@@ -37,58 +37,61 @@ using namespace asiodnp3;
 
 TEST_CASE(SUITE("TestEventIntegration"))
 {
-	const uint16_t START_PORT = 20000;
-	const uint16_t NUM_STACK_PAIRS = 10;
+    const uint16_t START_PORT = 20000;
+    const uint16_t NUM_STACK_PAIRS = 10;
 
-	const uint16_t NUM_POINTS_PER_TYPE = 50;
-	const uint16_t EVENTS_PER_ITERATION = 50;
-	const int NUM_ITERATIONS = 10;
+    const uint16_t NUM_POINTS_PER_TYPE = 50;
+    const uint16_t EVENTS_PER_ITERATION = 50;
+    const int NUM_ITERATIONS = 10;
 
-	const uint32_t LEVELS = flags::ERR | flags::WARN;
+    const uint32_t LEVELS = flags::ERR | flags::WARN;
 
-	const auto TEST_TIMEOUT = std::chrono::seconds(5);
-	const auto STACK_TIMEOUT = openpal::TimeDuration::Seconds(1);
+    const auto TEST_TIMEOUT = std::chrono::seconds(5);
+    const auto STACK_TIMEOUT = openpal::TimeDuration::Seconds(1);
 
-	// run with at least a concurrency of 2, but more if there are more cores
-	const auto concurreny = std::max<unsigned int>(std::thread::hardware_concurrency(), 2);
+    // run with at least a concurrency of 2, but more if there are more cores
+    const auto concurreny = std::max<unsigned int>(std::thread::hardware_concurrency(), 2);
 
-	DNP3Manager manager(concurreny);
+    DNP3Manager manager(concurreny);
 
-	std::vector<std::unique_ptr<StackPair>> pairs;
+    std::vector<std::unique_ptr<StackPair>> pairs;
 
-	for (uint16_t i = 0; i < NUM_STACK_PAIRS; ++i)
-	{
-		auto pair = std::make_unique<StackPair>(LEVELS, STACK_TIMEOUT, manager, START_PORT + i, NUM_POINTS_PER_TYPE, EVENTS_PER_ITERATION);
-		pairs.push_back(std::move(pair));
-	}
+    for (uint16_t i = 0; i < NUM_STACK_PAIRS; ++i)
+    {
+        auto pair = std::make_unique<StackPair>(LEVELS, STACK_TIMEOUT, manager, START_PORT + i, NUM_POINTS_PER_TYPE,
+                                                EVENTS_PER_ITERATION);
+        pairs.push_back(std::move(pair));
+    }
 
-	for (auto& pair : pairs)
-	{
-		pair->WaitForChannelsOnline(TEST_TIMEOUT);
-	}
+    for (auto& pair : pairs)
+    {
+        pair->WaitForChannelsOnline(TEST_TIMEOUT);
+    }
 
-	const auto start = std::chrono::steady_clock::now();
+    const auto start = std::chrono::steady_clock::now();
 
-	for (int i = 0; i < NUM_ITERATIONS; ++i)
-	{
+    for (int i = 0; i < NUM_ITERATIONS; ++i)
+    {
 
-		for (auto& pair : pairs)
-		{
-			pair->SendRandomValues();
-		}
+        for (auto& pair : pairs)
+        {
+            pair->SendRandomValues();
+        }
 
-		for (auto& pair : pairs)
-		{
-			pair->WaitToRxValues(TEST_TIMEOUT);
-		}
-	}
+        for (auto& pair : pairs)
+        {
+            pair->WaitToRxValues(TEST_TIMEOUT);
+        }
+    }
 
-	const auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start);
+    const auto milliseconds
+        = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start);
 
-	const auto total_events_transferred = static_cast<uint64_t>(NUM_STACK_PAIRS) * static_cast<uint64_t>(EVENTS_PER_ITERATION) * static_cast<uint64_t>(NUM_ITERATIONS);
+    const auto total_events_transferred = static_cast<uint64_t>(NUM_STACK_PAIRS)
+        * static_cast<uint64_t>(EVENTS_PER_ITERATION) * static_cast<uint64_t>(NUM_ITERATIONS);
 
-	const auto rate = (total_events_transferred * 1000) / milliseconds.count();
+    const auto rate = (total_events_transferred * 1000) / milliseconds.count();
 
-	//std::cout << total_events_transferred << " in " << milliseconds.count() << " ms == " << rate << " events per/sec" << std::endl;
+    // std::cout << total_events_transferred << " in " << milliseconds.count() << " ms == " << rate << " events per/sec"
+    // << std::endl;
 }
-

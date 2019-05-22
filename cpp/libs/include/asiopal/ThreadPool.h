@@ -23,59 +23,54 @@
 
 #include <openpal/logging/Logger.h>
 
-#include "asiopal/SteadyClock.h"
 #include "asiopal/Executor.h"
+#include "asiopal/SteadyClock.h"
 
 #include <functional>
-#include <thread>
 #include <memory>
+#include <thread>
 
 namespace asiopal
 {
 
 /**
-*	A thread pool that calls asio::io_context::run
-*/
+ *	A thread pool that calls asio::io_context::run
+ */
 class ThreadPool
 {
 public:
+    friend class ThreadPoolTest;
 
-	friend class ThreadPoolTest;
+    ThreadPool(const openpal::Logger& logger,
+               const std::shared_ptr<IO>& io,
+               uint32_t concurrency,
+               std::function<void()> onThreadStart = []() {},
+               std::function<void()> onThreadExit = []() {});
 
-	ThreadPool(
-	    const openpal::Logger& logger,
-	    const std::shared_ptr<IO>& io,
-	    uint32_t concurrency,
-	std::function<void()> onThreadStart = []() {},
-	std::function<void()> onThreadExit = []() {}
-	);
+    ~ThreadPool();
 
-	~ThreadPool();
+    inline std::shared_ptr<Executor> CreateExecutor() const
+    {
+        return Executor::Create(io);
+    }
 
-	inline std::shared_ptr<Executor> CreateExecutor() const
-	{
-		return Executor::Create(io);
-	}
-
-	void Shutdown();
+    void Shutdown();
 
 private:
+    openpal::Logger logger;
+    const std::shared_ptr<IO> io;
 
-	openpal::Logger logger;
-	const std::shared_ptr<IO> io;
+    std::function<void()> onThreadStart;
+    std::function<void()> onThreadExit;
 
-	std::function<void ()> onThreadStart;
-	std::function<void ()> onThreadExit;
+    bool isShutdown;
 
-	bool isShutdown;
+    void Run(int threadnum);
 
-	void Run(int threadnum);
-
-	asio::basic_waitable_timer< asiopal::steady_clock_t > infiniteTimer;
-	std::vector<std::unique_ptr<std::thread>> threads;
+    asio::basic_waitable_timer<asiopal::steady_clock_t> infiniteTimer;
+    std::vector<std::unique_ptr<std::thread>> threads;
 };
 
-}
-
+} // namespace asiopal
 
 #endif

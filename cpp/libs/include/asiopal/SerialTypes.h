@@ -23,8 +23,8 @@
 
 #include "openpal/executor/TimeDuration.h"
 
-#include "opendnp3/gen/Parity.h"
 #include "opendnp3/gen/FlowControl.h"
+#include "opendnp3/gen/Parity.h"
 #include "opendnp3/gen/StopBits.h"
 
 #include <string>
@@ -36,39 +36,39 @@ namespace asiopal
 struct SerialSettings
 {
 
-	/// Defaults to the familiar 9600 8/N/1, no flow control
-	SerialSettings() :
-		baud(9600),
-		dataBits(8),
-		stopBits(opendnp3::StopBits::One),
-		parity(opendnp3::Parity::None),
-		flowType(opendnp3::FlowControl::None),
-		asyncOpenDelay(openpal::TimeDuration::Milliseconds(500))
-	{}
+    /// Defaults to the familiar 9600 8/N/1, no flow control
+    SerialSettings()
+        : baud(9600),
+          dataBits(8),
+          stopBits(opendnp3::StopBits::One),
+          parity(opendnp3::Parity::None),
+          flowType(opendnp3::FlowControl::None),
+          asyncOpenDelay(openpal::TimeDuration::Milliseconds(500))
+    {
+    }
 
-	/// name of the port, i.e. "COM1" or "/dev/tty0"
-	std::string deviceName;
+    /// name of the port, i.e. "COM1" or "/dev/tty0"
+    std::string deviceName;
 
-	/// Baud rate of the port, i.e. 9600 or 57600
-	int baud;
+    /// Baud rate of the port, i.e. 9600 or 57600
+    int baud;
 
-	/// Data bits, usually 8
-	int dataBits;
+    /// Data bits, usually 8
+    int dataBits;
 
-	/// Stop bits, usually set to 1
-	opendnp3::StopBits stopBits;
+    /// Stop bits, usually set to 1
+    opendnp3::StopBits stopBits;
 
-	/// Parity setting for the port, usually PAR_NONE
-	opendnp3::Parity parity;
+    /// Parity setting for the port, usually PAR_NONE
+    opendnp3::Parity parity;
 
-	/// Flow control setting, usually FLOW_NONE
-	opendnp3::FlowControl flowType;
+    /// Flow control setting, usually FLOW_NONE
+    opendnp3::FlowControl flowType;
 
-	/// Some physical layers need time to "settle" so that the first tx isn't lost
-	openpal::TimeDuration asyncOpenDelay;
+    /// Some physical layers need time to "settle" so that the first tx isn't lost
+    openpal::TimeDuration asyncOpenDelay;
 };
 
-}
+} // namespace asiopal
 
 #endif
-

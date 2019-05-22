@@ -27,22 +27,21 @@ namespace opendnp3
 {
 
 /**
-* Callbacks for when a task starts and completes
-*/
+ * Callbacks for when a task starts and completes
+ */
 class ITaskCallback
 {
 public:
+    // Called when the task starts running
+    virtual void OnStart() = 0;
 
-	// Called when the task starts running
-	virtual void OnStart() = 0;
+    // Called when the task succeeds or fails
+    virtual void OnComplete(TaskCompletion result) = 0;
 
-	// Called when the task succeeds or fails
-	virtual void OnComplete(TaskCompletion result) = 0;
-
-	// Called when the task no longer exists and no more calls will be made to OnStart/OnComplete
-	virtual void OnDestroyed() = 0;
+    // Called when the task no longer exists and no more calls will be made to OnStart/OnComplete
+    virtual void OnDestroyed() = 0;
 };
 
-}
+} // namespace opendnp3
 
 #endif

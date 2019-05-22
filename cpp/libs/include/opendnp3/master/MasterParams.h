@@ -23,10 +23,10 @@
 
 #include <openpal/executor/TimeDuration.h>
 
-#include "opendnp3/gen/TimeSyncMode.h"
-#include "opendnp3/gen/IndexQualifierMode.h"
-#include "opendnp3/app/ClassField.h"
 #include "opendnp3/app/AppConstants.h"
+#include "opendnp3/app/ClassField.h"
+#include "opendnp3/gen/IndexQualifierMode.h"
+#include "opendnp3/gen/TimeSyncMode.h"
 
 namespace opendnp3
 {
@@ -36,56 +36,55 @@ Configuration information for the dnp3 master
 */
 struct MasterParams
 {
-	/// Default constructor
-	MasterParams() {}
+    /// Default constructor
+    MasterParams() {}
 
-	/// Application layer response timeout
-	openpal::TimeDuration responseTimeout = openpal::TimeDuration::Seconds(5);
+    /// Application layer response timeout
+    openpal::TimeDuration responseTimeout = openpal::TimeDuration::Seconds(5);
 
-	/// If true, the master will do time syncs when it sees the time IIN bit from the outstation
-	TimeSyncMode timeSyncMode = TimeSyncMode::None;
+    /// If true, the master will do time syncs when it sees the time IIN bit from the outstation
+    TimeSyncMode timeSyncMode = TimeSyncMode::None;
 
-	/// If true, the master will disable unsol on startup for all 3 classes
-	bool disableUnsolOnStartup = true;
+    /// If true, the master will disable unsol on startup for all 3 classes
+    bool disableUnsolOnStartup = true;
 
-	/// If true, the master will not clear the restart IIN bit in response to detecting it set
-	bool ignoreRestartIIN = false;
+    /// If true, the master will not clear the restart IIN bit in response to detecting it set
+    bool ignoreRestartIIN = false;
 
-	/// Bitwise mask used determine which classes are enabled for unsol, if 0 unsol is not enabled
-	ClassField unsolClassMask = ClassField::AllEventClasses();
+    /// Bitwise mask used determine which classes are enabled for unsol, if 0 unsol is not enabled
+    ClassField unsolClassMask = ClassField::AllEventClasses();
 
-	/// Which classes should be requested in a startup integrity scan, defaults to 3/2/1/0
-	/// A mask equal to 0 means no startup integrity scan will be performed
-	ClassField startupIntegrityClassMask = ClassField::AllClasses();
+    /// Which classes should be requested in a startup integrity scan, defaults to 3/2/1/0
+    /// A mask equal to 0 means no startup integrity scan will be performed
+    ClassField startupIntegrityClassMask = ClassField::AllClasses();
 
-	/// Defines whether an integrity scan will be performed when the EventBufferOverflow IIN is detected
-	bool integrityOnEventOverflowIIN = true;
+    /// Defines whether an integrity scan will be performed when the EventBufferOverflow IIN is detected
+    bool integrityOnEventOverflowIIN = true;
 
-	/// Which classes should be requested in an event scan when detecting corresponding events available IIN
-	ClassField eventScanOnEventsAvailableClassMask = ClassField::None();
+    /// Which classes should be requested in an event scan when detecting corresponding events available IIN
+    ClassField eventScanOnEventsAvailableClassMask = ClassField::None();
 
-	/// Time delay before retrying a failed task
-	openpal::TimeDuration taskRetryPeriod = openpal::TimeDuration::Seconds(5);
+    /// Time delay before retrying a failed task
+    openpal::TimeDuration taskRetryPeriod = openpal::TimeDuration::Seconds(5);
 
-	/// Maximum time delay before retrying a failed task. Backs off exponentially from taskRetryPeriod
-	openpal::TimeDuration maxTaskRetryPeriod = openpal::TimeDuration::Minutes(1);
+    /// Maximum time delay before retrying a failed task. Backs off exponentially from taskRetryPeriod
+    openpal::TimeDuration maxTaskRetryPeriod = openpal::TimeDuration::Minutes(1);
 
-	/// Time delay before failing a non-recurring task (e.g. commands) that cannot start
-	openpal::TimeDuration taskStartTimeout = openpal::TimeDuration::Seconds(10);
+    /// Time delay before failing a non-recurring task (e.g. commands) that cannot start
+    openpal::TimeDuration taskStartTimeout = openpal::TimeDuration::Seconds(10);
 
-	/// maximum APDU tx size in bytes
-	uint32_t maxTxFragSize = DEFAULT_MAX_APDU_SIZE;
+    /// maximum APDU tx size in bytes
+    uint32_t maxTxFragSize = DEFAULT_MAX_APDU_SIZE;
 
-	/// maximum APDU rx size in bytes
-	uint32_t maxRxFragSize = DEFAULT_MAX_APDU_SIZE;
+    /// maximum APDU rx size in bytes
+    uint32_t maxRxFragSize = DEFAULT_MAX_APDU_SIZE;
 
-	/// Control how the master chooses what qualifier to send when making requests
-	/// The default behavior is to always use two bytes, but the one byte optimization
-	/// can be enabled
-	IndexQualifierMode controlQualifierMode = IndexQualifierMode::always_two_bytes;
+    /// Control how the master chooses what qualifier to send when making requests
+    /// The default behavior is to always use two bytes, but the one byte optimization
+    /// can be enabled
+    IndexQualifierMode controlQualifierMode = IndexQualifierMode::always_two_bytes;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

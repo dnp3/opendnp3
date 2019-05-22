@@ -29,84 +29,73 @@ namespace opendnp3
 {
 
 /**
-* Mock ICommandHandler used for examples and demos
-*/
+ * Mock ICommandHandler used for examples and demos
+ */
 class SimpleCommandHandler : public ICommandHandler
 {
 public:
+    /**
+     * @param status The status value to return in response to all commands
+     */
+    SimpleCommandHandler(CommandStatus status);
 
-	/**
-	* @param status The status value to return in response to all commands
-	*/
-	SimpleCommandHandler(CommandStatus status);
+    CommandStatus Select(const ControlRelayOutputBlock& command, uint16_t index) override final;
+    CommandStatus Operate(const ControlRelayOutputBlock& command, uint16_t index, OperateType opType) override final;
 
-	CommandStatus Select(const ControlRelayOutputBlock& command, uint16_t index) override final;
-	CommandStatus Operate(const ControlRelayOutputBlock& command, uint16_t index, OperateType opType) override final;
+    CommandStatus Select(const AnalogOutputInt16& command, uint16_t index) override final;
+    CommandStatus Operate(const AnalogOutputInt16& command, uint16_t index, OperateType opType) override final;
 
+    CommandStatus Select(const AnalogOutputInt32& command, uint16_t index) override final;
+    CommandStatus Operate(const AnalogOutputInt32& command, uint16_t index, OperateType opType) override final;
 
-	CommandStatus Select(const AnalogOutputInt16& command, uint16_t index) override final;
-	CommandStatus Operate(const AnalogOutputInt16& command, uint16_t index, OperateType opType) override final;
+    CommandStatus Select(const AnalogOutputFloat32& command, uint16_t index) override final;
+    CommandStatus Operate(const AnalogOutputFloat32& command, uint16_t index, OperateType opType) override final;
 
-
-	CommandStatus Select(const AnalogOutputInt32& command, uint16_t index) override final;
-	CommandStatus Operate(const AnalogOutputInt32& command, uint16_t index, OperateType opType) override final;
-
-
-	CommandStatus Select(const AnalogOutputFloat32& command, uint16_t index) override final;
-	CommandStatus Operate(const AnalogOutputFloat32& command, uint16_t index, OperateType opType) override final;
-
-
-	CommandStatus Select(const AnalogOutputDouble64& command, uint16_t index) override final;
-	CommandStatus Operate(const AnalogOutputDouble64& command, uint16_t index, OperateType opType) override final;
-
+    CommandStatus Select(const AnalogOutputDouble64& command, uint16_t index) override final;
+    CommandStatus Operate(const AnalogOutputDouble64& command, uint16_t index, OperateType opType) override final;
 
 protected:
+    virtual void DoSelect(const ControlRelayOutputBlock& command, uint16_t index) {}
+    virtual void DoOperate(const ControlRelayOutputBlock& command, uint16_t index, OperateType opType) {}
 
-	virtual void DoSelect(const ControlRelayOutputBlock& command, uint16_t index) {}
-	virtual void DoOperate(const ControlRelayOutputBlock& command, uint16_t index, OperateType opType) {}
+    virtual void DoSelect(const AnalogOutputInt16& command, uint16_t index) {}
+    virtual void DoOperate(const AnalogOutputInt16& command, uint16_t index, OperateType opType) {}
 
-	virtual void DoSelect(const AnalogOutputInt16& command, uint16_t index) {}
-	virtual void DoOperate(const AnalogOutputInt16& command, uint16_t index, OperateType opType) {}
+    virtual void DoSelect(const AnalogOutputInt32& command, uint16_t index) {}
+    virtual void DoOperate(const AnalogOutputInt32& command, uint16_t index, OperateType opType) {}
 
-	virtual void DoSelect(const AnalogOutputInt32& command, uint16_t index) {}
-	virtual void DoOperate(const AnalogOutputInt32& command, uint16_t index, OperateType opType) {}
+    virtual void DoSelect(const AnalogOutputFloat32& command, uint16_t index) {}
+    virtual void DoOperate(const AnalogOutputFloat32& command, uint16_t index, OperateType opType) {}
 
-	virtual void DoSelect(const AnalogOutputFloat32& command, uint16_t index) {}
-	virtual void DoOperate(const AnalogOutputFloat32& command, uint16_t index, OperateType opType) {}
+    virtual void DoSelect(const AnalogOutputDouble64& command, uint16_t index) {}
+    virtual void DoOperate(const AnalogOutputDouble64& command, uint16_t index, OperateType opType) {}
 
-	virtual void DoSelect(const AnalogOutputDouble64& command, uint16_t index) {}
-	virtual void DoOperate(const AnalogOutputDouble64& command, uint16_t index, OperateType opType) {}
+    virtual void Start() override;
+    virtual void End() override;
 
-	virtual void Start() override;
-	virtual void End() override;
-
-	CommandStatus status;
+    CommandStatus status;
 
 public:
-
-	uint32_t numOperate;
-	uint32_t numSelect;
-	uint32_t numStart;
-	uint32_t numEnd;
-
+    uint32_t numOperate;
+    uint32_t numSelect;
+    uint32_t numStart;
+    uint32_t numEnd;
 };
 
 /**
-* A singleton command handler that always returns success
-*/
+ * A singleton command handler that always returns success
+ */
 class SuccessCommandHandler : public SimpleCommandHandler
 {
 public:
+    static std::shared_ptr<ICommandHandler> Create()
+    {
+        return std::make_shared<SuccessCommandHandler>();
+    }
 
-	static std::shared_ptr<ICommandHandler> Create()
-	{
-		return std::make_shared<SuccessCommandHandler>();
-	}
-
-	SuccessCommandHandler() : SimpleCommandHandler(CommandStatus::SUCCESS) {}
+    SuccessCommandHandler() : SimpleCommandHandler(CommandStatus::SUCCESS) {}
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

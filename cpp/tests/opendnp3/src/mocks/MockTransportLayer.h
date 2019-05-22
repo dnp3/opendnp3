@@ -34,53 +34,49 @@ class MockTransportLayer final : public IUpperLayer
 {
 
 public:
+    struct Counters
+    {
+        uint32_t numTxReady = 0;
+        uint32_t numLayerUp = 0;
+        uint32_t numLayerDown = 0;
+    };
 
-	struct Counters
-	{
-		uint32_t numTxReady = 0;
-		uint32_t numLayerUp = 0;
-		uint32_t numLayerDown = 0;
-	};
+    MockTransportLayer();
 
-	MockTransportLayer();
+    void SetLinkLayer(ILinkLayer& linkLayer);
 
-	void SetLinkLayer(ILinkLayer& linkLayer);
+    bool SendDown(ITransportSegment& segments);
 
-	bool SendDown(ITransportSegment& segments);
+    bool IsOnline() const
+    {
+        return isOnline;
+    }
 
-	bool IsOnline() const
-	{
-		return isOnline;
-	}
+    bool CountersEquals(const Counters& other)
+    {
+        return (counters.numTxReady == other.numTxReady) && (counters.numLayerUp == other.numLayerUp)
+            && (counters.numLayerDown == other.numLayerDown);
+    }
 
-	bool CountersEquals(const Counters& other)
-	{
-		return (counters.numTxReady == other.numTxReady)
-		       && (counters.numLayerUp == other.numLayerUp)
-		       && (counters.numLayerDown == other.numLayerDown);
-	}
+    Counters GetCounters() const
+    {
+        return counters;
+    }
 
-	Counters GetCounters() const
-	{
-		return counters;
-	}
+    // these are the NVII delegates
+    virtual bool OnReceive(const Message& message) override;
+    virtual bool OnTxReady() override;
+    virtual bool OnLowerLayerUp() override;
+    virtual bool OnLowerLayerDown() override;
 
-	// these are the NVII delegates
-	virtual bool OnReceive(const Message& message) override;
-	virtual bool OnTxReady() override;
-	virtual bool OnLowerLayerUp() override;
-	virtual bool OnLowerLayerDown() override;
-
-	std::deque<std::string> receivedQueue;
+    std::deque<std::string> receivedQueue;
 
 private:
-	ILinkLayer* pLinkLayer;
-	bool isOnline;
-	Counters counters;
+    ILinkLayer* pLinkLayer;
+    bool isOnline;
+    Counters counters;
 };
 
-
-
-}
+} // namespace opendnp3
 
 #endif

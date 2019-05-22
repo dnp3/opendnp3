@@ -30,17 +30,16 @@ namespace opendnp3
 class ILinkSession : public IFrameSink
 {
 public:
+    virtual ~ILinkSession() {}
 
-	virtual ~ILinkSession() {}
+    // lower layer informs this layer that it is ready to transmit again
+    virtual bool OnTxReady() = 0;
 
-	// lower layer informs this layer that it is ready to transmit again
-	virtual bool OnTxReady() = 0;
+    virtual bool OnLowerLayerUp() = 0;
 
-	virtual bool OnLowerLayerUp() = 0;
-
-	virtual bool OnLowerLayerDown() = 0;
+    virtual bool OnLowerLayerDown() = 0;
 };
 
-}
+} // namespace opendnp3
 
 #endif

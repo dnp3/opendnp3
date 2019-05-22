@@ -34,14 +34,11 @@ namespace opendnp3
 class IFrameSink
 {
 public:
+    virtual ~IFrameSink() {}
 
-	virtual ~IFrameSink() {}
-
-	virtual bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata) = 0;
-
+    virtual bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata) = 0;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

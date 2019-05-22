@@ -18,12 +18,12 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
-
 #include <openpal/container/Array.h>
 
 #include <opendnp3/app/MeasurementTypeSpecs.h>
 #include <opendnp3/outstation/IndexSearch.h>
+
+#include <catch.hpp>
 
 using namespace openpal;
 using namespace opendnp3;
@@ -32,125 +32,124 @@ using namespace opendnp3;
 
 IndexSearch::Result TestResultLengthFour(uint16_t index)
 {
-	Array<Cell<BinarySpec>, uint16_t> values(4);
-	values[0].config.vIndex = 1;
-	values[1].config.vIndex = 3;
-	values[2].config.vIndex = 7;
-	values[3].config.vIndex = 9;
+    Array<Cell<BinarySpec>, uint16_t> values(4);
+    values[0].config.vIndex = 1;
+    values[1].config.vIndex = 3;
+    values[2].config.vIndex = 7;
+    values[3].config.vIndex = 9;
 
-	return IndexSearch::FindClosestRawIndex(values.ToView(), index);
+    return IndexSearch::FindClosestRawIndex(values.ToView(), index);
 }
 
 TEST_CASE(SUITE("FindsExactMatchForLastValue"))
 {
-	auto result = TestResultLengthFour(9);
-	REQUIRE(result.match);
-	REQUIRE(result.index == 3);
+    auto result = TestResultLengthFour(9);
+    REQUIRE(result.match);
+    REQUIRE(result.index == 3);
 }
 
 TEST_CASE(SUITE("FindsExactMatchForFirstValue"))
 {
-	auto result = TestResultLengthFour(1);
-	REQUIRE(result.match);
-	REQUIRE(result.index == 0);
+    auto result = TestResultLengthFour(1);
+    REQUIRE(result.match);
+    REQUIRE(result.index == 0);
 }
 
 TEST_CASE(SUITE("StopsOnFirstValueIfIndexLessThanFirst"))
 {
-	auto result = TestResultLengthFour(0);
-	REQUIRE(!result.match);
-	REQUIRE(result.index == 0);
+    auto result = TestResultLengthFour(0);
+    REQUIRE(!result.match);
+    REQUIRE(result.index == 0);
 }
 
 TEST_CASE(SUITE("StopsOnLastValueIfIndexGreaterThanLast"))
 {
-	auto result = TestResultLengthFour(11);
-	REQUIRE(!result.match);
-	REQUIRE(result.index == 3);
+    auto result = TestResultLengthFour(11);
+    REQUIRE(!result.match);
+    REQUIRE(result.index == 3);
 }
 
 TEST_CASE(SUITE("FindsNextSmallestIndex"))
 {
-	auto result = TestResultLengthFour(2);
-	REQUIRE(!result.match);
-	REQUIRE(result.index == 0);
+    auto result = TestResultLengthFour(2);
+    REQUIRE(!result.match);
+    REQUIRE(result.index == 0);
 }
 
 TEST_CASE(SUITE("FindsNextBiggestIndex"))
 {
-	auto result = TestResultLengthFour(8);
-	REQUIRE(!result.match);
-	REQUIRE(result.index == 3);
+    auto result = TestResultLengthFour(8);
+    REQUIRE(!result.match);
+    REQUIRE(result.index == 3);
 }
 
 Range TestRangeSearch(const Range& range)
 {
-	Array<Cell<BinarySpec>, uint16_t> values(4);
-	values[0].config.vIndex = 1;
-	values[1].config.vIndex = 3;
-	values[2].config.vIndex = 7;
-	values[3].config.vIndex = 9;
+    Array<Cell<BinarySpec>, uint16_t> values(4);
+    values[0].config.vIndex = 1;
+    values[1].config.vIndex = 3;
+    values[2].config.vIndex = 7;
+    values[3].config.vIndex = 9;
 
-	return IndexSearch::FindRawRange(values.ToView(), range);
+    return IndexSearch::FindRawRange(values.ToView(), range);
 }
 
 TEST_CASE(SUITE("FindsFullRangeIfInputBracketsEntireRange"))
 {
-	auto range = TestRangeSearch(Range::From(0, 20));
-	REQUIRE(range.start == 0);
-	REQUIRE(range.stop == 3);
+    auto range = TestRangeSearch(Range::From(0, 20));
+    REQUIRE(range.start == 0);
+    REQUIRE(range.stop == 3);
 }
 
 TEST_CASE(SUITE("FindsInvalidRangeIfBeneathRange"))
 {
-	auto range = TestRangeSearch(Range::From(0, 0));
-	REQUIRE(!range.IsValid());
+    auto range = TestRangeSearch(Range::From(0, 0));
+    REQUIRE(!range.IsValid());
 }
 
 TEST_CASE(SUITE("FindsInvalidRangeIfAboveRange"))
 {
-	auto range = TestRangeSearch(Range::From(10, 10));
-	REQUIRE(!range.IsValid());
+    auto range = TestRangeSearch(Range::From(10, 10));
+    REQUIRE(!range.IsValid());
 }
 
 TEST_CASE(SUITE("FindsInvalidRangeIfNoMatchInside"))
 {
-	auto range = TestRangeSearch(Range::From(4, 6));
-	REQUIRE(!range.IsValid());
+    auto range = TestRangeSearch(Range::From(4, 6));
+    REQUIRE(!range.IsValid());
 }
 
 TEST_CASE(SUITE("FindsSingleValueExactMatch"))
 {
-	auto range = TestRangeSearch(Range::From(3, 3));
-	REQUIRE(range.start == 1);
-	REQUIRE(range.stop == 1);
+    auto range = TestRangeSearch(Range::From(3, 3));
+    REQUIRE(range.start == 1);
+    REQUIRE(range.stop == 1);
 }
 
 TEST_CASE(SUITE("FindsSingleValuePartialMatch"))
 {
-	auto range = TestRangeSearch(Range::From(2, 6));
-	REQUIRE(range.start == 1);
-	REQUIRE(range.stop == 1);
+    auto range = TestRangeSearch(Range::From(2, 6));
+    REQUIRE(range.start == 1);
+    REQUIRE(range.stop == 1);
 }
 
 TEST_CASE(SUITE("FindsSubRangeAtFront"))
 {
-	auto range = TestRangeSearch(Range::From(0, 8));
-	REQUIRE(range.start == 0);
-	REQUIRE(range.stop == 2);
+    auto range = TestRangeSearch(Range::From(0, 8));
+    REQUIRE(range.start == 0);
+    REQUIRE(range.stop == 2);
 }
 
 TEST_CASE(SUITE("FindsSubRangeInMiddle"))
 {
-	auto range = TestRangeSearch(Range::From(3, 7));
-	REQUIRE(range.start == 1);
-	REQUIRE(range.stop == 2);
+    auto range = TestRangeSearch(Range::From(3, 7));
+    REQUIRE(range.start == 1);
+    REQUIRE(range.stop == 2);
 }
 
 TEST_CASE(SUITE("FindsSubRangeAtEnd"))
 {
-	auto range = TestRangeSearch(Range::From(5, 11));
-	REQUIRE(range.start == 2);
-	REQUIRE(range.stop == 3);
+    auto range = TestRangeSearch(Range::From(5, 11));
+    REQUIRE(range.start == 2);
+    REQUIRE(range.stop == 3);
 }
-

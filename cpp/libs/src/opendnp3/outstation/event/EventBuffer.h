@@ -21,104 +21,95 @@
 #ifndef OPENDNP3_EVENTBUFFER_H
 #define OPENDNP3_EVENTBUFFER_H
 
+#include "EventStorage.h"
+
+#include "opendnp3/app/ClassField.h"
+#include "opendnp3/outstation/EventBufferConfig.h"
 #include "opendnp3/outstation/IEventReceiver.h"
 #include "opendnp3/outstation/IEventSelector.h"
 #include "opendnp3/outstation/IResponseLoader.h"
-#include "opendnp3/outstation/EventBufferConfig.h"
-#include "opendnp3/app/ClassField.h"
-
-#include "EventStorage.h"
 
 namespace opendnp3
 {
 
 /*
-	The sequence of events list is a doubly linked-list implemented
-	in a finite array.  The list is desired for O(1) remove operations from
-	arbitrary parts of the list depending on what the user asks for in terms
-	of event type or Class1/2/3.
+    The sequence of events list is a doubly linked-list implemented
+    in a finite array.  The list is desired for O(1) remove operations from
+    arbitrary parts of the list depending on what the user asks for in terms
+    of event type or Class1/2/3.
 
-	At worst, selection is O(n) but it has some type/class tracking to avoid looping
-	over the SOE list when there are no more events to be written.
+    At worst, selection is O(n) but it has some type/class tracking to avoid looping
+    over the SOE list when there are no more events to be written.
 */
 
 class EventBuffer final : public IEventReceiver, public IEventSelector, public IResponseLoader
 {
 
 public:
+    explicit EventBuffer(const EventBufferConfig& config);
 
-	explicit EventBuffer(const EventBufferConfig& config);
+    // ------- IEventReceiver ------
 
-	// ------- IEventReceiver ------
+    virtual void Update(const Event<BinarySpec>& evt) override;
+    virtual void Update(const Event<DoubleBitBinarySpec>& evt) override;
+    virtual void Update(const Event<AnalogSpec>& evt) override;
+    virtual void Update(const Event<CounterSpec>& evt) override;
+    virtual void Update(const Event<FrozenCounterSpec>& evt) override;
+    virtual void Update(const Event<BinaryOutputStatusSpec>& evt) override;
+    virtual void Update(const Event<AnalogOutputStatusSpec>& evt) override;
+    virtual void Update(const Event<OctetStringSpec>& evt) override;
 
-	virtual void Update(const Event<BinarySpec>& evt) override;
-	virtual void Update(const Event<DoubleBitBinarySpec>& evt) override;
-	virtual void Update(const Event<AnalogSpec>& evt) override;
-	virtual void Update(const Event<CounterSpec>& evt) override;
-	virtual void Update(const Event<FrozenCounterSpec>&  evt) override;
-	virtual void Update(const Event<BinaryOutputStatusSpec>& evt) override;
-	virtual void Update(const Event<AnalogOutputStatusSpec>& evt) override;
-	virtual void Update(const Event<OctetStringSpec>& evt) override;
+    // ------- IEventSelector ------
 
-	// ------- IEventSelector ------
+    virtual void Unselect();
 
-	virtual void Unselect();
+    virtual IINField SelectAll(GroupVariation gv) override final;
 
-	virtual IINField SelectAll(GroupVariation gv) override final;
+    virtual IINField SelectCount(GroupVariation gv, uint16_t count) override final;
 
-	virtual IINField SelectCount(GroupVariation gv, uint16_t count) override final;
+    // ------- IResponseLoader -------
 
-	// ------- IResponseLoader -------
+    virtual bool HasAnySelection() const override final;
 
-	virtual bool HasAnySelection() const override final;
+    virtual bool Load(HeaderWriter& writer) override final;
 
-	virtual bool Load(HeaderWriter& writer) override final;
+    // ------- Misc -------
 
-	// ------- Misc -------
+    void ClearWritten(); // called when a transmission succeeds
 
-	void ClearWritten(); // called when a transmission succeeds
+    ClassField UnwrittenClassField() const;
 
-	ClassField UnwrittenClassField() const;
+    bool IsOverflown();
 
-	bool IsOverflown();
-
-	void SelectAllByClass(const ClassField& clazz);
+    void SelectAllByClass(const ClassField& clazz);
 
 private:
+    bool overflow = false;
+    EventStorage storage;
 
-	bool overflow = false;
-	EventStorage storage;
+    IINField SelectMaxCount(GroupVariation gv, uint32_t maximum);
 
-	IINField SelectMaxCount(GroupVariation gv, uint32_t maximum);
+    template<class T> IINField SelectByType(uint32_t max, T type)
+    {
+        this->storage.SelectByType(type, max);
+        return IINField::Empty();
+    }
 
-	template <class T>
-	IINField SelectByType(uint32_t max, T type)
-	{
-		this->storage.SelectByType(type, max);
-		return IINField::Empty();
-	}
+    template<class T> void UpdateAny(const Event<T>& evt)
+    {
+        if (this->storage.Update(evt))
+        {
+            this->overflow = true;
+        }
+    }
 
-	template <class T>
-	void UpdateAny(const Event<T>& evt)
-	{
-		if (this->storage.Update(evt))
-		{
-			this->overflow = true;
-		}
-	}
-
-	IINField SelectByClass(uint32_t max, EventClass clazz)
-	{
-		this->storage.SelectByClass(clazz, max);
-		return IINField::Empty();
-	}
-
-
+    IINField SelectByClass(uint32_t max, EventClass clazz)
+    {
+        this->storage.SelectByClass(clazz, max);
+        return IINField::Empty();
+    }
 };
 
-
-
-}
+} // namespace opendnp3
 
 #endif
-

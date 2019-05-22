@@ -34,6 +34,6 @@ bool GetBit(const openpal::RSlice& buffer, uint32_t position);
 uint32_t NumBytesInDoubleBits(uint32_t numBits);
 DoubleBit GetDoubleBit(const openpal::RSlice& buffer, uint32_t position);
 
-}
+} // namespace opendnp3
 
 #endif

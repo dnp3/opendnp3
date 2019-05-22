@@ -20,7 +20,6 @@
  */
 #include "asiopal/IOpenDelayStrategy.h"
 
-
 namespace asiopal
 {
 
@@ -28,15 +27,14 @@ ExponentialBackoffStrategy ExponentialBackoffStrategy::instance;
 
 IOpenDelayStrategy& ExponentialBackoffStrategy::Instance()
 {
-	return instance;
+    return instance;
 }
 
-openpal::TimeDuration ExponentialBackoffStrategy::GetNextDelay(const openpal::TimeDuration& current, const openpal::TimeDuration& max) const
+openpal::TimeDuration ExponentialBackoffStrategy::GetNextDelay(const openpal::TimeDuration& current,
+                                                               const openpal::TimeDuration& max) const
 {
-	int64_t doubled = 2 * current.GetMilliseconds();
-	return (doubled > max.GetMilliseconds()) ? max : openpal::TimeDuration::Milliseconds(doubled);
+    int64_t doubled = 2 * current.GetMilliseconds();
+    return (doubled > max.GetMilliseconds()) ? max : openpal::TimeDuration::Milliseconds(doubled);
 }
 
-}
-
-
+} // namespace asiopal

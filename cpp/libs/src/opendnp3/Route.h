@@ -27,26 +27,23 @@ namespace opendnp3
 {
 
 /**
-* DNP3 source/destination address pair
-*/
+ * DNP3 source/destination address pair
+ */
 struct Route
 {
-	Route(uint16_t destination, uint16_t source) :
-		destination(destination),
-		source(source)
-	{}
+    Route(uint16_t destination, uint16_t source) : destination(destination), source(source) {}
 
-	Route() : destination(0), source(0) {}
+    Route() : destination(0), source(0) {}
 
-	uint16_t destination;
-	uint16_t source;
+    uint16_t destination;
+    uint16_t source;
 
-	bool Equals(const Route& rhs) const
-	{
-		return (this->destination == rhs.destination) && (this->source == rhs.source);
-	}
+    bool Equals(const Route& rhs) const
+    {
+        return (this->destination == rhs.destination) && (this->source == rhs.source);
+    }
 };
 
-}
+} // namespace opendnp3
 
 #endif

@@ -24,80 +24,65 @@
 namespace opendnp3
 {
 
-EventLists::EventLists(const EventBufferConfig& config) :
-	events(config.TotalEvents()),
-	binary(config.maxBinaryEvents),
-	doubleBinary(config.maxDoubleBinaryEvents),
-	analog(config.maxAnalogEvents),
-	counter(config.maxCounterEvents),
-	frozenCounter(config.maxFrozenCounterEvents),
-	binaryOutputStatus(config.maxBinaryOutputStatusEvents),
-	analogOutputStatus(config.maxAnalogOutputStatusEvents),
-	octetString(config.maxOctetStringEvents)
-{}
+EventLists::EventLists(const EventBufferConfig& config)
+    : events(config.TotalEvents()),
+      binary(config.maxBinaryEvents),
+      doubleBinary(config.maxDoubleBinaryEvents),
+      analog(config.maxAnalogEvents),
+      counter(config.maxCounterEvents),
+      frozenCounter(config.maxFrozenCounterEvents),
+      binaryOutputStatus(config.maxBinaryOutputStatusEvents),
+      analogOutputStatus(config.maxAnalogOutputStatusEvents),
+      octetString(config.maxOctetStringEvents)
+{
+}
 
 bool EventLists::IsAnyTypeFull() const
 {
-	return
-	    this->binary.IsFullAndCapacityNotZero() ||
-	    this->doubleBinary.IsFullAndCapacityNotZero() ||
-	    this->counter.IsFullAndCapacityNotZero() ||
-	    this->frozenCounter.IsFullAndCapacityNotZero() ||
-	    this->analog.IsFullAndCapacityNotZero() ||
-	    this->binaryOutputStatus.IsFullAndCapacityNotZero() ||
-	    this->analogOutputStatus.IsFullAndCapacityNotZero() ||
-	    this->octetString.IsFullAndCapacityNotZero();
+    return this->binary.IsFullAndCapacityNotZero() || this->doubleBinary.IsFullAndCapacityNotZero()
+        || this->counter.IsFullAndCapacityNotZero() || this->frozenCounter.IsFullAndCapacityNotZero()
+        || this->analog.IsFullAndCapacityNotZero() || this->binaryOutputStatus.IsFullAndCapacityNotZero()
+        || this->analogOutputStatus.IsFullAndCapacityNotZero() || this->octetString.IsFullAndCapacityNotZero();
 }
 
-template <>
-List<TypedEventRecord<BinarySpec>>& EventLists::GetList()
+template<> List<TypedEventRecord<BinarySpec>>& EventLists::GetList()
 {
-	return this->binary;
+    return this->binary;
 }
 
-template <>
-List<TypedEventRecord<DoubleBitBinarySpec>>& EventLists::GetList()
+template<> List<TypedEventRecord<DoubleBitBinarySpec>>& EventLists::GetList()
 {
-	return this->doubleBinary;
+    return this->doubleBinary;
 }
 
-template <>
-List<TypedEventRecord<CounterSpec>>& EventLists::GetList()
+template<> List<TypedEventRecord<CounterSpec>>& EventLists::GetList()
 {
-	return this->counter;
+    return this->counter;
 }
 
-template <>
-List<TypedEventRecord<FrozenCounterSpec>>& EventLists::GetList()
+template<> List<TypedEventRecord<FrozenCounterSpec>>& EventLists::GetList()
 {
-	return this->frozenCounter;
+    return this->frozenCounter;
 }
 
-template <>
-List<TypedEventRecord<AnalogSpec>>& EventLists::GetList()
+template<> List<TypedEventRecord<AnalogSpec>>& EventLists::GetList()
 {
-	return this->analog;
+    return this->analog;
 }
 
-template <>
-List<TypedEventRecord<BinaryOutputStatusSpec>>& EventLists::GetList()
+template<> List<TypedEventRecord<BinaryOutputStatusSpec>>& EventLists::GetList()
 {
-	return this->binaryOutputStatus;
+    return this->binaryOutputStatus;
 }
 
-template <>
-List<TypedEventRecord<AnalogOutputStatusSpec>>& EventLists::GetList()
+template<> List<TypedEventRecord<AnalogOutputStatusSpec>>& EventLists::GetList()
 {
-	return this->analogOutputStatus;
+    return this->analogOutputStatus;
 }
 
-template <>
-List<TypedEventRecord<OctetStringSpec>>& EventLists::GetList()
+template<> List<TypedEventRecord<OctetStringSpec>>& EventLists::GetList()
 {
-	return this->octetString;
+    return this->octetString;
 }
 
-}
-
-
-
+} // namespace opendnp3

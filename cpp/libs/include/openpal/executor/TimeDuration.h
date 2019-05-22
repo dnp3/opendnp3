@@ -26,79 +26,71 @@
 namespace openpal
 {
 
-template <class T>
-class TimeDurationBase
+template<class T> class TimeDurationBase
 {
 
 public:
+    TimeDurationBase() : milliseconds(0) {}
 
-	TimeDurationBase() : milliseconds(0)
-	{}
+    T GetMilliseconds() const
+    {
+        return milliseconds;
+    }
 
-	T GetMilliseconds() const
-	{
-		return milliseconds;
-	}
+    bool IsNegative() const
+    {
+        return milliseconds < 0;
+    }
 
-	bool IsNegative() const
-	{
-		return milliseconds < 0;
-	}
+    operator T() const
+    {
+        return milliseconds;
+    }
 
-	operator T() const
-	{
-		return milliseconds;
-	}
-
-	T milliseconds;
+    T milliseconds;
 
 protected:
-
-	TimeDurationBase(T milliseconds) : milliseconds(milliseconds)
-	{}
-
+    TimeDurationBase(T milliseconds) : milliseconds(milliseconds) {}
 };
 
-
 /**
-*  Strong typing for millisecond based time durations
-*/
+ *  Strong typing for millisecond based time durations
+ */
 class TimeDuration : public TimeDurationBase<int64_t>
 {
 
 public:
+    TimeDuration();
 
-	TimeDuration();
+    bool IsPostive() const;
 
-	bool IsPostive() const;
+    TimeDuration MultiplyBy(int factor) const
+    {
+        return TimeDuration(factor * milliseconds);
+    }
 
-	TimeDuration MultiplyBy(int factor) const
-	{
-		return TimeDuration(factor * milliseconds);
-	}
+    static TimeDuration Min();
 
-	static TimeDuration Min();
+    static TimeDuration Max();
 
-	static TimeDuration Max();
+    static TimeDuration Zero();
 
-	static TimeDuration Zero();
+    static TimeDuration Milliseconds(int64_t milliseconds);
 
-	static TimeDuration Milliseconds(int64_t milliseconds);
+    static TimeDuration Seconds(int64_t seconds);
 
-	static TimeDuration Seconds(int64_t seconds);
+    static TimeDuration Minutes(int64_t minutes);
 
-	static TimeDuration Minutes(int64_t minutes);
+    static TimeDuration Hours(int64_t hours);
 
-	static TimeDuration Hours(int64_t hours);
-
-	static TimeDuration Days(int64_t days);
+    static TimeDuration Days(int64_t days);
 
 private:
-	TimeDuration(int64_t aMilliseconds);
+    TimeDuration(int64_t aMilliseconds);
 };
 
 bool operator==(const TimeDuration& lhs, const TimeDuration& rhs);
 
-}
+} // namespace openpal
 
 #endif

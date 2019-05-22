@@ -23,33 +23,30 @@
 
 #include <openpal/executor/TimeDuration.h>
 
-#include "opendnp3/outstation/OutstationParams.h"
 #include "opendnp3/outstation/EventBufferConfig.h"
-
+#include "opendnp3/outstation/OutstationParams.h"
 
 namespace opendnp3
 {
 
 /** Configuration information for a dnp3 outstation (outstation)
 
-Used as both input describing the startup configuration of the outstation, and as configuration state of mutable properties (i.e. unsolicited responses).
+Used as both input describing the startup configuration of the outstation, and as configuration state of mutable
+properties (i.e. unsolicited responses).
 
-Major feature areas are unsolicited responses, time synchronization requests, event buffer limits, and the DNP3 object/variations to use by default
-when the master requests class data or variation 0.
+Major feature areas are unsolicited responses, time synchronization requests, event buffer limits, and the DNP3
+object/variations to use by default when the master requests class data or variation 0.
 
 */
 struct OutstationConfig
 {
-	/// Various parameters that govern outstation behavior
-	OutstationParams params;
+    /// Various parameters that govern outstation behavior
+    OutstationParams params;
 
-	/// Describes the sizes in the event buffer
-	EventBufferConfig eventBufferConfig;
+    /// Describes the sizes in the event buffer
+    EventBufferConfig eventBufferConfig;
 };
 
-}
-
-
+} // namespace opendnp3
 
 #endif
-

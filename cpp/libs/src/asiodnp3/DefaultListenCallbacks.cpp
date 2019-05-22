@@ -24,59 +24,54 @@
 namespace asiodnp3
 {
 
-DefaultListenCallbacks::DefaultListenCallbacks()
-{}
-
+DefaultListenCallbacks::DefaultListenCallbacks() {}
 
 bool DefaultListenCallbacks::AcceptConnection(uint64_t sessionid, const std::string& ipaddress)
 {
-	return true;
+    return true;
 }
 
 bool DefaultListenCallbacks::AcceptCertificate(uint64_t sessionid, const X509Info& info)
 {
-	return true;
+    return true;
 }
 
 openpal::TimeDuration DefaultListenCallbacks::GetFirstFrameTimeout()
 {
-	return openpal::TimeDuration::Seconds(30);
+    return openpal::TimeDuration::Seconds(30);
 }
 
-void DefaultListenCallbacks::OnFirstFrame(uint64_t sessionid, const opendnp3::LinkHeaderFields& header, ISessionAcceptor& acceptor)
+void DefaultListenCallbacks::OnFirstFrame(uint64_t sessionid,
+                                          const opendnp3::LinkHeaderFields& header,
+                                          ISessionAcceptor& acceptor)
 {
-	MasterStackConfig config;
+    MasterStackConfig config;
 
-	// full implementations will look up config information for the SRC address
+    // full implementations will look up config information for the SRC address
 
-	config.link.LocalAddr = header.dest;
-	config.link.RemoteAddr = header.src;
+    config.link.LocalAddr = header.dest;
+    config.link.RemoteAddr = header.src;
 
-	auto soe = std::make_shared<PrintingSOEHandler>();
-	auto app = std::make_shared<DefaultMasterApplication>();
+    auto soe = std::make_shared<PrintingSOEHandler>();
+    auto app = std::make_shared<DefaultMasterApplication>();
 
-	// full implementations will keep a std::shared_ptr<IGPRSMaster> somewhere
-	auto master = acceptor.AcceptSession(SessionIdToString(sessionid), soe, app, config);
+    // full implementations will keep a std::shared_ptr<IGPRSMaster> somewhere
+    auto master = acceptor.AcceptSession(SessionIdToString(sessionid), soe, app, config);
 }
 
 void DefaultListenCallbacks::OnConnectionClose(uint64_t sessionid, const std::shared_ptr<IMasterSession>& session)
 {
-	// full implementations would drop any references they're holding to this session
-	// shared_ptr can be used with == operator also
+    // full implementations would drop any references they're holding to this session
+    // shared_ptr can be used with == operator also
 }
 
-void DefaultListenCallbacks::OnCertificateError(uint64_t sessionid, const X509Info& info, int error)
-{
-}
+void DefaultListenCallbacks::OnCertificateError(uint64_t sessionid, const X509Info& info, int error) {}
 
 std::string DefaultListenCallbacks::SessionIdToString(uint64_t id)
 {
-	std::ostringstream oss;
-	oss << "session-" << id;
-	return oss.str();
+    std::ostringstream oss;
+    oss << "session-" << id;
+    return oss.str();
 }
 
-}
-
-
-
+} // namespace asiodnp3

@@ -21,8 +21,8 @@
 #ifndef OPENPAL_STATICBUFFER_H
 #define OPENPAL_STATICBUFFER_H
 
-#include "openpal/container/WSlice.h"
 #include "openpal/container/RSlice.h"
+#include "openpal/container/WSlice.h"
 #include "openpal/util/Comparisons.h"
 
 #include <cstdint>
@@ -30,56 +30,53 @@
 namespace openpal
 {
 
-template <uint32_t SIZE>
-class StaticBuffer
+template<uint32_t SIZE> class StaticBuffer
 {
 
 public:
+    StaticBuffer() {}
 
-	StaticBuffer()
-	{}
+    virtual ~StaticBuffer() {}
 
-	virtual ~StaticBuffer() {}
+    RSlice ToRSlice() const
+    {
+        return RSlice(buffer, SIZE);
+    }
 
-	RSlice ToRSlice() const
-	{
-		return RSlice(buffer, SIZE);
-	}
+    RSlice ToRSlice(uint32_t maxSize) const
+    {
+        return RSlice(buffer, openpal::Min(SIZE, maxSize));
+    }
 
-	RSlice ToRSlice(uint32_t maxSize) const
-	{
-		return RSlice(buffer, openpal::Min(SIZE, maxSize));
-	}
+    WSlice GetWSlice()
+    {
+        return WSlice(buffer, SIZE);
+    }
 
-	WSlice GetWSlice()
-	{
-		return WSlice(buffer, SIZE);
-	}
+    WSlice GetWSlice(uint32_t maxSize)
+    {
+        return WSlice(buffer, openpal::Min(SIZE, maxSize));
+    }
 
-	WSlice GetWSlice(uint32_t maxSize)
-	{
-		return WSlice(buffer, openpal::Min(SIZE, maxSize));
-	}
+    const uint8_t* operator()() const
+    {
+        return buffer;
+    }
 
-	const uint8_t* operator()() const
-	{
-		return buffer;
-	}
+    uint8_t* operator()()
+    {
+        return buffer;
+    }
 
-	uint8_t* operator()()
-	{
-		return buffer;
-	}
-
-	uint32_t Size() const
-	{
-		return SIZE;
-	}
+    uint32_t Size() const
+    {
+        return SIZE;
+    }
 
 private:
-	uint8_t buffer[SIZE];
+    uint8_t buffer[SIZE];
 };
 
-}
+} // namespace openpal
 
 #endif

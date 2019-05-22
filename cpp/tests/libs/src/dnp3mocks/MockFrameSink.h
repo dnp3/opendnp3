@@ -21,12 +21,11 @@
 #ifndef OPENDNP3_MOCKFRAMESINK_H
 #define OPENDNP3_MOCKFRAMESINK_H
 
-#include <opendnp3/link/ILinkSession.h>
-#include <opendnp3/link/LinkLayerConstants.h>
+#include "DataSink.h"
 
 #include <opendnp3/gen/LinkFunction.h>
-
-#include "DataSink.h"
+#include <opendnp3/link/ILinkSession.h>
+#include <opendnp3/link/LinkLayerConstants.h>
 
 #include <functional>
 #include <queue>
@@ -34,50 +33,45 @@
 namespace opendnp3
 {
 
-
 class MockFrameSink : public ILinkSession
 {
 public:
+    MockFrameSink();
 
-	MockFrameSink();
+    // ILinkSession members
+    bool OnLowerLayerUp() override;
+    bool OnLowerLayerDown() override;
+    bool OnTxReady() override;
 
-	// ILinkSession members
-	bool OnLowerLayerUp() override;
-	bool OnLowerLayerDown() override;
-	bool OnTxReady() override;
+    virtual bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata) override final;
 
-	virtual bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata) override final;
+    void Reset();
 
-	void Reset();
+    bool CheckLast(LinkFunction aCode, bool aIsMaster, uint16_t aDest, uint16_t aSrc);
+    bool CheckLastWithFCB(LinkFunction aCode, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc);
+    bool CheckLastWithDFC(LinkFunction aCode, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
 
+    // Last frame information
+    size_t m_num_frames;
+    LinkHeaderFields m_last_header;
 
-	bool CheckLast(LinkFunction aCode, bool aIsMaster, uint16_t aDest, uint16_t aSrc);
-	bool CheckLastWithFCB(LinkFunction aCode, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc);
-	bool CheckLastWithDFC(LinkFunction aCode, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
+    bool mLowerOnline;
 
-	// Last frame information
-	size_t m_num_frames;
-	LinkHeaderFields m_last_header;
+    // Add a function to execute the next time a frame is received
+    // This allows us to test re-entrant behaviors
+    void AddAction(std::function<void()> fun);
 
-	bool mLowerOnline;
-
-	// Add a function to execute the next time a frame is received
-	// This allows us to test re-entrant behaviors
-	void AddAction(std::function<void ()> fun);
-
-	DataSink received;
+    DataSink received;
 
 private:
+    // Executes one action, if one is available
+    void ExecuteAction();
 
-	// Executes one action, if one is available
-	void ExecuteAction();
+    std::deque<std::function<void()>> m_actions;
 
-	std::deque< std::function<void ()> > m_actions;
-
-	void Update(LinkFunction aCode, bool aIsMaster, uint16_t aSrc, uint16_t aDest);
+    void Update(LinkFunction aCode, bool aIsMaster, uint16_t aSrc, uint16_t aDest);
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

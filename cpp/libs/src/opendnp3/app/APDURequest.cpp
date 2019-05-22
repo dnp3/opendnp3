@@ -25,16 +25,12 @@ using namespace openpal;
 namespace opendnp3
 {
 
-APDURequest::APDURequest(const openpal::WSlice& aBuffer) : APDUWrapper(aBuffer)
-{
-
-}
+APDURequest::APDURequest(const openpal::WSlice& aBuffer) : APDUWrapper(aBuffer) {}
 
 void APDURequest::ConfigureHeader(FunctionCode code, uint8_t seq)
 {
-	this->SetFunction(FunctionCode::AUTH_REQUEST);
-	this->SetControl(AppControlField::Request(seq));
+    this->SetFunction(FunctionCode::AUTH_REQUEST);
+    this->SetControl(AppControlField::Request(seq));
 }
 
-}
-
+} // namespace opendnp3

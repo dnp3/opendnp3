@@ -23,97 +23,78 @@
 namespace opendnp3
 {
 
-StaticBuffers::StaticBuffers(const DatabaseSizes& dbSizes) :
-	binaries(dbSizes.numBinary),
-	doubleBinaries(dbSizes.numDoubleBinary),
-	analogs(dbSizes.numAnalog),
-	counters(dbSizes.numCounter),
-	frozenCounters(dbSizes.numFrozenCounter),
-	binaryOutputStatii(dbSizes.numBinaryOutputStatus),
-	analogOutputStatii(dbSizes.numAnalogOutputStatus),
-	timeAndIntervals(dbSizes.numTimeAndInterval),
-	octetStrings(dbSizes.numOctetString)
+StaticBuffers::StaticBuffers(const DatabaseSizes& dbSizes)
+    : binaries(dbSizes.numBinary),
+      doubleBinaries(dbSizes.numDoubleBinary),
+      analogs(dbSizes.numAnalog),
+      counters(dbSizes.numCounter),
+      frozenCounters(dbSizes.numFrozenCounter),
+      binaryOutputStatii(dbSizes.numBinaryOutputStatus),
+      analogOutputStatii(dbSizes.numAnalogOutputStatus),
+      timeAndIntervals(dbSizes.numTimeAndInterval),
+      octetStrings(dbSizes.numOctetString)
 {
-	this->SetDefaultIndices<BinarySpec>();
-	this->SetDefaultIndices<DoubleBitBinarySpec>();
-	this->SetDefaultIndices<CounterSpec>();
-	this->SetDefaultIndices<FrozenCounterSpec>();
-	this->SetDefaultIndices<AnalogSpec>();
-	this->SetDefaultIndices<BinaryOutputStatusSpec>();
-	this->SetDefaultIndices<AnalogOutputStatusSpec>();
-	this->SetDefaultIndices<TimeAndIntervalSpec>();
-	this->SetDefaultIndices<OctetStringSpec>();
+    this->SetDefaultIndices<BinarySpec>();
+    this->SetDefaultIndices<DoubleBitBinarySpec>();
+    this->SetDefaultIndices<CounterSpec>();
+    this->SetDefaultIndices<FrozenCounterSpec>();
+    this->SetDefaultIndices<AnalogSpec>();
+    this->SetDefaultIndices<BinaryOutputStatusSpec>();
+    this->SetDefaultIndices<AnalogOutputStatusSpec>();
+    this->SetDefaultIndices<TimeAndIntervalSpec>();
+    this->SetDefaultIndices<OctetStringSpec>();
 }
 
 DatabaseConfigView StaticBuffers::GetView() const
 {
-	return DatabaseConfigView(
-	           binaries.ToView(),
-	           doubleBinaries.ToView(),
-	           analogs.ToView(),
-	           counters.ToView(),
-	           frozenCounters.ToView(),
-	           binaryOutputStatii.ToView(),
-	           analogOutputStatii.ToView(),
-	           timeAndIntervals.ToView(),
-	           octetStrings.ToView()
-	       );
+    return DatabaseConfigView(binaries.ToView(), doubleBinaries.ToView(), analogs.ToView(), counters.ToView(),
+                              frozenCounters.ToView(), binaryOutputStatii.ToView(), analogOutputStatii.ToView(),
+                              timeAndIntervals.ToView(), octetStrings.ToView());
 }
 
-template <>
-openpal::ArrayView<Cell<BinarySpec>, uint16_t> StaticBuffers::GetArrayView()
+template<> openpal::ArrayView<Cell<BinarySpec>, uint16_t> StaticBuffers::GetArrayView()
 {
-	return binaries.ToView();
+    return binaries.ToView();
 }
 
-template <>
-openpal::ArrayView<Cell<DoubleBitBinarySpec>, uint16_t> StaticBuffers::GetArrayView()
+template<> openpal::ArrayView<Cell<DoubleBitBinarySpec>, uint16_t> StaticBuffers::GetArrayView()
 {
-	return doubleBinaries.ToView();
+    return doubleBinaries.ToView();
 }
 
-template <>
-openpal::ArrayView<Cell<CounterSpec>, uint16_t> StaticBuffers::GetArrayView()
+template<> openpal::ArrayView<Cell<CounterSpec>, uint16_t> StaticBuffers::GetArrayView()
 {
-	return counters.ToView();
+    return counters.ToView();
 }
 
-template <>
-openpal::ArrayView<Cell<FrozenCounterSpec>, uint16_t> StaticBuffers::GetArrayView()
+template<> openpal::ArrayView<Cell<FrozenCounterSpec>, uint16_t> StaticBuffers::GetArrayView()
 {
-	return frozenCounters.ToView();
+    return frozenCounters.ToView();
 }
 
-template <>
-openpal::ArrayView<Cell<AnalogSpec>, uint16_t> StaticBuffers::GetArrayView()
+template<> openpal::ArrayView<Cell<AnalogSpec>, uint16_t> StaticBuffers::GetArrayView()
 {
-	return analogs.ToView();
+    return analogs.ToView();
 }
 
-template <>
-openpal::ArrayView<Cell<BinaryOutputStatusSpec>, uint16_t> StaticBuffers::GetArrayView()
+template<> openpal::ArrayView<Cell<BinaryOutputStatusSpec>, uint16_t> StaticBuffers::GetArrayView()
 {
-	return binaryOutputStatii.ToView();
+    return binaryOutputStatii.ToView();
 }
 
-template <>
-openpal::ArrayView<Cell<AnalogOutputStatusSpec>, uint16_t> StaticBuffers::GetArrayView()
+template<> openpal::ArrayView<Cell<AnalogOutputStatusSpec>, uint16_t> StaticBuffers::GetArrayView()
 {
-	return analogOutputStatii.ToView();
+    return analogOutputStatii.ToView();
 }
 
-template <>
-openpal::ArrayView<Cell<TimeAndIntervalSpec>, uint16_t> StaticBuffers::GetArrayView()
+template<> openpal::ArrayView<Cell<TimeAndIntervalSpec>, uint16_t> StaticBuffers::GetArrayView()
 {
-	return timeAndIntervals.ToView();
+    return timeAndIntervals.ToView();
 }
 
-template <>
-openpal::ArrayView<Cell<OctetStringSpec>, uint16_t> StaticBuffers::GetArrayView()
+template<> openpal::ArrayView<Cell<OctetStringSpec>, uint16_t> StaticBuffers::GetArrayView()
 {
-	return octetStrings.ToView();
+    return octetStrings.ToView();
 }
 
-}
-
-
+} // namespace opendnp3

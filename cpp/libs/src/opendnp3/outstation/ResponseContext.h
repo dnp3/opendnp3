@@ -23,12 +23,10 @@
 
 #include <openpal/util/Uncopyable.h>
 
-#include "opendnp3/app/Range.h"
-#include "opendnp3/app/HeaderWriter.h"
 #include "opendnp3/app/AppControlField.h"
+#include "opendnp3/app/HeaderWriter.h"
+#include "opendnp3/app/Range.h"
 #include "opendnp3/outstation/IResponseLoader.h"
-
-
 
 namespace opendnp3
 {
@@ -42,24 +40,22 @@ class ResponseContext : private openpal::Uncopyable
 {
 
 public:
+    ResponseContext(IResponseLoader& staticLoader, IResponseLoader& eventLoader);
 
-	ResponseContext(IResponseLoader& staticLoader, IResponseLoader& eventLoader);
+    bool HasSelection() const;
 
-	bool HasSelection() const;
+    void Reset();
 
-	void Reset();
-
-	AppControlField LoadResponse(HeaderWriter& writer);
+    AppControlField LoadResponse(HeaderWriter& writer);
 
 private:
+    static AppControlField GetControl(bool fir, bool fin, bool hasEvents);
 
-	static AppControlField GetControl(bool fir, bool fin, bool hasEvents);
-
-	uint16_t fragmentCount;
-	IResponseLoader* pStaticLoader;
-	IResponseLoader* pEventLoader;
+    uint16_t fragmentCount;
+    IResponseLoader* pStaticLoader;
+    IResponseLoader* pEventLoader;
 };
 
-}
+} // namespace opendnp3
 
 #endif

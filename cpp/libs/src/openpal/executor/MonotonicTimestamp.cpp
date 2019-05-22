@@ -27,52 +27,49 @@ namespace openpal
 
 MonotonicTimestamp MonotonicTimestamp::Max()
 {
-	return MonotonicTimestamp(INT64_MAX);
+    return MonotonicTimestamp(INT64_MAX);
 }
 
 MonotonicTimestamp MonotonicTimestamp::Min()
 {
-	return MonotonicTimestamp(INT64_MIN);
+    return MonotonicTimestamp(INT64_MIN);
 }
 
 bool MonotonicTimestamp::IsMax() const
 {
-	return milliseconds == INT64_MAX;
+    return milliseconds == INT64_MAX;
 }
 
 bool MonotonicTimestamp::IsMin() const
 {
-	return milliseconds == INT64_MIN;
+    return milliseconds == INT64_MIN;
 }
 
-MonotonicTimestamp::MonotonicTimestamp() : milliseconds(0)
-{}
+MonotonicTimestamp::MonotonicTimestamp() : milliseconds(0) {}
 
-MonotonicTimestamp::MonotonicTimestamp(int64_t aMilliseconds) : milliseconds(aMilliseconds)
-{}
-
+MonotonicTimestamp::MonotonicTimestamp(int64_t aMilliseconds) : milliseconds(aMilliseconds) {}
 
 MonotonicTimestamp MonotonicTimestamp::Add(const TimeDuration& duration) const
 {
-	const auto maximum = INT64_MAX - this->milliseconds;
+    const auto maximum = INT64_MAX - this->milliseconds;
 
-	return duration.GetMilliseconds() >= maximum ? MonotonicTimestamp::Max() : MonotonicTimestamp(milliseconds + duration.GetMilliseconds());
+    return duration.GetMilliseconds() >= maximum ? MonotonicTimestamp::Max()
+                                                 : MonotonicTimestamp(milliseconds + duration.GetMilliseconds());
 }
 
 bool operator==(const MonotonicTimestamp& first, const MonotonicTimestamp& second)
 {
-	return first.milliseconds == second.milliseconds;
+    return first.milliseconds == second.milliseconds;
 }
 
 bool operator<(const MonotonicTimestamp& first, const MonotonicTimestamp& second)
 {
-	return first.milliseconds < second.milliseconds;
+    return first.milliseconds < second.milliseconds;
 }
 
 bool operator>(const MonotonicTimestamp& first, const MonotonicTimestamp& second)
 {
-	return first.milliseconds > second.milliseconds;
+    return first.milliseconds > second.milliseconds;
 }
 
-}
-
+} // namespace openpal

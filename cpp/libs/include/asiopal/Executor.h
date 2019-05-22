@@ -33,88 +33,75 @@ namespace asiopal
 {
 
 /**
-*
-* Implementation of openpal::IExecutor backed by asio::strand
-*
-* Shutdown life-cycle guarantees are provided by using std::shared_ptr
-*
-*/
-class Executor final :
-		public openpal::IExecutor,
-		public std::enable_shared_from_this<Executor>,
-		private openpal::Uncopyable
+ *
+ * Implementation of openpal::IExecutor backed by asio::strand
+ *
+ * Shutdown life-cycle guarantees are provided by using std::shared_ptr
+ *
+ */
+class Executor final : public openpal::IExecutor,
+                       public std::enable_shared_from_this<Executor>,
+                       private openpal::Uncopyable
 {
 
 public:
+    Executor(const std::shared_ptr<IO>& io);
 
-	Executor(const std::shared_ptr<IO>& io);
+    static std::shared_ptr<Executor> Create(const std::shared_ptr<IO>& io)
+    {
+        return std::make_shared<Executor>(io);
+    }
 
-	static std::shared_ptr<Executor> Create(const std::shared_ptr<IO>& io)
-	{
-		return std::make_shared<Executor>(io);
-	}
+    /// ---- Implement IExecutor -----
 
-	/// ---- Implement IExecutor -----
+    virtual openpal::MonotonicTimestamp GetTime() override;
+    virtual openpal::ITimer* Start(const openpal::TimeDuration&, const openpal::action_t& runnable) override;
+    virtual openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const openpal::action_t& runnable) override;
+    virtual void Post(const openpal::action_t& runnable) override;
 
-	virtual openpal::MonotonicTimestamp GetTime() override;
-	virtual openpal::ITimer* Start(const openpal::TimeDuration&, const openpal::action_t& runnable)  override;
-	virtual openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const openpal::action_t& runnable)  override;
-	virtual void Post(const openpal::action_t& runnable) override;
+    template<class T> T ReturnFrom(const std::function<T()>& action);
 
-	template <class T>
-	T ReturnFrom(const std::function<T()>& action);
+    void BlockUntil(const std::function<void()>& action);
 
-	void BlockUntil(const std::function<void ()>& action);
-
-	void BlockUntilAndFlush(const std::function<void()>& action);
+    void BlockUntilAndFlush(const std::function<void()>& action);
 
 private:
-
-	// we hold a shared_ptr to the pool so that it cannot dissapear while the strand is still executing
-	std::shared_ptr<IO> io;
+    // we hold a shared_ptr to the pool so that it cannot dissapear while the strand is still executing
+    std::shared_ptr<IO> io;
 
 public:
+    // Create a new Executor that shares the underling std::shared_ptr<IO>
+    std::shared_ptr<Executor> Fork() const
+    {
+        return Create(this->io);
+    }
 
-	// Create a new Executor that shares the underling std::shared_ptr<IO>
-	std::shared_ptr<Executor> Fork() const
-	{
-		return Create(this->io);
-	}
-
-	asio::io_context::strand strand;
+    asio::io_context::strand strand;
 
 private:
-
-	openpal::ITimer* Start(const steady_clock_t::time_point& expiration, const openpal::action_t& runnable);
-
+    openpal::ITimer* Start(const steady_clock_t::time_point& expiration, const openpal::action_t& runnable);
 };
 
-template <class T>
-T Executor::ReturnFrom(const std::function<T()>& action)
+template<class T> T Executor::ReturnFrom(const std::function<T()>& action)
 {
-	if (strand.running_in_this_thread())
-	{
-		return action();
-	}
+    if (strand.running_in_this_thread())
+    {
+        return action();
+    }
 
-	std::promise<T> ready;
+    std::promise<T> ready;
 
-	auto future = ready.get_future();
+    auto future = ready.get_future();
 
-	auto run = [&]
-	{
-		ready.set_value(action());
-	};
+    auto run = [&] { ready.set_value(action()); };
 
-	strand.post(run);
+    strand.post(run);
 
-	future.wait();
+    future.wait();
 
-	return future.get();
+    return future.get();
 }
 
-
-}
+} // namespace asiopal
 
 #endif
-

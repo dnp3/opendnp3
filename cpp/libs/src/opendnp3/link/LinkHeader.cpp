@@ -29,67 +29,68 @@ using namespace std;
 namespace opendnp3
 {
 
-LinkHeader::LinkHeader() : length(5), src(0), dest(0), ctrl(0)
-{
+LinkHeader::LinkHeader() : length(5), src(0), dest(0), ctrl(0) {}
 
+LinkHeader::LinkHeader(
+    uint8_t aLen, uint16_t aSrc, uint16_t aDest, bool aFromMaster, bool aFcvDfc, bool aFcb, LinkFunction aCode)
+{
+    this->Set(aLen, aSrc, aDest, aFromMaster, aFcvDfc, aFcb, aCode);
 }
 
-LinkHeader::LinkHeader(uint8_t aLen, uint16_t aSrc, uint16_t aDest, bool aFromMaster, bool aFcvDfc, bool aFcb, LinkFunction aCode)
+void LinkHeader::Set(
+    uint8_t aLen, uint16_t aSrc, uint16_t aDest, bool aFromMaster, bool aFcvDfc, bool aFcb, LinkFunction aCode)
 {
-	this->Set(aLen, aSrc, aDest, aFromMaster, aFcvDfc, aFcb, aCode);
-}
-
-void LinkHeader::Set(uint8_t aLen, uint16_t aSrc, uint16_t aDest, bool aFromMaster, bool aFcvDfc, bool aFcb, LinkFunction aCode)
-{
-	length = aLen;
-	src = aSrc;
-	dest = aDest;
-	ctrl = ControlByte(aFromMaster, aFcb, aFcvDfc, aCode);
+    length = aLen;
+    src = aSrc;
+    dest = aDest;
+    ctrl = ControlByte(aFromMaster, aFcb, aFcvDfc, aCode);
 }
 
 void LinkHeader::ChangeFCB(bool aFCB)
 {
-	if(aFCB)
-	{
-		ctrl |= MASK_FCB;
-	}
-	else
-	{
-		ctrl &= ~MASK_FCB;
-	}
+    if (aFCB)
+    {
+        ctrl |= MASK_FCB;
+    }
+    else
+    {
+        ctrl &= ~MASK_FCB;
+    }
 }
 
 uint8_t LinkHeader::ControlByte(bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aFunc)
 {
-	uint8_t ret = LinkFunctionToType(aFunc);
+    uint8_t ret = LinkFunctionToType(aFunc);
 
-	if(aIsMaster) ret |= MASK_DIR;
-	if(aFcb) ret |= MASK_FCB;
-	if(aFcvDfc) ret |= MASK_FCV;
+    if (aIsMaster)
+        ret |= MASK_DIR;
+    if (aFcb)
+        ret |= MASK_FCB;
+    if (aFcvDfc)
+        ret |= MASK_FCV;
 
-	return ret;
+    return ret;
 }
 
 void LinkHeader::Read(const uint8_t* apBuff)
 {
-	length = apBuff[LI_LENGTH];
-	dest = openpal::UInt16::Read(apBuff + LI_DESTINATION);
-	src = openpal::UInt16::Read(apBuff + LI_SOURCE);
-	ctrl = apBuff[LI_CONTROL];
+    length = apBuff[LI_LENGTH];
+    dest = openpal::UInt16::Read(apBuff + LI_DESTINATION);
+    src = openpal::UInt16::Read(apBuff + LI_SOURCE);
+    ctrl = apBuff[LI_CONTROL];
 }
 
 void LinkHeader::Write(uint8_t* apBuff) const
 {
-	apBuff[LI_START_05] = 0x05;
-	apBuff[LI_START_64] = 0x64;
+    apBuff[LI_START_05] = 0x05;
+    apBuff[LI_START_64] = 0x64;
 
-	apBuff[LI_LENGTH] = length;
-	openpal::UInt16::Write(apBuff + LI_DESTINATION, dest);
-	openpal::UInt16::Write(apBuff + LI_SOURCE, src);
-	apBuff[LI_CONTROL] = ctrl;
+    apBuff[LI_LENGTH] = length;
+    openpal::UInt16::Write(apBuff + LI_DESTINATION, dest);
+    openpal::UInt16::Write(apBuff + LI_SOURCE, src);
+    apBuff[LI_CONTROL] = ctrl;
 
-	CRC::AddCrc(apBuff, LI_CRC);
+    CRC::AddCrc(apBuff, LI_CRC);
 }
 
-}
-
+} // namespace opendnp3

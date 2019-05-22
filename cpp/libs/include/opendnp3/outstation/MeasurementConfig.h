@@ -31,41 +31,58 @@ namespace opendnp3
 // All entries have this information
 struct IndexConfig
 {
-	// virtual index for discontiguous data, as opposed to the raw array index
-	uint16_t vIndex = 0;
+    // virtual index for discontiguous data, as opposed to the raw array index
+    uint16_t vIndex = 0;
 };
 
 // All entries have this information
-template <class Info>
-struct StaticConfig : IndexConfig
+template<class Info> struct StaticConfig : IndexConfig
 {
-	typename Info::static_variation_t svariation = Info::DefaultStaticVariation;
+    typename Info::static_variation_t svariation = Info::DefaultStaticVariation;
 };
 
-template <class Info>
-struct EventConfig : StaticConfig<Info>
+template<class Info> struct EventConfig : StaticConfig<Info>
 {
-	PointClass clazz = PointClass::Class1;
-	typename Info::event_variation_t evariation = Info::DefaultEventVariation;
+    PointClass clazz = PointClass::Class1;
+    typename Info::event_variation_t evariation = Info::DefaultEventVariation;
 };
 
-template <class Info>
-struct DeadbandConfig : EventConfig<Info>
+template<class Info> struct DeadbandConfig : EventConfig<Info>
 {
-	typename Info::value_t deadband = 0;
+    typename Info::value_t deadband = 0;
 };
 
-class BinaryConfig : public EventConfig<BinaryInfo> {};
-class DoubleBitBinaryConfig : public EventConfig<DoubleBitBinaryInfo> {};
-class AnalogConfig : public DeadbandConfig<AnalogInfo> {};
-class CounterConfig : public DeadbandConfig<CounterInfo> {};
-class FrozenCounterConfig : public DeadbandConfig<FrozenCounterInfo> {};
-class BOStatusConfig : public EventConfig<BinaryOutputStatusInfo> {};
-class AOStatusConfig : public DeadbandConfig<AnalogOutputStatusInfo> {};
-class OctetStringConfig : public EventConfig<OctetStringInfo> {};
-class TimeAndIntervalConfig : public StaticConfig<TimeAndIntervalInfo> {};
-class SecurityStatConfig : public IndexConfig {};
+class BinaryConfig : public EventConfig<BinaryInfo>
+{
+};
+class DoubleBitBinaryConfig : public EventConfig<DoubleBitBinaryInfo>
+{
+};
+class AnalogConfig : public DeadbandConfig<AnalogInfo>
+{
+};
+class CounterConfig : public DeadbandConfig<CounterInfo>
+{
+};
+class FrozenCounterConfig : public DeadbandConfig<FrozenCounterInfo>
+{
+};
+class BOStatusConfig : public EventConfig<BinaryOutputStatusInfo>
+{
+};
+class AOStatusConfig : public DeadbandConfig<AnalogOutputStatusInfo>
+{
+};
+class OctetStringConfig : public EventConfig<OctetStringInfo>
+{
+};
+class TimeAndIntervalConfig : public StaticConfig<TimeAndIntervalInfo>
+{
+};
+class SecurityStatConfig : public IndexConfig
+{
+};
 
-}
+} // namespace opendnp3
 
 #endif

@@ -21,6 +21,7 @@
 #include "openpal/util/Limits.h"
 
 #include <float.h>
+
 #include <cstdint>
 
 /// these are implemented in terms of cstdint
@@ -28,100 +29,84 @@
 namespace openpal
 {
 
-template <>
-uint8_t MinValue<uint8_t>()
+template<> uint8_t MinValue<uint8_t>()
 {
-	return 0;
+    return 0;
 }
 
-template <>
-uint8_t MaxValue<uint8_t>()
+template<> uint8_t MaxValue<uint8_t>()
 {
-	return UINT8_MAX;
+    return UINT8_MAX;
 }
 
-template <>
-uint16_t MinValue<uint16_t>()
+template<> uint16_t MinValue<uint16_t>()
 {
-	return 0;
+    return 0;
 }
 
-template <>
-uint16_t MaxValue<uint16_t>()
+template<> uint16_t MaxValue<uint16_t>()
 {
-	return UINT16_MAX;
+    return UINT16_MAX;
 }
 
-template <>
-float MinValue<float>()
+template<> float MinValue<float>()
 {
-	return -FLT_MAX;
+    return -FLT_MAX;
 }
 
-template <>
-float MaxValue<float>()
+template<> float MaxValue<float>()
 {
-	return FLT_MAX ;
+    return FLT_MAX;
 }
 
-template <>
-double MinValue<double>()
+template<> double MinValue<double>()
 {
-	return -DBL_MAX;
+    return -DBL_MAX;
 }
 
-template <>
-double MaxValue<double>()
+template<> double MaxValue<double>()
 {
-	return DBL_MAX;
+    return DBL_MAX;
 }
 
-template <>
-int16_t MinValue<int16_t>()
+template<> int16_t MinValue<int16_t>()
 {
-	return INT16_MIN;
+    return INT16_MIN;
 }
 
-template <>
-int16_t MaxValue<int16_t>()
+template<> int16_t MaxValue<int16_t>()
 {
-	return INT16_MAX;
+    return INT16_MAX;
 }
 
-template <>
-int32_t MinValue<int32_t>()
+template<> int32_t MinValue<int32_t>()
 {
-	return INT32_MIN;
+    return INT32_MIN;
 }
 
-template <>
-int32_t MaxValue<int32_t>()
+template<> int32_t MaxValue<int32_t>()
 {
-	return INT32_MAX;
+    return INT32_MAX;
 }
 
-template <>
-uint32_t MinValue<uint32_t>()
+template<> uint32_t MinValue<uint32_t>()
 {
-	return 0;
+    return 0;
 }
 
-template <>
-uint32_t MaxValue<uint32_t>()
+template<> uint32_t MaxValue<uint32_t>()
 {
-	return UINT32_MAX;
+    return UINT32_MAX;
 }
 
-template <>
-int64_t MinValue<int64_t>()
+template<> int64_t MinValue<int64_t>()
 {
-	return INT64_MIN;
+    return INT64_MIN;
 }
 
-template <>
-int64_t MaxValue<int64_t>()
+template<> int64_t MaxValue<int64_t>()
 {
-	return INT64_MAX;
+    return INT64_MAX;
 }
 
-}
+} // namespace openpal

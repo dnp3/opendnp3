@@ -22,9 +22,9 @@
 #ifndef OPENDNP3_APPCONSTANTS_H
 #define OPENDNP3_APPCONSTANTS_H
 
-#include <cstdint>
-
 #include <openpal/executor/TimeDuration.h>
+
+#include <cstdint>
 
 namespace opendnp3
 {
@@ -33,6 +33,6 @@ const uint32_t DEFAULT_MAX_APDU_SIZE = 2048;
 
 // default timeout in milliseconds for the application layer
 const openpal::TimeDuration DEFAULT_APP_TIMEOUT = openpal::TimeDuration::Milliseconds(5000);
-}
+} // namespace opendnp3
 
 #endif

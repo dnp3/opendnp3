@@ -24,33 +24,29 @@
 namespace opendnp3
 {
 
-TransportHeader::TransportHeader(uint8_t byte) :
-	fir((byte & FIR_MASK) != 0),
-	fin((byte & FIN_MASK) != 0),
-	seq((byte & SEQ_MASK))
-{}
+TransportHeader::TransportHeader(uint8_t byte)
+    : fir((byte & FIR_MASK) != 0), fin((byte & FIN_MASK) != 0), seq((byte & SEQ_MASK))
+{
+}
 
 uint8_t TransportHeader::ToByte(bool fir, bool fin, uint8_t seq)
 {
-	uint8_t hdr = 0;
+    uint8_t hdr = 0;
 
-	if (fir)
-	{
-		hdr |= FIR_MASK;
-	}
+    if (fir)
+    {
+        hdr |= FIR_MASK;
+    }
 
-	if (fin)
-	{
-		hdr |= FIN_MASK;
-	}
+    if (fin)
+    {
+        hdr |= FIN_MASK;
+    }
 
-	// Only the lower 6 bits of the sequence number
-	hdr |= (SEQ_MASK & seq);
+    // Only the lower 6 bits of the sequence number
+    hdr |= (SEQ_MASK & seq);
 
-	return hdr;
+    return hdr;
 }
 
-}
-
-
-
+} // namespace opendnp3

@@ -30,24 +30,22 @@ namespace openpal
 
 struct FloatByteOrder : private StaticOnly
 {
-	enum class Value : uint8_t
-	{
-		NORMAL,
-		REVERSE,
-		UNSUPPORTED
-	};
+    enum class Value : uint8_t
+    {
+        NORMAL,
+        REVERSE,
+        UNSUPPORTED
+    };
 
-	static const Value ORDER;
+    static const Value ORDER;
 
 private:
+    static Value GetByteOrder();
 
-	static Value GetByteOrder();
-
-	static bool IsNormalByteOrder();
-	static bool IsReverseByteOrder();
-
+    static bool IsNormalByteOrder();
+    static bool IsReverseByteOrder();
 };
 
-}
+} // namespace openpal
 
 #endif

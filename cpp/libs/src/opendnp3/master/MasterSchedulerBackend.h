@@ -21,112 +21,102 @@
 #ifndef OPENDNP3_MASTERSCHEDULERBACKEND_H
 #define OPENDNP3_MASTERSCHEDULERBACKEND_H
 
-#include "opendnp3/master/IMasterTaskRunner.h"
-#include "opendnp3/master/IMasterScheduler.h"
-
 #include "openpal/executor/TimerRef.h"
 
-#include <vector>
+#include "opendnp3/master/IMasterScheduler.h"
+#include "opendnp3/master/IMasterTaskRunner.h"
+
 #include <memory>
+#include <vector>
 
 namespace opendnp3
 {
 
-class MasterSchedulerBackend final : public IMasterScheduler, public std::enable_shared_from_this<MasterSchedulerBackend>
+class MasterSchedulerBackend final : public IMasterScheduler,
+                                     public std::enable_shared_from_this<MasterSchedulerBackend>
 {
 
-	// Tasks are associated with a particular runner
-	struct Record
-	{
-		Record() = default;
+    // Tasks are associated with a particular runner
+    struct Record
+    {
+        Record() = default;
 
-		Record(
-		    const std::shared_ptr<IMasterTask>& task,
-		    IMasterTaskRunner& runner
-		) :
-			task(task),
-			runner(&runner)
-		{}
+        Record(const std::shared_ptr<IMasterTask>& task, IMasterTaskRunner& runner) : task(task), runner(&runner) {}
 
-		operator bool()
-		{
-			return task && runner;
-		}
+        operator bool()
+        {
+            return task && runner;
+        }
 
-		void Clear()
-		{
-			this->task.reset();
-			this->runner = nullptr;
-		}
+        void Clear()
+        {
+            this->task.reset();
+            this->runner = nullptr;
+        }
 
-		bool BelongsTo(const IMasterTaskRunner& runner) const
-		{
-			return this->runner == &runner;
-		}
+        bool BelongsTo(const IMasterTaskRunner& runner) const
+        {
+            return this->runner == &runner;
+        }
 
-		std::shared_ptr<IMasterTask> task;
-		IMasterTaskRunner* runner = nullptr;
-
-	};
+        std::shared_ptr<IMasterTask> task;
+        IMasterTaskRunner* runner = nullptr;
+    };
 
 public:
+    explicit MasterSchedulerBackend(const std::shared_ptr<openpal::IExecutor>& executor);
 
-	explicit MasterSchedulerBackend(const std::shared_ptr<openpal::IExecutor>& executor);
+    virtual void Shutdown() override;
 
-	virtual void Shutdown() override;
+    // ------- implement IMasterScheduler --------
 
-	// ------- implement IMasterScheduler --------
+    virtual void Add(const std::shared_ptr<IMasterTask>& task, IMasterTaskRunner& runner) override;
 
-	virtual void Add(const std::shared_ptr<IMasterTask>& task, IMasterTaskRunner& runner) override;
+    virtual void SetRunnerOffline(const IMasterTaskRunner& runner) override;
 
-	virtual void SetRunnerOffline(const IMasterTaskRunner& runner) override;
+    virtual bool CompleteCurrentFor(const IMasterTaskRunner& runner) override;
 
-	virtual bool CompleteCurrentFor(const IMasterTaskRunner& runner) override;
+    virtual void Demand(const std::shared_ptr<IMasterTask>& task) override;
 
-	virtual void Demand(const std::shared_ptr<IMasterTask>& task) override;
-
-	virtual void Evaluate() override;
+    virtual void Evaluate() override;
 
 private:
-	bool isShutdown = false;
-	bool taskCheckPending = false;
+    bool isShutdown = false;
+    bool taskCheckPending = false;
 
-	Record current;
-	std::vector<Record> tasks;
+    Record current;
+    std::vector<Record> tasks;
 
-	void PostCheckForTaskRun();
+    void PostCheckForTaskRun();
 
-	bool CheckForTaskRun();
+    bool CheckForTaskRun();
 
-	void RestartTimeoutTimer();
+    void RestartTimeoutTimer();
 
-	void TimeoutTasks();
+    void TimeoutTasks();
 
-	std::shared_ptr<openpal::IExecutor> executor;
-	openpal::TimerRef taskTimer;
-	openpal::TimerRef taskStartTimeout;
+    std::shared_ptr<openpal::IExecutor> executor;
+    openpal::TimerRef taskTimer;
+    openpal::TimerRef taskStartTimeout;
 
+    enum class Comparison : uint8_t
+    {
+        LEFT,
+        RIGHT,
+        SAME
+    };
 
-	enum class Comparison : uint8_t
-	{
-		LEFT,
-		RIGHT,
-		SAME
-	};
+    static Comparison GetBestTaskToRun(const openpal::MonotonicTimestamp& now, const Record& left, const Record& right);
 
-	static Comparison GetBestTaskToRun(const openpal::MonotonicTimestamp& now, const Record& left, const Record& right);
+    static Comparison CompareEnabledStatus(const Record& left, const Record& right);
 
-	static Comparison CompareEnabledStatus(const Record& left, const Record& right);
+    static Comparison CompareBlockedStatus(const Record& left, const Record& right);
 
-	static Comparison CompareBlockedStatus(const Record& left, const Record& right);
+    static Comparison ComparePriority(const Record& left, const Record& right);
 
-	static Comparison ComparePriority(const Record& left, const Record& right);
-
-	static Comparison CompareTime(const openpal::MonotonicTimestamp& time, const Record& left, const Record& right);
+    static Comparison CompareTime(const openpal::MonotonicTimestamp& time, const Record& left, const Record& right);
 };
 
-}
-
-
+} // namespace opendnp3
 
 #endif

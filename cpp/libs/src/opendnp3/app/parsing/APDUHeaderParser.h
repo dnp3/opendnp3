@@ -22,8 +22,8 @@
 #define OPENDNP3_APDUHEADERPARSER_H
 
 #include <openpal/container/RSlice.h>
-#include <openpal/util/Uncopyable.h>
 #include <openpal/logging/Logger.h>
+#include <openpal/util/Uncopyable.h>
 
 #include "opendnp3/app/APDUHeader.h"
 
@@ -34,44 +34,34 @@ class APDUHeaderParser : private openpal::StaticOnly
 {
 
 public:
+    template<class T> class Result
+    {
+    public:
+        const bool success;
+        const T header;
+        const openpal::RSlice objects;
 
-	template <class T>
-	class Result
-	{
-	public:
+        static Result Ok(const T& header, const openpal::RSlice& objects)
+        {
+            return Result(header, objects);
+        }
 
-		const bool success;
-		const T header;
-		const openpal::RSlice objects;
+        static Result Error()
+        {
+            return Result();
+        }
 
-		static Result Ok(const T& header, const openpal::RSlice& objects)
-		{
-			return Result(header, objects);
-		}
+    private:
+        Result(const T& header, const openpal::RSlice& objects) : success(true), header(header), objects(objects) {}
 
-		static Result Error()
-		{
-			return Result();
-		}
+        Result() : success(false) {}
+    };
 
-	private:
+    static Result<APDUHeader> ParseRequest(const openpal::RSlice& apdu, openpal::Logger* logger = nullptr);
 
-		Result(const T& header, const openpal::RSlice& objects) :
-			success(true),
-			header(header),
-			objects(objects)
-		{}
-
-		Result() : success(false)
-		{}
-	};
-
-	static Result<APDUHeader> ParseRequest(const openpal::RSlice& apdu, openpal::Logger* logger = nullptr);
-
-	static Result<APDUResponseHeader> ParseResponse(const openpal::RSlice& apdu, openpal::Logger* logger = nullptr);
-
+    static Result<APDUResponseHeader> ParseResponse(const openpal::RSlice& apdu, openpal::Logger* logger = nullptr);
 };
 
-}
+} // namespace opendnp3
 
 #endif

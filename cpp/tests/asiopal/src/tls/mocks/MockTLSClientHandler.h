@@ -23,11 +23,11 @@
 #define ASIOPAL_MOCKTLSCLIENTHANDLER_H
 
 #include "asiopal/IAsyncChannel.h"
-
 #include "asiopal/tls/TLSStreamChannel.h"
 
-#include <deque>
 #include <asio/ssl.hpp>
+
+#include <deque>
 
 namespace asiopal
 {
@@ -36,42 +36,34 @@ class MockTLSClientHandler final
 {
 
 public:
+    void OnConnect(const std::shared_ptr<Executor>& executor,
+                   const std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>>& stream,
+                   const std::error_code& ec)
+    {
+        if (ec)
+        {
+            ++num_error;
+            throw std::logic_error(ec.message());
+        }
+        else
+        {
+            channels.push_back(TLSStreamChannel::Create(executor, stream));
+        }
+    }
 
-	void OnConnect(const std::shared_ptr<Executor>& executor, const std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>>& stream, const std::error_code& ec)
-	{
-		if (ec)
-		{
-			++num_error;
-			throw std::logic_error(ec.message());
-		}
-		else
-		{
-			channels.push_back(TLSStreamChannel::Create(executor, stream));
-		}
-	}
+    ~MockTLSClientHandler()
+    {
+        for (auto& channel : channels)
+        {
+            channel->Shutdown();
+        }
+    }
 
-	~MockTLSClientHandler()
-	{
-		for (auto& channel : channels)
-		{
-			channel->Shutdown();
-		}
-	}
+    size_t num_error = 0;
 
-	size_t num_error = 0;
-
-	std::deque<std::shared_ptr<IAsyncChannel>> channels;
-
+    std::deque<std::shared_ptr<IAsyncChannel>> channels;
 };
 
-}
+} // namespace asiopal
 
 #endif
-
-
-
-
-
-
-
-

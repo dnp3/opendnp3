@@ -21,29 +21,23 @@
 #ifndef OPENDNP3_MESSAGE_H
 #define OPENDNP3_MESSAGE_H
 
-#include "opendnp3/link/Addresses.h"
 #include "openpal/container/RSlice.h"
+
+#include "opendnp3/link/Addresses.h"
 
 namespace opendnp3
 {
 
 struct Message
 {
-	Message() = default;
+    Message() = default;
 
-	Message(
-	    const Addresses& addresses,
-	    const openpal::RSlice& payload
-	) :
-		addresses(addresses),
-		payload(payload)
-	{}
+    Message(const Addresses& addresses, const openpal::RSlice& payload) : addresses(addresses), payload(payload) {}
 
-	Addresses addresses;
-	openpal::RSlice payload;
+    Addresses addresses;
+    openpal::RSlice payload;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

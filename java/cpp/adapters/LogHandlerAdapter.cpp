@@ -23,20 +23,19 @@
 
 using namespace jni;
 
-LogHandlerAdapter::LogHandlerAdapter(jobject proxy) : proxy(proxy)
-{}
+LogHandlerAdapter::LogHandlerAdapter(jobject proxy) : proxy(proxy) {}
 
 void LogHandlerAdapter::Log(const openpal::LogEntry& entry)
 {
-	const auto env = JNI::GetEnv();
+    const auto env = JNI::GetEnv();
 
-	const jint level = entry.filters.GetBitfield();
+    const jint level = entry.filters.GetBitfield();
 
-	LocalJString id(env, entry.loggerid);
-	LocalJString location(env, entry.location);
-	LocalJString msg(env, entry.message);
+    LocalJString id(env, entry.loggerid);
+    LocalJString location(env, entry.location);
+    LocalJString msg(env, entry.message);
 
-	auto jentry = JCache::LogEntry.init4(env, level, id, location, msg);
+    auto jentry = JCache::LogEntry.init4(env, level, id, location, msg);
 
-	JCache::LogHandler.log(env, proxy, jentry);
+    JCache::LogHandler.log(env, proxy, jentry);
 }

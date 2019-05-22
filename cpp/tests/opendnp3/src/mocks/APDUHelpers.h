@@ -21,23 +21,23 @@
 #ifndef __APDU_HELPERS_H_
 #define __APDU_HELPERS_H_
 
+#include <openpal/util/Uncopyable.h>
+
 #include <opendnp3/app/APDURequest.h>
 #include <opendnp3/app/APDUResponse.h>
-#include <openpal/util/Uncopyable.h>
 
 #include <assert.h>
 
 class APDUHelpers : private openpal::StaticOnly
 {
 private:
-	static const uint32_t SIZE = 2048;
-	static uint8_t fixedBuffer[2048];
+    static const uint32_t SIZE = 2048;
+    static uint8_t fixedBuffer[2048];
 
 public:
+    static opendnp3::APDURequest Request(opendnp3::FunctionCode code, uint32_t size = SIZE);
 
-	static opendnp3::APDURequest Request(opendnp3::FunctionCode code, uint32_t size = SIZE);
-
-	static opendnp3::APDUResponse Response(uint32_t size = SIZE);
+    static opendnp3::APDUResponse Response(uint32_t size = SIZE);
 };
 
 #endif

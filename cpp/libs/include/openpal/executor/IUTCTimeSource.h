@@ -27,37 +27,34 @@ namespace openpal
 {
 
 /**
-*  Interface that defines a method to get UTC timestamps
-*/
+ *  Interface that defines a method to get UTC timestamps
+ */
 class IUTCTimeSource
 {
 
 public:
-	/**
-	*  Returns a UTCTimestamp of the current time
-	*/
-	virtual UTCTimestamp Now() = 0;
+    /**
+     *  Returns a UTCTimestamp of the current time
+     */
+    virtual UTCTimestamp Now() = 0;
 };
 
 /**
-* Mock usable for testing
-*/
+ * Mock usable for testing
+ */
 class FixedUTCTimeSource : public IUTCTimeSource
 {
 public:
-	FixedUTCTimeSource(int64_t time_): time(time_)
-	{}
+    FixedUTCTimeSource(int64_t time_) : time(time_) {}
 
-	UTCTimestamp Now()
-	{
-		return UTCTimestamp (time);
-	}
+    UTCTimestamp Now()
+    {
+        return UTCTimestamp(time);
+    }
 
-	int64_t time;
+    int64_t time;
 };
 
-
-}
+} // namespace openpal
 
 #endif
-

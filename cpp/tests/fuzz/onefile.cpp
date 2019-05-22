@@ -1,49 +1,55 @@
 #include <cstdint>
-#include <cstdlib>
 #include <cstdio>
+#include <cstdlib>
 
-extern "C" int LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size);
+extern "C" int LLVMFuzzerTestOneInput(const uint8_t* Data, size_t Size);
 
 int main(int argc, char** argv)
 {
-    FILE * fp;
-    uint8_t *Data;
+    FILE* fp;
+    uint8_t* Data;
     size_t Size;
 
-    if (argc != 2) {
+    if (argc != 2)
+    {
         return 1;
     }
-    //opens the file, get its size, and reads it into a buffer
+    // opens the file, get its size, and reads it into a buffer
     fp = fopen(argv[1], "rb");
-    if (fp == NULL) {
+    if (fp == NULL)
+    {
         return 2;
     }
-    if (fseek(fp, 0L, SEEK_END) != 0) {
+    if (fseek(fp, 0L, SEEK_END) != 0)
+    {
         fclose(fp);
         return 2;
     }
     Size = ftell(fp);
-    if (Size == (size_t) -1) {
+    if (Size == (size_t)-1)
+    {
         fclose(fp);
         return 2;
     }
-    if (fseek(fp, 0L, SEEK_SET) != 0) {
+    if (fseek(fp, 0L, SEEK_SET) != 0)
+    {
         fclose(fp);
         return 2;
     }
-    Data = (uint8_t *) malloc(Size);
-    if (Data == NULL) {
+    Data = (uint8_t*)malloc(Size);
+    if (Data == NULL)
+    {
         fclose(fp);
         return 2;
     }
-    if (fread(Data, Size, 1, fp) != 1) {
+    if (fread(Data, Size, 1, fp) != 1)
+    {
         fclose(fp);
         return 2;
     }
 
-    //lauch fuzzer
+    // lauch fuzzer
     LLVMFuzzerTestOneInput(Data, Size);
     fclose(fp);
     return 0;
 }
-

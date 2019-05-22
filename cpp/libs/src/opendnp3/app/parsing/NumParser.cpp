@@ -30,96 +30,89 @@ using namespace openpal;
 namespace opendnp3
 {
 
-NumParser::NumParser(ReadFun pReadFun, uint8_t size) :
-	pReadFun(pReadFun),
-	size(size)
-{
-
-}
+NumParser::NumParser(ReadFun pReadFun, uint8_t size) : pReadFun(pReadFun), size(size) {}
 
 uint8_t NumParser::NumBytes() const
 {
-	return size;
+    return size;
 }
 
 ParseResult NumParser::ParseCount(openpal::RSlice& buffer, uint16_t& count, openpal::Logger* pLogger) const
 {
-	if (this->Read(count, buffer))
-	{
-		if (count == 0)
-		{
-			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "count of 0");
-			return ParseResult::COUNT_OF_ZERO;
-		}
-		else
-		{
-			return ParseResult::OK;
-		}
-	}
-	else
-	{
-		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for count");
-		return ParseResult::NOT_ENOUGH_DATA_FOR_RANGE;
-	}
+    if (this->Read(count, buffer))
+    {
+        if (count == 0)
+        {
+            SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "count of 0");
+            return ParseResult::COUNT_OF_ZERO;
+        }
+        else
+        {
+            return ParseResult::OK;
+        }
+    }
+    else
+    {
+        SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for count");
+        return ParseResult::NOT_ENOUGH_DATA_FOR_RANGE;
+    }
 }
 
 ParseResult NumParser::ParseRange(openpal::RSlice& buffer, Range& range, openpal::Logger* pLogger) const
 {
-	if (buffer.Size() < (2 * static_cast<uint32_t>(size)))
-	{
-		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for start / stop");
-		return ParseResult::NOT_ENOUGH_DATA_FOR_RANGE;
-	}
-	else
-	{
-		range.start = this->ReadNum(buffer);
-		range.stop = this->ReadNum(buffer);
+    if (buffer.Size() < (2 * static_cast<uint32_t>(size)))
+    {
+        SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for start / stop");
+        return ParseResult::NOT_ENOUGH_DATA_FOR_RANGE;
+    }
+    else
+    {
+        range.start = this->ReadNum(buffer);
+        range.stop = this->ReadNum(buffer);
 
-		if (range.IsValid())
-		{
-			return ParseResult::OK;
-		}
-		else
-		{
-			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "start (%u) > stop (%u)", range.start, range.stop);
-			return ParseResult::BAD_START_STOP;
-		}
-	}
+        if (range.IsValid())
+        {
+            return ParseResult::OK;
+        }
+        else
+        {
+            FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "start (%u) > stop (%u)", range.start, range.stop);
+            return ParseResult::BAD_START_STOP;
+        }
+    }
 }
 
 uint16_t NumParser::ReadNum(openpal::RSlice& buffer) const
 {
-	return pReadFun(buffer);
+    return pReadFun(buffer);
 }
 
 bool NumParser::Read(uint16_t& num, openpal::RSlice& buffer) const
 {
-	if (buffer.Size() < size)
-	{
-		return false;
-	}
-	else
-	{
-		num = pReadFun(buffer);
-		return true;
-	}
+    if (buffer.Size() < size)
+    {
+        return false;
+    }
+    else
+    {
+        num = pReadFun(buffer);
+        return true;
+    }
 }
 
 uint16_t NumParser::ReadByte(openpal::RSlice& buffer)
 {
-	return UInt8::ReadBuffer(buffer);
+    return UInt8::ReadBuffer(buffer);
 }
 
 NumParser NumParser::OneByte()
 {
-	return NumParser(&ReadByte, 1);
+    return NumParser(&ReadByte, 1);
 }
 
 NumParser NumParser::TwoByte()
 {
-	return NumParser(&UInt16::ReadBuffer, 2);
+    return NumParser(&UInt16::ReadBuffer, 2);
 }
 
-}
-
-
+} // namespace opendnp3

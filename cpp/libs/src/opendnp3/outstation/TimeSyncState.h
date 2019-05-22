@@ -21,10 +21,9 @@
 #ifndef OPENDNP3_TIMESYNCSTATE_H
 #define OPENDNP3_TIMESYNCSTATE_H
 
-#include "opendnp3/app/AppSeqNum.h"
-
 #include "openpal/executor/MonotonicTimestamp.h"
 
+#include "opendnp3/app/AppSeqNum.h"
 
 namespace opendnp3
 {
@@ -36,42 +35,42 @@ class TimeSyncState
 {
 
 public:
+    TimeSyncState() {}
 
-	TimeSyncState() {}
+    void RecordCurrentTime(const AppSeqNum& seq, const openpal::MonotonicTimestamp& now)
+    {
+        valid = true;
+        time = now;
+        expectedSeqNum = seq.Next();
+    }
 
-	void RecordCurrentTime(const AppSeqNum& seq, const openpal::MonotonicTimestamp& now)
-	{
-		valid = true;
-		time = now;
-		expectedSeqNum = seq.Next();
-	}
+    bool CalcTimeDifference(const AppSeqNum& seq, const openpal::MonotonicTimestamp& now)
+    {
+        if (!valid)
+            return false;
+        if (!expectedSeqNum.Equals(seq))
+            return false;
+        if (now.milliseconds < time.milliseconds)
+            return false;
 
-	bool CalcTimeDifference(const AppSeqNum& seq, const openpal::MonotonicTimestamp& now)
-	{
-		if (!valid) return false;
-		if (!expectedSeqNum.Equals(seq)) return false;
-		if (now.milliseconds < time.milliseconds) return false;
+        this->difference = openpal::TimeDuration::Milliseconds(now.milliseconds - time.milliseconds);
+        this->valid = false;
 
-		this->difference = openpal::TimeDuration::Milliseconds(now.milliseconds - time.milliseconds);
-		this->valid = false;
+        return true;
+    }
 
-		return true;
-	}
-
-	openpal::TimeDuration GetDifference() const
-	{
-		return this->difference;
-	}
+    openpal::TimeDuration GetDifference() const
+    {
+        return this->difference;
+    }
 
 private:
-
-	bool valid = false;
-	openpal::MonotonicTimestamp time;
-	openpal::TimeDuration difference;
-	AppSeqNum expectedSeqNum;
+    bool valid = false;
+    openpal::MonotonicTimestamp time;
+    openpal::TimeDuration difference;
+    AppSeqNum expectedSeqNum;
 };
 
-
-}
+} // namespace opendnp3
 
 #endif

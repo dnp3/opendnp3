@@ -29,80 +29,75 @@
 namespace openpal
 {
 
-
 /**
-* A copyable facade over a LogRoot class
-*/
+ * A copyable facade over a LogRoot class
+ */
 class Logger
 {
 
 public:
+    struct Settings
+    {
+        Settings(const std::string& id, openpal::LogFilters levels) : id(id), levels(levels) {}
 
-	struct Settings
-	{
-		Settings(const std::string& id, openpal::LogFilters levels) : id(id), levels(levels)
-		{}
+        std::string id;
+        openpal::LogFilters levels;
+    };
 
-		std::string id;
-		openpal::LogFilters levels;
-	};
+    Logger(const std::shared_ptr<ILogHandler>& backend, const std::string& id, openpal::LogFilters levels);
 
-	Logger(const std::shared_ptr<ILogHandler>& backend, const std::string& id, openpal::LogFilters levels);
+    static Logger Empty()
+    {
+        return Logger(nullptr, "", 0);
+    }
 
-	static Logger Empty()
-	{
-		return Logger(nullptr, "", 0);
-	}
+    void Log(const LogFilters& filters, const char* location, const char* message);
 
-	void Log(const LogFilters& filters, const char* location, const char* message);
+    Logger Detach(const std::string& id) const
+    {
+        return Logger(this->backend, std::make_shared<Settings>(id, this->settings->levels));
+    }
 
-	Logger Detach(const std::string& id) const
-	{
-		return Logger(this->backend, std::make_shared<Settings>(id, this->settings->levels));
-	}
+    Logger Detach(const std::string& id, openpal::LogFilters levels) const
+    {
+        return Logger(this->backend, std::make_shared<Settings>(id, levels));
+    }
 
-	Logger Detach(const std::string& id, openpal::LogFilters levels) const
-	{
-		return Logger(this->backend, std::make_shared<Settings>(id, levels));
-	}
+    Logger Detach(openpal::LogFilters levels) const
+    {
+        return Logger(this->backend, std::make_shared<Settings>(this->settings->id, levels));
+    }
 
-	Logger Detach(openpal::LogFilters levels) const
-	{
-		return Logger(this->backend, std::make_shared<Settings>(this->settings->id, levels));
-	}
+    bool IsEnabled(const LogFilters& filters) const;
 
-	bool IsEnabled(const LogFilters& filters) const;
+    LogFilters GetFilters() const
+    {
+        return this->settings->levels;
+    }
 
-	LogFilters GetFilters() const
-	{
-		return this->settings->levels;
-	}
+    void SetFilters(const openpal::LogFilters& filters)
+    {
+        this->settings->levels = filters;
+    }
 
-	void SetFilters(const openpal::LogFilters& filters)
-	{
-		this->settings->levels = filters;
-	}
-
-	void Rename(const std::string& id)
-	{
-		this->settings->id = id;
-	}
+    void Rename(const std::string& id)
+    {
+        this->settings->id = id;
+    }
 
 private:
+    Logger(const std::shared_ptr<ILogHandler>& backend, const std::shared_ptr<Settings>& settings)
+        : backend(backend), settings(settings)
+    {
+    }
 
-	Logger(const std::shared_ptr<ILogHandler>& backend, const std::shared_ptr<Settings>& settings) :
-		backend(backend),
-		settings(settings)
-	{}
+    Logger() = delete;
+    Logger& operator=(const Logger&) = delete;
 
-	Logger() = delete;
-	Logger& operator=(const Logger&) = delete;
-
-	const std::shared_ptr<ILogHandler> backend;
-	const std::shared_ptr<Settings> settings;
+    const std::shared_ptr<ILogHandler> backend;
+    const std::shared_ptr<Settings> settings;
 };
 
-}
+} // namespace openpal
 
 #endif
-

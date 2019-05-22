@@ -24,25 +24,22 @@
 
 #include "SteadyClock.h"
 
-#include "openpal/util/Uncopyable.h"
-
 #include "openpal/executor/MonotonicTimestamp.h"
+#include "openpal/util/Uncopyable.h"
 
 namespace asiopal
 {
 
-
 class TimeConversions : private openpal::StaticOnly
 {
-	static const int64_t MAX_MILLISECONDS = std::chrono::duration_cast<std::chrono::milliseconds>(steady_clock_t::duration::max()).count();
+    static const int64_t MAX_MILLISECONDS
+        = std::chrono::duration_cast<std::chrono::milliseconds>(steady_clock_t::duration::max()).count();
 
 public:
-
-	static steady_clock_t::time_point Convert(const openpal::MonotonicTimestamp& timestamp);
-	static openpal::MonotonicTimestamp Convert(const steady_clock_t::time_point& timestamp);
+    static steady_clock_t::time_point Convert(const openpal::MonotonicTimestamp& timestamp);
+    static openpal::MonotonicTimestamp Convert(const steady_clock_t::time_point& timestamp);
 };
 
-
-}
+} // namespace asiopal
 
 #endif

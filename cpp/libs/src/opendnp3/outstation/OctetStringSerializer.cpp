@@ -23,19 +23,19 @@
 
 namespace opendnp3
 {
-OctetStringSerializer::OctetStringSerializer(bool isEvent, uint8_t size) : DNP3Serializer(
-	    GroupVariationID(isEvent ? 111 : 110, size),
-	    size,
-	    nullptr, // won't be used for reading
-	    &OctetStringSerializer::Write
-	)
-{}
+OctetStringSerializer::OctetStringSerializer(bool isEvent, uint8_t size)
+    : DNP3Serializer(GroupVariationID(isEvent ? 111 : 110, size),
+                     size,
+                     nullptr, // won't be used for reading
+                     &OctetStringSerializer::Write)
+{
+}
 
 bool OctetStringSerializer::Write(const OctetString& value, openpal::WSlice& buffer)
 {
-	if (value.Size() > buffer.Size()) return false;
-	value.ToRSlice().CopyTo(buffer);
-	return true;
+    if (value.Size() > buffer.Size())
+        return false;
+    value.ToRSlice().CopyTo(buffer);
+    return true;
 }
-};
-
+}; // namespace opendnp3

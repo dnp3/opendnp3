@@ -32,11 +32,15 @@ const uint32_t MAX_HEX_PER_LINE = 20;
 
 static_assert(MAX_HEX_PER_LINE < (MAX_LOG_ENTRY_SIZE / 3), "Each hex byte takes 3 characters");
 
-void LogHex(Logger& logger, const openpal::LogFilters& filters, const openpal::RSlice& source, uint32_t firstRowSize, uint32_t otherRowSize);
+void LogHex(Logger& logger,
+            const openpal::LogFilters& filters,
+            const openpal::RSlice& source,
+            uint32_t firstRowSize,
+            uint32_t otherRowSize);
 
 // Portable allocation of a copy of a cstring
 char* AllocateCopy(char const* alias);
 
-}
+} // namespace openpal
 
 #endif

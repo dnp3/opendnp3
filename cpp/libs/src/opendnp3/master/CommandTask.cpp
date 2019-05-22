@@ -20,107 +20,129 @@
  */
 #include "CommandTask.h"
 
-#include "opendnp3/master/CommandSetOps.h"
-#include "opendnp3/master/ICommandHeader.h"
-
 #include <openpal/logging/LogMacros.h>
 
-#include "opendnp3/app/parsing/APDUParser.h"
 #include "opendnp3/LogLevels.h"
+#include "opendnp3/app/parsing/APDUParser.h"
+#include "opendnp3/master/CommandSetOps.h"
+#include "opendnp3/master/ICommandHeader.h"
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-std::shared_ptr<IMasterTask> CommandTask::CreateDirectOperate(const std::shared_ptr<TaskContext>& context, CommandSet&& set, IndexQualifierMode mode, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger)
+std::shared_ptr<IMasterTask> CommandTask::CreateDirectOperate(const std::shared_ptr<TaskContext>& context,
+                                                              CommandSet&& set,
+                                                              IndexQualifierMode mode,
+                                                              IMasterApplication& app,
+                                                              const CommandCallbackT& callback,
+                                                              const openpal::MonotonicTimestamp& startExpiration,
+                                                              const TaskConfig& config,
+                                                              openpal::Logger logger)
 {
-	auto task = std::make_shared<CommandTask>(context, std::move(set), mode, app, callback, startExpiration, config, logger);
-	task->LoadDirectOperate();
-	return task;
+    auto task
+        = std::make_shared<CommandTask>(context, std::move(set), mode, app, callback, startExpiration, config, logger);
+    task->LoadDirectOperate();
+    return task;
 }
 
-
-std::shared_ptr<IMasterTask> CommandTask::CreateSelectAndOperate(const std::shared_ptr<TaskContext>& context, CommandSet&& set, IndexQualifierMode mode, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger)
+std::shared_ptr<IMasterTask> CommandTask::CreateSelectAndOperate(const std::shared_ptr<TaskContext>& context,
+                                                                 CommandSet&& set,
+                                                                 IndexQualifierMode mode,
+                                                                 IMasterApplication& app,
+                                                                 const CommandCallbackT& callback,
+                                                                 const openpal::MonotonicTimestamp& startExpiration,
+                                                                 const TaskConfig& config,
+                                                                 openpal::Logger logger)
 {
-	auto task = std::make_shared<CommandTask>(context, std::move(set), mode, app, callback, startExpiration, config, logger);
-	task->LoadSelectAndOperate();
-	return task;
+    auto task
+        = std::make_shared<CommandTask>(context, std::move(set), mode, app, callback, startExpiration, config, logger);
+    task->LoadSelectAndOperate();
+    return task;
 }
 
-CommandTask::CommandTask(const std::shared_ptr<TaskContext>& context, CommandSet&& commands, IndexQualifierMode mode, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger) :
-	IMasterTask(context, app, TaskBehavior::SingleExecutionNoRetry(startExpiration), logger, config),
-	statusResult(CommandStatus::UNDEFINED),
-	commandCallback(callback),
-	commands(std::move(commands)),
-	mode(mode)
+CommandTask::CommandTask(const std::shared_ptr<TaskContext>& context,
+                         CommandSet&& commands,
+                         IndexQualifierMode mode,
+                         IMasterApplication& app,
+                         const CommandCallbackT& callback,
+                         const openpal::MonotonicTimestamp& startExpiration,
+                         const TaskConfig& config,
+                         openpal::Logger logger)
+    : IMasterTask(context, app, TaskBehavior::SingleExecutionNoRetry(startExpiration), logger, config),
+      statusResult(CommandStatus::UNDEFINED),
+      commandCallback(callback),
+      commands(std::move(commands)),
+      mode(mode)
 {
-
 }
 
 void CommandTask::LoadSelectAndOperate()
 {
-	functionCodes.clear();
-	functionCodes.push_back(FunctionCode::SELECT);
-	functionCodes.push_back(FunctionCode::OPERATE);
+    functionCodes.clear();
+    functionCodes.push_back(FunctionCode::SELECT);
+    functionCodes.push_back(FunctionCode::OPERATE);
 }
 
 void CommandTask::LoadDirectOperate()
 {
-	functionCodes.clear();
-	functionCodes.push_back(FunctionCode::DIRECT_OPERATE);
+    functionCodes.clear();
+    functionCodes.push_back(FunctionCode::DIRECT_OPERATE);
 }
 
 bool CommandTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
-	if (!functionCodes.empty())
-	{
-		request.SetFunction(functionCodes.front());
-		functionCodes.pop_front();
-		request.SetControl(AppControlField::Request(seq));
-		auto writer = request.GetWriter();
-		return CommandSetOps::Write(commands, writer, this->mode);
-	}
+    if (!functionCodes.empty())
+    {
+        request.SetFunction(functionCodes.front());
+        functionCodes.pop_front();
+        request.SetControl(AppControlField::Request(seq));
+        auto writer = request.GetWriter();
+        return CommandSetOps::Write(commands, writer, this->mode);
+    }
 
-	return false;
+    return false;
 }
 
-IMasterTask::ResponseResult CommandTask::ProcessResponse(const APDUResponseHeader& header, const openpal::RSlice& objects)
+IMasterTask::ResponseResult CommandTask::ProcessResponse(const APDUResponseHeader& header,
+                                                         const openpal::RSlice& objects)
 {
-	return ValidateSingleResponse(header) ? ProcessResponse(objects) : ResponseResult::ERROR_BAD_RESPONSE;
+    return ValidateSingleResponse(header) ? ProcessResponse(objects) : ResponseResult::ERROR_BAD_RESPONSE;
 }
 
 void CommandTask::OnTaskComplete(TaskCompletion result, MonotonicTimestamp now)
 {
-	CommandSetOps::InvokeCallback(commands, result, this->commandCallback);
+    CommandSetOps::InvokeCallback(commands, result, this->commandCallback);
 }
 
 void CommandTask::Initialize()
 {
-	statusResult = CommandStatus::UNDEFINED;
+    statusResult = CommandStatus::UNDEFINED;
 }
 
 IMasterTask::ResponseResult CommandTask::ProcessResponse(const openpal::RSlice& objects)
 {
-	if (functionCodes.empty())
-	{
-		auto result = CommandSetOps::ProcessOperateResponse(commands, objects, &logger);
-		return (result == CommandSetOps::OperateResult::FAIL_PARSE) ? ResponseResult::ERROR_BAD_RESPONSE : ResponseResult::OK_FINAL;
-	}
-	else
-	{
-		auto result = CommandSetOps::ProcessSelectResponse(commands, objects, &logger);
+    if (functionCodes.empty())
+    {
+        auto result = CommandSetOps::ProcessOperateResponse(commands, objects, &logger);
+        return (result == CommandSetOps::OperateResult::FAIL_PARSE) ? ResponseResult::ERROR_BAD_RESPONSE
+                                                                    : ResponseResult::OK_FINAL;
+    }
+    else
+    {
+        auto result = CommandSetOps::ProcessSelectResponse(commands, objects, &logger);
 
-		switch (result)
-		{
-		case(CommandSetOps::SelectResult::OK) :
-			return ResponseResult::OK_REPEAT; // proceed to OPERATE
-		case(CommandSetOps::SelectResult::FAIL_SELECT) :
-			return ResponseResult::OK_FINAL; // end the task, let the user examine each command point
-		default:
-			return ResponseResult::ERROR_BAD_RESPONSE;
-		}
-	}
+        switch (result)
+        {
+        case (CommandSetOps::SelectResult::OK):
+            return ResponseResult::OK_REPEAT; // proceed to OPERATE
+        case (CommandSetOps::SelectResult::FAIL_SELECT):
+            return ResponseResult::OK_FINAL; // end the task, let the user examine each command point
+        default:
+            return ResponseResult::ERROR_BAD_RESPONSE;
+        }
+    }
 }
 
-} //ens ns
+} // namespace opendnp3

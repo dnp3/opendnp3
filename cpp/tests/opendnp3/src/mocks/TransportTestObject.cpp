@@ -20,12 +20,12 @@
  */
 #include "TransportTestObject.h"
 
-#include <testlib/BufferHelpers.h>
-
 #include <openpal/util/ToHex.h>
 
 #include "opendnp3/app/AppConstants.h"
 #include "opendnp3/transport/TransportHeader.h"
+
+#include <testlib/BufferHelpers.h>
 
 #include <memory>
 #include <sstream>
@@ -37,56 +37,56 @@ using namespace testlib;
 namespace opendnp3
 {
 
-TransportTestObject::TransportTestObject(bool openOnStart, uint32_t maxRxFragmentSize) :
-	log(),
-	exe(),
-	transport(log.logger, maxRxFragmentSize)
+TransportTestObject::TransportTestObject(bool openOnStart, uint32_t maxRxFragmentSize)
+    : log(), exe(), transport(log.logger, maxRxFragmentSize)
 {
-	link.SetUpperLayer(transport);
-	transport.SetLinkLayer(link);
+    link.SetUpperLayer(transport);
+    transport.SetLinkLayer(link);
 
-	upper.SetLowerLayer(transport);
-	transport.SetAppLayer(upper);
+    upper.SetLowerLayer(transport);
+    transport.SetAppLayer(upper);
 
-	if (openOnStart)
-	{
-		transport.OnLowerLayerUp();
-	}
+    if (openOnStart)
+    {
+        transport.OnLowerLayerUp();
+    }
 }
 
 std::string TransportTestObject::GetData(const std::string& arHdr, uint8_t aSeed, uint32_t aLength)
 {
-	testlib::ByteStr buff(aLength);
-	uint8_t val = aSeed;
-	for(size_t i = 0; i < aLength; ++i)
-	{
-		buff[i] = val;
-		++val;
-	}
+    testlib::ByteStr buff(aLength);
+    uint8_t val = aSeed;
+    for (size_t i = 0; i < aLength; ++i)
+    {
+        buff[i] = val;
+        ++val;
+    }
 
-	ostringstream oss;
-	if(arHdr.size() > 0) oss << arHdr << " ";
-	oss << ToHex(buff, buff.Size(), true);
-	return oss.str();
+    ostringstream oss;
+    if (arHdr.size() > 0)
+        oss << arHdr << " ";
+    oss << ToHex(buff, buff.Size(), true);
+    return oss.str();
 }
 
-std::string TransportTestObject::GeneratePacketSequence(vector< std::string >& arVec, uint32_t aNumPackets, uint32_t aLastPacketLength)
+std::string TransportTestObject::GeneratePacketSequence(vector<std::string>& arVec,
+                                                        uint32_t aNumPackets,
+                                                        uint32_t aLastPacketLength)
 {
-	ostringstream oss;
-	for(size_t i = 0; i < aNumPackets; ++i)
-	{
-		bool fir = i == 0;
-		bool fin = i == (aNumPackets - 1);
-		int seq = static_cast<int>(i % 64);
-		uint32_t len = fin ? aLastPacketLength : MAX_TPDU_PAYLOAD;
-		uint8_t hdr = TransportHeader::ToByte(fir, fin, seq);
-		std::string data = this->GetData("", 0, len); //raw data with no header
-		oss << ((i == 0) ? "" : " ") << data; //cache the data in the string stream
-		arVec.push_back(ToHex(&hdr, 1, true) + " " + data);
-	}
+    ostringstream oss;
+    for (size_t i = 0; i < aNumPackets; ++i)
+    {
+        bool fir = i == 0;
+        bool fin = i == (aNumPackets - 1);
+        int seq = static_cast<int>(i % 64);
+        uint32_t len = fin ? aLastPacketLength : MAX_TPDU_PAYLOAD;
+        uint8_t hdr = TransportHeader::ToByte(fir, fin, seq);
+        std::string data = this->GetData("", 0, len); // raw data with no header
+        oss << ((i == 0) ? "" : " ") << data;         // cache the data in the string stream
+        arVec.push_back(ToHex(&hdr, 1, true) + " " + data);
+    }
 
-	return oss.str();
+    return oss.str();
 }
 
-}
-
+} // namespace opendnp3

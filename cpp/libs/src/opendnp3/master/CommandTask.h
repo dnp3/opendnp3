@@ -21,17 +21,17 @@
 #ifndef OPENDNP3_COMMANDTASK_H
 #define OPENDNP3_COMMANDTASK_H
 
+#include <openpal/Configure.h>
+#include <openpal/logging/Logger.h>
+
 #include "opendnp3/gen/FunctionCode.h"
 #include "opendnp3/gen/IndexQualifierMode.h"
-
+#include "opendnp3/master/CommandSet.h"
+#include "opendnp3/master/ICommandProcessor.h"
 #include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/ITaskCallback.h"
-#include "opendnp3/master/ICommandProcessor.h"
 #include "opendnp3/master/TaskPriority.h"
-#include "opendnp3/master/CommandSet.h"
 
-#include <openpal/logging/Logger.h>
-#include <openpal/Configure.h>
 #include <assert.h>
 
 #include <deque>
@@ -45,67 +45,85 @@ class CommandTask : public IMasterTask
 {
 
 public:
+    CommandTask(const std::shared_ptr<TaskContext>& context,
+                CommandSet&& set,
+                IndexQualifierMode mode,
+                IMasterApplication& app,
+                const CommandCallbackT& callback,
+                const openpal::MonotonicTimestamp& startExpiration,
+                const TaskConfig& config,
+                openpal::Logger logger);
 
-	CommandTask(const std::shared_ptr<TaskContext>& context, CommandSet&& set, IndexQualifierMode mode, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger);
+    static std::shared_ptr<IMasterTask> CreateDirectOperate(const std::shared_ptr<TaskContext>& context,
+                                                            CommandSet&& commands,
+                                                            IndexQualifierMode mode,
+                                                            IMasterApplication& app,
+                                                            const CommandCallbackT& callback,
+                                                            const openpal::MonotonicTimestamp& startExpiration,
+                                                            const TaskConfig& config,
+                                                            openpal::Logger logger);
+    static std::shared_ptr<IMasterTask> CreateSelectAndOperate(const std::shared_ptr<TaskContext>& context,
+                                                               CommandSet&& commands,
+                                                               IndexQualifierMode mode,
+                                                               IMasterApplication& app,
+                                                               const CommandCallbackT& callback,
+                                                               const openpal::MonotonicTimestamp& startExpiration,
+                                                               const TaskConfig& config,
+                                                               openpal::Logger logger);
 
-	static std::shared_ptr<IMasterTask> CreateDirectOperate(const std::shared_ptr<TaskContext>& context, CommandSet&& commands, IndexQualifierMode mode, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger);
-	static std::shared_ptr<IMasterTask> CreateSelectAndOperate(const std::shared_ptr<TaskContext>& context, CommandSet&& commands, IndexQualifierMode mode, IMasterApplication& app, const CommandCallbackT& callback, const openpal::MonotonicTimestamp& startExpiration, const TaskConfig& config, openpal::Logger logger);
+    virtual char const* Name() const override final
+    {
+        return "Command Task";
+    }
 
-	virtual char const* Name() const override final
-	{
-		return "Command Task";
-	}
+    virtual int Priority() const override final
+    {
+        return priority::COMMAND;
+    }
 
-	virtual int Priority() const override final
-	{
-		return priority::COMMAND;
-	}
+    virtual bool BlocksLowerPriority() const override final
+    {
+        return false;
+    }
 
-	virtual bool BlocksLowerPriority() const override final
-	{
-		return false;
-	}
+    virtual bool IsRecurring() const override final
+    {
+        return false;
+    }
 
-	virtual bool IsRecurring() const override final
-	{
-		return false;
-	}
-
-	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override final;
+    virtual bool BuildRequest(APDURequest& request, uint8_t seq) override final;
 
 private:
+    virtual bool IsEnabled() const override final
+    {
+        return true;
+    }
 
-	virtual bool IsEnabled() const override final
-	{
-		return true;
-	}
+    virtual MasterTaskType GetTaskType() const override final
+    {
+        return MasterTaskType::USER_TASK;
+    }
 
-	virtual MasterTaskType GetTaskType() const override final
-	{
-		return MasterTaskType::USER_TASK;
-	}
+    virtual void Initialize() override final;
 
-	virtual void Initialize() override final;
+    virtual ResponseResult ProcessResponse(const APDUResponseHeader& response,
+                                           const openpal::RSlice& objects) override final;
 
-	virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) override final;
+    virtual void OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
 
-	virtual void OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;
+    ResponseResult ProcessResponse(const openpal::RSlice& objects);
 
-	ResponseResult ProcessResponse(const openpal::RSlice& objects);
+    void LoadSelectAndOperate();
+    void LoadDirectOperate();
 
-	void LoadSelectAndOperate();
-	void LoadDirectOperate();
+    std::deque<FunctionCode> functionCodes;
 
-	std::deque<FunctionCode> functionCodes;
-
-	CommandStatus statusResult;
-	const CommandCallbackT commandCallback;
-	CommandSet commands;
-	const IndexQualifierMode mode;
-
+    CommandStatus statusResult;
+    const CommandCallbackT commandCallback;
+    CommandSet commands;
+    const IndexQualifierMode mode;
 };
 
-
-} //ens ns
+} // namespace opendnp3
 
 #endif

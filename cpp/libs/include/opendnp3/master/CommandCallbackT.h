@@ -29,7 +29,6 @@ namespace opendnp3
 {
 
 typedef std::function<void(const ICommandTaskResult&)> CommandCallbackT;
-
 }
 
 #endif

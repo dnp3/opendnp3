@@ -27,23 +27,21 @@ namespace opendnp3
 {
 
 /**
-* Interface used by the scheduler to start running a task on a particular master session
-*/
+ * Interface used by the scheduler to start running a task on a particular master session
+ */
 class IMasterTaskRunner
 {
 
 public:
-
-	/**
-	* Start running the task. The task runner will asynchronously make a call back to the scheduler
-	* when execution is complete
-	*
-	* @return true if the task can be started, false otherwise
-	*/
-	virtual bool Run(const std::shared_ptr<IMasterTask>& task) = 0;
-
+    /**
+     * Start running the task. The task runner will asynchronously make a call back to the scheduler
+     * when execution is complete
+     *
+     * @return true if the task can be started, false otherwise
+     */
+    virtual bool Run(const std::shared_ptr<IMasterTask>& task) = 0;
 };
 
-}
+} // namespace opendnp3
 
 #endif

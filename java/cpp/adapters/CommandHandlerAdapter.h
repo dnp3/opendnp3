@@ -19,51 +19,57 @@
 #ifndef OPENDNP3_COMMANDHANDLERADAPTER_H
 #define OPENDNP3_COMMANDHANDLERADAPTER_H
 
-#include <opendnp3/outstation/ICommandHandler.h>
-
 #include "GlobalRef.h"
 #include "LocalRef.h"
+
+#include <opendnp3/outstation/ICommandHandler.h>
 
 class CommandHandlerAdapter : public opendnp3::ICommandHandler
 {
 public:
+    CommandHandlerAdapter(jobject proxy) : proxy(proxy) {}
 
-	CommandHandlerAdapter(jobject proxy) : proxy(proxy) {}
+    virtual void Start() override;
+    virtual void End() override;
 
-	virtual void Start() override;
-	virtual void End() override;
+    virtual opendnp3::CommandStatus Select(const opendnp3::ControlRelayOutputBlock& command, uint16_t index) override;
 
-	virtual opendnp3::CommandStatus Select(const opendnp3::ControlRelayOutputBlock& command, uint16_t index) override;
+    virtual opendnp3::CommandStatus Operate(const opendnp3::ControlRelayOutputBlock& command,
+                                            uint16_t index,
+                                            opendnp3::OperateType opType) override;
 
-	virtual opendnp3::CommandStatus Operate(const opendnp3::ControlRelayOutputBlock& command, uint16_t index, opendnp3::OperateType opType) override;
+    virtual opendnp3::CommandStatus Select(const opendnp3::AnalogOutputInt16& command, uint16_t index) override;
 
-	virtual opendnp3::CommandStatus Select(const opendnp3::AnalogOutputInt16& command, uint16_t index) override;
+    virtual opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputInt16& command,
+                                            uint16_t index,
+                                            opendnp3::OperateType opType) override;
 
-	virtual opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputInt16& command, uint16_t index, opendnp3::OperateType opType) override;
+    virtual opendnp3::CommandStatus Select(const opendnp3::AnalogOutputInt32& command, uint16_t index) override;
 
-	virtual opendnp3::CommandStatus Select(const opendnp3::AnalogOutputInt32& command, uint16_t index) override;
+    virtual opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputInt32& command,
+                                            uint16_t index,
+                                            opendnp3::OperateType opType) override;
 
-	virtual opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputInt32& command, uint16_t index, opendnp3::OperateType opType) override;
+    virtual opendnp3::CommandStatus Select(const opendnp3::AnalogOutputFloat32& command, uint16_t index) override;
 
-	virtual opendnp3::CommandStatus Select(const opendnp3::AnalogOutputFloat32& command, uint16_t index) override;
+    virtual opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputFloat32& command,
+                                            uint16_t index,
+                                            opendnp3::OperateType opType) override;
 
-	virtual opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputFloat32& command, uint16_t index, opendnp3::OperateType opType) override;
+    virtual opendnp3::CommandStatus Select(const opendnp3::AnalogOutputDouble64& command, uint16_t index) override;
 
-	virtual opendnp3::CommandStatus Select(const opendnp3::AnalogOutputDouble64& command, uint16_t index) override;
-
-	virtual opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputDouble64& command, uint16_t index, opendnp3::OperateType opType) override;
-
+    virtual opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputDouble64& command,
+                                            uint16_t index,
+                                            opendnp3::OperateType opType) override;
 
 private:
+    static LocalRef<jobject> Convert(JNIEnv* env, const opendnp3::ControlRelayOutputBlock& command);
+    static LocalRef<jobject> Convert(JNIEnv* env, const opendnp3::AnalogOutputInt16& command);
+    static LocalRef<jobject> Convert(JNIEnv* env, const opendnp3::AnalogOutputInt32& command);
+    static LocalRef<jobject> Convert(JNIEnv* env, const opendnp3::AnalogOutputFloat32& command);
+    static LocalRef<jobject> Convert(JNIEnv* env, const opendnp3::AnalogOutputDouble64& command);
 
-	static LocalRef<jobject> Convert(JNIEnv* env, const opendnp3::ControlRelayOutputBlock& command);
-	static LocalRef<jobject> Convert(JNIEnv* env, const opendnp3::AnalogOutputInt16& command);
-	static LocalRef<jobject> Convert(JNIEnv* env, const opendnp3::AnalogOutputInt32& command);
-	static LocalRef<jobject> Convert(JNIEnv* env, const opendnp3::AnalogOutputFloat32& command);
-	static LocalRef<jobject> Convert(JNIEnv* env, const opendnp3::AnalogOutputDouble64& command);
-
-	GlobalRef proxy;
-
+    GlobalRef proxy;
 };
 
 #endif

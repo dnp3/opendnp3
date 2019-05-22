@@ -18,13 +18,13 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
+#include <openpal/logging/LogMacros.h>
 
 #include <opendnp3/LogLevels.h>
 
-#include <openpal/logging/LogMacros.h>
-
 #include <testlib/MockLogHandler.h>
+
+#include <catch.hpp>
 
 #include <iostream>
 #include <vector>
@@ -36,16 +36,15 @@ using namespace openpal;
 
 TEST_CASE(SUITE("FORMAT_SAFE macro truncates and null terminates"))
 {
-	char buffer[10];
-	auto text1 = "hello";
-	auto text2 = "my little friend";
+    char buffer[10];
+    auto text1 = "hello";
+    auto text2 = "my little friend";
 
-	SAFE_STRING_FORMAT(buffer, 10, "%s %s", text1, text2);
+    SAFE_STRING_FORMAT(buffer, 10, "%s %s", text1, text2);
 
-	std::string result(buffer);
+    std::string result(buffer);
 
-	REQUIRE(result.size() == 9);
+    REQUIRE(result.size() == 9);
 
-	REQUIRE(result == "hello my ");
+    REQUIRE(result == "hello my ");
 }
-

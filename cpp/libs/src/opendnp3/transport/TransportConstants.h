@@ -30,7 +30,6 @@ const uint8_t MAX_TPDU_LENGTH = 250;
 /// Maximum TPDU payload size
 const uint8_t MAX_TPDU_PAYLOAD = 249;
 
-}
+} // namespace opendnp3
 
 #endif
-

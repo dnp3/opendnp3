@@ -21,9 +21,9 @@
 #ifndef ASIODNP3_PRINTINGCOMMANDCALLBACK_H
 #define ASIODNP3_PRINTINGCOMMANDCALLBACK_H
 
-#include <opendnp3/master/CommandCallbackT.h>
-
 #include <openpal/util/Uncopyable.h>
+
+#include <opendnp3/master/CommandCallbackT.h>
 
 namespace asiodnp3
 {
@@ -32,10 +32,9 @@ class PrintingCommandCallback : public openpal::StaticOnly
 {
 
 public:
-	static opendnp3::CommandCallbackT Get();
-
+    static opendnp3::CommandCallbackT Get();
 };
 
-}
+} // namespace asiodnp3
 
 #endif

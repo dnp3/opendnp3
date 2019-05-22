@@ -19,6 +19,7 @@
  * to you under the terms of the License.
  */
 #include "OutstationTestObject.h"
+
 #include <testlib/BufferHelpers.h>
 
 using namespace openpal;
@@ -27,67 +28,63 @@ using namespace testlib;
 namespace opendnp3
 {
 
-OutstationTestObject::OutstationTestObject(
-    const OutstationConfig& config,
-    const DatabaseSizes& dbSizes
-) :
-	log(),
-	exe(std::make_shared<MockExecutor>()),
-	lower(std::make_shared<MockLowerLayer>()),
-	cmdHandler(std::make_shared<MockCommandHandler>(CommandStatus::SUCCESS)),
-	application(std::make_shared<MockOutstationApplication>()),
-	context(Addresses(), config, dbSizes, log.logger, exe, lower, cmdHandler, application)
+OutstationTestObject::OutstationTestObject(const OutstationConfig& config, const DatabaseSizes& dbSizes)
+    : log(),
+      exe(std::make_shared<MockExecutor>()),
+      lower(std::make_shared<MockLowerLayer>()),
+      cmdHandler(std::make_shared<MockCommandHandler>(CommandStatus::SUCCESS)),
+      application(std::make_shared<MockOutstationApplication>()),
+      context(Addresses(), config, dbSizes, log.logger, exe, lower, cmdHandler, application)
 {
-	lower->SetUpperLayer(context);
+    lower->SetUpperLayer(context);
 }
 
 size_t OutstationTestObject::LowerLayerUp()
 {
-	context.OnLowerLayerUp();
-	return exe->RunMany();
+    context.OnLowerLayerUp();
+    return exe->RunMany();
 }
 
 size_t OutstationTestObject::LowerLayerDown()
 {
-	context.OnLowerLayerDown();
-	return exe->RunMany();
+    context.OnLowerLayerDown();
+    return exe->RunMany();
 }
 
 size_t OutstationTestObject::OnTxReady()
 {
-	context.OnTxReady();
-	return exe->RunMany();
+    context.OnTxReady();
+    return exe->RunMany();
 }
 
 size_t OutstationTestObject::SendToOutstation(const std::string& hex)
 {
-	HexSequence hs(hex);
-	context.OnReceive(Message(Addresses(), hs.ToRSlice()));
-	return exe->RunMany();
+    HexSequence hs(hex);
+    context.OnReceive(Message(Addresses(), hs.ToRSlice()));
+    return exe->RunMany();
 }
 
 size_t OutstationTestObject::NumPendingTimers() const
 {
-	return exe->NumPendingTimers();
+    return exe->NumPendingTimers();
 }
 
 bool OutstationTestObject::AdvanceToNextTimer()
 {
-	if (exe->AdvanceToNextTimer())
-	{
-		return exe->RunMany() > 0;
-	}
-	else
-	{
-		return false;
-	}
+    if (exe->AdvanceToNextTimer())
+    {
+        return exe->RunMany() > 0;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 size_t OutstationTestObject::AdvanceTime(const openpal::TimeDuration& td)
 {
-	exe->AdvanceTime(td);
-	return exe->RunMany();
+    exe->AdvanceTime(td);
+    return exe->RunMany();
 }
 
-}
-
+} // namespace opendnp3

@@ -18,9 +18,9 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
-
 #include <opendnp3/app/parsing/Collections.h>
+
+#include <catch.hpp>
 
 #include <vector>
 
@@ -30,22 +30,18 @@ using namespace opendnp3;
 
 TEST_CASE(SUITE("Map integers to booleans"))
 {
-	int values[4] = { 1, 2, 3, 4 };
-	ArrayCollection<int> collectionInt(values, 4);
-	auto greaterThanTwo = [](const int& x) -> bool { return x > 2; };
-	auto collectionBool = Map<int, bool>(collectionInt, greaterThanTwo);
+    int values[4] = {1, 2, 3, 4};
+    ArrayCollection<int> collectionInt(values, 4);
+    auto greaterThanTwo = [](const int& x) -> bool { return x > 2; };
+    auto collectionBool = Map<int, bool>(collectionInt, greaterThanTwo);
 
-	std::vector<bool> items;
-	auto fillVector = [&items](const bool & item)
-	{
-		items.push_back(item);
-	};
-	collectionBool.ForeachItem(fillVector);
+    std::vector<bool> items;
+    auto fillVector = [&items](const bool& item) { items.push_back(item); };
+    collectionBool.ForeachItem(fillVector);
 
-	REQUIRE(items.size() == 4);
-	REQUIRE_FALSE(items[0]);
-	REQUIRE_FALSE(items[1]);
-	REQUIRE(items[2]);
-	REQUIRE(items[3]);
-
+    REQUIRE(items.size() == 4);
+    REQUIRE_FALSE(items[0]);
+    REQUIRE_FALSE(items[1]);
+    REQUIRE(items[2]);
+    REQUIRE(items[3]);
 }

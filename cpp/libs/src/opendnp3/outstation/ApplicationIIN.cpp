@@ -25,13 +25,13 @@ namespace opendnp3
 
 IINField ApplicationIIN::ToIIN() const
 {
-	IINField ret;
-	ret.SetBitToValue(IINBit::NEED_TIME, needTime);
-	ret.SetBitToValue(IINBit::LOCAL_CONTROL, localControl);
-	ret.SetBitToValue(IINBit::CONFIG_CORRUPT, configCorrupt);
-	ret.SetBitToValue(IINBit::DEVICE_TROUBLE, deviceTrouble);
-	ret.SetBitToValue(IINBit::EVENT_BUFFER_OVERFLOW, eventBufferOverflow);
-	return ret;
+    IINField ret;
+    ret.SetBitToValue(IINBit::NEED_TIME, needTime);
+    ret.SetBitToValue(IINBit::LOCAL_CONTROL, localControl);
+    ret.SetBitToValue(IINBit::CONFIG_CORRUPT, configCorrupt);
+    ret.SetBitToValue(IINBit::DEVICE_TROUBLE, deviceTrouble);
+    ret.SetBitToValue(IINBit::EVENT_BUFFER_OVERFLOW, eventBufferOverflow);
+    return ret;
 }
 
-}
+} // namespace opendnp3

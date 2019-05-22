@@ -31,61 +31,68 @@ namespace opendnp3
 class FanoutDataObserver : public IMeasurementLoader
 {
 public:
+    void AddObserver(IMeasurementLoader* apObserver)
+    {
+        mObservers.push_back(apObserver);
+    }
 
-	void AddObserver(IMeasurementLoader* apObserver)
-	{
-		mObservers.push_back(apObserver);
-	}
+    void Start()
+    {
+        for (auto pObs : mObservers)
+            openpal::Transaction::Start(pObs);
+    }
 
-	void Start()
-	{
-		for (auto pObs : mObservers) openpal::Transaction::Start(pObs);
-	}
+    void End()
+    {
+        for (auto pObs : mObservers)
+            openpal::Transaction::End(pObs);
+    }
 
-	void End()
-	{
-		for (auto pObs : mObservers) openpal::Transaction::End(pObs);
-	}
+    void Update(const Binary& arPoint, uint16_t aIndex) override final
+    {
+        for (auto pObs : mObservers)
+            pObs->Update(arPoint, aIndex);
+    }
 
-	void Update(const Binary& arPoint, uint16_t aIndex) override final
-	{
-		for(auto pObs : mObservers) pObs->Update(arPoint, aIndex);
-	}
+    void Update(const DoubleBitBinary& arPoint, uint16_t aIndex) override final
+    {
+        for (auto pObs : mObservers)
+            pObs->Update(arPoint, aIndex);
+    }
 
-	void Update(const DoubleBitBinary& arPoint, uint16_t aIndex) override final
-	{
-		for (auto pObs : mObservers) pObs->Update(arPoint, aIndex);
-	}
+    void Update(const Analog& arPoint, uint16_t aIndex) override final
+    {
+        for (auto pObs : mObservers)
+            pObs->Update(arPoint, aIndex);
+    }
 
-	void Update(const Analog& arPoint, uint16_t aIndex) override final
-	{
-		for(auto pObs : mObservers) pObs->Update(arPoint, aIndex);
-	}
+    void Update(const Counter& arPoint, uint16_t aIndex) override final
+    {
+        for (auto pObs : mObservers)
+            pObs->Update(arPoint, aIndex);
+    }
 
-	void Update(const Counter& arPoint, uint16_t aIndex) override final
-	{
-		for(auto pObs : mObservers) pObs->Update(arPoint, aIndex);
-	}
+    void Update(const FrozenCounter& arPoint, uint16_t aIndex) override final
+    {
+        for (auto pObs : mObservers)
+            pObs->Update(arPoint, aIndex);
+    }
 
-	void Update(const FrozenCounter& arPoint, uint16_t aIndex) override final
-	{
-		for(auto pObs : mObservers) pObs->Update(arPoint, aIndex);
-	}
-
-	void Update(const BinaryOutputStatus& arPoint, uint16_t aIndex) override final
-	{
-		for(auto pObs : mObservers) pObs->Update(arPoint, aIndex);
-	}
-	void Update(const AnalogOutputStatus& arPoint, uint16_t aIndex) override final
-	{
-		for(auto pObs : mObservers) pObs->Update(arPoint, aIndex);
-	}
+    void Update(const BinaryOutputStatus& arPoint, uint16_t aIndex) override final
+    {
+        for (auto pObs : mObservers)
+            pObs->Update(arPoint, aIndex);
+    }
+    void Update(const AnalogOutputStatus& arPoint, uint16_t aIndex) override final
+    {
+        for (auto pObs : mObservers)
+            pObs->Update(arPoint, aIndex);
+    }
 
 private:
-	std::vector<IMeasurementLoader*> mObservers;
+    std::vector<IMeasurementLoader*> mObservers;
 };
 
-}
+} // namespace opendnp3
 
 #endif
-

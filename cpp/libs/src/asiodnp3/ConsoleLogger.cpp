@@ -20,12 +20,13 @@
  */
 #include "asiodnp3/ConsoleLogger.h"
 
-#include <chrono>
-#include <sstream>
-#include <iostream>
+#include <opendnp3/LogLevels.h>
+
 #include <assert.h>
 
-#include <opendnp3/LogLevels.h>
+#include <chrono>
+#include <iostream>
+#include <sstream>
 
 using namespace std;
 using namespace opendnp3;
@@ -36,22 +37,21 @@ namespace asiodnp3
 
 void ConsoleLogger::Log(const openpal::LogEntry& entry)
 {
-	auto time = std::chrono::high_resolution_clock::now();
-	auto num = duration_cast<milliseconds>(time.time_since_epoch()).count();
+    auto time = std::chrono::high_resolution_clock::now();
+    auto num = duration_cast<milliseconds>(time.time_since_epoch()).count();
 
-	ostringstream oss;
+    ostringstream oss;
 
-	oss << "ms(" << num << ") " << LogFlagToString(entry.filters.GetBitfield());
-	oss << " " << entry.loggerid;
-	if (printLocation)
-	{
-		oss << " - " << entry.location;
-	}
-	oss << " - " << entry.message;
+    oss << "ms(" << num << ") " << LogFlagToString(entry.filters.GetBitfield());
+    oss << " " << entry.loggerid;
+    if (printLocation)
+    {
+        oss << " - " << entry.location;
+    }
+    oss << " - " << entry.message;
 
-	std::unique_lock<std::mutex> lock(mutex);
-	std::cout << oss.str() << std::endl;
+    std::unique_lock<std::mutex> lock(mutex);
+    std::cout << oss.str() << std::endl;
 }
 
-} //end ns
-
+} // namespace asiodnp3

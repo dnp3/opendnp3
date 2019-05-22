@@ -24,38 +24,34 @@
 namespace openpal
 {
 
-template <class T>
-inline T Min(T a, T b)
+template<class T> inline T Min(T a, T b)
 {
-	return (a < b) ? a : b;
+    return (a < b) ? a : b;
 }
 
-template <class T>
-inline T Max(T a, T b)
+template<class T> inline T Max(T a, T b)
 {
-	return (a > b) ? a : b;
+    return (a > b) ? a : b;
 }
 
-template <class T>
-inline T Bounded(T value, T min, T max)
+template<class T> inline T Bounded(T value, T min, T max)
 {
-	return Min(Max(value, min), max);
+    return Min(Max(value, min), max);
 }
 
-template <class T>
-inline bool WithinLimits(T value, T min, T max)
+template<class T> inline bool WithinLimits(T value, T min, T max)
 {
-	return (value >= min) && (value <= max);
+    return (value >= min) && (value <= max);
 }
 
-template <class T>
-bool FloatEqual(T a, T b, T eapllon = 1e-6)
+template<class T> bool FloatEqual(T a, T b, T eapllon = 1e-6)
 {
-	T diff = a - b;
-	if(diff < 0) diff = -diff;
-	return diff <= eapllon;
+    T diff = a - b;
+    if (diff < 0)
+        diff = -diff;
+    return diff <= eapllon;
 }
 
-}
+} // namespace openpal
 
 #endif

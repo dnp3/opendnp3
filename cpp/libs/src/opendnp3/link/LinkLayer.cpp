@@ -25,25 +25,24 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayer::LinkLayer(
-    const openpal::Logger& logger,
-    const std::shared_ptr<openpal::IExecutor>& executor,
-    const std::shared_ptr<IUpperLayer>& upper,
-    const std::shared_ptr<opendnp3::ILinkListener>& listener,
-    const LinkLayerConfig& config
-) :
-	ctx(logger, executor, upper, listener, *this, config)
-{}
+LinkLayer::LinkLayer(const openpal::Logger& logger,
+                     const std::shared_ptr<openpal::IExecutor>& executor,
+                     const std::shared_ptr<IUpperLayer>& upper,
+                     const std::shared_ptr<opendnp3::ILinkListener>& listener,
+                     const LinkLayerConfig& config)
+    : ctx(logger, executor, upper, listener, *this, config)
+{
+}
 
 const StackStatistics::Link& LinkLayer::GetStatistics() const
 {
-	return this->ctx.statistics;
+    return this->ctx.statistics;
 }
 
 void LinkLayer::SetRouter(ILinkTx& router)
 {
-	assert(ctx.linktx == nullptr);
-	ctx.linktx = &router;
+    assert(ctx.linktx == nullptr);
+    ctx.linktx = &router;
 }
 
 ////////////////////////////////
@@ -52,14 +51,15 @@ void LinkLayer::SetRouter(ILinkTx& router)
 
 bool LinkLayer::Send(ITransportSegment& segments)
 {
-	if (!ctx.isOnline) return false;
+    if (!ctx.isOnline)
+        return false;
 
-	if (ctx.SetTxSegment(segments))
-	{
-		ctx.TryStartTransmission();
-	}
+    if (ctx.SetTxSegment(segments))
+    {
+        ctx.TryStartTransmission();
+    }
 
-	return true;
+    return true;
 }
 
 ////////////////////////////////
@@ -68,24 +68,24 @@ bool LinkLayer::Send(ITransportSegment& segments)
 
 bool LinkLayer::OnLowerLayerUp()
 {
-	return ctx.OnLowerLayerUp();
+    return ctx.OnLowerLayerUp();
 }
 
 bool LinkLayer::OnLowerLayerDown()
 {
-	return ctx.OnLowerLayerDown();
+    return ctx.OnLowerLayerDown();
 }
 
 bool LinkLayer::OnTxReady()
 {
-	auto ret = ctx.OnTxReady();
+    auto ret = ctx.OnTxReady();
 
-	if (ret)
-	{
-		ctx.TryStartTransmission();
-	}
+    if (ret)
+    {
+        ctx.TryStartTransmission();
+    }
 
-	return true;
+    return true;
 }
 
 ////////////////////////////////
@@ -94,15 +94,14 @@ bool LinkLayer::OnTxReady()
 
 bool LinkLayer::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
 {
-	auto ret = this->ctx.OnFrame(header, userdata);
+    auto ret = this->ctx.OnFrame(header, userdata);
 
-	if (ret)
-	{
-		this->ctx.TryStartTransmission();
-	}
+    if (ret)
+    {
+        this->ctx.TryStartTransmission();
+    }
 
-	return ret;
+    return ret;
 }
 
-}
-
+} // namespace opendnp3

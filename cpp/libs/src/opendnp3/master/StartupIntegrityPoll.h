@@ -22,7 +22,6 @@
 #define OPENDNP3_STARTUPINTEGRITYPOLL_H
 
 #include "opendnp3/app/ClassField.h"
-
 #include "opendnp3/master/PollTaskBase.h"
 #include "opendnp3/master/TaskPriority.h"
 
@@ -38,46 +37,46 @@ class StartupIntegrityPoll final : public PollTaskBase
 {
 
 public:
+    StartupIntegrityPoll(const std::shared_ptr<TaskContext>& context,
+                         IMasterApplication& app,
+                         ISOEHandler& soeHandler,
+                         ClassField classes,
+                         const TaskBehavior& behavior,
+                         openpal::Logger logger);
 
-	StartupIntegrityPoll(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, ISOEHandler& soeHandler, ClassField classes, const TaskBehavior& behavior, openpal::Logger logger);
+    virtual bool IsRecurring() const override
+    {
+        return true;
+    }
 
-	virtual bool IsRecurring() const override
-	{
-		return true;
-	}
+    virtual const char* Name() const override
+    {
+        return "Startup Integrity Poll";
+    };
 
-	virtual const char* Name() const override
-	{
-		return "Startup Integrity Poll";
-	};
+    virtual bool BuildRequest(APDURequest& request, uint8_t seq) override;
 
-	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override;
+    virtual int Priority() const override
+    {
+        return priority::INTEGRITY_POLL;
+    }
 
-	virtual int Priority() const override
-	{
-		return priority::INTEGRITY_POLL;
-	}
-
-	virtual bool BlocksLowerPriority() const override
-	{
-		return true;
-	}
+    virtual bool BlocksLowerPriority() const override
+    {
+        return true;
+    }
 
 private:
+    ClassField classes;
 
-	ClassField classes;
+    virtual bool IsEnabled() const override;
 
-	virtual bool IsEnabled() const override;
-
-	virtual MasterTaskType GetTaskType() const override
-	{
-		return MasterTaskType::STARTUP_INTEGRITY_POLL;
-	}
-
+    virtual MasterTaskType GetTaskType() const override
+    {
+        return MasterTaskType::STARTUP_INTEGRITY_POLL;
+    }
 };
 
-
-} //end ns
-
+} // namespace opendnp3
 
 #endif

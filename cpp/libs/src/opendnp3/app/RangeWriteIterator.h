@@ -28,74 +28,72 @@ namespace opendnp3
 {
 
 // A facade for writing APDUs to an external buffer
-template <class IndexType, class WriteType>
-class RangeWriteIterator
+template<class IndexType, class WriteType> class RangeWriteIterator
 {
 public:
+    static RangeWriteIterator Null()
+    {
+        return RangeWriteIterator();
+    }
 
-	static RangeWriteIterator Null()
-	{
-		return RangeWriteIterator();
-	}
+    RangeWriteIterator() : start(0), count(0), isValid(false), pPosition(nullptr) {}
 
-	RangeWriteIterator() : start(0), count(0), isValid(false), pPosition(nullptr)
-	{}
+    RangeWriteIterator(typename IndexType::Type start_,
+                       const openpal::Serializer<WriteType>& serializer_,
+                       openpal::WSlice& position)
+        : start(start_),
+          serializer(serializer_),
+          count(0),
+          isValid(position.Size() >= 2 * IndexType::SIZE),
+          range(position),
+          pPosition(&position)
+    {
+        if (isValid)
+        {
+            openpal::Format::Write(range, start);
+            pPosition->Advance(2 * IndexType::SIZE);
+        }
+    }
 
-	RangeWriteIterator(typename IndexType::Type start_, const openpal::Serializer<WriteType>& serializer_, openpal::WSlice& position) :
-		start(start_),
-		serializer(serializer_),
-		count(0),
-		isValid(position.Size() >= 2 * IndexType::SIZE),
-		range(position),
-		pPosition(&position)
-	{
-		if (isValid)
-		{
-			openpal::Format::Write(range, start);
-			pPosition->Advance(2 * IndexType::SIZE);
-		}
-	}
+    ~RangeWriteIterator()
+    {
+        if (isValid && count > 0)
+        {
+            auto stop = start + count - 1;
+            IndexType::Write(range, static_cast<typename IndexType::Type>(stop));
+        }
+    }
 
-	~RangeWriteIterator()
-	{
-		if (isValid && count > 0)
-		{
-			auto stop = start + count - 1;
-			IndexType::Write(range, static_cast<typename IndexType::Type>(stop));
-		}
-	}
+    bool Write(const WriteType& value)
+    {
+        if (isValid && (pPosition->Size() >= serializer.Size()) && (count <= IndexType::Max))
+        {
+            serializer.Write(value, *pPosition);
+            ++count;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
-	bool Write(const WriteType& value)
-	{
-		if (isValid && (pPosition->Size() >= serializer.Size()) && (count <= IndexType::Max))
-		{
-			serializer.Write(value, *pPosition);
-			++count;
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	bool IsValid() const
-	{
-		return isValid;
-	}
+    bool IsValid() const
+    {
+        return isValid;
+    }
 
 private:
+    typename IndexType::Type start;
+    openpal::Serializer<WriteType> serializer;
+    uint32_t count;
 
-	typename IndexType::Type start;
-	openpal::Serializer<WriteType> serializer;
-	uint32_t count;
+    bool isValid;
 
-	bool isValid;
-
-	openpal::WSlice range;  // make a copy to record where we write the range
-	openpal::WSlice* pPosition;
+    openpal::WSlice range; // make a copy to record where we write the range
+    openpal::WSlice* pPosition;
 };
 
-}
+} // namespace opendnp3
 
 #endif
