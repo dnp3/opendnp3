@@ -34,7 +34,7 @@ namespace asiopal
 {
 
 /**
-*	A thread pool that calls asio::io_service::run
+*	A thread pool that calls asio::io_context::run
 */
 class ThreadPool
 {

@@ -114,7 +114,7 @@ vector<string> tokenize(const std::string& line)
 		tokens.push_back(s);
 	}
 
-	return std::move(tokens);
+	return tokens;
 }
 
 void init_handlers(command_handler_map_t& map)

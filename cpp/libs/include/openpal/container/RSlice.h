@@ -60,7 +60,7 @@ public:
 	operator uint8_t const* () const
 	{
 		return pBuffer;
-	};
+	}
 
 private:
 	uint8_t const* pBuffer;

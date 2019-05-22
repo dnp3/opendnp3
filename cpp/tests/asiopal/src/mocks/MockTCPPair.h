@@ -50,6 +50,7 @@ private:
 
 	testlib::MockLogHandler log;
 	std::shared_ptr<MockIO> io;
+	uint16_t port;
 	std::shared_ptr<MockTCPClientHandler> chandler;
 	std::shared_ptr<TCPClient> client;
 	std::shared_ptr<MockTCPServer> server;

@@ -41,8 +41,8 @@ TCPServer::TCPServer(
 	logger(logger),
 	executor(executor),
 	endpoint(ip::tcp::v4(), endpoint.port),
-	acceptor(executor->strand.get_io_service()),
-	socket(executor->strand.get_io_service())
+	acceptor(executor->strand.get_io_context()),
+	socket(executor->strand.get_io_context())
 {
 	this->Configure(endpoint.address, ec);
 }
@@ -111,6 +111,14 @@ void TCPServer::StartAccept()
 		}
 		else
 		{
+			// For an unknown reason, the socket may not be properly opened when accepted.
+			// We simply ignore it.
+			if(!self->socket.is_open())
+			{
+				self->StartAccept();
+				return;
+			}
+
 			const auto ID = self->session_id;
 			++self->session_id;
 

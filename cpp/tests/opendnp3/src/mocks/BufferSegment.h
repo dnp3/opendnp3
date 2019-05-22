@@ -35,16 +35,16 @@ public:
 
 	BufferSegment(uint32_t segmentSize, const std::string& hex, const Addresses& addresses);
 
-	virtual const Addresses& GetAddresses() const
+	const Addresses& GetAddresses() const override
 	{
 		return this->addresses;
 	}
 
-	virtual bool HasValue() const override;
+	bool HasValue() const override;
 
-	virtual openpal::RSlice GetSegment() override;
+	openpal::RSlice GetSegment() override;
 
-	virtual bool Advance() override;
+	bool Advance() override;
 
 	void Reset();
 

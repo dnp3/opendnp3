@@ -56,12 +56,12 @@ public:
 	operator uint8_t* ()
 	{
 		return pBuffer;
-	};
+	}
 
 	operator uint8_t const* () const
 	{
 		return pBuffer;
-	};
+	}
 
 private:
 

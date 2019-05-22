@@ -38,31 +38,31 @@ public:
 
 	EmptyResponseTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, const std::string& name, FunctionCode func, const HeaderBuilderT& format, openpal::MonotonicTimestamp startExpiration, openpal::Logger logger, const TaskConfig& config);
 
-	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override;
+	bool BuildRequest(APDURequest& request, uint8_t seq) override;
 
-	virtual char const* Name() const override
+	char const* Name() const override
 	{
 		return name.c_str();
 	}
 
-	virtual bool IsRecurring() const override
+	bool IsRecurring() const override
 	{
 		return false;
 	}
 
-	virtual int Priority() const override
+	int Priority() const override
 	{
 		return priority::USER_REQUEST;
 	}
 
-	virtual bool BlocksLowerPriority() const override
+	bool BlocksLowerPriority() const override
 	{
 		return false;
 	}
 
 private:
 
-	virtual MasterTaskType GetTaskType() const
+	MasterTaskType GetTaskType() const override
 	{
 		return MasterTaskType::USER_TASK;
 	}

@@ -35,7 +35,6 @@ namespace asiodnp3
 
 StackPair::StackPair(uint32_t levels, openpal::TimeDuration timeout, DNP3Manager& manager, uint16_t port, uint16_t numPointsPerType, uint32_t eventsPerIteration) :
 	PORT(port),
-	NUM_POINTS_PER_TYPE(numPointsPerType),
 	EVENTS_PER_ITERATION(eventsPerIteration),
 	soeHandler(std::make_shared<opendnp3::QueuingSOEHandler>()),
 	clientListener(std::make_shared<QueuedChannelListener>()),

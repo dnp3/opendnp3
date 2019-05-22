@@ -38,22 +38,20 @@ public:
 	static std::shared_ptr<TCPClient> Create(
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<Executor>& executor,
-	    const IPEndpoint& remote,
 	    const std::string& adapter)
 	{
-		return std::make_shared<TCPClient>(logger, executor, remote, adapter);
+		return std::make_shared<TCPClient>(logger, executor, adapter);
 	}
 
 	TCPClient(
 	    const openpal::Logger& logger,
 	    const std::shared_ptr<Executor>& executor,
-	    const IPEndpoint& remote,
 	    const std::string& adapter
 	);
 
 	bool Cancel();
 
-	bool BeginConnect(const connect_callback_t& callback);
+	bool BeginConnect(const IPEndpoint& remote, const connect_callback_t& callback);
 
 private:
 
@@ -70,10 +68,8 @@ private:
 
 	LoggingConnectionCondition condition;
 	const std::shared_ptr<Executor> executor;
-	const std::string host;
 	const std::string adapter;
 	asio::ip::tcp::socket socket;
-	asio::ip::tcp::endpoint remoteEndpoint;
 	asio::ip::tcp::endpoint localEndpoint;
 	asio::ip::tcp::resolver resolver;
 };

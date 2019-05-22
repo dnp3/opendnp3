@@ -39,7 +39,6 @@ namespace asiodnp3
 
 class PerformanceStackPair final : openpal::Uncopyable
 {
-	const uint16_t PORT;
 	const uint16_t NUM_POINTS_PER_TYPE;
 	const uint32_t EVENTS_PER_ITERATION;
 

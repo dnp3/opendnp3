@@ -50,7 +50,7 @@ struct TestComponents
 	{
 		for(int i = 0; i < numOutstations; ++i)
 		{
-			auto channel = manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(), "127.0.0.1", "", 20000, nullptr);
+			auto channel = manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(), "127.0.0.1", "0.0.0.0", 20000, nullptr);
 			auto outstation = channel->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), GetConfig());
 
 			this->channels.push_back(channel);

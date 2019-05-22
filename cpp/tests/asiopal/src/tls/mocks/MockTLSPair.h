@@ -51,6 +51,7 @@ public:
 private:
 
 	std::shared_ptr<MockIO> io;
+	uint16_t port;
 	std::shared_ptr<MockTLSClientHandler> chandler;
 	std::shared_ptr<TLSClient> client;
 	std::shared_ptr<MockTLSServer> server;

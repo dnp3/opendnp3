@@ -206,7 +206,7 @@ uint32_t EventStorage::ClearWritten()
 
 void EventStorage::Unselect()
 {
-	auto clear = [this](EventRecord & record) -> void
+	auto clear = [](EventRecord& record) -> void
 	{
 		record.state = EventState::unselected;
 	};

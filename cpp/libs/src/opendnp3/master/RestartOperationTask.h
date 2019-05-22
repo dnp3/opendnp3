@@ -38,33 +38,33 @@ public:
 
 	RestartOperationTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, const openpal::MonotonicTimestamp& startTimeout, RestartType operationType, const RestartOperationCallbackT& callback, openpal::Logger logger, const TaskConfig& config);
 
-	virtual bool BuildRequest(APDURequest& request, uint8_t seq) override;
+	bool BuildRequest(APDURequest& request, uint8_t seq) override;
 
-	virtual int Priority() const
+	int Priority() const override
 	{
 		return priority::USER_REQUEST;
 	}
 
-	virtual bool BlocksLowerPriority() const
+	bool BlocksLowerPriority() const override
 	{
 		return false;
 	}
 
-	virtual bool IsRecurring() const
+	bool IsRecurring() const override
 	{
 		return false;
 	}
 
-	virtual char const* Name() const override;
+	char const* Name() const override;
 
-	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override;
+	bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override;
 
 private:
 
-	virtual MasterTaskType GetTaskType() const override;
+	MasterTaskType GetTaskType() const override;
 
-	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var1>& values) override;
-	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& values) override;
+	IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var1>& values) override;
+	IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& values) override;
 
 	static FunctionCode ToFunctionCode(RestartType op);
 
@@ -73,9 +73,9 @@ private:
 	openpal::TimeDuration duration = openpal::TimeDuration::Min();
 
 
-	virtual IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects) override;
+	IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header, const openpal::RSlice& objects) override;
 
-	virtual void OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override;
+	void OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override;
 };
 
 } //end ns
