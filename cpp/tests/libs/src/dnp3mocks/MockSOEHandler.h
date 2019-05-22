@@ -24,7 +24,7 @@
 #include <opendnp3/master/ISOEHandler.h>
 
 #include <map>
-
+#include <vector>
 
 namespace opendnp3
 {

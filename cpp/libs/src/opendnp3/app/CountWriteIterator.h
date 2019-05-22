@@ -22,6 +22,7 @@
 #define OPENDNP3_COUNTWRITEITERATOR_H
 
 #include <openpal/serialization/Format.h>
+#include <openpal/serialization/Serializer.h>
 
 namespace opendnp3
 {

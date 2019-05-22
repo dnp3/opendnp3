@@ -26,6 +26,8 @@
 
 #include "asiodnp3/IChannelListener.h"
 
+#include <vector>
+
 namespace asiodnp3
 {
 class QueuedChannelListener : public IChannelListener

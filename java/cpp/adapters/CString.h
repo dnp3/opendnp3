@@ -22,6 +22,7 @@
 
 #include <jni.h>
 #include <openpal/util/Uncopyable.h>
+#include <string>
 
 // RAII class for java <=> cstring
 class CString : private openpal::Uncopyable
