@@ -1,30 +1,39 @@
+### 2.3.0-RC1 ###
+* :beetle: Fixes for issues #268, #262, #259, #257, #255, #251, #228, #216.
+* :star: Added overloaded methods for TCP and TLS clients to support outstation redundancy (#277).
+* :star: .NET bindings can now be configured and built using Cmake (requires CMake >= 3.8).
+* :star: Expanded fuzzing support from Google OSS Fuzz to the master and outstation handlers.
+* :star: Added support for cold/warm restart in Java OutstationApplication interface.
+* :wrench: Migrate default ASIO version to 1-12-2. Older versions may no longer be compatible.
+
+
 ### 2.3.0-M1 ###
-* :star: Small internal change to support openssl 1.1.x ([pull request](https://github.com/automatak/dnp3/pull/207))
+* :star: Small internal change to support openssl 1.1.x ([pull request](https://github.com/dnp3/opendnp3/pull/207))
 * :star: TCP server channels can now configurably drop or accept.
   * :wrench: This causes a breaking API change by adding a parameter to DNP3Manager::AddTCPServer(..).
 * :star: Outstation now supports transmitting octet strings
 * :star: Masters can now optimize control requests for 1-byte index qualifiers. This optimization can be enabled via MasterParams.controlIndexMode.
 * :star: ILinkListener has two additional callbacks for unknown destination / source addresses.
 * :star: Outstations can now queue events w/o updating static values using *EventMode::EventOnly*.
-* :beetle: Fix [integer underflow](https://github.com/automatak/dnp3/commit/827cb6d4e26f14b7bd33f9d71a7f6d507fc5f1c8) w/ discontiguous outstation indices
-* :beetle: Fix [memory leak](https://github.com/automatak/dnp3/issues/214) in C# DNP3ManagerAdapter.
+* :beetle: Fix [integer underflow](https://github.com/dnp3/opendnp3/commit/827cb6d4e26f14b7bd33f9d71a7f6d507fc5f1c8) w/ discontiguous outstation indices
+* :beetle: Fix [memory leak](https://github.com/dnp3/opendnp3/issues/214) in C# DNP3ManagerAdapter.
 
 ### 2.2.0 ###
 * No changes from 2.2.0-RC5
 
 ### 2.2.0-RC5 ###
-* :beetle: Fixed a [bug](https://github.com/automatak/dnp3/issues/200) where connection attempts were not retrieved after failed DNS resolution.
+* :beetle: Fixed a [bug](https://github.com/dnp3/opendnp3/issues/200) where connection attempts were not retrieved after failed DNS resolution.
 
 ### 2.2.0-RC4 ###
-* :beetle: Fixed a [regression](https://github.com/automatak/dnp3/issues/197) in outstation whereby the session could hang indefinitely if a non-read request was received during UnsolConirmWait.
+* :beetle: Fixed a [regression](https://github.com/dnp3/opendnp3/issues/197) in outstation whereby the session could hang indefinitely if a non-read request was received during UnsolConirmWait.
 
 ### 2.2.0-RC3 ###
-* :beetle: Fixed a [regression](https://github.com/automatak/dnp3/issues/195) whereby multi segment messages could be transmitted with trailing garbage.
+* :beetle: Fixed a [regression](https://github.com/dnp3/opendnp3/issues/195) whereby multi segment messages could be transmitted with trailing garbage.
 * :beetle: Fixed a bug whereby improper TLS shutdown from the remote host could result in an infinite loop. TLS shutdown is no longer utilized in favor of just a hard TCP close.
 
 ### 2.2.0-RC2 ###
 * :beetle: Java bindings in 2.2.0-RC1 were leaking local references. Modified the bindings to use resource management class to ensure this doens't happen going forward.
-* :beetle: Fixed a [bug](https://github.com/automatak/dnp3/issues/187) in outstation/master enable/disable that put the session into an invalid state.
+* :beetle: Fixed a [bug](https://github.com/dnp3/opendnp3/issues/187) in outstation/master enable/disable that put the session into an invalid state.
 
 ### 2.2.0-RC1 ###
 * :star: Java bindings have been added to the project.
@@ -33,10 +42,10 @@
 these interfaces used via shared_ptr.
 * :wrench: Channel, master, and outstation now accept all callback interfaces via shared_ptr.
 * :wrench: The external format for statistics has been changed to ease maintainence. Each class now owns the statistics it increments.
-* :beetle: Fixed a [bug](https://github.com/automatak/dnp3/issues/175) where the keep-alive timer would rapidly fire in C# if set to Timespan.MaxValue.
-* :beetle: Fixed a [bug](https://github.com/automatak/dnp3/issues/164) in the outstation state machine where it would incorrectly ignore repeat READ requests.
+* :beetle: Fixed a [bug](https://github.com/dnp3/opendnp3/issues/175) where the keep-alive timer would rapidly fire in C# if set to Timespan.MaxValue.
+* :beetle: Fixed a [bug](https://github.com/dnp3/opendnp3/issues/164) in the outstation state machine where it would incorrectly ignore repeat READ requests.
 * :beetle: Fixed a bug in the ASDU formatting where a request for a range of 255 measurement values would result in a malformed response.
-* :beetle: Fixed a [bug](https://github.com/automatak/dnp3/issues/173) in the TLS client that caused the channel to be unrecoverable after any disconnect.
+* :beetle: Fixed a [bug](https://github.com/dnp3/opendnp3/issues/173) in the TLS client that caused the channel to be unrecoverable after any disconnect.
 
 ### 2.1.0 ###
 * Minor formatting and documentation tweaks
