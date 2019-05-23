@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -49,7 +49,7 @@ public:
                     const std::shared_ptr<IChannelListener>& listener,
                     const std::shared_ptr<asiopal::Executor>& executor,
                     const asiopal::ChannelRetry& retry,
-                    const asiopal::SerialSettings& settings);
+                    asiopal::SerialSettings settings);
 
 protected:
     virtual void ShutdownImpl() override;
@@ -58,7 +58,7 @@ protected:
     virtual void OnChannelShutdown() override;
 
 private:
-    void TryOpen(const openpal::TimeDuration& retry);
+    void TryOpen(const openpal::TimeDuration& timeout);
 
     void ResetState();
 

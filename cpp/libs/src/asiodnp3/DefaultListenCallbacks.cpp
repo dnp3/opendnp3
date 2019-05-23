@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -23,14 +23,14 @@
 namespace asiodnp3
 {
 
-DefaultListenCallbacks::DefaultListenCallbacks() {}
+DefaultListenCallbacks::DefaultListenCallbacks() = default;
 
-bool DefaultListenCallbacks::AcceptConnection(uint64_t sessionid, const std::string& ipaddress)
+bool DefaultListenCallbacks::AcceptConnection(uint64_t /*sessionid*/, const std::string& /*ipaddress*/)
 {
     return true;
 }
 
-bool DefaultListenCallbacks::AcceptCertificate(uint64_t sessionid, const X509Info& info)
+bool DefaultListenCallbacks::AcceptCertificate(uint64_t /*sessionid*/, const X509Info& /*info*/)
 {
     return true;
 }

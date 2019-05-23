@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -26,13 +26,15 @@
 
 #include "opendnp3/LogLevels.h"
 
+#include <utility>
+
 using namespace asiopal;
 using namespace opendnp3;
 
 namespace asiodnp3
 {
 
-void TCPServerIOHandler::Server::AcceptConnection(uint64_t sessionid,
+void TCPServerIOHandler::Server::AcceptConnection(uint64_t /*sessionid*/,
                                                   const std::shared_ptr<asiopal::Executor>& executor,
                                                   asio::ip::tcp::socket socket)
 {
@@ -42,10 +44,12 @@ void TCPServerIOHandler::Server::AcceptConnection(uint64_t sessionid,
 TCPServerIOHandler::TCPServerIOHandler(const openpal::Logger& logger,
                                        ServerAcceptMode mode,
                                        const std::shared_ptr<IChannelListener>& listener,
-                                       const std::shared_ptr<asiopal::Executor>& executor,
-                                       const asiopal::IPEndpoint& endpoint,
-                                       std::error_code& ec)
-    : IOHandler(logger, mode == ServerAcceptMode::CloseExisting, listener), executor(executor), endpoint(endpoint)
+                                       std::shared_ptr<asiopal::Executor> executor,
+                                       asiopal::IPEndpoint endpoint,
+                                       std::error_code& /*ec*/)
+    : IOHandler(logger, mode == ServerAcceptMode::CloseExisting, listener),
+      executor(std::move(executor)),
+      endpoint(std::move(endpoint))
 {
 }
 

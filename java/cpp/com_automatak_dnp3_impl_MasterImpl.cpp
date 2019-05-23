@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -29,8 +29,8 @@
 
 #include <memory>
 
-JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_set_1log_1level_1native(JNIEnv* env,
-                                                                                       jobject,
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_set_1log_1level_1native(JNIEnv* /*env*/,
+                                                                                       jobject /*unused*/,
                                                                                        jlong native,
                                                                                        jint levels)
 {
@@ -39,7 +39,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_set_1log_1level_1
 }
 
 JNIEXPORT jobject JNICALL Java_com_automatak_dnp3_impl_MasterImpl_get_1statistics_1native(JNIEnv* env,
-                                                                                          jobject,
+                                                                                          jobject /*unused*/,
                                                                                           jlong native)
 {
     const auto master = (std::shared_ptr<asiodnp3::IMaster>*)native;
@@ -47,31 +47,40 @@ JNIEXPORT jobject JNICALL Java_com_automatak_dnp3_impl_MasterImpl_get_1statistic
     return env->NewGlobalRef(Conversions::ConvertStackStatistics(env, stats));
 }
 
-JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_enable_1native(JNIEnv* env, jobject, jlong native)
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_enable_1native(JNIEnv* /*env*/,
+                                                                              jobject /*unused*/,
+                                                                              jlong native)
 {
     const auto master = (std::shared_ptr<asiodnp3::IMaster>*)native;
     (*master)->Enable();
 }
 
-JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_disable_1native(JNIEnv* env, jobject, jlong native)
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_disable_1native(JNIEnv* /*env*/,
+                                                                               jobject /*unused*/,
+                                                                               jlong native)
 {
     const auto master = (std::shared_ptr<asiodnp3::IMaster>*)native;
     (*master)->Disable();
 }
 
-JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_shutdown_1native(JNIEnv* env, jobject, jlong native)
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_shutdown_1native(JNIEnv* /*env*/,
+                                                                                jobject /*unused*/,
+                                                                                jlong native)
 {
     const auto master = (std::shared_ptr<asiodnp3::IMaster>*)native;
     (*master)->Shutdown();
 }
 
-JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_destroy_1native(JNIEnv*, jobject, jlong native)
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_destroy_1native(JNIEnv* /*unused*/,
+                                                                               jobject /*unused*/,
+                                                                               jlong native)
 {
     const auto master = (std::shared_ptr<asiodnp3::IMaster>*)native;
     delete master;
 }
 
-template<class Fun> void operate(JNIEnv* env, jlong native, jlong nativeCommandSet, jobject future, const Fun& operate)
+template<class Fun>
+void operate(JNIEnv* /*env*/, jlong native, jlong nativeCommandSet, jobject future, const Fun& operate)
 {
     auto& set = *(opendnp3::CommandSet*)nativeCommandSet;
 
@@ -100,7 +109,7 @@ template<class Fun> void operate(JNIEnv* env, jlong native, jlong nativeCommandS
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_select_1and_1operate_1native(
-    JNIEnv* env, jobject, jlong native, jlong nativeCommandSet, jobject future)
+    JNIEnv* env, jobject /*unused*/, jlong native, jlong nativeCommandSet, jobject future)
 {
     auto sbo = [](asiodnp3::IMaster& master, opendnp3::CommandSet& commandset,
                   const opendnp3::CommandCallbackT& callback) -> void {
@@ -111,7 +120,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_select_1and_1oper
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_direct_1operate_1native(
-    JNIEnv* env, jobject, jlong native, jlong nativeCommandSet, jobject future)
+    JNIEnv* env, jobject /*unused*/, jlong native, jlong nativeCommandSet, jobject future)
 {
     auto directOp = [](asiodnp3::IMaster& master, opendnp3::CommandSet& commandset,
                        const opendnp3::CommandCallbackT& callback) -> void {
@@ -154,7 +163,7 @@ bool ConvertJHeader(JNIEnv* env, jobject jheader, opendnp3::Header& header)
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_scan_1native(JNIEnv* env,
-                                                                            jobject,
+                                                                            jobject /*unused*/,
                                                                             jlong native,
                                                                             jobject jheaders)
 {
@@ -176,7 +185,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_scan_1native(JNIE
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_add_1periodic_1scan_1native(
-    JNIEnv* env, jobject, jlong native, jobject jduration, jobject jheaders)
+    JNIEnv* env, jobject /*unused*/, jlong native, jobject jduration, jobject jheaders)
 {
     const auto master = (std::shared_ptr<asiodnp3::IMaster>*)native;
 

@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -55,8 +55,8 @@ class LinkContext
 public:
     LinkContext(const openpal::Logger& logger,
                 const std::shared_ptr<openpal::IExecutor>&,
-                const std::shared_ptr<IUpperLayer>&,
-                const std::shared_ptr<opendnp3::ILinkListener>&,
+                std::shared_ptr<IUpperLayer>,
+                std::shared_ptr<opendnp3::ILinkListener>,
                 ILinkSession& session,
                 const LinkLayerConfig&);
 

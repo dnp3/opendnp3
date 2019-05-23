@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -41,15 +41,13 @@ ParseResult CountParser::Process(const HeaderRecord& record,
         SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for specified objects");
         return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
     }
-    else
+
+    if (pHandler != nullptr)
     {
-        if (pHandler)
-        {
-            handler(record, count, buffer, *pHandler);
-        }
-        buffer.Advance(requiredSize);
-        return ParseResult::OK;
+        handler(record, count, buffer, *pHandler);
     }
+    buffer.Advance(requiredSize);
+    return ParseResult::OK;
 }
 
 ParseResult CountParser::ParseHeader(openpal::RSlice& buffer,
@@ -71,15 +69,13 @@ ParseResult CountParser::ParseHeader(openpal::RSlice& buffer,
         {
             return ParseCountOfObjects(buffer, record, count, pLogger, pHandler);
         }
-        else
-        {
-            if (pHandler)
-            {
-                pHandler->OnHeader(CountHeader(record, count));
-            }
 
-            return ParseResult::OK;
+        if (pHandler != nullptr)
+        {
+            pHandler->OnHeader(CountHeader(record, count));
         }
+
+        return ParseResult::OK;
     }
     else
     {

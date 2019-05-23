@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -55,11 +55,9 @@ double DoubleFloat::Read(const uint8_t* data)
         DoubleFloatUnion x = {{data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]}};
         return x.value;
     }
-    else
-    {
-        DoubleFloatUnion x = {{data[7], data[6], data[5], data[4], data[3], data[2], data[1], data[0]}};
-        return x.value;
-    }
+
+    DoubleFloatUnion x = {{data[7], data[6], data[5], data[4], data[3], data[2], data[1], data[0]}};
+    return x.value;
 }
 
 void DoubleFloat::Write(uint8_t* dest, double value)

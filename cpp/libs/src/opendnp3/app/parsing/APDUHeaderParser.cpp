@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -37,11 +37,9 @@ APDUHeaderParser::Result<APDUHeader> APDUHeaderParser::ParseRequest(const openpa
         FORMAT_LOGGER_BLOCK(logger, flags::WARN, "Request fragment  with insufficient size of %u bytes", apdu.Size());
         return Result<APDUHeader>::Error();
     }
-    else
-    {
-        return Result<APDUHeader>::Ok(APDUHeader(AppControlField(apdu[0]), FunctionCodeFromType(apdu[1])),
-                                      apdu.Skip(APDUHeader::REQUEST_SIZE));
-    }
+
+    return Result<APDUHeader>::Ok(APDUHeader(AppControlField(apdu[0]), FunctionCodeFromType(apdu[1])),
+                                  apdu.Skip(APDUHeader::REQUEST_SIZE));
 }
 
 APDUHeaderParser::Result<APDUResponseHeader> APDUHeaderParser::ParseResponse(const openpal::RSlice& apdu,
@@ -52,12 +50,10 @@ APDUHeaderParser::Result<APDUResponseHeader> APDUHeaderParser::ParseResponse(con
         FORMAT_LOGGER_BLOCK(logger, flags::WARN, "Response fragment  with insufficient size of %u bytes", apdu.Size());
         return Result<APDUResponseHeader>::Error();
     }
-    else
-    {
-        return Result<APDUResponseHeader>::Ok(
-            APDUResponseHeader(AppControlField(apdu[0]), FunctionCodeFromType(apdu[1]), IINField(apdu[2], apdu[3])),
-            apdu.Skip(APDUHeader::RESPONSE_SIZE));
-    }
+
+    return Result<APDUResponseHeader>::Ok(
+        APDUResponseHeader(AppControlField(apdu[0]), FunctionCodeFromType(apdu[1]), IINField(apdu[2], apdu[3])),
+        apdu.Skip(APDUHeader::RESPONSE_SIZE));
 }
 
 } // namespace opendnp3

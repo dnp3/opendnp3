@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -38,7 +38,7 @@ public:
         return std::make_shared<SerialChannel>(executor);
     }
 
-    SerialChannel(std::shared_ptr<Executor> executor);
+    SerialChannel(const std::shared_ptr<Executor>& executor);
 
     bool Open(const SerialSettings& settings, std::error_code& ec);
 

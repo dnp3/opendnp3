@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -46,7 +46,7 @@ const int ITERATIONS = 100;
 
 struct Channels
 {
-    Channels(DNP3Manager& manager)
+    explicit Channels(DNP3Manager& manager)
         : client(manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(), "127.0.0.1", "", 20000, nullptr)),
           server(
               manager.AddTCPServer("server", levels::ALL, ServerAcceptMode::CloseExisting, "0.0.0.0", 20000, nullptr))
@@ -59,7 +59,7 @@ struct Channels
 
 struct Components : Channels
 {
-    Components(DNP3Manager& manager)
+    explicit Components(DNP3Manager& manager)
         : Channels(manager),
           outstation(server->AddOutstation("outstation",
                                            SuccessCommandHandler::Create(),

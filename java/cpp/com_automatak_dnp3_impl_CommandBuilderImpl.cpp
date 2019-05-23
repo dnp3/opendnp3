@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -26,20 +26,21 @@
 
 using namespace opendnp3;
 
-JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_CommandBuilderImpl_create_1native(JNIEnv* env, jobject)
+JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_CommandBuilderImpl_create_1native(JNIEnv* /*env*/,
+                                                                                       jobject /*unused*/)
 {
     return (jlong) new CommandSet();
 }
 
-JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandBuilderImpl_destroy_1native(JNIEnv* env,
-                                                                                       jobject,
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandBuilderImpl_destroy_1native(JNIEnv* /*env*/,
+                                                                                       jobject /*unused*/,
                                                                                        jlong native)
 {
     delete (CommandSet*)native;
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandBuilderImpl_add_1crob_1native(JNIEnv* env,
-                                                                                         jobject,
+                                                                                         jobject /*unused*/,
                                                                                          jlong native,
                                                                                          jobject jcommands)
 {
@@ -92,7 +93,7 @@ template<class T, class Cache> void process_analogs(JNIEnv* env, jlong native, j
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandBuilderImpl_add_1aoI16_1native(JNIEnv* env,
-                                                                                          jobject,
+                                                                                          jobject /*unused*/,
                                                                                           jlong native,
                                                                                           jobject jcommands)
 {
@@ -100,7 +101,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandBuilderImpl_add_1aoI1
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandBuilderImpl_add_1aoI32_1native(JNIEnv* env,
-                                                                                          jobject,
+                                                                                          jobject /*unused*/,
                                                                                           jlong native,
                                                                                           jobject jcommands)
 {
@@ -108,7 +109,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandBuilderImpl_add_1aoI3
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandBuilderImpl_add_1aoF32_1native(JNIEnv* env,
-                                                                                          jobject,
+                                                                                          jobject /*unused*/,
                                                                                           jlong native,
                                                                                           jobject jcommands)
 {
@@ -116,7 +117,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandBuilderImpl_add_1aoF3
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandBuilderImpl_add_1aoD64_1native(JNIEnv* env,
-                                                                                          jobject,
+                                                                                          jobject /*unused*/,
                                                                                           jlong native,
                                                                                           jobject jcommands)
 {

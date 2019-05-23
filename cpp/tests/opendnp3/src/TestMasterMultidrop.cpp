@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -30,8 +30,8 @@ using namespace opendnp3;
 
 // helpers
 
-void ExpectRequestAndCauseResponseTimeout(MasterTestFixture&, const std::string& expected);
-void ExpectRequestAndRespond(MasterTestFixture&, const std::string& expected, const std::string& response);
+void ExpectRequestAndCauseResponseTimeout(MasterTestFixture& /*session*/, const std::string& expected);
+void ExpectRequestAndRespond(MasterTestFixture& /*session*/, const std::string& expected, const std::string& response);
 
 #define SUITE(name) "MasterMultidropTestSuite - " name
 
@@ -53,7 +53,7 @@ TEST_CASE(SUITE("Multidrop scheduling is priroity based"))
     REQUIRE(executor->RunMany() > 0);
 
     REQUIRE(t1.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
-    REQUIRE(t2.lower->PopWriteAsHex() == "");
+    REQUIRE(t2.lower->PopWriteAsHex().empty());
 
     t1.context->OnTxReady();
     t1.SendToMaster(hex::EmptyResponse(0, IINField(IINBit::DEVICE_RESTART)));
@@ -63,7 +63,7 @@ TEST_CASE(SUITE("Multidrop scheduling is priroity based"))
     // The IIN clear has higher priority than the integrity poll, so it is run first
 
     REQUIRE(t1.lower->PopWriteAsHex() == hex::ClearRestartIIN(1));
-    REQUIRE(t2.lower->PopWriteAsHex() == "");
+    REQUIRE(t2.lower->PopWriteAsHex().empty());
 
     t1.context->OnTxReady();
     t1.SendToMaster(hex::EmptyResponse(1));
@@ -72,7 +72,7 @@ TEST_CASE(SUITE("Multidrop scheduling is priroity based"))
 
     // Finally, the 2nd master gets to run it's integrity poll
 
-    REQUIRE(t1.lower->PopWriteAsHex() == "");
+    REQUIRE(t1.lower->PopWriteAsHex().empty());
     REQUIRE(t2.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 }
 
@@ -95,7 +95,7 @@ TEST_CASE(SUITE("Shutting down a master causes 2nd master to run scheduled task"
     REQUIRE(executor->RunMany() > 0);
 
     REQUIRE(t1.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
-    REQUIRE(t2.lower->PopWriteAsHex() == "");
+    REQUIRE(t2.lower->PopWriteAsHex().empty());
 
     t1.context->OnTxReady();
     // instead of sending a reply, shutdown the first master
@@ -103,7 +103,7 @@ TEST_CASE(SUITE("Shutting down a master causes 2nd master to run scheduled task"
 
     REQUIRE(executor->RunMany() > 0);
 
-    REQUIRE(t1.lower->PopWriteAsHex() == "");
+    REQUIRE(t1.lower->PopWriteAsHex().empty());
     REQUIRE(t2.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
 }
 

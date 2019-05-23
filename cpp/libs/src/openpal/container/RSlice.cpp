@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -42,13 +42,11 @@ RSlice RSlice::CopyTo(WSlice& dest) const
     {
         return RSlice::Empty();
     }
-    else
-    {
-        WSlice copy(dest);
-        memcpy(dest, pBuffer, size);
-        dest.Advance(size);
-        return copy.ToRSlice().Take(size);
-    }
+
+    WSlice copy(dest);
+    memcpy(dest, pBuffer, size);
+    dest.Advance(size);
+    return copy.ToRSlice().Take(size);
 }
 
 RSlice RSlice::Take(uint32_t count) const
@@ -74,10 +72,8 @@ bool RSlice::Equals(const RSlice& rhs) const
     {
         return memcmp(pBuffer, rhs.pBuffer, Size()) == 0;
     }
-    else
-    {
-        return false;
-    }
+
+    return false;
 }
 
 void RSlice::Advance(uint32_t count)

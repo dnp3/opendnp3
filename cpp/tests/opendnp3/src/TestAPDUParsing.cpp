@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -44,7 +44,7 @@ using namespace testlib;
 void TestComplex(const std::string& hex,
                  ParseResult expected,
                  size_t numCalls,
-                 std::function<void(MockApduHeaderHandler&)> validate)
+                 const std::function<void(MockApduHeaderHandler&)>& validate)
 {
     HexSequence buffer(hex);
     MockApduHeaderHandler mock;
@@ -246,7 +246,7 @@ TEST_CASE(SUITE("ParserDoesNotAllowEmptyOctetStrings"))
     auto result = APDUParser::Parse(buffer.ToRSlice(), mock, nullptr);
 
     REQUIRE((result == ParseResult::INVALID_OBJECT));
-    REQUIRE(0 == mock.records.size());
+    REQUIRE(mock.records.empty());
 }
 
 TEST_CASE(SUITE("Group1Var2CountWithIndexUInt8"))

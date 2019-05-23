@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -43,7 +43,7 @@ void MockLogHandlerImpl::Log(const LogEntry& entry)
         std::cout << entry.loggerid << " - " << entry.message << std::endl;
     }
 
-    this->messages.push_back(entry);
+    this->messages.emplace_back(entry);
 }
 
 void MockLogHandler::ClearLog()
@@ -65,12 +65,10 @@ bool MockLogHandler::GetNextEntry(LogRecord& record)
 {
     if (impl->messages.empty())
         return false;
-    else
-    {
-        record = impl->messages.front();
-        impl->messages.pop_front();
-        return true;
-    }
+
+    record = impl->messages.front();
+    impl->messages.pop_front();
+    return true;
 }
 
 } // namespace testlib

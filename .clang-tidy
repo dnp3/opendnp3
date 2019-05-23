@@ -1,0 +1,10 @@
+---
+Checks:          '*,-google-readability-todo,-google-build-using-namespace,-google-readability-braces-around-statements,-readability-braces-around-statements,-hicpp-braces-around-statements,-modernize-return-braced-init-list,-cppcoreguidelines-pro-type-member-init,-hicpp-member-init,-modernize-use-default-member-init'
+WarningsAsErrors: ''
+HeaderFilterRegex: ''
+AnalyzeTemporaryDtors: false
+FormatStyle:     file
+CheckOptions:
+  - key:             modernize-make-unique.MakeSmartPtrFunction
+    value:           'std::make_unique'
+...

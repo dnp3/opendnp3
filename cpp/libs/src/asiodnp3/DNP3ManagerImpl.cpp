@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -21,6 +21,8 @@
 #include "DNP3ManagerImpl.h"
 
 #include <opendnp3/LogLevels.h>
+
+#include <utility>
 
 #ifdef OPENDNP3_USE_TLS
 #include "asiodnp3/tls/MasterTLSServer.h"
@@ -46,9 +48,9 @@ DNP3ManagerImpl::DNP3ManagerImpl(uint32_t concurrencyHint,
                                  std::shared_ptr<openpal::ILogHandler> handler,
                                  std::function<void()> onThreadStart,
                                  std::function<void()> onThreadExit)
-    : logger(handler, "manager", opendnp3::levels::ALL),
+    : logger(std::move(handler), "manager", opendnp3::levels::ALL),
       io(std::make_shared<asiopal::IO>()),
-      threadpool(logger, io, concurrencyHint, onThreadStart, onThreadExit),
+      threadpool(logger, io, concurrencyHint, std::move(onThreadStart), std::move(onThreadExit)),
       resources(ResourceManager::Create())
 {
 }

@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -28,19 +28,19 @@ using namespace opendnp3;
 bool OutstationApplicationAdapter::SupportsWriteAbsoluteTime()
 {
     const auto env = JNI::GetEnv();
-    return !!JCache::OutstationApplication.supportsWriteAbsoluteTime(env, proxy);
+    return !(JCache::OutstationApplication.supportsWriteAbsoluteTime(env, proxy) == 0u);
 }
 
 bool OutstationApplicationAdapter::WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp)
 {
     const auto env = JNI::GetEnv();
-    return !!JCache::OutstationApplication.writeAbsoluteTime(env, proxy, timestamp.msSinceEpoch);
+    return !(JCache::OutstationApplication.writeAbsoluteTime(env, proxy, timestamp.msSinceEpoch) == 0u);
 }
 
 bool OutstationApplicationAdapter::SupportsAssignClass()
 {
     const auto env = JNI::GetEnv();
-    return !!JCache::OutstationApplication.supportsAssignClass(env, proxy);
+    return !(JCache::OutstationApplication.supportsAssignClass(env, proxy) == 0u);
 }
 
 void OutstationApplicationAdapter::RecordClassAssignment(AssignClassType type,
@@ -61,10 +61,10 @@ ApplicationIIN OutstationApplicationAdapter::GetApplicationIIN() const
     const auto env = JNI::GetEnv();
     auto jiin = JCache::OutstationApplication.getApplicationIIN(env, proxy);
     ApplicationIIN iin;
-    iin.configCorrupt = !!JCache::ApplicationIIN.getconfigCorrupt(env, jiin);
-    iin.deviceTrouble = !!JCache::ApplicationIIN.getdeviceTrouble(env, jiin);
-    iin.localControl = !!JCache::ApplicationIIN.getlocalControl(env, jiin);
-    iin.needTime = !!JCache::ApplicationIIN.getneedTime(env, jiin);
+    iin.configCorrupt = !(JCache::ApplicationIIN.getconfigCorrupt(env, jiin) == 0u);
+    iin.deviceTrouble = !(JCache::ApplicationIIN.getdeviceTrouble(env, jiin) == 0u);
+    iin.localControl = !(JCache::ApplicationIIN.getlocalControl(env, jiin) == 0u);
+    iin.needTime = !(JCache::ApplicationIIN.getneedTime(env, jiin) == 0u);
     return iin;
 }
 

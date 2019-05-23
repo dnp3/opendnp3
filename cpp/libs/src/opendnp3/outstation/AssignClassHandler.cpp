@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -97,17 +97,15 @@ IINField AssignClassHandler::ProcessHeader(const RangeHeader& header)
 
 bool AssignClassHandler::IsExpectingAssignment()
 {
-    int32_t current = static_cast<int32_t>(this->GetCurrentHeader());
+    auto current = static_cast<int32_t>(this->GetCurrentHeader());
 
     if (current > 0 && ((current - 1) == this->classHeader))
     {
         this->classHeader = -1;
         return true;
     }
-    else
-    {
-        return false;
-    }
+
+    return false;
 }
 
 IINField AssignClassHandler::ProcessAssignRange(AssignClassType type, PointClass clazz, const Range& range)
@@ -131,7 +129,7 @@ IINField AssignClassHandler::ProcessAssignAll(AssignClassType type, PointClass c
 
 void AssignClassHandler::NotifyApplicationOfAssignment(AssignClassType type, PointClass clazz, const Range& range)
 {
-    if (range.IsValid() && pApplication)
+    if (range.IsValid() && (pApplication != nullptr))
     {
         auto pApplication = this->pApplication;
         auto callback = [pApplication, range, clazz, type]() {

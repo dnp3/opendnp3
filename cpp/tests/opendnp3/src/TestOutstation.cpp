@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -129,7 +129,7 @@ TEST_CASE(SUITE("NoResponseToNoAckCodes"))
         auto request = ToHex(bytes, 2, true);
 
         t.SendToOutstation(request);
-        REQUIRE(t.lower->PopWriteAsHex() == "");
+        REQUIRE(t.lower->PopWriteAsHex().empty());
 
         ++sequence;
     }
@@ -259,7 +259,7 @@ TEST_CASE(SUITE("WriteTimeDateNotAsking"))
     t.application->allowTimeWrite = false;
     t.SendToOutstation("C0 02 32 01 07 01 D2 04 00 00 00 00"); // write Grp50Var1, value = 1234 ms after epoch
     REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 04");        // param error
-    REQUIRE(t.application->timestamps.size() == 0);
+    REQUIRE(t.application->timestamps.empty());
 }
 
 TEST_CASE(SUITE("WriteTimeDateMultipleObjects"))
@@ -368,7 +368,7 @@ TEST_CASE(SUITE("ReadClass0MultiFragAnalog"))
     t.OnTxReady();
     t.SendToOutstation("C3 00");
 
-    REQUIRE(t.lower->PopWriteAsHex() == "");
+    REQUIRE(t.lower->PopWriteAsHex().empty());
 }
 
 TEST_CASE(SUITE("ReadFuncNotSupported"))

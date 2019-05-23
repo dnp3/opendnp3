@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -29,6 +29,7 @@
 #include "asiodnp3/LinkSession.h"
 
 #include <sstream>
+#include <utility>
 
 using namespace opendnp3;
 using namespace openpal;
@@ -40,10 +41,10 @@ namespace asiodnp3
 MasterTCPServer::MasterTCPServer(const openpal::Logger& logger,
                                  const std::shared_ptr<asiopal::Executor>& executor,
                                  const asiopal::IPEndpoint& endpoint,
-                                 const std::shared_ptr<IListenCallbacks>& callbacks,
-                                 const std::shared_ptr<asiopal::ResourceManager>& manager,
+                                 std::shared_ptr<IListenCallbacks> callbacks,
+                                 std::shared_ptr<asiopal::ResourceManager> manager,
                                  std::error_code& ec)
-    : TCPServer(logger, executor, endpoint, ec), callbacks(callbacks), manager(manager)
+    : TCPServer(logger, executor, endpoint, ec), callbacks(std::move(callbacks)), manager(std::move(manager))
 {
 }
 

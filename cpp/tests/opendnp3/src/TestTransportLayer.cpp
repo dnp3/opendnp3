@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -131,7 +131,7 @@ TEST_CASE(SUITE("ReceiveLargestPossibleAPDU"))
 
     vector<string> packets;
     const string apdu = test.GeneratePacketSequence(packets, num_packets, last_packet_length);
-    for (string s : packets)
+    for (const string& s : packets)
     {
         test.link.SendUp(s);
     }
@@ -238,9 +238,9 @@ TEST_CASE(SUITE("SendFullAPDU"))
     REQUIRE(numPackets == test.link.sends.size());
     REQUIRE(packets.size() == test.link.sends.size());
 
-    for (size_t i = 0; i < packets.size(); ++i)
+    for (const auto& packet : packets)
     {
-        REQUIRE(packets[i] == test.link.PopWriteAsHex());
+        REQUIRE(packet == test.link.PopWriteAsHex());
     }
 
     test.transport.OnTxReady();

@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -100,10 +100,8 @@ LinkLayerParser::State LinkLayerParser::ParseSync()
 
         return synced ? State::ReadHeader : State::FindSync;
     }
-    else
-    {
-        return State::FindSync;
-    }
+
+    return State::FindSync;
 }
 
 LinkLayerParser::State LinkLayerParser::ParseHeader()
@@ -114,11 +112,9 @@ LinkLayerParser::State LinkLayerParser::ParseHeader()
         {
             return State::ReadBody;
         }
-        else
-        {
-            this->FailFrame();
-            return State::FindSync;
-        }
+
+        this->FailFrame();
+        return State::FindSync;
     }
     else
     {
@@ -132,19 +128,15 @@ LinkLayerParser::State LinkLayerParser::ParseBody()
     {
         return State::ReadBody;
     }
-    else
+
+    if (this->ValidateBody())
     {
-        if (this->ValidateBody())
-        {
-            this->TransferUserData();
-            return State::Complete;
-        }
-        else
-        {
-            this->FailFrame();
-            return State::FindSync;
-        }
+        this->TransferUserData();
+        return State::Complete;
     }
+
+    this->FailFrame();
+    return State::FindSync;
 }
 
 void LinkLayerParser::PushFrame(IFrameSink& sink)
@@ -169,14 +161,7 @@ bool LinkLayerParser::ReadHeader()
     header.Read(buffer.ReadBuffer());
     if (CRC::IsCorrectCRC(buffer.ReadBuffer(), LI_CRC))
     {
-        if (ValidateHeaderParameters())
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return ValidateHeaderParameters();
     }
     else
     {
@@ -199,12 +184,10 @@ bool LinkLayerParser::ValidateBody()
 
         return true;
     }
-    else
-    {
-        ++this->statistics.numBodyCrcError;
-        SIMPLE_LOG_BLOCK(logger, flags::ERR, "CRC failure in body");
-        return false;
-    }
+
+    ++this->statistics.numBodyCrcError;
+    SIMPLE_LOG_BLOCK(logger, flags::ERR, "CRC failure in body");
+    return false;
 }
 
 bool LinkLayerParser::ValidateHeaderParameters()

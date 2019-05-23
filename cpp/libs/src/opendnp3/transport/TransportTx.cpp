@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -25,7 +25,7 @@
 
 #include "opendnp3/LogLevels.h"
 
-#include <assert.h>
+#include <cassert>
 
 using namespace std;
 using namespace openpal;
@@ -54,27 +54,25 @@ openpal::RSlice TransportTx::GetSegment()
     {
         return txSegment.Get();
     }
-    else
-    {
-        const uint32_t numToSend
-            = (this->message.payload.Size() < MAX_TPDU_PAYLOAD) ? this->message.payload.Size() : MAX_TPDU_PAYLOAD;
 
-        auto dest = tpduBuffer.GetWSlice().Skip(1);
-        this->message.payload.Take(numToSend).CopyTo(dest);
+    const uint32_t numToSend
+        = (this->message.payload.Size() < MAX_TPDU_PAYLOAD) ? this->message.payload.Size() : MAX_TPDU_PAYLOAD;
 
-        bool fir = (tpduCount == 0);
-        bool fin = (numToSend == this->message.payload.Size());
-        tpduBuffer()[0] = TransportHeader::ToByte(fir, fin, sequence);
+    auto dest = tpduBuffer.GetWSlice().Skip(1);
+    this->message.payload.Take(numToSend).CopyTo(dest);
 
-        FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_TX, "FIR: %d FIN: %d SEQ: %u LEN: %u", fir, fin, sequence.Get(),
-                         numToSend);
+    bool fir = (tpduCount == 0);
+    bool fin = (numToSend == this->message.payload.Size());
+    tpduBuffer()[0] = TransportHeader::ToByte(fir, fin, sequence);
 
-        ++statistics.numTransportTx;
+    FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_TX, "FIR: %d FIN: %d SEQ: %u LEN: %u", fir, fin, sequence.Get(),
+                     numToSend);
 
-        auto segment = tpduBuffer.ToRSlice(numToSend + 1);
-        txSegment.Set(segment);
-        return segment;
-    }
+    ++statistics.numTransportTx;
+
+    auto segment = tpduBuffer.ToRSlice(numToSend + 1);
+    txSegment.Set(segment);
+    return segment;
 }
 
 bool TransportTx::Advance()

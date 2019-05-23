@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -97,7 +97,7 @@ std::string AuthErrorResponse(opendnp3::IINField iin,
                               uint16_t assocId,
                               opendnp3::AuthErrorCode code,
                               opendnp3::DNPTime timestamp,
-                              std::string hexText);
+                              const std::string& hexErrorText);
 
 std::string ChallengeResponse(opendnp3::IINField iin,
                               uint8_t seq,
@@ -105,9 +105,9 @@ std::string ChallengeResponse(opendnp3::IINField iin,
                               uint16_t user,
                               opendnp3::HMACType hmacType,
                               opendnp3::ChallengeReason reason,
-                              std::string challengeDataHex);
+                              const std::string& challengeDataHex);
 
-std::string ChallengeReply(uint8_t appSeq, uint32_t challengeSeqNum, uint16_t userNum, std::string hmacHex);
+std::string ChallengeReply(uint8_t appSeq, uint32_t challengeSeqNum, uint16_t userNum, const std::string& hmacHex);
 
 std::string KeyStatusResponse(opendnp3::IINField iin,
                               uint8_t seq,
@@ -146,7 +146,7 @@ std::string FinishUpdateKeyChangeRequest(
 
 std::string FinishUpdateKeyChangeResponse(uint8_t seq, const std::string& hmac);
 
-std::string KeyWrapData(uint16_t keyLengthBytes, uint8_t keyRepeatValue, std::string keyStatusMsg);
+std::string KeyWrapData(uint16_t keyLengthBytes, uint8_t keyRepeatValue, const std::string& keyStatusMsg);
 
 } // namespace hex
 

@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -32,11 +32,11 @@ struct LinkHeader
 {
     LinkHeader();
 
-    LinkHeader(uint8_t len, uint16_t src, uint16_t dest, bool isFromMaster, bool fcvdfc, bool fcb, LinkFunction func);
+    LinkHeader(uint8_t len, uint16_t src, uint16_t dest, bool aFromMaster, bool fcvdfc, bool fcb, LinkFunction aCode);
 
     // Setter
 
-    void Set(uint8_t len, uint16_t src, uint16_t dest, bool isFromMaster, bool fcvdfc, bool fcb, LinkFunction func);
+    void Set(uint8_t len, uint16_t src, uint16_t dest, bool aFromMaster, bool fcvdfc, bool fcb, LinkFunction aCode);
 
     void ChangeFCB(bool aFCB);
 
@@ -90,11 +90,11 @@ struct LinkHeader
 
     /** Reads the header, setting all the fields. Does NOT validate 0x0564 or CRC
     @param apBuff Buffer of at least 10 bytes */
-    void Read(const uint8_t* data);
+    void Read(const uint8_t* apBuff);
 
     /** Writes header to buffer including, 0x0564 and CRC
     @param apBuff Buffer of at least 10 bytes */
-    void Write(uint8_t* dest) const;
+    void Write(uint8_t* apBuff) const;
 
     static uint8_t ControlByte(bool isMaster, bool fcb, bool fcvdfc, LinkFunction func);
 

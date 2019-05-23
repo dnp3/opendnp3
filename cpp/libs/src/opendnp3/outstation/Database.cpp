@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -21,7 +21,7 @@
 
 #include <openpal/logging/LogMacros.h>
 
-#include <assert.h>
+#include <cassert>
 
 using namespace openpal;
 
@@ -86,10 +86,8 @@ bool Database::Update(const TimeAndInterval& value, uint16_t index)
         view[rawIndex].value = value;
         return true;
     }
-    else
-    {
-        return false;
-    }
+
+    return false;
 }
 
 bool Database::Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t flags)
@@ -139,12 +137,10 @@ template<class Spec> uint16_t Database::GetRawIndex(uint16_t index)
     {
         return index;
     }
-    else
-    {
-        auto view = buffers.buffers.GetArrayView<Spec>();
-        auto result = IndexSearch::FindClosestRawIndex(view, index);
-        return result.match ? result.index : openpal::MaxValue<uint16_t>();
-    }
+
+    auto view = buffers.buffers.GetArrayView<Spec>();
+    auto result = IndexSearch::FindClosestRawIndex(view, index);
+    return result.match ? result.index : openpal::MaxValue<uint16_t>();
 }
 
 template<class Spec> bool Database::UpdateEvent(const typename Spec::meas_t& value, uint16_t index, EventMode mode)
@@ -158,10 +154,8 @@ template<class Spec> bool Database::UpdateEvent(const typename Spec::meas_t& val
         this->UpdateAny(view[rawIndex], value, mode);
         return true;
     }
-    else
-    {
-        return false;
-    }
+
+    return false;
 }
 
 template<class Spec> bool Database::UpdateAny(Cell<Spec>& cell, const typename Spec::meas_t& value, EventMode mode)
@@ -220,10 +214,8 @@ template<class Spec> bool Database::Modify(uint16_t start, uint16_t stop, uint8_
 
         return true;
     }
-    else
-    {
-        return false;
-    }
+
+    return false;
 }
 
 } // namespace opendnp3

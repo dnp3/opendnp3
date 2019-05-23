@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -68,7 +68,7 @@ class PLLS_SendUnconfirmedTransmitWait final : public PriStateBase
 {
     MACRO_STATE_SINGLETON_INSTANCE(PLLS_SendUnconfirmedTransmitWait);
 
-    virtual PriStateBase& OnTxReady(LinkContext& link) override;
+    virtual PriStateBase& OnTxReady(LinkContext& ctx) override;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -79,7 +79,7 @@ class PLLS_LinkResetTransmitWait : public PriStateBase
 {
     MACRO_STATE_SINGLETON_INSTANCE(PLLS_LinkResetTransmitWait);
 
-    virtual PriStateBase& OnTxReady(LinkContext& link) override;
+    virtual PriStateBase& OnTxReady(LinkContext& ctx) override;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -90,7 +90,7 @@ class PLLS_ConfUserDataTransmitWait : public PriStateBase
 {
     MACRO_STATE_SINGLETON_INSTANCE(PLLS_ConfUserDataTransmitWait);
 
-    virtual PriStateBase& OnTxReady(LinkContext& link) override;
+    virtual PriStateBase& OnTxReady(LinkContext& ctx) override;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -101,7 +101,7 @@ class PLLS_RequestLinkStatusTransmitWait : public PriStateBase
 {
     MACRO_STATE_SINGLETON_INSTANCE(PLLS_RequestLinkStatusTransmitWait);
 
-    virtual PriStateBase& OnTxReady(LinkContext& link) override;
+    virtual PriStateBase& OnTxReady(LinkContext& ctx) override;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -144,7 +144,7 @@ class PLLS_ConfDataWait final : public PriStateBase
     MACRO_STATE_SINGLETON_INSTANCE(PLLS_ConfDataWait);
 
     PriStateBase& OnAck(LinkContext&, bool aIsRcvBuffFull) override;
-    PriStateBase& OnNack(LinkContext& link, bool) override;
+    PriStateBase& OnNack(LinkContext& ctx, bool) override;
     PriStateBase& OnLinkStatus(LinkContext& link, bool) override
     {
         return Failure(link);
@@ -169,9 +169,9 @@ class PLLS_RequestLinkStatusWait final : public PriStateBase
 {
     MACRO_STATE_SINGLETON_INSTANCE(PLLS_RequestLinkStatusWait);
 
-    PriStateBase& OnNack(LinkContext& link, bool) override;
-    PriStateBase& OnLinkStatus(LinkContext& link, bool) override;
-    PriStateBase& OnNotSupported(LinkContext& link, bool) override;
+    PriStateBase& OnNack(LinkContext& ctx, bool) override;
+    PriStateBase& OnLinkStatus(LinkContext& ctx, bool) override;
+    PriStateBase& OnNotSupported(LinkContext& ctx, bool) override;
     PriStateBase& OnTimeout(LinkContext&) override;
 };
 

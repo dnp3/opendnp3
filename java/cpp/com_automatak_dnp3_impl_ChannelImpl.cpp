@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -34,8 +34,8 @@
 using namespace asiodnp3;
 using namespace opendnp3;
 
-JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_set_1log_1level_1native(JNIEnv* env,
-                                                                                        jobject,
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_set_1log_1level_1native(JNIEnv* /*env*/,
+                                                                                        jobject /*unused*/,
                                                                                         jlong native,
                                                                                         jint levels)
 {
@@ -44,7 +44,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_set_1log_1level_
 }
 
 JNIEXPORT jobject JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1statistics_1native(JNIEnv* env,
-                                                                                           jobject,
+                                                                                           jobject /*unused*/,
                                                                                            jlong native)
 {
     const auto channel = (std::shared_ptr<IChannel>*)native;
@@ -61,20 +61,24 @@ JNIEXPORT jobject JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1statisti
     return env->NewGlobalRef(jni::JCache::LinkStatistics.init2(env, channelStats, parserStats));
 }
 
-JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_shutdown_1native(JNIEnv* env, jobject, jlong native)
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_shutdown_1native(JNIEnv* /*env*/,
+                                                                                 jobject /*unused*/,
+                                                                                 jlong native)
 {
     const auto channel = (std::shared_ptr<IChannel>*)native;
     (*channel)->Shutdown();
 }
 
-JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_destroy_1native(JNIEnv*, jobject, jlong native)
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_destroy_1native(JNIEnv* /*unused*/,
+                                                                                jobject /*unused*/,
+                                                                                jlong native)
 {
     const auto channel = (std::shared_ptr<IChannel>*)native;
     delete channel; // drop our reference
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1master(
-    JNIEnv* env, jobject, jlong native, jstring jid, jobject handler, jobject application, jobject jconfig)
+    JNIEnv* env, jobject /*unused*/, jlong native, jstring jid, jobject handler, jobject application, jobject jconfig)
 {
     const auto channel = (std::shared_ptr<IChannel>*)native;
 
@@ -89,8 +93,13 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1ma
     return stack ? (jlong) new std::shared_ptr<IMaster>(stack) : 0;
 }
 
-JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1outstation(
-    JNIEnv* env, jobject, jlong native, jstring jid, jobject commandHandler, jobject application, jobject jconfig)
+JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1outstation(JNIEnv* env,
+                                                                                         jobject /*unused*/,
+                                                                                         jlong native,
+                                                                                         jstring jid,
+                                                                                         jobject commandHandler,
+                                                                                         jobject application,
+                                                                                         jobject jconfig)
 {
     const auto channel = (std::shared_ptr<IChannel>*)native;
 

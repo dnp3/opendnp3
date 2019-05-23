@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -24,6 +24,8 @@
 
 #include "asiodnp3/Conversions.h"
 #include "asiodnp3/LinkSession.h"
+
+#include <utility>
 
 using namespace opendnp3;
 
@@ -48,12 +50,12 @@ MasterSessionStack::MasterSessionStack(const openpal::Logger& logger,
                                        const std::shared_ptr<opendnp3::ISOEHandler>& SOEHandler,
                                        const std::shared_ptr<opendnp3::IMasterApplication>& application,
                                        const std::shared_ptr<opendnp3::IMasterScheduler>& scheduler,
-                                       const std::shared_ptr<LinkSession>& session,
+                                       std::shared_ptr<LinkSession> session,
                                        opendnp3::ILinkTx& linktx,
                                        const MasterStackConfig& config)
     : executor(executor),
       scheduler(scheduler),
-      session(session),
+      session(std::move(session)),
       stack(logger, executor, application, config.master.maxRxFragSize, LinkLayerConfig(config.link, false)),
       context(Addresses(config.link.LocalAddr, config.link.RemoteAddr),
               logger,

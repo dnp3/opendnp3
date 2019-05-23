@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -39,25 +39,25 @@ public:
     //	Functions for formatting outgoing Sec to Pri frames
     ////////////////////////////////////////////////
 
-    static openpal::RSlice FormatAck(openpal::WSlice& output,
+    static openpal::RSlice FormatAck(openpal::WSlice& buffer,
                                      bool aIsMaster,
                                      bool aIsRcvBuffFull,
                                      uint16_t aDest,
                                      uint16_t aSrc,
                                      openpal::Logger* pLogger);
-    static openpal::RSlice FormatNack(openpal::WSlice& output,
+    static openpal::RSlice FormatNack(openpal::WSlice& buffer,
                                       bool aIsMaster,
                                       bool aIsRcvBuffFull,
                                       uint16_t aDest,
                                       uint16_t aSrc,
                                       openpal::Logger* pLogger);
-    static openpal::RSlice FormatLinkStatus(openpal::WSlice& output,
+    static openpal::RSlice FormatLinkStatus(openpal::WSlice& buffer,
                                             bool aIsMaster,
                                             bool aIsRcvBuffFull,
                                             uint16_t aDest,
                                             uint16_t aSrc,
                                             openpal::Logger* pLogger);
-    static openpal::RSlice FormatNotSupported(openpal::WSlice& output,
+    static openpal::RSlice FormatNotSupported(openpal::WSlice& buffer,
                                               bool aIsMaster,
                                               bool aIsRcvBuffFull,
                                               uint16_t aDest,
@@ -69,12 +69,12 @@ public:
     ////////////////////////////////////////////////
 
     static openpal::RSlice FormatTestLinkStatus(
-        openpal::WSlice& output, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
+        openpal::WSlice& buffer, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
     static openpal::RSlice FormatResetLinkStates(
-        openpal::WSlice& output, bool aIsMaster, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
+        openpal::WSlice& buffer, bool aIsMaster, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
     static openpal::RSlice FormatRequestLinkStatus(
-        openpal::WSlice& output, bool aIsMaster, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
-    static openpal::RSlice FormatConfirmedUserData(openpal::WSlice& output,
+        openpal::WSlice& buffer, bool aIsMaster, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
+    static openpal::RSlice FormatConfirmedUserData(openpal::WSlice& buffer,
                                                    bool aIsMaster,
                                                    bool aFcb,
                                                    uint16_t aDest,
@@ -82,7 +82,7 @@ public:
                                                    const uint8_t* apData,
                                                    uint8_t aDataLength,
                                                    openpal::Logger* pLogger);
-    static openpal::RSlice FormatUnconfirmedUserData(openpal::WSlice& output,
+    static openpal::RSlice FormatUnconfirmedUserData(openpal::WSlice& buffer,
                                                      bool aIsMaster,
                                                      uint16_t aDest,
                                                      uint16_t aSrc,
@@ -99,7 +99,7 @@ public:
     @param apDest Destination buffer to which the data is extracted
     @param aLength Length of user data to read to the dest buffer. The source buffer must be larger b/c of crc bytes.
     */
-    static void ReadUserData(const uint8_t* apSrc, uint8_t* apDest, uint32_t aLength);
+    static void ReadUserData(const uint8_t* apSrc, uint8_t* apDest, uint32_t length_);
 
     /** Validates FT3 user data integriry
     @param apBody Beginning of the FT3 user data
@@ -121,12 +121,12 @@ private:
     static void WriteUserData(const uint8_t* pSrc, uint8_t* pDest, uint8_t length);
 
     /** Write 10 header bytes to to buffer including 0x0564, all fields, and CRC */
-    static openpal::RSlice FormatHeader(openpal::WSlice& output,
+    static openpal::RSlice FormatHeader(openpal::WSlice& buffer,
                                         uint8_t aDataLength,
                                         bool aIsMaster,
                                         bool aFcb,
                                         bool aFcvDfc,
-                                        LinkFunction aCode,
+                                        LinkFunction aFuncCode,
                                         uint16_t aDest,
                                         uint16_t aSrc,
                                         openpal::Logger* pLogger);

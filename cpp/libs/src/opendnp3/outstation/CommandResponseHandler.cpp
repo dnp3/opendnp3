@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -34,7 +34,7 @@ CommandResponseHandler::CommandResponseHandler(uint8_t maxCommands_,
 {
 }
 
-bool CommandResponseHandler::IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc)
+bool CommandResponseHandler::IsAllowed(uint32_t /*headerCount*/, GroupVariation gv, QualifierCode qc)
 {
     if (!(qc == QualifierCode::UINT8_CNT_UINT8_INDEX || qc == QualifierCode::UINT16_CNT_UINT16_INDEX))
     {
@@ -84,70 +84,70 @@ IINField CommandResponseHandler::ProcessHeader(const PrefixHeader& header,
     return this->ProcessAny(header, meas);
 }
 
-IINField CommandResponseHandler::ProcessIndexPrefixTwoByte(const HeaderRecord&,
+IINField CommandResponseHandler::ProcessIndexPrefixTwoByte(const HeaderRecord& /*unused*/,
                                                            const ICollection<Indexed<ControlRelayOutputBlock>>& meas)
 {
     return this->RespondToHeader<ControlRelayOutputBlock, openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX,
                                                                            Group12Var1::Inst(), meas);
 }
 
-IINField CommandResponseHandler::ProcessIndexPrefixTwoByte(const HeaderRecord&,
+IINField CommandResponseHandler::ProcessIndexPrefixTwoByte(const HeaderRecord& /*unused*/,
                                                            const ICollection<Indexed<AnalogOutputInt16>>& meas)
 {
     return this->RespondToHeader<AnalogOutputInt16, openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX,
                                                                      Group41Var2::Inst(), meas);
 }
 
-IINField CommandResponseHandler::ProcessIndexPrefixTwoByte(const HeaderRecord&,
+IINField CommandResponseHandler::ProcessIndexPrefixTwoByte(const HeaderRecord& /*unused*/,
                                                            const ICollection<Indexed<AnalogOutputInt32>>& meas)
 {
     return this->RespondToHeader<AnalogOutputInt32, openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX,
                                                                      Group41Var1::Inst(), meas);
 }
 
-IINField CommandResponseHandler::ProcessIndexPrefixTwoByte(const HeaderRecord&,
+IINField CommandResponseHandler::ProcessIndexPrefixTwoByte(const HeaderRecord& /*unused*/,
                                                            const ICollection<Indexed<AnalogOutputFloat32>>& meas)
 {
     return this->RespondToHeader<AnalogOutputFloat32, openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX,
                                                                        Group41Var3::Inst(), meas);
 }
 
-IINField CommandResponseHandler::ProcessIndexPrefixTwoByte(const HeaderRecord&,
+IINField CommandResponseHandler::ProcessIndexPrefixTwoByte(const HeaderRecord& /*unused*/,
                                                            const ICollection<Indexed<AnalogOutputDouble64>>& meas)
 {
     return this->RespondToHeader<AnalogOutputDouble64, openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX,
                                                                         Group41Var4::Inst(), meas);
 }
 
-IINField CommandResponseHandler::ProcessIndexPrefixOneByte(const HeaderRecord&,
+IINField CommandResponseHandler::ProcessIndexPrefixOneByte(const HeaderRecord& /*unused*/,
                                                            const ICollection<Indexed<ControlRelayOutputBlock>>& meas)
 {
     return this->RespondToHeader<ControlRelayOutputBlock, openpal::UInt8>(QualifierCode::UINT8_CNT_UINT8_INDEX,
                                                                           Group12Var1::Inst(), meas);
 }
 
-IINField CommandResponseHandler::ProcessIndexPrefixOneByte(const HeaderRecord&,
+IINField CommandResponseHandler::ProcessIndexPrefixOneByte(const HeaderRecord& /*unused*/,
                                                            const ICollection<Indexed<AnalogOutputInt16>>& meas)
 {
     return this->RespondToHeader<AnalogOutputInt16, openpal::UInt8>(QualifierCode::UINT8_CNT_UINT8_INDEX,
                                                                     Group41Var2::Inst(), meas);
 }
 
-IINField CommandResponseHandler::ProcessIndexPrefixOneByte(const HeaderRecord&,
+IINField CommandResponseHandler::ProcessIndexPrefixOneByte(const HeaderRecord& /*unused*/,
                                                            const ICollection<Indexed<AnalogOutputInt32>>& meas)
 {
     return this->RespondToHeader<AnalogOutputInt32, openpal::UInt8>(QualifierCode::UINT8_CNT_UINT8_INDEX,
                                                                     Group41Var1::Inst(), meas);
 }
 
-IINField CommandResponseHandler::ProcessIndexPrefixOneByte(const HeaderRecord&,
+IINField CommandResponseHandler::ProcessIndexPrefixOneByte(const HeaderRecord& /*unused*/,
                                                            const ICollection<Indexed<AnalogOutputFloat32>>& meas)
 {
     return this->RespondToHeader<AnalogOutputFloat32, openpal::UInt8>(QualifierCode::UINT8_CNT_UINT8_INDEX,
                                                                       Group41Var3::Inst(), meas);
 }
 
-IINField CommandResponseHandler::ProcessIndexPrefixOneByte(const HeaderRecord&,
+IINField CommandResponseHandler::ProcessIndexPrefixOneByte(const HeaderRecord& /*unused*/,
                                                            const ICollection<Indexed<AnalogOutputDouble64>>& meas)
 {
     return this->RespondToHeader<AnalogOutputDouble64, openpal::UInt8>(QualifierCode::UINT8_CNT_UINT8_INDEX,

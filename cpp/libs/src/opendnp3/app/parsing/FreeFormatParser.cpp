@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -139,7 +139,7 @@ ParseResult FreeFormatParser::ParseHeader(openpal::RSlice& buffer,
 
 ParseResult FreeFormatParser::ParseFreeFormat(FreeFormatHandler parser,
                                               const FreeFormatHeader& header,
-                                              uint16_t size,
+                                              uint16_t /*size*/,
                                               openpal::RSlice& objects,
                                               IAPDUHandler* pHandler,
                                               openpal::Logger* pLogger)
@@ -148,12 +148,10 @@ ParseResult FreeFormatParser::ParseFreeFormat(FreeFormatHandler parser,
     {
         return ParseResult::OK;
     }
-    else
-    {
-        FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Insufficient data for free-format object: (%i, %i)", header.group,
-                            header.variation);
-        return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
-    }
+
+    FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Insufficient data for free-format object: (%i, %i)", header.group,
+                        header.variation);
+    return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
 }
 
 } // namespace opendnp3

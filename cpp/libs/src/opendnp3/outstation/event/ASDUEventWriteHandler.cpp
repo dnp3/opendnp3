@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -67,7 +67,7 @@ uint16_t ASDUEventWriteHandler::Write(EventDoubleBinaryVariation variation,
 }
 
 uint16_t ASDUEventWriteHandler::Write(EventCounterVariation variation,
-                                      const Counter& first,
+                                      const Counter& /*first*/,
                                       IEventCollection<Counter>& items)
 {
     switch (variation)
@@ -86,7 +86,7 @@ uint16_t ASDUEventWriteHandler::Write(EventCounterVariation variation,
 }
 
 uint16_t ASDUEventWriteHandler::Write(EventFrozenCounterVariation variation,
-                                      const FrozenCounter& first,
+                                      const FrozenCounter& /*first*/,
                                       IEventCollection<FrozenCounter>& items)
 {
     switch (variation)
@@ -105,7 +105,7 @@ uint16_t ASDUEventWriteHandler::Write(EventFrozenCounterVariation variation,
 }
 
 uint16_t ASDUEventWriteHandler::Write(EventAnalogVariation variation,
-                                      const Analog& first,
+                                      const Analog& /*first*/,
                                       IEventCollection<Analog>& items)
 {
     switch (variation)
@@ -132,7 +132,7 @@ uint16_t ASDUEventWriteHandler::Write(EventAnalogVariation variation,
 }
 
 uint16_t ASDUEventWriteHandler::Write(EventBinaryOutputStatusVariation variation,
-                                      const BinaryOutputStatus& first,
+                                      const BinaryOutputStatus& /*first*/,
                                       IEventCollection<BinaryOutputStatus>& items)
 {
     switch (variation)
@@ -147,7 +147,7 @@ uint16_t ASDUEventWriteHandler::Write(EventBinaryOutputStatusVariation variation
 }
 
 uint16_t ASDUEventWriteHandler::Write(EventAnalogOutputStatusVariation variation,
-                                      const AnalogOutputStatus& first,
+                                      const AnalogOutputStatus& /*first*/,
                                       IEventCollection<AnalogOutputStatus>& items)
 {
     switch (variation)
@@ -173,7 +173,7 @@ uint16_t ASDUEventWriteHandler::Write(EventAnalogOutputStatusVariation variation
     }
 }
 
-uint16_t ASDUEventWriteHandler::Write(EventOctetStringVariation variation,
+uint16_t ASDUEventWriteHandler::Write(EventOctetStringVariation /*variation*/,
                                       const OctetString& first,
                                       IEventCollection<OctetString>& items)
 {

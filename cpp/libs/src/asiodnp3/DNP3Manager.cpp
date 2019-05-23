@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -21,6 +21,8 @@
 
 #include "asiodnp3/DNP3ManagerImpl.h"
 
+#include <utility>
+
 namespace asiodnp3
 {
 
@@ -32,7 +34,7 @@ DNP3Manager::DNP3Manager(uint32_t concurrencyHint,
 {
 }
 
-DNP3Manager::~DNP3Manager() {}
+DNP3Manager::~DNP3Manager() = default;
 
 void DNP3Manager::Shutdown()
 {
@@ -47,7 +49,7 @@ std::shared_ptr<IChannel> DNP3Manager::AddTCPClient(const std::string& id,
                                                     uint16_t port,
                                                     std::shared_ptr<IChannelListener> listener)
 {
-    return this->impl->AddTCPClient(id, levels, retry, {asiopal::IPEndpoint(host, port)}, local, listener);
+    return this->impl->AddTCPClient(id, levels, retry, {asiopal::IPEndpoint(host, port)}, local, std::move(listener));
 }
 
 std::shared_ptr<IChannel> DNP3Manager::AddTCPClient(const std::string& id,
@@ -57,7 +59,7 @@ std::shared_ptr<IChannel> DNP3Manager::AddTCPClient(const std::string& id,
                                                     const std::string& local,
                                                     std::shared_ptr<IChannelListener> listener)
 {
-    return this->impl->AddTCPClient(id, levels, retry, hosts, local, listener);
+    return this->impl->AddTCPClient(id, levels, retry, hosts, local, std::move(listener));
 }
 
 std::shared_ptr<IChannel> DNP3Manager::AddTCPServer(const std::string& id,
@@ -67,7 +69,7 @@ std::shared_ptr<IChannel> DNP3Manager::AddTCPServer(const std::string& id,
                                                     uint16_t port,
                                                     std::shared_ptr<IChannelListener> listener)
 {
-    return this->impl->AddTCPServer(id, levels, mode, endpoint, port, listener);
+    return this->impl->AddTCPServer(id, levels, mode, endpoint, port, std::move(listener));
 }
 
 std::shared_ptr<IChannel> DNP3Manager::AddSerial(const std::string& id,
@@ -76,7 +78,7 @@ std::shared_ptr<IChannel> DNP3Manager::AddSerial(const std::string& id,
                                                  asiopal::SerialSettings settings,
                                                  std::shared_ptr<IChannelListener> listener)
 {
-    return this->impl->AddSerial(id, levels, retry, settings, listener);
+    return this->impl->AddSerial(id, levels, retry, std::move(settings), std::move(listener));
 }
 
 std::shared_ptr<IChannel> DNP3Manager::AddTLSClient(const std::string& id,
@@ -89,7 +91,8 @@ std::shared_ptr<IChannel> DNP3Manager::AddTLSClient(const std::string& id,
                                                     std::shared_ptr<IChannelListener> listener,
                                                     std::error_code& ec)
 {
-    return this->impl->AddTLSClient(id, levels, retry, {asiopal::IPEndpoint(host, port)}, local, config, listener, ec);
+    return this->impl->AddTLSClient(id, levels, retry, {asiopal::IPEndpoint(host, port)}, local, config,
+                                    std::move(listener), ec);
 }
 
 std::shared_ptr<IChannel> DNP3Manager::AddTLSClient(const std::string& id,
@@ -101,7 +104,7 @@ std::shared_ptr<IChannel> DNP3Manager::AddTLSClient(const std::string& id,
                                                     std::shared_ptr<IChannelListener> listener,
                                                     std::error_code& ec)
 {
-    return this->impl->AddTLSClient(id, levels, retry, hosts, local, config, listener, ec);
+    return this->impl->AddTLSClient(id, levels, retry, hosts, local, config, std::move(listener), ec);
 }
 
 std::shared_ptr<IChannel> DNP3Manager::AddTLSServer(const std::string& id,
@@ -113,26 +116,26 @@ std::shared_ptr<IChannel> DNP3Manager::AddTLSServer(const std::string& id,
                                                     std::shared_ptr<IChannelListener> listener,
                                                     std::error_code& ec)
 {
-    return this->impl->AddTLSServer(id, levels, mode, endpoint, port, config, listener, ec);
+    return this->impl->AddTLSServer(id, levels, mode, endpoint, port, config, std::move(listener), ec);
 }
 
 std::shared_ptr<asiopal::IListener> DNP3Manager::CreateListener(std::string loggerid,
                                                                 openpal::LogFilters loglevel,
                                                                 asiopal::IPEndpoint endpoint,
-                                                                std::shared_ptr<IListenCallbacks> callbacks,
+                                                                const std::shared_ptr<IListenCallbacks>& callbacks,
                                                                 std::error_code& ec)
 {
-    return impl->CreateListener(loggerid, loglevel, endpoint, callbacks, ec);
+    return impl->CreateListener(std::move(loggerid), loglevel, std::move(endpoint), callbacks, ec);
 }
 
 std::shared_ptr<asiopal::IListener> DNP3Manager::CreateListener(std::string loggerid,
                                                                 openpal::LogFilters loglevel,
                                                                 asiopal::IPEndpoint endpoint,
                                                                 const asiopal::TLSConfig& config,
-                                                                std::shared_ptr<IListenCallbacks> callbacks,
+                                                                const std::shared_ptr<IListenCallbacks>& callbacks,
                                                                 std::error_code& ec)
 {
-    return impl->CreateListener(loggerid, loglevel, endpoint, config, callbacks, ec);
+    return impl->CreateListener(std::move(loggerid), loglevel, std::move(endpoint), config, callbacks, ec);
 }
 
 } // namespace asiodnp3

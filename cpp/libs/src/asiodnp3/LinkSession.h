@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -62,8 +62,8 @@ public:
 
     LinkSession(const openpal::Logger& logger,
                 uint64_t sessionid,
-                const std::shared_ptr<asiopal::IResourceManager>& manager,
-                const std::shared_ptr<IListenCallbacks>& callbacks,
+                std::shared_ptr<asiopal::IResourceManager> manager,
+                std::shared_ptr<IListenCallbacks> callbacks,
                 const std::shared_ptr<asiopal::IAsyncChannel>& channel);
 
     // override IResource

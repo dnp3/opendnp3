@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -107,7 +107,7 @@ class MockTimer : public openpal::ITimer
     friend class MockExecutor;
 
 public:
-    MockTimer(MockExecutor*, const openpal::MonotonicTimestamp&, const openpal::action_t& runnable);
+    MockTimer(MockExecutor*, const openpal::MonotonicTimestamp&, openpal::action_t runnable);
 
     // implement ITimer
     void Cancel();

@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -104,7 +104,7 @@ TEST_CASE(SUITE("UnsolData"))
     REQUIRE(t.lower->PopWriteAsHex() == "F1 82 80 00 02 01 28 01 00 02 00 01");
     t.OnTxReady();
     t.SendToOutstation(hex::UnsolConfirm(1));
-    REQUIRE(t.lower->PopWriteAsHex() == "");
+    REQUIRE(t.lower->PopWriteAsHex().empty());
 }
 
 TEST_CASE(SUITE("UnsolEventBufferOverflow"))
@@ -134,7 +134,7 @@ TEST_CASE(SUITE("UnsolEventBufferOverflow"))
     t.OnTxReady();
     t.SendToOutstation(hex::UnsolConfirm(1));
 
-    REQUIRE(t.lower->PopWriteAsHex() == "");
+    REQUIRE(t.lower->PopWriteAsHex().empty());
 }
 
 TEST_CASE(SUITE("UnsolMultiFragments"))
@@ -151,7 +151,7 @@ TEST_CASE(SUITE("UnsolMultiFragments"))
     REQUIRE(t.lower->PopWriteAsHex() == hex::NullUnsolicited(0));
     t.OnTxReady();
     t.SendToOutstation(hex::UnsolConfirm(0));
-    REQUIRE(t.lower->PopWriteAsHex() == "");
+    REQUIRE(t.lower->PopWriteAsHex().empty());
 
     t.Transaction([](IUpdateHandler& db) {
         db.Update(Analog(7, 0x01), 1);
@@ -168,7 +168,7 @@ TEST_CASE(SUITE("UnsolMultiFragments"))
     t.OnTxReady();
     t.SendToOutstation(hex::UnsolConfirm(2));
 
-    REQUIRE(t.lower->PopWriteAsHex() == "");
+    REQUIRE(t.lower->PopWriteAsHex().empty());
 }
 
 void WriteDuringUnsol(bool beforeTx)
@@ -205,7 +205,7 @@ void WriteDuringUnsol(bool beforeTx)
 
     // now send the confirm to the outstation
     t.SendToOutstation(hex::UnsolConfirm(1));
-    REQUIRE(t.lower->PopWriteAsHex() == "");
+    REQUIRE(t.lower->PopWriteAsHex().empty());
 }
 
 // Test that non-read fragments are immediately responded to while
@@ -240,15 +240,9 @@ TEST_CASE(SUITE("ReadDuringUnsol"))
 
     auto readClass1 = "C0 01 3C 02 06";
 
-    if (true)
     {
         t.OnTxReady();
         t.SendToOutstation(readClass1);
-    }
-    else
-    {
-        t.SendToOutstation(readClass1);
-        t.OnTxReady();
     }
 
     t.SendToOutstation(hex::UnsolConfirm(1));
@@ -328,7 +322,7 @@ TEST_CASE(SUITE("UnsolEnable"))
     // do a transaction to show that unsol data is not being reported yet
     t.Transaction([](IUpdateHandler& db) { db.Update(Binary(false, 0x01), 0); });
 
-    REQUIRE(t.lower->PopWriteAsHex() == "");
+    REQUIRE(t.lower->PopWriteAsHex().empty());
 
     // Enable unsol class 1
     t.SendToOutstation("C0 14 3C 02 06");

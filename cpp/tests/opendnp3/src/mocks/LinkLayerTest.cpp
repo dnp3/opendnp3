@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -30,8 +30,7 @@ namespace opendnp3
 LinkLayerTest::LinkLayerTest(const LinkConfig& config) : LinkLayerTest(LinkLayerConfig(config, false)) {}
 
 LinkLayerTest::LinkLayerTest(const LinkLayerConfig& config)
-    : log(),
-      exe(std::make_shared<testlib::MockExecutor>()),
+    : exe(std::make_shared<testlib::MockExecutor>()),
       listener(std::make_shared<MockLinkListener>()),
       upper(std::make_shared<MockTransportLayer>()),
       link(log.logger, exe, upper, listener, config),
@@ -75,7 +74,7 @@ uint32_t LinkLayerTest::NumTotalWrites()
     return numTotalWrites;
 }
 
-void LinkLayerTest::BeginTransmit(const openpal::RSlice& buffer, ILinkSession&)
+void LinkLayerTest::BeginTransmit(const openpal::RSlice& buffer, ILinkSession& /*context*/)
 {
     ++numTotalWrites;
     this->writeQueue.push_back(ToHex(buffer));

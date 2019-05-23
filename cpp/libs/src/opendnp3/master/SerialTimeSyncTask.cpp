@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -33,7 +33,7 @@ namespace opendnp3
 
 SerialTimeSyncTask::SerialTimeSyncTask(const std::shared_ptr<TaskContext>& context,
                                        IMasterApplication& app,
-                                       openpal::Logger logger)
+                                       const openpal::Logger& logger)
     : IMasterTask(context, app, TaskBehavior::ReactsToIINOnly(), logger, TaskConfig::Default()), delay(-1)
 {
 }
@@ -91,10 +91,8 @@ IMasterTask::ResponseResult SerialTimeSyncTask::OnResponseDelayMeas(const APDURe
 
                 return ResponseResult::OK_REPEAT;
             }
-            else
-            {
-                return ResponseResult::ERROR_BAD_RESPONSE;
-            }
+
+            return ResponseResult::ERROR_BAD_RESPONSE;
         }
         else
         {

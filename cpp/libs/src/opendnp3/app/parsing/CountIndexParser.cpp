@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -64,10 +64,8 @@ ParseResult CountIndexParser::ParseHeader(openpal::RSlice& buffer,
 
         return ParseCountOfObjects(buffer, record, numparser, count, pLogger, pHandler);
     }
-    else
-    {
-        return res;
-    }
+
+    return res;
 }
 
 ParseResult CountIndexParser::Process(const HeaderRecord& record,
@@ -80,15 +78,13 @@ ParseResult CountIndexParser::Process(const HeaderRecord& record,
         SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for specified objects");
         return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
     }
-    else
+
+    if (pHandler != nullptr)
     {
-        if (pHandler)
-        {
-            handler(record, count, numparser, buffer, *pHandler);
-        }
-        buffer.Advance(requiredSize);
-        return ParseResult::OK;
+        handler(record, count, numparser, buffer, *pHandler);
     }
+    buffer.Advance(requiredSize);
+    return ParseResult::OK;
 }
 
 ParseResult CountIndexParser::ParseCountOfObjects(openpal::RSlice& buffer,
@@ -244,7 +240,7 @@ ParseResult CountIndexParser::ParseIndexPrefixedOctetData(openpal::RSlice& buffe
         return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
     }
 
-    if (pHandler)
+    if (pHandler != nullptr)
     {
         auto read = [&numparser, record](RSlice& buffer, uint32_t pos) -> Indexed<OctetString> {
             auto index = numparser.ReadNum(buffer);

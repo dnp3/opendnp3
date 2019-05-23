@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -27,7 +27,7 @@
 #include "opendnp3/link/CRC.h"
 #include "opendnp3/link/LinkHeader.h"
 
-#include <assert.h>
+#include <cassert>
 
 using namespace openpal;
 
@@ -85,10 +85,8 @@ uint32_t LinkFrame::CalcUserDataSize(uint8_t dataLength)
         uint32_t size = (dataLength / LPDU_DATA_BLOCK_SIZE) * LPDU_DATA_PLUS_CRC_SIZE; // complete blocks
         return (mod16 > 0) ? (size + mod16 + LPDU_CRC_SIZE) : size;                    // possible partial block
     }
-    else
-    {
-        return 0;
-    }
+
+    return 0;
 }
 
 ////////////////////////////////////////////////

@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -79,14 +79,14 @@ bool MockFrameSink::OnFrame(const LinkHeaderFields& header, const openpal::RSlic
     return true;
 }
 
-void MockFrameSink::AddAction(std::function<void()> fun)
+void MockFrameSink::AddAction(const std::function<void()>& fun)
 {
     m_actions.push_back(fun);
 }
 
 void MockFrameSink::ExecuteAction()
 {
-    if (m_actions.size() > 0)
+    if (!m_actions.empty())
     {
         auto f = m_actions.front();
         m_actions.pop_front();

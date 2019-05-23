@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -60,10 +60,10 @@ template<class T> bool TestReadWriteFloat(T value)
     return true;
 }
 
-template<class T> bool TestFloatParsing(std::string hex, typename T::Type value)
+template<class T> bool TestFloatParsing(const std::string& hex, typename T::Type value)
 {
     HexSequence hs(hex);
-    const uint32_t TYPE_SIZE = static_cast<uint32_t>(sizeof(typename T::Type));
+    const auto TYPE_SIZE = static_cast<uint32_t>(sizeof(typename T::Type));
     REQUIRE((hs.Size() == TYPE_SIZE));
 
     Buffer buffer(2 * TYPE_SIZE);

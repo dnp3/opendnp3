@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -60,7 +60,7 @@ void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Index
     return PrintAll(info, values);
 }
 
-void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values)
+void PrintingSOEHandler::Process(const HeaderInfo& /*info*/, const ICollection<Indexed<OctetString>>& values)
 {
     auto print = [](const Indexed<OctetString>& pair) {
         std::cout << "OctetString "
@@ -70,7 +70,7 @@ void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Index
     values.ForeachItem(print);
 }
 
-void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<TimeAndInterval>>& values)
+void PrintingSOEHandler::Process(const HeaderInfo& /*info*/, const ICollection<Indexed<TimeAndInterval>>& values)
 {
     auto print = [](const Indexed<TimeAndInterval>& pair) {
         std::cout << "TimeAndInterval: "
@@ -81,7 +81,7 @@ void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Index
     values.ForeachItem(print);
 }
 
-void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values)
+void PrintingSOEHandler::Process(const HeaderInfo& /*info*/, const ICollection<Indexed<BinaryCommandEvent>>& values)
 {
     auto print = [](const Indexed<BinaryCommandEvent>& pair) {
         std::cout << "BinaryCommandEvent: "
@@ -92,7 +92,7 @@ void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Index
     values.ForeachItem(print);
 }
 
-void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values)
+void PrintingSOEHandler::Process(const HeaderInfo& /*info*/, const ICollection<Indexed<AnalogCommandEvent>>& values)
 {
     auto print = [](const Indexed<AnalogCommandEvent>& pair) {
         std::cout << "AnalogCommandEvent: "
@@ -103,7 +103,7 @@ void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Index
     values.ForeachItem(print);
 }
 
-void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values)
+void PrintingSOEHandler::Process(const HeaderInfo& /*info*/, const ICollection<Indexed<SecurityStat>>& values)
 {
     auto print = [](const Indexed<SecurityStat>& pair) {
         std::cout << "SecurityStat: "
@@ -114,7 +114,7 @@ void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Index
     values.ForeachItem(print);
 }
 
-void PrintingSOEHandler::Process(const opendnp3::HeaderInfo& info,
+void PrintingSOEHandler::Process(const opendnp3::HeaderInfo& /*info*/,
                                  const opendnp3::ICollection<opendnp3::DNPTime>& values)
 {
     auto print = [](const DNPTime& value) { std::cout << "DNPTime: " << value.value << std::endl; };

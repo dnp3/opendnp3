@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -26,13 +26,15 @@
 
 #include "opendnp3/LogLevels.h"
 
+#include <utility>
+
 using namespace opendnp3;
 using namespace asiopal;
 
 namespace asiodnp3
 {
 
-void TLSServerIOHandler::Server::AcceptStream(uint64_t sessionid,
+void TLSServerIOHandler::Server::AcceptStream(uint64_t /*sessionid*/,
                                               const std::shared_ptr<asiopal::Executor>& executor,
                                               std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream)
 {
@@ -42,14 +44,14 @@ void TLSServerIOHandler::Server::AcceptStream(uint64_t sessionid,
 TLSServerIOHandler::TLSServerIOHandler(const openpal::Logger& logger,
                                        ServerAcceptMode mode,
                                        const std::shared_ptr<IChannelListener>& listener,
-                                       const std::shared_ptr<asiopal::Executor>& executor,
-                                       const asiopal::IPEndpoint& endpoint,
-                                       const asiopal::TLSConfig& config,
-                                       std::error_code& ec)
+                                       std::shared_ptr<asiopal::Executor> executor,
+                                       asiopal::IPEndpoint endpoint,
+                                       asiopal::TLSConfig config,
+                                       std::error_code& /*ec*/)
     : IOHandler(logger, mode == ServerAcceptMode::CloseExisting, listener),
-      executor(executor),
-      endpoint(endpoint),
-      config(config)
+      executor(std::move(executor)),
+      endpoint(std::move(endpoint)),
+      config(std::move(config))
 {
 }
 

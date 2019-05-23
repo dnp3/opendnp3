@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -32,7 +32,7 @@ class MockLowerLayer : public ILowerLayer, public HasUpperLayer
 {
 public:
     void SendUp(const openpal::RSlice& data, const Addresses& addresses = Addresses());
-    void SendUp(const std::string& hex, const Addresses& addresses = Addresses());
+    void SendUp(const std::string& arHexData, const Addresses& addresses = Addresses());
 
     void SendComplete();
     void ThisLayerUp();
@@ -43,7 +43,7 @@ public:
     size_t NumWrites() const;
     std::string PopWriteAsHex();
 
-    virtual bool BeginTransmit(const Message& buffer) override final;
+    virtual bool BeginTransmit(const Message& message) override final;
 
 private:
     std::queue<Message> sendQueue;

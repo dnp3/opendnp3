@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -61,7 +61,7 @@ void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info,
 void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values)
 {
     auto create = [](JNIEnv* env, const Binary& value) -> LocalRef<jobject> {
-        return jni::JCache::BinaryInput.init3(env, value.value, value.flags.value, value.time);
+        return jni::JCache::BinaryInput.init3(env, static_cast<jboolean>(value.value), value.flags.value, value.time);
     };
 
     auto call = [](JNIEnv* env, jobject proxy, jobject hinfo, jobject list) {
@@ -123,7 +123,8 @@ void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexe
 void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<BinaryOutputStatus>>& values)
 {
     auto create = [](JNIEnv* env, const BinaryOutputStatus& value) -> LocalRef<jobject> {
-        return jni::JCache::BinaryOutputStatus.init3(env, value.value, value.flags.value, value.time);
+        return jni::JCache::BinaryOutputStatus.init3(env, static_cast<jboolean>(value.value), value.flags.value,
+                                                     value.time);
     };
     auto call = [](JNIEnv* env, jobject proxy, jobject hinfo, jobject list) {
         jni::JCache::SOEHandler.processBOS(env, proxy, hinfo, list);
@@ -168,8 +169,8 @@ LocalRef<jobject> SOEHandlerAdapter::Convert(JNIEnv* env, const opendnp3::Header
     auto gv = jni::JCache::GroupVariation.fromType(env, GroupVariationToType(info.gv));
     auto qc = jni::JCache::QualifierCode.fromType(env, QualifierCodeToType(info.qualifier));
     auto tsmode = jni::JCache::TimestampMode.fromType(env, static_cast<jint>(info.tsmode));
-    jboolean isEvent = info.isEventVariation;
-    jboolean flagsValid = info.flagsValid;
+    jboolean isEvent = static_cast<jboolean>(info.isEventVariation);
+    jboolean flagsValid = static_cast<jboolean>(info.flagsValid);
     jint headerIndex = info.headerIndex;
 
     return jni::JCache::HeaderInfo.init6(env, gv, qc, tsmode, isEvent, flagsValid, headerIndex);

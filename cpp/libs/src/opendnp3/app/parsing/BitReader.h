@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -31,7 +31,7 @@ uint32_t NumBytesInBits(uint32_t numBits);
 bool GetBit(const openpal::RSlice& buffer, uint32_t position);
 
 uint32_t NumBytesInDoubleBits(uint32_t numBits);
-DoubleBit GetDoubleBit(const openpal::RSlice& buffer, uint32_t position);
+DoubleBit GetDoubleBit(const openpal::RSlice& buffer, uint32_t index);
 
 } // namespace opendnp3
 

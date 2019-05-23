@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -19,20 +19,24 @@
  */
 #include "UserPollTask.h"
 
+#include <utility>
+
 using namespace openpal;
 
 namespace opendnp3
 {
 
 UserPollTask::UserPollTask(const std::shared_ptr<TaskContext>& context,
-                           const HeaderBuilderT& builder,
+                           HeaderBuilderT builder,
                            const TaskBehavior& behavior,
                            bool recurring,
                            IMasterApplication& app,
                            ISOEHandler& soeHandler,
-                           openpal::Logger logger,
+                           const openpal::Logger& logger,
                            TaskConfig config)
-    : PollTaskBase(context, app, soeHandler, behavior, logger, config), builder(builder), recurring(recurring)
+    : PollTaskBase(context, app, soeHandler, behavior, logger, config),
+      builder(std::move(builder)),
+      recurring(recurring)
 {
 }
 
