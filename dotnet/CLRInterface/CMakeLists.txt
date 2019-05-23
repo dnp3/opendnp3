@@ -1,6 +1,9 @@
 enable_language(CSharp)
 
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/AssemblyInfo.cs "[assembly: System.Reflection.AssemblyVersion(\"${opendnp3_VERSION}\")]")
+
 add_library(DNP3CLRInterface SHARED
+${CMAKE_CURRENT_BINARY_DIR}/AssemblyInfo.cs
 src/ApplicationIIN.cs
 src/BaseMeasurementTypes.cs
 src/ChangeSet.cs
