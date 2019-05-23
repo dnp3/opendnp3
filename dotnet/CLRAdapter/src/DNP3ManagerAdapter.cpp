@@ -86,7 +86,9 @@ namespace Automatak
                     endpoints.push_back(Conversions::Convert(remote));
                 }
 
-                auto listenAdapter = std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener));
+                auto listenAdapter = listener
+                    ? std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener))
+                    : nullptr;
 
                 auto channel = this->manager->AddTCPClient(stdName.c_str(), filters, Convert(retry), endpoints, "", listenAdapter);
 
@@ -98,7 +100,9 @@ namespace Automatak
 				std::string stdName = Conversions::ConvertString(id);
 				std::string stdEndpoint = Conversions::ConvertString(endpoint);
 
-				auto listenAdapter = std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener));
+				auto listenAdapter = listener
+                    ? std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener))
+                    : nullptr;
 
 				auto channel = this->manager->AddTCPServer(stdName.c_str(), filters, (opendnp3::ServerAcceptMode) mode, stdEndpoint, port, listenAdapter);
 
@@ -122,7 +126,9 @@ namespace Automatak
                     endpoints.push_back(Conversions::Convert(remote));
                 }
 
-                auto listenAdapter = std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener));
+                auto listenAdapter = listener
+                    ? std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener))
+                    : nullptr;
 
                 std::error_code ec;
                 auto channel = this->manager->AddTLSClient(stdName.c_str(), filters, Convert(retry), endpoints, "", Conversions::Convert(config), listenAdapter, ec);
@@ -141,7 +147,9 @@ namespace Automatak
 				std::string stdName = Conversions::ConvertString(id);
 				std::string stdEndpoint = Conversions::ConvertString(endpoint);
 
-				auto listenAdapter = std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener));
+				auto listenAdapter = listener
+                    ? std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener))
+                    : nullptr;
 				
 				std::error_code ec;
 				auto channel = this->manager->AddTLSServer(stdName.c_str(), filters, (opendnp3::ServerAcceptMode) mode, stdEndpoint, port, Conversions::Convert(config), listenAdapter, ec);
@@ -160,7 +168,9 @@ namespace Automatak
 				std::string stdName = Conversions::ConvertString(id);
 				auto s = Conversions::ConvertSerialSettings(settings);				
 
-				auto listenAdapter = std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener));
+				auto listenAdapter = listener
+                    ? std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener))
+                    : nullptr;
 				
 				auto channel = this->manager->AddSerial(stdName.c_str(), filters, Convert(retry), s, listenAdapter);
 				
