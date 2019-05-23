@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -25,7 +25,7 @@
 
 #include "opendnp3/LogLevels.h"
 
-#include <assert.h>
+#include <cassert>
 
 using namespace std;
 using namespace openpal;
@@ -62,7 +62,7 @@ bool TransportLayer::BeginTransmit(const Message& message)
         return false;
     }
 
-    if (!lower)
+    if (lower == nullptr)
     {
         SIMPLE_LOG_BLOCK(logger, flags::ERR, "Can't send without an attached link layer");
         return false;
@@ -84,17 +84,15 @@ bool TransportLayer::OnReceive(const Message& message)
     if (isOnline)
     {
         const auto asdu = receiver.ProcessReceive(message);
-        if (asdu.payload.IsNotEmpty() && upper)
+        if (asdu.payload.IsNotEmpty() && (upper != nullptr))
         {
             upper->OnReceive(asdu);
         }
         return true;
     }
-    else
-    {
-        SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer offline");
-        return false;
-    }
+
+    SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer offline");
+    return false;
 }
 
 bool TransportLayer::OnTxReady()
@@ -113,7 +111,7 @@ bool TransportLayer::OnTxReady()
 
     isSending = false;
 
-    if (upper)
+    if (upper != nullptr)
     {
         upper->OnTxReady();
     }
@@ -147,7 +145,7 @@ bool TransportLayer::OnLowerLayerUp()
     }
 
     isOnline = true;
-    if (upper)
+    if (upper != nullptr)
     {
         upper->OnLowerLayerUp();
     }
@@ -166,7 +164,7 @@ bool TransportLayer::OnLowerLayerDown()
     isSending = false;
     receiver.Reset();
 
-    if (upper)
+    if (upper != nullptr)
     {
         upper->OnLowerLayerDown();
     }

@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -30,7 +30,7 @@ namespace opendnp3
 AssignClassTask::AssignClassTask(const std::shared_ptr<TaskContext>& context,
                                  IMasterApplication& application,
                                  const TaskBehavior& behavior,
-                                 openpal::Logger logger)
+                                 const openpal::Logger& logger)
     : IMasterTask(context, application, behavior, logger, TaskConfig::Default())
 {
 }

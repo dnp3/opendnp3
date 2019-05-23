@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -46,7 +46,7 @@ void MasterSchedulerBackend::Add(const std::shared_ptr<IMasterTask>& task, IMast
     if (this->isShutdown)
         return;
 
-    this->tasks.push_back(Record(task, runner));
+    this->tasks.emplace_back(task, runner);
     this->PostCheckForTaskRun();
 }
 
@@ -67,10 +67,8 @@ void MasterSchedulerBackend::SetRunnerOffline(const IMasterTaskRunner& runner)
 
             return true;
         }
-        else
-        {
-            return false;
-        }
+
+        return false;
     };
 
     if (this->current && checkForOwnership(this->current))
@@ -169,14 +167,12 @@ bool MasterSchedulerBackend::CheckForTaskRun()
 
         return true;
     }
-    else
-    {
-        auto callback = [this, self = shared_from_this()]() { this->CheckForTaskRun(); };
 
-        this->taskTimer.Restart(best_task->task->ExpirationTime(), callback);
+    auto callback = [this, self = shared_from_this()]() { this->CheckForTaskRun(); };
 
-        return false;
-    }
+    this->taskTimer.Restart(best_task->task->ExpirationTime(), callback);
+
+    return false;
 }
 
 void MasterSchedulerBackend::RestartTimeoutTimer()
@@ -266,7 +262,7 @@ MasterSchedulerBackend::Comparison MasterSchedulerBackend::CompareTime(const ope
     {
         return Comparison::LEFT;
     }
-    else if (rightTime < leftTime)
+    if (rightTime < leftTime)
     {
         return Comparison::RIGHT;
     }
@@ -282,7 +278,7 @@ MasterSchedulerBackend::Comparison MasterSchedulerBackend::CompareEnabledStatus(
     {
         return right.task->ExpirationTime().IsMax() ? Comparison::SAME : Comparison::RIGHT;
     }
-    else if (right.task->ExpirationTime().IsMax()) // left is enabled, right is disabled
+    if (right.task->ExpirationTime().IsMax()) // left is enabled, right is disabled
     {
         return Comparison::LEFT;
     }
@@ -299,10 +295,8 @@ MasterSchedulerBackend::Comparison MasterSchedulerBackend::CompareBlockedStatus(
     {
         return right.task->IsBlocked() ? Comparison::SAME : Comparison::RIGHT;
     }
-    else
-    {
-        return right.task->IsBlocked() ? Comparison::LEFT : Comparison::SAME;
-    }
+
+    return right.task->IsBlocked() ? Comparison::LEFT : Comparison::SAME;
 }
 
 MasterSchedulerBackend::Comparison MasterSchedulerBackend::ComparePriority(const Record& left, const Record& right)
@@ -311,7 +305,7 @@ MasterSchedulerBackend::Comparison MasterSchedulerBackend::ComparePriority(const
     {
         return Comparison::LEFT;
     }
-    else if (right.task->Priority() < left.task->Priority())
+    if (right.task->Priority() < left.task->Priority())
     {
         return Comparison::RIGHT;
     }

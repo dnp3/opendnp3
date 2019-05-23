@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -22,7 +22,7 @@
 #include <testlib/BufferHelpers.h>
 #include <testlib/HexConversions.h>
 
-#include <assert.h>
+#include <cassert>
 
 using namespace openpal;
 using namespace testlib;
@@ -46,12 +46,10 @@ std::string MockLowerLayer::PopWriteAsHex()
     {
         return "";
     }
-    else
-    {
-        auto ret = sendQueue.front();
-        sendQueue.pop();
-        return ToHex(ret.payload);
-    }
+
+    auto ret = sendQueue.front();
+    sendQueue.pop();
+    return ToHex(ret.payload);
 }
 
 bool MockLowerLayer::BeginTransmit(const Message& message)
@@ -62,7 +60,7 @@ bool MockLowerLayer::BeginTransmit(const Message& message)
 
 void MockLowerLayer::SendUp(const openpal::RSlice& data, const Addresses& addresses)
 {
-    if (pUpperLayer)
+    if (pUpperLayer != nullptr)
     {
         pUpperLayer->OnReceive(Message(addresses, data));
     }
@@ -76,7 +74,7 @@ void MockLowerLayer::SendUp(const std::string& arHexData, const Addresses& addre
 
 void MockLowerLayer::SendComplete()
 {
-    if (pUpperLayer)
+    if (pUpperLayer != nullptr)
     {
         pUpperLayer->OnTxReady();
     }
@@ -84,14 +82,14 @@ void MockLowerLayer::SendComplete()
 
 void MockLowerLayer::ThisLayerUp()
 {
-    if (pUpperLayer)
+    if (pUpperLayer != nullptr)
     {
         pUpperLayer->OnLowerLayerUp();
     }
 }
 void MockLowerLayer::ThisLayerDown()
 {
-    if (pUpperLayer)
+    if (pUpperLayer != nullptr)
     {
         pUpperLayer->OnLowerLayerDown();
     }

@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -36,6 +36,8 @@
 #include "opendnp3/outstation/ReadHandler.h"
 #include "opendnp3/outstation/WriteHandler.h"
 
+#include <utility>
+
 using namespace openpal;
 
 namespace opendnp3
@@ -46,17 +48,17 @@ OContext::OContext(const Addresses& addresses,
                    const DatabaseSizes& dbSizes,
                    const openpal::Logger& logger,
                    const std::shared_ptr<openpal::IExecutor>& executor,
-                   const std::shared_ptr<ILowerLayer>& lower,
-                   const std::shared_ptr<ICommandHandler>& commandHandler,
-                   const std::shared_ptr<IOutstationApplication>& application)
+                   std::shared_ptr<ILowerLayer> lower,
+                   std::shared_ptr<ICommandHandler> commandHandler,
+                   std::shared_ptr<IOutstationApplication> application)
     :
 
       addresses(addresses),
       logger(logger),
       executor(executor),
-      lower(lower),
-      commandHandler(commandHandler),
-      application(application),
+      lower(std::move(lower)),
+      commandHandler(std::move(commandHandler)),
+      application(std::move(application)),
       eventBuffer(config.eventBufferConfig),
       database(dbSizes, eventBuffer, config.params.indexMode, config.params.typesAllowedInClass0),
       rspContext(database.GetResponseLoader(), eventBuffer),
@@ -148,10 +150,8 @@ OutstationState& OContext::OnReceiveSolRequest(const ParsedRequest& request)
                 {
                     return this->state->OnRepeatReadRequest(*this, request);
                 }
-                else
-                {
-                    return this->state->OnRepeatNonReadRequest(*this, request);
-                }
+
+                return this->state->OnRepeatNonReadRequest(*this, request);
             }
             else // new operation with same SEQ
             {
@@ -177,10 +177,8 @@ OutstationState& OContext::ProcessNewRequest(const ParsedRequest& request)
     {
         return this->state->OnNewReadRequest(*this, request);
     }
-    else
-    {
-        return this->state->OnNewNonReadRequest(*this, request);
-    }
+
+    return this->state->OnNewNonReadRequest(*this, request);
 }
 
 bool OContext::ProcessObjects(const ParsedRequest& request)
@@ -191,25 +189,19 @@ bool OContext::ProcessObjects(const ParsedRequest& request)
         // because it doesn't require a response of any kind
         return this->ProcessRequestNoAck(request);
     }
-    else
+
+    if (this->isTransmitting)
     {
-        if (this->isTransmitting)
-        {
-            this->deferred.Set(request);
-            return true;
-        }
-        else
-        {
-            if (request.header.function == FunctionCode::CONFIRM)
-            {
-                return this->ProcessConfirm(request);
-            }
-            else
-            {
-                return this->ProcessRequest(request);
-            }
-        }
+        this->deferred.Set(request);
+        return true;
     }
+
+    if (request.header.function == FunctionCode::CONFIRM)
+    {
+        return this->ProcessConfirm(request);
+    }
+
+    return this->ProcessRequest(request);
 }
 
 bool OContext::ProcessRequest(const ParsedRequest& request)
@@ -220,11 +212,9 @@ bool OContext::ProcessRequest(const ParsedRequest& request)
                          FunctionCodeToString(request.header.function));
         return false;
     }
-    else
-    {
-        this->state = &this->OnReceiveSolRequest(request);
-        return true;
-    }
+
+    this->state = &this->OnReceiveSolRequest(request);
+    return true;
 }
 
 bool OContext::ProcessConfirm(const ParsedRequest& request)
@@ -270,25 +260,21 @@ bool OContext::ProcessDeferredRequest(const ParsedRequest& request)
         this->ProcessConfirm(request);
         return true;
     }
-    else
+
+    if (request.header.function == FunctionCode::READ)
     {
-        if (request.header.function == FunctionCode::READ)
-        {
-            if (this->state->IsIdle())
-            {
-                this->ProcessRequest(request);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else
+        if (this->state->IsIdle())
         {
             this->ProcessRequest(request);
             return true;
         }
+
+        return false;
+    }
+    else
+    {
+        this->ProcessRequest(request);
+        return true;
     }
 }
 
@@ -370,10 +356,8 @@ OutstationState& OContext::RespondToReadRequest(const ParsedRequest& request)
         this->RestartConfirmTimer();
         return StateSolicitedConfirmWait::Inst();
     }
-    else
-    {
-        return StateIdle::Inst();
-    }
+
+    return StateIdle::Inst();
 }
 
 OutstationState& OContext::ContinueMultiFragResponse(const Addresses& addresses, const AppSeqNum& seq)
@@ -393,10 +377,8 @@ OutstationState& OContext::ContinueMultiFragResponse(const Addresses& addresses,
         this->RestartConfirmTimer();
         return StateSolicitedConfirmWait::Inst();
     }
-    else
-    {
-        return StateIdle::Inst();
-    }
+
+    return StateIdle::Inst();
 }
 
 bool OContext::CanTransmit() const
@@ -547,11 +529,9 @@ Pair<IINField, AppControlField> OContext::HandleRead(const openpal::RSlice& obje
         auto control = this->rspContext.LoadResponse(writer);
         return Pair<IINField, AppControlField>(handler.Errors(), control);
     }
-    else
-    {
-        this->rspContext.Reset();
-        return Pair<IINField, AppControlField>(IINFromParseResult(result), AppControlField(true, true, false, false));
-    }
+
+    this->rspContext.Reset();
+    return Pair<IINField, AppControlField>(IINFromParseResult(result), AppControlField(true, true, false, false));
 }
 
 IINField OContext::HandleWrite(const openpal::RSlice& objects)
@@ -565,19 +545,17 @@ IINField OContext::HandleWrite(const openpal::RSlice& objects)
 IINField OContext::HandleDirectOperate(const openpal::RSlice& objects, OperateType opType, HeaderWriter* pWriter)
 {
     // since we're echoing, make sure there's enough size before beginning
-    if (pWriter && (objects.Size() > pWriter->Remaining()))
+    if ((pWriter != nullptr) && (objects.Size() > pWriter->Remaining()))
     {
         FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Igonring command request due to oversized payload size of %u",
                          objects.Size());
         return IINField(IINBit::PARAM_ERROR);
     }
-    else
-    {
-        CommandActionAdapter adapter(this->commandHandler.get(), false, opType);
-        CommandResponseHandler handler(this->params.maxControlsPerRequest, &adapter, pWriter);
-        auto result = APDUParser::Parse(objects, handler, &this->logger);
-        return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
-    }
+
+    CommandActionAdapter adapter(this->commandHandler.get(), false, opType);
+    CommandResponseHandler handler(this->params.maxControlsPerRequest, &adapter, pWriter);
+    auto result = APDUParser::Parse(objects, handler, &this->logger);
+    return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
 }
 
 IINField OContext::HandleSelect(const openpal::RSlice& objects, HeaderWriter& writer)
@@ -589,26 +567,22 @@ IINField OContext::HandleSelect(const openpal::RSlice& objects, HeaderWriter& wr
                          objects.Size());
         return IINField(IINBit::PARAM_ERROR);
     }
-    else
-    {
-        // the 'OperateType' is just ignored  since it's a select
-        CommandActionAdapter adapter(this->commandHandler.get(), true, OperateType::DirectOperate);
-        CommandResponseHandler handler(this->params.maxControlsPerRequest, &adapter, &writer);
-        auto result = APDUParser::Parse(objects, handler, &this->logger);
-        if (result == ParseResult::OK)
-        {
-            if (handler.AllCommandsSuccessful())
-            {
-                this->control.Select(this->sol.seq.num, this->executor->GetTime(), objects);
-            }
 
-            return handler.Errors();
-        }
-        else
+    // the 'OperateType' is just ignored  since it's a select
+    CommandActionAdapter adapter(this->commandHandler.get(), true, OperateType::DirectOperate);
+    CommandResponseHandler handler(this->params.maxControlsPerRequest, &adapter, &writer);
+    auto result = APDUParser::Parse(objects, handler, &this->logger);
+    if (result == ParseResult::OK)
+    {
+        if (handler.AllCommandsSuccessful())
         {
-            return IINFromParseResult(result);
+            this->control.Select(this->sol.seq.num, this->executor->GetTime(), objects);
         }
+
+        return handler.Errors();
     }
+
+    return IINFromParseResult(result);
 }
 
 IINField OContext::HandleOperate(const openpal::RSlice& objects, HeaderWriter& writer)
@@ -620,23 +594,19 @@ IINField OContext::HandleOperate(const openpal::RSlice& objects, HeaderWriter& w
                          objects.Size());
         return IINField(IINBit::PARAM_ERROR);
     }
-    else
-    {
-        auto now = this->executor->GetTime();
-        auto result = this->control.ValidateSelection(this->sol.seq.num, now, this->params.selectTimeout, objects);
 
-        if (result == CommandStatus::SUCCESS)
-        {
-            CommandActionAdapter adapter(this->commandHandler.get(), false, OperateType::SelectBeforeOperate);
-            CommandResponseHandler handler(this->params.maxControlsPerRequest, &adapter, &writer);
-            auto result = APDUParser::Parse(objects, handler, &this->logger);
-            return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
-        }
-        else
-        {
-            return this->HandleCommandWithConstant(objects, writer, result);
-        }
+    auto now = this->executor->GetTime();
+    auto result = this->control.ValidateSelection(this->sol.seq.num, now, this->params.selectTimeout, objects);
+
+    if (result == CommandStatus::SUCCESS)
+    {
+        CommandActionAdapter adapter(this->commandHandler.get(), false, OperateType::SelectBeforeOperate);
+        CommandResponseHandler handler(this->params.maxControlsPerRequest, &adapter, &writer);
+        auto result = APDUParser::Parse(objects, handler, &this->logger);
+        return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
     }
+
+    return this->HandleCommandWithConstant(objects, writer, result);
 }
 
 IINField OContext::HandleDelayMeasure(const openpal::RSlice& objects, HeaderWriter& writer)
@@ -648,11 +618,9 @@ IINField OContext::HandleDelayMeasure(const openpal::RSlice& objects, HeaderWrit
         writer.WriteSingleValue<UInt8, Group52Var2>(QualifierCode::UINT8_CNT, value);
         return IINField::Empty();
     }
-    else
-    {
-        // there shouldn't be any trailing headers in delay measure request, no need to even parse
-        return IINField(IINBit::PARAM_ERROR);
-    }
+
+    // there shouldn't be any trailing headers in delay measure request, no need to even parse
+    return IINField(IINBit::PARAM_ERROR);
 }
 
 IINField OContext::HandleRecordCurrentTime()
@@ -675,7 +643,7 @@ IINField OContext::HandleRestart(const openpal::RSlice& objects, bool isWarmRest
     case (RestartMode::SUPPORTED_DELAY_COARSE):
     {
         auto delay = isWarmRestart ? this->application->WarmRestart() : this->application->ColdRestart();
-        if (pWriter)
+        if (pWriter != nullptr)
         {
             Group52Var1 coarse;
             coarse.time = delay;
@@ -686,7 +654,7 @@ IINField OContext::HandleRestart(const openpal::RSlice& objects, bool isWarmRest
     default:
     {
         auto delay = isWarmRestart ? this->application->WarmRestart() : this->application->ColdRestart();
-        if (pWriter)
+        if (pWriter != nullptr)
         {
             Group52Var2 fine;
             fine.time = delay;
@@ -705,13 +673,11 @@ IINField OContext::HandleAssignClass(const openpal::RSlice& objects)
         auto result = APDUParser::Parse(objects, handler, &this->logger, ParserSettings::NoContents());
         return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
     }
-    else
-    {
-        return IINField(IINBit::FUNC_NOT_SUPPORTED);
-    }
+
+    return IINField(IINBit::FUNC_NOT_SUPPORTED);
 }
 
-IINField OContext::HandleDisableUnsolicited(const openpal::RSlice& objects, HeaderWriter& writer)
+IINField OContext::HandleDisableUnsolicited(const openpal::RSlice& objects, HeaderWriter& /*writer*/)
 {
     ClassBasedRequestHandler handler;
     auto result = APDUParser::Parse(objects, handler, &this->logger);
@@ -720,13 +686,11 @@ IINField OContext::HandleDisableUnsolicited(const openpal::RSlice& objects, Head
         this->params.unsolClassMask.Clear(handler.GetClassField());
         return handler.Errors();
     }
-    else
-    {
-        return IINFromParseResult(result);
-    }
+
+    return IINFromParseResult(result);
 }
 
-IINField OContext::HandleEnableUnsolicited(const openpal::RSlice& objects, HeaderWriter& writer)
+IINField OContext::HandleEnableUnsolicited(const openpal::RSlice& objects, HeaderWriter& /*writer*/)
 {
     ClassBasedRequestHandler handler;
     auto result = APDUParser::Parse(objects, handler, &this->logger);
@@ -735,10 +699,8 @@ IINField OContext::HandleEnableUnsolicited(const openpal::RSlice& objects, Heade
         this->params.unsolClassMask.Set(handler.GetClassField());
         return handler.Errors();
     }
-    else
-    {
-        return IINFromParseResult(result);
-    }
+
+    return IINFromParseResult(result);
 }
 
 IINField OContext::HandleCommandWithConstant(const openpal::RSlice& objects, HeaderWriter& writer, CommandStatus status)

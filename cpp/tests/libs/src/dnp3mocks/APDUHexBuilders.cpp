@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -183,7 +183,7 @@ std::string AuthErrorResponse(opendnp3::IINField iin,
                               uint16_t assocId,
                               opendnp3::AuthErrorCode code,
                               opendnp3::DNPTime timestamp,
-                              std::string hexErrorText)
+                              const std::string& hexErrorText)
 {
     Buffer buffer(DEFAULT_MAX_APDU_SIZE);
     APDUResponse apdu(buffer.GetWSlice());
@@ -207,7 +207,7 @@ std::string ChallengeResponse(opendnp3::IINField iin,
                               uint16_t user,
                               HMACType hmacType,
                               ChallengeReason reason,
-                              std::string challengeDataHex)
+                              const std::string& challengeDataHex)
 {
     Buffer buffer(DEFAULT_MAX_APDU_SIZE);
     APDUResponse apdu(buffer.GetWSlice());
@@ -225,7 +225,7 @@ std::string ChallengeResponse(opendnp3::IINField iin,
     return ToHex(apdu.ToRSlice());
 }
 
-std::string ChallengeReply(uint8_t appSeq, uint32_t challengeSeqNum, uint16_t userNum, std::string hmacHex)
+std::string ChallengeReply(uint8_t appSeq, uint32_t challengeSeqNum, uint16_t userNum, const std::string& hmacHex)
 {
     Buffer buffer(DEFAULT_MAX_APDU_SIZE);
     APDURequest apdu(buffer.GetWSlice());
@@ -391,7 +391,7 @@ std::string FinishUpdateKeyChangeResponse(uint8_t seq, const std::string& hmac)
     return ToHex(apdu.ToRSlice());
 }
 
-std::string KeyWrapData(uint16_t keyLengthBytes, uint8_t keyRepeatValue, std::string keyStatusMsg)
+std::string KeyWrapData(uint16_t keyLengthBytes, uint8_t keyRepeatValue, const std::string& keyStatusMsg)
 {
     Buffer key(keyLengthBytes);
     key.GetWSlice().SetAllTo(keyRepeatValue);

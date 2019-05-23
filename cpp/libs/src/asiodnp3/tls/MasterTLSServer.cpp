@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -28,6 +28,8 @@
 
 #include "asiodnp3/LinkSession.h"
 
+#include <utility>
+
 using namespace openpal;
 using namespace asiopal;
 using namespace opendnp3;
@@ -39,10 +41,10 @@ MasterTLSServer::MasterTLSServer(const openpal::Logger& logger,
                                  const std::shared_ptr<asiopal::Executor>& executor,
                                  const asiopal::IPEndpoint& endpoint,
                                  const asiopal::TLSConfig& config,
-                                 const std::shared_ptr<IListenCallbacks>& callbacks,
-                                 const std::shared_ptr<asiopal::ResourceManager>& manager,
+                                 std::shared_ptr<IListenCallbacks> callbacks,
+                                 std::shared_ptr<asiopal::ResourceManager> manager,
                                  std::error_code& ec)
-    : TLSServer(logger, executor, endpoint, config, ec), callbacks(callbacks), manager(manager)
+    : TLSServer(logger, executor, endpoint, config, ec), callbacks(std::move(callbacks)), manager(std::move(manager))
 {
 }
 
@@ -56,11 +58,9 @@ bool MasterTLSServer::AcceptConnection(uint64_t sessionid, const asio::ip::tcp::
         FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());
         return true;
     }
-    else
-    {
-        FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Rejected connection from: %s", oss.str().c_str());
-        return false;
-    }
+
+    FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Rejected connection from: %s", oss.str().c_str());
+    return false;
 }
 
 bool MasterTLSServer::VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx)
@@ -74,7 +74,7 @@ bool MasterTLSServer::VerifyCallback(uint64_t sessionid, bool preverified, asio:
     X509_NAME_oneline(X509_get_subject_name(cert), subjectName, MAX_SUBJECT_NAME);
     unsigned char sha1_hash[SHA_DIGEST_LENGTH];
     unsigned int sha1_hash_len;
-    if (!X509_digest(cert, EVP_sha1(), sha1_hash, &sha1_hash_len))
+    if (X509_digest(cert, EVP_sha1(), sha1_hash, &sha1_hash_len) == 0)
     {
         return false;
     }

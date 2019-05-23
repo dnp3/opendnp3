@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -35,7 +35,7 @@ WriteHandler::WriteHandler(IOutstationApplication& application,
 {
 }
 
-IINField WriteHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values)
+IINField WriteHandler::ProcessHeader(const RangeHeader& /*header*/, const ICollection<Indexed<IINValue>>& values)
 {
     Indexed<IINValue> pair;
 
@@ -64,7 +64,7 @@ IINField WriteHandler::ProcessHeader(const RangeHeader& header, const ICollectio
     return IINField();
 }
 
-IINField WriteHandler::ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& values)
+IINField WriteHandler::ProcessHeader(const CountHeader& /*header*/, const ICollection<Group50Var1>& values)
 {
     if (this->wroteTime)
         return IINBit::PARAM_ERROR;
@@ -80,7 +80,7 @@ IINField WriteHandler::ProcessHeader(const CountHeader& header, const ICollectio
     return application->WriteAbsoluteTime(UTCTimestamp(value.time)) ? IINField::Empty() : IINBit::PARAM_ERROR;
 }
 
-IINField WriteHandler::ProcessHeader(const CountHeader& header, const ICollection<Group50Var3>& values)
+IINField WriteHandler::ProcessHeader(const CountHeader& /*header*/, const ICollection<Group50Var3>& values)
 {
     if (this->wroteTime)
         return IINBit::PARAM_ERROR;
@@ -101,7 +101,8 @@ IINField WriteHandler::ProcessHeader(const CountHeader& header, const ICollectio
     return application->WriteAbsoluteTime(time) ? IINField::Empty() : IINBit::PARAM_ERROR;
 }
 
-IINField WriteHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values)
+IINField WriteHandler::ProcessHeader(const PrefixHeader& /*header*/,
+                                     const ICollection<Indexed<TimeAndInterval>>& values)
 {
     if (!application->SupportsWriteTimeAndInterval())
     {

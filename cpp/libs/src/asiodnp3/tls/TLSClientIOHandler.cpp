@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -24,6 +24,8 @@
 
 #include "opendnp3/LogLevels.h"
 
+#include <utility>
+
 using namespace asiopal;
 
 namespace asiodnp3
@@ -32,16 +34,16 @@ namespace asiodnp3
 TLSClientIOHandler::TLSClientIOHandler(const openpal::Logger& logger,
                                        const std::shared_ptr<IChannelListener>& listener,
                                        const std::shared_ptr<asiopal::Executor>& executor,
-                                       const asiopal::TLSConfig& config,
+                                       asiopal::TLSConfig config,
                                        const asiopal::ChannelRetry& retry,
                                        const asiodnp3::IPEndpointsList& remotes,
-                                       const std::string& adapter)
+                                       std::string adapter)
     : IOHandler(logger, false, listener),
       executor(executor),
-      config(config),
+      config(std::move(config)),
       retry(retry),
       remotes(remotes),
-      adapter(adapter),
+      adapter(std::move(adapter)),
       retrytimer(*executor)
 {
 }

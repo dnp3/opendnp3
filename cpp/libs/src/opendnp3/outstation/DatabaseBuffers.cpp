@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -21,7 +21,7 @@
 
 #include "openpal/logging/LogMacros.h"
 
-#include <assert.h>
+#include <cassert>
 
 using namespace openpal;
 
@@ -63,88 +63,86 @@ IINField DatabaseBuffers::SelectAll(GroupVariation gv)
 
         return IINField::Empty();
     }
-    else
+
+    switch (gv)
     {
-        switch (gv)
-        {
-        case (GroupVariation::Group1Var0):
-            return this->SelectAll<BinarySpec>();
-        case (GroupVariation::Group1Var1):
-            return this->SelectAllUsing<BinarySpec>(StaticBinaryVariation::Group1Var1);
-        case (GroupVariation::Group1Var2):
-            return this->SelectAllUsing<BinarySpec>(StaticBinaryVariation::Group1Var2);
+    case (GroupVariation::Group1Var0):
+        return this->SelectAll<BinarySpec>();
+    case (GroupVariation::Group1Var1):
+        return this->SelectAllUsing<BinarySpec>(StaticBinaryVariation::Group1Var1);
+    case (GroupVariation::Group1Var2):
+        return this->SelectAllUsing<BinarySpec>(StaticBinaryVariation::Group1Var2);
 
-        case (GroupVariation::Group3Var0):
-            return this->SelectAll<DoubleBitBinarySpec>();
-        case (GroupVariation::Group3Var2):
-            return this->SelectAllUsing<DoubleBitBinarySpec>(StaticDoubleBinaryVariation::Group3Var2);
+    case (GroupVariation::Group3Var0):
+        return this->SelectAll<DoubleBitBinarySpec>();
+    case (GroupVariation::Group3Var2):
+        return this->SelectAllUsing<DoubleBitBinarySpec>(StaticDoubleBinaryVariation::Group3Var2);
 
-        case (GroupVariation::Group10Var0):
-            return this->SelectAll<BinaryOutputStatusSpec>();
-        case (GroupVariation::Group10Var2):
-            return this->SelectAllUsing<BinaryOutputStatusSpec>(StaticBinaryOutputStatusVariation::Group10Var2);
+    case (GroupVariation::Group10Var0):
+        return this->SelectAll<BinaryOutputStatusSpec>();
+    case (GroupVariation::Group10Var2):
+        return this->SelectAllUsing<BinaryOutputStatusSpec>(StaticBinaryOutputStatusVariation::Group10Var2);
 
-        case (GroupVariation::Group20Var0):
-            return this->SelectAll<CounterSpec>();
-        case (GroupVariation::Group20Var1):
-            return this->SelectAllUsing<CounterSpec>(StaticCounterVariation::Group20Var1);
-        case (GroupVariation::Group20Var2):
-            return this->SelectAllUsing<CounterSpec>(StaticCounterVariation::Group20Var2);
-        case (GroupVariation::Group20Var5):
-            return this->SelectAllUsing<CounterSpec>(StaticCounterVariation::Group20Var5);
-        case (GroupVariation::Group20Var6):
-            return this->SelectAllUsing<CounterSpec>(StaticCounterVariation::Group20Var6);
+    case (GroupVariation::Group20Var0):
+        return this->SelectAll<CounterSpec>();
+    case (GroupVariation::Group20Var1):
+        return this->SelectAllUsing<CounterSpec>(StaticCounterVariation::Group20Var1);
+    case (GroupVariation::Group20Var2):
+        return this->SelectAllUsing<CounterSpec>(StaticCounterVariation::Group20Var2);
+    case (GroupVariation::Group20Var5):
+        return this->SelectAllUsing<CounterSpec>(StaticCounterVariation::Group20Var5);
+    case (GroupVariation::Group20Var6):
+        return this->SelectAllUsing<CounterSpec>(StaticCounterVariation::Group20Var6);
 
-        case (GroupVariation::Group21Var0):
-            return this->SelectAll<FrozenCounterSpec>();
-        case (GroupVariation::Group21Var1):
-            return this->SelectAllUsing<FrozenCounterSpec>(StaticFrozenCounterVariation::Group21Var1);
-        case (GroupVariation::Group21Var2):
-            return this->SelectAllUsing<FrozenCounterSpec>(StaticFrozenCounterVariation::Group21Var2);
-        case (GroupVariation::Group21Var5):
-            return this->SelectAllUsing<FrozenCounterSpec>(StaticFrozenCounterVariation::Group21Var5);
-        case (GroupVariation::Group21Var6):
-            return this->SelectAllUsing<FrozenCounterSpec>(StaticFrozenCounterVariation::Group21Var6);
-        case (GroupVariation::Group21Var9):
-            return this->SelectAllUsing<FrozenCounterSpec>(StaticFrozenCounterVariation::Group21Var9);
-        case (GroupVariation::Group21Var10):
-            return this->SelectAllUsing<FrozenCounterSpec>(StaticFrozenCounterVariation::Group21Var10);
+    case (GroupVariation::Group21Var0):
+        return this->SelectAll<FrozenCounterSpec>();
+    case (GroupVariation::Group21Var1):
+        return this->SelectAllUsing<FrozenCounterSpec>(StaticFrozenCounterVariation::Group21Var1);
+    case (GroupVariation::Group21Var2):
+        return this->SelectAllUsing<FrozenCounterSpec>(StaticFrozenCounterVariation::Group21Var2);
+    case (GroupVariation::Group21Var5):
+        return this->SelectAllUsing<FrozenCounterSpec>(StaticFrozenCounterVariation::Group21Var5);
+    case (GroupVariation::Group21Var6):
+        return this->SelectAllUsing<FrozenCounterSpec>(StaticFrozenCounterVariation::Group21Var6);
+    case (GroupVariation::Group21Var9):
+        return this->SelectAllUsing<FrozenCounterSpec>(StaticFrozenCounterVariation::Group21Var9);
+    case (GroupVariation::Group21Var10):
+        return this->SelectAllUsing<FrozenCounterSpec>(StaticFrozenCounterVariation::Group21Var10);
 
-        case (GroupVariation::Group30Var0):
-            return this->SelectAll<AnalogSpec>();
-        case (GroupVariation::Group30Var1):
-            return this->SelectAllUsing<AnalogSpec>(StaticAnalogVariation::Group30Var1);
-        case (GroupVariation::Group30Var2):
-            return this->SelectAllUsing<AnalogSpec>(StaticAnalogVariation::Group30Var2);
-        case (GroupVariation::Group30Var3):
-            return this->SelectAllUsing<AnalogSpec>(StaticAnalogVariation::Group30Var3);
-        case (GroupVariation::Group30Var4):
-            return this->SelectAllUsing<AnalogSpec>(StaticAnalogVariation::Group30Var4);
-        case (GroupVariation::Group30Var5):
-            return this->SelectAllUsing<AnalogSpec>(StaticAnalogVariation::Group30Var5);
-        case (GroupVariation::Group30Var6):
-            return this->SelectAllUsing<AnalogSpec>(StaticAnalogVariation::Group30Var6);
+    case (GroupVariation::Group30Var0):
+        return this->SelectAll<AnalogSpec>();
+    case (GroupVariation::Group30Var1):
+        return this->SelectAllUsing<AnalogSpec>(StaticAnalogVariation::Group30Var1);
+    case (GroupVariation::Group30Var2):
+        return this->SelectAllUsing<AnalogSpec>(StaticAnalogVariation::Group30Var2);
+    case (GroupVariation::Group30Var3):
+        return this->SelectAllUsing<AnalogSpec>(StaticAnalogVariation::Group30Var3);
+    case (GroupVariation::Group30Var4):
+        return this->SelectAllUsing<AnalogSpec>(StaticAnalogVariation::Group30Var4);
+    case (GroupVariation::Group30Var5):
+        return this->SelectAllUsing<AnalogSpec>(StaticAnalogVariation::Group30Var5);
+    case (GroupVariation::Group30Var6):
+        return this->SelectAllUsing<AnalogSpec>(StaticAnalogVariation::Group30Var6);
 
-        case (GroupVariation::Group40Var0):
-            return this->SelectAll<AnalogOutputStatusSpec>();
-        case (GroupVariation::Group40Var1):
-            return this->SelectAllUsing<AnalogOutputStatusSpec>(StaticAnalogOutputStatusVariation::Group40Var1);
-        case (GroupVariation::Group40Var2):
-            return this->SelectAllUsing<AnalogOutputStatusSpec>(StaticAnalogOutputStatusVariation::Group40Var2);
-        case (GroupVariation::Group40Var3):
-            return this->SelectAllUsing<AnalogOutputStatusSpec>(StaticAnalogOutputStatusVariation::Group40Var3);
-        case (GroupVariation::Group40Var4):
-            return this->SelectAllUsing<AnalogOutputStatusSpec>(StaticAnalogOutputStatusVariation::Group40Var4);
+    case (GroupVariation::Group40Var0):
+        return this->SelectAll<AnalogOutputStatusSpec>();
+    case (GroupVariation::Group40Var1):
+        return this->SelectAllUsing<AnalogOutputStatusSpec>(StaticAnalogOutputStatusVariation::Group40Var1);
+    case (GroupVariation::Group40Var2):
+        return this->SelectAllUsing<AnalogOutputStatusSpec>(StaticAnalogOutputStatusVariation::Group40Var2);
+    case (GroupVariation::Group40Var3):
+        return this->SelectAllUsing<AnalogOutputStatusSpec>(StaticAnalogOutputStatusVariation::Group40Var3);
+    case (GroupVariation::Group40Var4):
+        return this->SelectAllUsing<AnalogOutputStatusSpec>(StaticAnalogOutputStatusVariation::Group40Var4);
 
-        case (GroupVariation::Group50Var4):
-            return this->SelectAllUsing<TimeAndIntervalSpec>(StaticTimeAndIntervalVariation::Group50Var4);
+    case (GroupVariation::Group50Var4):
+        return this->SelectAllUsing<TimeAndIntervalSpec>(StaticTimeAndIntervalVariation::Group50Var4);
 
-        case (GroupVariation::Group110Var0):
-            return this->SelectAll<OctetStringSpec>();
+    case (GroupVariation::Group110Var0):
+        return this->SelectAll<OctetStringSpec>();
 
-        default:
-            return IINField(IINBit::FUNC_NOT_SUPPORTED);
-        }
+    default:
+        return IINField(IINBit::FUNC_NOT_SUPPORTED);
     }
 }
 
@@ -248,9 +246,9 @@ bool DatabaseBuffers::Load(HeaderWriter& writer)
                                    &DatabaseBuffers::LoadType<TimeAndIntervalSpec>,
                                    &DatabaseBuffers::LoadType<OctetStringSpec>};
 
-    for (int i = 0; i < NUM_TYPE; ++i)
+    for (auto& function : functions)
     {
-        if (!(this->*functions[i])(writer))
+        if (!(this->*function)(writer))
         {
             // return early because the APDU is full
             return false;
@@ -314,10 +312,8 @@ StaticBinaryVariation DatabaseBuffers::CheckForPromotion<BinarySpec>(const Binar
     {
         return BinarySpec::IsQualityOnlineOnly(value) ? variation : StaticBinaryVariation::Group1Var2;
     }
-    else
-    {
-        return variation;
-    }
+
+    return variation;
 }
 
 Range DatabaseBuffers::RangeOf(uint16_t size)

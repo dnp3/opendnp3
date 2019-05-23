@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -58,7 +58,7 @@ EventScanTask::EventScanTask(const std::shared_ptr<TaskContext>& context,
                              IMasterApplication& application,
                              ISOEHandler& soeHandler,
                              ClassField classes,
-                             openpal::Logger logger)
+                             const openpal::Logger& logger)
     : PollTaskBase(context, application, soeHandler, TaskBehavior::ReactsToIINOnly(), logger, TaskConfig::Default()),
       classes(classes.OnlyEventClasses())
 {

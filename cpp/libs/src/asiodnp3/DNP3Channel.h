@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -36,8 +36,8 @@ class DNP3Channel final : public IChannel, public std::enable_shared_from_this<D
 public:
     DNP3Channel(const openpal::Logger& logger,
                 const std::shared_ptr<asiopal::Executor>& executor,
-                const std::shared_ptr<IOHandler>& iohandler,
-                const std::shared_ptr<asiopal::IResourceManager>& manager);
+                std::shared_ptr<IOHandler> iohandler,
+                std::shared_ptr<asiopal::IResourceManager> manager);
 
     static std::shared_ptr<DNP3Channel> Create(const openpal::Logger& logger,
                                                const std::shared_ptr<asiopal::Executor>& executor,

@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -104,12 +104,10 @@ bool WriteSingleBitfield(openpal::ArrayView<Cell<Spec>, uint16_t>& view, HeaderW
                                                                      static_cast<uint8_t>(mapped.start));
         return LoadWithBitfieldIterator<Spec, openpal::UInt8>(view, iter, range);
     }
-    else
-    {
-        auto iter = writer.IterateOverSingleBitfield<openpal::UInt16>(GV::ID(), QualifierCode::UINT16_START_STOP,
-                                                                      mapped.start);
-        return LoadWithBitfieldIterator<Spec, openpal::UInt16>(view, iter, range);
-    }
+
+    auto iter
+        = writer.IterateOverSingleBitfield<openpal::UInt16>(GV::ID(), QualifierCode::UINT16_START_STOP, mapped.start);
+    return LoadWithBitfieldIterator<Spec, openpal::UInt16>(view, iter, range);
 }
 
 template<class Spec, class Serializer>
@@ -125,12 +123,10 @@ bool WriteWithSerializer(openpal::ArrayView<Cell<Spec>, uint16_t>& view, HeaderW
             QualifierCode::UINT8_START_STOP, Serializer::Inst(), static_cast<uint8_t>(mapped.start));
         return LoadWithRangeIterator<Spec, openpal::UInt8>(view, iter, range);
     }
-    else
-    {
-        auto iter = writer.IterateOverRange<openpal::UInt16, typename Serializer::Target>(
-            QualifierCode::UINT16_START_STOP, Serializer::Inst(), mapped.start);
-        return LoadWithRangeIterator<Spec, openpal::UInt16>(view, iter, range);
-    }
+
+    auto iter = writer.IterateOverRange<openpal::UInt16, typename Serializer::Target>(QualifierCode::UINT16_START_STOP,
+                                                                                      Serializer::Inst(), mapped.start);
+    return LoadWithRangeIterator<Spec, openpal::UInt16>(view, iter, range);
 }
 
 StaticWrite<BinarySpec>::func_t StaticWriters::Get(StaticBinaryVariation variation)
@@ -242,13 +238,13 @@ StaticWrite<AnalogOutputStatusSpec>::func_t StaticWriters::Get(StaticAnalogOutpu
     }
 }
 
-StaticWrite<OctetStringSpec>::func_t StaticWriters::Get(StaticOctetStringVariation variation)
+StaticWrite<OctetStringSpec>::func_t StaticWriters::Get(StaticOctetStringVariation /*variation*/)
 {
     // variation is always the same
     return &Write;
 }
 
-StaticWrite<TimeAndIntervalSpec>::func_t StaticWriters::Get(StaticTimeAndIntervalVariation variation)
+StaticWrite<TimeAndIntervalSpec>::func_t StaticWriters::Get(StaticTimeAndIntervalVariation /*variation*/)
 {
     return &WriteWithSerializer<TimeAndIntervalSpec, Group50Var4>;
 }

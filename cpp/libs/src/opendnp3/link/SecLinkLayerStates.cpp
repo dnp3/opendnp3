@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -44,14 +44,17 @@ SecStateBase& SecStateBase::OnTxReady(LinkContext& ctx)
 ////////////////////////////////////////////////////////
 SLLS_NotReset SLLS_NotReset::instance;
 
-SecStateBase& SLLS_NotReset::OnTestLinkStatus(LinkContext& ctx, uint16_t source, bool fcb)
+SecStateBase& SLLS_NotReset::OnTestLinkStatus(LinkContext& ctx, uint16_t /*source*/, bool /*fcb*/)
 {
     ++ctx.statistics.numUnexpectedFrame;
     SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "TestLinkStatus ignored");
     return *this;
 }
 
-SecStateBase& SLLS_NotReset::OnConfirmedUserData(LinkContext& ctx, uint16_t source, bool fcb, const Message& message)
+SecStateBase& SLLS_NotReset::OnConfirmedUserData(LinkContext& ctx,
+                                                 uint16_t /*source*/,
+                                                 bool /*fcb*/,
+                                                 const Message& /*message*/)
 {
     ++ctx.statistics.numUnexpectedFrame;
     SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "ConfirmedUserData ignored: secondary not reset");
@@ -84,14 +87,12 @@ SecStateBase& SLLS_Reset::OnTestLinkStatus(LinkContext& ctx, uint16_t source, bo
         ctx.ToggleReadFCB();
         return SLLS_TransmitWaitReset::Instance();
     }
-    else
-    {
-        // "Re-transmit most recent response that contained function code 0 (ACK) or 1 (NACK)."
-        // This is a PITA implement
-        // TODO - see if this function is deprecated or not
-        SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Received TestLinkStatus with invalid FCB");
-        return *this;
-    }
+
+    // "Re-transmit most recent response that contained function code 0 (ACK) or 1 (NACK)."
+    // This is a PITA implement
+    // TODO - see if this function is deprecated or not
+    SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Received TestLinkStatus with invalid FCB");
+    return *this;
 }
 
 SecStateBase& SLLS_Reset::OnConfirmedUserData(LinkContext& ctx, uint16_t source, bool fcb, const Message& message)

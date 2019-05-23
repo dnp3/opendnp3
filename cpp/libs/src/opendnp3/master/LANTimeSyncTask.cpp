@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -31,7 +31,7 @@ namespace opendnp3
 
 LANTimeSyncTask::LANTimeSyncTask(const std::shared_ptr<TaskContext>& context,
                                  IMasterApplication& app,
-                                 openpal::Logger logger)
+                                 const openpal::Logger& logger)
     : IMasterTask(context, app, TaskBehavior::ReactsToIINOnly(), logger, TaskConfig::Default())
 {
 }
@@ -49,15 +49,13 @@ bool LANTimeSyncTask::BuildRequest(APDURequest& request, uint8_t seq)
         build::RecordCurrentTime(request, seq);
         return true;
     }
-    else
-    {
-        Group50Var3 time;
-        time.time = DNPTime(this->start.msSinceEpoch);
-        request.SetFunction(FunctionCode::WRITE);
-        request.SetControl(AppControlField::Request(seq));
-        auto writer = request.GetWriter();
-        return writer.WriteSingleValue<UInt8, Group50Var3>(QualifierCode::UINT8_CNT, time);
-    }
+
+    Group50Var3 time;
+    time.time = DNPTime(this->start.msSinceEpoch);
+    request.SetFunction(FunctionCode::WRITE);
+    request.SetControl(AppControlField::Request(seq));
+    auto writer = request.GetWriter();
+    return writer.WriteSingleValue<UInt8, Group50Var3>(QualifierCode::UINT8_CNT, time);
 }
 
 IMasterTask::ResponseResult LANTimeSyncTask::ProcessResponse(const APDUResponseHeader& response,

@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -24,6 +24,8 @@
 #include "opendnp3/app/parsing/APDUParser.h"
 #include "opendnp3/master/TaskPriority.h"
 
+#include <utility>
+
 using namespace openpal;
 
 namespace opendnp3
@@ -33,12 +35,12 @@ RestartOperationTask::RestartOperationTask(const std::shared_ptr<TaskContext>& c
                                            IMasterApplication& app,
                                            const openpal::MonotonicTimestamp& startTimeout,
                                            RestartType operationType,
-                                           const RestartOperationCallbackT& callback,
-                                           openpal::Logger logger,
+                                           RestartOperationCallbackT callback,
+                                           const openpal::Logger& logger,
                                            const TaskConfig& config)
     : IMasterTask(context, app, TaskBehavior::SingleExecutionNoRetry(startTimeout), logger, config),
       function((operationType == RestartType::COLD) ? FunctionCode::COLD_RESTART : FunctionCode::WARM_RESTART),
-      callback(callback)
+      callback(std::move(callback))
 {
 }
 
@@ -49,7 +51,7 @@ bool RestartOperationTask::BuildRequest(APDURequest& request, uint8_t seq)
     return true;
 }
 
-bool RestartOperationTask::IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc)
+bool RestartOperationTask::IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode /*qc*/)
 {
     if (headerCount != 0)
     {
@@ -94,7 +96,7 @@ IMasterTask::ResponseResult RestartOperationTask::ProcessResponse(const opendnp3
     return (result == ParseResult::OK) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
 }
 
-IINField RestartOperationTask::ProcessHeader(const CountHeader& header, const ICollection<Group52Var1>& values)
+IINField RestartOperationTask::ProcessHeader(const CountHeader& /*header*/, const ICollection<Group52Var1>& values)
 {
     Group52Var1 value;
     if (values.ReadOnlyValue(value))
@@ -102,13 +104,11 @@ IINField RestartOperationTask::ProcessHeader(const CountHeader& header, const IC
         this->duration = TimeDuration::Seconds(value.time);
         return IINField::Empty();
     }
-    else
-    {
-        return IINBit::PARAM_ERROR;
-    }
+
+    return IINBit::PARAM_ERROR;
 }
 
-IINField RestartOperationTask::ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& values)
+IINField RestartOperationTask::ProcessHeader(const CountHeader& /*header*/, const ICollection<Group52Var2>& values)
 {
     Group52Var2 value;
     if (values.ReadOnlyValue(value))
@@ -116,10 +116,8 @@ IINField RestartOperationTask::ProcessHeader(const CountHeader& header, const IC
         this->duration = TimeDuration::Milliseconds(value.time);
         return IINField::Empty();
     }
-    else
-    {
-        return IINBit::PARAM_ERROR;
-    }
+
+    return IINBit::PARAM_ERROR;
 }
 
 FunctionCode RestartOperationTask::ToFunctionCode(RestartType op)
@@ -127,7 +125,7 @@ FunctionCode RestartOperationTask::ToFunctionCode(RestartType op)
     return (op == RestartType::COLD) ? FunctionCode::COLD_RESTART : FunctionCode::WARM_RESTART;
 }
 
-void RestartOperationTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now)
+void RestartOperationTask::OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp /*now*/)
 {
     if (this->Errors().Any())
     {

@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -30,11 +30,11 @@
 class ConfigReader
 {
 public:
-    static asiodnp3::MasterStackConfig ConvertMasterStackConfig(JNIEnv* env, jobject jconfig);
+    static asiodnp3::MasterStackConfig ConvertMasterStackConfig(JNIEnv* env, jobject jcfg);
     static asiodnp3::OutstationStackConfig ConvertOutstationStackConfig(JNIEnv* env, jobject jconfig);
 
 private:
-    static opendnp3::LinkConfig ConvertLinkConfig(JNIEnv* env, jobject jconfig);
+    static opendnp3::LinkConfig ConvertLinkConfig(JNIEnv* env, jobject jlinkcfg);
     static opendnp3::MasterParams ConvertMasterConfig(JNIEnv* apEnv, jobject jcfg);
 
     static opendnp3::ClassField ConvertClassField(JNIEnv* env, jobject jclassmask);

@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -22,17 +22,17 @@
 
 #include "../jni/JCache.h"
 
-#include <assert.h>
+#include <cassert>
 
 using namespace std;
 
-JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved)
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* /*reserved*/)
 {
     JNI::Initialize(vm);
     return jni::JCache::init(JNI::GetEnv()) ? OPENDNP3_JNI_VERSION : JNI_ERR;
 }
 
-JNIEXPORT void JNICALL JNI_OnUnload(JavaVM* vm, void* reserved)
+JNIEXPORT void JNICALL JNI_OnUnload(JavaVM* /*vm*/, void* /*reserved*/)
 {
     jni::JCache::cleanup(JNI::GetEnv());
 }
@@ -40,7 +40,7 @@ JNIEXPORT void JNICALL JNI_OnUnload(JavaVM* vm, void* reserved)
 JNIEnv* JNI::GetEnv()
 {
     JNIEnv* env = nullptr;
-    vm->GetEnv((void**)&env, OPENDNP3_JNI_VERSION);
+    vm->GetEnv(reinterpret_cast<void**>(&env), OPENDNP3_JNI_VERSION);
     assert(env);
     return env;
 }
@@ -54,7 +54,7 @@ void JNI::Initialize(JavaVM* vmin)
 bool JNI::AttachCurrentThread()
 {
     JNIEnv* env;
-    return vm->AttachCurrentThread((void**)&env, nullptr) == 0;
+    return vm->AttachCurrentThread(reinterpret_cast<void**>(&env), nullptr) == 0;
 }
 
 bool JNI::DetachCurrentThread()
@@ -79,7 +79,7 @@ void JNI::Iterate(JNIEnv* env, jobject iterable, const std::function<void(LocalR
 {
     auto iterator = jni::JCache::Iterable.iterator(env, iterable);
 
-    while (jni::JCache::Iterator.hasNext(env, iterator))
+    while (jni::JCache::Iterator.hasNext(env, iterator) != 0u)
     {
         callback(jni::JCache::Iterator.next(env, iterator));
     }
@@ -90,7 +90,7 @@ void JNI::IterateWithIndex(JNIEnv* env, jobject iterable, const std::function<vo
     auto iterator = jni::JCache::Iterable.iterator(env, iterable);
 
     int i = 0;
-    while (jni::JCache::Iterator.hasNext(env, iterator))
+    while (jni::JCache::Iterator.hasNext(env, iterator) != 0u)
     {
         callback(jni::JCache::Iterator.next(env, iterator), i);
         ++i;

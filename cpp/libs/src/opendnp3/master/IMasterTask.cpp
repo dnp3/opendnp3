@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -23,17 +23,19 @@
 
 #include "opendnp3/LogLevels.h"
 
+#include <utility>
+
 using namespace openpal;
 
 namespace opendnp3
 {
 
-IMasterTask::IMasterTask(const std::shared_ptr<TaskContext>& context,
+IMasterTask::IMasterTask(std::shared_ptr<TaskContext> context,
                          IMasterApplication& app,
-                         const TaskBehavior& behavior,
+                         TaskBehavior behavior,
                          const openpal::Logger& logger,
                          TaskConfig config)
-    : context(context), application(&app), logger(logger), config(config), behavior(behavior)
+    : context(std::move(context)), application(&app), logger(logger), config(config), behavior(std::move(behavior))
 {
 }
 
@@ -41,7 +43,7 @@ IMasterTask::~IMasterTask()
 {
     context->RemoveBlock(*this);
 
-    if (config.pCallback)
+    if (config.pCallback != nullptr)
     {
         config.pCallback->OnDestroyed();
     }
@@ -115,7 +117,7 @@ void IMasterTask::CompleteTask(TaskCompletion result, openpal::MonotonicTimestam
     }
     }
 
-    if (config.pCallback)
+    if (config.pCallback != nullptr)
     {
         config.pCallback->OnComplete(result);
     }
@@ -149,7 +151,7 @@ void IMasterTask::OnMessageFormatError(openpal::MonotonicTimestamp now)
 
 void IMasterTask::OnStart()
 {
-    if (config.pCallback)
+    if (config.pCallback != nullptr)
     {
         config.pCallback->OnStart();
     }
@@ -170,11 +172,9 @@ bool IMasterTask::ValidateSingleResponse(const APDUResponseHeader& header)
     {
         return true;
     }
-    else
-    {
-        SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected response FIR/FIN not set");
-        return false;
-    }
+
+    SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected response FIR/FIN not set");
+    return false;
 }
 
 bool IMasterTask::ValidateNullResponse(const APDUResponseHeader& header, const openpal::RSlice& objects)
@@ -190,10 +190,8 @@ bool IMasterTask::ValidateInternalIndications(const APDUResponseHeader& header)
                          this->Name());
         return false;
     }
-    else
-    {
-        return true;
-    }
+
+    return true;
 }
 
 bool IMasterTask::ValidateNoObjects(const openpal::RSlice& objects)
@@ -202,11 +200,9 @@ bool IMasterTask::ValidateNoObjects(const openpal::RSlice& objects)
     {
         return true;
     }
-    else
-    {
-        FORMAT_LOG_BLOCK(logger, flags::WARN, "Received unexpected response object headers for task: %s", this->Name());
-        return false;
-    }
+
+    FORMAT_LOG_BLOCK(logger, flags::WARN, "Received unexpected response object headers for task: %s", this->Name());
+    return false;
 }
 
 } // namespace opendnp3

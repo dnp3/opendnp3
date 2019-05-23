@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -57,9 +57,9 @@ public:
         OK_CONTINUE
     };
 
-    IMasterTask(const std::shared_ptr<TaskContext>& context,
+    IMasterTask(std::shared_ptr<TaskContext> context,
                 IMasterApplication& app,
-                const TaskBehavior& behavior,
+                TaskBehavior behavior,
                 const openpal::Logger& logger,
                 TaskConfig config);
 
@@ -158,7 +158,7 @@ protected:
 
     virtual ResponseResult ProcessResponse(const APDUResponseHeader& response, const openpal::RSlice& objects) = 0;
 
-    void CompleteTask(TaskCompletion completion, openpal::MonotonicTimestamp now);
+    void CompleteTask(TaskCompletion result, openpal::MonotonicTimestamp now);
 
     virtual void OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) {}
 

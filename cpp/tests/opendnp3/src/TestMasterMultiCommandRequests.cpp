@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -79,7 +79,7 @@ TEST_CASE(SUITE("DirectOperateTwoCROB"))
 
     REQUIRE(t.exe->RunMany() > 0);
 
-    REQUIRE(t.lower->PopWriteAsHex() == ""); // nore more packets
+    REQUIRE(t.lower->PopWriteAsHex().empty()); // nore more packets
 
     REQUIRE(queue.PopOnlyEqualValue(TaskCompletion::SUCCESS,
                                     {CommandPointResult(0, 1, CommandPointState::SUCCESS, CommandStatus::SUCCESS),
@@ -119,7 +119,7 @@ TEST_CASE(SUITE("SelectAndOperateTwoCROBSOneAO"))
 
     REQUIRE(t.exe->RunMany() > 0);
 
-    REQUIRE(t.lower->PopWriteAsHex() == ""); // nore more packets
+    REQUIRE(t.lower->PopWriteAsHex().empty()); // nore more packets
 
     REQUIRE(queue.PopOnlyEqualValue(TaskCompletion::SUCCESS,
                                     {CommandPointResult(0, 1, CommandPointState::SUCCESS, CommandStatus::SUCCESS),

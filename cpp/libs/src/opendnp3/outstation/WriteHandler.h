@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -48,9 +48,9 @@ public:
 private:
     virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values) override;
 
-    virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& times) override;
+    virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& values) override;
 
-    virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var3>& times) override;
+    virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var3>& values) override;
 
     virtual IINField ProcessHeader(const PrefixHeader& header,
                                    const ICollection<Indexed<TimeAndInterval>>& values) override;

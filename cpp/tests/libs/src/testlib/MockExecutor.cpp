@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -20,6 +20,7 @@
 #include "MockExecutor.h"
 
 #include <algorithm>
+#include <utility>
 
 using namespace openpal;
 
@@ -42,10 +43,8 @@ openpal::MonotonicTimestamp MockExecutor::NextTimerExpiration()
     {
         return MonotonicTimestamp::Max();
     }
-    else
-    {
-        return (*min)->ExpiresAt();
-    }
+
+    return (*min)->ExpiresAt();
 }
 
 size_t MockExecutor::CheckForExpiredTimers()
@@ -67,13 +66,11 @@ bool MockExecutor::FindExpiredTimer()
     {
         return false;
     }
-    else
-    {
-        this->postQueue.push_back((*iter)->runnable);
-        delete (*iter);
-        timers.erase(iter);
-        return true;
-    }
+
+    this->postQueue.push_back((*iter)->runnable);
+    delete (*iter);
+    timers.erase(iter);
+    return true;
 }
 
 size_t MockExecutor::AdvanceTime(TimeDuration aDuration)
@@ -94,35 +91,29 @@ bool MockExecutor::AdvanceToNextTimer()
     {
         return false;
     }
-    else
+
+    auto timestamp = NextTimerExpiration();
+    if (timestamp > mCurrentTime)
     {
-        auto timestamp = NextTimerExpiration();
-        if (timestamp > mCurrentTime)
-        {
-            mCurrentTime = timestamp;
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        mCurrentTime = timestamp;
+        return true;
     }
+
+    return false;
 }
 
 bool MockExecutor::RunOne()
 {
     this->CheckForExpiredTimers();
 
-    if (postQueue.size() > 0)
+    if (!postQueue.empty())
     {
         postQueue.front()();
         postQueue.pop_front();
         return true;
     }
-    else
-    {
-        return false;
-    }
+
+    return false;
 }
 
 size_t MockExecutor::RunMany(size_t aMaximum)
@@ -158,14 +149,14 @@ ITimer* MockExecutor::Start(const openpal::TimeDuration& aDelay, const openpal::
 
 ITimer* MockExecutor::Start(const openpal::MonotonicTimestamp& arTime, const openpal::action_t& runnable)
 {
-    MockTimer* pTimer = new MockTimer(this, arTime, runnable);
+    auto* pTimer = new MockTimer(this, arTime, runnable);
     timers.push_back(pTimer);
     return pTimer;
 }
 
 void MockExecutor::Cancel(ITimer* pTimer)
 {
-    for (TimerVector::iterator i = timers.begin(); i != timers.end(); ++i)
+    for (auto i = timers.begin(); i != timers.end(); ++i)
     {
         if (*i == pTimer)
         {
@@ -176,8 +167,8 @@ void MockExecutor::Cancel(ITimer* pTimer)
     }
 }
 
-MockTimer::MockTimer(MockExecutor* source, const openpal::MonotonicTimestamp& time, const openpal::action_t& runnable)
-    : mTime(time), mpSource(source), runnable(runnable)
+MockTimer::MockTimer(MockExecutor* source, const openpal::MonotonicTimestamp& time, openpal::action_t runnable)
+    : mTime(time), mpSource(source), runnable(std::move(runnable))
 {
 }
 

@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -81,7 +81,7 @@ IINField MeasurementHandler::ProcessHeader(const CountHeader& header, const ICol
     return IINField();
 }
 
-IINField MeasurementHandler::ProcessHeader(const CountHeader& header, const ICollection<Group51Var1>& values)
+IINField MeasurementHandler::ProcessHeader(const CountHeader& /*header*/, const ICollection<Group51Var1>& values)
 {
     Group51Var1 cto;
     if (values.ReadOnlyValue(cto))
@@ -92,7 +92,7 @@ IINField MeasurementHandler::ProcessHeader(const CountHeader& header, const ICol
     return IINField::Empty();
 }
 
-IINField MeasurementHandler::ProcessHeader(const CountHeader& header, const ICollection<Group51Var2>& values)
+IINField MeasurementHandler::ProcessHeader(const CountHeader& /*header*/, const ICollection<Group51Var2>& values)
 {
     Group51Var2 cto;
     if (values.ReadOnlyValue(cto))
@@ -164,10 +164,8 @@ IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICo
     {
         return this->ProcessWithCTO(header, values);
     }
-    else
-    {
-        return this->LoadValues(header, ModeFromType(header.enumeration), values);
-    }
+
+    return this->LoadValues(header, ModeFromType(header.enumeration), values);
 }
 
 IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header,
@@ -183,10 +181,8 @@ IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header,
     {
         return this->ProcessWithCTO(header, values);
     }
-    else
-    {
-        return this->LoadValues(header, ModeFromType(header.enumeration), values);
-    }
+
+    return this->LoadValues(header, ModeFromType(header.enumeration), values);
 }
 
 IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Counter>>& values)

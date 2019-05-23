@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -68,7 +68,7 @@ private:
     bool StartAction(const MonotonicTimestamp& expiration, const action_t& action);
 
     // Start a new timer, canceling any existing timer
-    void RestartAction(const TimeDuration& expiration, const action_t& action);
+    void RestartAction(const TimeDuration& timeout, const action_t& action);
     void RestartAction(const MonotonicTimestamp& expiration, const action_t& action);
 
     IExecutor* pExecutor;

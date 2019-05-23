@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -28,12 +28,12 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LoggingHandler::LoggingHandler(openpal::Logger logger_, IDecoderCallbacks& callbacks_)
+LoggingHandler::LoggingHandler(const openpal::Logger& logger_, IDecoderCallbacks& callbacks_)
     : logger(logger_), callbacks(&callbacks_)
 {
 }
 
-void LoggingHandler::OnHeaderResult(const HeaderRecord& record, const IINField& result)
+void LoggingHandler::OnHeaderResult(const HeaderRecord& /*record*/, const IINField& result)
 {
     if (result.Any())
     {
@@ -44,12 +44,12 @@ void LoggingHandler::OnHeaderResult(const HeaderRecord& record, const IINField& 
 
 std::string LoggingHandler::ToUTCString(const DNPTime& dnptime)
 {
-    time_t seconds = static_cast<time_t>(dnptime / 1000);
-    uint16_t milliseconds = static_cast<uint16_t>(dnptime % 1000);
+    auto seconds = static_cast<time_t>(dnptime / 1000);
+    auto milliseconds = static_cast<uint16_t>(dnptime % 1000);
 
 #ifdef WIN32
     tm t;
-    if (gmtime_s(&t, &seconds))
+    if (gmtime_s(&t, &seconds) != 0)
     {
         return "BAD TIME";
     }
@@ -122,9 +122,9 @@ IINField LoggingHandler::PrintTimeAndInterval(const ICollection<Indexed<TimeAndI
     return IINField::Empty();
 }
 
-IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header,
+IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
                                        const Group120Var1& value,
-                                       const openpal::RSlice& object)
+                                       const openpal::RSlice& /*object*/)
 {
     Indent i(*callbacks);
 
@@ -141,9 +141,9 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header,
     return IINField::Empty();
 }
 
-IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header,
+IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
                                        const Group120Var2& value,
-                                       const openpal::RSlice& object)
+                                       const openpal::RSlice& /*object*/)
 {
     Indent i(*callbacks);
 
@@ -158,9 +158,9 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header,
     return IINField::Empty();
 }
 
-IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header,
+IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
                                        const Group120Var5& value,
-                                       const openpal::RSlice& object)
+                                       const openpal::RSlice& /*object*/)
 {
     Indent i(*callbacks);
 
@@ -181,9 +181,9 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header,
     return IINField::Empty();
 }
 
-IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header,
+IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
                                        const Group120Var6& value,
-                                       const openpal::RSlice& object)
+                                       const openpal::RSlice& /*object*/)
 {
     Indent i(*callbacks);
 
@@ -198,9 +198,9 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header,
     return IINField::Empty();
 }
 
-IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header,
+IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
                                        const Group120Var7& value,
-                                       const openpal::RSlice& object)
+                                       const openpal::RSlice& /*object*/)
 {
     Indent i(*callbacks);
 
@@ -225,9 +225,9 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header,
     return IINField::Empty();
 }
 
-IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header,
+IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
                                        const Group120Var8& value,
-                                       const openpal::RSlice& object)
+                                       const openpal::RSlice& /*object*/)
 {
     Indent i(*callbacks);
 
@@ -242,9 +242,9 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header,
     return IINField::Empty();
 }
 
-IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header,
+IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
                                        const Group120Var9& value,
-                                       const openpal::RSlice& object)
+                                       const openpal::RSlice& /*object*/)
 {
     Indent i(*callbacks);
 
@@ -254,9 +254,9 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header,
     return IINField::Empty();
 }
 
-IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header,
+IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
                                        const Group120Var10& value,
-                                       const openpal::RSlice& object)
+                                       const openpal::RSlice& /*object*/)
 {
     Indent i(*callbacks);
 
@@ -282,9 +282,9 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header,
     return IINField::Empty();
 }
 
-IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header,
+IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
                                        const Group120Var11& value,
-                                       const openpal::RSlice& object)
+                                       const openpal::RSlice& /*object*/)
 {
     Indent i(*callbacks);
 
@@ -303,9 +303,9 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header,
     return IINField::Empty();
 }
 
-IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header,
+IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
                                        const Group120Var12& value,
-                                       const openpal::RSlice& object)
+                                       const openpal::RSlice& /*object*/)
 {
     Indent i(*callbacks);
 
@@ -322,9 +322,9 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header,
     return IINField::Empty();
 }
 
-IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header,
+IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
                                        const Group120Var13& value,
-                                       const openpal::RSlice& object)
+                                       const openpal::RSlice& /*object*/)
 {
     Indent i(*callbacks);
 
@@ -341,9 +341,9 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header,
     return IINField::Empty();
 }
 
-IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header,
+IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
                                        const Group120Var14& value,
-                                       const openpal::RSlice& object)
+                                       const openpal::RSlice& /*object*/)
 {
     Indent i(*callbacks);
 
@@ -353,9 +353,9 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header,
     return IINField::Empty();
 }
 
-IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header,
+IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
                                        const Group120Var15& value,
-                                       const openpal::RSlice& object)
+                                       const openpal::RSlice& /*object*/)
 {
     Indent i(*callbacks);
 
@@ -365,32 +365,32 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& header,
     return IINField::Empty();
 }
 
-IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& values)
+IINField LoggingHandler::ProcessHeader(const CountHeader& /*header*/, const ICollection<Group50Var1>& values)
 {
     return this->PrintTime(values);
 }
 
-IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollection<Group51Var1>& values)
+IINField LoggingHandler::ProcessHeader(const CountHeader& /*header*/, const ICollection<Group51Var1>& values)
 {
     return this->PrintTime(values);
 }
 
-IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollection<Group51Var2>& values)
+IINField LoggingHandler::ProcessHeader(const CountHeader& /*header*/, const ICollection<Group51Var2>& values)
 {
     return this->PrintTime(values);
 }
 
-IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollection<Group52Var1>& values)
+IINField LoggingHandler::ProcessHeader(const CountHeader& /*header*/, const ICollection<Group52Var1>& values)
 {
     return this->PrintTime16(values);
 }
 
-IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& values)
+IINField LoggingHandler::ProcessHeader(const CountHeader& /*header*/, const ICollection<Group52Var2>& values)
 {
     return this->PrintTime16(values);
 }
 
-IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollection<Group120Var3>& values)
+IINField LoggingHandler::ProcessHeader(const CountHeader& /*header*/, const ICollection<Group120Var3>& values)
 {
     Indent i(*callbacks);
 
@@ -406,7 +406,7 @@ IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollect
     return IINField::Empty();
 }
 
-IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollection<Group120Var4>& values)
+IINField LoggingHandler::ProcessHeader(const CountHeader& /*header*/, const ICollection<Group120Var4>& values)
 {
     Indent i(*callbacks);
 
@@ -421,7 +421,7 @@ IINField LoggingHandler::ProcessHeader(const CountHeader& header, const ICollect
     return IINField::Empty();
 }
 
-IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values)
+IINField LoggingHandler::ProcessHeader(const RangeHeader& /*header*/, const ICollection<Indexed<IINValue>>& values)
 {
     return this->PrintV(values);
 }
@@ -465,17 +465,18 @@ IINField LoggingHandler::ProcessHeader(const RangeHeader& header,
     return this->PrintVQT(header.enumeration, values);
 }
 
-IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values)
+IINField LoggingHandler::ProcessHeader(const RangeHeader& /*header*/, const ICollection<Indexed<OctetString>>& values)
 {
     return this->PrintOctets(values);
 }
 
-IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values)
+IINField LoggingHandler::ProcessHeader(const RangeHeader& /*header*/,
+                                       const ICollection<Indexed<TimeAndInterval>>& values)
 {
     return this->PrintTimeAndInterval(values);
 }
 
-IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Group121Var1>>& values)
+IINField LoggingHandler::ProcessHeader(const RangeHeader& /*header*/, const ICollection<Indexed<Group121Var1>>& values)
 {
     return this->PrintSecStat(values);
 }
@@ -518,12 +519,13 @@ IINField LoggingHandler::ProcessHeader(const PrefixHeader& header,
     return this->PrintVQT(header.enumeration, values);
 }
 
-IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<OctetString>>& values)
+IINField LoggingHandler::ProcessHeader(const PrefixHeader& /*header*/, const ICollection<Indexed<OctetString>>& values)
 {
     return this->PrintOctets(values);
 }
 
-IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values)
+IINField LoggingHandler::ProcessHeader(const PrefixHeader& /*header*/,
+                                       const ICollection<Indexed<TimeAndInterval>>& values)
 {
     return this->PrintTimeAndInterval(values);
 }
@@ -570,12 +572,12 @@ IINField LoggingHandler::ProcessHeader(const PrefixHeader& header,
     return IINField::Empty();
 }
 
-IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values)
+IINField LoggingHandler::ProcessHeader(const PrefixHeader& /*header*/, const ICollection<Indexed<Group122Var1>>& values)
 {
     return this->PrintSecStat(values);
 }
 
-IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values)
+IINField LoggingHandler::ProcessHeader(const PrefixHeader& /*header*/, const ICollection<Indexed<Group122Var2>>& values)
 {
     Indent i(*callbacks);
     auto logItem = [this](const Indexed<Group122Var2>& item) {
@@ -592,31 +594,31 @@ IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollec
     return IINField::Empty();
 }
 
-IINField LoggingHandler::ProcessHeader(const PrefixHeader& header,
+IINField LoggingHandler::ProcessHeader(const PrefixHeader& /*header*/,
                                        const ICollection<Indexed<ControlRelayOutputBlock>>& values)
 {
     return PrintCrob(values);
 }
 
-IINField LoggingHandler::ProcessHeader(const PrefixHeader& header,
+IINField LoggingHandler::ProcessHeader(const PrefixHeader& /*header*/,
                                        const ICollection<Indexed<AnalogOutputInt16>>& values)
 {
     return PrintAO(values);
 }
 
-IINField LoggingHandler::ProcessHeader(const PrefixHeader& header,
+IINField LoggingHandler::ProcessHeader(const PrefixHeader& /*header*/,
                                        const ICollection<Indexed<AnalogOutputInt32>>& values)
 {
     return PrintAO(values);
 }
 
-IINField LoggingHandler::ProcessHeader(const PrefixHeader& header,
+IINField LoggingHandler::ProcessHeader(const PrefixHeader& /*header*/,
                                        const ICollection<Indexed<AnalogOutputFloat32>>& values)
 {
     return PrintAO(values);
 }
 
-IINField LoggingHandler::ProcessHeader(const PrefixHeader& header,
+IINField LoggingHandler::ProcessHeader(const PrefixHeader& /*header*/,
                                        const ICollection<Indexed<AnalogOutputDouble64>>& values)
 {
     return PrintAO(values);

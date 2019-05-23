@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -45,16 +45,16 @@ class CommandTask : public IMasterTask
 
 public:
     CommandTask(const std::shared_ptr<TaskContext>& context,
-                CommandSet&& set,
+                CommandSet&& commands,
                 IndexQualifierMode mode,
                 IMasterApplication& app,
-                const CommandCallbackT& callback,
+                CommandCallbackT callback,
                 const openpal::MonotonicTimestamp& startExpiration,
                 const TaskConfig& config,
-                openpal::Logger logger);
+                const openpal::Logger& logger);
 
     static std::shared_ptr<IMasterTask> CreateDirectOperate(const std::shared_ptr<TaskContext>& context,
-                                                            CommandSet&& commands,
+                                                            CommandSet&& set,
                                                             IndexQualifierMode mode,
                                                             IMasterApplication& app,
                                                             const CommandCallbackT& callback,
@@ -62,7 +62,7 @@ public:
                                                             const TaskConfig& config,
                                                             openpal::Logger logger);
     static std::shared_ptr<IMasterTask> CreateSelectAndOperate(const std::shared_ptr<TaskContext>& context,
-                                                               CommandSet&& commands,
+                                                               CommandSet&& set,
                                                                IndexQualifierMode mode,
                                                                IMasterApplication& app,
                                                                const CommandCallbackT& callback,
@@ -105,7 +105,7 @@ private:
 
     virtual void Initialize() override final;
 
-    virtual ResponseResult ProcessResponse(const APDUResponseHeader& response,
+    virtual ResponseResult ProcessResponse(const APDUResponseHeader& header,
                                            const openpal::RSlice& objects) override final;
 
     virtual void OnTaskComplete(TaskCompletion result, openpal::MonotonicTimestamp now) override final;

@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -41,7 +41,7 @@ void MasterApplicationAdapter::OnTaskStart(MasterTaskType type, TaskId id)
 {
     const auto env = JNI::GetEnv();
     auto jtasktype = jni::JCache::MasterTaskType.fromType(env, static_cast<jint>(type));
-    auto jtaskid = jni::JCache::TaskId.init2(env, id.GetId(), id.IsDefined());
+    auto jtaskid = jni::JCache::TaskId.init2(env, id.GetId(), static_cast<jboolean>(id.IsDefined()));
     jni::JCache::MasterApplication.onTaskStart(env, proxy, jtasktype, jtaskid);
 }
 
@@ -50,7 +50,7 @@ void MasterApplicationAdapter::OnTaskComplete(const TaskInfo& info)
     const auto env = JNI::GetEnv();
     auto jtype = jni::JCache::MasterTaskType.fromType(env, static_cast<jint>(info.type));
     auto jresult = jni::JCache::TaskCompletion.fromType(env, static_cast<jint>(info.result));
-    auto jtaskid = jni::JCache::TaskId.init2(env, info.id.GetId(), info.id.IsDefined());
+    auto jtaskid = jni::JCache::TaskId.init2(env, info.id.GetId(), static_cast<jboolean>(info.id.IsDefined()));
 
     auto jinfo = jni::JCache::TaskInfo.init3(env, jtype, jresult, jtaskid);
     jni::JCache::MasterApplication.onTaskComplete(env, proxy, jinfo);
@@ -71,7 +71,7 @@ void MasterApplicationAdapter::OnClose()
 bool MasterApplicationAdapter::AssignClassDuringStartup()
 {
     const auto env = JNI::GetEnv();
-    return !!jni::JCache::MasterApplication.assignClassDuringStartup(env, proxy);
+    return !(jni::JCache::MasterApplication.assignClassDuringStartup(env, proxy) == 0u);
 }
 
 void MasterApplicationAdapter::ConfigureAssignClassRequest(const WriteHeaderFunT& fun)
@@ -91,7 +91,7 @@ void MasterApplicationAdapter::ConfigureAssignClassRequest(const WriteHeaderFunT
         fun(Header::From(clazz));
 
         // write the header for the assigned type
-        if (jni::JCache::Range.isDefined(env, jrange))
+        if (jni::JCache::Range.isDefined(env, jrange) != 0u)
         {
             const auto jstart = jni::JCache::Range.getstart(env, jrange);
             const auto jstop = jni::JCache::Range.getstop(env, jrange);

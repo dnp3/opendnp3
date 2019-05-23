@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -179,7 +179,7 @@ TEST_CASE(SUITE("Retries use exponential backoff"))
     REQUIRE(t.exe->AdvanceToNextTimer());
     REQUIRE(t.exe->GetTime().milliseconds == 5000);
     REQUIRE(t.exe->RunMany() > 0);
-    REQUIRE(t.lower->PopWriteAsHex() == "");
+    REQUIRE(t.lower->PopWriteAsHex().empty());
 
     // advance to the retry
     REQUIRE(t.exe->AdvanceToNextTimer());
@@ -192,7 +192,7 @@ TEST_CASE(SUITE("Retries use exponential backoff"))
     REQUIRE(t.exe->AdvanceToNextTimer());
     REQUIRE(t.exe->GetTime().milliseconds == 15000);
     REQUIRE(t.exe->RunMany() > 0);
-    REQUIRE(t.lower->PopWriteAsHex() == "");
+    REQUIRE(t.lower->PopWriteAsHex().empty());
 
     // advance to the retry
     REQUIRE(t.exe->AdvanceToNextTimer());
@@ -670,7 +670,7 @@ TEST_CASE(SUITE("MasterWritesTimeAndInterval"))
     REQUIRE(t.lower->PopWriteAsHex() == "C0 02 32 04 28 01 00 07 00 03 00 00 00 00 00 04 00 00 00 05");
     t.context->OnTxReady();
     t.SendToMaster("C0 81 00 00");
-    REQUIRE(t.lower->PopWriteAsHex() == "");
+    REQUIRE(t.lower->PopWriteAsHex().empty());
 
     REQUIRE(callback.numStart == 1);
     REQUIRE(callback.results.size() == 1);
@@ -690,7 +690,7 @@ TEST_CASE(SUITE("Cold restart fails with empty response"))
     REQUIRE(t.lower->PopWriteAsHex() == "C0 0D"); // cold restart
     t.context->OnTxReady();
     t.SendToMaster("C0 81 00 00");
-    REQUIRE(t.lower->PopWriteAsHex() == "");
+    REQUIRE(t.lower->PopWriteAsHex().empty());
 
     REQUIRE(queue.responses.size() == 1);
     REQUIRE(queue.responses[0].summary == TaskCompletion::FAILURE_BAD_RESPONSE);
@@ -709,7 +709,7 @@ TEST_CASE(SUITE("Warm restart fails with empty response"))
     REQUIRE(t.lower->PopWriteAsHex() == "C0 0E"); // warm restart
     t.context->OnTxReady();
     t.SendToMaster("C0 81 00 00 34 01 07 01 BB BB");
-    REQUIRE(t.lower->PopWriteAsHex() == "");
+    REQUIRE(t.lower->PopWriteAsHex().empty());
 
     REQUIRE(queue.responses.size() == 1);
     REQUIRE(queue.responses[0].summary == TaskCompletion::SUCCESS);

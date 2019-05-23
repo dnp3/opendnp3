@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -307,304 +307,322 @@ void IAPDUHandler::OnHeader(const PrefixHeader& header, const ICollection<Indexe
     Record(header, this->ProcessHeader(header, values));
 }
 
-IINField IAPDUHandler::ProcessHeader(const AllObjectsHeader& record)
+IINField IAPDUHandler::ProcessHeader(const AllObjectsHeader& /*record*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const RangeHeader& header)
+IINField IAPDUHandler::ProcessHeader(const RangeHeader& /*header*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const CountHeader& header)
+IINField IAPDUHandler::ProcessHeader(const CountHeader& /*header*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header,
-                                     const Group120Var1& value,
-                                     const openpal::RSlice& object)
+IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
+                                     const Group120Var1& /*value*/,
+                                     const openpal::RSlice& /*object*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header,
-                                     const Group120Var2& value,
-                                     const openpal::RSlice& object)
+IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
+                                     const Group120Var2& /*value*/,
+                                     const openpal::RSlice& /*object*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header,
-                                     const Group120Var5& value,
-                                     const openpal::RSlice& object)
+IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
+                                     const Group120Var5& /*value*/,
+                                     const openpal::RSlice& /*object*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header,
-                                     const Group120Var6& value,
-                                     const openpal::RSlice& object)
+IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
+                                     const Group120Var6& /*value*/,
+                                     const openpal::RSlice& /*object*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header,
-                                     const Group120Var7& value,
-                                     const openpal::RSlice& object)
+IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
+                                     const Group120Var7& /*value*/,
+                                     const openpal::RSlice& /*object*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header,
-                                     const Group120Var8& value,
-                                     const openpal::RSlice& object)
+IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
+                                     const Group120Var8& /*value*/,
+                                     const openpal::RSlice& /*object*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header,
-                                     const Group120Var9& value,
-                                     const openpal::RSlice& object)
+IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
+                                     const Group120Var9& /*value*/,
+                                     const openpal::RSlice& /*object*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header,
-                                     const Group120Var10& value,
-                                     const openpal::RSlice& object)
+IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
+                                     const Group120Var10& /*value*/,
+                                     const openpal::RSlice& /*object*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header,
-                                     const Group120Var11& value,
-                                     const openpal::RSlice& object)
+IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
+                                     const Group120Var11& /*value*/,
+                                     const openpal::RSlice& /*object*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header,
-                                     const Group120Var12& value,
-                                     const openpal::RSlice& object)
+IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
+                                     const Group120Var12& /*value*/,
+                                     const openpal::RSlice& /*object*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header,
-                                     const Group120Var13& value,
-                                     const openpal::RSlice& object)
+IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
+                                     const Group120Var13& /*value*/,
+                                     const openpal::RSlice& /*object*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header,
-                                     const Group120Var14& value,
-                                     const openpal::RSlice& object)
+IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
+                                     const Group120Var14& /*value*/,
+                                     const openpal::RSlice& /*object*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header,
-                                     const Group120Var15& value,
-                                     const openpal::RSlice& object)
+IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
+                                     const Group120Var15& /*value*/,
+                                     const openpal::RSlice& /*object*/)
 {
     return ProcessUnsupportedHeader();
 }
 
 /// ---- counts -----
 
-IINField IAPDUHandler::ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>&)
+IINField IAPDUHandler::ProcessHeader(const CountHeader& /*header*/, const ICollection<Group50Var1>& /*unused*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const CountHeader& header, const ICollection<Group50Var3>& values)
+IINField IAPDUHandler::ProcessHeader(const CountHeader& /*header*/, const ICollection<Group50Var3>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const CountHeader& header, const ICollection<Group51Var1>&)
+IINField IAPDUHandler::ProcessHeader(const CountHeader& /*header*/, const ICollection<Group51Var1>& /*unused*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const CountHeader& header, const ICollection<Group51Var2>&)
+IINField IAPDUHandler::ProcessHeader(const CountHeader& /*header*/, const ICollection<Group51Var2>& /*unused*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const CountHeader& header, const ICollection<Group52Var1>& values)
+IINField IAPDUHandler::ProcessHeader(const CountHeader& /*header*/, const ICollection<Group52Var1>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>&)
+IINField IAPDUHandler::ProcessHeader(const CountHeader& /*header*/, const ICollection<Group52Var2>& /*unused*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const CountHeader& header, const ICollection<Group120Var3>&)
+IINField IAPDUHandler::ProcessHeader(const CountHeader& /*header*/, const ICollection<Group120Var3>& /*unused*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const CountHeader& header, const ICollection<Group120Var4>&)
+IINField IAPDUHandler::ProcessHeader(const CountHeader& /*header*/, const ICollection<Group120Var4>& /*unused*/)
 {
     return ProcessUnsupportedHeader();
 }
 
 /// ---- ranges -----
 
-IINField IAPDUHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values)
+IINField IAPDUHandler::ProcessHeader(const RangeHeader& /*header*/, const ICollection<Indexed<IINValue>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Binary>>& values)
+IINField IAPDUHandler::ProcessHeader(const RangeHeader& /*header*/, const ICollection<Indexed<Binary>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values)
+IINField IAPDUHandler::ProcessHeader(const RangeHeader& /*header*/,
+                                     const ICollection<Indexed<DoubleBitBinary>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values)
+IINField IAPDUHandler::ProcessHeader(const RangeHeader& /*header*/,
+                                     const ICollection<Indexed<BinaryOutputStatus>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Counter>>& values)
+IINField IAPDUHandler::ProcessHeader(const RangeHeader& /*header*/, const ICollection<Indexed<Counter>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<FrozenCounter>>& values)
+IINField IAPDUHandler::ProcessHeader(const RangeHeader& /*header*/,
+                                     const ICollection<Indexed<FrozenCounter>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Analog>>& values)
+IINField IAPDUHandler::ProcessHeader(const RangeHeader& /*header*/, const ICollection<Indexed<Analog>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values)
+IINField IAPDUHandler::ProcessHeader(const RangeHeader& /*header*/,
+                                     const ICollection<Indexed<AnalogOutputStatus>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values)
+IINField IAPDUHandler::ProcessHeader(const RangeHeader& /*header*/, const ICollection<Indexed<OctetString>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values)
+IINField IAPDUHandler::ProcessHeader(const RangeHeader& /*header*/,
+                                     const ICollection<Indexed<TimeAndInterval>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Group121Var1>>& values)
+IINField IAPDUHandler::ProcessHeader(const RangeHeader& /*header*/,
+                                     const ICollection<Indexed<Group121Var1>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
 /// ---- index prefixes -----
 
-IINField IAPDUHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Counter>>& values)
+IINField IAPDUHandler::ProcessHeader(const PrefixHeader& /*header*/, const ICollection<Indexed<Counter>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<FrozenCounter>>& values)
+IINField IAPDUHandler::ProcessHeader(const PrefixHeader& /*header*/,
+                                     const ICollection<Indexed<FrozenCounter>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values)
+IINField IAPDUHandler::ProcessHeader(const PrefixHeader& /*header*/, const ICollection<Indexed<Binary>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values)
+IINField IAPDUHandler::ProcessHeader(const PrefixHeader& /*header*/,
+                                     const ICollection<Indexed<BinaryOutputStatus>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values)
+IINField IAPDUHandler::ProcessHeader(const PrefixHeader& /*header*/,
+                                     const ICollection<Indexed<DoubleBitBinary>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Analog>>& values)
+IINField IAPDUHandler::ProcessHeader(const PrefixHeader& /*header*/, const ICollection<Indexed<Analog>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values)
+IINField IAPDUHandler::ProcessHeader(const PrefixHeader& /*header*/,
+                                     const ICollection<Indexed<AnalogOutputStatus>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<OctetString>>& values)
+IINField IAPDUHandler::ProcessHeader(const PrefixHeader& /*header*/,
+                                     const ICollection<Indexed<OctetString>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values)
+IINField IAPDUHandler::ProcessHeader(const PrefixHeader& /*header*/,
+                                     const ICollection<Indexed<TimeAndInterval>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryCommandEvent>>& values)
+IINField IAPDUHandler::ProcessHeader(const PrefixHeader& /*header*/,
+                                     const ICollection<Indexed<BinaryCommandEvent>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values)
+IINField IAPDUHandler::ProcessHeader(const PrefixHeader& /*header*/,
+                                     const ICollection<Indexed<AnalogCommandEvent>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values)
+IINField IAPDUHandler::ProcessHeader(const PrefixHeader& /*header*/,
+                                     const ICollection<Indexed<Group122Var1>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values)
+IINField IAPDUHandler::ProcessHeader(const PrefixHeader& /*header*/,
+                                     const ICollection<Indexed<Group122Var2>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
 //// --- controls ----
 
-IINField IAPDUHandler::ProcessHeader(const PrefixHeader& header,
-                                     const ICollection<Indexed<ControlRelayOutputBlock>>& values)
+IINField IAPDUHandler::ProcessHeader(const PrefixHeader& /*header*/,
+                                     const ICollection<Indexed<ControlRelayOutputBlock>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt16>>& values)
+IINField IAPDUHandler::ProcessHeader(const PrefixHeader& /*header*/,
+                                     const ICollection<Indexed<AnalogOutputInt16>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt32>>& values)
+IINField IAPDUHandler::ProcessHeader(const PrefixHeader& /*header*/,
+                                     const ICollection<Indexed<AnalogOutputInt32>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const PrefixHeader& header,
-                                     const ICollection<Indexed<AnalogOutputFloat32>>& values)
+IINField IAPDUHandler::ProcessHeader(const PrefixHeader& /*header*/,
+                                     const ICollection<Indexed<AnalogOutputFloat32>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const PrefixHeader& header,
-                                     const ICollection<Indexed<AnalogOutputDouble64>>& values)
+IINField IAPDUHandler::ProcessHeader(const PrefixHeader& /*header*/,
+                                     const ICollection<Indexed<AnalogOutputDouble64>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }

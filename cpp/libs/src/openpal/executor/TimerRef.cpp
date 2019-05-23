@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -36,52 +36,46 @@ bool TimerRef::IsActive() const
 
 MonotonicTimestamp TimerRef::ExpiresAt() const
 {
-    return pTimer ? pTimer->ExpiresAt() : MonotonicTimestamp::Max();
+    return pTimer != nullptr ? pTimer->ExpiresAt() : MonotonicTimestamp::Max();
 }
 
 bool TimerRef::Cancel()
 {
-    if (pTimer)
+    if (pTimer != nullptr)
     {
         pTimer->Cancel();
         pTimer = nullptr;
         return true;
     }
-    else
-    {
-        return false;
-    }
+
+    return false;
 }
 
 bool TimerRef::StartAction(const TimeDuration& timeout, const action_t& action)
 {
-    if (pTimer)
+    if (pTimer != nullptr)
     {
         return false;
     }
-    else
-    {
-        pTimer = pExecutor->Start(timeout, action);
-        return true;
-    }
+
+    pTimer = pExecutor->Start(timeout, action);
+    return true;
 }
 
 bool TimerRef::StartAction(const MonotonicTimestamp& expiration, const action_t& action)
 {
-    if (pTimer)
+    if (pTimer != nullptr)
     {
         return false;
     }
-    else
-    {
-        pTimer = pExecutor->Start(expiration, action);
-        return true;
-    }
+
+    pTimer = pExecutor->Start(expiration, action);
+    return true;
 }
 
 void TimerRef::RestartAction(const TimeDuration& timeout, const action_t& action)
 {
-    if (pTimer)
+    if (pTimer != nullptr)
     {
         pTimer->Cancel();
     }
@@ -91,7 +85,7 @@ void TimerRef::RestartAction(const TimeDuration& timeout, const action_t& action
 
 void TimerRef::RestartAction(const MonotonicTimestamp& expiration, const action_t& action)
 {
-    if (pTimer)
+    if (pTimer != nullptr)
     {
         pTimer->Cancel();
     }

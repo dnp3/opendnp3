@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -25,6 +25,8 @@
 #include "opendnp3/app/parsing/APDUParser.h"
 #include "opendnp3/master/CommandSetOps.h"
 #include "opendnp3/master/ICommandHeader.h"
+
+#include <utility>
 
 using namespace openpal;
 
@@ -65,13 +67,13 @@ CommandTask::CommandTask(const std::shared_ptr<TaskContext>& context,
                          CommandSet&& commands,
                          IndexQualifierMode mode,
                          IMasterApplication& app,
-                         const CommandCallbackT& callback,
+                         CommandCallbackT callback,
                          const openpal::MonotonicTimestamp& startExpiration,
                          const TaskConfig& config,
-                         openpal::Logger logger)
+                         const openpal::Logger& logger)
     : IMasterTask(context, app, TaskBehavior::SingleExecutionNoRetry(startExpiration), logger, config),
       statusResult(CommandStatus::UNDEFINED),
-      commandCallback(callback),
+      commandCallback(std::move(callback)),
       commands(std::move(commands)),
       mode(mode)
 {
@@ -110,7 +112,7 @@ IMasterTask::ResponseResult CommandTask::ProcessResponse(const APDUResponseHeade
     return ValidateSingleResponse(header) ? ProcessResponse(objects) : ResponseResult::ERROR_BAD_RESPONSE;
 }
 
-void CommandTask::OnTaskComplete(TaskCompletion result, MonotonicTimestamp now)
+void CommandTask::OnTaskComplete(TaskCompletion result, MonotonicTimestamp /*now*/)
 {
     CommandSetOps::InvokeCallback(commands, result, this->commandCallback);
 }
@@ -128,19 +130,17 @@ IMasterTask::ResponseResult CommandTask::ProcessResponse(const openpal::RSlice& 
         return (result == CommandSetOps::OperateResult::FAIL_PARSE) ? ResponseResult::ERROR_BAD_RESPONSE
                                                                     : ResponseResult::OK_FINAL;
     }
-    else
-    {
-        auto result = CommandSetOps::ProcessSelectResponse(commands, objects, &logger);
 
-        switch (result)
-        {
-        case (CommandSetOps::SelectResult::OK):
-            return ResponseResult::OK_REPEAT; // proceed to OPERATE
-        case (CommandSetOps::SelectResult::FAIL_SELECT):
-            return ResponseResult::OK_FINAL; // end the task, let the user examine each command point
-        default:
-            return ResponseResult::ERROR_BAD_RESPONSE;
-        }
+    auto result = CommandSetOps::ProcessSelectResponse(commands, objects, &logger);
+
+    switch (result)
+    {
+    case (CommandSetOps::SelectResult::OK):
+        return ResponseResult::OK_REPEAT; // proceed to OPERATE
+    case (CommandSetOps::SelectResult::FAIL_SELECT):
+        return ResponseResult::OK_FINAL; // end the task, let the user examine each command point
+    default:
+        return ResponseResult::ERROR_BAD_RESPONSE;
     }
 }
 

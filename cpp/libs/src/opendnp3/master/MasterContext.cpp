@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -33,6 +33,8 @@
 #include "opendnp3/objects/Group12.h"
 #include "opendnp3/objects/Group41.h"
 
+#include <utility>
+
 using namespace openpal;
 
 namespace opendnp3
@@ -40,19 +42,19 @@ namespace opendnp3
 MContext::MContext(const Addresses& addresses,
                    const openpal::Logger& logger,
                    const std::shared_ptr<openpal::IExecutor>& executor,
-                   const std::shared_ptr<ILowerLayer>& lower,
+                   std::shared_ptr<ILowerLayer> lower,
                    const std::shared_ptr<ISOEHandler>& SOEHandler,
                    const std::shared_ptr<IMasterApplication>& application,
-                   const std::shared_ptr<IMasterScheduler>& scheduler,
+                   std::shared_ptr<IMasterScheduler> scheduler,
                    const MasterParams& params)
     : logger(logger),
       executor(executor),
-      lower(lower),
+      lower(std::move(lower)),
       addresses(addresses),
       params(params),
       SOEHandler(SOEHandler),
       application(application),
-      scheduler(scheduler),
+      scheduler(std::move(scheduler)),
       responseTimer(*executor),
       tasks(params, logger, *application, *SOEHandler),
       txBuffer(params.maxTxFragSize),
@@ -160,7 +162,7 @@ void MContext::CompleteActiveTask()
     }
 }
 
-void MContext::OnParsedHeader(const RSlice& apdu, const APDUResponseHeader& header, const RSlice& objects)
+void MContext::OnParsedHeader(const RSlice& /*apdu*/, const APDUResponseHeader& header, const RSlice& objects)
 {
     // Note: this looks silly, but OnParsedHeader() is virtual and can be overriden to do SA
     this->ProcessAPDU(header, objects);

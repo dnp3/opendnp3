@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -71,8 +71,8 @@ private:
     IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& values) override;
 
     // Handle the CTO objects
-    IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var1>& cto) override;
-    IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var2>& cto) override;
+    IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var1>& values) override;
+    IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var2>& values) override;
 
     IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Binary>>& values) override;
     IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values) override;
@@ -127,9 +127,9 @@ private:
 
     void CheckForTxStart();
 
-    static SecurityStat Convert(const Group121Var1& value);
-    static SecurityStat Convert(const Group122Var1& value);
-    static SecurityStat Convert(const Group122Var2& value);
+    static SecurityStat Convert(const Group121Var1& meas);
+    static SecurityStat Convert(const Group122Var1& meas);
+    static SecurityStat Convert(const Group122Var2& meas);
 
     template<class T, class U> static Indexed<U> Convert(const Indexed<T>& input)
     {

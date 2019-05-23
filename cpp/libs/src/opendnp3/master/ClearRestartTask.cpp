@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -32,7 +32,7 @@ namespace opendnp3
 
 ClearRestartTask::ClearRestartTask(const std::shared_ptr<TaskContext>& context,
                                    IMasterApplication& application,
-                                   openpal::Logger logger)
+                                   const openpal::Logger& logger)
     : IMasterTask(context, application, TaskBehavior::ReactsToIINOnly(), logger, TaskConfig::Default())
 {
 }
@@ -44,7 +44,7 @@ bool ClearRestartTask::BuildRequest(APDURequest& request, uint8_t seq)
 }
 
 IMasterTask::ResponseResult ClearRestartTask::ProcessResponse(const APDUResponseHeader& response,
-                                                              const openpal::RSlice& objects)
+                                                              const openpal::RSlice& /*objects*/)
 {
     // we only care that the response to this has FIR/FIN
     if (ValidateSingleResponse(response))
@@ -56,10 +56,8 @@ IMasterTask::ResponseResult ClearRestartTask::ProcessResponse(const APDUResponse
                              "Clear restart task failed to clear restart bit, permanently disabling task");
             return ResponseResult::ERROR_BAD_RESPONSE;
         }
-        else
-        {
-            return ResponseResult::OK_FINAL;
-        }
+
+        return ResponseResult::OK_FINAL;
     }
     else
     {

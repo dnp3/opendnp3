@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -23,10 +23,12 @@
 namespace asiopal
 {
 
-MockTLSPair::MockTLSPair(
-    std::shared_ptr<MockIO> io, uint16_t port, const TLSConfig& client, const TLSConfig& server, std::error_code ec)
-    : log(),
-      io(io),
+MockTLSPair::MockTLSPair(const std::shared_ptr<MockIO>& io,
+                         uint16_t port,
+                         const TLSConfig& client,
+                         const TLSConfig& server,
+                         std::error_code ec)
+    : io(io),
       port(port),
       chandler(std::make_shared<MockTLSClientHandler>()),
       client(TLSClient::Create(log.logger, io->GetExecutor(), "127.0.0.1", client, ec)),

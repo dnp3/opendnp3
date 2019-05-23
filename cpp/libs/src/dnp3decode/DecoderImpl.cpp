@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -83,37 +83,37 @@ void DecoderImpl::DecodeAPDU(const openpal::RSlice& data)
         {
             logging::LogHeader(this->logger, flags::APP_HEADER_RX, result.header);
 
-            if (result.header.IIN.LSB & 0x01)
+            if ((result.header.IIN.LSB & 0x01) != 0)
                 SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.0 - All stations");
-            if (result.header.IIN.LSB & 0x02)
+            if ((result.header.IIN.LSB & 0x02) != 0)
                 SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.1 - Class 1 events");
-            if (result.header.IIN.LSB & 0x04)
+            if ((result.header.IIN.LSB & 0x04) != 0)
                 SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.2 - Class 2 events");
-            if (result.header.IIN.LSB & 0x08)
+            if ((result.header.IIN.LSB & 0x08) != 0)
                 SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.3 - Class 3 events");
-            if (result.header.IIN.LSB & 0x10)
+            if ((result.header.IIN.LSB & 0x10) != 0)
                 SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.4 - Need time");
-            if (result.header.IIN.LSB & 0x20)
+            if ((result.header.IIN.LSB & 0x20) != 0)
                 SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.5 - Local control");
-            if (result.header.IIN.LSB & 0x40)
+            if ((result.header.IIN.LSB & 0x40) != 0)
                 SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.6 - Device trouble");
-            if (result.header.IIN.LSB & 0x80)
+            if ((result.header.IIN.LSB & 0x80) != 0)
                 SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.7 - Device restart");
-            if (result.header.IIN.MSB & 0x01)
+            if ((result.header.IIN.MSB & 0x01) != 0)
                 SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.0 - Function code not supported");
-            if (result.header.IIN.MSB & 0x02)
+            if ((result.header.IIN.MSB & 0x02) != 0)
                 SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.1 - Object unknown");
-            if (result.header.IIN.MSB & 0x04)
+            if ((result.header.IIN.MSB & 0x04) != 0)
                 SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.2 - Parameter error");
-            if (result.header.IIN.MSB & 0x08)
+            if ((result.header.IIN.MSB & 0x08) != 0)
                 SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.3 - Event buffer overflow");
-            if (result.header.IIN.MSB & 0x10)
+            if ((result.header.IIN.MSB & 0x10) != 0)
                 SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.4 - Already executing");
-            if (result.header.IIN.MSB & 0x20)
+            if ((result.header.IIN.MSB & 0x20) != 0)
                 SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.5 - Configuration corrupt");
-            if (result.header.IIN.MSB & 0x40)
+            if ((result.header.IIN.MSB & 0x40) != 0)
                 SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.6 - Reserved 1");
-            if (result.header.IIN.MSB & 0x80)
+            if ((result.header.IIN.MSB & 0x80) != 0)
                 SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN2.7 - Reserved 2");
 
             Indent i(*callbacks);

@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -24,16 +24,16 @@
 
 #include "opendnp3/LogLevels.h"
 
+#include <utility>
+
 using namespace openpal;
 using namespace opendnp3;
 
 namespace asiodnp3
 {
 
-IOHandler::IOHandler(const openpal::Logger& logger,
-                     bool close_existing,
-                     const std::shared_ptr<IChannelListener>& listener)
-    : close_existing(close_existing), logger(logger), listener(listener), parser(logger)
+IOHandler::IOHandler(const openpal::Logger& logger, bool close_existing, std::shared_ptr<IChannelListener> listener)
+    : close_existing(close_existing), logger(logger), listener(std::move(listener)), parser(logger)
 {
 }
 
@@ -101,7 +101,7 @@ void IOHandler::BeginTransmit(const std::shared_ptr<opendnp3::ILinkSession>& ses
 {
     if (this->channel)
     {
-        this->txQueue.push_back(Transmission(data, session));
+        this->txQueue.emplace_back(data, session);
         this->CheckForSend();
     }
     else
@@ -124,7 +124,7 @@ bool IOHandler::AddContext(const std::shared_ptr<opendnp3::ILinkSession>& sessio
         return false;
     }
 
-    sessions.push_back(Session(session, route)); // record is always disabled by default
+    sessions.emplace_back(session, route); // record is always disabled by default
 
     return true;
 }
@@ -246,12 +246,9 @@ bool IOHandler::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& u
     {
         return true;
     }
-    else
-    {
-        FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Frame w/ unknown route, source: %i, dest %i", header.src,
-                         header.dest);
-        return false;
-    }
+
+    FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Frame w/ unknown route, source: %i, dest %i", header.src, header.dest);
+    return false;
 }
 
 void IOHandler::BeginRead()
@@ -268,7 +265,7 @@ void IOHandler::CheckForSend()
     this->channel->BeginWrite(this->txQueue.front().txdata);
 }
 
-bool IOHandler::SendToSession(const opendnp3::Route& route,
+bool IOHandler::SendToSession(const opendnp3::Route& /*route*/,
                               const opendnp3::LinkHeaderFields& header,
                               const openpal::RSlice& userdata)
 {

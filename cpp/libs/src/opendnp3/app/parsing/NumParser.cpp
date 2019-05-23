@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -45,10 +45,8 @@ ParseResult NumParser::ParseCount(openpal::RSlice& buffer, uint16_t& count, open
             SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "count of 0");
             return ParseResult::COUNT_OF_ZERO;
         }
-        else
-        {
-            return ParseResult::OK;
-        }
+
+        return ParseResult::OK;
     }
     else
     {
@@ -64,21 +62,17 @@ ParseResult NumParser::ParseRange(openpal::RSlice& buffer, Range& range, openpal
         SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for start / stop");
         return ParseResult::NOT_ENOUGH_DATA_FOR_RANGE;
     }
-    else
-    {
-        range.start = this->ReadNum(buffer);
-        range.stop = this->ReadNum(buffer);
 
-        if (range.IsValid())
-        {
-            return ParseResult::OK;
-        }
-        else
-        {
-            FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "start (%u) > stop (%u)", range.start, range.stop);
-            return ParseResult::BAD_START_STOP;
-        }
+    range.start = this->ReadNum(buffer);
+    range.stop = this->ReadNum(buffer);
+
+    if (range.IsValid())
+    {
+        return ParseResult::OK;
     }
+
+    FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "start (%u) > stop (%u)", range.start, range.stop);
+    return ParseResult::BAD_START_STOP;
 }
 
 uint16_t NumParser::ReadNum(openpal::RSlice& buffer) const
@@ -92,11 +86,9 @@ bool NumParser::Read(uint16_t& num, openpal::RSlice& buffer) const
     {
         return false;
     }
-    else
-    {
-        num = pReadFun(buffer);
-        return true;
-    }
+
+    num = pReadFun(buffer);
+    return true;
 }
 
 uint16_t NumParser::ReadByte(openpal::RSlice& buffer)

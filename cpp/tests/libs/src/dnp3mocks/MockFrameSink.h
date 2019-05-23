@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -46,9 +46,9 @@ public:
 
     void Reset();
 
-    bool CheckLast(LinkFunction aCode, bool aIsMaster, uint16_t aDest, uint16_t aSrc);
-    bool CheckLastWithFCB(LinkFunction aCode, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc);
-    bool CheckLastWithDFC(LinkFunction aCode, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
+    bool CheckLast(LinkFunction func, bool aIsMaster, uint16_t aDest, uint16_t aSrc);
+    bool CheckLastWithFCB(LinkFunction func, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc);
+    bool CheckLastWithDFC(LinkFunction func, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
 
     // Last frame information
     size_t m_num_frames;
@@ -58,7 +58,7 @@ public:
 
     // Add a function to execute the next time a frame is received
     // This allows us to test re-entrant behaviors
-    void AddAction(std::function<void()> fun);
+    void AddAction(const std::function<void()>& fun);
 
     DataSink received;
 

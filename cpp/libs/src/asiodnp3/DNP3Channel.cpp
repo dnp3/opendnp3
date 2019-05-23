@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -27,6 +27,8 @@
 #include "opendnp3/LogLevels.h"
 #include "opendnp3/master/MasterSchedulerBackend.h"
 
+#include <utility>
+
 using namespace openpal;
 using namespace asiopal;
 using namespace opendnp3;
@@ -36,15 +38,15 @@ namespace asiodnp3
 
 DNP3Channel::DNP3Channel(const Logger& logger,
                          const std::shared_ptr<asiopal::Executor>& executor,
-                         const std::shared_ptr<IOHandler>& iohandler,
-                         const std::shared_ptr<asiopal::IResourceManager>& manager)
+                         std::shared_ptr<IOHandler> iohandler,
+                         std::shared_ptr<asiopal::IResourceManager> manager)
     :
 
       logger(logger),
       executor(executor),
       scheduler(std::make_shared<MasterSchedulerBackend>(executor)),
-      iohandler(iohandler),
-      manager(manager),
+      iohandler(std::move(iohandler)),
+      manager(std::move(manager)),
       resources(ResourceManager::Create())
 {
 }

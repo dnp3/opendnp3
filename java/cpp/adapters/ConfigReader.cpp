@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -48,11 +48,11 @@ MasterParams ConfigReader::ConvertMasterConfig(JNIEnv* env, jobject jcfg)
     cfg.responseTimeout = TimeDuration::Milliseconds(dur.toMillis(env, config.getresponseTimeout(env, jcfg)));
     cfg.timeSyncMode
         = static_cast<TimeSyncMode>(jni::JCache::TimeSyncMode.toType(env, config.gettimeSyncMode(env, jcfg)));
-    cfg.disableUnsolOnStartup = !!config.getdisableUnsolOnStartup(env, jcfg);
-    cfg.ignoreRestartIIN = !!config.getignoreRestartIIN(env, jcfg);
+    cfg.disableUnsolOnStartup = !(config.getdisableUnsolOnStartup(env, jcfg) == 0u);
+    cfg.ignoreRestartIIN = !(config.getignoreRestartIIN(env, jcfg) == 0u);
     cfg.unsolClassMask = ConvertClassField(env, config.getunsolClassMask(env, jcfg));
     cfg.startupIntegrityClassMask = ConvertClassField(env, config.getstartupIntegrityClassMask(env, jcfg));
-    cfg.integrityOnEventOverflowIIN = !!config.getintegrityOnEventOverflowIIN(env, jcfg);
+    cfg.integrityOnEventOverflowIIN = !(config.getintegrityOnEventOverflowIIN(env, jcfg) == 0u);
     cfg.taskRetryPeriod = TimeDuration::Milliseconds(dur.toMillis(env, config.gettaskRetryPeriod(env, jcfg)));
     cfg.taskStartTimeout = TimeDuration::Milliseconds(dur.toMillis(env, config.gettaskStartTimeout(env, jcfg)));
     cfg.maxTxFragSize = config.getmaxTxFragSize(env, jcfg);
@@ -69,8 +69,8 @@ LinkConfig ConfigReader::ConvertLinkConfig(JNIEnv* env, jobject jlinkcfg)
 
     auto& ref = jni::JCache::LinkLayerConfig;
 
-    cfg.IsMaster = !!ref.getisMaster(env, jlinkcfg);
-    cfg.UseConfirms = !!ref.getuseConfirms(env, jlinkcfg);
+    cfg.IsMaster = !(ref.getisMaster(env, jlinkcfg) == 0u);
+    cfg.UseConfirms = !(ref.getuseConfirms(env, jlinkcfg) == 0u);
     cfg.NumRetry = ref.getnumRetry(env, jlinkcfg);
     cfg.LocalAddr = static_cast<uint16_t>(ref.getlocalAddr(env, jlinkcfg));
     cfg.RemoteAddr = static_cast<uint16_t>(ref.getremoteAddr(env, jlinkcfg));
@@ -138,7 +138,7 @@ opendnp3::OutstationParams ConfigReader::ConvertOutstationConfig(JNIEnv* env, jo
     config.unsolRetryTimeout = ConvertDuration(env, cfg.getunsolRetryTimeout(env, jconfig));
     config.maxTxFragSize = cfg.getmaxTxFragSize(env, jconfig);
     config.maxRxFragSize = cfg.getmaxRxFragSize(env, jconfig);
-    config.allowUnsolicited = !!cfg.getallowUnsolicited(env, jconfig);
+    config.allowUnsolicited = !(cfg.getallowUnsolicited(env, jconfig) == 0u);
 
     return config;
 }

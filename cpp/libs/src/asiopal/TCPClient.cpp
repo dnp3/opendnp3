@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -22,17 +22,17 @@
 
 #include "asiopal/SocketHelpers.h"
 
+#include <utility>
+
 namespace asiopal
 {
 
-TCPClient::TCPClient(const openpal::Logger& logger,
-                     const std::shared_ptr<Executor>& executor,
-                     const std::string& adapter)
+TCPClient::TCPClient(const openpal::Logger& logger, const std::shared_ptr<Executor>& executor, std::string adapter)
     : condition(logger),
       executor(executor),
-      adapter(adapter),
+      adapter(std::move(adapter)),
       socket(executor->strand.get_io_context()),
-      localEndpoint(),
+
       resolver(executor->strand.get_io_context())
 {
 }
@@ -83,20 +83,18 @@ bool TCPClient::BeginConnect(const IPEndpoint& remote, const connect_callback_t&
 
         return true;
     }
-    else
-    {
-        asio::ip::tcp::endpoint remoteEndpoint(address, remote.port);
-        auto cb = [self, callback](const std::error_code& ec) {
-            self->connecting = false;
-            if (!self->canceled)
-            {
-                callback(self->executor, std::move(self->socket), ec);
-            }
-        };
 
-        socket.async_connect(remoteEndpoint, executor->strand.wrap(cb));
-        return true;
-    }
+    asio::ip::tcp::endpoint remoteEndpoint(address, remote.port);
+    auto cb = [self, callback](const std::error_code& ec) {
+        self->connecting = false;
+        if (!self->canceled)
+        {
+            callback(self->executor, std::move(self->socket), ec);
+        }
+    };
+
+    socket.async_connect(remoteEndpoint, executor->strand.wrap(cb));
+    return true;
 }
 
 void TCPClient::HandleResolveResult(const connect_callback_t& callback,

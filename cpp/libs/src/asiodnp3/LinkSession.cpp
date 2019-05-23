@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -25,6 +25,8 @@
 #include "opendnp3/LogLevels.h"
 #include "opendnp3/master/MasterSchedulerBackend.h"
 
+#include <utility>
+
 using namespace openpal;
 using namespace asiopal;
 using namespace opendnp3;
@@ -34,13 +36,13 @@ namespace asiodnp3
 
 LinkSession::LinkSession(const openpal::Logger& logger,
                          uint64_t sessionid,
-                         const std::shared_ptr<IResourceManager>& manager,
-                         const std::shared_ptr<IListenCallbacks>& callbacks,
+                         std::shared_ptr<IResourceManager> manager,
+                         std::shared_ptr<IListenCallbacks> callbacks,
                          const std::shared_ptr<asiopal::IAsyncChannel>& channel)
     : logger(logger),
       session_id(sessionid),
-      manager(manager),
-      callbacks(callbacks),
+      manager(std::move(manager)),
+      callbacks(std::move(callbacks)),
       channel(channel),
       parser(logger),
       first_frame_timer(*channel->executor)
@@ -97,7 +99,7 @@ void LinkSession::OnReadComplete(const std::error_code& ec, size_t num)
     }
 }
 
-void LinkSession::OnWriteComplete(const std::error_code& ec, size_t num)
+void LinkSession::OnWriteComplete(const std::error_code& ec, size_t /*num*/)
 {
     if (ec)
     {
@@ -110,7 +112,7 @@ void LinkSession::OnWriteComplete(const std::error_code& ec, size_t num)
     }
 }
 
-void LinkSession::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& session)
+void LinkSession::BeginTransmit(const openpal::RSlice& buffer, opendnp3::ILinkSession& /*session*/)
 {
     this->channel->BeginWrite(buffer);
 }

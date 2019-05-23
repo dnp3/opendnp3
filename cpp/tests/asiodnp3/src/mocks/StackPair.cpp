@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -27,6 +27,7 @@
 #include <exception>
 #include <iostream>
 #include <sstream>
+#include <utility>
 
 using namespace opendnp3;
 
@@ -204,10 +205,10 @@ std::shared_ptr<IMaster> StackPair::CreateMaster(uint32_t levels,
                                                  std::shared_ptr<opendnp3::ISOEHandler> soehandler,
                                                  std::shared_ptr<IChannelListener> listener)
 {
-    auto channel = manager.AddTCPClient(GetId("client", port).c_str(), levels, asiopal::ChannelRetry::Default(),
-                                        "127.0.0.1", "127.0.0.1", port, listener);
+    auto channel = manager.AddTCPClient(GetId("client", port), levels, asiopal::ChannelRetry::Default(), "127.0.0.1",
+                                        "127.0.0.1", port, std::move(listener));
 
-    return channel->AddMaster(GetId("master", port).c_str(), soehandler, DefaultMasterApplication::Create(),
+    return channel->AddMaster(GetId("master", port), std::move(soehandler), DefaultMasterApplication::Create(),
                               GetMasterStackConfig(timeout));
 }
 
@@ -219,10 +220,10 @@ std::shared_ptr<IOutstation> StackPair::CreateOutstation(uint32_t levels,
                                                          uint16_t eventBufferSize,
                                                          std::shared_ptr<IChannelListener> listener)
 {
-    auto channel = manager.AddTCPServer(GetId("server", port).c_str(), levels, ServerAcceptMode::CloseExisting,
-                                        "127.0.0.1", port, listener);
+    auto channel = manager.AddTCPServer(GetId("server", port), levels, ServerAcceptMode::CloseExisting, "127.0.0.1",
+                                        port, std::move(listener));
 
-    return channel->AddOutstation(GetId("outstation", port).c_str(), opendnp3::SuccessCommandHandler::Create(),
+    return channel->AddOutstation(GetId("outstation", port), opendnp3::SuccessCommandHandler::Create(),
                                   opendnp3::DefaultOutstationApplication::Create(),
                                   GetOutstationStackConfig(numPointsPerType, eventBufferSize, timeout));
 }

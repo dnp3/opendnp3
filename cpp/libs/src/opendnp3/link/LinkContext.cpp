@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -26,6 +26,8 @@
 #include "opendnp3/link/PriLinkLayerStates.h"
 #include "opendnp3/link/SecLinkLayerStates.h"
 
+#include <utility>
+
 using namespace openpal;
 
 namespace opendnp3
@@ -33,8 +35,8 @@ namespace opendnp3
 
 LinkContext::LinkContext(const openpal::Logger& logger,
                          const std::shared_ptr<openpal::IExecutor>& executor,
-                         const std::shared_ptr<IUpperLayer>& upper,
-                         const std::shared_ptr<opendnp3::ILinkListener>& listener,
+                         std::shared_ptr<IUpperLayer> upper,
+                         std::shared_ptr<opendnp3::ILinkListener> listener,
                          ILinkSession& session,
                          const LinkLayerConfig& config)
     : logger(logger),
@@ -53,8 +55,8 @@ LinkContext::LinkContext(const openpal::Logger& logger,
       lastMessageTimestamp(executor->GetTime()),
       pPriState(&PLLS_Idle::Instance()),
       pSecState(&SLLS_NotReset::Instance()),
-      listener(listener),
-      upper(upper),
+      listener(std::move(listener)),
+      upper(std::move(upper)),
       pSession(&session)
 {
 }
@@ -117,7 +119,7 @@ bool LinkContext::SetTxSegment(ITransportSegment& segments)
         return false;
     }
 
-    if (this->pSegments)
+    if (this->pSegments != nullptr)
     {
         SIMPLE_LOG_BLOCK(this->logger, flags::ERR, "Already transmitting a segment");
         return false;
@@ -241,10 +243,8 @@ bool LinkContext::Retry()
         --numRetryRemaining;
         return true;
     }
-    else
-    {
-        return false;
-    }
+
+    return false;
 }
 
 void LinkContext::PushDataUp(const Message& message)
@@ -268,7 +268,7 @@ void LinkContext::TryStartTransmission()
         this->pPriState = &pPriState->TrySendRequestLinkStatus(*this);
     }
 
-    if (this->pSegments)
+    if (this->pSegments != nullptr)
     {
         this->pPriState = (this->config.UseConfirms) ? &pPriState->TrySendConfirmed(*this, *pSegments)
                                                      : &pPriState->TrySendUnconfirmed(*this, *pSegments);

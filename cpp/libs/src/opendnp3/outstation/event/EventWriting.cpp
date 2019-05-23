@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -41,10 +41,8 @@ uint32_t EventWriting::Write(EventLists& lists, IEventWriteHandler& handler)
         {
             return total_num_written;
         }
-        else
-        {
-            total_num_written += num_written;
-        }
+
+        total_num_written += num_written;
     }
 }
 
@@ -53,7 +51,7 @@ EventRecord* EventWriting::FindNextSelected(event_iter_t& iter, EventType type)
     while (true)
     {
         auto current = iter.CurrentValue();
-        if (!current)
+        if (current == nullptr)
             return nullptr;
 
         if (current->state == EventState::selected)
@@ -61,10 +59,8 @@ EventRecord* EventWriting::FindNextSelected(event_iter_t& iter, EventType type)
             // we terminate here since the type has changed
             return current->type->IsEqual(type) ? current : nullptr;
         }
-        else
-        {
-            iter.Next();
-        }
+
+        iter.Next();
     }
 }
 
@@ -76,7 +72,7 @@ uint16_t EventWriting::WriteSome(event_iter_t& iterator, EventLists& lists, IEve
 
     const auto value = iterator.Find([](const EventRecord& record) { return record.state == EventState::selected; });
 
-    if (!value)
+    if (value == nullptr)
         return 0; // no match
 
     return value->type->WriteSome(iterator, lists, handler);

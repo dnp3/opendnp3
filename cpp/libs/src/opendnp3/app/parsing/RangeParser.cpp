@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -61,14 +61,12 @@ ParseResult RangeParser::ParseHeader(openpal::RSlice& buffer,
     {
         return ParseRangeOfObjects(buffer, record, range, pLogger, pHandler);
     }
-    else
+
+    if (pHandler != nullptr)
     {
-        if (pHandler)
-        {
-            pHandler->OnHeader(RangeHeader(record, range));
-        }
-        return ParseResult::OK;
+        pHandler->OnHeader(RangeHeader(record, range));
     }
+    return ParseResult::OK;
 }
 
 ParseResult RangeParser::Process(const HeaderRecord& record,
@@ -81,15 +79,13 @@ ParseResult RangeParser::Process(const HeaderRecord& record,
         SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for specified objects");
         return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
     }
-    else
+
+    if (pHandler != nullptr)
     {
-        if (pHandler)
-        {
-            handler(record, range, buffer, *pHandler);
-        }
-        buffer.Advance(requiredSize);
-        return ParseResult::OK;
+        handler(record, range, buffer, *pHandler);
     }
+    buffer.Advance(requiredSize);
+    return ParseResult::OK;
 }
 
 #define MACRO_PARSE_OBJECTS_WITH_RANGE(descriptor)                                                                     \
@@ -175,24 +171,22 @@ ParseResult RangeParser::ParseRangeOfOctetData(openpal::RSlice& buffer,
             SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for specified octet objects");
             return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
         }
-        else
+
+        if (pHandler != nullptr)
         {
-            if (pHandler)
-            {
-                auto read = [range, record](openpal::RSlice& buffer, uint32_t pos) -> Indexed<OctetString> {
-                    OctetString octets(buffer.Take(record.variation));
-                    buffer.Advance(record.variation);
-                    return WithIndex(octets, range.start + pos);
-                };
+            auto read = [range, record](openpal::RSlice& buffer, uint32_t pos) -> Indexed<OctetString> {
+                OctetString octets(buffer.Take(record.variation));
+                buffer.Advance(record.variation);
+                return WithIndex(octets, range.start + pos);
+            };
 
-                auto collection = CreateBufferedCollection<Indexed<OctetString>>(buffer, COUNT, read);
+            auto collection = CreateBufferedCollection<Indexed<OctetString>>(buffer, COUNT, read);
 
-                pHandler->OnHeader(RangeHeader(record, range), collection);
-            }
-
-            buffer.Advance(size);
-            return ParseResult::OK;
+            pHandler->OnHeader(RangeHeader(record, range), collection);
         }
+
+        buffer.Advance(size);
+        return ParseResult::OK;
     }
     else
     {

@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -24,6 +24,8 @@
 
 #include <asiopal/SteadyClock.h>
 
+#include <utility>
+
 using namespace std;
 using namespace std::chrono;
 using namespace openpal;
@@ -38,8 +40,8 @@ ThreadPool::ThreadPool(const openpal::Logger& logger,
                        std::function<void()> onThreadExit)
     : logger(logger),
       io(io),
-      onThreadStart(onThreadStart),
-      onThreadExit(onThreadExit),
+      onThreadStart(std::move(std::move(onThreadStart))),
+      onThreadExit(std::move(std::move(onThreadExit))),
       isShutdown(false),
       infiniteTimer(io->service)
 {

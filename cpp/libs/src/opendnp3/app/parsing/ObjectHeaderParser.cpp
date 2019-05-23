@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -39,13 +39,11 @@ ParseResult ObjectHeaderParser::ParseObjectHeader(ObjectHeader& header, RSlice& 
         SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for header");
         return ParseResult::NOT_ENOUGH_DATA_FOR_HEADER;
     }
-    else
-    {
-        header.group = UInt8::ReadBuffer(buffer);
-        header.variation = UInt8::ReadBuffer(buffer);
-        header.qualifier = UInt8::ReadBuffer(buffer);
-        return ParseResult::OK;
-    }
+
+    header.group = UInt8::ReadBuffer(buffer);
+    header.variation = UInt8::ReadBuffer(buffer);
+    header.qualifier = UInt8::ReadBuffer(buffer);
+    return ParseResult::OK;
 }
 
 bool ObjectHeaderParser::ReadFirstGroupVariation(const openpal::RSlice& objects, GroupVariation& gv)
