@@ -1,5 +1,8 @@
 
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/AssemblyInfo.cpp "[assembly:System::Reflection::AssemblyVersion(\"${opendnp3_VERSION}\")];")
+
 add_library(DNP3CLRAdapter SHARED
+${CMAKE_CURRENT_BINARY_DIR}/AssemblyInfo.cpp
 src/CallbackAdapters.cpp
 src/CallbackAdapters.h
 src/ChangeSetAdapter.cpp
