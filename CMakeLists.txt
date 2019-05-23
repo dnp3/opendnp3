@@ -28,6 +28,7 @@ option(DNP3_JAVA "Build the Java bindings" OFF)
 option(DNP3_FUZZING "Build the OSSFuzz integration" OFF)
 if(WIN32)
   option(DNP3_DOTNET "Build the .NET bindings" OFF)
+  set(DNP3_DOTNET_FRAMEWORK_VERSION "v4.5" CACHE STRING "The target .NET framework version for the .NET components")
 endif()
 
 # other options off-by-default that you can enable
@@ -302,8 +303,9 @@ if(DNP3_FUZZING)
 endif()
 
 if(WIN32 AND DNP3_DOTNET)
-  # TODO - get this from environment or command line?
-  set(CLR_VERSION "v4.5.2")
+
+  message("The .NET framework version is: ${DNP3_DOTNET_FRAMEWORK_VERSION}")
+
   add_subdirectory(./dotnet/CLRInterface)
   add_subdirectory(./dotnet/CLRAdapter)
 
@@ -313,6 +315,7 @@ if(WIN32 AND DNP3_DOTNET)
     add_subdirectory(./dotnet/examples/master-gprs-tls)
     add_subdirectory(./dotnet/examples/outstation)
   endif()
+
 endif()
 
 # ----- Formating -----
