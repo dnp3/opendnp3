@@ -42,16 +42,15 @@ function(define_clang_tidy)
     if(CLANG_TIDY_EXE)
         get_property(all_tidy_files GLOBAL PROPERTY CLANG_TIDY_FILES)
 
-        #set(commands)
-        #foreach(file ${all_tidy_files})
-        #    list(APPEND commands COMMAND ${CLANG_TIDY_EXE} -fix -p ${CMAKE_BINARY_DIR} ${file})
-        #endforeach()
+        set(commands)
+        foreach(file ${all_tidy_files})
+            list(APPEND commands COMMAND ${CLANG_TIDY_EXE} -fix -p ${CMAKE_BINARY_DIR} ${file})
+        endforeach()
 
         message(STATUS ${CMAKE_BINARY_DIR})
         list(LENGTH all_tidy_files num_files)
         add_custom_target(clang-tidy
-            #${commands}
-            COMMAND ${CLANG_TIDY_EXE} -fix -p ${CMAKE_BINARY_DIR} ${all_tidy_files}
+            ${commands}
             COMMENT "Applying clang-tidy fixes on ${num_files} files"
         )
     endif()
