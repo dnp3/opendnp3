@@ -47,7 +47,7 @@ namespace Automatak.DNP3.Interface
 
         public UInt16 RequestIndex
         {
-            get { return RequestIndex; }
+            get { return requestIndex; }
         }
 
         public CommandPointState PointState
