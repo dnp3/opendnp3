@@ -103,6 +103,7 @@ public:
      * Update an octet string value
      * @param meas measurement to be processed
      * @param index index of the measurement
+     * @param mode Describes how event generation is handled for this method
      * @return true if the value exists and it was updated
      */
     virtual bool Update(const OctetString& meas, uint16_t index, EventMode mode = EventMode::Detect) = 0;
