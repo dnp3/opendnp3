@@ -115,7 +115,7 @@ add_library(opendnp3 ${LIB_TYPE} ${opendnp3_SRC})
 target_link_libraries(opendnp3 openpal)
 install(TARGETS opendnp3 DESTINATION lib)
 set_target_properties(opendnp3 PROPERTIES FOLDER cpp/libs VERSION ${OPENDNP3_VERSION} SOVERSION ${OPENDNP3_MAJOR_VERSION})
-clang_format(opendnp3 EXCLUDES ".*/gen/.*")
+clang_format(opendnp3 EXCLUDES ".*/gen/.*" ".*/objects/.*")
 clang_tidy(opendnp3)
 
 if(DNP3_DECODER)
