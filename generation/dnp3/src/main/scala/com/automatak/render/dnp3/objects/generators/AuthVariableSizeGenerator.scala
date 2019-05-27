@@ -35,7 +35,7 @@ object AuthVariableSizeGenerator {
 
     def getFieldString(x: FixedSizeField): String = "%s %s;".format(x.cppType, x.name)
 
-    def getVariableFieldString(name: String): String = "openpal::RSlice %s;".format(name)
+    def getVariableFieldString(name: String): String = "ser4cpp::rseq_t %s;".format(name)
 
     def members: Iterator[String] =  {
       x.fixedFields.map(f => getFieldString(f)).iterator ++
@@ -66,9 +66,9 @@ object AuthVariableSizeGenerator {
 
     def sizeSignature: Iterator[String] = Iterator("virtual uint32_t Size() const override final;")
 
-    def readSignature: Iterator[String] = Iterator("virtual bool Read(const openpal::RSlice&) override final;")
+    def readSignature: Iterator[String] = Iterator("virtual bool Read(const ser4cpp::rseq_t&) override final;")
 
-    def writeSignature: Iterator[String] = Iterator("virtual bool Write(openpal::WSlice&) const override final;")
+    def writeSignature: Iterator[String] = Iterator("virtual bool Write(ser4cpp::wseq_t&) const override final;")
 
     space ++
     Id ++
@@ -119,9 +119,9 @@ object AuthVariableSizeGenerator {
       Iterator("{}")
     }
 
-    def readSignature: Iterator[String] = Iterator("bool %s::Read(const RSlice& buffer)".format(x.name))
+    def readSignature: Iterator[String] = Iterator("bool %s::Read(const rseq_t& buffer)".format(x.name))
 
-    def writeSignature: Iterator[String] = Iterator("bool %s::Write(openpal::WSlice& buffer) const".format(x.name))
+    def writeSignature: Iterator[String] = Iterator("bool %s::Write(ser4cpp::wseq_t& buffer) const".format(x.name))
 
     def fieldParams(name: String) : String = {
       x.fixedFields.map(f => f.name).map(s => "%s.%s".format(name,s)).mkString(", ")
@@ -129,7 +129,7 @@ object AuthVariableSizeGenerator {
 
     def variableFields: List[VariableField] = x.lengthFields ::: x.remainder.toList
 
-    def variableFieldSizeSumation: String = variableFields.map(f => "%s.Size()".format(f.name)).mkString(" + ")
+    def variableFieldSizeSumation: String = variableFields.map(f => "%s.length()".format(f.name)).mkString(" + ")
 
     def sizeFunction: Iterator[String] = Iterator("uint32_t %s::Size() const".format(x.name)) ++ bracket {
       Iterator("return MIN_SIZE + %s;".format(variableFieldSizeSumation))
@@ -137,27 +137,32 @@ object AuthVariableSizeGenerator {
 
     def readFunction: Iterator[String] = {
 
-      def minSizeBailout = bailoutIf("buffer.Size() < %s::MIN_SIZE".format(x.name))
+      def minSizeBailout = bailoutIf("buffer.length() < %s::MIN_SIZE".format(x.name))
 
-      def copy = Iterator("RSlice copy(buffer); //mutable copy for parsing")
+      def copy = Iterator("rseq_t copy(buffer); //mutable copy for parsing")
 
       def fixedReads : Iterator[String] = {
 
-        def toNumericReadOp(fs: FixedSizeField) : String = {
-          "this->%s = %s::ReadBuffer(copy);".format(fs.name, FixedSizeHelpers.getCppFieldTypeParser(fs.typ))
+        def toNumericReadOp(fs: FixedSizeField) : Iterator[String] = {
+          Iterator("%s::read_from(copy, this->%s);".format(FixedSizeHelpers.getCppFieldTypeParser(fs.typ), fs.name))
         }
 
-        def toEnumReadOp(fs: FixedSizeField, e: EnumFieldType) : String = {
-          "this->%s = %sFromType(UInt8::ReadBuffer(copy));".format(fs.name, e.model.name)
+        def toEnumReadOp(fs: FixedSizeField, e: EnumFieldType) : Iterator[String] = {
+          val rawValueName = fs.name ++ "RawValue"
+          Iterator(
+            "uint8_t %s;".format(rawValueName),
+            "UInt8::read_from(copy, %s);".format(rawValueName),
+            "this->%s = %sFromType(%s);".format(fs.name, e.model.name, rawValueName)
+          )
         }
 
 
-        def toReadOp(fs: FixedSizeField) : String = fs.typ match {
+        def toReadOp(fs: FixedSizeField) : Iterator[String] = fs.typ match {
           case x : EnumFieldType => toEnumReadOp(fs, x)
           case _ => toNumericReadOp(fs)
         }
 
-        if(x.fixedFields.isEmpty) Iterator.empty else x.fixedFields.map(toReadOp).iterator ++ space
+        if(x.fixedFields.isEmpty) Iterator.empty else x.fixedFields.flatMap(toReadOp).iterator ++ space
       }
 
       def prefixedRead(x : List[VariableField]) : Iterator[String] =  {
@@ -171,7 +176,7 @@ object AuthVariableSizeGenerator {
         case None => {
           comment("object does not have a remainder field so it should be fully consumed") ++
           comment("The header length disagrees with object encoding so abort") ++
-          bailoutIf("copy.IsNotEmpty()")
+          bailoutIf("copy.is_not_empty()")
         }
       }
 
@@ -199,7 +204,7 @@ object AuthVariableSizeGenerator {
 
     def writeFunction: Iterator[String] = {
 
-      def minSizeBailout = "this->Size() > buffer.Size()"
+      def minSizeBailout = "this->Size() > buffer.length()"
 
       def uint16Bailouts : Iterator[String] = if(x.lengthFields.isEmpty) Iterator.empty
       else
@@ -214,11 +219,11 @@ object AuthVariableSizeGenerator {
       def fixedWrites : Iterator[String] = {
 
         def toNumericWriteOp(fs: FixedSizeField) : String = {
-          "%s::WriteBuffer(buffer, this->%s);".format(FixedSizeHelpers.getCppFieldTypeParser(fs.typ), fs.name)
+          "%s::write_to(buffer, this->%s);".format(FixedSizeHelpers.getCppFieldTypeParser(fs.typ), fs.name)
         }
 
         def toEnumWriteOp(fs: FixedSizeField, e: EnumFieldType) : String = {
-          "UInt8::WriteBuffer(buffer, %sToType(this->%s));".format(e.model.name, fs.name)
+          "UInt8::write_to(buffer, %sToType(this->%s));".format(e.model.name, fs.name)
         }
 
         def toWriteOp(fs: FixedSizeField) : String = fs.typ match {
@@ -235,7 +240,7 @@ object AuthVariableSizeGenerator {
       }
 
       def remainderWrite: Iterator[String] = x.remainder match {
-        case Some(x) => Iterator("%s.CopyTo(buffer);".format(x.name))
+        case Some(x) => Iterator("buffer.copy_from(%s);".format(x.name))
         case None => Iterator.empty
       }
 

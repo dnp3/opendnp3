@@ -157,5 +157,8 @@ build*
 #clion
 /cmake-build-*
 
-#VS Code
+# Visual Studio
+.vs/
+
+# VS Code
 .vscode/

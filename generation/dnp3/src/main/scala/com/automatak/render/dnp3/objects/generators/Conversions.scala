@@ -32,9 +32,9 @@ object ConversionHeaders {
   val ao = quoted("opendnp3/app/AnalogOutput.h")
   val binaryCommandEvent = quoted("opendnp3/app/BinaryCommandEvent.h")
   val analogCommandEvent = quoted("opendnp3/app/AnalogCommandEvent.h")
-  val factory = quoted("opendnp3/app/MeasurementFactory.h")
-  val serializer = quoted("opendnp3/app/DNP3Serializer.h")
-  val conversions = quoted("opendnp3/app/WriteConversions.h")
+  val factory = quoted("app/MeasurementFactory.h")
+  val serializer = quoted("app/DNP3Serializer.h")
+  val conversions = quoted("app/WriteConversions.h")
 
   val cppIncludes = List(factory, conversions)
 }
@@ -63,8 +63,8 @@ trait Conversion extends FixedSize {
   private def convHeaderLines : Iterator[String] = {
     Iterator("typedef %s Target;".format(target)) ++ specTypedef ++
     Iterator(
-      "static bool ReadTarget(openpal::RSlice&, %s&);".format(target),
-      "static bool WriteTarget(const %s&, openpal::WSlice&);".format(target),
+      "static bool ReadTarget(ser4cpp::rseq_t&, %s&);".format(target),
+      "static bool WriteTarget(const %s&, ser4cpp::wseq_t&);".format(target),
       serializerInstance
     )
   }
@@ -81,7 +81,7 @@ trait Conversion extends FixedSize {
 
     def readFunc = {
       val args =  fs.fields.map(f => "value." + f.name).mkString(", ")
-      Iterator("bool %s::ReadTarget(RSlice& buff, %s& output)".format(fs.name, target)) ++ bracket {
+      Iterator("bool %s::ReadTarget(rseq_t& buff, %s& output)".format(fs.name, target)) ++ bracket {
         Iterator("%s value;".format(fs.name)) ++
         Iterator("if(Read(buff, value))") ++ bracket {
           Iterator("output = %sFactory::From(%s);".format(target, args)) ++
@@ -94,7 +94,7 @@ trait Conversion extends FixedSize {
     }
 
     def writeFunc = {
-      Iterator("bool " + fs.name + "::WriteTarget(const " + target + "& value, openpal::WSlice& buff)") ++ bracket {
+      Iterator("bool " + fs.name + "::WriteTarget(const " + target + "& value, ser4cpp::wseq_t& buff)") ++ bracket {
         Iterator("return %s::Write(Convert%s::Apply(value), buff);".format(fs.name, fs.name))
       }
     }

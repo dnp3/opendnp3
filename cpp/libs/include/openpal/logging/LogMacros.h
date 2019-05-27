@@ -69,7 +69,7 @@
     }
 
 #define FORMAT_HEX_BLOCK(logger, filters, buffer, firstSize, otherSize)                                                \
-    if (logger.IsEnabled(filters))                                                                                     \
+    if (logger.is_enabled(filters))                                                                                    \
     {                                                                                                                  \
         LogHex(logger, filters, buffer, firstSize, otherSize);                                                         \
     }

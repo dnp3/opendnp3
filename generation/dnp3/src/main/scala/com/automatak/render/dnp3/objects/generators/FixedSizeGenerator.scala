@@ -39,9 +39,9 @@ object FixedSizeGenerator {
 
     def sizeSignature: Iterator[String] = Iterator("static uint32_t Size() { return %d; }".format(x.size))
 
-    def readSignature: Iterator[String] = Iterator("static bool Read(openpal::RSlice&, %s&);".format(x.name))
+    def readSignature: Iterator[String] = Iterator("static bool Read(ser4cpp::rseq_t&, %s&);".format(x.name))
 
-    def writeSignature: Iterator[String] = Iterator("static bool Write(const %s&, openpal::WSlice&);".format(x.name))
+    def writeSignature: Iterator[String] = Iterator("static bool Write(const %s&, ser4cpp::wseq_t&);".format(x.name))
 
     space ++
     defaultConstructor ++
@@ -56,9 +56,9 @@ object FixedSizeGenerator {
 
   def implementation(x: FixedSize)(implicit i: Indentation): Iterator[String] = {
 
-    def readSignature: Iterator[String] = Iterator("bool %s::Read(RSlice& buffer, %s& output)".format(x.name, x.name))
+    def readSignature: Iterator[String] = Iterator("bool %s::Read(rseq_t& buffer, %s& output)".format(x.name, x.name))
 
-    def writeSignature: Iterator[String] = Iterator("bool %s::Write(const %s& arg, openpal::WSlice& buffer)".format(x.name, x.name))
+    def writeSignature: Iterator[String] = Iterator("bool %s::Write(const %s& arg, ser4cpp::wseq_t& buffer)".format(x.name, x.name))
 
     def defaultConstructorSignature: Iterator[String] = Iterator("%s::%s() : %s".format(x.name, x.name, defaultParams), "{}")
 
@@ -71,11 +71,11 @@ object FixedSizeGenerator {
     }
 
     def readFunction: Iterator[String] = readSignature ++ bracket {
-      Iterator("return Parse::Many(buffer, %s);".format(fieldParams("output")))
+      Iterator("return LittleEndian::read(buffer, %s);".format(fieldParams("output")))
     }
 
     def writeFunction: Iterator[String] = writeSignature ++ bracket {
-      Iterator("return Format::Many(buffer, %s);".format(fieldParams("arg")))
+      Iterator("return LittleEndian::write(buffer, %s);".format(fieldParams("arg")))
     }
 
     def defaultConstructor: Iterator[String] = defaultConstructorSignature
