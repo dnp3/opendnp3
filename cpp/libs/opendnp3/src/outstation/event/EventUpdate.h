@@ -23,12 +23,12 @@
 #include "EventLists.h"
 #include "EventTypeImpl.h"
 
-#include "opendnp3/outstation/Event.h"
+#include "outstation/Event.h"
 
 namespace opendnp3
 {
 
-struct EventUpdate : private openpal::StaticOnly
+struct EventUpdate : private ser4cpp::StaticOnly
 {
     template<class T> static bool Update(EventLists& lists, const Event<T>& event);
 };

@@ -23,11 +23,11 @@
 
 #include "IEventWriteHandler.h"
 
-#include "openpal/serialization/Serialization.h"
+#include "ser4cpp/serialization/LittleEndian.h"
 
-#include "opendnp3/app/DNP3Serializer.h"
-#include "opendnp3/app/HeaderWriter.h"
-#include "opendnp3/objects/Group51.h"
+#include "app/DNP3Serializer.h"
+#include "app/HeaderWriter.h"
+#include "objects/Group51.h"
 
 namespace opendnp3
 {
@@ -60,11 +60,11 @@ public:
 private:
     template<class T> class BasicEventWriter final : public IEventWriter<T>
     {
-        PrefixedWriteIterator<openpal::UInt16, T> iterator;
+        PrefixedWriteIterator<ser4cpp::UInt16, T> iterator;
 
     public:
         BasicEventWriter(HeaderWriter& writer, const DNP3Serializer<T>& serializer)
-            : iterator(writer.IterateOverCountWithPrefix<openpal::UInt16, T>(QualifierCode::UINT16_CNT_UINT16_INDEX,
+            : iterator(writer.IterateOverCountWithPrefix<ser4cpp::UInt16, T>(QualifierCode::UINT16_CNT_UINT16_INDEX,
                                                                              serializer))
         {
         }
@@ -78,12 +78,12 @@ private:
     template<class T, class U> class CTOEventWriter final : public IEventWriter<T>
     {
         const DNPTime cto;
-        PrefixedWriteIterator<openpal::UInt16, T> iterator;
+        PrefixedWriteIterator<ser4cpp::UInt16, T> iterator;
 
     public:
         CTOEventWriter(const U& cto, HeaderWriter& writer, const DNP3Serializer<T>& serializer)
             : cto(cto.time),
-              iterator(writer.IterateOverCountWithPrefixAndCTO<openpal::UInt16, T, U>(
+              iterator(writer.IterateOverCountWithPrefixAndCTO<ser4cpp::UInt16, T, U>(
                   QualifierCode::UINT16_CNT_UINT16_INDEX, serializer, cto))
         {
         }
@@ -95,17 +95,17 @@ private:
                 return false;
 
             // can't encode timestamps that go backwards
-            if (meas.time < this->cto.value)
+            if (meas.time < this->cto)
                 return false;
 
-            const auto diff = meas.time - this->cto.value;
+            const auto diff = meas.time - this->cto;
 
             // can't encode timestamps where the diff is greater than uint16_t
-            if (diff > openpal::UInt16::Max)
+            if (diff > ser4cpp::UInt16::max_value)
                 return false;
 
             auto copy = meas;
-            copy.time.value = diff;
+            copy.time = DNPTime(diff);
 
             return this->iterator.Write(copy, index);
         }

@@ -22,15 +22,15 @@
 
 #include "IEventWriteHandler.h"
 
-#include "openpal/util/Uncopyable.h"
+#include "ser4cpp/util/Uncopyable.h"
 
-#include "opendnp3/app/DNP3Serializer.h"
-#include "opendnp3/app/HeaderWriter.h"
+#include "app/DNP3Serializer.h"
+#include "app/HeaderWriter.h"
 
 namespace opendnp3
 {
 
-class ASDUEventWriteHandler final : public IEventWriteHandler, private openpal::Uncopyable
+class ASDUEventWriteHandler final : public IEventWriteHandler, private ser4cpp::Uncopyable
 {
 
 public:

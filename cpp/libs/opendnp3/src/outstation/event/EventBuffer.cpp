@@ -73,7 +73,7 @@ void EventBuffer::Unselect()
 
 IINField EventBuffer::SelectAll(GroupVariation gv)
 {
-    return SelectMaxCount(gv, openpal::MaxValue<uint32_t>());
+    return SelectMaxCount(gv, std::numeric_limits<uint32_t>::max());
 }
 
 IINField EventBuffer::SelectCount(GroupVariation gv, uint16_t count)

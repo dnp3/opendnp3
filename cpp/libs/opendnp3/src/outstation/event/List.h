@@ -22,7 +22,7 @@
 
 #include "ser4cpp/container/Array.h"
 
-#include <cstdio>
+#include <cstdint>
 
 namespace opendnp3
 {
@@ -94,7 +94,7 @@ public:
 
     inline list_size_type_t Capacity() const
     {
-        return underlying.Size();
+        return underlying.length();
     }
 
     inline Node<T>* Head()
@@ -191,7 +191,7 @@ template<class T> Node<T>* List<T>::Insert(const T& value, Node<T>* left, Node<T
     this->free = this->free->next;
 
     new_node->value = value;
-    ++(this->size);
+    ++(this->m_length);
 
     this->Link(left, new_node);
     this->Link(new_node, right);
@@ -231,7 +231,7 @@ template<class T> void List<T>::Remove(Node<T>* node)
     this->Link(node, this->free);
     this->free = node;
 
-    --(this->size);
+    --(this->m_length);
 }
 
 template<class T> bool List<T>::IsFullAndCapacityNotZero() const
@@ -249,11 +249,11 @@ template<class T> void List<T>::Link(Node<T>* first, Node<T>* second)
 
 template<class T> void List<T>::Initialize()
 {
-    if (underlying.IsEmpty())
+    if (underlying.is_empty())
         return;
 
     this->free = &underlying[0];
-    for (list_size_type_t i = 1; i < underlying.Size(); ++i)
+    for (list_size_type_t i = 1; i < underlying.length(); ++i)
     {
         Link(&underlying[i - 1], &underlying[i]);
     }

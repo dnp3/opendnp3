@@ -27,7 +27,7 @@
 namespace opendnp3
 {
 
-struct EventSelection : private openpal::StaticOnly
+struct EventSelection : private ser4cpp::StaticOnly
 {
     template<class T> static uint32_t SelectByType(EventLists& lists, uint32_t max)
     {

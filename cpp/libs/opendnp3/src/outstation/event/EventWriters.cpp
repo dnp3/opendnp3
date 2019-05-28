@@ -20,7 +20,7 @@
 
 #include "EventWriters.h"
 
-#include "opendnp3/outstation/OctetStringSerializer.h"
+#include "outstation/OctetStringSerializer.h"
 
 namespace opendnp3
 {
@@ -28,19 +28,19 @@ namespace opendnp3
 class OctetStringEventWriter : public IEventWriter<OctetString>
 {
     const OctetStringSerializer serializer;
-    PrefixedWriteIterator<openpal::UInt16, OctetString> iterator;
+    PrefixedWriteIterator<ser4cpp::UInt16, OctetString> iterator;
 
 public:
     OctetStringEventWriter(HeaderWriter& writer, uint8_t size)
         : serializer(true, size),
           iterator(
-              writer.IterateOverCountWithPrefix<openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX, serializer))
+              writer.IterateOverCountWithPrefix<ser4cpp::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX, serializer))
     {
     }
 
     bool Write(const OctetString& meas, uint16_t index) override
     {
-        if (meas.Size() != this->serializer.Size())
+        if (meas.Size() != this->serializer.size())
             return false;
 
         return iterator.Write(meas, index);

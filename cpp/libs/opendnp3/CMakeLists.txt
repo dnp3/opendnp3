@@ -487,7 +487,6 @@ set(opendnp3_src
     ./src/outstation/StaticWriters.cpp
     ./src/outstation/WriteHandler.cpp
 
-#[[
     ./src/outstation/event/ASDUEventWriteHandler.cpp
     ./src/outstation/event/EventBuffer.cpp
     ./src/outstation/event/EventLists.cpp
@@ -496,7 +495,7 @@ set(opendnp3_src
     ./src/outstation/event/EventStorage.cpp
     ./src/outstation/event/EventWriters.cpp
     ./src/outstation/event/EventWriting.cpp
-]]
+
     ./src/transport/TransportHeader.cpp
     ./src/transport/TransportLayer.cpp
     ./src/transport/TransportRx.cpp

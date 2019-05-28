@@ -26,7 +26,8 @@
 
 namespace opendnp3
 {
-template<class T> struct TypedStorage : private openpal::StaticOnly
+
+template<class T> struct TypedStorage : private ser4cpp::StaticOnly
 {
 
     static inline Node<TypedEventRecord<T>>* Retrieve(EventRecord& record)
