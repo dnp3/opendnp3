@@ -36,8 +36,6 @@ struct ParsedRequest
     {
     }
 
-    ParsedRequest() = default;
-
     const Addresses addresses;
     const APDUHeader header;
     const ser4cpp::rseq_t objects;
