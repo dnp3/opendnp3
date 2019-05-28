@@ -87,7 +87,7 @@ public:
         Node<T>* current;
     };
 
-    List(list_size_type_t maxSize) : openpal::HasSize<list_size_type_t>(0), underlying(maxSize)
+    List(list_size_type_t maxSize) : ser4cpp::HasLength<list_size_type_t>(0), underlying(maxSize)
     {
         Initialize();
     }
