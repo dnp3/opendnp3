@@ -2,16 +2,16 @@ version: 2
 aliases:
   - run: &install_deps_gcc
       name: Install dependencies
-      command: apt-get update && apt-get install -y git cmake g++ libssl-dev default-jdk maven
+      command: apt-get update && apt-get install -y git cmake g++ #libssl-dev default-jdk maven
   - run: &install_deps_clang
       name: Install dependencies
-      command: apt-get update && apt-get install -y git cmake clang libc++-dev libc++abi-dev libssl-dev default-jdk maven
+      command: apt-get update && apt-get install -y git cmake clang libc++-dev libc++abi-dev #libssl-dev default-jdk maven
   - run: &print_versions_gcc
       name: Print versions
-      command: g++ -v && cmake -version && openssl version && java --version
+      command: g++ -v && cmake -version # && openssl version && java --version
   - run: &print_versions_clang
       name: Print versions
-      command: clang --version && cmake -version && openssl version && java --version
+      command: clang --version && cmake -version # && openssl version && java --version
   - run: &init_submodules
       name: Initialize submodules
       command: git submodule update --init
@@ -49,7 +49,7 @@ jobs:
       - checkout
       - run: *install_deps_gcc
       - run: *print_versions_gcc
-      - run: *init_submodules
+      #- run: *init_submodules
       - run:
           name: Configure
           command: cmake -DCMAKE_BUILD_TYPE=Debug -DDNP3_ALL=ON -DDNP3_TLS=ON ..
@@ -67,7 +67,7 @@ jobs:
       - checkout
       - run: *install_deps_gcc
       - run: *print_versions_gcc
-      - run: *init_submodules
+      #- run: *init_submodules
       - run:
           name: Configure
           command: cmake -DCMAKE_BUILD_TYPE=Release -DDNP3_ALL=ON -DDNP3_TLS=ON ..
@@ -85,7 +85,7 @@ jobs:
       - checkout
       - run: *install_deps_clang
       - run: *print_versions_clang
-      - run: *init_submodules
+      #- run: *init_submodules
       - run:
           name: Configure
           command: cmake -DCMAKE_BUILD_TYPE=Debug -DDNP3_ALL=ON -DDNP3_TLS=ON ..
@@ -103,7 +103,7 @@ jobs:
       - checkout
       - run: *install_deps_clang
       - run: *print_versions_clang
-      - run: *init_submodules
+      #- run: *init_submodules
       - run:
           name: Configure
           command: cmake -DCMAKE_BUILD_TYPE=Release -DDNP3_ALL=ON -DDNP3_TLS=ON ..

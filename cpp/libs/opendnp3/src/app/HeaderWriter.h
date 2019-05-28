@@ -192,7 +192,7 @@ RangeWriteIterator<IndexType, WriteType> HeaderWriter::IterateOverRange(Qualifie
                                                                         const DNP3Serializer<WriteType>& serializer,
                                                                         typename IndexType::type_t start)
 {
-    uint32_t reserveSize = 2 * IndexType::size + serializer.Size();
+    uint32_t reserveSize = 2 * IndexType::size + serializer.size();
     if (this->WriteHeaderWithReserve(serializer.ID(), qc, reserveSize))
     {
         return RangeWriteIterator<IndexType, WriteType>(start, serializer, *position);
@@ -205,7 +205,7 @@ template<class CountType, class WriteType>
 CountWriteIterator<CountType, WriteType> HeaderWriter::IterateOverCount(QualifierCode qc,
                                                                         const DNP3Serializer<WriteType>& serializer)
 {
-    uint32_t reserveSize = CountType::SIZE + serializer.Size();
+    uint32_t reserveSize = CountType::SIZE + serializer.size();
     if (this->WriteHeaderWithReserve(serializer.ID(), qc, reserveSize))
     {
         return CountWriteIterator<CountType, WriteType>(serializer, *position);
@@ -246,7 +246,7 @@ PrefixedWriteIterator<PrefixType, WriteType> HeaderWriter::IterateOverCountWithP
     QualifierCode qc, const DNP3Serializer<WriteType>& serializer, const CTOType& cto)
 {
     this->Mark();
-    if (this->WriteSingleValue<openpal::UInt8, CTOType>(QualifierCode::UINT8_CNT, cto))
+    if (this->WriteSingleValue<ser4cpp::UInt8, CTOType>(QualifierCode::UINT8_CNT, cto))
     {
         auto iter = IterateOverCountWithPrefix<PrefixType, WriteType>(qc, serializer);
         if (!iter.IsValid())

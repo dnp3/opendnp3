@@ -42,14 +42,14 @@ public:
         : start(start_),
           serializer(serializer_),
           count(0),
-          isValid(position.Size() >= 2 * IndexType::SIZE),
+          isValid(position.length() >= 2 * IndexType::SIZE),
           range(position),
           pPosition(&position)
     {
         if (isValid)
         {
-            openpal::Format::Write(range, start);
-            pPosition->Advance(2 * IndexType::SIZE);
+            IndexType::write_to(range, start);
+            pPosition->advance(2 * IndexType::SIZE);
         }
     }
 
@@ -64,9 +64,9 @@ public:
 
     bool Write(const WriteType& value)
     {
-        if (isValid && (pPosition->Size() >= serializer.Size()) && (count <= IndexType::Max))
+        if (isValid && (pPosition->length() >= serializer.size()) && (count <= IndexType::Max))
         {
-            serializer.Write(value, *pPosition);
+            serializer.write(value, *pPosition);
             ++count;
             return true;
         }

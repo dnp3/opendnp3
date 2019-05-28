@@ -21,6 +21,7 @@
 #define OPENDNP3_PREFIXFIELDS_H
 
 #include <ser4cpp/container/SequenceTypes.h>
+#include <ser4cpp/serialization/LittleEndian.h>
 #include <ser4cpp/util/Uncopyable.h>
 
 namespace opendnp3
