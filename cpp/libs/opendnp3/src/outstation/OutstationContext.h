@@ -20,16 +20,15 @@
 #ifndef OPENDNP3_OUTSTATIONCONTEXT_H
 #define OPENDNP3_OUTSTATIONCONTEXT_H
 
-#include <openpal/container/Pair.h>
-#include <openpal/executor/TimerRef.h>
-#include <openpal/logging/Logger.h>
+#include <exe4cpp/Timer.h>
+#include <log4cpp/Logger.h>
 
-#include "opendnp3/LayerInterfaces.h"
+#include "LayerInterfaces.h"
 #include "opendnp3/gen/SecurityStatIndex.h"
 #include "opendnp3/link/Addresses.h"
-#include "opendnp3/outstation/ControlState.h"
-#include "opendnp3/outstation/Database.h"
-#include "opendnp3/outstation/DeferredRequest.h"
+#include "outstation/ControlState.h"
+#include "outstation/Database.h"
+#include "outstation/DeferredRequest.h"
 #include "opendnp3/outstation/ICommandHandler.h"
 #include "opendnp3/outstation/IOutstationApplication.h"
 #include "opendnp3/outstation/OutstationChannelStates.h"
@@ -58,8 +57,8 @@ public:
     OContext(const Addresses& addresses,
              const OutstationConfig& config,
              const DatabaseSizes& dbSizes,
-             const openpal::Logger& logger,
-             const std::shared_ptr<openpal::IExecutor>& executor,
+             const log4cpp::Logger& logger,
+             const std::shared_ptr<exe3cpp::IExecutor>& executor,
              std::shared_ptr<ILowerLayer> lower,
              std::shared_ptr<ICommandHandler> commandHandler,
              std::shared_ptr<IOutstationApplication> application);
@@ -157,8 +156,8 @@ private:
 
     // ------ resources --------
     const Addresses addresses;
-    openpal::Logger logger;
-    const std::shared_ptr<openpal::IExecutor> executor;
+    log4cpp::Logger logger;
+    const std::shared_ptr<exe4cpp::IExecutor> executor;
     const std::shared_ptr<ILowerLayer> lower;
     const std::shared_ptr<ICommandHandler> commandHandler;
     const std::shared_ptr<IOutstationApplication> application;
@@ -175,7 +174,7 @@ private:
     bool isOnline;
     bool isTransmitting;
     IINField staticIIN;
-    openpal::TimerRef confirmTimer;
+    exe4cpp::Timer confirmTimer;
     RequestHistory history;
     DeferredRequest deferred;
 

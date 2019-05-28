@@ -20,11 +20,11 @@
 #ifndef OPENDNP3_CONTROLSTATE_H
 #define OPENDNP3_CONTROLSTATE_H
 
-#include <openpal/executor/MonotonicTimestamp.h>
+#include "opendnp3/Timestamp.h"
 
-#include "opendnp3/app/AppSeqNum.h"
+#include "app/AppSeqNum.h"
 #include "opendnp3/gen/CommandStatus.h"
-#include "opendnp3/link/CRC.h"
+#include "link/CRC.h"
 
 namespace opendnp3
 {
@@ -36,21 +36,21 @@ class ControlState
 {
 
 public:
-    ControlState() : digest(0), length(0) {}
+    ControlState() : selectTime(Timestamp::Min()), digest(0), length(0) {}
 
     CommandStatus ValidateSelection(const AppSeqNum& seq,
-                                    const openpal::MonotonicTimestamp& now,
-                                    const openpal::TimeDuration& timeout,
+                                    const Timestamp& now,
+                                    const TimeDuration& timeout,
                                     const ser4cpp::rseq_t& objects) const
     {
         if (expectedSeq.Equals(seq))
         {
-            if (selectTime.milliseconds <= now.milliseconds)
+            if (selectTime <= now)
             {
-                auto elapsed = now.milliseconds - selectTime.milliseconds;
+                auto elapsed = now - selectTime;
                 if (elapsed < timeout)
                 {
-                    if (length == objects.Size() && digest == CRC::CalcCrc(objects))
+                    if (length == objects.length() && digest == CRC::CalcCrc(objects))
                     {
                         return CommandStatus::SUCCESS;
                     }
@@ -75,17 +75,17 @@ public:
         }
     }
 
-    void Select(const AppSeqNum& currentSeqN, const openpal::MonotonicTimestamp& now, const ser4cpp::rseq_t& objects)
+    void Select(const AppSeqNum& currentSeqN, const Timestamp& now, const ser4cpp::rseq_t& objects)
     {
         selectTime = now;
         expectedSeq = currentSeqN.Next();
         digest = CRC::CalcCrc(objects);
-        length = objects.Size();
+        length = objects.length();
     }
 
 private:
     AppSeqNum expectedSeq;
-    openpal::MonotonicTimestamp selectTime;
+    Timestamp selectTime;
     uint16_t digest;
     uint32_t length;
 };

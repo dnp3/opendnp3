@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_APPLICATIONIIN_H
 #define OPENDNP3_APPLICATIONIIN_H
 
-#include <openpal/executor/UTCTimestamp.h>
+#include "opendnp3/UTCTimestamp.h"
 
 #include <opendnp3/app/IINField.h>
 

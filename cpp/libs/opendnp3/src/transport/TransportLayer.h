@@ -23,12 +23,12 @@
 #include "TransportRx.h"
 #include "TransportTx.h"
 
-#include <openpal/executor/IExecutor.h>
-#include <openpal/logging/Logger.h>
+#include <exe4cpp/IExecutor.h>
+#include <log4cpp/Logger.h>
 
-#include "opendnp3/LayerInterfaces.h"
+#include "LayerInterfaces.h"
 #include "opendnp3/StackStatistics.h"
-#include "opendnp3/link/ILinkLayer.h"
+#include "link/ILinkLayer.h"
 
 namespace opendnp3
 {
@@ -40,7 +40,7 @@ class TransportLayer final : public IUpperLayer, public ILowerLayer
 {
 
 public:
-    TransportLayer(const openpal::Logger& logger, uint32_t maxRxFragSize);
+    TransportLayer(const log4cpp::Logger& logger, uint32_t maxRxFragSize);
 
     // ------ ILowerLayer ------
 
@@ -60,7 +60,7 @@ public:
     StackStatistics::Transport GetStatistics() const;
 
 private:
-    openpal::Logger logger;
+    log4cpp::Logger logger;
 
     IUpperLayer* upper = nullptr;
     ILinkLayer* lower = nullptr;

@@ -20,11 +20,11 @@
 #ifndef OPENDNP3_CLASSBASEDREQUESTHANDLER_H
 #define OPENDNP3_CLASSBASEDREQUESTHANDLER_H
 
-#include <openpal/logging/Logger.h>
+#include <log4cpp/Logger.h>
 
 #include "opendnp3/app/ClassField.h"
 #include "opendnp3/app/IINField.h"
-#include "opendnp3/app/parsing/IAPDUHandler.h"
+#include "app/parsing/IAPDUHandler.h"
 
 namespace opendnp3
 {

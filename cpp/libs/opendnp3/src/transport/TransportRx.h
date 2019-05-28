@@ -20,14 +20,14 @@
 #ifndef OPENDNP3_TRANSPORTRX_H
 #define OPENDNP3_TRANSPORTRX_H
 
-#include <openpal/container/Buffer.h>
-#include <openpal/container/RSlice.h>
-#include <openpal/logging/Logger.h>
+#include <ser4cpp/container/Buffer.h>
+#include <ser4cpp/container/SequenceTypes.h>
+#include <log4cpp/Logger.h>
 
 #include "opendnp3/StackStatistics.h"
-#include "opendnp3/app/Message.h"
-#include "opendnp3/transport/TransportConstants.h"
-#include "opendnp3/transport/TransportSeqNum.h"
+#include "app/Message.h"
+#include "transport/TransportConstants.h"
+#include "transport/TransportSeqNum.h"
 
 namespace opendnp3
 {
@@ -39,7 +39,7 @@ class TransportRx
 {
 
 public:
-    TransportRx(const openpal::Logger&, uint32_t maxRxFragSize);
+    TransportRx(const log4cpp::Logger&, uint32_t maxRxFragSize);
 
     Message ProcessReceive(const Message& segment);
 
@@ -55,10 +55,10 @@ private:
 
     void ClearRxBuffer();
 
-    openpal::Logger logger;
+    log4cpp::Logger logger;
     StackStatistics::Transport::Rx statistics;
 
-    openpal::Buffer rxBuffer;
+    ser4cpp::Buffer rxBuffer;
     uint32_t numBytesRead;
     Addresses lastAddresses;
 

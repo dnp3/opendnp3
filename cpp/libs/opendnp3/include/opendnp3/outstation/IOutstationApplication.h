@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_IOUTSTATIONAPPLICATION_H
 #define OPENDNP3_IOUTSTATIONAPPLICATION_H
 
-#include <openpal/executor/UTCTimestamp.h>
+#include "opendnp3/UTCTimestamp.h"
 
 #include "opendnp3/app/Indexed.h"
 #include "opendnp3/app/MeasurementTypes.h"
@@ -54,7 +54,7 @@ public:
     /// @return boolean value indicating if the time value supplied was accepted. Returning
     /// false will cause the outstation to set IIN 2.3 (PARAM_ERROR) in its response.
     /// The outstation should clear its NEED_TIME field when handling this response
-    virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp)
+    virtual bool WriteAbsoluteTime(const UTCTimestamp& timestamp)
     {
         return false;
     }

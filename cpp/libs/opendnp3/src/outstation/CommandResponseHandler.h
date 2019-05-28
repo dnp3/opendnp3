@@ -20,11 +20,11 @@
 #ifndef OPENDNP3_COMMANDRESPONSEHANDLER_H
 #define OPENDNP3_COMMANDRESPONSEHANDLER_H
 
-#include <openpal/logging/Logger.h>
+#include <log4cpp/Logger.h>
 
-#include "opendnp3/app/APDUResponse.h"
-#include "opendnp3/app/parsing/IAPDUHandler.h"
-#include "opendnp3/outstation/ICommandAction.h"
+#include "app/APDUResponse.h"
+#include "app/parsing/IAPDUHandler.h"
+#include "outstation/ICommandAction.h"
 
 namespace opendnp3
 {
@@ -132,7 +132,7 @@ IINField CommandResponseHandler::RespondToHeaderWithIterator(QualifierCode quali
 
         if (pIterator)
         {
-            pIterator->Write(response, static_cast<typename IndexType::Type>(pair.index));
+            pIterator->Write(response, static_cast<typename IndexType::type_t>(pair.index));
         }
     };
 

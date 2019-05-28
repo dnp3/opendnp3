@@ -21,11 +21,11 @@
 #define OPENDNP3_STATICWRITERS_H
 
 #include <openpal/container/ArrayView.h>
-#include <openpal/util/Uncopyable.h>
+#include <ser4cpp/util/Uncopyable.h>
 
-#include "opendnp3/app/HeaderWriter.h"
+#include "app/HeaderWriter.h"
 #include "opendnp3/app/MeasurementTypeSpecs.h"
-#include "opendnp3/app/Range.h"
+#include "app/Range.h"
 #include "opendnp3/gen/StaticAnalogOutputStatusVariation.h"
 #include "opendnp3/gen/StaticAnalogVariation.h"
 #include "opendnp3/gen/StaticBinaryOutputStatusVariation.h"
@@ -38,7 +38,7 @@
 namespace opendnp3
 {
 
-template<class Spec> struct StaticWrite : private openpal::StaticOnly
+template<class Spec> struct StaticWrite : private ser4cpp::StaticOnly
 {
     typedef bool (*func_t)(openpal::ArrayView<Cell<Spec>, uint16_t>& view, HeaderWriter& writer, Range& range);
 };

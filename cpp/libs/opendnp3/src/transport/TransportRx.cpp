@@ -22,20 +22,19 @@
 #include "TransportConstants.h"
 #include "TransportHeader.h"
 
-#include <openpal/logging/LogMacros.h>
-#include <openpal/util/ToHex.h>
+#include <log4cpp/LogMacros.h>
+#include <ser4cpp/util/HexConversions.h>
 
 #include "opendnp3/LogLevels.h"
 
 #include <cstring>
 
 using namespace std;
-using namespace openpal;
 
 namespace opendnp3
 {
 
-TransportRx::TransportRx(const Logger& logger, uint32_t maxRxFragSize)
+TransportRx::TransportRx(const log4cpp::Logger& logger, uint32_t maxRxFragSize)
     : logger(logger), rxBuffer(maxRxFragSize), numBytesRead(0)
 {
 }
@@ -52,14 +51,14 @@ void TransportRx::ClearRxBuffer()
 
 ser4cpp::wseq_t TransportRx::GetAvailable()
 {
-    return rxBuffer.GetWSlice().Skip(numBytesRead);
+    return rxBuffer.as_wslice().skip(numBytesRead);
 }
 
 Message TransportRx::ProcessReceive(const Message& segment)
 {
     ++statistics.numTransportRx;
 
-    if (segment.payload.IsEmpty())
+    if (segment.payload.is_empty())
     {
         FORMAT_LOG_BLOCK(logger, flags::WARN, "Received tpdu with no header");
         ++statistics.numTransportErrorRx;
@@ -68,10 +67,10 @@ Message TransportRx::ProcessReceive(const Message& segment)
 
     const TransportHeader header(segment.payload[0]);
 
-    const auto payload = segment.payload.Skip(1);
+    const auto payload = segment.payload.skip(1);
 
     FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_RX, "FIR: %d FIN: %d SEQ: %u LEN: %u", header.fir, header.fin, header.seq,
-                     payload.Size());
+                     payload.length());
 
     if (header.fir && this->numBytesRead > 0)
     {
@@ -112,7 +111,7 @@ Message TransportRx::ProcessReceive(const Message& segment)
 
     auto available = this->GetAvailable();
 
-    if (payload.Size() > available.Size())
+    if (payload.length() > available.length())
     {
         // transport buffer overflow
         ++statistics.numTransportBufferOverflow;
@@ -121,16 +120,16 @@ Message TransportRx::ProcessReceive(const Message& segment)
         return Message();
     }
 
-    payload.CopyTo(available);
+    available.copy_from(payload);
 
-    this->numBytesRead += payload.Size();
+    this->numBytesRead += payload.length();
     this->lastAddresses = segment.addresses;
     this->expectedSeq = header.seq;
     this->expectedSeq.Increment();
 
     if (header.fin)
     {
-        const auto ret = rxBuffer.ToRSlice().Take(numBytesRead);
+        const auto ret = rxBuffer.as_rslice().take(numBytesRead);
         this->numBytesRead = 0;
         return Message(segment.addresses, ret);
     }

@@ -22,7 +22,7 @@
 
 #include "opendnp3/gen/AssignClassType.h"
 #include "opendnp3/gen/IndexMode.h"
-#include "opendnp3/outstation/DatabaseBuffers.h"
+#include "outstation/DatabaseBuffers.h"
 #include "opendnp3/outstation/IDatabase.h"
 #include "opendnp3/outstation/IEventReceiver.h"
 

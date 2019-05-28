@@ -20,17 +20,17 @@
 #ifndef OPENDNP3_DATABASEBUFFERS_H
 #define OPENDNP3_DATABASEBUFFERS_H
 
-#include "opendnp3/app/Range.h"
+#include "app/Range.h"
 #include "opendnp3/gen/IndexMode.h"
 #include "opendnp3/outstation/DatabaseSizes.h"
-#include "opendnp3/outstation/IClassAssigner.h"
-#include "opendnp3/outstation/IResponseLoader.h"
-#include "opendnp3/outstation/IStaticSelector.h"
-#include "opendnp3/outstation/IndexSearch.h"
-#include "opendnp3/outstation/SelectedRanges.h"
-#include "opendnp3/outstation/StaticBuffers.h"
+#include "outstation/IClassAssigner.h"
+#include "outstation/IResponseLoader.h"
+#include "outstation/IStaticSelector.h"
+#include "outstation/IndexSearch.h"
+#include "outstation/SelectedRanges.h"
+#include "outstation/StaticBuffers.h"
 #include "opendnp3/outstation/StaticTypeBitfield.h"
-#include "opendnp3/outstation/StaticWriters.h"
+#include "outstation/StaticWriters.h"
 
 namespace opendnp3
 {

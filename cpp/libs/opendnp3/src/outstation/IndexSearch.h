@@ -21,11 +21,10 @@
 #define OPENDNP3_INDEXSEARCH_H
 
 #include <openpal/container/ArrayView.h>
-#include <openpal/util/Limits.h>
-#include <openpal/util/Uncopyable.h>
+#include <ser4cpp/util/Uncopyable.h>
 
 #include "opendnp3/app/MeasurementTypes.h"
-#include "opendnp3/app/Range.h"
+#include "app/Range.h"
 #include "opendnp3/outstation/Cell.h"
 
 namespace opendnp3
@@ -34,7 +33,7 @@ namespace opendnp3
 /**
  * Implements a binary search for virtual indices in a discontiguous database
  */
-class IndexSearch : private openpal::StaticOnly
+class IndexSearch : private ser4cpp::StaticOnly
 {
 
 public:

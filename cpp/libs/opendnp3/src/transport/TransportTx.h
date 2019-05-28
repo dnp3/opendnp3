@@ -20,15 +20,15 @@
 #ifndef OPENDNP3_TRANSPORTTX_H
 #define OPENDNP3_TRANSPORTTX_H
 
-#include <openpal/container/Settable.h>
-#include <openpal/container/StaticBuffer.h>
-#include <openpal/logging/Logger.h>
+#include <ser4cpp/container/Settable.h>
+#include <ser4cpp/container/StaticBuffer.h>
+#include <log4cpp/Logger.h>
 
 #include "opendnp3/StackStatistics.h"
-#include "opendnp3/app/Message.h"
-#include "opendnp3/link/ITransportSegment.h"
-#include "opendnp3/transport/TransportConstants.h"
-#include "opendnp3/transport/TransportSeqNum.h"
+#include "app/Message.h"
+#include "link/ITransportSegment.h"
+#include "transport/TransportConstants.h"
+#include "transport/TransportSeqNum.h"
 
 namespace opendnp3
 {
@@ -40,7 +40,7 @@ class TransportTx final : public ITransportSegment
 {
 
 public:
-    TransportTx(const openpal::Logger& logger);
+    TransportTx(const log4cpp::Logger& logger);
 
     void Configure(const Message& message);
 
@@ -65,12 +65,12 @@ public:
 private:
     Message message;
 
-    openpal::Settable<ser4cpp::rseq_t> txSegment;
+    ser4cpp::Settable<ser4cpp::rseq_t> txSegment;
 
     // Static buffer where we store tpdus that are being transmitted
-    openpal::StaticBuffer<MAX_TPDU_LENGTH> tpduBuffer;
+    ser4cpp::StaticBuffer<uint32_t, MAX_TPDU_LENGTH> tpduBuffer;
 
-    openpal::Logger logger;
+    log4cpp::Logger logger;
     StackStatistics::Transport::Tx statistics;
     TransportSeqNum sequence;
     uint32_t tpduCount = 0;

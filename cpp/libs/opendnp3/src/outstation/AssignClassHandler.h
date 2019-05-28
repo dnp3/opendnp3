@@ -20,12 +20,12 @@
 #ifndef OPENDNP3_ASSIGNCLASSHANDLER_H
 #define OPENDNP3_ASSIGNCLASSHANDLER_H
 
-#include <openpal/executor/IExecutor.h>
-#include <openpal/logging/Logger.h>
+#include <exe4cpp/IExecutor.h>
+#include <log4cpp/Logger.h>
 
-#include "opendnp3/app/parsing/IAPDUHandler.h"
+#include "app/parsing/IAPDUHandler.h"
 #include "opendnp3/gen/AssignClassType.h"
-#include "opendnp3/outstation/IClassAssigner.h"
+#include "outstation/IClassAssigner.h"
 #include "opendnp3/outstation/IOutstationApplication.h"
 
 namespace opendnp3
@@ -34,7 +34,7 @@ namespace opendnp3
 class AssignClassHandler : public IAPDUHandler
 {
 public:
-    AssignClassHandler(openpal::IExecutor& executor, IOutstationApplication& application, IClassAssigner& assigner);
+    AssignClassHandler(exe4cpp::IExecutor& executor, IOutstationApplication& application, IClassAssigner& assigner);
 
     virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final
     {
@@ -59,7 +59,7 @@ private:
     int32_t classHeader;
     PointClass clazz;
 
-    openpal::IExecutor* pExecutor;
+    exe4cpp::IExecutor* pExecutor;
     IOutstationApplication* pApplication;
     IClassAssigner* pAssigner;
 };

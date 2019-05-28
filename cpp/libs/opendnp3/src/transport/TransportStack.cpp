@@ -19,14 +19,12 @@
  */
 #include "TransportStack.h"
 
-using namespace openpal;
-
 namespace opendnp3
 {
 
-TransportStack::TransportStack(const openpal::Logger& logger,
-                               const std::shared_ptr<openpal::IExecutor>& executor,
-                               const std::shared_ptr<opendnp3::ILinkListener>& listener,
+TransportStack::TransportStack(const log4cpp::Logger& logger,
+                               const std::shared_ptr<exe4cpp::IExecutor>& executor,
+                               const std::shared_ptr<ILinkListener>& listener,
                                uint32_t maxRxFragSize,
                                const LinkLayerConfig& config)
     : transport(std::make_shared<TransportLayer>(logger, maxRxFragSize)),

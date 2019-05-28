@@ -21,19 +21,18 @@
 
 #include "TransportConstants.h"
 
-#include <openpal/logging/LogMacros.h>
+#include <log4cpp/LogMacros.h>
 
 #include "opendnp3/LogLevels.h"
 
 #include <cassert>
 
 using namespace std;
-using namespace openpal;
 
 namespace opendnp3
 {
 
-TransportLayer::TransportLayer(const openpal::Logger& logger, uint32_t maxRxFragSize)
+TransportLayer::TransportLayer(const log4cpp::Logger& logger, uint32_t maxRxFragSize)
     : logger(logger), receiver(logger, maxRxFragSize), transmitter(logger)
 {
 }
@@ -50,7 +49,7 @@ bool TransportLayer::BeginTransmit(const Message& message)
         return false;
     }
 
-    if (message.payload.IsEmpty())
+    if (message.payload.is_empty())
     {
         SIMPLE_LOG_BLOCK(logger, flags::ERR, "APDU cannot be empty");
         return false;
@@ -84,7 +83,7 @@ bool TransportLayer::OnReceive(const Message& message)
     if (isOnline)
     {
         const auto asdu = receiver.ProcessReceive(message);
-        if (asdu.payload.IsNotEmpty() && (upper != nullptr))
+        if (asdu.payload.is_not_empty() && (upper != nullptr))
         {
             upper->OnReceive(asdu);
         }
@@ -171,9 +170,5 @@ bool TransportLayer::OnLowerLayerDown()
 
     return true;
 }
-
-///////////////////////////////////////
-// Helpers
-///////////////////////////////////////
 
 } // namespace opendnp3

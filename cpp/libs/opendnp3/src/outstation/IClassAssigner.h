@@ -20,8 +20,8 @@
 #ifndef OPENDNP3_ICLASSASSIGNER_H
 #define OPENDNP3_ICLASSASSIGNER_H
 
-#include "opendnp3/app/GroupVariationRecord.h"
-#include "opendnp3/app/Range.h"
+#include "app/GroupVariationRecord.h"
+#include "app/Range.h"
 #include "opendnp3/gen/AssignClassType.h"
 #include "opendnp3/gen/PointClass.h"
 

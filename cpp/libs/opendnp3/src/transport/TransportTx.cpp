@@ -21,69 +21,71 @@
 
 #include "TransportHeader.h"
 
-#include <openpal/logging/LogMacros.h>
+#include <log4cpp/LogMacros.h>
+
+#include <ser4cpp/serialization/LittleEndian.h>
 
 #include "opendnp3/LogLevels.h"
 
 #include <cassert>
 
 using namespace std;
-using namespace openpal;
 
 namespace opendnp3
 {
 
-TransportTx::TransportTx(const openpal::Logger& logger) : logger(logger) {}
+TransportTx::TransportTx(const log4cpp::Logger& logger) : logger(logger) {}
 
 void TransportTx::Configure(const Message& message)
 {
-    assert(message.payload.IsNotEmpty());
-    txSegment.Clear();
+    assert(message.payload.is_not_empty());
+    txSegment.clear();
     this->message = message;
     this->tpduCount = 0;
 }
 
 bool TransportTx::HasValue() const
 {
-    return this->message.payload.Size() > 0;
+    return this->message.payload.length() > 0;
 }
 
 ser4cpp::rseq_t TransportTx::GetSegment()
 {
-    if (txSegment.IsSet())
+    if (txSegment.is_set())
     {
-        return txSegment.Get();
+        return txSegment.get();
     }
 
     const uint32_t numToSend
-        = (this->message.payload.Size() < MAX_TPDU_PAYLOAD) ? this->message.payload.Size() : MAX_TPDU_PAYLOAD;
+        = (this->message.payload.length() < MAX_TPDU_PAYLOAD) ? this->message.payload.length() : MAX_TPDU_PAYLOAD;
 
-    auto dest = tpduBuffer.GetWSlice().Skip(1);
-    this->message.payload.Take(numToSend).CopyTo(dest);
+    auto dest = tpduBuffer.as_wseq().skip(1);
+    dest.copy_from(this->message.payload.take(numToSend));
 
     bool fir = (tpduCount == 0);
-    bool fin = (numToSend == this->message.payload.Size());
-    tpduBuffer()[0] = TransportHeader::ToByte(fir, fin, sequence);
+    bool fin = (numToSend == this->message.payload.length());
+    auto destHeader = tpduBuffer.as_wseq();
+    ser4cpp::UInt8::write_to(destHeader, TransportHeader::ToByte(fir, fin, sequence));
 
     FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_TX, "FIR: %d FIN: %d SEQ: %u LEN: %u", fir, fin, sequence.Get(),
                      numToSend);
 
     ++statistics.numTransportTx;
 
-    auto segment = tpduBuffer.ToRSlice(numToSend + 1);
-    txSegment.Set(segment);
+    auto segment = tpduBuffer.as_seq(numToSend + 1);
+    txSegment.set(segment);
     return segment;
 }
 
 bool TransportTx::Advance()
 {
-    txSegment.Clear();
+    txSegment.clear();
     uint32_t numToSend
-        = this->message.payload.Size() < MAX_TPDU_PAYLOAD ? this->message.payload.Size() : MAX_TPDU_PAYLOAD;
-    this->message.payload.Advance(numToSend);
+        = this->message.payload.length() < MAX_TPDU_PAYLOAD ? this->message.payload.length() : MAX_TPDU_PAYLOAD;
+    this->message.payload.advance(numToSend);
     ++tpduCount;
     sequence.Increment();
-    return this->message.payload.IsNotEmpty();
+    return this->message.payload.is_not_empty();
 }
 
 } // namespace opendnp3

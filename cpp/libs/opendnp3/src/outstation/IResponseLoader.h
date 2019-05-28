@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_IRESPONSELOADER_H
 #define OPENDNP3_IRESPONSELOADER_H
 
-#include "opendnp3/app/HeaderWriter.h"
+#include "app/HeaderWriter.h"
 
 namespace opendnp3
 {

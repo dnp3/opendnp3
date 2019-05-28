@@ -19,15 +19,15 @@
  */
 #include "AssignClassHandler.h"
 
-#include <openpal/logging/Logger.h>
+#include <log4cpp/Logger.h>
 
-#include "opendnp3/app/parsing/IAPDUHandler.h"
+#include "app/parsing/IAPDUHandler.h"
 #include "opendnp3/outstation/IOutstationApplication.h"
 
 namespace opendnp3
 {
 
-AssignClassHandler::AssignClassHandler(openpal::IExecutor& executor,
+AssignClassHandler::AssignClassHandler(exe4cpp::IExecutor& executor,
                                        IOutstationApplication& application,
                                        IClassAssigner& assigner)
     : classHeader(-1), clazz(PointClass::Class0), pExecutor(&executor), pApplication(&application), pAssigner(&assigner)
@@ -136,7 +136,7 @@ void AssignClassHandler::NotifyApplicationOfAssignment(AssignClassType type, Poi
             pApplication->RecordClassAssignment(type, clazz, range.start, range.stop);
         };
 
-        pExecutor->Post(callback);
+        pExecutor->post(callback);
     }
 }
 
