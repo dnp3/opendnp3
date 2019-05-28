@@ -44,7 +44,7 @@ aliases:
 jobs:
   build-gcc-debug:
     docker:
-      - image: ubuntu:18.04
+      - image: ubuntu:19.04
     steps:
       - checkout
       - run: *install_deps_gcc
@@ -55,14 +55,14 @@ jobs:
           command: cmake -DCMAKE_BUILD_TYPE=Debug -DDNP3_ALL=ON -DDNP3_TLS=ON ..
           working_directory: build
       - run: *build
-      - run: *test
-      - run: *build_java
-      - run: *test_java
-      - run: *package
-      - store_artifacts: *store_artifacts
+      #- run: *test
+      #- run: *build_java
+      #- run: *test_java
+      #- run: *package
+      #- store_artifacts: *store_artifacts
   build-gcc-release:
     docker:
-      - image: ubuntu:18.04
+      - image: ubuntu:19.04
     steps:
       - checkout
       - run: *install_deps_gcc
@@ -73,14 +73,14 @@ jobs:
           command: cmake -DCMAKE_BUILD_TYPE=Release -DDNP3_ALL=ON -DDNP3_TLS=ON ..
           working_directory: build
       - run: *build
-      - run: *test
-      - run: *build_java
-      - run: *test_java
-      - run: *package
-      - store_artifacts: *store_artifacts
+      #- run: *test
+      #- run: *build_java
+      #- run: *test_java
+      #- run: *package
+      #- store_artifacts: *store_artifacts
   build-clang-debug:
     docker:
-      - image: ubuntu:18.04
+      - image: ubuntu:19.04
     steps:
       - checkout
       - run: *install_deps_clang
@@ -91,14 +91,14 @@ jobs:
           command: cmake -DCMAKE_BUILD_TYPE=Debug -DDNP3_ALL=ON -DDNP3_TLS=ON ..
           working_directory: build
       - run: *build
-      - run: *test
-      - run: *build_java
-      - run: *test_java
-      - run: *package
-      - store_artifacts: *store_artifacts
+      #- run: *test
+      #- run: *build_java
+      #- run: *test_java
+      #- run: *package
+      #- store_artifacts: *store_artifacts
   build-clang-release:
     docker:
-      - image: ubuntu:18.04
+      - image: ubuntu:19.04
     steps:
       - checkout
       - run: *install_deps_clang
@@ -109,11 +109,11 @@ jobs:
           command: cmake -DCMAKE_BUILD_TYPE=Release -DDNP3_ALL=ON -DDNP3_TLS=ON ..
           working_directory: build
       - run: *build
-      - run: *test
-      - run: *build_java
-      - run: *test_java
-      - run: *package
-      - store_artifacts: *store_artifacts
+      #- run: *test
+      #- run: *build_java
+      #- run: *test_java
+      #- run: *package
+      #- store_artifacts: *store_artifacts
 workflows:
   version: 2
   build_and_test:
