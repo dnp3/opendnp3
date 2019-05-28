@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_IEVENTSELECTOR_H
 #define OPENDNP3_IEVENTSELECTOR_H
 
-#include "opendnp3/app/GroupVariationRecord.h"
+#include "app/GroupVariationRecord.h"
 #include "opendnp3/app/IINField.h"
 
 namespace opendnp3

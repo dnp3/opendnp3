@@ -18,12 +18,12 @@
  * limitations under the License.
  */
 
-#include "opendnp3/outstation/OutstationStates.h"
+#include "outstation/OutstationStates.h"
 
-#include "openpal/logging/LogMacros.h"
+#include "log4cpp/LogMacros.h"
 
 #include "opendnp3/LogLevels.h"
-#include "opendnp3/outstation/OutstationContext.h"
+#include "outstation/OutstationContext.h"
 
 namespace opendnp3
 {
@@ -90,7 +90,7 @@ OutstationState& StateSolicitedConfirmWait::OnConfirm(OContext& ctx, const Parse
     }
 
     ctx.history.Reset(); // any time we get a confirm we can treat any request as a new request
-    ctx.confirmTimer.Cancel();
+    ctx.confirmTimer.cancel();
     ctx.eventBuffer.ClearWritten();
 
     if (ctx.rspContext.HasSelection())
@@ -109,20 +109,20 @@ OutstationState& StateSolicitedConfirmWait::OnConfirmTimeout(OContext& ctx)
 
 OutstationState& StateSolicitedConfirmWait::OnNewReadRequest(OContext& ctx, const ParsedRequest& request)
 {
-    ctx.confirmTimer.Cancel();
+    ctx.confirmTimer.cancel();
     return ctx.RespondToReadRequest(request);
 }
 
 OutstationState& StateSolicitedConfirmWait::OnNewNonReadRequest(OContext& ctx, const ParsedRequest& request)
 {
-    ctx.confirmTimer.Cancel();
+    ctx.confirmTimer.cancel();
     ctx.RespondToNonReadRequest(request);
     return StateIdle::Inst();
 }
 
 OutstationState& StateSolicitedConfirmWait::OnRepeatNonReadRequest(OContext& ctx, const ParsedRequest& request)
 {
-    ctx.confirmTimer.Cancel();
+    ctx.confirmTimer.cancel();
     ctx.BeginResponseTx(request.addresses.source, ctx.sol.tx.GetLastResponse(), ctx.sol.tx.GetLastControl());
     return *this;
 }
@@ -156,7 +156,7 @@ OutstationState& StateUnsolicitedConfirmWait::OnConfirm(OContext& ctx, const Par
     }
 
     ctx.history.Reset(); // any time we get a confirm we can treat any request as a new request
-    ctx.confirmTimer.Cancel();
+    ctx.confirmTimer.cancel();
 
     if (ctx.unsol.completedNull)
     {

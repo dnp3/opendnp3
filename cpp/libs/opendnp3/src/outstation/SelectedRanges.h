@@ -20,9 +20,9 @@
 #ifndef OPENDNP3_SELECTEDRANGES_H
 #define OPENDNP3_SELECTEDRANGES_H
 
-#include <openpal/util/Uncopyable.h>
+#include <ser4cpp/util/Uncopyable.h>
 
-#include "opendnp3/app/Range.h"
+#include "app/Range.h"
 
 namespace opendnp3
 {
@@ -30,7 +30,7 @@ namespace opendnp3
 /**
  * Selected ranges for each static datatype
  */
-class SelectedRanges : private openpal::Uncopyable
+class SelectedRanges : private ser4cpp::Uncopyable
 {
 
 public:

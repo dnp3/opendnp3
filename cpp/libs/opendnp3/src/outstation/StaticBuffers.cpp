@@ -17,7 +17,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "StaticBuffers.h"
+#include "outstation/StaticBuffers.h"
 
 namespace opendnp3
 {
@@ -46,54 +46,54 @@ StaticBuffers::StaticBuffers(const DatabaseSizes& dbSizes)
 
 DatabaseConfigView StaticBuffers::GetView() const
 {
-    return DatabaseConfigView(binaries.ToView(), doubleBinaries.ToView(), analogs.ToView(), counters.ToView(),
-                              frozenCounters.ToView(), binaryOutputStatii.ToView(), analogOutputStatii.ToView(),
-                              timeAndIntervals.ToView(), octetStrings.ToView());
+    return DatabaseConfigView(binaries.to_view(), doubleBinaries.to_view(), analogs.to_view(), counters.to_view(),
+                              frozenCounters.to_view(), binaryOutputStatii.to_view(), analogOutputStatii.to_view(),
+                              timeAndIntervals.to_view(), octetStrings.to_view());
 }
 
-template<> openpal::ArrayView<Cell<BinarySpec>, uint16_t> StaticBuffers::GetArrayView()
+template<> ser4cpp::ArrayView<Cell<BinarySpec>, uint16_t> StaticBuffers::GetArrayView()
 {
-    return binaries.ToView();
+    return binaries.to_view();
 }
 
-template<> openpal::ArrayView<Cell<DoubleBitBinarySpec>, uint16_t> StaticBuffers::GetArrayView()
+template<> ser4cpp::ArrayView<Cell<DoubleBitBinarySpec>, uint16_t> StaticBuffers::GetArrayView()
 {
-    return doubleBinaries.ToView();
+    return doubleBinaries.to_view();
 }
 
-template<> openpal::ArrayView<Cell<CounterSpec>, uint16_t> StaticBuffers::GetArrayView()
+template<> ser4cpp::ArrayView<Cell<CounterSpec>, uint16_t> StaticBuffers::GetArrayView()
 {
-    return counters.ToView();
+    return counters.to_view();
 }
 
-template<> openpal::ArrayView<Cell<FrozenCounterSpec>, uint16_t> StaticBuffers::GetArrayView()
+template<> ser4cpp::ArrayView<Cell<FrozenCounterSpec>, uint16_t> StaticBuffers::GetArrayView()
 {
-    return frozenCounters.ToView();
+    return frozenCounters.to_view();
 }
 
-template<> openpal::ArrayView<Cell<AnalogSpec>, uint16_t> StaticBuffers::GetArrayView()
+template<> ser4cpp::ArrayView<Cell<AnalogSpec>, uint16_t> StaticBuffers::GetArrayView()
 {
-    return analogs.ToView();
+    return analogs.to_view();
 }
 
-template<> openpal::ArrayView<Cell<BinaryOutputStatusSpec>, uint16_t> StaticBuffers::GetArrayView()
+template<> ser4cpp::ArrayView<Cell<BinaryOutputStatusSpec>, uint16_t> StaticBuffers::GetArrayView()
 {
-    return binaryOutputStatii.ToView();
+    return binaryOutputStatii.to_view();
 }
 
-template<> openpal::ArrayView<Cell<AnalogOutputStatusSpec>, uint16_t> StaticBuffers::GetArrayView()
+template<> ser4cpp::ArrayView<Cell<AnalogOutputStatusSpec>, uint16_t> StaticBuffers::GetArrayView()
 {
-    return analogOutputStatii.ToView();
+    return analogOutputStatii.to_view();
 }
 
-template<> openpal::ArrayView<Cell<TimeAndIntervalSpec>, uint16_t> StaticBuffers::GetArrayView()
+template<> ser4cpp::ArrayView<Cell<TimeAndIntervalSpec>, uint16_t> StaticBuffers::GetArrayView()
 {
-    return timeAndIntervals.ToView();
+    return timeAndIntervals.to_view();
 }
 
-template<> openpal::ArrayView<Cell<OctetStringSpec>, uint16_t> StaticBuffers::GetArrayView()
+template<> ser4cpp::ArrayView<Cell<OctetStringSpec>, uint16_t> StaticBuffers::GetArrayView()
 {
-    return octetStrings.ToView();
+    return octetStrings.to_view();
 }
 
 } // namespace opendnp3

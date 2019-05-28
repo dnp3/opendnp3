@@ -20,7 +20,8 @@
 #ifndef OPENDNP3_OUTSTATIONCONTEXT_H
 #define OPENDNP3_OUTSTATIONCONTEXT_H
 
-#include <exe4cpp/Timer.h>
+#include <exe4cpp/IExecutor.h>
+#include <ser4cpp/container/Pair.h>
 #include <log4cpp/Logger.h>
 
 #include "LayerInterfaces.h"
@@ -31,15 +32,15 @@
 #include "outstation/DeferredRequest.h"
 #include "opendnp3/outstation/ICommandHandler.h"
 #include "opendnp3/outstation/IOutstationApplication.h"
-#include "opendnp3/outstation/OutstationChannelStates.h"
+#include "outstation/OutstationChannelStates.h"
 #include "opendnp3/outstation/OutstationConfig.h"
-#include "opendnp3/outstation/OutstationSeqNum.h"
-#include "opendnp3/outstation/OutstationStates.h"
-#include "opendnp3/outstation/ParsedRequest.h"
-#include "opendnp3/outstation/RequestHistory.h"
-#include "opendnp3/outstation/ResponseContext.h"
-#include "opendnp3/outstation/TimeSyncState.h"
-#include "opendnp3/outstation/event/EventBuffer.h"
+#include "outstation/OutstationSeqNum.h"
+#include "outstation/OutstationStates.h"
+#include "outstation/ParsedRequest.h"
+#include "outstation/RequestHistory.h"
+#include "outstation/ResponseContext.h"
+#include "outstation/TimeSyncState.h"
+#include "outstation/event/EventBuffer.h"
 
 namespace opendnp3
 {
@@ -58,7 +59,7 @@ public:
              const OutstationConfig& config,
              const DatabaseSizes& dbSizes,
              const log4cpp::Logger& logger,
-             const std::shared_ptr<exe3cpp::IExecutor>& executor,
+             const std::shared_ptr<exe4cpp::IExecutor>& executor,
              std::shared_ptr<ILowerLayer> lower,
              std::shared_ptr<ICommandHandler> commandHandler,
              std::shared_ptr<IOutstationApplication> application);
@@ -138,7 +139,7 @@ private:
 
     /// Handles read function codes. May trigger an unsolicited response
     /// @return an IIN field and a partial AppControlField (missing sequence info)
-    openpal::Pair<IINField, AppControlField> HandleRead(const ser4cpp::rseq_t& objects, HeaderWriter& writer);
+    ser4cpp::Pair<IINField, AppControlField> HandleRead(const ser4cpp::rseq_t& objects, HeaderWriter& writer);
 
     // ------ Function Handlers ------
 

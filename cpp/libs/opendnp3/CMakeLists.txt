@@ -462,7 +462,7 @@ set(opendnp3_src
     ./src/objects/Group121.cpp
     ./src/objects/Group122.cpp
 
-#[[
+
     ./src/outstation/ApplicationIIN.cpp
     ./src/outstation/AssignClassHandler.cpp
     ./src/outstation/ClassBasedRequestHandler.cpp
@@ -486,7 +486,7 @@ set(opendnp3_src
     ./src/outstation/StaticBuffers.cpp
     ./src/outstation/StaticWriters.cpp
     ./src/outstation/WriteHandler.cpp
-]]
+
 #[[
     ./src/outstation/event/ASDUEventWriteHandler.cpp
     ./src/outstation/event/EventBuffer.cpp

@@ -20,13 +20,13 @@
 #ifndef OPENDNP3_WRITEHANDLER_H
 #define OPENDNP3_WRITEHANDLER_H
 
-#include "openpal/executor/MonotonicTimestamp.h"
-#include "openpal/logging/Logger.h"
+#include "opendnp3/Timestamp.h"
+#include "log4cpp/Logger.h"
 
 #include "opendnp3/app/IINField.h"
-#include "opendnp3/app/parsing/IAPDUHandler.h"
+#include "app/parsing/IAPDUHandler.h"
 #include "opendnp3/outstation/IOutstationApplication.h"
-#include "opendnp3/outstation/TimeSyncState.h"
+#include "outstation/TimeSyncState.h"
 
 namespace opendnp3
 {
@@ -37,7 +37,7 @@ public:
     WriteHandler(IOutstationApplication& application,
                  TimeSyncState& timeSyncState,
                  AppSeqNum seq,
-                 openpal::MonotonicTimestamp now,
+                 Timestamp now,
                  IINField* pWriteIIN);
 
     virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override
@@ -58,7 +58,7 @@ private:
     IOutstationApplication* application;
     TimeSyncState* timeSyncState;
     AppSeqNum seq;
-    openpal::MonotonicTimestamp now;
+    Timestamp now;
     IINField* writeIIN;
 
     bool wroteTime = false;

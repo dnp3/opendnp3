@@ -62,6 +62,12 @@ TimeDuration TimeDuration::Days(int64_t days)
     return TimeDuration(std::chrono::hours(24) * days);
 }
 
+TimeDuration::TimeDuration()
+    : value(std::chrono::milliseconds(0))
+{
+
+}
+
 TimeDuration TimeDuration::Double() const
 {
     const bool doubling_would_cause_mult_overflow

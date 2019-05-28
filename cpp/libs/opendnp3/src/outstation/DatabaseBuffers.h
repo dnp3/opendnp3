@@ -41,7 +41,7 @@ The database coordinates all updates of measurement data
 class DatabaseBuffers final : public IStaticSelector,
                               public IResponseLoader,
                               public IClassAssigner,
-                              private openpal::Uncopyable
+                              private ser4cpp::Uncopyable
 {
 public:
     DatabaseBuffers(const DatabaseSizes&, StaticTypeBitField allowedClass0Types, IndexMode indexMode);
@@ -104,7 +104,7 @@ private:
 
     template<class T>
     IINField GenericSelect(Range range,
-                           openpal::ArrayView<Cell<T>, uint16_t> view,
+                           ser4cpp::ArrayView<Cell<T>, uint16_t> view,
                            bool useDefault,
                            typename T::static_variation_t variation);
 
@@ -121,13 +121,13 @@ private:
     template<class T> IINField SelectAll()
     {
         auto view = buffers.GetArrayView<T>();
-        return GenericSelect(RangeOf(view.Size()), view, true, typename T::static_variation_t());
+        return GenericSelect(RangeOf(view.length()), view, true, typename T::static_variation_t());
     }
 
     template<class T> IINField SelectAllUsing(typename T::static_variation_t variation)
     {
         auto view = buffers.GetArrayView<T>();
-        return GenericSelect(RangeOf(view.Size()), view, false, variation);
+        return GenericSelect(RangeOf(view.length()), view, false, variation);
     }
 
     template<class T>
@@ -167,13 +167,13 @@ private:
 
 template<class T>
 IINField DatabaseBuffers::GenericSelect(Range range,
-                                        openpal::ArrayView<Cell<T>, uint16_t> view,
+                                        ser4cpp::ArrayView<Cell<T>, uint16_t> view,
                                         bool useDefault,
                                         typename T::static_variation_t variation)
 {
     if (range.IsValid())
     {
-        auto allowed = range.Intersection(RangeOf(view.Size()));
+        auto allowed = range.Intersection(RangeOf(view.length()));
 
         if (allowed.IsValid())
         {
@@ -246,7 +246,7 @@ template<class T> bool DatabaseBuffers::LoadType(HeaderWriter& writer)
 template<class Spec> Range DatabaseBuffers::AssignClassTo(PointClass clazz, const Range& range)
 {
     auto view = buffers.GetArrayView<Spec>();
-    auto clipped = range.Intersection(RangeOf(view.Size()));
+    auto clipped = range.Intersection(RangeOf(view.length()));
     for (auto i = clipped.start; i <= clipped.stop; ++i)
     {
         view[i].config.clazz = clazz;

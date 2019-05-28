@@ -17,7 +17,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "opendnp3/outstation/IINHelpers.h"
+#include "outstation/IINHelpers.h"
 
 namespace opendnp3
 {

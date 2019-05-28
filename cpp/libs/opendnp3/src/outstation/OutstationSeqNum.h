@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_OUTSTATIONSEQNUM_H
 #define OPENDNP3_OUTSTATIONSEQNUM_H
 
-#include "opendnp3/app/AppSeqNum.h"
+#include "app/AppSeqNum.h"
 
 #include <cstdint>
 

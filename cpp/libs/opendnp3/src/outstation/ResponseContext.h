@@ -20,12 +20,12 @@
 #ifndef OPENDNP3_RESPONSECONTEXT_H
 #define OPENDNP3_RESPONSECONTEXT_H
 
-#include <openpal/util/Uncopyable.h>
+#include <ser4cpp/util/Uncopyable.h>
 
-#include "opendnp3/app/AppControlField.h"
-#include "opendnp3/app/HeaderWriter.h"
-#include "opendnp3/app/Range.h"
-#include "opendnp3/outstation/IResponseLoader.h"
+#include "app/AppControlField.h"
+#include "app/HeaderWriter.h"
+#include "app/Range.h"
+#include "outstation/IResponseLoader.h"
 
 namespace opendnp3
 {
@@ -35,7 +35,7 @@ class Database;
 /**
  *  Coordinates the event & static response contexts to do multi-fragments responses
  */
-class ResponseContext : private openpal::Uncopyable
+class ResponseContext : private ser4cpp::Uncopyable
 {
 
 public:

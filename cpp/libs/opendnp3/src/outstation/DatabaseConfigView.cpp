@@ -22,15 +22,15 @@
 namespace opendnp3
 {
 
-DatabaseConfigView::DatabaseConfigView(openpal::ArrayView<Cell<BinarySpec>, uint16_t> binaries,
-                                       openpal::ArrayView<Cell<DoubleBitBinarySpec>, uint16_t> doubleBinaries,
-                                       openpal::ArrayView<Cell<AnalogSpec>, uint16_t> analogs,
-                                       openpal::ArrayView<Cell<CounterSpec>, uint16_t> counters,
-                                       openpal::ArrayView<Cell<FrozenCounterSpec>, uint16_t> frozenCounters,
-                                       openpal::ArrayView<Cell<BinaryOutputStatusSpec>, uint16_t> binaryOutputStatii,
-                                       openpal::ArrayView<Cell<AnalogOutputStatusSpec>, uint16_t> analogOutputStatii,
-                                       openpal::ArrayView<Cell<TimeAndIntervalSpec>, uint16_t> timeAndIntervals,
-                                       openpal::ArrayView<Cell<OctetStringSpec>, uint16_t> octetStrings)
+DatabaseConfigView::DatabaseConfigView(ser4cpp::ArrayView<Cell<BinarySpec>, uint16_t> binaries,
+                                       ser4cpp::ArrayView<Cell<DoubleBitBinarySpec>, uint16_t> doubleBinaries,
+                                       ser4cpp::ArrayView<Cell<AnalogSpec>, uint16_t> analogs,
+                                       ser4cpp::ArrayView<Cell<CounterSpec>, uint16_t> counters,
+                                       ser4cpp::ArrayView<Cell<FrozenCounterSpec>, uint16_t> frozenCounters,
+                                       ser4cpp::ArrayView<Cell<BinaryOutputStatusSpec>, uint16_t> binaryOutputStatii,
+                                       ser4cpp::ArrayView<Cell<AnalogOutputStatusSpec>, uint16_t> analogOutputStatii,
+                                       ser4cpp::ArrayView<Cell<TimeAndIntervalSpec>, uint16_t> timeAndIntervals,
+                                       ser4cpp::ArrayView<Cell<OctetStringSpec>, uint16_t> octetStrings)
     : binaries(binaries),
       doubleBinaries(doubleBinaries),
       analogs(analogs),

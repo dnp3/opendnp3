@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_OUTSTATIONPARAMS_H
 #define OPENDNP3_OUTSTATIONPARAMS_H
 
-#include <openpal/executor/TimeDuration.h>
+#include "opendnp3/TimeDuration.h"
 
 #include "opendnp3/app/AppConstants.h"
 #include "opendnp3/app/ClassField.h"
@@ -42,16 +42,16 @@ struct OutstationParams
     uint8_t maxControlsPerRequest = 16;
 
     /// How long the outstation will allow an operate to proceed after a prior select
-    openpal::TimeDuration selectTimeout = openpal::TimeDuration::Seconds(10);
+    TimeDuration selectTimeout = TimeDuration::Seconds(10);
 
     /// Timeout for solicited confirms
-    openpal::TimeDuration solConfirmTimeout = DEFAULT_APP_TIMEOUT;
+    TimeDuration solConfirmTimeout = DEFAULT_APP_TIMEOUT;
 
     /// Timeout for unsolicited confirms
-    openpal::TimeDuration unsolConfirmTimeout = DEFAULT_APP_TIMEOUT;
+    TimeDuration unsolConfirmTimeout = DEFAULT_APP_TIMEOUT;
 
     /// Timeout for unsolicited retries
-    openpal::TimeDuration unsolRetryTimeout = DEFAULT_APP_TIMEOUT;
+    TimeDuration unsolRetryTimeout = DEFAULT_APP_TIMEOUT;
 
     /// The maximum fragment size the outstation will use for fragments it sends
     uint32_t maxTxFragSize = DEFAULT_MAX_APDU_SIZE;

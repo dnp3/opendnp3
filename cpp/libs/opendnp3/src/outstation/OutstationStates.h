@@ -20,9 +20,9 @@
 #ifndef OPENDNP3_OUTSTATIONSTATES_H
 #define OPENDNP3_OUTSTATIONSTATES_H
 
-#include <openpal/util/Uncopyable.h>
+#include <ser4cpp/util/Uncopyable.h>
 
-#include "opendnp3/outstation/ParsedRequest.h"
+#include "outstation/ParsedRequest.h"
 
 namespace opendnp3
 {
@@ -32,7 +32,7 @@ class OContext;
 /**
  * Base class for the outstation states
  */
-class OutstationState : private openpal::Uncopyable
+class OutstationState : private ser4cpp::Uncopyable
 {
 public:
     virtual bool IsIdle()

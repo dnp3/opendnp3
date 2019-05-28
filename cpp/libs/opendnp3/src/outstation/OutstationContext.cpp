@@ -19,26 +19,24 @@
  */
 #include "OutstationContext.h"
 
-#include <openpal/logging/LogMacros.h>
+#include <log4cpp/LogMacros.h>
 
 #include "opendnp3/LogLevels.h"
-#include "opendnp3/app/APDUBuilders.h"
-#include "opendnp3/app/APDULogging.h"
-#include "opendnp3/app/Functions.h"
-#include "opendnp3/app/parsing/APDUHeaderParser.h"
-#include "opendnp3/app/parsing/APDUParser.h"
-#include "opendnp3/outstation/AssignClassHandler.h"
-#include "opendnp3/outstation/ClassBasedRequestHandler.h"
-#include "opendnp3/outstation/CommandActionAdapter.h"
-#include "opendnp3/outstation/CommandResponseHandler.h"
-#include "opendnp3/outstation/ConstantCommandAction.h"
-#include "opendnp3/outstation/IINHelpers.h"
-#include "opendnp3/outstation/ReadHandler.h"
-#include "opendnp3/outstation/WriteHandler.h"
+#include "app/APDUBuilders.h"
+#include "app/APDULogging.h"
+#include "app/Functions.h"
+#include "app/parsing/APDUHeaderParser.h"
+#include "app/parsing/APDUParser.h"
+#include "outstation/AssignClassHandler.h"
+#include "outstation/ClassBasedRequestHandler.h"
+#include "outstation/CommandActionAdapter.h"
+#include "outstation/CommandResponseHandler.h"
+#include "outstation/ConstantCommandAction.h"
+#include "outstation/IINHelpers.h"
+#include "outstation/ReadHandler.h"
+#include "outstation/WriteHandler.h"
 
 #include <utility>
-
-using namespace openpal;
 
 namespace opendnp3
 {
@@ -46,8 +44,8 @@ namespace opendnp3
 OContext::OContext(const Addresses& addresses,
                    const OutstationConfig& config,
                    const DatabaseSizes& dbSizes,
-                   const openpal::Logger& logger,
-                   const std::shared_ptr<openpal::IExecutor>& executor,
+                   const log4cpp::Logger& logger,
+                   const std::shared_ptr<exe4cpp::IExecutor>& executor,
                    std::shared_ptr<ILowerLayer> lower,
                    std::shared_ptr<ICommandHandler> commandHandler,
                    std::shared_ptr<IOutstationApplication> application)
@@ -66,7 +64,6 @@ OContext::OContext(const Addresses& addresses,
       isOnline(false),
       isTransmitting(false),
       staticIIN(IINBit::DEVICE_RESTART),
-      confirmTimer(*executor),
       deferred(config.params.maxRxFragSize),
       sol(config.params.maxTxFragSize),
       unsol(config.params.maxTxFragSize)
@@ -105,7 +102,7 @@ bool OContext::OnLowerLayerDown()
     deferred.Reset();
     eventBuffer.Unselect();
     rspContext.Reset();
-    confirmTimer.Cancel();
+    confirmTimer.cancel();
 
     return true;
 }
@@ -229,7 +226,7 @@ void OContext::BeginResponseTx(uint16_t destination, const ser4cpp::rseq_t& data
     this->BeginTx(destination, data);
 }
 
-void OContext::BeginUnsolTx(const AppControlField& control, const RSlice& response)
+void OContext::BeginUnsolTx(const AppControlField& control, const ser4cpp::rseq_t& response)
 {
     this->unsol.tx.Record(control, response);
     this->unsol.seq.confirmNum = this->unsol.seq.num;
@@ -298,7 +295,7 @@ void OContext::CheckForUnsolicited()
                 build::NullUnsolicited(response, this->unsol.seq.num, this->GetResponseIIN());
                 this->RestartConfirmTimer();
                 this->state = &StateUnsolicitedConfirmWait::Inst();
-                this->BeginUnsolTx(response.GetControl(), response.ToRSlice());
+                this->BeginUnsolTx(response.GetControl(), response.ToRSeq());
             }
         }
         else
@@ -308,7 +305,7 @@ void OContext::CheckForUnsolicited()
             build::NullUnsolicited(response, this->unsol.seq.num, this->GetResponseIIN());
             this->RestartConfirmTimer();
             this->state = &StateUnsolicitedConfirmWait::Inst();
-            this->BeginUnsolTx(response.GetControl(), response.ToRSlice());
+            this->BeginUnsolTx(response.GetControl(), response.ToRSeq());
         }
     }
 }
@@ -320,7 +317,7 @@ void OContext::RestartConfirmTimer()
         this->CheckForTaskStart();
     };
 
-    this->confirmTimer.Restart(this->params.unsolConfirmTimeout, timeout);
+    this->confirmTimer = this->executor->start(this->params.unsolConfirmTimeout.value, timeout);
 }
 
 void OContext::RespondToNonReadRequest(const ParsedRequest& request)
@@ -333,7 +330,7 @@ void OContext::RespondToNonReadRequest(const ParsedRequest& request)
     response.SetControl(AppControlField(true, true, false, false, request.header.control.SEQ));
     auto iin = this->HandleNonReadResponse(request.header, request.objects, writer);
     response.SetIIN(iin | this->GetResponseIIN());
-    this->BeginResponseTx(request.addresses.source, response.ToRSlice(), response.GetControl());
+    this->BeginResponseTx(request.addresses.source, response.ToRSeq(), response.GetControl());
 }
 
 OutstationState& OContext::RespondToReadRequest(const ParsedRequest& request)
@@ -349,7 +346,7 @@ OutstationState& OContext::RespondToReadRequest(const ParsedRequest& request)
     response.SetControl(result.second);
     response.SetIIN(result.first | this->GetResponseIIN());
 
-    this->BeginResponseTx(request.addresses.source, response.ToRSlice(), response.GetControl());
+    this->BeginResponseTx(request.addresses.source, response.ToRSeq(), response.GetControl());
 
     if (result.second.CON)
     {
@@ -370,7 +367,7 @@ OutstationState& OContext::ContinueMultiFragResponse(const Addresses& addresses,
     this->sol.seq.confirmNum = seq;
     response.SetControl(control);
     response.SetIIN(this->GetResponseIIN());
-    this->BeginResponseTx(addresses.source, response.ToRSlice(), response.GetControl());
+    this->BeginResponseTx(addresses.source, response.ToRSeq(), response.GetControl());
 
     if (control.CON)
     {
@@ -503,7 +500,7 @@ IINField OContext::HandleNonReadResponse(const APDUHeader& header, const ser4cpp
     case (FunctionCode::DELAY_MEASURE):
         return this->HandleDelayMeasure(objects, writer);
     case (FunctionCode::RECORD_CURRENT_TIME):
-        return objects.IsEmpty() ? this->HandleRecordCurrentTime() : IINField(IINBit::PARAM_ERROR);
+        return objects.is_empty() ? this->HandleRecordCurrentTime() : IINField(IINBit::PARAM_ERROR);
     case (FunctionCode::DISABLE_UNSOLICITED):
         return this->params.allowUnsolicited ? this->HandleDisableUnsolicited(objects, writer)
                                              : IINField(IINBit::FUNC_NOT_SUPPORTED);
@@ -515,7 +512,7 @@ IINField OContext::HandleNonReadResponse(const APDUHeader& header, const ser4cpp
     }
 }
 
-Pair<IINField, AppControlField> OContext::HandleRead(const ser4cpp::rseq_t& objects, HeaderWriter& writer)
+ser4cpp::Pair<IINField, AppControlField> OContext::HandleRead(const ser4cpp::rseq_t& objects, HeaderWriter& writer)
 {
     this->rspContext.Reset();
     this->eventBuffer.Unselect(); // always un-select any previously selected points when we start a new read request
@@ -527,16 +524,16 @@ Pair<IINField, AppControlField> OContext::HandleRead(const ser4cpp::rseq_t& obje
     if (result == ParseResult::OK)
     {
         auto control = this->rspContext.LoadResponse(writer);
-        return Pair<IINField, AppControlField>(handler.Errors(), control);
+        return ser4cpp::Pair<IINField, AppControlField>(handler.Errors(), control);
     }
 
     this->rspContext.Reset();
-    return Pair<IINField, AppControlField>(IINFromParseResult(result), AppControlField(true, true, false, false));
+    return ser4cpp::Pair<IINField, AppControlField>(IINFromParseResult(result), AppControlField(true, true, false, false));
 }
 
 IINField OContext::HandleWrite(const ser4cpp::rseq_t& objects)
 {
-    WriteHandler handler(*this->application, this->time, this->sol.seq.num, this->executor->GetTime(),
+    WriteHandler handler(*this->application, this->time, this->sol.seq.num, Timestamp(this->executor->get_time()),
                          &this->staticIIN);
     auto result = APDUParser::Parse(objects, handler, &this->logger);
     return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
@@ -545,10 +542,10 @@ IINField OContext::HandleWrite(const ser4cpp::rseq_t& objects)
 IINField OContext::HandleDirectOperate(const ser4cpp::rseq_t& objects, OperateType opType, HeaderWriter* pWriter)
 {
     // since we're echoing, make sure there's enough size before beginning
-    if ((pWriter != nullptr) && (objects.Size() > pWriter->Remaining()))
+    if ((pWriter != nullptr) && (objects.length() > pWriter->Remaining()))
     {
         FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Igonring command request due to oversized payload size of %u",
-                         objects.Size());
+                         objects.length());
         return IINField(IINBit::PARAM_ERROR);
     }
 
@@ -561,10 +558,10 @@ IINField OContext::HandleDirectOperate(const ser4cpp::rseq_t& objects, OperateTy
 IINField OContext::HandleSelect(const ser4cpp::rseq_t& objects, HeaderWriter& writer)
 {
     // since we're echoing, make sure there's enough size before beginning
-    if (objects.Size() > writer.Remaining())
+    if (objects.length() > writer.Remaining())
     {
         FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Igonring command request due to oversized payload size of %i",
-                         objects.Size());
+                         objects.length());
         return IINField(IINBit::PARAM_ERROR);
     }
 
@@ -576,7 +573,7 @@ IINField OContext::HandleSelect(const ser4cpp::rseq_t& objects, HeaderWriter& wr
     {
         if (handler.AllCommandsSuccessful())
         {
-            this->control.Select(this->sol.seq.num, this->executor->GetTime(), objects);
+            this->control.Select(this->sol.seq.num, Timestamp(this->executor->get_time()), objects);
         }
 
         return handler.Errors();
@@ -588,14 +585,14 @@ IINField OContext::HandleSelect(const ser4cpp::rseq_t& objects, HeaderWriter& wr
 IINField OContext::HandleOperate(const ser4cpp::rseq_t& objects, HeaderWriter& writer)
 {
     // since we're echoing, make sure there's enough size before beginning
-    if (objects.Size() > writer.Remaining())
+    if (objects.length() > writer.Remaining())
     {
         FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Igonring command request due to oversized payload size of %i",
-                         objects.Size());
+                         objects.length());
         return IINField(IINBit::PARAM_ERROR);
     }
 
-    auto now = this->executor->GetTime();
+    auto now = Timestamp(this->executor->get_time());
     auto result = this->control.ValidateSelection(this->sol.seq.num, now, this->params.selectTimeout, objects);
 
     if (result == CommandStatus::SUCCESS)
@@ -611,11 +608,11 @@ IINField OContext::HandleOperate(const ser4cpp::rseq_t& objects, HeaderWriter& w
 
 IINField OContext::HandleDelayMeasure(const ser4cpp::rseq_t& objects, HeaderWriter& writer)
 {
-    if (objects.IsEmpty())
+    if (objects.is_empty())
     {
         Group52Var2 value;
         value.time = 0; // respond with 0 time delay
-        writer.WriteSingleValue<UInt8, Group52Var2>(QualifierCode::UINT8_CNT, value);
+        writer.WriteSingleValue<ser4cpp::UInt8, Group52Var2>(QualifierCode::UINT8_CNT, value);
         return IINField::Empty();
     }
 
@@ -625,13 +622,13 @@ IINField OContext::HandleDelayMeasure(const ser4cpp::rseq_t& objects, HeaderWrit
 
 IINField OContext::HandleRecordCurrentTime()
 {
-    this->time.RecordCurrentTime(this->sol.seq.num, this->executor->GetTime());
+    this->time.RecordCurrentTime(this->sol.seq.num, Timestamp(this->executor->get_time()));
     return IINField::Empty();
 }
 
 IINField OContext::HandleRestart(const ser4cpp::rseq_t& objects, bool isWarmRestart, HeaderWriter* pWriter)
 {
-    if (objects.IsNotEmpty())
+    if (objects.is_not_empty())
         return IINField(IINBit::PARAM_ERROR);
 
     auto mode = isWarmRestart ? this->application->WarmRestartSupport() : this->application->ColdRestartSupport();
@@ -647,7 +644,7 @@ IINField OContext::HandleRestart(const ser4cpp::rseq_t& objects, bool isWarmRest
         {
             Group52Var1 coarse;
             coarse.time = delay;
-            pWriter->WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, coarse);
+            pWriter->WriteSingleValue<ser4cpp::UInt8>(QualifierCode::UINT8_CNT, coarse);
         }
         return IINField::Empty();
     }
@@ -658,7 +655,7 @@ IINField OContext::HandleRestart(const ser4cpp::rseq_t& objects, bool isWarmRest
         {
             Group52Var2 fine;
             fine.time = delay;
-            pWriter->WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, fine);
+            pWriter->WriteSingleValue<ser4cpp::UInt8>(QualifierCode::UINT8_CNT, fine);
         }
         return IINField::Empty();
     }

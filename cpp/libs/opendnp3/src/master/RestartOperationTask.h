@@ -72,7 +72,7 @@ private:
 
     const FunctionCode function;
     RestartOperationCallbackT callback;
-    TimeDuration duration = TimeDuration::Zero();
+    TimeDuration duration;
 
     IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header,
                                                 const ser4cpp::rseq_t& objects) override;

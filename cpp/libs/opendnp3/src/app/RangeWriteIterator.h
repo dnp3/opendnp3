@@ -36,20 +36,20 @@ public:
 
     RangeWriteIterator() : start(0), count(0), isValid(false), pPosition(nullptr) {}
 
-    RangeWriteIterator(typename IndexType::Type start_,
+    RangeWriteIterator(typename IndexType::type_t start_,
                        const ser4cpp::Serializer<WriteType>& serializer_,
                        ser4cpp::wseq_t& position)
         : start(start_),
           serializer(serializer_),
           count(0),
-          isValid(position.length() >= 2 * IndexType::SIZE),
+          isValid(position.length() >= 2 * IndexType::size),
           range(position),
           pPosition(&position)
     {
         if (isValid)
         {
             IndexType::write_to(range, start);
-            pPosition->advance(2 * IndexType::SIZE);
+            pPosition->advance(2 * IndexType::size);
         }
     }
 
@@ -58,13 +58,13 @@ public:
         if (isValid && count > 0)
         {
             auto stop = start + count - 1;
-            IndexType::Write(range, static_cast<typename IndexType::Type>(stop));
+            IndexType::write_to(range, static_cast<typename IndexType::type_t>(stop));
         }
     }
 
     bool Write(const WriteType& value)
     {
-        if (isValid && (pPosition->length() >= serializer.size()) && (count <= IndexType::Max))
+        if (isValid && (pPosition->length() >= serializer.size()) && (count <= IndexType::max_value))
         {
             serializer.write(value, *pPosition);
             ++count;
@@ -82,7 +82,7 @@ public:
     }
 
 private:
-    typename IndexType::Type start;
+    typename IndexType::type_t start;
     ser4cpp::Serializer<WriteType> serializer;
     uint32_t count;
 

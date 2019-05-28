@@ -19,9 +19,7 @@
  */
 #include "WriteHandler.h"
 
-#include "openpal/logging/LogMacros.h"
-
-using namespace openpal;
+#include "log4cpp/LogMacros.h"
 
 namespace opendnp3
 {
@@ -29,7 +27,7 @@ namespace opendnp3
 WriteHandler::WriteHandler(IOutstationApplication& application,
                            TimeSyncState& timeSyncState,
                            AppSeqNum seq,
-                           openpal::MonotonicTimestamp now,
+                           Timestamp now,
                            IINField* writeIIN)
     : application(&application), timeSyncState(&timeSyncState), seq(seq), now(now), writeIIN(writeIIN)
 {
@@ -95,7 +93,7 @@ IINField WriteHandler::ProcessHeader(const CountHeader& /*header*/, const IColle
     if (!this->timeSyncState->CalcTimeDifference(this->seq, this->now))
         return IINBit::PARAM_ERROR;
 
-    const UTCTimestamp time(value.time + this->timeSyncState->GetDifference().milliseconds);
+    const UTCTimestamp time(value.time + std::chrono::duration_cast<std::chrono::milliseconds>(this->timeSyncState->GetDifference().value).count());
 
     this->wroteTime = true;
     return application->WriteAbsoluteTime(time) ? IINField::Empty() : IINBit::PARAM_ERROR;

@@ -46,8 +46,8 @@ void DeferredRequest::Set(const ParsedRequest& request)
     this->addresses = request.addresses;
     this->header = request.header;
 
-    auto dest = buffer.GetWSlice();
-    this->objects = request.objects.CopyTo(dest);
+    auto dest = buffer.as_wslice();
+    this->objects = dest.copy_from(request.objects);
 }
 
 } // namespace opendnp3

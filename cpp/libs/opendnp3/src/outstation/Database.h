@@ -23,8 +23,8 @@
 #include "opendnp3/gen/AssignClassType.h"
 #include "opendnp3/gen/IndexMode.h"
 #include "outstation/DatabaseBuffers.h"
-#include "opendnp3/outstation/IDatabase.h"
-#include "opendnp3/outstation/IEventReceiver.h"
+#include "outstation/IDatabase.h"
+#include "outstation/IEventReceiver.h"
 
 namespace opendnp3
 {
@@ -32,7 +32,7 @@ namespace opendnp3
 /**
 The database coordinates all updates of measurement data
 */
-class Database final : public IDatabase, private openpal::Uncopyable
+class Database final : public IDatabase, private ser4cpp::Uncopyable
 {
 public:
     Database(const DatabaseSizes&,

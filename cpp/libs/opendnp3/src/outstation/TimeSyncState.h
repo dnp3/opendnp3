@@ -20,9 +20,9 @@
 #ifndef OPENDNP3_TIMESYNCSTATE_H
 #define OPENDNP3_TIMESYNCSTATE_H
 
-#include "openpal/executor/MonotonicTimestamp.h"
+#include "opendnp3/Timestamp.h"
 
-#include "opendnp3/app/AppSeqNum.h"
+#include "app/AppSeqNum.h"
 
 namespace opendnp3
 {
@@ -36,37 +36,37 @@ class TimeSyncState
 public:
     TimeSyncState() {}
 
-    void RecordCurrentTime(const AppSeqNum& seq, const openpal::MonotonicTimestamp& now)
+    void RecordCurrentTime(const AppSeqNum& seq, const Timestamp& now)
     {
         valid = true;
         time = now;
         expectedSeqNum = seq.Next();
     }
 
-    bool CalcTimeDifference(const AppSeqNum& seq, const openpal::MonotonicTimestamp& now)
+    bool CalcTimeDifference(const AppSeqNum& seq, const Timestamp& now)
     {
         if (!valid)
             return false;
         if (!expectedSeqNum.Equals(seq))
             return false;
-        if (now.milliseconds < time.milliseconds)
+        if (now < time)
             return false;
 
-        this->difference = openpal::TimeDuration::Milliseconds(now.milliseconds - time.milliseconds);
+        this->difference = now - time;
         this->valid = false;
 
         return true;
     }
 
-    openpal::TimeDuration GetDifference() const
+    TimeDuration GetDifference() const
     {
         return this->difference;
     }
 
 private:
     bool valid = false;
-    openpal::MonotonicTimestamp time;
-    openpal::TimeDuration difference;
+    Timestamp time;
+    TimeDuration difference;
     AppSeqNum expectedSeqNum;
 };
 

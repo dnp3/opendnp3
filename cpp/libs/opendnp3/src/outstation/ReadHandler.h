@@ -20,11 +20,11 @@
 #ifndef OPENDNP3_READHANDLER_H
 #define OPENDNP3_READHANDLER_H
 
-#include <openpal/logging/Logger.h>
+#include <log4cpp/Logger.h>
 
-#include "opendnp3/app/parsing/IAPDUHandler.h"
-#include "opendnp3/outstation/IEventSelector.h"
-#include "opendnp3/outstation/IStaticSelector.h"
+#include "app/parsing/IAPDUHandler.h"
+#include "outstation/IEventSelector.h"
+#include "outstation/IStaticSelector.h"
 #include "opendnp3/outstation/StaticTypeBitfield.h"
 
 namespace opendnp3

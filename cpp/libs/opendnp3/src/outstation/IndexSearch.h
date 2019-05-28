@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_INDEXSEARCH_H
 #define OPENDNP3_INDEXSEARCH_H
 
-#include <openpal/container/ArrayView.h>
+#include <ser4cpp/container/ArrayView.h>
 #include <ser4cpp/util/Uncopyable.h>
 
 #include "opendnp3/app/MeasurementTypes.h"
@@ -49,10 +49,10 @@ public:
         Result() = delete;
     };
 
-    template<class T> static Range FindRawRange(const openpal::ArrayView<Cell<T>, uint16_t>& view, const Range& range);
+    template<class T> static Range FindRawRange(const ser4cpp::ArrayView<Cell<T>, uint16_t>& view, const Range& range);
 
     template<class T>
-    static Result FindClosestRawIndex(const openpal::ArrayView<Cell<T>, uint16_t>& view, uint16_t vIndex);
+    static Result FindClosestRawIndex(const ser4cpp::ArrayView<Cell<T>, uint16_t>& view, uint16_t vIndex);
 
 private:
     static uint16_t GetMidpoint(uint16_t lower, uint16_t upper)
@@ -61,16 +61,16 @@ private:
     }
 };
 
-template<class T> Range IndexSearch::FindRawRange(const openpal::ArrayView<Cell<T>, uint16_t>& view, const Range& range)
+template<class T> Range IndexSearch::FindRawRange(const ser4cpp::ArrayView<Cell<T>, uint16_t>& view, const Range& range)
 {
-    if (range.IsValid() && view.IsNotEmpty())
+    if (range.IsValid() && view.is_not_empty())
     {
         uint16_t start = FindClosestRawIndex(view, range.start).index;
         uint16_t stop = FindClosestRawIndex(view, range.stop).index;
 
         if (view[start].config.vIndex < range.start)
         {
-            if (start < openpal::MaxValue<uint16_t>())
+            if (start < std::numeric_limits<uint16_t>::max())
             {
                 ++start;
             }
@@ -92,7 +92,7 @@ template<class T> Range IndexSearch::FindRawRange(const openpal::ArrayView<Cell<
             }
         }
 
-        return (view.Contains(start) && view.Contains(stop)) ? Range::From(start, stop) : Range::Invalid();
+        return (view.contains(start) && view.contains(stop)) ? Range::From(start, stop) : Range::Invalid();
     }
     else
     {
@@ -101,15 +101,15 @@ template<class T> Range IndexSearch::FindRawRange(const openpal::ArrayView<Cell<
 }
 
 template<class T>
-IndexSearch::Result IndexSearch::FindClosestRawIndex(const openpal::ArrayView<Cell<T>, uint16_t>& view, uint16_t vIndex)
+IndexSearch::Result IndexSearch::FindClosestRawIndex(const ser4cpp::ArrayView<Cell<T>, uint16_t>& view, uint16_t vIndex)
 {
-    if (view.IsEmpty())
+    if (view.is_empty())
     {
         return Result(false, 0);
     }
 
     uint16_t lower = 0;
-    uint16_t upper = view.Size() - 1;
+    uint16_t upper = view.length() - 1;
 
     uint16_t midpoint = 0;
 
@@ -127,7 +127,7 @@ IndexSearch::Result IndexSearch::FindClosestRawIndex(const openpal::ArrayView<Ce
 
         if (index < vIndex) // search the upper array
         {
-            if (lower < openpal::MaxValue<uint16_t>())
+            if (lower < std::numeric_limits<uint16_t>::max())
             {
                 lower = midpoint + 1;
             }

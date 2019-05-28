@@ -19,7 +19,7 @@
  */
 #include "RequestHistory.h"
 
-#include "opendnp3/link/CRC.h"
+#include "link/CRC.h"
 
 namespace opendnp3
 {
@@ -35,7 +35,7 @@ void RequestHistory::RecordLastProcessedRequest(const APDUHeader& header, const 
 {
     hasLast = true;
     lastHeader = header;
-    lastObjectsLength = objects.Size();
+    lastObjectsLength = objects.length();
     lastDigest = CRC::CalcCrc(objects);
 }
 
@@ -51,8 +51,7 @@ APDUHeader RequestHistory::GetLastHeader() const
 
 bool RequestHistory::EqualsLastObjects(const ser4cpp::rseq_t& objects) const
 {
-
-    return hasLast && (lastObjectsLength == objects.Size()) && (lastDigest == CRC::CalcCrc(objects));
+    return hasLast && (lastObjectsLength == objects.length()) && (lastDigest == CRC::CalcCrc(objects));
 }
 
 } // namespace opendnp3

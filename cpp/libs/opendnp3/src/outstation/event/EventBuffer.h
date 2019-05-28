@@ -24,9 +24,9 @@
 
 #include "opendnp3/app/ClassField.h"
 #include "opendnp3/outstation/EventBufferConfig.h"
-#include "opendnp3/outstation/IEventReceiver.h"
-#include "opendnp3/outstation/IEventSelector.h"
-#include "opendnp3/outstation/IResponseLoader.h"
+#include "outstation/IEventReceiver.h"
+#include "outstation/IEventSelector.h"
+#include "outstation/IResponseLoader.h"
 
 namespace opendnp3
 {

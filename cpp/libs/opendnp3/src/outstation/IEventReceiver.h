@@ -22,7 +22,7 @@
 
 #include "opendnp3/app/MeasurementTypeSpecs.h"
 #include "opendnp3/app/SecurityStat.h"
-#include "opendnp3/outstation/Event.h"
+#include "outstation/Event.h"
 
 namespace opendnp3
 {

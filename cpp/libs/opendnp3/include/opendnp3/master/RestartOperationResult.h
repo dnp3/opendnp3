@@ -32,7 +32,7 @@ namespace opendnp3
 class RestartOperationResult
 {
 public:
-    RestartOperationResult() : summary(TaskCompletion::FAILURE_NO_COMMS), restartTime(TimeDuration::Zero()) {}
+    RestartOperationResult() : summary(TaskCompletion::FAILURE_NO_COMMS) {}
 
     RestartOperationResult(TaskCompletion summary_, TimeDuration restartTime_)
         : summary(summary_), restartTime(restartTime_)

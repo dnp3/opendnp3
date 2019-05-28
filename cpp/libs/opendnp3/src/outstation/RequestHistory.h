@@ -20,9 +20,9 @@
 #ifndef OPENDNP3_REQUESTHISTORY_H
 #define OPENDNP3_REQUESTHISTORY_H
 
-#include <openpal/container/RSlice.h>
+#include <ser4cpp/container/SequenceTypes.h>
 
-#include "opendnp3/app/APDUHeader.h"
+#include "app/APDUHeader.h"
 
 #include <cstdint>
 

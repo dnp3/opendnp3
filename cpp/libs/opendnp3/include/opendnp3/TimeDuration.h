@@ -52,6 +52,8 @@ public:
 
     static TimeDuration Days(int64_t days);
 
+    TimeDuration();
+
     TimeDuration Double() const;
 
     bool IsNegative() const;

@@ -42,6 +42,12 @@ bool Timestamp::IsMin() const
     return value == exe4cpp::steady_time_t::min();
 }
 
+Timestamp::Timestamp()
+    : value(exe4cpp::steady_time_t::min())
+{
+
+}
+
 Timestamp::Timestamp(exe4cpp::steady_time_t value)
     : value(value)
 {

@@ -20,9 +20,9 @@
 #ifndef OPENDNP3_TXBUFFER_H
 #define OPENDNP3_TXBUFFER_H
 
-#include <openpal/container/Buffer.h>
+#include <ser4cpp/container/Buffer.h>
 
-#include <opendnp3/app/APDUResponse.h>
+#include "app/APDUResponse.h"
 
 namespace opendnp3
 {
@@ -34,7 +34,7 @@ public:
 
     APDUResponse Start()
     {
-        APDUResponse response(buffer.GetWSlice());
+        APDUResponse response(buffer.as_wslice());
         return response;
     }
 
@@ -58,7 +58,7 @@ private:
     ser4cpp::rseq_t lastResponse;
     AppControlField control;
 
-    openpal::Buffer buffer;
+    ser4cpp::Buffer buffer;
 };
 
 } // namespace opendnp3

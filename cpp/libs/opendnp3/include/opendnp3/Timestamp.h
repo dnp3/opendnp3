@@ -35,6 +35,7 @@ public:
     static Timestamp Max();
     static Timestamp Min();
 
+    Timestamp();
     explicit Timestamp(exe4cpp::steady_time_t value);
 
     bool IsMax() const;

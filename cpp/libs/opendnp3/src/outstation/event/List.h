@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_LIST_H
 #define OPENDNP3_LIST_H
 
-#include "openpal/container/Array.h"
+#include "ser4cpp/container/Array.h"
 
 #include <cstdio>
 
@@ -44,7 +44,7 @@ private:
 };
 
 // A container adapter for a -linked list
-template<class T> class List : public openpal::HasSize<list_size_type_t>
+template<class T> class List : public ser4cpp::HasLength<list_size_type_t>
 {
 public:
     class Iterator
@@ -124,7 +124,7 @@ private:
     Node<T>* tail = nullptr;
     Node<T>* free = nullptr;
 
-    openpal::Array<Node<T>, list_size_type_t> underlying;
+    ser4cpp::Array<Node<T>, list_size_type_t> underlying;
 
     Node<T>* Insert(const T& value, Node<T>* left, Node<T>* right);
 

@@ -19,23 +19,21 @@
  */
 #include "StaticWriters.h"
 
-#include "opendnp3/objects/Group1.h"
-#include "opendnp3/objects/Group10.h"
-#include "opendnp3/objects/Group20.h"
-#include "opendnp3/objects/Group21.h"
-#include "opendnp3/objects/Group3.h"
-#include "opendnp3/objects/Group30.h"
-#include "opendnp3/objects/Group40.h"
-#include "opendnp3/objects/Group50.h"
-#include "opendnp3/outstation/OctetStringSerializer.h"
-
-using namespace openpal;
+#include "objects/Group1.h"
+#include "objects/Group10.h"
+#include "objects/Group20.h"
+#include "objects/Group21.h"
+#include "objects/Group3.h"
+#include "objects/Group30.h"
+#include "objects/Group40.h"
+#include "objects/Group50.h"
+#include "outstation/OctetStringSerializer.h"
 
 namespace opendnp3
 {
 
 template<class Spec, class IndexType>
-bool LoadWithRangeIterator(openpal::ArrayView<Cell<Spec>, uint16_t>& view,
+bool LoadWithRangeIterator(ser4cpp::ArrayView<Cell<Spec>, uint16_t>& view,
                            RangeWriteIterator<IndexType, typename Spec::meas_t>& iterator,
                            Range& range)
 {
@@ -63,7 +61,7 @@ bool LoadWithRangeIterator(openpal::ArrayView<Cell<Spec>, uint16_t>& view,
 }
 
 template<class Spec, class IndexType>
-bool LoadWithBitfieldIterator(openpal::ArrayView<Cell<Spec>, uint16_t>& view,
+bool LoadWithBitfieldIterator(ser4cpp::ArrayView<Cell<Spec>, uint16_t>& view,
                               BitfieldRangeWriteIterator<IndexType>& iterator,
                               Range& range)
 {
@@ -92,7 +90,7 @@ bool LoadWithBitfieldIterator(openpal::ArrayView<Cell<Spec>, uint16_t>& view,
 }
 
 template<class Spec, class GV>
-bool WriteSingleBitfield(openpal::ArrayView<Cell<Spec>, uint16_t>& view, HeaderWriter& writer, Range& range)
+bool WriteSingleBitfield(ser4cpp::ArrayView<Cell<Spec>, uint16_t>& view, HeaderWriter& writer, Range& range)
 {
     auto start = view[range.start].config.vIndex;
     auto stop = view[range.stop].config.vIndex;
@@ -100,18 +98,18 @@ bool WriteSingleBitfield(openpal::ArrayView<Cell<Spec>, uint16_t>& view, HeaderW
 
     if (mapped.IsOneByte())
     {
-        auto iter = writer.IterateOverSingleBitfield<openpal::UInt8>(GV::ID(), QualifierCode::UINT8_START_STOP,
+        auto iter = writer.IterateOverSingleBitfield<ser4cpp::UInt8>(GV::ID(), QualifierCode::UINT8_START_STOP,
                                                                      static_cast<uint8_t>(mapped.start));
-        return LoadWithBitfieldIterator<Spec, openpal::UInt8>(view, iter, range);
+        return LoadWithBitfieldIterator<Spec, ser4cpp::UInt8>(view, iter, range);
     }
 
     auto iter
-        = writer.IterateOverSingleBitfield<openpal::UInt16>(GV::ID(), QualifierCode::UINT16_START_STOP, mapped.start);
-    return LoadWithBitfieldIterator<Spec, openpal::UInt16>(view, iter, range);
+        = writer.IterateOverSingleBitfield<ser4cpp::UInt16>(GV::ID(), QualifierCode::UINT16_START_STOP, mapped.start);
+    return LoadWithBitfieldIterator<Spec, ser4cpp::UInt16>(view, iter, range);
 }
 
 template<class Spec, class Serializer>
-bool WriteWithSerializer(openpal::ArrayView<Cell<Spec>, uint16_t>& view, HeaderWriter& writer, Range& range)
+bool WriteWithSerializer(ser4cpp::ArrayView<Cell<Spec>, uint16_t>& view, HeaderWriter& writer, Range& range)
 {
     auto start = view[range.start].config.vIndex;
     auto stop = view[range.stop].config.vIndex;
@@ -119,14 +117,14 @@ bool WriteWithSerializer(openpal::ArrayView<Cell<Spec>, uint16_t>& view, HeaderW
 
     if (mapped.IsOneByte())
     {
-        auto iter = writer.IterateOverRange<openpal::UInt8, typename Serializer::Target>(
+        auto iter = writer.IterateOverRange<ser4cpp::UInt8, typename Serializer::Target>(
             QualifierCode::UINT8_START_STOP, Serializer::Inst(), static_cast<uint8_t>(mapped.start));
-        return LoadWithRangeIterator<Spec, openpal::UInt8>(view, iter, range);
+        return LoadWithRangeIterator<Spec, ser4cpp::UInt8>(view, iter, range);
     }
 
-    auto iter = writer.IterateOverRange<openpal::UInt16, typename Serializer::Target>(QualifierCode::UINT16_START_STOP,
+    auto iter = writer.IterateOverRange<ser4cpp::UInt16, typename Serializer::Target>(QualifierCode::UINT16_START_STOP,
                                                                                       Serializer::Inst(), mapped.start);
-    return LoadWithRangeIterator<Spec, openpal::UInt16>(view, iter, range);
+    return LoadWithRangeIterator<Spec, ser4cpp::UInt16>(view, iter, range);
 }
 
 StaticWrite<BinarySpec>::func_t StaticWriters::Get(StaticBinaryVariation variation)
@@ -250,7 +248,7 @@ StaticWrite<TimeAndIntervalSpec>::func_t StaticWriters::Get(StaticTimeAndInterva
 }
 
 template<class Iterator>
-uint16_t WriteSomeOctetString(openpal::ArrayView<Cell<OctetStringSpec>, uint16_t>& view,
+uint16_t WriteSomeOctetString(ser4cpp::ArrayView<Cell<OctetStringSpec>, uint16_t>& view,
                               Iterator& iterator,
                               Range& range,
                               uint8_t size)
@@ -281,7 +279,7 @@ uint16_t WriteSomeOctetString(openpal::ArrayView<Cell<OctetStringSpec>, uint16_t
     return num_written;
 }
 
-bool StaticWriters::Write(openpal::ArrayView<Cell<OctetStringSpec>, uint16_t>& view, HeaderWriter& writer, Range& range)
+bool StaticWriters::Write(ser4cpp::ArrayView<Cell<OctetStringSpec>, uint16_t>& view, HeaderWriter& writer, Range& range)
 {
     auto start = view[range.start].config.vIndex;
     auto stop = view[range.stop].config.vIndex;
@@ -294,7 +292,7 @@ bool StaticWriters::Write(openpal::ArrayView<Cell<OctetStringSpec>, uint16_t>& v
 
         if (mapped.IsOneByte())
         {
-            auto iter = writer.IterateOverRange<UInt8>(QualifierCode::UINT8_START_STOP, serializer,
+            auto iter = writer.IterateOverRange<ser4cpp::UInt8>(QualifierCode::UINT8_START_STOP, serializer,
                                                        static_cast<uint8_t>(mapped.start));
             const uint16_t num_written = WriteSomeOctetString(view, iter, range, sizeStartingSize);
             if (num_written == 0)
@@ -302,7 +300,7 @@ bool StaticWriters::Write(openpal::ArrayView<Cell<OctetStringSpec>, uint16_t>& v
         }
         else
         {
-            auto iter = writer.IterateOverRange<UInt16>(QualifierCode::UINT16_START_STOP, serializer, mapped.start);
+            auto iter = writer.IterateOverRange<ser4cpp::UInt16>(QualifierCode::UINT16_START_STOP, serializer, mapped.start);
             const uint16_t num_written = WriteSomeOctetString(view, iter, range, sizeStartingSize);
             if (num_written == 0)
                 return false;

@@ -19,11 +19,9 @@
  */
 #include "Database.h"
 
-#include <openpal/logging/LogMacros.h>
+#include <log4cpp/LogMacros.h>
 
 #include <cassert>
-
-using namespace openpal;
 
 namespace opendnp3
 {
@@ -81,7 +79,7 @@ bool Database::Update(const TimeAndInterval& value, uint16_t index)
     auto rawIndex = GetRawIndex<TimeAndIntervalSpec>(index);
     auto view = buffers.buffers.GetArrayView<TimeAndIntervalSpec>();
 
-    if (view.Contains(rawIndex))
+    if (view.contains(rawIndex))
     {
         view[rawIndex].value = value;
         return true;
@@ -140,7 +138,7 @@ template<class Spec> uint16_t Database::GetRawIndex(uint16_t index)
 
     auto view = buffers.buffers.GetArrayView<Spec>();
     auto result = IndexSearch::FindClosestRawIndex(view, index);
-    return result.match ? result.index : openpal::MaxValue<uint16_t>();
+    return result.match ? result.index : std::numeric_limits<uint16_t>::max();
 }
 
 template<class Spec> bool Database::UpdateEvent(const typename Spec::meas_t& value, uint16_t index, EventMode mode)
@@ -149,7 +147,7 @@ template<class Spec> bool Database::UpdateEvent(const typename Spec::meas_t& val
 
     auto view = buffers.buffers.GetArrayView<Spec>();
 
-    if (view.Contains(rawIndex))
+    if (view.contains(rawIndex))
     {
         this->UpdateAny(view[rawIndex], value, mode);
         return true;
@@ -203,7 +201,7 @@ template<class Spec> bool Database::Modify(uint16_t start, uint16_t stop, uint8_
 
     auto view = buffers.buffers.GetArrayView<Spec>();
 
-    if (view.Contains(rawStart) && view.Contains(rawStop) && (rawStart <= rawStop))
+    if (view.contains(rawStart) && view.contains(rawStop) && (rawStart <= rawStop))
     {
         for (uint16_t i = rawStart; i <= rawStop; ++i)
         {

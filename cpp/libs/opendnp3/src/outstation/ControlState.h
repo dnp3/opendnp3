@@ -36,7 +36,7 @@ class ControlState
 {
 
 public:
-    ControlState() : selectTime(Timestamp::Min()), digest(0), length(0) {}
+    ControlState() : digest(0), length(0) {}
 
     CommandStatus ValidateSelection(const AppSeqNum& seq,
                                     const Timestamp& now,

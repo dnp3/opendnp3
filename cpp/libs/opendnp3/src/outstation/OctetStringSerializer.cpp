@@ -32,9 +32,9 @@ OctetStringSerializer::OctetStringSerializer(bool isEvent, uint8_t size)
 
 bool OctetStringSerializer::Write(const OctetString& value, ser4cpp::wseq_t& buffer)
 {
-    if (value.Size() > buffer.Size())
+    if (value.Size() > buffer.length())
         return false;
-    value.ToRSlice().CopyTo(buffer);
+    buffer.copy_from(value.ToRSeq());
     return true;
 }
 }; // namespace opendnp3

@@ -24,7 +24,7 @@
 #include "IEventWriteHandler.h"
 
 #include "opendnp3/app/ClassField.h"
-#include "opendnp3/outstation/Event.h"
+#include "outstation/Event.h"
 
 #include <limits>
 

@@ -29,8 +29,7 @@ AssignClassTask::AssignClassTask(const std::shared_ptr<TaskContext>& context,
                                  IMasterApplication& application,
                                  const TaskBehavior& behavior,
                                  const log4cpp::Logger& logger)
-    : IMasterTask(context, application, behavior, logger, TaskConfig::Default()),
-      retryPeriod(TimeDuration::Zero())
+    : IMasterTask(context, application, behavior, logger, TaskConfig::Default())
 {
 }
 

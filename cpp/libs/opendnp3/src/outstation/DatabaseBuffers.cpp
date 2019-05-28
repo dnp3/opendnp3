@@ -19,11 +19,9 @@
  */
 #include "DatabaseBuffers.h"
 
-#include "openpal/logging/LogMacros.h"
+#include "log4cpp/LogMacros.h"
 
 #include <cassert>
-
-using namespace openpal;
 
 namespace opendnp3
 {
@@ -263,19 +261,19 @@ Range DatabaseBuffers::AssignClassToAll(AssignClassType type, PointClass clazz)
     switch (type)
     {
     case (AssignClassType::BinaryInput):
-        return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<BinarySpec>().Size()));
+        return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<BinarySpec>().length()));
     case (AssignClassType::DoubleBinaryInput):
-        return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<DoubleBitBinarySpec>().Size()));
+        return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<DoubleBitBinarySpec>().length()));
     case (AssignClassType::Counter):
-        return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<CounterSpec>().Size()));
+        return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<CounterSpec>().length()));
     case (AssignClassType::FrozenCounter):
-        return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<FrozenCounterSpec>().Size()));
+        return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<FrozenCounterSpec>().length()));
     case (AssignClassType::AnalogInput):
-        return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<AnalogSpec>().Size()));
+        return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<AnalogSpec>().length()));
     case (AssignClassType::BinaryOutputStatus):
-        return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<BinaryOutputStatusSpec>().Size()));
+        return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<BinaryOutputStatusSpec>().length()));
     case (AssignClassType::AnalogOutputStatus):
-        return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<AnalogOutputStatusSpec>().Size()));
+        return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<AnalogOutputStatusSpec>().length()));
     default:
         return Range::Invalid();
     }

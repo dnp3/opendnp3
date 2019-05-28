@@ -22,8 +22,8 @@
 
 #include "ParsedRequest.h"
 
-#include <openpal/container/Buffer.h>
-#include <openpal/util/Uncopyable.h>
+#include <ser4cpp/container/Buffer.h>
+#include <ser4cpp/util/Uncopyable.h>
 
 namespace opendnp3
 {
@@ -31,7 +31,7 @@ namespace opendnp3
 /**
  * Records metadata about deferred requests
  */
-class DeferredRequest : private openpal::Uncopyable
+class DeferredRequest : private ser4cpp::Uncopyable
 {
 
 public:
@@ -54,7 +54,7 @@ private:
     Addresses addresses;
     APDUHeader header;
     ser4cpp::rseq_t objects;
-    openpal::Buffer buffer;
+    ser4cpp::Buffer buffer;
 };
 
 template<class Handler> bool DeferredRequest::Process(const Handler& handler)
