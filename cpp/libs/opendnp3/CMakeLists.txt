@@ -170,6 +170,26 @@ set(opendnp3_private_headers
     ./src/app/WriteConversions.h
     ./src/app/WriteConversionTemplates.h
 
+    ./src/asiopal/ASIOSerialHelpers.h
+    ./src/asiopal/ChannelRetry.h
+    ./src/asiopal/IAsyncChannel.h
+    ./src/asiopal/IChannelCallbacks.h
+    ./src/asiopal/IListener.h
+    ./src/asiopal/IOpenDelayStrategy.h
+    ./src/asiopal/IPEndpoint.h
+    ./src/asiopal/IResourceManager.h
+    ./src/asiopal/LoggingConnectionCondition.h
+    ./src/asiopal/ResourceManager.h
+    ./src/asiopal/SerialChannel.h
+    ./src/asiopal/SerialSettings.h
+    ./src/asiopal/SocketChannel.h
+    ./src/asiopal/SocketHelpers.h
+    ./src/asiopal/SteadyClock.h
+    ./src/asiopal/TCPClient.h
+    ./src/asiopal/TCPServer.h
+    ./src/asiopal/TLSConfig.h
+    ./src/asiopal/UTCTimeSource.h
+
     ./src/app/parsing/APDUHeaderParser.h
     ./src/app/parsing/APDUParser.h
     ./src/app/parsing/BitReader.h
@@ -361,6 +381,16 @@ set(opendnp3_src
     ./src/app/QualityFlags.cpp
     ./src/app/SecurityStat.cpp
 
+    ./src/asiopal/ASIOSerialHelpers.cpp
+    ./src/asiopal/ChannelRetry.cpp
+    ./src/asiopal/IOpenDelayStrategy.cpp
+    ./src/asiopal/ResourceManager.cpp
+    ./src/asiopal/SerialChannel.cpp
+    ./src/asiopal/SocketChannel.cpp
+    ./src/asiopal/TCPClient.cpp
+    ./src/asiopal/TCPServer.cpp
+    ./src/asiopal/UTCTimeSource.cpp
+
     ./src/app/parsing/APDUHeaderParser.cpp
     ./src/app/parsing/APDUParser.cpp
     ./src/app/parsing/BitReader.cpp
@@ -507,7 +537,7 @@ source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${opendnp3_public_headers} $
 
 add_library(opendnp3 ${opendnp3_public_headers} ${opendnp3_private_headers} ${opendnp3_src})
 target_compile_features(opendnp3 PRIVATE cxx_std_14)
-target_link_libraries(opendnp3 PRIVATE ser4cpp exe4cpp log4cpp)
+target_link_libraries(opendnp3 PRIVATE ser4cpp exe4cpp log4cpp asio)
 target_include_directories(opendnp3
     PUBLIC ./include
     PRIVATE ./src
