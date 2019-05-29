@@ -76,7 +76,7 @@ char const* RestartOperationTask::Name() const
     return FunctionCodeToString(this->function);
 }
 
-IMasterTask::ResponseResult RestartOperationTask::ProcessResponse(const opendnp3::APDUResponseHeader& header,
+IMasterTask::ResponseResult RestartOperationTask::ProcessResponse(const APDUResponseHeader& header,
                                                                   const ser4cpp::rseq_t& objects)
 {
     if (!(ValidateSingleResponse(header) && ValidateInternalIndications(header)))

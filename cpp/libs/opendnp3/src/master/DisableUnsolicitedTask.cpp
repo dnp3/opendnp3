@@ -40,7 +40,7 @@ bool DisableUnsolicitedTask::BuildRequest(APDURequest& request, uint8_t seq)
     return true;
 }
 
-IMasterTask::ResponseResult DisableUnsolicitedTask::ProcessResponse(const opendnp3::APDUResponseHeader& header,
+IMasterTask::ResponseResult DisableUnsolicitedTask::ProcessResponse(const APDUResponseHeader& header,
                                                                     const ser4cpp::rseq_t& objects)
 {
     return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;

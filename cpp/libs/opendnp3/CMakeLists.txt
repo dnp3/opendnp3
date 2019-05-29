@@ -1,4 +1,8 @@
 set(opendnp3_public_headers
+    ./include/opendnp3/ConsoleLogger.h
+    ./include/opendnp3/DNP3Manager.h
+    ./include/opendnp3/ErrorCodes.h
+    ./include/opendnp3/IStack.h
     ./include/opendnp3/IUTCTimeSource.h
     ./include/opendnp3/LogLevels.h
     ./include/opendnp3/StackStatistics.h
@@ -31,6 +35,10 @@ set(opendnp3_public_headers
     ./include/opendnp3/app/SecurityStat.h
 
     ./include/opendnp3/app/parsing/ICollection.h
+
+    ./include/opendnp3/channel/IChannel.h
+    ./include/opendnp3/channel/IChannelListener.h
+    ./include/opendnp3/channel/PrintingChannelListener.h
 
     ./include/opendnp3/gen/AnalogOutputStatusQuality.h
     ./include/opendnp3/gen/AnalogQuality.h
@@ -109,12 +117,20 @@ set(opendnp3_public_headers
     ./include/opendnp3/master/CommandCallbackT.h
     ./include/opendnp3/master/CommandPointResult.h
     ./include/opendnp3/master/CommandSet.h
+    ./include/opendnp3/master/DefaultListenCallbacks.h
+    ./include/opendnp3/master/DefaultMasterApplication.h
     ./include/opendnp3/master/HeaderInfo.h
     ./include/opendnp3/master/HeaderTypes.h
     ./include/opendnp3/master/ICommandCollection.h
     ./include/opendnp3/master/ICommandProcessor.h
     ./include/opendnp3/master/ICommandTaskResult.h
+    ./include/opendnp3/master/IListenCallbacks.h
+    ./include/opendnp3/master/IMaster.h
     ./include/opendnp3/master/IMasterApplication.h
+    ./include/opendnp3/master/IMasterOperations.h
+    ./include/opendnp3/master/IMasterScan.h
+    ./include/opendnp3/master/IMasterSession.h
+    ./include/opendnp3/master/ISessionAcceptor.h
     ./include/opendnp3/master/ISOEHandler.h
     ./include/opendnp3/master/ITaskCallback.h
     ./include/opendnp3/master/MasterParams.h
@@ -125,22 +141,30 @@ set(opendnp3_public_headers
 
     ./include/opendnp3/outstation/ApplicationIIN.h
     ./include/opendnp3/outstation/Cell.h
+    ./include/opendnp3/outstation/DatabaseConfig.h
     ./include/opendnp3/outstation/DatabaseSizes.h
     ./include/opendnp3/outstation/EventBufferConfig.h
     ./include/opendnp3/outstation/ICommandHandler.h
+    ./include/opendnp3/outstation/IOutstation.h
     ./include/opendnp3/outstation/IOutstationApplication.h
     ./include/opendnp3/outstation/IUpdateHandler.h
     ./include/opendnp3/outstation/MeasurementConfig.h
     ./include/opendnp3/outstation/OutstationConfig.h
     ./include/opendnp3/outstation/OutstationParams.h
+    ./include/opendnp3/outstation/OutstationStackConfig.h
+    ./include/opendnp3/outstation/PrintingSOEHandler.h
     ./include/opendnp3/outstation/SimpleCommandHandler.h
     ./include/opendnp3/outstation/StaticTypeBitfield.h
+    ./include/opendnp3/outstation/UpdateBuilder.h
+    ./include/opendnp3/outstation/Updates.h
 )
 
 set(opendnp3_private_headers
+    ./src/DNP3ManagerImpl.h
     ./src/LayerInterfaces.h
     ./src/Route.h
     ./src/SequenceNum.h
+    ./src/StackBase.h
 
     ./src/app/APDUBuilders.h
     ./src/app/APDUHeader.h
@@ -190,6 +214,13 @@ set(opendnp3_private_headers
     ./src/asiopal/TLSConfig.h
     ./src/asiopal/UTCTimeSource.h
 
+    ./src/channel/DNP3Channel.h
+    ./src/channel/IOHandler.h
+    ./src/channel/IPEndpointsList.h
+    ./src/channel/SerialIOHandler.h
+    ./src/channel/TCPClientIOHandler.h
+    ./src/channel/TCPServerIOHandler.h
+
     ./src/app/parsing/APDUHeaderParser.h
     ./src/app/parsing/APDUParser.h
     ./src/app/parsing/BitReader.h
@@ -221,6 +252,7 @@ set(opendnp3_private_headers
     ./src/link/LinkLayerConfig.h
     ./src/link/LinkLayerConstants.h
     ./src/link/LinkLayerParser.h
+    ./src/link/LinkSession.h
     ./src/link/PriLinkLayerStates.h
     ./src/link/SecLinkLayerStates.h
     ./src/link/ShiftableBuffer.h
@@ -231,6 +263,7 @@ set(opendnp3_private_headers
     ./src/master/CommandSetOps.h
     ./src/master/CommandTask.h
     ./src/master/CommandTaskResult.h
+    ./src/master/Conversions.h
     ./src/master/DisableUnsolicitedTask.h
     ./src/master/EmptyResponseTask.h
     ./src/master/EnableUnsolicitedTask.h
@@ -244,7 +277,10 @@ set(opendnp3_private_headers
     ./src/master/LANTimeSyncTask.h
     ./src/master/MasterContext.h
     ./src/master/MasterSchedulerBackend.h
+    ./src/master/MasterSessionStack.h
+    ./src/master/MasterStack.h
     ./src/master/MasterTasks.h
+    ./src/master/MasterTCPServer.h
     ./src/master/MeasurementHandler.h
     ./src/master/PollTaskBase.h
     ./src/master/RestartOperationTask.h
@@ -315,6 +351,7 @@ set(opendnp3_private_headers
     ./src/outstation/OutstationChannelStates.h
     ./src/outstation/OutstationContext.h
     ./src/outstation/OutstationSeqNum.h
+    ./src/outstation/OutstationStack.h
     ./src/outstation/OutstationStates.h
     ./src/outstation/ParsedRequest.h
     ./src/outstation/ReadHandler.h
@@ -355,6 +392,10 @@ set(opendnp3_private_headers
 )
 
 set(opendnp3_src
+    ./src/ConsoleLogger.cpp
+    ./src/DNP3Manager.cpp
+    ./src/DNP3ManagerImpl.cpp
+    ./src/ErrorCodes.cpp
     ./src/LogLevels.cpp
     ./src/TimeDuration.cpp
     ./src/Timestamp.cpp
@@ -381,16 +422,6 @@ set(opendnp3_src
     ./src/app/QualityFlags.cpp
     ./src/app/SecurityStat.cpp
 
-    ./src/asiopal/ASIOSerialHelpers.cpp
-    ./src/asiopal/ChannelRetry.cpp
-    ./src/asiopal/IOpenDelayStrategy.cpp
-    ./src/asiopal/ResourceManager.cpp
-    ./src/asiopal/SerialChannel.cpp
-    ./src/asiopal/SocketChannel.cpp
-    ./src/asiopal/TCPClient.cpp
-    ./src/asiopal/TCPServer.cpp
-    ./src/asiopal/UTCTimeSource.cpp
-
     ./src/app/parsing/APDUHeaderParser.cpp
     ./src/app/parsing/APDUParser.cpp
     ./src/app/parsing/BitReader.cpp
@@ -401,6 +432,23 @@ set(opendnp3_src
     ./src/app/parsing/NumParser.cpp
     ./src/app/parsing/ObjectHeaderParser.cpp
     ./src/app/parsing/RangeParser.cpp
+
+    ./src/asiopal/ASIOSerialHelpers.cpp
+    ./src/asiopal/ChannelRetry.cpp
+    ./src/asiopal/IOpenDelayStrategy.cpp
+    ./src/asiopal/ResourceManager.cpp
+    ./src/asiopal/SerialChannel.cpp
+    ./src/asiopal/SocketChannel.cpp
+    ./src/asiopal/TCPClient.cpp
+    ./src/asiopal/TCPServer.cpp
+    ./src/asiopal/UTCTimeSource.cpp
+
+    ./src/channel/DNP3Channel.cpp
+    ./src/channel/IOHandler.cpp
+    ./src/channel/IPEndpointsList.cpp
+    ./src/channel/SerialIOHandler.cpp
+    ./src/channel/TCPClientIOHandler.cpp
+    ./src/channel/TCPServerIOHandler.cpp
 
     ./src/gen/Attributes.cpp
     ./src/gen/AuthErrorCode.cpp
@@ -438,6 +486,7 @@ set(opendnp3_src
     ./src/link/LinkHeaderFields.cpp
     ./src/link/LinkLayer.cpp
     ./src/link/LinkLayerParser.cpp
+    ./src/link/LinkSession.cpp
     ./src/link/PriLinkLayerStates.cpp
     ./src/link/SecLinkLayerStates.cpp
     ./src/link/ShiftableBuffer.cpp
@@ -448,6 +497,9 @@ set(opendnp3_src
     ./src/master/CommandSetOps.cpp
     ./src/master/CommandTask.cpp
     ./src/master/CommandTaskResult.cpp
+    ./src/master/Conversions.cpp
+    ./src/master/DefaultListenCallbacks.cpp
+    ./src/master/DefaultMasterApplication.cpp
     ./src/master/DisableUnsolicitedTask.cpp
     ./src/master/EmptyResponseTask.cpp
     ./src/master/EnableUnsolicitedTask.cpp
@@ -456,10 +508,15 @@ set(opendnp3_src
     ./src/master/IMasterTask.cpp
     ./src/master/LANTimeSyncTask.cpp
     ./src/master/MasterContext.cpp
+    ./src/master/MasterScan.cpp
     ./src/master/MasterSchedulerBackend.cpp
+    ./src/master/MasterSessionStack.cpp
+    ./src/master/MasterStack.cpp
     ./src/master/MasterTasks.cpp
+    ./src/master/MasterTCPServer.cpp
     ./src/master/MeasurementHandler.cpp
     ./src/master/PollTaskBase.cpp
+    ./src/master/PrintingCommandCallback.cpp
     ./src/master/RestartOperationTask.cpp
     ./src/master/SerialTimeSyncTask.cpp
     ./src/master/StartupIntegrityPoll.cpp
@@ -507,7 +564,9 @@ set(opendnp3_src
     ./src/outstation/IOutstationApplication.cpp
     ./src/outstation/OctetStringSerializer.cpp
     ./src/outstation/OutstationContext.cpp
+    ./src/outstation/OutstationStack.cpp
     ./src/outstation/OutstationStates.cpp
+    ./src/outstation/PrintingSOEHandler.cpp
     ./src/outstation/ReadHandler.cpp
     ./src/outstation/RequestHistory.cpp
     ./src/outstation/ResponseContext.cpp
@@ -515,6 +574,7 @@ set(opendnp3_src
     ./src/outstation/SimpleCommandHandler.cpp
     ./src/outstation/StaticBuffers.cpp
     ./src/outstation/StaticWriters.cpp
+    ./src/outstation/UpdateBuilder.cpp
     ./src/outstation/WriteHandler.cpp
 
     ./src/outstation/event/ASDUEventWriteHandler.cpp

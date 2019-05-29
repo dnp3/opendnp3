@@ -17,8 +17,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef ASIOPAL_TLSCLIENT_H
-#define ASIOPAL_TLSCLIENT_H
+#ifndef OPENDNP3_TLSCLIENT_H
+#define OPENDNP3_TLSCLIENT_H
 
 #include "asiopal/Executor.h"
 #include "asiopal/IPEndpoint.h"
@@ -28,7 +28,7 @@
 
 #include <asio/ssl.hpp>
 
-namespace asiopal
+namespace opendnp3
 {
 
 class TLSClient final : public std::enable_shared_from_this<TLSClient>, private openpal::Uncopyable
@@ -40,7 +40,7 @@ public:
                                const std::error_code& ec)>
         connect_callback_t;
 
-    static std::shared_ptr<TLSClient> Create(const openpal::Logger& logger,
+    static std::shared_ptr<TLSClient> Create(const log4cpp::Logger& logger,
                                              const std::shared_ptr<Executor>& executor,
                                              const std::string& adapter,
                                              const TLSConfig& config,
@@ -50,7 +50,7 @@ public:
         return ec ? nullptr : ret;
     }
 
-    TLSClient(const openpal::Logger& logger,
+    TLSClient(const log4cpp::Logger& logger,
               const std::shared_ptr<Executor>& executor,
               std::string adapter,
               const TLSConfig& config,
@@ -74,7 +74,7 @@ private:
 
     bool canceled = false;
 
-    openpal::Logger logger;
+    log4cpp::Logger logger;
     LoggingConnectionCondition condition;
     const std::shared_ptr<Executor> executor;
     const std::string adapter;
@@ -83,6 +83,6 @@ private:
     asio::ip::tcp::resolver resolver;
 };
 
-} // namespace asiopal
+} // namespace opendnp3
 
 #endif

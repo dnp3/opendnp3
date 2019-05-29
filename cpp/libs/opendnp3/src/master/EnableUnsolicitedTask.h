@@ -71,7 +71,7 @@ private:
         return MasterTaskType::ENABLE_UNSOLICITED;
     }
 
-    virtual ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header,
+    virtual ResponseResult ProcessResponse(const APDUResponseHeader& header,
                                            const ser4cpp::rseq_t& objects) override;
 
     virtual bool IsEnabled() const override;

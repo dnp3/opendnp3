@@ -51,7 +51,7 @@ bool EmptyResponseTask::EmptyResponseTask::BuildRequest(APDURequest& request, ui
 
 /*func, priority::USER_REQUEST, format*/
 
-IMasterTask::ResponseResult EmptyResponseTask::ProcessResponse(const opendnp3::APDUResponseHeader& header,
+IMasterTask::ResponseResult EmptyResponseTask::ProcessResponse(const APDUResponseHeader& header,
                                                                const ser4cpp::rseq_t& objects)
 {
     return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;

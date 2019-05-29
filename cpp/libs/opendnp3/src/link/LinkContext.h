@@ -56,7 +56,7 @@ public:
     LinkContext(const log4cpp::Logger& logger,
                 const std::shared_ptr<exe4cpp::IExecutor>&,
                 std::shared_ptr<IUpperLayer>,
-                std::shared_ptr<opendnp3::ILinkListener>,
+                std::shared_ptr<ILinkListener>,
                 ILinkSession& session,
                 const LinkLayerConfig&);
 
@@ -144,7 +144,7 @@ public:
     PriStateBase* pPriState;
     SecStateBase* pSecState;
 
-    const std::shared_ptr<opendnp3::ILinkListener> listener;
+    const std::shared_ptr<ILinkListener> listener;
     const std::shared_ptr<IUpperLayer> upper;
 
     ILinkSession* pSession;

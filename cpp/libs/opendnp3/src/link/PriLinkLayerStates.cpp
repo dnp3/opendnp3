@@ -198,7 +198,7 @@ PriStateBase& PLLS_ResetLinkWait::OnAck(LinkContext& ctx, bool /*rxBuffFull*/)
     auto buffer = ctx.FormatPrimaryBufferWithConfirmed(ctx.pSegments->GetAddresses(), ctx.pSegments->GetSegment(),
                                                        ctx.nextWriteFCB);
     ctx.QueueTransmit(buffer, true);
-    ctx.listener->OnStateChange(opendnp3::LinkStatus::RESET);
+    ctx.listener->OnStateChange(LinkStatus::RESET);
     return PLLS_ConfUserDataTransmitWait::Instance();
 }
 
@@ -249,7 +249,7 @@ PriStateBase& PLLS_ConfDataWait::OnAck(LinkContext& ctx, bool /*rxBuffFull*/)
 
 PriStateBase& PLLS_ConfDataWait::OnNack(LinkContext& ctx, bool rxBuffFull)
 {
-    ctx.listener->OnStateChange(opendnp3::LinkStatus::UNRESET);
+    ctx.listener->OnStateChange(LinkStatus::UNRESET);
 
     if (rxBuffFull)
     {
@@ -282,7 +282,7 @@ PriStateBase& PLLS_ConfDataWait::OnTimeout(LinkContext& ctx)
     }
 
     SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Confirmed data final timeout, no retries remain");
-    ctx.listener->OnStateChange(opendnp3::LinkStatus::UNRESET);
+    ctx.listener->OnStateChange(LinkStatus::UNRESET);
     ctx.CompleteSendOperation();
     return PLLS_Idle::Instance();
 }

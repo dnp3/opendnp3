@@ -86,4 +86,4 @@ void SerialChannel::ShutdownImpl()
     port.close(ec);
 }
 
-} // namespace asiopal
+} // namespace opendnp3

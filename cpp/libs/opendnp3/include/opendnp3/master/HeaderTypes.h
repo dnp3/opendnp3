@@ -77,7 +77,7 @@ union HeaderUnion
 class Header
 {
 public:
-    bool WriteTo(opendnp3::HeaderWriter& writer) const;
+    bool WriteTo(HeaderWriter& writer) const;
 
     /**
      * Create an all objects (0x06) header
@@ -112,7 +112,7 @@ public:
     Header() {}
 
 private:
-    opendnp3::GroupVariationID id;
+    GroupVariationID id;
     HeaderType type = HeaderType::AllObjects;
     HeaderUnion value;
 

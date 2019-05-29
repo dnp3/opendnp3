@@ -29,7 +29,7 @@
 using namespace openpal;
 using namespace opendnp3;
 
-namespace asiopal
+namespace opendnp3
 {
 
 TLSClient::TLSClient(const Logger& logger,
@@ -201,4 +201,4 @@ void TLSClient::HandleConnectResult(const connect_callback_t& callback,
     }
 }
 
-} // namespace asiopal
+} // namespace opendnp3

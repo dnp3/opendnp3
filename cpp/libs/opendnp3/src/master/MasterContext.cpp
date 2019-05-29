@@ -39,7 +39,7 @@ namespace opendnp3
 {
 MContext::MContext(const Addresses& addresses,
                    const log4cpp::Logger& logger,
-                   const std::shared_ptr<exe4cpp::IExecutor>& executor,
+                   const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                    std::shared_ptr<ILowerLayer> lower,
                    const std::shared_ptr<ISOEHandler>& SOEHandler,
                    const std::shared_ptr<IMasterApplication>& application,
@@ -382,7 +382,7 @@ void MContext::Restart(RestartType op, const RestartOperationCallbackT& callback
 }
 
 void MContext::PerformFunction(const std::string& name,
-                               opendnp3::FunctionCode func,
+                               FunctionCode func,
                                const HeaderBuilderT& builder,
                                TaskConfig config)
 {

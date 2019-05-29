@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_COMMAND_CALLBACK_T_H
 #define OPENDNP3_COMMAND_CALLBACK_T_H
 
-#include "ICommandTaskResult.h"
+#include "opendnp3/master/ICommandTaskResult.h"
 
 #include <functional>
 

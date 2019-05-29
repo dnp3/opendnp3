@@ -22,7 +22,7 @@
 
 #include <utility>
 
-namespace asiopal
+namespace opendnp3
 {
 
 TLSStreamChannel::TLSStreamChannel(const std::shared_ptr<Executor>& executor,
@@ -53,4 +53,4 @@ void TLSStreamChannel::ShutdownImpl()
     stream->lowest_layer().close(ec);
 }
 
-} // namespace asiopal
+} // namespace opendnp3

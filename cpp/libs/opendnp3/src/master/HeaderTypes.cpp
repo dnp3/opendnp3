@@ -86,7 +86,7 @@ Header::Header(uint8_t group, uint8_t var, uint16_t count) : id(group, var), typ
     value.count16.value = count;
 }
 
-bool Header::WriteTo(opendnp3::HeaderWriter& writer) const
+bool Header::WriteTo(HeaderWriter& writer) const
 {
     switch (type)
     {

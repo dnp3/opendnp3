@@ -17,14 +17,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef ASIOPAL_TLSSTREAMCHANNEL_H
-#define ASIOPAL_TLSSTREAMCHANNEL_H
+#ifndef OPENDNP3_TLSSTREAMCHANNEL_H
+#define OPENDNP3_TLSSTREAMCHANNEL_H
 
 #include "asiopal/IAsyncChannel.h"
 
 #include <asio/ssl.hpp>
 
-namespace asiopal
+namespace opendnp3
 {
 
 class TLSStreamChannel final : public IAsyncChannel
@@ -49,6 +49,6 @@ private:
     const std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream;
 };
 
-} // namespace asiopal
+} // namespace opendnp3
 
 #endif

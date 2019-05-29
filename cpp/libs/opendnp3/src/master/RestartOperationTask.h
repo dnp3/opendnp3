@@ -74,7 +74,7 @@ private:
     RestartOperationCallbackT callback;
     TimeDuration duration;
 
-    IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header,
+    IMasterTask::ResponseResult ProcessResponse(const APDUResponseHeader& header,
                                                 const ser4cpp::rseq_t& objects) override;
 
     void OnTaskComplete(TaskCompletion result, Timestamp now) override;

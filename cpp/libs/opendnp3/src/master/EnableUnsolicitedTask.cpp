@@ -48,7 +48,7 @@ bool EnableUnsolicitedTask::IsEnabled() const
     return enabledClasses.HasEventClass();
 }
 
-IMasterTask::ResponseResult EnableUnsolicitedTask::ProcessResponse(const opendnp3::APDUResponseHeader& header,
+IMasterTask::ResponseResult EnableUnsolicitedTask::ProcessResponse(const APDUResponseHeader& header,
                                                                    const ser4cpp::rseq_t& objects)
 {
     return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;

@@ -18,8 +18,8 @@
  * limitations under the License.
  */
 
-#ifndef ASIOPAL_TLS_CONTEXT_H
-#define ASIOPAL_TLS_CONTEXT_H
+#ifndef OPENDNP3_TLS_CONTEXT_H
+#define OPENDNP3_TLS_CONTEXT_H
 
 #include "TLSConfig.h"
 
@@ -27,7 +27,7 @@
 
 #include <asio/ssl.hpp>
 
-namespace asiopal
+namespace opendnp3
 {
 
 /**
@@ -41,6 +41,6 @@ public:
 private:
 };
 
-} // namespace asiopal
+} // namespace opendnp3
 
 #endif

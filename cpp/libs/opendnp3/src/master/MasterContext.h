@@ -21,7 +21,7 @@
 #define OPENDNP3_MASTERCONTEXT_H
 
 #include <ser4cpp/container/Buffer.h>
-#include <exe4cpp/IExecutor.h>
+#include <exe4cpp/asio/StrandExecutor.h>
 #include <exe4cpp/Timer.h>
 #include <log4cpp/Logger.h>
 
@@ -57,7 +57,7 @@ public:
 
     MContext(const Addresses& addresses,
              const log4cpp::Logger& logger,
-             const std::shared_ptr<exe4cpp::IExecutor>& executor,
+             const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
              std::shared_ptr<ILowerLayer> lower,
              const std::shared_ptr<ISOEHandler>& SOEHandler,
              const std::shared_ptr<IMasterApplication>& application,
@@ -65,7 +65,7 @@ public:
              const MasterParams& params);
 
     log4cpp::Logger logger;
-    const std::shared_ptr<exe4cpp::IExecutor> executor;
+    const std::shared_ptr<exe4cpp::StrandExecutor> executor;
     const std::shared_ptr<ILowerLayer> lower;
 
     // ------- configuration --------
@@ -90,13 +90,13 @@ public:
 
     // --- implement  IUpperLayer ------
 
-    virtual bool OnLowerLayerUp() override;
+    bool OnLowerLayerUp() final;
 
-    virtual bool OnLowerLayerDown() override;
+    bool OnLowerLayerDown() final;
 
-    virtual bool OnReceive(const Message& message) override;
+    bool OnReceive(const Message& message) final;
 
-    virtual bool OnTxReady() override final;
+    bool OnTxReady() final;
 
     // additional virtual methods that can be overriden to implement secure authentication
 
@@ -149,7 +149,7 @@ public:
     void Restart(RestartType op, const RestartOperationCallbackT& callback, TaskConfig config = TaskConfig::Default());
 
     void PerformFunction(const std::string& name,
-                         opendnp3::FunctionCode func,
+                         FunctionCode func,
                          const HeaderBuilderT& builder,
                          TaskConfig config = TaskConfig::Default());
 

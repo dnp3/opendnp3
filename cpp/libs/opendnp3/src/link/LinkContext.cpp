@@ -30,7 +30,7 @@ namespace opendnp3
 LinkContext::LinkContext(const log4cpp::Logger& logger,
                          const std::shared_ptr<exe4cpp::IExecutor>& executor,
                          std::shared_ptr<IUpperLayer> upper,
-                         std::shared_ptr<opendnp3::ILinkListener> listener,
+                         std::shared_ptr<ILinkListener> listener,
                          ILinkSession& session,
                          const LinkLayerConfig& config)
     : logger(logger),
@@ -69,7 +69,7 @@ bool LinkContext::OnLowerLayerUp()
 
     this->StartKeepAliveTimer(now + config.KeepAliveTimeout);
 
-    listener->OnStateChange(opendnp3::LinkStatus::UNRESET);
+    listener->OnStateChange(LinkStatus::UNRESET);
     upper->OnLowerLayerUp();
 
     return true;
@@ -97,7 +97,7 @@ bool LinkContext::OnLowerLayerDown()
     pPriState = &PLLS_Idle::Instance();
     pSecState = &SLLS_NotReset::Instance();
 
-    listener->OnStateChange(opendnp3::LinkStatus::UNRESET);
+    listener->OnStateChange(LinkStatus::UNRESET);
     upper->OnLowerLayerDown();
 
     return true;

@@ -26,9 +26,9 @@
 
 using namespace opendnp3;
 
-namespace asiopal
+namespace opendnp3
 {
-SSLContext::SSLContext(const openpal::Logger& logger, bool server, const TLSConfig& config, std::error_code& ec)
+SSLContext::SSLContext(const log4cpp::Logger& logger, bool server, const TLSConfig& config, std::error_code& ec)
     : value(server ? asio::ssl::context_base::sslv23_server : asio::ssl::context_base::sslv23_client), logger(logger)
 {
     this->ApplyConfig(config, server, ec);
@@ -119,4 +119,4 @@ std::error_code SSLContext::ApplyConfig(const TLSConfig& config, bool server, st
 
     return ec;
 }
-} // namespace asiopal
+} // namespace opendnp3

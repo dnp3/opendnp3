@@ -25,7 +25,7 @@ namespace opendnp3
 LinkLayer::LinkLayer(const log4cpp::Logger& logger,
                      const std::shared_ptr<exe4cpp::IExecutor>& executor,
                      const std::shared_ptr<IUpperLayer>& upper,
-                     const std::shared_ptr<opendnp3::ILinkListener>& listener,
+                     const std::shared_ptr<ILinkListener>& listener,
                      const LinkLayerConfig& config)
     : ctx(logger, executor, upper, listener, *this, config)
 {

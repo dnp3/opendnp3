@@ -51,7 +51,7 @@ bool AssignClassTask::IsEnabled() const
     return this->application->AssignClassDuringStartup();
 }
 
-IMasterTask::ResponseResult AssignClassTask::ProcessResponse(const opendnp3::APDUResponseHeader& header,
+IMasterTask::ResponseResult AssignClassTask::ProcessResponse(const APDUResponseHeader& header,
                                                              const ser4cpp::rseq_t& objects)
 {
     return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;

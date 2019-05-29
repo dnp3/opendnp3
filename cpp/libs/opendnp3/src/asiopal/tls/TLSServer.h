@@ -17,8 +17,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef ASIOPAL_TLSSERVER_H
-#define ASIOPAL_TLSSERVER_H
+#ifndef OPENDNP3_TLSSERVER_H
+#define OPENDNP3_TLSSERVER_H
 
 #include <openpal/logging/Logger.h>
 #include <openpal/util/Uncopyable.h>
@@ -29,7 +29,7 @@
 #include "asiopal/TLSConfig.h"
 #include "asiopal/tls/SSLContext.h"
 
-namespace asiopal
+namespace opendnp3
 {
 /**
  * Binds and listens on an IPv4 TCP port. Implement TLS negotiation.
@@ -40,7 +40,7 @@ class TLSServer : public IListener, public std::enable_shared_from_this<TLSServe
 {
 
 public:
-    TLSServer(const openpal::Logger& logger,
+    TLSServer(const log4cpp::Logger& logger,
               const std::shared_ptr<Executor>& executor,
               const IPEndpoint& endpoint,
               const TLSConfig& config,
@@ -62,7 +62,7 @@ protected:
 
     void StartAccept(std::error_code& ec);
 
-    openpal::Logger logger;
+    log4cpp::Logger logger;
     std::shared_ptr<Executor> executor;
 
 private:
@@ -76,6 +76,6 @@ private:
     uint64_t session_id;
 };
 
-} // namespace asiopal
+} // namespace opendnp3
 
 #endif

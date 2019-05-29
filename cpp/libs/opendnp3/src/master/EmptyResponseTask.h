@@ -75,7 +75,7 @@ private:
     FunctionCode func;
     HeaderBuilderT format;
 
-    IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header,
+    IMasterTask::ResponseResult ProcessResponse(const APDUResponseHeader& header,
                                                 const ser4cpp::rseq_t& objects) override final;
 };
 

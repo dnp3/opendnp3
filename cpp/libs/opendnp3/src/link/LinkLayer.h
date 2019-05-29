@@ -34,7 +34,7 @@ public:
     LinkLayer(const log4cpp::Logger& logger,
               const std::shared_ptr<exe4cpp::IExecutor>&,
               const std::shared_ptr<IUpperLayer>& upper,
-              const std::shared_ptr<opendnp3::ILinkListener>&,
+              const std::shared_ptr<ILinkListener>&,
               const LinkLayerConfig&);
 
     void SetRouter(ILinkTx&);

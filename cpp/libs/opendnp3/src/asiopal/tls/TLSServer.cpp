@@ -30,10 +30,10 @@ using namespace asio;
 using namespace asio::ip;
 using namespace opendnp3;
 
-namespace asiopal
+namespace opendnp3
 {
 
-TLSServer::TLSServer(const openpal::Logger& logger,
+TLSServer::TLSServer(const log4cpp::Logger& logger,
                      const std::shared_ptr<Executor>& executor,
                      const IPEndpoint& endpoint,
                      const TLSConfig& config,
@@ -143,4 +143,4 @@ void TLSServer::StartAccept(std::error_code& ec)
     this->acceptor.async_accept(stream->lowest_layer(), this->executor->strand.wrap(accept_cb));
 }
 
-} // namespace asiopal
+} // namespace opendnp3
