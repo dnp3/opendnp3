@@ -21,14 +21,14 @@
 #ifndef OPENDNP3_FUNCTIONS_H
 #define OPENDNP3_FUNCTIONS_H
 
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/StaticOnly.h"
 
 #include "opendnp3/gen/FunctionCode.h"
 
 namespace opendnp3
 {
 
-class Functions : private ser4cpp::StaticOnly
+class Functions : private StaticOnly
 {
 public:
     static bool IsNoAckFuncCode(FunctionCode code);

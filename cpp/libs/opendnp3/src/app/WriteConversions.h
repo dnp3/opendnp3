@@ -22,27 +22,27 @@
 
 #include "opendnp3/app/MeasurementTypes.h"
 #include "app/WriteConversionTemplates.h"
-#include "objects/Group1.h"
-#include "objects/Group10.h"
-#include "objects/Group11.h"
-#include "objects/Group12.h"
-#include "objects/Group121.h"
-#include "objects/Group122.h"
-#include "objects/Group13.h"
-#include "objects/Group2.h"
-#include "objects/Group20.h"
-#include "objects/Group21.h"
-#include "objects/Group22.h"
-#include "objects/Group23.h"
-#include "objects/Group3.h"
-#include "objects/Group30.h"
-#include "objects/Group32.h"
-#include "objects/Group4.h"
-#include "objects/Group40.h"
-#include "objects/Group41.h"
-#include "objects/Group42.h"
-#include "objects/Group43.h"
-#include "objects/Group50.h"
+#include "gen/objects/Group1.h"
+#include "gen/objects/Group10.h"
+#include "gen/objects/Group11.h"
+#include "gen/objects/Group12.h"
+#include "gen/objects/Group121.h"
+#include "gen/objects/Group122.h"
+#include "gen/objects/Group13.h"
+#include "gen/objects/Group2.h"
+#include "gen/objects/Group20.h"
+#include "gen/objects/Group21.h"
+#include "gen/objects/Group22.h"
+#include "gen/objects/Group23.h"
+#include "gen/objects/Group3.h"
+#include "gen/objects/Group30.h"
+#include "gen/objects/Group32.h"
+#include "gen/objects/Group4.h"
+#include "gen/objects/Group40.h"
+#include "gen/objects/Group41.h"
+#include "gen/objects/Group42.h"
+#include "gen/objects/Group43.h"
+#include "gen/objects/Group50.h"
 
 namespace opendnp3
 {
@@ -71,7 +71,7 @@ typedef ConvertQ<Group11Var1, BinaryOutputStatus> ConvertGroup11Var1;
 typedef ConvertQT<Group11Var2, BinaryOutputStatus> ConvertGroup11Var2;
 
 // Group 12
-struct ConvertGroup12Var1 : private ser4cpp::StaticOnly
+struct ConvertGroup12Var1 : private StaticOnly
 {
     static Group12Var1 Apply(const ControlRelayOutputBlock& crob)
     {
@@ -86,7 +86,7 @@ struct ConvertGroup12Var1 : private ser4cpp::StaticOnly
 };
 
 // Group 13
-struct ConvertGroup13Var1 : private ser4cpp::StaticOnly
+struct ConvertGroup13Var1 : private StaticOnly
 {
     static Group13Var1 Apply(const BinaryCommandEvent& ev)
     {
@@ -96,7 +96,7 @@ struct ConvertGroup13Var1 : private ser4cpp::StaticOnly
     }
 };
 
-struct ConvertGroup13Var2 : private ser4cpp::StaticOnly
+struct ConvertGroup13Var2 : private StaticOnly
 {
     static Group13Var2 Apply(const BinaryCommandEvent& ev)
     {
@@ -177,7 +177,7 @@ typedef ConvertQVTRangeCheck<Group42Var7, AnalogOutputStatus, 0x20> ConvertGroup
 typedef ConvertQVT<Group42Var8, AnalogOutputStatus> ConvertGroup42Var8;
 
 // Group 43
-template<class Target> struct ConvertGroup43RangeCheck : private ser4cpp::StaticOnly
+template<class Target> struct ConvertGroup43RangeCheck : private StaticOnly
 {
     static Target Apply(const AnalogCommandEvent& src)
     {
@@ -188,7 +188,7 @@ template<class Target> struct ConvertGroup43RangeCheck : private ser4cpp::Static
     }
 };
 
-template<class Target> struct ConvertGroup43WithTimeRangeCheck : private ser4cpp::StaticOnly
+template<class Target> struct ConvertGroup43WithTimeRangeCheck : private StaticOnly
 {
     static Target Apply(const AnalogCommandEvent& src)
     {
@@ -206,7 +206,7 @@ typedef ConvertGroup43WithTimeRangeCheck<Group43Var3> ConvertGroup43Var3;
 typedef ConvertGroup43WithTimeRangeCheck<Group43Var4> ConvertGroup43Var4;
 typedef ConvertGroup43RangeCheck<Group43Var5> ConvertGroup43Var5;
 
-struct ConvertGroup43Var6 : private ser4cpp::StaticOnly
+struct ConvertGroup43Var6 : private StaticOnly
 {
     static Group43Var6 Apply(const AnalogCommandEvent& src)
     {
@@ -219,7 +219,7 @@ struct ConvertGroup43Var6 : private ser4cpp::StaticOnly
 
 typedef ConvertGroup43WithTimeRangeCheck<Group43Var7> ConvertGroup43Var7;
 
-struct ConvertGroup43Var8 : private ser4cpp::StaticOnly
+struct ConvertGroup43Var8 : private StaticOnly
 {
     static Group43Var8 Apply(const AnalogCommandEvent& src)
     {
@@ -232,7 +232,7 @@ struct ConvertGroup43Var8 : private ser4cpp::StaticOnly
 };
 
 // Group 50
-struct ConvertGroup50Var4 : private ser4cpp::StaticOnly
+struct ConvertGroup50Var4 : private StaticOnly
 {
     static Group50Var4 Apply(const TimeAndInterval& value)
     {
@@ -245,7 +245,7 @@ struct ConvertGroup50Var4 : private ser4cpp::StaticOnly
 };
 
 // Group 121
-struct ConvertGroup121Var1 : private ser4cpp::StaticOnly
+struct ConvertGroup121Var1 : private StaticOnly
 {
     static Group121Var1 Apply(const SecurityStat& value)
     {
@@ -258,7 +258,7 @@ struct ConvertGroup121Var1 : private ser4cpp::StaticOnly
 };
 
 // Group 122
-struct ConvertGroup122Var1 : private ser4cpp::StaticOnly
+struct ConvertGroup122Var1 : private StaticOnly
 {
     static Group122Var1 Apply(const SecurityStat& value)
     {
@@ -270,7 +270,7 @@ struct ConvertGroup122Var1 : private ser4cpp::StaticOnly
     }
 };
 
-struct ConvertGroup122Var2 : private ser4cpp::StaticOnly
+struct ConvertGroup122Var2 : private StaticOnly
 {
     static Group122Var2 Apply(const SecurityStat& value)
     {

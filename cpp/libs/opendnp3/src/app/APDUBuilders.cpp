@@ -22,7 +22,7 @@
 #include <ser4cpp/serialization/LittleEndian.h>
 
 #include "opendnp3/app/IINField.h"
-#include "objects/Group60.h"
+#include "gen/objects/Group60.h"
 
 namespace opendnp3
 {

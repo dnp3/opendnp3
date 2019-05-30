@@ -21,7 +21,7 @@
 #define OPENDNP3_X509_INFO_H
 
 #include <ser4cpp/container/SequenceTypes.h>
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/Uncopyable.h"
 
 #include <string>
 
@@ -32,7 +32,7 @@ namespace opendnp3
  * Select information from a preverified x509 certificate
  * that user can can inspect an optionally reject
  */
-class X509Info : private ser4cpp::Uncopyable
+class X509Info : private Uncopyable
 {
 public:
     X509Info(int depth_, const ser4cpp::rseq_t sha1thumbprint_, std::string subjectName_)

@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_GROUPVARIATIONRECORD_H
 #define OPENDNP3_GROUPVARIATIONRECORD_H
 
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/Uncopyable.h"
 
 #include "app/Range.h"
 #include "opendnp3/gen/GroupVariation.h"

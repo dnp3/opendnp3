@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_RESOURCEMANAGER_H
 #define OPENDNP3_RESOURCEMANAGER_H
 
-#include "channel/IResourceManager.h"
+#include "IResourceManager.h"
 
 #include <memory>
 #include <mutex>

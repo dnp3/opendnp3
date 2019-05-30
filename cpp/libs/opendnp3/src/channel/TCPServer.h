@@ -21,12 +21,12 @@
 #define OPENDNP3_TCPSERVER_H
 
 #include <log4cpp/Logger.h>
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/Uncopyable.h"
 
 #include <exe4cpp/asio/StrandExecutor.h>
 
-#include "channel/IListener.h"
-#include "channel/IPEndpoint.h"
+#include "opendnp3/channel/IListener.h"
+#include "opendnp3/channel/IPEndpoint.h"
 
 #include <memory>
 
@@ -38,7 +38,7 @@ namespace opendnp3
  *
  * Meant to be used exclusively as a shared_ptr
  */
-class TCPServer : public std::enable_shared_from_this<TCPServer>, public IListener, private ser4cpp::Uncopyable
+class TCPServer : public std::enable_shared_from_this<TCPServer>, public IListener, private Uncopyable
 {
 
 public:

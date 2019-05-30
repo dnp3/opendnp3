@@ -22,7 +22,7 @@
 
 #include <ser4cpp/container/SequenceTypes.h>
 #include <log4cpp/Logger.h>
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/StaticOnly.h"
 
 #include "opendnp3/gen/FunctionCode.h"
 #include "opendnp3/gen/LinkFunction.h"
@@ -30,7 +30,7 @@
 namespace opendnp3
 {
 
-class LinkFrame : private ser4cpp::StaticOnly
+class LinkFrame : private StaticOnly
 {
 
 public:

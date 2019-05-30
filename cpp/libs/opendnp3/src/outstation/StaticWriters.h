@@ -21,7 +21,7 @@
 #define OPENDNP3_STATICWRITERS_H
 
 #include <ser4cpp/container/ArrayView.h>
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/Uncopyable.h"
 
 #include "app/HeaderWriter.h"
 #include "opendnp3/app/MeasurementTypeSpecs.h"
@@ -38,12 +38,12 @@
 namespace opendnp3
 {
 
-template<class Spec> struct StaticWrite : private ser4cpp::StaticOnly
+template<class Spec> struct StaticWrite : private StaticOnly
 {
     typedef bool (*func_t)(ser4cpp::ArrayView<Cell<Spec>, uint16_t>& view, HeaderWriter& writer, Range& range);
 };
 
-class StaticWriters : private ser4cpp::StaticOnly
+class StaticWriters : private StaticOnly
 {
 
 public:

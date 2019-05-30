@@ -22,7 +22,7 @@
 
 #include <ser4cpp/container/SequenceTypes.h>
 #include <log4cpp/Logger.h>
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/StaticOnly.h"
 
 #include "app/parsing/ParseResult.h"
 #include "opendnp3/gen/GroupVariation.h"
@@ -40,7 +40,7 @@ public:
     uint8_t qualifier;
 };
 
-class ObjectHeaderParser : private ser4cpp::StaticOnly
+class ObjectHeaderParser : private StaticOnly
 {
 public:
     static ParseResult ParseObjectHeader(ObjectHeader& header, ser4cpp::rseq_t& buffer, log4cpp::Logger* pLogger);

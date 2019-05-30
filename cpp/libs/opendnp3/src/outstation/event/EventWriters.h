@@ -27,7 +27,7 @@
 
 #include "app/DNP3Serializer.h"
 #include "app/HeaderWriter.h"
-#include "objects/Group51.h"
+#include "gen/objects/Group51.h"
 
 namespace opendnp3
 {

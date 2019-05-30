@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_SIMPLECOMMANDHANDLER_H
 #define OPENDNP3_SIMPLECOMMANDHANDLER_H
 
-#include "ICommandHandler.h"
+#include "opendnp3/outstation/ICommandHandler.h"
 
 #include <memory>
 

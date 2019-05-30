@@ -24,11 +24,11 @@
 #include <log4cpp/LogLevels.h>
 
 #include "opendnp3/TimeDuration.h"
-#include "channel/ChannelRetry.h"
-#include "channel/IListener.h"
-#include "channel/IPEndpoint.h"
-#include "channel/SerialSettings.h"
-#include "channel/TLSConfig.h"
+#include "opendnp3/channel/ChannelRetry.h"
+#include "opendnp3/channel/IListener.h"
+#include "opendnp3/channel/IPEndpoint.h"
+#include "opendnp3/channel/SerialSettings.h"
+#include "opendnp3/channel/TLSConfig.h"
 
 #include "opendnp3/gen/ChannelState.h"
 #include "opendnp3/gen/ServerAcceptMode.h"

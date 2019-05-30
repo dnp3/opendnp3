@@ -28,7 +28,7 @@
 namespace opendnp3
 {
 
-struct EventUpdate : private ser4cpp::StaticOnly
+struct EventUpdate : private StaticOnly
 {
     template<class T> static bool Update(EventLists& lists, const Event<T>& event);
 };

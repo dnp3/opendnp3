@@ -21,12 +21,12 @@
 #define OPENDNP3_TLSSERVER_H
 
 #include <log4cpp/Logger.h>
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/Uncopyable.h"
 #include <exe4cpp/asio/StrandExecutor.h>
 
-#include "channel/IListener.h"
-#include "channel/IPEndpoint.h"
-#include "channel/TLSConfig.h"
+#include "opendnp3/channel/IListener.h"
+#include "opendnp3/channel/IPEndpoint.h"
+#include "opendnp3/channel/TLSConfig.h"
 #include "channel/tls/SSLContext.h"
 
 namespace opendnp3
@@ -36,7 +36,7 @@ namespace opendnp3
  *
  * Meant to be used exclusively as a shared_ptr
  */
-class TLSServer : public IListener, public std::enable_shared_from_this<TLSServer>, private ser4cpp::Uncopyable
+class TLSServer : public IListener, public std::enable_shared_from_this<TLSServer>, private Uncopyable
 {
 
 public:

@@ -44,7 +44,7 @@ namespace opendnp3
 /*
     All of the mutable state and configuration for a master
 */
-class MContext final : public IUpperLayer, private IMasterTaskRunner, private ser4cpp::Uncopyable
+class MContext final : public IUpperLayer, private IMasterTaskRunner, private Uncopyable
 {
 
 public:

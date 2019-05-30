@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_MEASUREMENTFACTORY_H
 #define OPENDNP3_MEASUREMENTFACTORY_H
 
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/StaticOnly.h"
 
 #include "opendnp3/app/AnalogCommandEvent.h"
 #include "opendnp3/app/AnalogOutput.h"
@@ -32,7 +32,7 @@
 namespace opendnp3
 {
 
-struct BinaryFactory : private ser4cpp::StaticOnly
+struct BinaryFactory : private StaticOnly
 {
     inline static Binary From(Flags flags)
     {
@@ -50,7 +50,7 @@ struct BinaryFactory : private ser4cpp::StaticOnly
     }
 };
 
-struct DoubleBitBinaryFactory : private ser4cpp::StaticOnly
+struct DoubleBitBinaryFactory : private StaticOnly
 {
     inline static DoubleBitBinary From(Flags flags)
     {
@@ -68,7 +68,7 @@ struct DoubleBitBinaryFactory : private ser4cpp::StaticOnly
     }
 };
 
-struct AnalogFactory : private ser4cpp::StaticOnly
+struct AnalogFactory : private StaticOnly
 {
     static Analog From(int32_t count)
     {
@@ -84,7 +84,7 @@ struct AnalogFactory : private ser4cpp::StaticOnly
     }
 };
 
-struct CounterFactory : private ser4cpp::StaticOnly
+struct CounterFactory : private StaticOnly
 {
     inline static Counter From(uint32_t count)
     {
@@ -100,7 +100,7 @@ struct CounterFactory : private ser4cpp::StaticOnly
     }
 };
 
-struct FrozenCounterFactory : private ser4cpp::StaticOnly
+struct FrozenCounterFactory : private StaticOnly
 {
     inline static FrozenCounter From(uint32_t count)
     {
@@ -116,7 +116,7 @@ struct FrozenCounterFactory : private ser4cpp::StaticOnly
     }
 };
 
-struct TimeAndIntervalFactory : private ser4cpp::StaticOnly
+struct TimeAndIntervalFactory : private StaticOnly
 {
     inline static TimeAndInterval From(DNPTime time, uint32_t interval, uint8_t units)
     {
@@ -124,7 +124,7 @@ struct TimeAndIntervalFactory : private ser4cpp::StaticOnly
     }
 };
 
-struct ControlRelayOutputBlockFactory : private ser4cpp::StaticOnly
+struct ControlRelayOutputBlockFactory : private StaticOnly
 {
     inline static ControlRelayOutputBlock From(
         uint8_t code, uint8_t count, uint32_t onTime, uint32_t offTime, uint8_t status)
@@ -133,7 +133,7 @@ struct ControlRelayOutputBlockFactory : private ser4cpp::StaticOnly
     }
 };
 
-struct BinaryOutputStatusFactory : private ser4cpp::StaticOnly
+struct BinaryOutputStatusFactory : private StaticOnly
 {
     inline static BinaryOutputStatus From(Flags flags)
     {
@@ -146,7 +146,7 @@ struct BinaryOutputStatusFactory : private ser4cpp::StaticOnly
     }
 };
 
-struct BinaryCommandEventFactory : private ser4cpp::StaticOnly
+struct BinaryCommandEventFactory : private StaticOnly
 {
     inline static BinaryCommandEvent From(Flags flags)
     {
@@ -159,7 +159,7 @@ struct BinaryCommandEventFactory : private ser4cpp::StaticOnly
     }
 };
 
-struct AnalogOutputStatusFactory : private ser4cpp::StaticOnly
+struct AnalogOutputStatusFactory : private StaticOnly
 {
     inline static AnalogOutputStatus From(uint8_t flags, double value)
     {
@@ -172,7 +172,7 @@ struct AnalogOutputStatusFactory : private ser4cpp::StaticOnly
     }
 };
 
-struct AnalogCommandEventFactory : private ser4cpp::StaticOnly
+struct AnalogCommandEventFactory : private StaticOnly
 {
     inline static AnalogCommandEvent From(uint8_t status, double value)
     {
@@ -185,7 +185,7 @@ struct AnalogCommandEventFactory : private ser4cpp::StaticOnly
     }
 };
 
-struct SecurityStatFactory : private ser4cpp::StaticOnly
+struct SecurityStatFactory : private StaticOnly
 {
     inline static SecurityStat From(uint8_t flags, uint16_t assocId, uint32_t value)
     {
@@ -198,7 +198,7 @@ struct SecurityStatFactory : private ser4cpp::StaticOnly
     }
 };
 
-template<class Target, class ValueType> struct AnalogOutputFactory : private ser4cpp::StaticOnly
+template<class Target, class ValueType> struct AnalogOutputFactory : private StaticOnly
 {
     inline static Target From(ValueType value, uint8_t status)
     {

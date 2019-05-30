@@ -37,7 +37,7 @@ namespace opendnp3
 /**
  * A generic interface for defining master request/response style tasks
  */
-class IMasterTask : private ser4cpp::Uncopyable
+class IMasterTask : private Uncopyable
 {
 
 public:

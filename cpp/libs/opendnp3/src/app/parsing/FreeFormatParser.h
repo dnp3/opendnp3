@@ -22,7 +22,7 @@
 
 #include <ser4cpp/container/SequenceTypes.h>
 #include <log4cpp/Logger.h>
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/StaticOnly.h"
 
 #include "app/parsing/IAPDUHandler.h"
 #include "app/parsing/ObjectHeaderParser.h"
@@ -35,7 +35,7 @@ namespace opendnp3
 /**
     Parser for free format (0x5B)
 */
-class FreeFormatParser : private ser4cpp::StaticOnly
+class FreeFormatParser : private StaticOnly
 {
 public:
     static ParseResult ParseHeader(ser4cpp::rseq_t& buffer,

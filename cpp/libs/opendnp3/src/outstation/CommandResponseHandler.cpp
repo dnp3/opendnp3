@@ -21,8 +21,8 @@
 
 #include <ser4cpp/serialization/LittleEndian.h>
 
-#include "objects/Group12.h"
-#include "objects/Group41.h"
+#include "gen/objects/Group12.h"
+#include "gen/objects/Group41.h"
 
 namespace opendnp3
 {

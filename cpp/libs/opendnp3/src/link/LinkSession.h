@@ -25,7 +25,7 @@
 #include <log4cpp/Logger.h>
 
 #include "channel/IAsyncChannel.h"
-#include "channel/IResourceManager.h"
+#include "IResourceManager.h"
 
 #include "Route.h"
 #include "link/ILinkTx.h"
@@ -44,7 +44,7 @@ class LinkSession final : public ILinkTx,
                           public std::enable_shared_from_this<LinkSession>,
                           public IResource,
                           private ISessionAcceptor,
-                          private ser4cpp::Uncopyable
+                          private Uncopyable
 {
 public:
     static std::shared_ptr<LinkSession> Create(const log4cpp::Logger& logger,

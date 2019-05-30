@@ -21,7 +21,7 @@
 #define OPENDNP3_TIMESYNCHANDLER_H
 
 #include <log4cpp/LogMacros.h>
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/Uncopyable.h"
 
 #include "opendnp3/LogLevels.h"
 #include "app/parsing/IAPDUHandler.h"
@@ -32,7 +32,7 @@ namespace opendnp3
 /**
  * Dedicated class for processing response data in the master.
  */
-class TimeSyncHandler : public IAPDUHandler, private ser4cpp::Uncopyable
+class TimeSyncHandler : public IAPDUHandler, private Uncopyable
 {
 
 public:

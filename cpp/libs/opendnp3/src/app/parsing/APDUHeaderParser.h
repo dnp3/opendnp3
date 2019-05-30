@@ -22,14 +22,14 @@
 
 #include <ser4cpp/container/SequenceTypes.h>
 #include <log4cpp/Logger.h>
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/StaticOnly.h"
 
 #include "app/APDUHeader.h"
 
 namespace opendnp3
 {
 
-class APDUHeaderParser : private ser4cpp::StaticOnly
+class APDUHeaderParser : private StaticOnly
 {
 
 public:

@@ -22,7 +22,7 @@
 #include <ser4cpp/serialization/LittleEndian.h>
 
 #include "app/APDUBuilders.h"
-#include "objects/Group50.h"
+#include "gen/objects/Group50.h"
 
 namespace opendnp3
 {

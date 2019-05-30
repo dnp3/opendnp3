@@ -21,7 +21,7 @@
 #define OPENDNP3_IASYNCCHANNEL_H
 
 #include <ser4cpp/container/SequenceTypes.h>
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/Uncopyable.h"
 
 #include <exe4cpp/asio/StrandExecutor.h>
 #include "channel/IChannelCallbacks.h"
@@ -32,7 +32,7 @@
 namespace opendnp3
 {
 
-class IAsyncChannel : public std::enable_shared_from_this<IAsyncChannel>, private ser4cpp::Uncopyable
+class IAsyncChannel : public std::enable_shared_from_this<IAsyncChannel>, private Uncopyable
 {
 public:
     IAsyncChannel(const std::shared_ptr<exe4cpp::StrandExecutor>& executor) : executor(executor) {}

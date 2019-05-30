@@ -23,8 +23,8 @@
 
 #include <exe4cpp/Timer.h>
 
-#include "channel/ChannelRetry.h"
-#include "channel/IPEndpoint.h"
+#include "opendnp3/channel/ChannelRetry.h"
+#include "opendnp3/channel/IPEndpoint.h"
 #include "channel/tls/TLSServer.h"
 
 #include "opendnp3/gen/ServerAcceptMode.h"

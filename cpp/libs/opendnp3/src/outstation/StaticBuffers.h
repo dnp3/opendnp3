@@ -21,7 +21,7 @@
 #define OPENDNP3_STATICBUFFERS_H
 
 #include <ser4cpp/container/Array.h>
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/Uncopyable.h"
 
 #include "opendnp3/outstation/Cell.h"
 #include "outstation/DatabaseConfigView.h"
@@ -33,7 +33,7 @@ namespace opendnp3
 /**
  * The static database provides storage for current values and all of the associated metadata
  */
-class StaticBuffers : private ser4cpp::Uncopyable
+class StaticBuffers : private Uncopyable
 {
 
 public:

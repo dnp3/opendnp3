@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_ITRANSACTABLE_H
 #define OPENDNP3_ITRANSACTABLE_H
 
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/Uncopyable.h"
 
 namespace opendnp3
 {
@@ -42,7 +42,7 @@ protected:
 /**
   Uses RAII to safely perform a transaction
 */
-class Transaction : private ser4cpp::Uncopyable
+class Transaction : private Uncopyable
 {
 public:
     Transaction(ITransactable& transactable) : pTransactable(&transactable)

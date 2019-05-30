@@ -24,7 +24,7 @@
 #include "EventRecord.h"
 #include "TypedEventRecord.h"
 
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/Uncopyable.h"
 
 #include "opendnp3/app/MeasurementTypeSpecs.h"
 #include "opendnp3/outstation/EventBufferConfig.h"
@@ -34,7 +34,7 @@ namespace opendnp3
 
 typedef List<EventRecord>::Iterator event_iter_t;
 
-class EventLists : private ser4cpp::Uncopyable
+class EventLists : private Uncopyable
 {
 public:
     EventLists() = delete;

@@ -22,7 +22,7 @@
 
 #include "opendnp3/TimeDuration.h"
 
-#include "channel/IOpenDelayStrategy.h"
+#include "opendnp3/channel/IOpenDelayStrategy.h"
 
 namespace opendnp3
 {

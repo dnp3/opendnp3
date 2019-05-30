@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_ASIOSERIALHELPERS_H
 #define OPENDNP3_ASIOSERIALHELPERS_H
 
-#include "channel/SerialSettings.h"
+#include "opendnp3/channel/SerialSettings.h"
 
 #include <asio.hpp>
 

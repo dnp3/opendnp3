@@ -18,21 +18,35 @@
  * limitations under the License.
  */
 
-#include "opendnp3/channel/ChannelRetry.h"
+#include "ResourceManager.h"
 
 namespace opendnp3
 {
 
-ChannelRetry::ChannelRetry(TimeDuration minOpenRetry_,
-                           TimeDuration maxOpenRetry_,
-                           IOpenDelayStrategy& strategy_)
-    : minOpenRetry(minOpenRetry_), maxOpenRetry(maxOpenRetry_), strategy(strategy_)
+void ResourceManager::Detach(const std::shared_ptr<IResource>& resource)
 {
+    std::lock_guard<std::mutex> lock(this->mutex);
+    this->resources.erase(resource);
 }
 
-ChannelRetry ChannelRetry::Default()
+void ResourceManager::Shutdown()
 {
-    return ChannelRetry(TimeDuration::Seconds(1), TimeDuration::Minutes(1));
+    std::set<std::shared_ptr<IResource>> copy;
+
+    {
+        std::lock_guard<std::mutex> lock(this->mutex);
+        this->is_shutting_down = true;
+        for (auto& resource : this->resources)
+        {
+            copy.insert(resource);
+        }
+        resources.clear();
+    }
+
+    for (auto& resource : copy)
+    {
+        resource->Shutdown();
+    }
 }
 
 } // namespace opendnp3

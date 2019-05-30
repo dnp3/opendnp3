@@ -17,36 +17,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#ifndef OPENDNP3_IRESOURCEMANAGER_H
+#define OPENDNP3_IRESOURCEMANAGER_H
 
-#include "channel/ResourceManager.h"
+#include "opendnp3/IResource.h"
+
+#include <memory>
 
 namespace opendnp3
 {
 
-void ResourceManager::Detach(const std::shared_ptr<IResource>& resource)
+struct IResourceManager
 {
-    std::lock_guard<std::mutex> lock(this->mutex);
-    this->resources.erase(resource);
-}
 
-void ResourceManager::Shutdown()
-{
-    std::set<std::shared_ptr<IResource>> copy;
+public:
+    virtual ~IResourceManager() = default;
 
-    {
-        std::lock_guard<std::mutex> lock(this->mutex);
-        this->is_shutting_down = true;
-        for (auto& resource : this->resources)
-        {
-            copy.insert(resource);
-        }
-        resources.clear();
-    }
-
-    for (auto& resource : copy)
-    {
-        resource->Shutdown();
-    }
-}
+    /// notify the handler that the resource is shutting down, and it doesn't
+    /// have to track it anymore
+    virtual void Detach(const std::shared_ptr<IResource>& resource) = 0;
+};
 
 } // namespace opendnp3
+
+#endif

@@ -21,9 +21,9 @@
 #define OPENDNP3_SSLCONTEXT_H
 
 #include <log4cpp/Logger.h>
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/Uncopyable.h"
 
-#include "channel/TLSConfig.h"
+#include "opendnp3/channel/TLSConfig.h"
 
 #include <asio/ssl.hpp>
 
@@ -32,7 +32,7 @@ namespace opendnp3
 /**
  * Create and fully configure an asio::ssl::context
  */
-class SSLContext : private ser4cpp::Uncopyable
+class SSLContext : private Uncopyable
 {
 
 public:

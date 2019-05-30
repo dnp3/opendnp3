@@ -17,34 +17,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_IRESOURCEMANAGER_H
-#define OPENDNP3_IRESOURCEMANAGER_H
+#ifndef OPENDNP3_IOPENDELAYSTRATEGY_H
+#define OPENDNP3_IOPENDELAYSTRATEGY_H
 
-#include <memory>
+#include "opendnp3/TimeDuration.h"
+#include "opendnp3/Uncopyable.h"
 
 namespace opendnp3
 {
 
 /**
- *	Anything that can be shutdown
+ * A strategy interface for controlling how connection are retried
  */
-struct IResource
+class IOpenDelayStrategy
 {
-public:
-    virtual ~IResource() = default;
 
-    virtual void Shutdown() = 0;
+public:
+    virtual ~IOpenDelayStrategy() {}
+
+    /**
+     * The the next delay based on the current and the maximum.
+     */
+    virtual TimeDuration GetNextDelay(const TimeDuration& current,
+                                      const TimeDuration& max) const = 0;
 };
 
-struct IResourceManager
+/**
+ * Implements IOpenDelayStrategy using exponential-backoff.
+ */
+class ExponentialBackoffStrategy final : public IOpenDelayStrategy, private Uncopyable
 {
+    static ExponentialBackoffStrategy instance;
 
 public:
-    virtual ~IResourceManager() = default;
+    static IOpenDelayStrategy& Instance();
 
-    /// notify the handler that the resource is shutting down, and it doesn't
-    /// have to track it anymore
-    virtual void Detach(const std::shared_ptr<IResource>& resource) = 0;
+    TimeDuration GetNextDelay(const TimeDuration& current,
+                              const TimeDuration& max) const final;
 };
 
 } // namespace opendnp3

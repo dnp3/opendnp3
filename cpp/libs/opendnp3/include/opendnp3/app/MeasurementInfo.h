@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_MEASUREMENTINFO_H
 #define OPENDNP3_MEASUREMENTINFO_H
 
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/StaticOnly.h"
 
 #include "opendnp3/app/EventType.h"
 #include "opendnp3/app/MeasurementTypes.h"
@@ -51,7 +51,7 @@
 namespace opendnp3
 {
 
-struct BinaryInfo : private ser4cpp::StaticOnly
+struct BinaryInfo : private StaticOnly
 {
     typedef Binary meas_t;
     typedef bool value_t;
@@ -64,7 +64,7 @@ struct BinaryInfo : private ser4cpp::StaticOnly
     static const static_variation_t DefaultStaticVariation = StaticBinaryVariation::Group1Var2;
 };
 
-struct DoubleBitBinaryInfo : private ser4cpp::StaticOnly
+struct DoubleBitBinaryInfo : private StaticOnly
 {
     typedef DoubleBitBinary meas_t;
     typedef DoubleBit value_t;
@@ -77,7 +77,7 @@ struct DoubleBitBinaryInfo : private ser4cpp::StaticOnly
     static const static_variation_t DefaultStaticVariation = StaticDoubleBinaryVariation::Group3Var2;
 };
 
-class BinaryOutputStatusInfo : private ser4cpp::StaticOnly
+class BinaryOutputStatusInfo : private StaticOnly
 {
 public:
     typedef BinaryOutputStatus meas_t;
@@ -91,7 +91,7 @@ public:
     static const static_variation_t DefaultStaticVariation = StaticBinaryOutputStatusVariation::Group10Var2;
 };
 
-struct AnalogInfo : private ser4cpp::StaticOnly
+struct AnalogInfo : private StaticOnly
 {
     typedef Analog meas_t;
     typedef double value_t;
@@ -104,7 +104,7 @@ struct AnalogInfo : private ser4cpp::StaticOnly
     static const static_variation_t DefaultStaticVariation = StaticAnalogVariation::Group30Var1;
 };
 
-struct CounterInfo : private ser4cpp::StaticOnly
+struct CounterInfo : private StaticOnly
 {
     typedef Counter meas_t;
     typedef uint32_t value_t;
@@ -117,7 +117,7 @@ struct CounterInfo : private ser4cpp::StaticOnly
     static const static_variation_t DefaultStaticVariation = StaticCounterVariation::Group20Var1;
 };
 
-struct FrozenCounterInfo : private ser4cpp::StaticOnly
+struct FrozenCounterInfo : private StaticOnly
 {
     typedef FrozenCounter meas_t;
     typedef uint32_t value_t;
@@ -130,7 +130,7 @@ struct FrozenCounterInfo : private ser4cpp::StaticOnly
     static const static_variation_t DefaultStaticVariation = StaticFrozenCounterVariation::Group21Var1;
 };
 
-struct AnalogOutputStatusInfo : private ser4cpp::StaticOnly
+struct AnalogOutputStatusInfo : private StaticOnly
 {
     typedef AnalogOutputStatus meas_t;
     typedef double value_t;
@@ -143,7 +143,7 @@ struct AnalogOutputStatusInfo : private ser4cpp::StaticOnly
     static const static_variation_t DefaultStaticVariation = StaticAnalogOutputStatusVariation::Group40Var1;
 };
 
-struct OctetStringInfo : private ser4cpp::StaticOnly
+struct OctetStringInfo : private StaticOnly
 {
     typedef OctetString meas_t;
     typedef EventOctetStringVariation event_variation_t;
@@ -155,7 +155,7 @@ struct OctetStringInfo : private ser4cpp::StaticOnly
     static const static_variation_t DefaultStaticVariation = StaticOctetStringVariation::Group110Var0;
 };
 
-struct TimeAndIntervalInfo : private ser4cpp::StaticOnly
+struct TimeAndIntervalInfo : private StaticOnly
 {
     typedef TimeAndInterval meas_t;
     typedef StaticTimeAndIntervalVariation static_variation_t;
@@ -164,7 +164,7 @@ struct TimeAndIntervalInfo : private ser4cpp::StaticOnly
     const static StaticTimeAndIntervalVariation DefaultStaticVariation = StaticTimeAndIntervalVariation::Group50Var4;
 };
 
-struct SecurityStatInfo : private ser4cpp::StaticOnly
+struct SecurityStatInfo : private StaticOnly
 {
     typedef SecurityStat meas_t;
     typedef SecurityStat::Value value_t;

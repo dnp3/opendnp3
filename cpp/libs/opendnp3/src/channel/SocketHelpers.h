@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_SOCKET_HELPERS_H
 #define OPENDNP3_SOCKET_HELPERS_H
 
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/StaticOnly.h"
 
 #include <asio.hpp>
 
@@ -29,7 +29,7 @@
 
 namespace opendnp3
 {
-class SocketHelpers : private ser4cpp::StaticOnly
+class SocketHelpers : private StaticOnly
 {
 
 public:

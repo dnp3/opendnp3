@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_COMMAND_TASK_RESULT_H
 #define OPENDNP3_COMMAND_TASK_RESULT_H
 
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/Uncopyable.h"
 
 #include "opendnp3/master/CommandSet.h"
 #include "opendnp3/master/ICommandTaskResult.h"
@@ -29,7 +29,7 @@
 namespace opendnp3
 {
 
-class CommandTaskResult final : public ICommandTaskResult, private ser4cpp::Uncopyable
+class CommandTaskResult final : public ICommandTaskResult, private Uncopyable
 {
 public:
     CommandTaskResult(TaskCompletion result, const CommandSet::HeaderVector& vector);

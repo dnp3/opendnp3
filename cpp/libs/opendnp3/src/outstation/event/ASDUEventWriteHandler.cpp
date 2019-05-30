@@ -22,13 +22,13 @@
 
 #include "EventWriters.h"
 
-#include "objects/Group11.h"
-#include "objects/Group2.h"
-#include "objects/Group22.h"
-#include "objects/Group23.h"
-#include "objects/Group32.h"
-#include "objects/Group4.h"
-#include "objects/Group42.h"
+#include "gen/objects/Group11.h"
+#include "gen/objects/Group2.h"
+#include "gen/objects/Group22.h"
+#include "gen/objects/Group23.h"
+#include "gen/objects/Group32.h"
+#include "gen/objects/Group4.h"
+#include "gen/objects/Group42.h"
 
 namespace opendnp3
 {

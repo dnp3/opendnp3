@@ -17,45 +17,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_IOPENDELAYSTRATEGY_H
-#define OPENDNP3_IOPENDELAYSTRATEGY_H
-
-#include "opendnp3/TimeDuration.h"
-#include <ser4cpp/util/Uncopyable.h>
+#ifndef OPENDNP3_STATICONLY_H
+#define OPENDNP3_STATICONLY_H
 
 namespace opendnp3
 {
 
-/**
- * A strategy interface for controlling how connection are retried
- */
-class IOpenDelayStrategy
+class StaticOnly
 {
-
-public:
-    virtual ~IOpenDelayStrategy() {}
-
-    /**
-     * The the next delay based on the current and the maximum.
-     */
-    virtual TimeDuration GetNextDelay(const TimeDuration& current,
-                                      const TimeDuration& max) const = 0;
+private:
+    // prevent these functions
+    StaticOnly() = delete;
+    StaticOnly(const StaticOnly&) = delete;
+    StaticOnly& operator=(const StaticOnly&) = delete;
 };
 
-/**
- * Implements IOpenDelayStrategy using exponential-backoff.
- */
-class ExponentialBackoffStrategy final : public IOpenDelayStrategy, private ser4cpp::Uncopyable
-{
-    static ExponentialBackoffStrategy instance;
-
-public:
-    static IOpenDelayStrategy& Instance();
-
-    TimeDuration GetNextDelay(const TimeDuration& current,
-                              const TimeDuration& max) const final;
-};
-
-} // namespace opendnp3
+}
 
 #endif

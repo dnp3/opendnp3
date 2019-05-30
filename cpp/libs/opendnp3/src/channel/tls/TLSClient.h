@@ -21,9 +21,9 @@
 #define OPENDNP3_TLSCLIENT_H
 
 #include <exe4cpp/asio/StrandExecutor.h>
-#include "channel/IPEndpoint.h"
+#include "opendnp3/channel/IPEndpoint.h"
 #include "channel/LoggingConnectionCondition.h"
-#include "channel/TLSConfig.h"
+#include "opendnp3/channel/TLSConfig.h"
 #include "channel/tls/SSLContext.h"
 
 #include <asio/ssl.hpp>
@@ -31,7 +31,7 @@
 namespace opendnp3
 {
 
-class TLSClient final : public std::enable_shared_from_this<TLSClient>, private ser4cpp::Uncopyable
+class TLSClient final : public std::enable_shared_from_this<TLSClient>, private Uncopyable
 {
 
 public:

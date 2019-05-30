@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_WRITECONVERSIONTEMPLATES_H
 #define OPENDNP3_WRITECONVERSIONTEMPLATES_H
 
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/Uncopyable.h"
 
 #include "app/DownSampling.h"
 
@@ -28,7 +28,7 @@
 
 namespace opendnp3
 {
-template<class Target, class Source> struct ConvertQ : private ser4cpp::StaticOnly
+template<class Target, class Source> struct ConvertQ : private StaticOnly
 {
     static Target Apply(const Source& src)
     {
@@ -38,7 +38,7 @@ template<class Target, class Source> struct ConvertQ : private ser4cpp::StaticOn
     }
 };
 
-template<class Target, class Source> struct ConvertQV : private ser4cpp::StaticOnly
+template<class Target, class Source> struct ConvertQV : private StaticOnly
 {
     static Target Apply(const Source& src)
     {
@@ -49,7 +49,7 @@ template<class Target, class Source> struct ConvertQV : private ser4cpp::StaticO
     }
 };
 
-template<class Target, class Source> struct ConvertV : private ser4cpp::StaticOnly
+template<class Target, class Source> struct ConvertV : private StaticOnly
 {
     static Target Apply(const Source& src)
     {
@@ -59,7 +59,7 @@ template<class Target, class Source> struct ConvertV : private ser4cpp::StaticOn
     }
 };
 
-template<class Target, class Source> struct ConvertVandTruncate : private ser4cpp::StaticOnly
+template<class Target, class Source> struct ConvertVandTruncate : private StaticOnly
 {
     static Target Apply(const Source& src)
     {
@@ -69,7 +69,7 @@ template<class Target, class Source> struct ConvertVandTruncate : private ser4cp
     }
 };
 
-template<class Target, class Source> struct ConvertVRangeCheck : private ser4cpp::StaticOnly
+template<class Target, class Source> struct ConvertVRangeCheck : private StaticOnly
 {
     static Target Apply(const Source& src)
     {
@@ -79,7 +79,7 @@ template<class Target, class Source> struct ConvertVRangeCheck : private ser4cpp
     }
 };
 
-template<class Target, class Source, uint8_t Overrange> struct ConvertQVRangeCheck : private ser4cpp::StaticOnly
+template<class Target, class Source, uint8_t Overrange> struct ConvertQVRangeCheck : private StaticOnly
 {
     static Target Apply(const Source& src)
     {
@@ -91,7 +91,7 @@ template<class Target, class Source, uint8_t Overrange> struct ConvertQVRangeChe
     }
 };
 
-template<class Target, class Source> struct ConvertQVandTruncate : private ser4cpp::StaticOnly
+template<class Target, class Source> struct ConvertQVandTruncate : private StaticOnly
 {
     static Target Apply(const Source& src)
     {
@@ -102,7 +102,7 @@ template<class Target, class Source> struct ConvertQVandTruncate : private ser4c
     }
 };
 
-template<class Target, class Source> struct ConvertQVT : private ser4cpp::StaticOnly
+template<class Target, class Source> struct ConvertQVT : private StaticOnly
 {
     static Target Apply(const Source& src)
     {
@@ -114,7 +114,7 @@ template<class Target, class Source> struct ConvertQVT : private ser4cpp::Static
     }
 };
 
-template<class Target, class Source> struct ConvertQVTandTruncate : private ser4cpp::StaticOnly
+template<class Target, class Source> struct ConvertQVTandTruncate : private StaticOnly
 {
     static Target Apply(const Source& src)
     {
@@ -126,7 +126,7 @@ template<class Target, class Source> struct ConvertQVTandTruncate : private ser4
     }
 };
 
-template<class Target, class Source, uint8_t Overrange> struct ConvertQVTRangeCheck : private ser4cpp::StaticOnly
+template<class Target, class Source, uint8_t Overrange> struct ConvertQVTRangeCheck : private StaticOnly
 {
     static Target Apply(const Source& src)
     {
@@ -139,7 +139,7 @@ template<class Target, class Source, uint8_t Overrange> struct ConvertQVTRangeCh
     }
 };
 
-template<class Target, class Source> struct ConvertQT : private ser4cpp::StaticOnly
+template<class Target, class Source> struct ConvertQT : private StaticOnly
 {
     static Target Apply(const Source& src)
     {
@@ -150,7 +150,7 @@ template<class Target, class Source> struct ConvertQT : private ser4cpp::StaticO
     }
 };
 
-template<class Target, class Source, class Downcast> struct ConvertQTDowncast : private ser4cpp::StaticOnly
+template<class Target, class Source, class Downcast> struct ConvertQTDowncast : private StaticOnly
 {
     static Target Apply(const Source& src)
     {
@@ -161,7 +161,7 @@ template<class Target, class Source, class Downcast> struct ConvertQTDowncast : 
     }
 };
 
-template<class Target, class Source> struct ConvertQS : private ser4cpp::StaticOnly
+template<class Target, class Source> struct ConvertQS : private StaticOnly
 {
     static Target Apply(const Source& src)
     {

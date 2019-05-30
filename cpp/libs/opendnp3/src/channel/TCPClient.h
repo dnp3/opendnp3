@@ -22,15 +22,15 @@
 
 #include <exe4cpp/asio/StrandExecutor.h>
 
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/Uncopyable.h"
 
-#include "channel/IPEndpoint.h"
+#include "opendnp3/channel/IPEndpoint.h"
 #include "channel/LoggingConnectionCondition.h"
 
 namespace opendnp3
 {
 
-class TCPClient final : public std::enable_shared_from_this<TCPClient>, private ser4cpp::Uncopyable
+class TCPClient final : public std::enable_shared_from_this<TCPClient>, private Uncopyable
 {
 
 public:

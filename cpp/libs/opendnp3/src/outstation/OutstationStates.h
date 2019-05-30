@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_OUTSTATIONSTATES_H
 #define OPENDNP3_OUTSTATIONSTATES_H
 
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/Uncopyable.h"
 
 #include "outstation/ParsedRequest.h"
 
@@ -32,7 +32,7 @@ class OContext;
 /**
  * Base class for the outstation states
  */
-class OutstationState : private ser4cpp::Uncopyable
+class OutstationState : private Uncopyable
 {
 public:
     virtual bool IsIdle()

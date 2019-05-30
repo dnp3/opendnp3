@@ -21,7 +21,7 @@
 #define OPENDNP3_CONSOLELOGGER_H
 
 #include <log4cpp/ILogHandler.h>
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/Uncopyable.h"
 
 #include <memory>
 #include <mutex>
@@ -34,7 +34,7 @@ std::ostringstream& operator<<(std::ostringstream& ss, const log4cpp::LogLevels&
 /**
  * LogHandler that prints all log messages to the console
  */
-class ConsoleLogger final : public log4cpp::ILogHandler, private ser4cpp::Uncopyable
+class ConsoleLogger final : public log4cpp::ILogHandler, private Uncopyable
 {
 
 public:

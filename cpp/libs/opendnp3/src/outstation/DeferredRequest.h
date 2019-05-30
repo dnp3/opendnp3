@@ -23,7 +23,7 @@
 #include "ParsedRequest.h"
 
 #include <ser4cpp/container/Buffer.h>
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/Uncopyable.h"
 
 namespace opendnp3
 {
@@ -31,7 +31,7 @@ namespace opendnp3
 /**
  * Records metadata about deferred requests
  */
-class DeferredRequest : private ser4cpp::Uncopyable
+class DeferredRequest : private Uncopyable
 {
 
 public:

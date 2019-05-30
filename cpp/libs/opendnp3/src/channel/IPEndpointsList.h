@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_IPENDPOINTSLIST_H
 #define OPENDNP3_IPENDPOINTSLIST_H
 
-#include "channel/IPEndpoint.h"
+#include "opendnp3/channel/IPEndpoint.h"
 
 #include <vector>
 

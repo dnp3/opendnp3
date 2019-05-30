@@ -26,7 +26,7 @@
 namespace opendnp3
 {
 
-class EventWriting : private ser4cpp::StaticOnly
+class EventWriting : private StaticOnly
 {
 
 public:

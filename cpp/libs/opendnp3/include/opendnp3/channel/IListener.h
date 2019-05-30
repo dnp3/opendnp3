@@ -17,22 +17,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#ifndef OPENDNP3_ILISTENER_H
+#define OPENDNP3_ILISTENER_H
 
-#include "opendnp3/channel/ChannelRetry.h"
+#include "opendnp3/IResource.h"
 
 namespace opendnp3
 {
 
-ChannelRetry::ChannelRetry(TimeDuration minOpenRetry_,
-                           TimeDuration maxOpenRetry_,
-                           IOpenDelayStrategy& strategy_)
-    : minOpenRetry(minOpenRetry_), maxOpenRetry(maxOpenRetry_), strategy(strategy_)
+/**
+ * Represents a running TCP or TLS listener that can be shutdown
+ * so that no new connections are accepted.
+ */
+class IListener : public IResource
 {
-}
-
-ChannelRetry ChannelRetry::Default()
-{
-    return ChannelRetry(TimeDuration::Seconds(1), TimeDuration::Minutes(1));
-}
+public:
+    virtual ~IListener() {}
+};
 
 } // namespace opendnp3
+
+#endif

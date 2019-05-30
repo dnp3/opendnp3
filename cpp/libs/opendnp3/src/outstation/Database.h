@@ -32,7 +32,7 @@ namespace opendnp3
 /**
 The database coordinates all updates of measurement data
 */
-class Database final : public IDatabase, private ser4cpp::Uncopyable
+class Database final : public IDatabase, private Uncopyable
 {
 public:
     Database(const DatabaseSizes&,

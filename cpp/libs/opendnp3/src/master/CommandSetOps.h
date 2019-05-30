@@ -36,7 +36,7 @@ namespace opendnp3
  *
  * Used to reduce the public API surface exposed in includes to users
  */
-class CommandSetOps final : public IAPDUHandler, private ser4cpp::Uncopyable
+class CommandSetOps final : public IAPDUHandler, private Uncopyable
 {
     enum class Mode : uint8_t
     {

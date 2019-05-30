@@ -34,12 +34,12 @@
 #include "opendnp3/app/parsing/ICollection.h"
 #include "app/parsing/IWhiteList.h"
 #include "opendnp3/gen/QualifierCode.h"
-#include "objects/Group120.h"
-#include "objects/Group121.h"
-#include "objects/Group122.h"
-#include "objects/Group50.h"
-#include "objects/Group51.h"
-#include "objects/Group52.h"
+#include "gen/objects/Group120.h"
+#include "gen/objects/Group121.h"
+#include "gen/objects/Group122.h"
+#include "gen/objects/Group50.h"
+#include "gen/objects/Group51.h"
+#include "gen/objects/Group52.h"
 
 namespace opendnp3
 {

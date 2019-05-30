@@ -22,7 +22,7 @@
 
 #include "IEventWriteHandler.h"
 
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/Uncopyable.h"
 
 #include "app/DNP3Serializer.h"
 #include "app/HeaderWriter.h"
@@ -30,7 +30,7 @@
 namespace opendnp3
 {
 
-class ASDUEventWriteHandler final : public IEventWriteHandler, private ser4cpp::Uncopyable
+class ASDUEventWriteHandler final : public IEventWriteHandler, private Uncopyable
 {
 
 public:

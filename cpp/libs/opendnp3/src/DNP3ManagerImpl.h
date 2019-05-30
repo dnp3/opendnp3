@@ -22,15 +22,15 @@
 #define OPENDNP3_DNP3MANAGERIMPL_H
 
 #include <log4cpp/Logger.h>
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/Uncopyable.h"
 #include <exe4cpp/asio/ThreadPool.h>
 
-#include "channel/ChannelRetry.h"
-#include "channel/IListener.h"
-#include "channel/IPEndpoint.h"
-#include "channel/ResourceManager.h"
-#include "channel/SerialSettings.h"
-#include "channel/TLSConfig.h"
+#include "opendnp3/channel/ChannelRetry.h"
+#include "opendnp3/channel/IListener.h"
+#include "opendnp3/channel/IPEndpoint.h"
+#include "ResourceManager.h"
+#include "opendnp3/channel/SerialSettings.h"
+#include "opendnp3/channel/TLSConfig.h"
 
 #include "opendnp3/LogLevels.h"
 #include "opendnp3/gen/ServerAcceptMode.h"
@@ -42,7 +42,7 @@
 namespace opendnp3
 {
 
-class DNP3ManagerImpl : private ser4cpp::Uncopyable
+class DNP3ManagerImpl : private Uncopyable
 {
 
 public:

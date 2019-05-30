@@ -20,8 +20,7 @@
 #ifndef OPENDNP3_ISTACK_H
 #define OPENDNP3_ISTACK_H
 
-#include "channel/IResourceManager.h"
-
+#include "opendnp3/IResource.h"
 #include "opendnp3/StackStatistics.h"
 
 namespace opendnp3

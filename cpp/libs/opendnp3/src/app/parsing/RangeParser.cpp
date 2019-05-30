@@ -22,14 +22,14 @@
 #include <log4cpp/LogMacros.h>
 
 #include "app/parsing/BufferedCollection.h"
-#include "objects/Group1.h"
-#include "objects/Group10.h"
-#include "objects/Group20.h"
-#include "objects/Group21.h"
-#include "objects/Group3.h"
-#include "objects/Group30.h"
-#include "objects/Group40.h"
-#include "objects/Group50.h"
+#include "gen/objects/Group1.h"
+#include "gen/objects/Group10.h"
+#include "gen/objects/Group20.h"
+#include "gen/objects/Group21.h"
+#include "gen/objects/Group3.h"
+#include "gen/objects/Group30.h"
+#include "gen/objects/Group40.h"
+#include "gen/objects/Group50.h"
 
 namespace opendnp3
 {

@@ -22,10 +22,10 @@
 
 #include <exe4cpp/Timer.h>
 
-#include "channel/ChannelRetry.h"
-#include "channel/IPEndpoint.h"
+#include "opendnp3/channel/ChannelRetry.h"
+#include "opendnp3/channel/IPEndpoint.h"
 #include "channel/SerialChannel.h"
-#include "channel/SerialSettings.h"
+#include "opendnp3/channel/SerialSettings.h"
 
 #include "channel/IOHandler.h"
 

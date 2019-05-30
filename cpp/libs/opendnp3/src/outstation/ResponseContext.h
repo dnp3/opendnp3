@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_RESPONSECONTEXT_H
 #define OPENDNP3_RESPONSECONTEXT_H
 
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/Uncopyable.h"
 
 #include "app/AppControlField.h"
 #include "app/HeaderWriter.h"
@@ -35,7 +35,7 @@ class Database;
 /**
  *  Coordinates the event & static response contexts to do multi-fragments responses
  */
-class ResponseContext : private ser4cpp::Uncopyable
+class ResponseContext : private Uncopyable
 {
 
 public:

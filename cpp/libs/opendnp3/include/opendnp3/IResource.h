@@ -17,22 +17,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_ILISTENER_H
-#define OPENDNP3_ILISTENER_H
-
-#include "channel/IResourceManager.h"
+#ifndef OPENDNP3_IRESOURCE_H
+#define OPENDNP3_IRESOURCE_H
 
 namespace opendnp3
 {
 
 /**
- * Represents a running TCP or TLS listener that can be shutdown
- * so that no new connections are accepted.
+ *	Anything that can be shutdown
  */
-class IListener : public IResource
+struct IResource
 {
 public:
-    virtual ~IListener() {}
+    virtual ~IResource() = default;
+
+    virtual void Shutdown() = 0;
 };
 
 } // namespace opendnp3

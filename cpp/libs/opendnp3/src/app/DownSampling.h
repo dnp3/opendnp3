@@ -20,14 +20,14 @@
 #ifndef OPENDNP3_DOWNSAMPLING_H
 #define OPENDNP3_DOWNSAMPLING_H
 
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/Uncopyable.h"
 
 #include <cstdint>
 
 namespace opendnp3
 {
 // A safe down sampling class
-template<class Source, class Target> class DownSampling : private ser4cpp::Uncopyable
+template<class Source, class Target> class DownSampling : private Uncopyable
 {
     static const Target TARGET_MAX;
     static const Target TARGET_MIN;

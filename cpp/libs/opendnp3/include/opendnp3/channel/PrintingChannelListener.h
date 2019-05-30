@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_PRINTINGCHANNELLISTENER_H
 #define OPENDNP3_PRINTINGCHANNELLISTENER_H
 
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/Uncopyable.h"
 
 #include "opendnp3/channel/IChannelListener.h"
 
@@ -33,7 +33,7 @@ namespace opendnp3
 /**
  * Callback interface for receiving information about a running channel
  */
-class PrintingChannelListener final : public IChannelListener, private ser4cpp::Uncopyable
+class PrintingChannelListener final : public IChannelListener, private Uncopyable
 {
 public:
     virtual void OnStateChange(ChannelState state) override

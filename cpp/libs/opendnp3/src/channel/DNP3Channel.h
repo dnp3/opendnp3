@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_DNP3CHANNEL_H
 #define OPENDNP3_DNP3CHANNEL_H
 
-#include "channel/ResourceManager.h"
+#include "ResourceManager.h"
 #include "master/IMasterScheduler.h"
 #include "opendnp3/channel/IChannel.h"
 #include "channel/IOHandler.h"

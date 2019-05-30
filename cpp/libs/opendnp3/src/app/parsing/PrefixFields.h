@@ -22,12 +22,12 @@
 
 #include <ser4cpp/container/SequenceTypes.h>
 #include <ser4cpp/serialization/LittleEndian.h>
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/StaticOnly.h"
 
 namespace opendnp3
 {
 
-class PrefixFields : private ser4cpp::StaticOnly
+class PrefixFields : private StaticOnly
 {
 public:
     template<typename... Args> static bool Read(ser4cpp::rseq_t& input, Args&... fields)

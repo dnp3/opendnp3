@@ -22,8 +22,8 @@
 
 #include <log4cpp/Logger.h>
 
-#include "channel/IPEndpoint.h"
-#include "channel/ResourceManager.h"
+#include "opendnp3/channel/IPEndpoint.h"
+#include "ResourceManager.h"
 #include "channel/TCPServer.h"
 
 #include "opendnp3/master/IListenCallbacks.h"

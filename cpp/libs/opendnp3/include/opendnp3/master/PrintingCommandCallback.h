@@ -20,14 +20,14 @@
 #ifndef OPENDNP3_PRINTINGCOMMANDCALLBACK_H
 #define OPENDNP3_PRINTINGCOMMANDCALLBACK_H
 
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/StaticOnly.h"
 
 #include "opendnp3/master/CommandCallbackT.h"
 
 namespace opendnp3
 {
 
-class PrintingCommandCallback : public ser4cpp::StaticOnly
+class PrintingCommandCallback : public StaticOnly
 {
 
 public:

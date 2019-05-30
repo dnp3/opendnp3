@@ -17,22 +17,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#include "opendnp3/channel/ChannelRetry.h"
+#ifndef OPENDNP3_UNCOPYABLE_H
+#define OPENDNP3_UNCOPYABLE_H
 
 namespace opendnp3
 {
 
-ChannelRetry::ChannelRetry(TimeDuration minOpenRetry_,
-                           TimeDuration maxOpenRetry_,
-                           IOpenDelayStrategy& strategy_)
-    : minOpenRetry(minOpenRetry_), maxOpenRetry(maxOpenRetry_), strategy(strategy_)
+/** 
+ * Inherited classes will not have default copy/assignment.
+*/
+class Uncopyable
 {
+protected:
+    Uncopyable() = default; //allow construction/destruction/move
+    Uncopyable(Uncopyable&&) = default;
+    virtual ~Uncopyable() = default;
+    Uncopyable& operator=(Uncopyable&&) = default;
+
+private:
+    // prevent these functions
+    Uncopyable(const Uncopyable&) = delete;
+    Uncopyable& operator=(const Uncopyable&) = delete;
+};
+
 }
 
-ChannelRetry ChannelRetry::Default()
-{
-    return ChannelRetry(TimeDuration::Seconds(1), TimeDuration::Minutes(1));
-}
-
-} // namespace opendnp3
+#endif

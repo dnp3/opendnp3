@@ -41,7 +41,7 @@ The database coordinates all updates of measurement data
 class DatabaseBuffers final : public IStaticSelector,
                               public IResponseLoader,
                               public IClassAssigner,
-                              private ser4cpp::Uncopyable
+                              private Uncopyable
 {
 public:
     DatabaseBuffers(const DatabaseSizes&, StaticTypeBitField allowedClass0Types, IndexMode indexMode);

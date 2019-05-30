@@ -22,7 +22,7 @@
 
 #include "channel/IAsyncChannel.h"
 
-#include "channel/SerialSettings.h"
+#include "opendnp3/channel/SerialSettings.h"
 
 namespace opendnp3
 {

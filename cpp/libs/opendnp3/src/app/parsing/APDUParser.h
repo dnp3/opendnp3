@@ -21,7 +21,7 @@
 #define OPENDNP3_APDUPARSER_H
 
 #include <ser4cpp/container/SequenceTypes.h>
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/StaticOnly.h"
 
 #include "app/parsing/IAPDUHandler.h"
 #include "app/parsing/NumParser.h"
@@ -31,7 +31,7 @@
 namespace opendnp3
 {
 
-class APDUParser : private ser4cpp::StaticOnly
+class APDUParser : private StaticOnly
 {
 public:
     static ParseResult Parse(const ser4cpp::rseq_t& buffer,

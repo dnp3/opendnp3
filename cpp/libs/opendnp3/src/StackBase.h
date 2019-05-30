@@ -21,7 +21,7 @@
 #define OPENDNP3_STACKBASE_H
 
 #include <exe4cpp/asio/StrandExecutor.h>
-#include "channel/IResourceManager.h"
+#include "IResourceManager.h"
 
 #include "transport/TransportStack.h"
 

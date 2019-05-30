@@ -2,12 +2,15 @@ set(opendnp3_public_headers
     ./include/opendnp3/ConsoleLogger.h
     ./include/opendnp3/DNP3Manager.h
     ./include/opendnp3/ErrorCodes.h
+    ./include/opendnp3/IResource.h
     ./include/opendnp3/IStack.h
     ./include/opendnp3/IUTCTimeSource.h
     ./include/opendnp3/LogLevels.h
     ./include/opendnp3/StackStatistics.h
+    ./include/opendnp3/StaticOnly.h
     ./include/opendnp3/TimeDuration.h
     ./include/opendnp3/Timestamp.h
+    ./include/opendnp3/Uncopyable.h
     ./include/opendnp3/UTCTimestamp.h
 
     ./include/opendnp3/app/AnalogCommandEvent.h
@@ -36,9 +39,15 @@ set(opendnp3_public_headers
 
     ./include/opendnp3/app/parsing/ICollection.h
 
+    ./include/opendnp3/channel/ChannelRetry.h
     ./include/opendnp3/channel/IChannel.h
     ./include/opendnp3/channel/IChannelListener.h
+    ./include/opendnp3/channel/IListener.h
+    ./include/opendnp3/channel/IOpenDelayStrategy.h
+    ./include/opendnp3/channel/IPEndpoint.h
     ./include/opendnp3/channel/PrintingChannelListener.h
+    ./include/opendnp3/channel/SerialSettings.h
+    ./include/opendnp3/channel/TLSConfig.h
 
     ./include/opendnp3/gen/AnalogOutputStatusQuality.h
     ./include/opendnp3/gen/AnalogQuality.h
@@ -161,7 +170,9 @@ set(opendnp3_public_headers
 
 set(opendnp3_private_headers
     ./src/DNP3ManagerImpl.h
+    ./src/IResourceManager.h
     ./src/LayerInterfaces.h
+    ./src/ResourceManager.h
     ./src/Route.h
     ./src/SequenceNum.h
     ./src/StackBase.h
@@ -195,21 +206,14 @@ set(opendnp3_private_headers
     ./src/app/WriteConversionTemplates.h
 
     ./src/channel/ASIOSerialHelpers.h
-    ./src/channel/ChannelRetry.h
     ./src/channel/DNP3Channel.h
     ./src/channel/IAsyncChannel.h
     ./src/channel/IChannelCallbacks.h
-    ./src/channel/IListener.h
     ./src/channel/IOHandler.h
-    ./src/channel/IOpenDelayStrategy.h
-    ./src/channel/IPEndpoint.h
     ./src/channel/IPEndpointsList.h
-    ./src/channel/IResourceManager.h
     ./src/channel/LoggingConnectionCondition.h
-    ./src/channel/ResourceManager.h
     ./src/channel/SerialChannel.h
     ./src/channel/SerialIOHandler.h
-    ./src/channel/SerialSettings.h
     ./src/channel/SocketChannel.h
     ./src/channel/SocketHelpers.h
     ./src/channel/SteadyClock.h
@@ -217,7 +221,6 @@ set(opendnp3_private_headers
     ./src/channel/TCPClientIOHandler.h
     ./src/channel/TCPServer.h
     ./src/channel/TCPServerIOHandler.h
-    ./src/channel/TLSConfig.h
     ./src/channel/UTCTimeSource.h
 
     ./src/app/parsing/APDUHeaderParser.h
@@ -237,6 +240,38 @@ set(opendnp3_private_headers
     ./src/app/parsing/ParserSettings.h
     ./src/app/parsing/PrefixFields.h
     ./src/app/parsing/RangeParser.h
+
+    ./src/gen/objects/Group1.h
+    ./src/gen/objects/Group2.h
+    ./src/gen/objects/Group3.h
+    ./src/gen/objects/Group4.h
+    ./src/gen/objects/Group10.h
+    ./src/gen/objects/Group11.h
+    ./src/gen/objects/Group12.h
+    ./src/gen/objects/Group13.h
+    ./src/gen/objects/Group20.h
+    ./src/gen/objects/Group21.h
+    ./src/gen/objects/Group22.h
+    ./src/gen/objects/Group23.h
+    ./src/gen/objects/Group30.h
+    ./src/gen/objects/Group32.h
+    ./src/gen/objects/Group40.h
+    ./src/gen/objects/Group41.h
+    ./src/gen/objects/Group42.h
+    ./src/gen/objects/Group43.h
+    ./src/gen/objects/Group50.h
+    ./src/gen/objects/Group51.h
+    ./src/gen/objects/Group52.h
+    ./src/gen/objects/Group60.h
+    ./src/gen/objects/Group70.h
+    ./src/gen/objects/Group80.h
+    ./src/gen/objects/Group110.h
+    ./src/gen/objects/Group111.h
+    ./src/gen/objects/Group112.h
+    ./src/gen/objects/Group113.h
+    ./src/gen/objects/Group120.h
+    ./src/gen/objects/Group121.h
+    ./src/gen/objects/Group122.h
 
     ./src/link/CRC.h
     ./src/link/IFrameSink.h
@@ -292,38 +327,6 @@ set(opendnp3_private_headers
     ./src/master/TimeSyncHandler.h
     ./src/master/TypedCommandHeader.h
     ./src/master/UserPollTask.h
-
-    ./src/objects/Group1.h
-    ./src/objects/Group2.h
-    ./src/objects/Group3.h
-    ./src/objects/Group4.h
-    ./src/objects/Group10.h
-    ./src/objects/Group11.h
-    ./src/objects/Group12.h
-    ./src/objects/Group13.h
-    ./src/objects/Group20.h
-    ./src/objects/Group21.h
-    ./src/objects/Group22.h
-    ./src/objects/Group23.h
-    ./src/objects/Group30.h
-    ./src/objects/Group32.h
-    ./src/objects/Group40.h
-    ./src/objects/Group41.h
-    ./src/objects/Group42.h
-    ./src/objects/Group43.h
-    ./src/objects/Group50.h
-    ./src/objects/Group51.h
-    ./src/objects/Group52.h
-    ./src/objects/Group60.h
-    ./src/objects/Group70.h
-    ./src/objects/Group80.h
-    ./src/objects/Group110.h
-    ./src/objects/Group111.h
-    ./src/objects/Group112.h
-    ./src/objects/Group113.h
-    ./src/objects/Group120.h
-    ./src/objects/Group121.h
-    ./src/objects/Group122.h
 
     ./src/outstation/AssignClassHandler.h
     ./src/outstation/ClassBasedRequestHandler.h
@@ -396,6 +399,7 @@ set(opendnp3_src
     ./src/DNP3ManagerImpl.cpp
     ./src/ErrorCodes.cpp
     ./src/LogLevels.cpp
+    ./src/ResourceManager.cpp
     ./src/TimeDuration.cpp
     ./src/Timestamp.cpp
 
@@ -438,7 +442,6 @@ set(opendnp3_src
     ./src/channel/IOHandler.cpp
     ./src/channel/IOpenDelayStrategy.cpp
     ./src/channel/IPEndpointsList.cpp
-    ./src/channel/ResourceManager.cpp
     ./src/channel/SerialChannel.cpp
     ./src/channel/SerialIOHandler.cpp
     ./src/channel/SocketChannel.cpp
@@ -476,6 +479,31 @@ set(opendnp3_src
     ./src/gen/TaskCompletion.cpp
     ./src/gen/UserOperation.cpp
     ./src/gen/UserRole.cpp
+
+    ./src/gen/objects/Group1.cpp
+    ./src/gen/objects/Group2.cpp
+    ./src/gen/objects/Group3.cpp
+    ./src/gen/objects/Group4.cpp
+    ./src/gen/objects/Group10.cpp
+    ./src/gen/objects/Group11.cpp
+    ./src/gen/objects/Group12.cpp
+    ./src/gen/objects/Group13.cpp
+    ./src/gen/objects/Group20.cpp
+    ./src/gen/objects/Group21.cpp
+    ./src/gen/objects/Group22.cpp
+    ./src/gen/objects/Group23.cpp
+    ./src/gen/objects/Group30.cpp
+    ./src/gen/objects/Group32.cpp
+    ./src/gen/objects/Group40.cpp
+    ./src/gen/objects/Group41.cpp
+    ./src/gen/objects/Group42.cpp
+    ./src/gen/objects/Group43.cpp
+    ./src/gen/objects/Group50.cpp
+    ./src/gen/objects/Group51.cpp
+    ./src/gen/objects/Group52.cpp
+    ./src/gen/objects/Group120.cpp
+    ./src/gen/objects/Group121.cpp
+    ./src/gen/objects/Group122.cpp
 
     ./src/link/CRC.cpp
     ./src/link/LinkContext.cpp
@@ -521,32 +549,6 @@ set(opendnp3_src
     ./src/master/TaskBehavior.cpp
     ./src/master/TaskContext.cpp
     ./src/master/UserPollTask.cpp
-
-    ./src/objects/Group1.cpp
-    ./src/objects/Group2.cpp
-    ./src/objects/Group3.cpp
-    ./src/objects/Group4.cpp
-    ./src/objects/Group10.cpp
-    ./src/objects/Group11.cpp
-    ./src/objects/Group12.cpp
-    ./src/objects/Group13.cpp
-    ./src/objects/Group20.cpp
-    ./src/objects/Group21.cpp
-    ./src/objects/Group22.cpp
-    ./src/objects/Group23.cpp
-    ./src/objects/Group30.cpp
-    ./src/objects/Group32.cpp
-    ./src/objects/Group40.cpp
-    ./src/objects/Group41.cpp
-    ./src/objects/Group42.cpp
-    ./src/objects/Group43.cpp
-    ./src/objects/Group50.cpp
-    ./src/objects/Group51.cpp
-    ./src/objects/Group52.cpp
-    ./src/objects/Group120.cpp
-    ./src/objects/Group121.cpp
-    ./src/objects/Group122.cpp
-
 
     ./src/outstation/ApplicationIIN.cpp
     ./src/outstation/AssignClassHandler.cpp
@@ -621,7 +623,10 @@ add_library(opendnp3
     $<$<BOOL:DNP3_TLS>:${opendnp3_tls_private_headers} ${opendnp3_tls_src}>
 )
 target_compile_features(opendnp3 PRIVATE cxx_std_14)
-target_link_libraries(opendnp3 PRIVATE ser4cpp exe4cpp log4cpp asio)
+target_link_libraries(opendnp3
+    PUBLIC ser4cpp exe4cpp log4cpp
+    PRIVATE asio
+)
 target_include_directories(opendnp3
     PUBLIC ./include
     PRIVATE ./src

@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_TASKCONTEXT_H
 #define OPENDNP3_TASKCONTEXT_H
 
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/Uncopyable.h"
 
 #include <set>
 
@@ -36,7 +36,7 @@ class IMasterTask; // break circular dependency
  * Every master session will initialize its tasks with a shared_ptr to a TaskContext
  *
  */
-class TaskContext : private ser4cpp::Uncopyable
+class TaskContext : private Uncopyable
 {
     std::set<const IMasterTask*> blocking_tasks;
 

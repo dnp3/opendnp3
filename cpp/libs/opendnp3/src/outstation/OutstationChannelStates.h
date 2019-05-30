@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_OUTSTATIONCHANNEL_STATES_H
 #define OPENDNP3_OUTSTATIONCHANNEL_STATES_H
 
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/Uncopyable.h"
 
 #include "app/TxBuffer.h"
 #include "outstation/OutstationSeqNum.h"
@@ -28,7 +28,7 @@
 namespace opendnp3
 {
 
-class OutstationSolState : private ser4cpp::Uncopyable
+class OutstationSolState : private Uncopyable
 {
 public:
     OutstationSolState(uint32_t maxTxSize) : tx(maxTxSize) {}
@@ -39,7 +39,7 @@ public:
     TxBuffer tx;
 };
 
-class OutstationUnsolState : private ser4cpp::Uncopyable
+class OutstationUnsolState : private Uncopyable
 {
 public:
     OutstationUnsolState(uint32_t maxTxSize) : completedNull(false), tx(maxTxSize) {}

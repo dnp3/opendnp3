@@ -24,7 +24,7 @@
 #include "app/APDUBuilders.h"
 #include "app/parsing/APDUParser.h"
 #include "master/TimeSyncHandler.h"
-#include "objects/Group50.h"
+#include "gen/objects/Group50.h"
 
 namespace opendnp3
 {

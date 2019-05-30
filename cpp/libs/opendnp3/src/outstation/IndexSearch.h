@@ -21,7 +21,7 @@
 #define OPENDNP3_INDEXSEARCH_H
 
 #include <ser4cpp/container/ArrayView.h>
-#include <ser4cpp/util/Uncopyable.h>
+#include "opendnp3/StaticOnly.h"
 
 #include "opendnp3/app/MeasurementTypes.h"
 #include "app/Range.h"
@@ -33,7 +33,7 @@ namespace opendnp3
 /**
  * Implements a binary search for virtual indices in a discontiguous database
  */
-class IndexSearch : private ser4cpp::StaticOnly
+class IndexSearch : private StaticOnly
 {
 
 public:

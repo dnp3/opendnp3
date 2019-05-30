@@ -22,9 +22,9 @@
 
 #include <log4cpp/Logger.h>
 
-#include "channel/IPEndpoint.h"
-#include "channel/ResourceManager.h"
-#include "channel/TLSConfig.h"
+#include "opendnp3/channel/IPEndpoint.h"
+#include "ResourceManager.h"
+#include "opendnp3/channel/TLSConfig.h"
 #include "channel/tls/TLSServer.h"
 
 #include "opendnp3/master/IListenCallbacks.h"

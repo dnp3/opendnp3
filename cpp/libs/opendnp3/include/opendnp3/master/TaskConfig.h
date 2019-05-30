@@ -20,10 +20,8 @@
 #ifndef OPENDNP3_TASKCONFIG_H
 #define OPENDNP3_TASKCONFIG_H
 
-#include "ITaskCallback.h"
-#include "TaskId.h"
-
-#include <exe4cpp/Typedefs.h>
+#include "opendnp3/master/ITaskCallback.h"
+#include "opendnp3/master/TaskId.h"
 
 namespace opendnp3
 {

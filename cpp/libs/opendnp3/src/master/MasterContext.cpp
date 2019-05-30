@@ -30,8 +30,8 @@
 #include "master/MeasurementHandler.h"
 #include "master/RestartOperationTask.h"
 #include "master/UserPollTask.h"
-#include "objects/Group12.h"
-#include "objects/Group41.h"
+#include "gen/objects/Group12.h"
+#include "gen/objects/Group41.h"
 
 #include <utility>
 
