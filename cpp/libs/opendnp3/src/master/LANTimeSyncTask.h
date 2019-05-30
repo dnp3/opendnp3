@@ -20,7 +20,6 @@
 #ifndef OPENDNP3_LANTIMESYNCTASK_H
 #define OPENDNP3_LANTIMESYNCTASK_H
 
-#include "opendnp3/IUTCTimeSource.h"
 #include "master/IMasterTask.h"
 #include "master/TaskPriority.h"
 

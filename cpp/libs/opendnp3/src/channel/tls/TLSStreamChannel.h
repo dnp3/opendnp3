@@ -17,30 +17,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_IPENDPOINTSLIST_H
-#define OPENDNP3_IPENDPOINTSLIST_H
+#ifndef OPENDNP3_TLSSTREAMCHANNEL_H
+#define OPENDNP3_TLSSTREAMCHANNEL_H
 
-#include "channel/IPEndpoint.h"
+#include "channel/IAsyncChannel.h"
 
-#include <vector>
+#include <asio/ssl.hpp>
 
 namespace opendnp3
 {
 
-class IPEndpointsList final
+class TLSStreamChannel final : public IAsyncChannel
 {
-public:
-    IPEndpointsList(const std::vector<IPEndpoint>& endpoints);
-    IPEndpointsList(const IPEndpointsList& rhs);
-    ~IPEndpointsList() = default;
 
-    const IPEndpoint& GetCurrentEndpoint();
-    void Next();
-    void Reset();
+public:
+    static std::shared_ptr<IAsyncChannel> Create(
+        const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
+        const std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>>& stream)
+    {
+        return std::make_shared<TLSStreamChannel>(executor, stream);
+    }
+
+    TLSStreamChannel(const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
+                     std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream);
 
 private:
-    const std::vector<IPEndpoint> endpoints;
-    std::vector<IPEndpoint>::const_iterator currentEndpoint;
+    void BeginReadImpl(ser4cpp::wseq_t dest) final;
+    void BeginWriteImpl(const ser4cpp::rseq_t& data) final;
+    void ShutdownImpl() final;
+
+    const std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream;
 };
 
 } // namespace opendnp3

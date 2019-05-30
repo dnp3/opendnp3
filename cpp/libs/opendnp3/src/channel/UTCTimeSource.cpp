@@ -17,32 +17,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_IPENDPOINTSLIST_H
-#define OPENDNP3_IPENDPOINTSLIST_H
+#include "channel/UTCTimeSource.h"
 
-#include "channel/IPEndpoint.h"
-
-#include <vector>
+#include <chrono>
 
 namespace opendnp3
 {
 
-class IPEndpointsList final
+UTCTimeSource UTCTimeSource::instance;
+
+IUTCTimeSource& UTCTimeSource::Instance()
 {
-public:
-    IPEndpointsList(const std::vector<IPEndpoint>& endpoints);
-    IPEndpointsList(const IPEndpointsList& rhs);
-    ~IPEndpointsList() = default;
+    return instance;
+}
 
-    const IPEndpoint& GetCurrentEndpoint();
-    void Next();
-    void Reset();
-
-private:
-    const std::vector<IPEndpoint> endpoints;
-    std::vector<IPEndpoint>::const_iterator currentEndpoint;
-};
+UTCTimestamp UTCTimeSource::Now()
+{
+    auto time
+        = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch())
+              .count();
+    return UTCTimestamp(time);
+}
 
 } // namespace opendnp3
-
-#endif

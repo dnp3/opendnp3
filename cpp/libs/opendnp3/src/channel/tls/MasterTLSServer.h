@@ -17,65 +17,71 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_MASTERTCPSERVER_H
-#define OPENDNP3_MASTERTCPSERVER_H
+#ifndef OPENDNP3_MASTERTLSSERVER_H
+#define OPENDNP3_MASTERTLSSERVER_H
 
 #include <log4cpp/Logger.h>
 
 #include "channel/IPEndpoint.h"
 #include "channel/ResourceManager.h"
-#include "channel/TCPServer.h"
+#include "channel/TLSConfig.h"
+#include "channel/tls/TLSServer.h"
 
 #include "opendnp3/master/IListenCallbacks.h"
 
 namespace opendnp3
 {
-/**
- * Binds and listens on an IPv4 TCP port
- *
- * Meant to be used exclusively as a shared_ptr
- */
-class MasterTCPServer final : public TCPServer
+
+class MasterTLSServer final : public TLSServer
 {
 
 public:
-    MasterTCPServer(const log4cpp::Logger& logger,
+    MasterTLSServer(const log4cpp::Logger& logger,
                     const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                     const IPEndpoint& endpoint,
+                    const TLSConfig& tlsConfig,
                     std::shared_ptr<IListenCallbacks> callbacks,
                     std::shared_ptr<ResourceManager> manager,
                     std::error_code& ec);
 
-    static std::shared_ptr<MasterTCPServer> Create(const log4cpp::Logger& logger,
-                                                   const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
-                                                   const IPEndpoint& endpoint,
-                                                   const std::shared_ptr<IListenCallbacks>& callbacks,
+    static std::shared_ptr<MasterTLSServer> Create(const log4cpp::Logger& logger,
+                                                   const std::shared_ptr<exe4cpp::StrandExecutor> executor,
+                                                   const IPEndpoint endpoint,
+                                                   const TLSConfig& tlsConfig,
+                                                   const std::shared_ptr<IListenCallbacks> callbacks,
                                                    const std::shared_ptr<ResourceManager>& manager,
                                                    std::error_code& ec)
     {
-        auto server = std::make_shared<MasterTCPServer>(logger, executor, endpoint, callbacks, manager, ec);
+        auto ret = std::make_shared<MasterTLSServer>(logger, executor, endpoint, tlsConfig, callbacks, manager, ec);
 
-        if (!ec)
+        if (ec)
+            return nullptr;
+
+        ret->StartAccept(ec);
+
+        if (ec)
         {
-            server->StartAccept();
+            return nullptr;
         }
 
-        return server;
+        return ret;
     }
+
+    virtual bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) override;
+
+    virtual bool VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx) override;
+
+    virtual void AcceptStream(uint64_t sessionid,
+                              const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
+                              std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) override;
+
+    virtual void OnShutdown() override;
 
 private:
     std::shared_ptr<IListenCallbacks> callbacks;
     std::shared_ptr<ResourceManager> manager;
 
     static std::string SessionIdToString(uint64_t sessionid);
-
-    // implement the virutal methods from TCPServer
-
-    virtual void OnShutdown() override;
-
-    virtual void AcceptConnection(uint64_t sessionid,
-                                  const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
-                                  asio::ip::tcp::socket) override;
 };
 
 } // namespace opendnp3

@@ -17,30 +17,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_IPENDPOINTSLIST_H
-#define OPENDNP3_IPENDPOINTSLIST_H
+#ifndef OPENDNP3_ILISTENER_H
+#define OPENDNP3_ILISTENER_H
 
-#include "channel/IPEndpoint.h"
-
-#include <vector>
+#include "channel/IResourceManager.h"
 
 namespace opendnp3
 {
 
-class IPEndpointsList final
+/**
+ * Represents a running TCP or TLS listener that can be shutdown
+ * so that no new connections are accepted.
+ */
+class IListener : public IResource
 {
 public:
-    IPEndpointsList(const std::vector<IPEndpoint>& endpoints);
-    IPEndpointsList(const IPEndpointsList& rhs);
-    ~IPEndpointsList() = default;
-
-    const IPEndpoint& GetCurrentEndpoint();
-    void Next();
-    void Reset();
-
-private:
-    const std::vector<IPEndpoint> endpoints;
-    std::vector<IPEndpoint>::const_iterator currentEndpoint;
+    virtual ~IListener() {}
 };
 
 } // namespace opendnp3

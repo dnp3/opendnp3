@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_ISTACK_H
 #define OPENDNP3_ISTACK_H
 
-#include "asiopal/IResourceManager.h"
+#include "channel/IResourceManager.h"
 
 #include "opendnp3/StackStatistics.h"
 

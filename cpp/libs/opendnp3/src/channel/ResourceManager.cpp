@@ -17,32 +17,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_IPENDPOINTSLIST_H
-#define OPENDNP3_IPENDPOINTSLIST_H
 
-#include "channel/IPEndpoint.h"
-
-#include <vector>
+#include "channel/ResourceManager.h"
 
 namespace opendnp3
 {
 
-class IPEndpointsList final
+void ResourceManager::Detach(const std::shared_ptr<IResource>& resource)
 {
-public:
-    IPEndpointsList(const std::vector<IPEndpoint>& endpoints);
-    IPEndpointsList(const IPEndpointsList& rhs);
-    ~IPEndpointsList() = default;
+    std::lock_guard<std::mutex> lock(this->mutex);
+    this->resources.erase(resource);
+}
 
-    const IPEndpoint& GetCurrentEndpoint();
-    void Next();
-    void Reset();
+void ResourceManager::Shutdown()
+{
+    std::set<std::shared_ptr<IResource>> copy;
 
-private:
-    const std::vector<IPEndpoint> endpoints;
-    std::vector<IPEndpoint>::const_iterator currentEndpoint;
-};
+    {
+        std::lock_guard<std::mutex> lock(this->mutex);
+        this->is_shutting_down = true;
+        for (auto& resource : this->resources)
+        {
+            copy.insert(resource);
+        }
+        resources.clear();
+    }
+
+    for (auto& resource : copy)
+    {
+        resource->Shutdown();
+    }
+}
 
 } // namespace opendnp3
-
-#endif

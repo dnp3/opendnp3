@@ -25,12 +25,12 @@
 #include <ser4cpp/util/Uncopyable.h>
 #include <exe4cpp/asio/ThreadPool.h>
 
-#include "asiopal/ChannelRetry.h"
-#include "asiopal/IListener.h"
-#include "asiopal/IPEndpoint.h"
-#include "asiopal/ResourceManager.h"
-#include "asiopal/SerialSettings.h"
-#include "asiopal/TLSConfig.h"
+#include "channel/ChannelRetry.h"
+#include "channel/IListener.h"
+#include "channel/IPEndpoint.h"
+#include "channel/ResourceManager.h"
+#include "channel/SerialSettings.h"
+#include "channel/TLSConfig.h"
 
 #include "opendnp3/LogLevels.h"
 #include "opendnp3/gen/ServerAcceptMode.h"

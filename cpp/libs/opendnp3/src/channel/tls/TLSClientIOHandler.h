@@ -17,14 +17,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_TCPCLIENTIOHANDLER_H
-#define OPENDNP3_TCPCLIENTIOHANDLER_H
+#ifndef OPENDNP3_TLSCLIENTIOHANDLER_H
+#define OPENDNP3_TLSCLIENTIOHANDLER_H
 
-#include <exe4cpp/Timer.h>
+#include <exe4cpp//Timer.h>
 
 #include "channel/ChannelRetry.h"
 #include "channel/IPEndpoint.h"
 #include "channel/TCPClient.h"
+#include "channel/TLSConfig.h"
+#include "channel/tls/TLSClient.h"
 
 #include "channel/IOHandler.h"
 #include "channel/IPEndpointsList.h"
@@ -32,45 +34,48 @@
 namespace opendnp3
 {
 
-class TCPClientIOHandler final : public IOHandler
+class TLSClientIOHandler final : public IOHandler
 {
 
 public:
-    static std::shared_ptr<TCPClientIOHandler> Create(const log4cpp::Logger& logger,
+    static std::shared_ptr<TLSClientIOHandler> Create(const log4cpp::Logger& logger,
                                                       const std::shared_ptr<IChannelListener>& listener,
                                                       const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
+                                                      const TLSConfig& config,
                                                       const ChannelRetry& retry,
                                                       const IPEndpointsList& remotes,
                                                       const std::string& adapter)
     {
-        return std::make_shared<TCPClientIOHandler>(logger, listener, executor, retry, remotes, adapter);
+        return std::make_shared<TLSClientIOHandler>(logger, listener, executor, config, retry, remotes, adapter);
     }
 
-    TCPClientIOHandler(const log4cpp::Logger& logger,
+    TLSClientIOHandler(const log4cpp::Logger& logger,
                        const std::shared_ptr<IChannelListener>& listener,
                        const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
+                       TLSConfig config,
                        const ChannelRetry& retry,
                        const IPEndpointsList& remotes,
                        std::string adapter);
 
 protected:
-    void ShutdownImpl() final;
-    void BeginChannelAccept() final;
-    void SuspendChannelAccept() final;
-    void OnChannelShutdown() final;
+    virtual void ShutdownImpl() override;
+    virtual void BeginChannelAccept() override;
+    virtual void SuspendChannelAccept() override;
+    virtual void OnChannelShutdown() override;
 
 private:
-    bool StartConnect(const TimeDuration& delay);
+    void StartConnect(const std::shared_ptr<TLSClient>& client, const TimeDuration& delay);
 
     void ResetState();
 
     const std::shared_ptr<exe4cpp::StrandExecutor> executor;
+    const TLSConfig config;
     const ChannelRetry retry;
     IPEndpointsList remotes;
     const std::string adapter;
 
     // current value of the client
-    std::shared_ptr<TCPClient> client;
+    std::shared_ptr<TLSClient> client;
 
     // connection retry timer
     exe4cpp::Timer retrytimer;

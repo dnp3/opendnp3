@@ -22,10 +22,10 @@
 
 #include <exe4cpp/Timer.h>
 
-#include "asiopal/ChannelRetry.h"
-#include "asiopal/IPEndpoint.h"
-#include "asiopal/SerialChannel.h"
-#include "asiopal/SerialSettings.h"
+#include "channel/ChannelRetry.h"
+#include "channel/IPEndpoint.h"
+#include "channel/SerialChannel.h"
+#include "channel/SerialSettings.h"
 
 #include "channel/IOHandler.h"
 

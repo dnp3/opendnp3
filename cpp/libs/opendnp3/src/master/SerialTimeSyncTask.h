@@ -20,7 +20,6 @@
 #ifndef OPENDNP3_SERIALTIMESYNCTASK_H
 #define OPENDNP3_SERIALTIMESYNCTASK_H
 
-#include "opendnp3/IUTCTimeSource.h"
 #include "master/IMasterTask.h"
 #include "master/TaskPriority.h"
 

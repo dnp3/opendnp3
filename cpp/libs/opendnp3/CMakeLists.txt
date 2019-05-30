@@ -194,32 +194,31 @@ set(opendnp3_private_headers
     ./src/app/WriteConversions.h
     ./src/app/WriteConversionTemplates.h
 
-    ./src/asiopal/ASIOSerialHelpers.h
-    ./src/asiopal/ChannelRetry.h
-    ./src/asiopal/IAsyncChannel.h
-    ./src/asiopal/IChannelCallbacks.h
-    ./src/asiopal/IListener.h
-    ./src/asiopal/IOpenDelayStrategy.h
-    ./src/asiopal/IPEndpoint.h
-    ./src/asiopal/IResourceManager.h
-    ./src/asiopal/LoggingConnectionCondition.h
-    ./src/asiopal/ResourceManager.h
-    ./src/asiopal/SerialChannel.h
-    ./src/asiopal/SerialSettings.h
-    ./src/asiopal/SocketChannel.h
-    ./src/asiopal/SocketHelpers.h
-    ./src/asiopal/SteadyClock.h
-    ./src/asiopal/TCPClient.h
-    ./src/asiopal/TCPServer.h
-    ./src/asiopal/TLSConfig.h
-    ./src/asiopal/UTCTimeSource.h
-
+    ./src/channel/ASIOSerialHelpers.h
+    ./src/channel/ChannelRetry.h
     ./src/channel/DNP3Channel.h
+    ./src/channel/IAsyncChannel.h
+    ./src/channel/IChannelCallbacks.h
+    ./src/channel/IListener.h
     ./src/channel/IOHandler.h
+    ./src/channel/IOpenDelayStrategy.h
+    ./src/channel/IPEndpoint.h
     ./src/channel/IPEndpointsList.h
+    ./src/channel/IResourceManager.h
+    ./src/channel/LoggingConnectionCondition.h
+    ./src/channel/ResourceManager.h
+    ./src/channel/SerialChannel.h
     ./src/channel/SerialIOHandler.h
+    ./src/channel/SerialSettings.h
+    ./src/channel/SocketChannel.h
+    ./src/channel/SocketHelpers.h
+    ./src/channel/SteadyClock.h
+    ./src/channel/TCPClient.h
     ./src/channel/TCPClientIOHandler.h
+    ./src/channel/TCPServer.h
     ./src/channel/TCPServerIOHandler.h
+    ./src/channel/TLSConfig.h
+    ./src/channel/UTCTimeSource.h
 
     ./src/app/parsing/APDUHeaderParser.h
     ./src/app/parsing/APDUParser.h
@@ -433,22 +432,21 @@ set(opendnp3_src
     ./src/app/parsing/ObjectHeaderParser.cpp
     ./src/app/parsing/RangeParser.cpp
 
-    ./src/asiopal/ASIOSerialHelpers.cpp
-    ./src/asiopal/ChannelRetry.cpp
-    ./src/asiopal/IOpenDelayStrategy.cpp
-    ./src/asiopal/ResourceManager.cpp
-    ./src/asiopal/SerialChannel.cpp
-    ./src/asiopal/SocketChannel.cpp
-    ./src/asiopal/TCPClient.cpp
-    ./src/asiopal/TCPServer.cpp
-    ./src/asiopal/UTCTimeSource.cpp
-
+    ./src/channel/ASIOSerialHelpers.cpp
+    ./src/channel/ChannelRetry.cpp
     ./src/channel/DNP3Channel.cpp
     ./src/channel/IOHandler.cpp
+    ./src/channel/IOpenDelayStrategy.cpp
     ./src/channel/IPEndpointsList.cpp
+    ./src/channel/ResourceManager.cpp
+    ./src/channel/SerialChannel.cpp
     ./src/channel/SerialIOHandler.cpp
+    ./src/channel/SocketChannel.cpp
+    ./src/channel/TCPClient.cpp
     ./src/channel/TCPClientIOHandler.cpp
+    ./src/channel/TCPServer.cpp
     ./src/channel/TCPServerIOHandler.cpp
+    ./src/channel/UTCTimeSource.cpp
 
     ./src/gen/Attributes.cpp
     ./src/gen/AuthErrorCode.cpp
@@ -593,12 +591,43 @@ set(opendnp3_src
     ./src/transport/TransportTx.cpp
 )
 
-source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${opendnp3_public_headers} ${opendnp3_private_headers} ${opendnp3_src})
+set(opendnp3_tls_private_headers
+    ./src/channel/tls/MasterTLSServer.h
+    ./src/channel/tls/SSLContext.h
+    ./src/channel/tls/TLSClient.h
+    ./src/channel/tls/TLSClientIOHandler.h
+    ./src/channel/tls/TLSServer.h
+    ./src/channel/tls/TLSServerIOHandler.h
+    ./src/channel/tls/TLSStreamChannel.h
+)
 
-add_library(opendnp3 ${opendnp3_public_headers} ${opendnp3_private_headers} ${opendnp3_src})
+set(opendnp3_tls_src
+    ./src/channel/tls/MasterTLSServer.cpp
+    ./src/channel/tls/SSLContext.cpp
+    ./src/channel/tls/TLSClient.cpp
+    ./src/channel/tls/TLSClientIOHandler.cpp
+    ./src/channel/tls/TLSServer.cpp
+    ./src/channel/tls/TLSServerIOHandler.cpp
+    ./src/channel/tls/TLSStreamChannel.cpp
+)
+
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}
+    FILES ${opendnp3_public_headers} ${opendnp3_private_headers} ${opendnp3_src}
+    $<$<BOOL:DNP3_TLS>:${opendnp3_tls_private_headers} ${opendnp3_tls_src}>
+)
+
+add_library(opendnp3
+    ${opendnp3_public_headers} ${opendnp3_private_headers} ${opendnp3_src}
+    $<$<BOOL:DNP3_TLS>:${opendnp3_tls_private_headers} ${opendnp3_tls_src}>
+)
 target_compile_features(opendnp3 PRIVATE cxx_std_14)
 target_link_libraries(opendnp3 PRIVATE ser4cpp exe4cpp log4cpp asio)
 target_include_directories(opendnp3
     PUBLIC ./include
     PRIVATE ./src
 )
+
+if(DNP3_TLS)
+    target_link_libraries(opendnp3 PRIVATE OpenSSL::SSL)
+    target_compile_definitions(opendnp3 PRIVATE OPENDNP3_USE_TLS)
+endif()

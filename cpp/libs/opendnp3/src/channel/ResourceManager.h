@@ -17,30 +17,54 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_IPENDPOINTSLIST_H
-#define OPENDNP3_IPENDPOINTSLIST_H
+#ifndef OPENDNP3_RESOURCEMANAGER_H
+#define OPENDNP3_RESOURCEMANAGER_H
 
-#include "channel/IPEndpoint.h"
+#include "channel/IResourceManager.h"
 
-#include <vector>
+#include <memory>
+#include <mutex>
+#include <set>
 
 namespace opendnp3
 {
 
-class IPEndpointsList final
+class ResourceManager final : public IResourceManager
 {
-public:
-    IPEndpointsList(const std::vector<IPEndpoint>& endpoints);
-    IPEndpointsList(const IPEndpointsList& rhs);
-    ~IPEndpointsList() = default;
 
-    const IPEndpoint& GetCurrentEndpoint();
-    void Next();
-    void Reset();
+public:
+    static std::shared_ptr<ResourceManager> Create()
+    {
+        return std::make_shared<ResourceManager>();
+    }
+
+    void Detach(const std::shared_ptr<IResource>& resource) final;
+
+    void Shutdown();
+
+    template<class R, class T> std::shared_ptr<R> Bind(const T& create)
+    {
+        std::lock_guard<std::mutex> lock(this->mutex);
+
+        if (this->is_shutting_down)
+        {
+            return nullptr;
+        }
+        else
+        {
+            auto item = create();
+            if (item)
+            {
+                this->resources.insert(item);
+            }
+            return item;
+        }
+    }
 
 private:
-    const std::vector<IPEndpoint> endpoints;
-    std::vector<IPEndpoint>::const_iterator currentEndpoint;
+    std::mutex mutex;
+    bool is_shutting_down = false;
+    std::set<std::shared_ptr<IResource>> resources;
 };
 
 } // namespace opendnp3

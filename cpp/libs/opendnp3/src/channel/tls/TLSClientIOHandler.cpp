@@ -18,58 +18,69 @@
  * limitations under the License.
  */
 
-#include "channel/TCPClientIOHandler.h"
+#include "TLSClientIOHandler.h"
 
-#include "channel/SocketChannel.h"
+#include "channel/tls/TLSStreamChannel.h"
+
+#include "opendnp3/LogLevels.h"
 
 #include <utility>
 
 namespace opendnp3
 {
 
-TCPClientIOHandler::TCPClientIOHandler(const log4cpp::Logger& logger,
+TLSClientIOHandler::TLSClientIOHandler(const log4cpp::Logger& logger,
                                        const std::shared_ptr<IChannelListener>& listener,
                                        const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
+                                       TLSConfig config,
                                        const ChannelRetry& retry,
                                        const IPEndpointsList& remotes,
                                        std::string adapter)
     : IOHandler(logger, false, listener),
       executor(executor),
+      config(std::move(config)),
       retry(retry),
       remotes(remotes),
       adapter(std::move(adapter))
 {
 }
 
-void TCPClientIOHandler::ShutdownImpl()
+void TLSClientIOHandler::ShutdownImpl()
 {
     this->ResetState();
 }
 
-void TCPClientIOHandler::BeginChannelAccept()
+void TLSClientIOHandler::BeginChannelAccept()
 {
-    this->client = TCPClient::Create(logger, executor, adapter);
-    this->StartConnect(this->retry.minOpenRetry);
+    std::error_code ec;
+
+    this->client = TLSClient::Create(logger, executor, adapter, config, ec);
+
+    if (ec)
+    {
+        this->client.reset();
+    }
+    else
+    {
+        this->StartConnect(this->client, this->retry.minOpenRetry);
+    }
 }
 
-void TCPClientIOHandler::SuspendChannelAccept()
+void TLSClientIOHandler::SuspendChannelAccept()
 {
     this->ResetState();
 }
 
-void TCPClientIOHandler::OnChannelShutdown()
+void TLSClientIOHandler::OnChannelShutdown()
 {
     this->BeginChannelAccept();
 }
 
-bool TCPClientIOHandler::StartConnect(const TimeDuration& delay)
+void TLSClientIOHandler::StartConnect(const std::shared_ptr<TLSClient>& client,
+                                      const TimeDuration& delay)
 {
-    if (!client)
-    {
-        return false;
-    }
-
-    auto cb = [=, self = shared_from_this()](const std::shared_ptr<exe4cpp::StrandExecutor>& executor, asio::ip::tcp::socket socket,
+    auto cb = [=, self = shared_from_this()](const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
+                                             const std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>>& stream,
                                              const std::error_code& ec) -> void {
         if (ec)
         {
@@ -79,15 +90,12 @@ bool TCPClientIOHandler::StartConnect(const TimeDuration& delay)
 
             const auto newDelay = this->retry.NextDelay(delay);
 
-            if (client)
-            {
-                auto retry_cb = [self, newDelay, this]() {
-                    this->remotes.Next();
-                    this->StartConnect(newDelay);
-                };
+            auto cb = [self, newDelay, client, this]() {
+                this->remotes.Next();
+                this->StartConnect(client, newDelay);
+            };
 
-                this->retrytimer = this->executor->start(delay.value, retry_cb);
-            }
+            this->retrytimer = this->executor->start(delay.value, cb);
         }
         else
         {
@@ -95,10 +103,7 @@ bool TCPClientIOHandler::StartConnect(const TimeDuration& delay)
                              this->remotes.GetCurrentEndpoint().address.c_str(),
                              this->remotes.GetCurrentEndpoint().port);
 
-            if (client)
-            {
-                this->OnNewChannel(SocketChannel::Create(executor, std::move(socket)));
-            }
+            this->OnNewChannel(TLSStreamChannel::Create(executor, stream));
         }
     };
 
@@ -106,11 +111,9 @@ bool TCPClientIOHandler::StartConnect(const TimeDuration& delay)
                      this->remotes.GetCurrentEndpoint().address.c_str(), this->remotes.GetCurrentEndpoint().port);
 
     this->client->BeginConnect(this->remotes.GetCurrentEndpoint(), cb);
-
-    return true;
 }
 
-void TCPClientIOHandler::ResetState()
+void TLSClientIOHandler::ResetState()
 {
     if (this->client)
     {

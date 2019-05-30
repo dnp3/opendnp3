@@ -29,8 +29,6 @@
 
 #include <cstring>
 
-using namespace std;
-
 namespace opendnp3
 {
 

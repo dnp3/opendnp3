@@ -17,30 +17,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_IPENDPOINTSLIST_H
-#define OPENDNP3_IPENDPOINTSLIST_H
+#ifndef OPENDNP3_SSLCONTEXT_H
+#define OPENDNP3_SSLCONTEXT_H
 
-#include "channel/IPEndpoint.h"
+#include <log4cpp/Logger.h>
+#include <ser4cpp/util/Uncopyable.h>
 
-#include <vector>
+#include "channel/TLSConfig.h"
+
+#include <asio/ssl.hpp>
 
 namespace opendnp3
 {
-
-class IPEndpointsList final
+/**
+ * Create and fully configure an asio::ssl::context
+ */
+class SSLContext : private ser4cpp::Uncopyable
 {
-public:
-    IPEndpointsList(const std::vector<IPEndpoint>& endpoints);
-    IPEndpointsList(const IPEndpointsList& rhs);
-    ~IPEndpointsList() = default;
 
-    const IPEndpoint& GetCurrentEndpoint();
-    void Next();
-    void Reset();
+public:
+    SSLContext(const log4cpp::Logger& logger, bool server, const TLSConfig& config, std::error_code&);
+
+    asio::ssl::context value;
 
 private:
-    const std::vector<IPEndpoint> endpoints;
-    std::vector<IPEndpoint>::const_iterator currentEndpoint;
+    log4cpp::Logger logger;
+
+    static int GetVerifyMode(bool server);
+
+    std::error_code ApplyConfig(const TLSConfig& config, bool server, std::error_code& ec);
 };
 
 } // namespace opendnp3

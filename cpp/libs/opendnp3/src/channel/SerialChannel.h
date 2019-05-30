@@ -17,30 +17,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_IPENDPOINTSLIST_H
-#define OPENDNP3_IPENDPOINTSLIST_H
+#ifndef OPENDNP3_SERIALCHANNEL_H
+#define OPENDNP3_SERIALCHANNEL_H
 
-#include "channel/IPEndpoint.h"
+#include "channel/IAsyncChannel.h"
 
-#include <vector>
+#include "channel/SerialSettings.h"
 
 namespace opendnp3
 {
 
-class IPEndpointsList final
+class SerialChannel final : public IAsyncChannel
 {
-public:
-    IPEndpointsList(const std::vector<IPEndpoint>& endpoints);
-    IPEndpointsList(const IPEndpointsList& rhs);
-    ~IPEndpointsList() = default;
 
-    const IPEndpoint& GetCurrentEndpoint();
-    void Next();
-    void Reset();
+public:
+    static std::shared_ptr<SerialChannel> Create(std::shared_ptr<exe4cpp::StrandExecutor> executor)
+    {
+        return std::make_shared<SerialChannel>(executor);
+    }
+
+    SerialChannel(const std::shared_ptr<exe4cpp::StrandExecutor>& executor);
+
+    bool Open(const SerialSettings& settings, std::error_code& ec);
 
 private:
-    const std::vector<IPEndpoint> endpoints;
-    std::vector<IPEndpoint>::const_iterator currentEndpoint;
+    void BeginReadImpl(ser4cpp::wseq_t buffer) final;
+    void BeginWriteImpl(const ser4cpp::rseq_t& buffer) final;
+    void ShutdownImpl() final;
+
+    asio::serial_port port;
 };
 
 } // namespace opendnp3

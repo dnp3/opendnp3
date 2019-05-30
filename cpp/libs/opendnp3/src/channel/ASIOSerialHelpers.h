@@ -17,31 +17,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_IPENDPOINTSLIST_H
-#define OPENDNP3_IPENDPOINTSLIST_H
+#ifndef OPENDNP3_ASIOSERIALHELPERS_H
+#define OPENDNP3_ASIOSERIALHELPERS_H
 
-#include "channel/IPEndpoint.h"
+#include "channel/SerialSettings.h"
 
-#include <vector>
+#include <asio.hpp>
 
 namespace opendnp3
 {
 
-class IPEndpointsList final
-{
-public:
-    IPEndpointsList(const std::vector<IPEndpoint>& endpoints);
-    IPEndpointsList(const IPEndpointsList& rhs);
-    ~IPEndpointsList() = default;
-
-    const IPEndpoint& GetCurrentEndpoint();
-    void Next();
-    void Reset();
-
-private:
-    const std::vector<IPEndpoint> endpoints;
-    std::vector<IPEndpoint>::const_iterator currentEndpoint;
-};
+// Serial port configuration functions "free" to keep the classes simple.
+bool Configure(const SerialSettings& settings, asio::serial_port& port, std::error_code& ec);
 
 } // namespace opendnp3
 

@@ -18,11 +18,11 @@
  * limitations under the License.
  */
 
-#include "TCPServerIOHandler.h"
+#include "channel/tls/TLSServerIOHandler.h"
 
 #include <log4cpp/LogMacros.h>
 
-#include "channel/SocketChannel.h"
+#include "channel/tls/TLSStreamChannel.h"
 
 #include "opendnp3/LogLevels.h"
 
@@ -31,26 +31,28 @@
 namespace opendnp3
 {
 
-void TCPServerIOHandler::Server::AcceptConnection(uint64_t /*sessionid*/,
-                                                  const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
-                                                  asio::ip::tcp::socket socket)
+void TLSServerIOHandler::Server::AcceptStream(uint64_t /*sessionid*/,
+                                              const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
+                                              std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream)
 {
-    this->callback(executor, std::move(socket));
+    this->callback(TLSStreamChannel::Create(executor, stream));
 }
 
-TCPServerIOHandler::TCPServerIOHandler(const log4cpp::Logger& logger,
+TLSServerIOHandler::TLSServerIOHandler(const log4cpp::Logger& logger,
                                        ServerAcceptMode mode,
                                        const std::shared_ptr<IChannelListener>& listener,
                                        std::shared_ptr<exe4cpp::StrandExecutor> executor,
                                        IPEndpoint endpoint,
+                                       TLSConfig config,
                                        std::error_code& /*ec*/)
     : IOHandler(logger, mode == ServerAcceptMode::CloseExisting, listener),
       executor(std::move(executor)),
-      endpoint(std::move(endpoint))
+      endpoint(std::move(endpoint)),
+      config(std::move(config))
 {
 }
 
-void TCPServerIOHandler::ShutdownImpl()
+void TLSServerIOHandler::ShutdownImpl()
 {
     if (this->server)
     {
@@ -59,36 +61,27 @@ void TCPServerIOHandler::ShutdownImpl()
     }
 }
 
-void TCPServerIOHandler::BeginChannelAccept()
+void TLSServerIOHandler::BeginChannelAccept()
 {
-    auto callback = [self = shared_from_this(), this](const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
-                                                      asio::ip::tcp::socket socket) {
-        this->OnNewChannel(SocketChannel::Create(executor, std::move(socket)));
+    auto callback = [self = shared_from_this(), this](const std::shared_ptr<IAsyncChannel>& channel) {
+        this->OnNewChannel(channel);
     };
 
-    if (this->server)
+    std::error_code ec;
+    this->server = std::make_shared<Server>(this->logger, this->executor, this->endpoint, this->config, ec);
+
+    if (ec)
     {
-        this->server->StartAcceptingConnection(callback);
+        SIMPLE_LOG_BLOCK(this->logger, flags::ERR, ec.message().c_str());
     }
     else
     {
-        std::error_code ec;
-        this->server = std::make_shared<Server>(this->logger, this->executor, this->endpoint, ec);
-
-        if (ec)
-        {
-            SIMPLE_LOG_BLOCK(this->logger, flags::WARN, ec.message().c_str());
-
-            // TODO - should we retry?
-        }
-        else
-        {
-            this->server->StartAcceptingConnection(callback);
-        }
+        this->server->StartAcceptingConnection(callback, ec);
+        FORMAT_LOG_BLOCK(this->logger, flags::ERR, "Unable to begin accepting connections: %s", ec.message().c_str());
     }
 }
 
-void TCPServerIOHandler::SuspendChannelAccept()
+void TLSServerIOHandler::SuspendChannelAccept()
 {
     if (this->server)
     {

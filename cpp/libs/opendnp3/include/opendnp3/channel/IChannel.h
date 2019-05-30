@@ -26,7 +26,7 @@
 #include "opendnp3/outstation/IOutstation.h"
 #include "opendnp3/outstation/OutstationStackConfig.h"
 
-#include "asiopal/IResourceManager.h"
+#include "channel/IResourceManager.h"
 
 #include "opendnp3/gen/ChannelState.h"
 #include "opendnp3/link/LinkStatistics.h"

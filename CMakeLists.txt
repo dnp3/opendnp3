@@ -11,8 +11,14 @@ project(opendnp3 VERSION ${OPENDNP3_VERSION})
 include(./cmake/ClangFormat.cmake)
 include(./cmake/ClangTidy.cmake)
 
+# Compilation options
+option(DNP3_TLS "Build TLS client/server support (requires OpenSSL)" OFF)
+
 # External dependencies
 add_subdirectory(./deps)
+if(DNP3_TLS)
+    find_package(OpenSSL REQUIRED)
+endif()
 
 # Libraries
 add_subdirectory(./cpp/libs/opendnp3)

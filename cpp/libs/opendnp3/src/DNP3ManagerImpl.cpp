@@ -216,9 +216,9 @@ std::shared_ptr<IListener> DNP3ManagerImpl::CreateListener(std::string loggerid,
 #ifdef OPENDNP3_USE_TLS
 
     auto create = [&]() -> std::shared_ptr<IListener> {
-        return asiodnp3::MasterTLSServer::Create(this->logger.detach(loggerid, levels),
-                                                 exe4cpp::StrandExecutor::create(this->io), endpoint, config, callbacks,
-                                                 this->resources, ec);
+        return MasterTLSServer::Create(this->logger.detach(loggerid, levels),
+                                       exe4cpp::StrandExecutor::create(this->io), endpoint, config, callbacks,
+                                       this->resources, ec);
     };
 
     auto listener = this->resources->Bind<IListener>(create);

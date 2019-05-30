@@ -17,32 +17,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_IPENDPOINTSLIST_H
-#define OPENDNP3_IPENDPOINTSLIST_H
-
-#include "channel/IPEndpoint.h"
-
-#include <vector>
+#include "channel/IOpenDelayStrategy.h"
 
 namespace opendnp3
 {
 
-class IPEndpointsList final
+ExponentialBackoffStrategy ExponentialBackoffStrategy::instance;
+
+IOpenDelayStrategy& ExponentialBackoffStrategy::Instance()
 {
-public:
-    IPEndpointsList(const std::vector<IPEndpoint>& endpoints);
-    IPEndpointsList(const IPEndpointsList& rhs);
-    ~IPEndpointsList() = default;
+    return instance;
+}
 
-    const IPEndpoint& GetCurrentEndpoint();
-    void Next();
-    void Reset();
-
-private:
-    const std::vector<IPEndpoint> endpoints;
-    std::vector<IPEndpoint>::const_iterator currentEndpoint;
-};
+TimeDuration ExponentialBackoffStrategy::GetNextDelay(const TimeDuration& current,
+                                                      const TimeDuration& max) const
+{
+    const auto doubled = current.Double();
+    return (doubled > max) ? max : doubled;
+}
 
 } // namespace opendnp3
-
-#endif

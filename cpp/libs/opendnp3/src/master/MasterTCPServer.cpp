@@ -22,7 +22,7 @@
 
 #include <log4cpp/LogMacros.h>
 
-#include "asiopal/SocketChannel.h"
+#include "channel/SocketChannel.h"
 
 #include <opendnp3/LogLevels.h>
 

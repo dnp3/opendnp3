@@ -17,30 +17,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_IPENDPOINTSLIST_H
-#define OPENDNP3_IPENDPOINTSLIST_H
+#ifndef OPENDNP3_SOCKETCHANNEL_H
+#define OPENDNP3_SOCKETCHANNEL_H
 
-#include "channel/IPEndpoint.h"
-
-#include <vector>
+#include "channel/IAsyncChannel.h"
 
 namespace opendnp3
 {
 
-class IPEndpointsList final
+class SocketChannel final : public IAsyncChannel
 {
-public:
-    IPEndpointsList(const std::vector<IPEndpoint>& endpoints);
-    IPEndpointsList(const IPEndpointsList& rhs);
-    ~IPEndpointsList() = default;
 
-    const IPEndpoint& GetCurrentEndpoint();
-    void Next();
-    void Reset();
+public:
+    static std::shared_ptr<IAsyncChannel> Create(std::shared_ptr<exe4cpp::StrandExecutor> executor, asio::ip::tcp::socket socket)
+    {
+        return std::make_shared<SocketChannel>(executor, std::move(socket));
+    }
+
+    SocketChannel(const std::shared_ptr<exe4cpp::StrandExecutor>& executor, asio::ip::tcp::socket socket);
+
+protected:
+    void BeginReadImpl(ser4cpp::wseq_t dest) final;
+    void BeginWriteImpl(const ser4cpp::rseq_t& buffer) final;
+    void ShutdownImpl() final;
 
 private:
-    const std::vector<IPEndpoint> endpoints;
-    std::vector<IPEndpoint>::const_iterator currentEndpoint;
+    asio::ip::tcp::socket socket;
 };
 
 } // namespace opendnp3

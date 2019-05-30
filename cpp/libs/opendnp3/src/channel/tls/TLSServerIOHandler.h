@@ -18,14 +18,14 @@
  * limitations under the License.
  */
 
-#ifndef OPENDNP3_TCPSERVERIOHANDLER_H
-#define OPENDNP3_TCPSERVERIOHANDLER_H
+#ifndef OPENDNP3_TLSSERVERIOHANDLER_H
+#define OPENDNP3_TLSSERVERIOHANDLER_H
 
 #include <exe4cpp/Timer.h>
 
 #include "channel/ChannelRetry.h"
 #include "channel/IPEndpoint.h"
-#include "channel/TCPServer.h"
+#include "channel/tls/TLSServer.h"
 
 #include "opendnp3/gen/ServerAcceptMode.h"
 
@@ -34,65 +34,76 @@
 namespace opendnp3
 {
 
-class TCPServerIOHandler final : public IOHandler
+class TLSServerIOHandler final : public IOHandler
 {
-    class Server final : public TCPServer
+    class Server final : public TLSServer
     {
     public:
-        typedef std::function<void(const std::shared_ptr<exe4cpp::StrandExecutor>& executor, asio::ip::tcp::socket)>
-            callback_t;
+        typedef std::function<void(const std::shared_ptr<IAsyncChannel>&)> callback_t;
 
         Server(const log4cpp::Logger& logger,
                const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                const IPEndpoint& endpoint,
+               const TLSConfig& config,
                std::error_code& ec)
-            : TCPServer(logger, executor, endpoint, ec)
+            : TLSServer(logger, executor, endpoint, config, ec)
         {
         }
 
-        void StartAcceptingConnection(const callback_t& callback)
+        void StartAcceptingConnection(const callback_t& callback, std::error_code& ec)
         {
             this->callback = callback;
-            this->StartAccept();
+            this->StartAccept(ec);
         }
 
     private:
         callback_t callback;
 
-        void OnShutdown() final {}
+        virtual bool AcceptConnection(uint64_t sessionid, const asio::ip::tcp::endpoint& remote) override
+        {
+            return true;
+        }
+        virtual bool VerifyCallback(uint64_t sessionid, bool preverified, asio::ssl::verify_context& ctx) override
+        {
+            return preverified;
+        }
+        virtual void OnShutdown() override {}
 
-        void AcceptConnection(uint64_t sessionid,
-                                      const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
-                                      asio::ip::tcp::socket) final;
+        virtual void AcceptStream(uint64_t sessionid,
+                                  const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
+                                  std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) override;
     };
 
 public:
-    static std::shared_ptr<TCPServerIOHandler> Create(const log4cpp::Logger& logger,
-                                                      ServerAcceptMode accept_mode,
+    static std::shared_ptr<TLSServerIOHandler> Create(const log4cpp::Logger& logger,
+                                                      ServerAcceptMode mode,
                                                       const std::shared_ptr<IChannelListener>& listener,
                                                       const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                                       const IPEndpoint& endpoint,
+                                                      const TLSConfig& config,
                                                       std::error_code& ec)
     {
-        return std::make_shared<TCPServerIOHandler>(logger, accept_mode, listener, executor, endpoint, ec);
+        return std::make_shared<TLSServerIOHandler>(logger, mode, listener, executor, endpoint, config, ec);
     }
 
-    TCPServerIOHandler(const log4cpp::Logger& logger,
-                       ServerAcceptMode accept_mode,
+    TLSServerIOHandler(const log4cpp::Logger& logger,
+                       ServerAcceptMode mode,
                        const std::shared_ptr<IChannelListener>& listener,
                        std::shared_ptr<exe4cpp::StrandExecutor> executor,
                        IPEndpoint endpoint,
+                       TLSConfig config,
                        std::error_code& ec);
 
 protected:
-    void ShutdownImpl() final;
-    void BeginChannelAccept() final;
-    void SuspendChannelAccept() final;
-    void OnChannelShutdown() final {} // do nothing, always accepting new connections
+    virtual void ShutdownImpl() override;
+    virtual void BeginChannelAccept() override;
+    virtual void SuspendChannelAccept() override;
+    virtual void OnChannelShutdown() override {} // do nothing, always accepting new connections
 
 private:
     const std::shared_ptr<exe4cpp::StrandExecutor> executor;
     const IPEndpoint endpoint;
+    const TLSConfig config;
     std::shared_ptr<Server> server;
 };
 

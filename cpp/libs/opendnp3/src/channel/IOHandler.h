@@ -22,7 +22,7 @@
 
 #include <log4cpp/Logger.h>
 
-#include "asiopal/IAsyncChannel.h"
+#include "channel/IAsyncChannel.h"
 
 #include "Route.h"
 #include "link/ILinkTx.h"

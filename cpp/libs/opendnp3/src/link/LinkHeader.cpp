@@ -23,8 +23,6 @@
 
 #include <ser4cpp/serialization/LittleEndian.h>
 
-using namespace std;
-
 namespace opendnp3
 {
 

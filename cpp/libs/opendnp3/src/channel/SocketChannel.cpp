@@ -17,32 +17,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_IPENDPOINTSLIST_H
-#define OPENDNP3_IPENDPOINTSLIST_H
 
-#include "channel/IPEndpoint.h"
-
-#include <vector>
+#include "channel/SocketChannel.h"
 
 namespace opendnp3
 {
 
-class IPEndpointsList final
+SocketChannel::SocketChannel(const std::shared_ptr<exe4cpp::StrandExecutor>& executor, asio::ip::tcp::socket socket)
+    : IAsyncChannel(executor), socket(std::move(socket))
 {
-public:
-    IPEndpointsList(const std::vector<IPEndpoint>& endpoints);
-    IPEndpointsList(const IPEndpointsList& rhs);
-    ~IPEndpointsList() = default;
+}
 
-    const IPEndpoint& GetCurrentEndpoint();
-    void Next();
-    void Reset();
+void SocketChannel::BeginReadImpl(ser4cpp::wseq_t dest)
+{
+    auto callback = [this](const std::error_code& ec, size_t num) { this->OnReadCallback(ec, num); };
 
-private:
-    const std::vector<IPEndpoint> endpoints;
-    std::vector<IPEndpoint>::const_iterator currentEndpoint;
-};
+    socket.async_read_some(asio::buffer(dest, dest.length()), this->executor->wrap(callback));
+}
+
+void SocketChannel::BeginWriteImpl(const ser4cpp::rseq_t& buffer)
+{
+    auto callback = [this](const std::error_code& ec, size_t num) { this->OnWriteCallback(ec, num); };
+
+    asio::async_write(socket, asio::buffer(buffer, buffer.length()), this->executor->wrap(callback));
+}
+
+void SocketChannel::ShutdownImpl()
+{
+    std::error_code ec;
+    socket.shutdown(asio::socket_base::shutdown_type::shutdown_both, ec);
+    socket.close(ec);
+}
 
 } // namespace opendnp3
-
-#endif

@@ -24,8 +24,8 @@
 #include <exe4cpp/Timer.h>
 #include <log4cpp/Logger.h>
 
-#include "asiopal/IAsyncChannel.h"
-#include "asiopal/IResourceManager.h"
+#include "channel/IAsyncChannel.h"
+#include "channel/IResourceManager.h"
 
 #include "Route.h"
 #include "link/ILinkTx.h"
