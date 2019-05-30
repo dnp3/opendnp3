@@ -18,59 +18,57 @@
  * limitations under the License.
  */
 
-#include "DecoderImpl.h"
+#include "decoder/DecoderImpl.h"
 
-#include <openpal/logging/LogMacros.h>
+#include <log4cpp/LogMacros.h>
 
-#include "opendnp3/app/APDULogging.h"
-#include "opendnp3/app/parsing/APDUHeaderParser.h"
-#include "opendnp3/app/parsing/APDUParser.h"
+#include "app/APDULogging.h"
+#include "app/parsing/APDUHeaderParser.h"
+#include "app/parsing/APDUParser.h"
 
-#include "dnp3decode/Indent.h"
-#include "dnp3decode/LoggingHandler.h"
-
-using namespace openpal;
+#include "decoder/Indent.h"
+#include "decoder/LoggingHandler.h"
 
 namespace opendnp3
 {
 
-DecoderImpl::DecoderImpl(IDecoderCallbacks& callbacks, const openpal::Logger& logger)
+DecoderImpl::DecoderImpl(IDecoderCallbacks& callbacks, const log4cpp::Logger& logger)
     : callbacks(&callbacks), logger(logger), link(logger), transportRx(logger, 2048)
 {
 }
 
-void DecoderImpl::DecodeLPDU(const openpal::RSlice& data)
+void DecoderImpl::DecodeLPDU(const ser4cpp::rseq_t& data)
 {
     Indent i(*callbacks);
 
-    RSlice remaining(data);
+    ser4cpp::rseq_t remaining(data);
 
-    while (remaining.IsNotEmpty())
+    while (remaining.is_not_empty())
     {
         auto dest = this->link.WriteBuff();
 
-        const auto NUM = (remaining.Size() > dest.Size()) ? dest.Size() : remaining.Size();
+        const auto NUM = (remaining.length() > dest.length()) ? dest.length() : remaining.length();
 
-        remaining.Take(NUM).CopyTo(dest);
+        dest.copy_from(remaining.take(NUM));
         link.OnRead(NUM, *this);
 
-        remaining.Advance(NUM);
+        remaining.advance(NUM);
     }
 }
 
-void DecoderImpl::DecodeTPDU(const openpal::RSlice& data)
+void DecoderImpl::DecodeTPDU(const ser4cpp::rseq_t& data)
 {
     Indent i(*callbacks);
     FORMAT_HEX_BLOCK(logger, flags::TRANSPORT_RX, data, 18, 18);
 
     auto result = transportRx.ProcessReceive(Message(Addresses(), data));
-    if (result.payload.IsNotEmpty())
+    if (result.payload.is_not_empty())
     {
         this->DecodeAPDU(result.payload);
     }
 }
 
-void DecoderImpl::DecodeAPDU(const openpal::RSlice& data)
+void DecoderImpl::DecodeAPDU(const ser4cpp::rseq_t& data)
 {
     Indent i(*callbacks);
 
@@ -137,9 +135,9 @@ void DecoderImpl::DecodeAPDU(const openpal::RSlice& data)
     }
 }
 
-bool DecoderImpl::IsResponse(const openpal::RSlice& data)
+bool DecoderImpl::IsResponse(const ser4cpp::rseq_t& data)
 {
-    if (data.Size() < 2)
+    if (data.length() < 2)
     {
         return false;
     }
@@ -155,7 +153,7 @@ bool DecoderImpl::IsResponse(const openpal::RSlice& data)
     }
 }
 
-bool DecoderImpl::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
+bool DecoderImpl::OnFrame(const LinkHeaderFields& header, const ser4cpp::rseq_t& userdata)
 {
     if (header.func == LinkFunction::PRI_CONFIRMED_USER_DATA || header.func == LinkFunction::PRI_UNCONFIRMED_USER_DATA)
     {

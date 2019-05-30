@@ -49,6 +49,9 @@ set(opendnp3_public_headers
     ./include/opendnp3/channel/SerialSettings.h
     ./include/opendnp3/channel/TLSConfig.h
 
+    ./include/opendnp3/decoder/Decoder.h
+    ./include/opendnp3/decoder/IDecoderCallbacks.h
+
     ./include/opendnp3/gen/AnalogOutputStatusQuality.h
     ./include/opendnp3/gen/AnalogQuality.h
     ./include/opendnp3/gen/AssignClassType.h
@@ -205,6 +208,24 @@ set(opendnp3_private_headers
     ./src/app/WriteConversions.h
     ./src/app/WriteConversionTemplates.h
 
+    ./src/app/parsing/APDUHeaderParser.h
+    ./src/app/parsing/APDUParser.h
+    ./src/app/parsing/BitReader.h
+    ./src/app/parsing/BufferedCollection.h
+    ./src/app/parsing/Collections.h
+    ./src/app/parsing/CountIndexParser.h
+    ./src/app/parsing/CountParser.h
+    ./src/app/parsing/FreeFormatParser.h
+    ./src/app/parsing/Functions.h
+    ./src/app/parsing/IAPDUHandler.h
+    ./src/app/parsing/IWhiteList.h
+    ./src/app/parsing/NumParser.h
+    ./src/app/parsing/ObjectHeaderParser.h
+    ./src/app/parsing/ParseResult.h
+    ./src/app/parsing/ParserSettings.h
+    ./src/app/parsing/PrefixFields.h
+    ./src/app/parsing/RangeParser.h
+
     ./src/channel/ASIOSerialHelpers.h
     ./src/channel/DNP3Channel.h
     ./src/channel/IAsyncChannel.h
@@ -223,23 +244,9 @@ set(opendnp3_private_headers
     ./src/channel/TCPServerIOHandler.h
     ./src/channel/UTCTimeSource.h
 
-    ./src/app/parsing/APDUHeaderParser.h
-    ./src/app/parsing/APDUParser.h
-    ./src/app/parsing/BitReader.h
-    ./src/app/parsing/BufferedCollection.h
-    ./src/app/parsing/Collections.h
-    ./src/app/parsing/CountIndexParser.h
-    ./src/app/parsing/CountParser.h
-    ./src/app/parsing/FreeFormatParser.h
-    ./src/app/parsing/Functions.h
-    ./src/app/parsing/IAPDUHandler.h
-    ./src/app/parsing/IWhiteList.h
-    ./src/app/parsing/NumParser.h
-    ./src/app/parsing/ObjectHeaderParser.h
-    ./src/app/parsing/ParseResult.h
-    ./src/app/parsing/ParserSettings.h
-    ./src/app/parsing/PrefixFields.h
-    ./src/app/parsing/RangeParser.h
+    ./src/decoder/DecoderImpl.h
+    ./src/decoder/Indent.h
+    ./src/decoder/LoggingHandler.h
 
     ./src/gen/objects/Group1.h
     ./src/gen/objects/Group2.h
@@ -450,6 +457,10 @@ set(opendnp3_src
     ./src/channel/TCPServer.cpp
     ./src/channel/TCPServerIOHandler.cpp
     ./src/channel/UTCTimeSource.cpp
+
+    ./src/decoder/Decoder.cpp
+    ./src/decoder/DecoderImpl.cpp
+    ./src/decoder/LoggingHandler.cpp
 
     ./src/gen/Attributes.cpp
     ./src/gen/AuthErrorCode.cpp

@@ -22,23 +22,24 @@
 
 #include "IDecoderCallbacks.h"
 
-#include <openpal/container/RSlice.h>
-#include <openpal/logging/Logger.h>
+#include <ser4cpp/container/SequenceTypes.h>
+#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {
+
 class DecoderImpl;
 
 // stand-alone DNP3 decoder
 class Decoder
 {
 public:
-    Decoder(IDecoderCallbacks& callbacks, const openpal::Logger& logger);
+    Decoder(IDecoderCallbacks& callbacks, const log4cpp::Logger& logger);
     ~Decoder();
 
-    void DecodeLPDU(const openpal::RSlice& data);
-    void DecodeTPDU(const openpal::RSlice& data);
-    void DecodeAPDU(const openpal::RSlice& data);
+    void DecodeLPDU(const ser4cpp::rseq_t& data);
+    void DecodeTPDU(const ser4cpp::rseq_t& data);
+    void DecodeAPDU(const ser4cpp::rseq_t& data);
 
 private:
     DecoderImpl* impl;

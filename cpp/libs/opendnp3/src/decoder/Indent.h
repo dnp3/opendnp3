@@ -17,42 +17,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_DECODERIMPL_H
-#define OPENDNP3_DECODERIMPL_H
+#ifndef OPENDNP3_INDENT_H
+#define OPENDNP3_INDENT_H
 
-#include <openpal/container/RSlice.h>
-#include <openpal/logging/Logger.h>
-
-#include "opendnp3/link/IFrameSink.h"
-#include "opendnp3/link/LinkLayerParser.h"
-#include "opendnp3/transport/TransportRx.h"
-
-#include <dnp3decode/IDecoderCallbacks.h>
+#include "opendnp3/decoder/IDecoderCallbacks.h"
 
 namespace opendnp3
 {
-class DecoderImpl;
 
-// stand-alone DNP3 decoder
-class DecoderImpl final : private IFrameSink
+class Indent : Uncopyable
 {
 public:
-    DecoderImpl(IDecoderCallbacks& callbacks, const openpal::Logger& logger);
+    Indent(IDecoderCallbacks& callbacks) : m_callbacks(&callbacks)
+    {
+        m_callbacks->PushIndent();
+    }
 
-    void DecodeLPDU(const openpal::RSlice& data);
-    void DecodeTPDU(const openpal::RSlice& data);
-    void DecodeAPDU(const openpal::RSlice& data);
+    ~Indent()
+    {
+        m_callbacks->PopIndent();
+    }
 
 private:
-    static bool IsResponse(const openpal::RSlice& data);
+    Indent() = delete;
 
-    /// --- Implement IFrameSink ---
-    virtual bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata) override;
-
-    IDecoderCallbacks* callbacks;
-    openpal::Logger logger;
-    LinkLayerParser link;
-    TransportRx transportRx;
+    IDecoderCallbacks* m_callbacks;
 };
 
 } // namespace opendnp3

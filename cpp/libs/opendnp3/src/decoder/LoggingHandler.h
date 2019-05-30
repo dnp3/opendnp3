@@ -20,16 +20,15 @@
 #ifndef OPENDNP3_LOGGINGHANDLER_H
 #define OPENDNP3_LOGGINGHANDLER_H
 
-#include <openpal/logging/LogMacros.h>
-#include <openpal/logging/Logger.h>
-#include <openpal/util/ToHex.h>
+#include <log4cpp/LogMacros.h>
+#include <log4cpp/Logger.h>
 
 #include "opendnp3/LogLevels.h"
-#include "opendnp3/app/parsing/IAPDUHandler.h"
+#include "opendnp3/decoder/IDecoderCallbacks.h"
 #include "opendnp3/gen/Attributes.h"
 
-#include "dnp3decode/IDecoderCallbacks.h"
-#include "dnp3decode/Indent.h"
+#include "app/parsing/IAPDUHandler.h"
+#include "decoder/Indent.h"
 
 #include <cstdint>
 #include <sstream>
@@ -40,14 +39,14 @@ namespace opendnp3
 class LoggingHandler final : public IAPDUHandler
 {
 public:
-    LoggingHandler(const openpal::Logger& logger, IDecoderCallbacks& callbacks);
+    LoggingHandler(const log4cpp::Logger& logger, IDecoderCallbacks& callbacks);
 
 private:
     virtual void OnHeaderResult(const HeaderRecord& record, const IINField& result) override;
 
     static std::string ToUTCString(const DNPTime& time);
 
-    openpal::Logger logger;
+    log4cpp::Logger logger;
     IDecoderCallbacks* callbacks;
 
     static const char* GetStringValue(bool value)
@@ -58,7 +57,7 @@ private:
     static std::string ToHex(uint8_t b)
     {
         std::ostringstream oss;
-        oss << openpal::ToHexChar((b & 0xf0) >> 4) << openpal::ToHexChar(b & 0xf);
+        oss << ser4cpp::HexConversions::to_hex_char((b & 0xf0) >> 4) << ser4cpp::HexConversions::to_hex_char(b & 0xf);
         return oss.str();
     }
 
@@ -105,43 +104,43 @@ private:
 
     virtual IINField ProcessHeader(const FreeFormatHeader& header,
                                    const Group120Var1& value,
-                                   const openpal::RSlice& object) override;
+                                   const ser4cpp::rseq_t& object) override;
     virtual IINField ProcessHeader(const FreeFormatHeader& header,
                                    const Group120Var2& value,
-                                   const openpal::RSlice& object) override;
+                                   const ser4cpp::rseq_t& object) override;
     virtual IINField ProcessHeader(const FreeFormatHeader& header,
                                    const Group120Var5& value,
-                                   const openpal::RSlice& object) override;
+                                   const ser4cpp::rseq_t& object) override;
     virtual IINField ProcessHeader(const FreeFormatHeader& header,
                                    const Group120Var6& value,
-                                   const openpal::RSlice& object) override;
+                                   const ser4cpp::rseq_t& object) override;
     virtual IINField ProcessHeader(const FreeFormatHeader& header,
                                    const Group120Var7& value,
-                                   const openpal::RSlice& object) override;
+                                   const ser4cpp::rseq_t& object) override;
     virtual IINField ProcessHeader(const FreeFormatHeader& header,
                                    const Group120Var8& value,
-                                   const openpal::RSlice& object) override;
+                                   const ser4cpp::rseq_t& object) override;
     virtual IINField ProcessHeader(const FreeFormatHeader& header,
                                    const Group120Var9& value,
-                                   const openpal::RSlice& object) override;
+                                   const ser4cpp::rseq_t& object) override;
     virtual IINField ProcessHeader(const FreeFormatHeader& header,
                                    const Group120Var10& value,
-                                   const openpal::RSlice& object) override;
+                                   const ser4cpp::rseq_t& object) override;
     virtual IINField ProcessHeader(const FreeFormatHeader& header,
                                    const Group120Var11& value,
-                                   const openpal::RSlice& object) override;
+                                   const ser4cpp::rseq_t& object) override;
     virtual IINField ProcessHeader(const FreeFormatHeader& header,
                                    const Group120Var12& value,
-                                   const openpal::RSlice& object) override;
+                                   const ser4cpp::rseq_t& object) override;
     virtual IINField ProcessHeader(const FreeFormatHeader& header,
                                    const Group120Var13& value,
-                                   const openpal::RSlice& object) override;
+                                   const ser4cpp::rseq_t& object) override;
     virtual IINField ProcessHeader(const FreeFormatHeader& header,
                                    const Group120Var14& value,
-                                   const openpal::RSlice& object) override;
+                                   const ser4cpp::rseq_t& object) override;
     virtual IINField ProcessHeader(const FreeFormatHeader& header,
                                    const Group120Var15& value,
-                                   const openpal::RSlice& object) override;
+                                   const ser4cpp::rseq_t& object) override;
 
     virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& values) override;
     virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var1>& values) override;

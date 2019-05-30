@@ -30,6 +30,7 @@ add_subdirectory(./cpp/libs/opendnp3)
 
 # Examples
 if(DNP3_EXAMPLES)
+    add_subdirectory(./cpp/examples/decoder)
     add_subdirectory(./cpp/examples/master)
     add_subdirectory(./cpp/examples/master-gprs)
     add_subdirectory(./cpp/examples/outstation)

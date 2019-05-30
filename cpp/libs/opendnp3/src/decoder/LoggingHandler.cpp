@@ -18,17 +18,15 @@
  * limitations under the License.
  */
 
-#include "LoggingHandler.h"
+#include "decoder/LoggingHandler.h"
 
 #include <ctime>
 #include <iomanip>
 
-using namespace openpal;
-
 namespace opendnp3
 {
 
-LoggingHandler::LoggingHandler(const openpal::Logger& logger_, IDecoderCallbacks& callbacks_)
+LoggingHandler::LoggingHandler(const log4cpp::Logger& logger_, IDecoderCallbacks& callbacks_)
     : logger(logger_), callbacks(&callbacks_)
 {
 }
@@ -95,8 +93,8 @@ IINField LoggingHandler::PrintOctets(const ICollection<Indexed<OctetString>>& it
 {
     Indent i(*callbacks);
     auto logItem = [this](const Indexed<OctetString>& item) {
-        auto slice = item.value.ToRSlice();
-        FORMAT_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "[%u] value: (length = %u)", item.index, slice.Size());
+        auto slice = item.value.ToRSeq();
+        FORMAT_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "[%u] value: (length = %u)", item.index, slice.length());
         FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, slice, 18, 18);
     };
 
@@ -124,7 +122,7 @@ IINField LoggingHandler::PrintTimeAndInterval(const ICollection<Indexed<TimeAndI
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
                                        const Group120Var1& value,
-                                       const openpal::RSlice& /*object*/)
+                                       const ser4cpp::rseq_t& /*object*/)
 {
     Indent i(*callbacks);
 
@@ -143,7 +141,7 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
                                        const Group120Var2& value,
-                                       const openpal::RSlice& /*object*/)
+                                       const ser4cpp::rseq_t& /*object*/)
 {
     Indent i(*callbacks);
 
@@ -160,7 +158,7 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
                                        const Group120Var5& value,
-                                       const openpal::RSlice& /*object*/)
+                                       const ser4cpp::rseq_t& /*object*/)
 {
     Indent i(*callbacks);
 
@@ -183,7 +181,7 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
                                        const Group120Var6& value,
-                                       const openpal::RSlice& /*object*/)
+                                       const ser4cpp::rseq_t& /*object*/)
 {
     Indent i(*callbacks);
 
@@ -200,7 +198,7 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
                                        const Group120Var7& value,
-                                       const openpal::RSlice& /*object*/)
+                                       const ser4cpp::rseq_t& /*object*/)
 {
     Indent i(*callbacks);
 
@@ -227,7 +225,7 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
                                        const Group120Var8& value,
-                                       const openpal::RSlice& /*object*/)
+                                       const ser4cpp::rseq_t& /*object*/)
 {
     Indent i(*callbacks);
 
@@ -244,7 +242,7 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
                                        const Group120Var9& value,
-                                       const openpal::RSlice& /*object*/)
+                                       const ser4cpp::rseq_t& /*object*/)
 {
     Indent i(*callbacks);
 
@@ -256,7 +254,7 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
                                        const Group120Var10& value,
-                                       const openpal::RSlice& /*object*/)
+                                       const ser4cpp::rseq_t& /*object*/)
 {
     Indent i(*callbacks);
 
@@ -284,7 +282,7 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
                                        const Group120Var11& value,
-                                       const openpal::RSlice& /*object*/)
+                                       const ser4cpp::rseq_t& /*object*/)
 {
     Indent i(*callbacks);
 
@@ -305,7 +303,7 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
                                        const Group120Var12& value,
-                                       const openpal::RSlice& /*object*/)
+                                       const ser4cpp::rseq_t& /*object*/)
 {
     Indent i(*callbacks);
 
@@ -324,7 +322,7 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
                                        const Group120Var13& value,
-                                       const openpal::RSlice& /*object*/)
+                                       const ser4cpp::rseq_t& /*object*/)
 {
     Indent i(*callbacks);
 
@@ -343,7 +341,7 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
                                        const Group120Var14& value,
-                                       const openpal::RSlice& /*object*/)
+                                       const ser4cpp::rseq_t& /*object*/)
 {
     Indent i(*callbacks);
 
@@ -355,7 +353,7 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
 
 IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
                                        const Group120Var15& value,
-                                       const openpal::RSlice& /*object*/)
+                                       const ser4cpp::rseq_t& /*object*/)
 {
     Indent i(*callbacks);
 

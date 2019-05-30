@@ -17,21 +17,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_IDECODERCALLBACKS_H
-#define OPENDNP3_IDECODERCALLBACKS_H
+#ifndef OPENDNP3_DECODERIMPL_H
+#define OPENDNP3_DECODERIMPL_H
 
-#include <openpal/util/Uncopyable.h>
+#include <ser4cpp/container/SequenceTypes.h>
+#include <log4cpp/Logger.h>
+
+#include "opendnp3/decoder/IDecoderCallbacks.h"
+
+#include "link/IFrameSink.h"
+#include "link/LinkLayerParser.h"
+#include "transport/TransportRx.h"
+
 
 namespace opendnp3
 {
-class IDecoderCallbacks : openpal::Uncopyable
-{
-    friend class Indent;
 
-protected:
-    virtual void PushIndent(){};
-    virtual void PopIndent(){};
+class DecoderImpl;
+
+// stand-alone DNP3 decoder
+class DecoderImpl final : private IFrameSink
+{
+public:
+    DecoderImpl(IDecoderCallbacks& callbacks, const log4cpp::Logger& logger);
+
+    void DecodeLPDU(const ser4cpp::rseq_t& data);
+    void DecodeTPDU(const ser4cpp::rseq_t& data);
+    void DecodeAPDU(const ser4cpp::rseq_t& data);
+
+private:
+    static bool IsResponse(const ser4cpp::rseq_t& data);
+
+    /// --- Implement IFrameSink ---
+    virtual bool OnFrame(const LinkHeaderFields& header, const ser4cpp::rseq_t& userdata) override;
+
+    IDecoderCallbacks* callbacks;
+    log4cpp::Logger logger;
+    LinkLayerParser link;
+    TransportRx transportRx;
 };
+
 } // namespace opendnp3
 
 #endif

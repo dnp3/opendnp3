@@ -17,35 +17,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#ifndef OPENDNP3_IDECODERCALLBACKS_H
+#define OPENDNP3_IDECODERCALLBACKS_H
 
-#include "DecoderImpl.h"
-
-#include <dnp3decode/Decoder.h>
+#include "opendnp3/Uncopyable.h"
 
 namespace opendnp3
 {
-Decoder::Decoder(IDecoderCallbacks& callbacks, const openpal::Logger& logger) : impl(new DecoderImpl(callbacks, logger))
-{
-}
 
-void Decoder::DecodeLPDU(const openpal::RSlice& data)
+class IDecoderCallbacks : Uncopyable
 {
-    impl->DecodeLPDU(data);
-}
+    friend class Indent;
 
-void Decoder::DecodeTPDU(const openpal::RSlice& data)
-{
-    impl->DecodeTPDU(data);
-}
-
-void Decoder::DecodeAPDU(const openpal::RSlice& data)
-{
-    impl->DecodeAPDU(data);
-}
-
-Decoder::~Decoder()
-{
-    delete impl;
-}
+protected:
+    virtual void PushIndent(){};
+    virtual void PopIndent(){};
+};
 
 } // namespace opendnp3
+
+#endif

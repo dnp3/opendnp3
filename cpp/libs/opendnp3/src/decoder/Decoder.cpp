@@ -17,31 +17,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_INDENT_H
-#define OPENDNP3_INDENT_H
+#include "opendnp3/decoder/Decoder.h"
 
-#include <dnp3decode/IDecoderCallbacks.h>
+#include "decoder/DecoderImpl.h"
 
 namespace opendnp3
 {
-class Indent : openpal::Uncopyable
+
+Decoder::Decoder(IDecoderCallbacks& callbacks, const log4cpp::Logger& logger) : impl(new DecoderImpl(callbacks, logger))
 {
-public:
-    Indent(IDecoderCallbacks& callbacks) : m_callbacks(&callbacks)
-    {
-        m_callbacks->PushIndent();
-    }
+}
 
-    ~Indent()
-    {
-        m_callbacks->PopIndent();
-    }
+void Decoder::DecodeLPDU(const ser4cpp::rseq_t& data)
+{
+    impl->DecodeLPDU(data);
+}
 
-private:
-    Indent() = delete;
+void Decoder::DecodeTPDU(const ser4cpp::rseq_t& data)
+{
+    impl->DecodeTPDU(data);
+}
 
-    IDecoderCallbacks* m_callbacks;
-};
+void Decoder::DecodeAPDU(const ser4cpp::rseq_t& data)
+{
+    impl->DecodeAPDU(data);
+}
+
+Decoder::~Decoder()
+{
+    delete impl;
+}
+
 } // namespace opendnp3
-
-#endif
