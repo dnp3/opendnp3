@@ -24,7 +24,7 @@
 
 #include "channel/SocketChannel.h"
 
-#include <opendnp3/LogLevels.h>
+#include "opendnp3/LogLevels.h"
 
 #include "link/LinkSession.h"
 

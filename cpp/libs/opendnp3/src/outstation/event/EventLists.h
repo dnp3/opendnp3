@@ -24,7 +24,7 @@
 #include "EventRecord.h"
 #include "TypedEventRecord.h"
 
-#include "ser4cpp/util/Uncopyable.h"
+#include <ser4cpp/util/Uncopyable.h>
 
 #include "opendnp3/app/MeasurementTypeSpecs.h"
 #include "opendnp3/outstation/EventBufferConfig.h"

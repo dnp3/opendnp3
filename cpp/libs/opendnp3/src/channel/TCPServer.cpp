@@ -22,7 +22,7 @@
 
 #include <log4cpp/LogMacros.h>
 
-#include <opendnp3/LogLevels.h>
+#include "opendnp3/LogLevels.h"
 
 #include <sstream>
 

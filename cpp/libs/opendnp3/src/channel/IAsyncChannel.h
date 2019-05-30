@@ -23,7 +23,7 @@
 #include <ser4cpp/container/SequenceTypes.h>
 #include <ser4cpp/util/Uncopyable.h>
 
-#include "exe4cpp/asio/StrandExecutor.h"
+#include <exe4cpp/asio/StrandExecutor.h>
 #include "channel/IChannelCallbacks.h"
 
 #include <cassert>

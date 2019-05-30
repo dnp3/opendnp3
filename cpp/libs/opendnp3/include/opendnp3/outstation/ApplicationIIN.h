@@ -22,7 +22,7 @@
 
 #include "opendnp3/UTCTimestamp.h"
 
-#include <opendnp3/app/IINField.h>
+#include "opendnp3/app/IINField.h"
 
 namespace opendnp3
 {

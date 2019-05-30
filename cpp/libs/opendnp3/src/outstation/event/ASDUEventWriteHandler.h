@@ -22,7 +22,7 @@
 
 #include "IEventWriteHandler.h"
 
-#include "ser4cpp/util/Uncopyable.h"
+#include <ser4cpp/util/Uncopyable.h>
 
 #include "app/DNP3Serializer.h"
 #include "app/HeaderWriter.h"

@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_PRINTINGSOEHANDLER_H
 #define OPENDNP3_PRINTINGSOEHANDLER_H
 
-#include <opendnp3/master/ISOEHandler.h>
+#include "opendnp3/master/ISOEHandler.h"
 
 #include <iostream>
 #include <memory>

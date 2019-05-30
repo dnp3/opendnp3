@@ -19,7 +19,7 @@
  */
 #include "SecLinkLayerStates.h"
 
-#include "log4cpp/LogMacros.h"
+#include <log4cpp/LogMacros.h>
 
 #include "opendnp3/LogLevels.h"
 #include "link/LinkLayer.h"

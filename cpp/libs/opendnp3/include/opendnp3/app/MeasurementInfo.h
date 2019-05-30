@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_MEASUREMENTINFO_H
 #define OPENDNP3_MEASUREMENTINFO_H
 
-#include "ser4cpp/util/Uncopyable.h"
+#include <ser4cpp/util/Uncopyable.h>
 
 #include "opendnp3/app/EventType.h"
 #include "opendnp3/app/MeasurementTypes.h"

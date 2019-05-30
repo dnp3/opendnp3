@@ -23,7 +23,7 @@
 
 #include "IEventWriteHandler.h"
 
-#include "ser4cpp/serialization/LittleEndian.h"
+#include <ser4cpp/serialization/LittleEndian.h>
 
 #include "app/DNP3Serializer.h"
 #include "app/HeaderWriter.h"

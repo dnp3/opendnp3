@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_ILINK_LISTENER_H
 #define OPENDNP3_ILINK_LISTENER_H
 
-#include <opendnp3/gen/LinkStatus.h>
+#include "opendnp3/gen/LinkStatus.h"
 
 namespace opendnp3
 {

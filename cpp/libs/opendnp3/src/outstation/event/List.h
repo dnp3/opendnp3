@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_LIST_H
 #define OPENDNP3_LIST_H
 
-#include "ser4cpp/container/Array.h"
+#include <ser4cpp/container/Array.h>
 
 #include <cstdint>
 

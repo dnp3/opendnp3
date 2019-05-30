@@ -19,7 +19,7 @@
  */
 #include "DatabaseBuffers.h"
 
-#include "log4cpp/LogMacros.h"
+#include <log4cpp/LogMacros.h>
 
 #include <cassert>
 

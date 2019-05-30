@@ -21,7 +21,7 @@
 #define OPENDNP3_WRITEHANDLER_H
 
 #include "opendnp3/Timestamp.h"
-#include "log4cpp/Logger.h"
+#include <log4cpp/Logger.h>
 
 #include "opendnp3/app/IINField.h"
 #include "app/parsing/IAPDUHandler.h"

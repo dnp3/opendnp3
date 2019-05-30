@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_TASKCONTEXT_H
 #define OPENDNP3_TASKCONTEXT_H
 
-#include "ser4cpp/util/Uncopyable.h"
+#include <ser4cpp/util/Uncopyable.h>
 
 #include <set>
 

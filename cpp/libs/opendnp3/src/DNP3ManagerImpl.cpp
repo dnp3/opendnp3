@@ -20,7 +20,7 @@
 
 #include "DNP3ManagerImpl.h"
 
-#include <opendnp3/LogLevels.h>
+#include "opendnp3/LogLevels.h"
 
 #include <utility>
 
