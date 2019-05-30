@@ -17,34 +17,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <asiopal/UTCTimeSource.h>
 
+#include <opendnp3/ConsoleLogger.h>
+#include <opendnp3/DNP3Manager.h>
 #include <opendnp3/LogLevels.h>
-
-#include <asiodnp3/ConsoleLogger.h>
-#include <asiodnp3/DNP3Manager.h>
-#include <asiodnp3/DefaultMasterApplication.h>
-#include <asiodnp3/PrintingChannelListener.h>
-#include <asiodnp3/PrintingCommandCallback.h>
-#include <asiodnp3/PrintingSOEHandler.h>
+#include <opendnp3/channel/PrintingChannelListener.h>
+#include <opendnp3/master/DefaultMasterApplication.h>
+#include <opendnp3/master/PrintingCommandCallback.h>
+#include <opendnp3/master/PrintingSOEHandler.h>
 
 using namespace std;
-using namespace openpal;
-using namespace asiopal;
-using namespace asiodnp3;
 using namespace opendnp3;
 
 int main(int argc, char* argv[])
 {
     // Specify what log levels to use. NORMAL is warning and above
     // You can add all the comms logging by uncommenting below
-    const uint32_t FILTERS = levels::NORMAL | levels::ALL_APP_COMMS;
+    const auto logLevels = levels::NORMAL | levels::ALL_APP_COMMS;
 
     // This is the main point of interaction with the stack
     DNP3Manager manager(1, ConsoleLogger::Create());
 
     // Connect via a TCPClient socket to a outstation
-    auto channel = manager.AddTCPClient("tcpclient", FILTERS, ChannelRetry::Default(), {IPEndpoint("127.0.0.1", 20000)},
+    auto channel = manager.AddTCPClient("tcpclient", logLevels, ChannelRetry::Default(), {IPEndpoint("127.0.0.1", 20000)},
                                         "0.0.0.0", PrintingChannelListener::Create());
 
     // The master config object for a master. The default are
@@ -64,10 +59,10 @@ int main(int argc, char* argv[])
     // Create a new master on a previously declared port, with a
     // name, log level, command acceptor, and config info. This
     // returns a thread-safe interface used for sending commands.
-    auto master = channel->AddMaster("master",                                     // id for logging
-                                     PrintingSOEHandler::Create(),                 // callback for data processing
-                                     asiodnp3::DefaultMasterApplication::Create(), // master application instance
-                                     stackConfig                                   // stack configuration
+    auto master = channel->AddMaster("master",                           // id for logging
+                                     PrintingSOEHandler::Create(),       // callback for data processing
+                                     DefaultMasterApplication::Create(), // master application instance
+                                     stackConfig                         // stack configuration
     );
 
     // do an integrity poll (Class 3/2/1/0) once per minute
@@ -111,7 +106,7 @@ int main(int argc, char* argv[])
             auto print = [](const RestartOperationResult& result) {
                 if (result.summary == TaskCompletion::SUCCESS)
                 {
-                    std::cout << "Success, Time: " << result.restartTime.GetMilliseconds() << std::endl;
+                    std::cout << "Success, Time: " << result.restartTime.ToString() << std::endl;
                 }
                 else
                 {
@@ -141,7 +136,7 @@ int main(int argc, char* argv[])
             channelCommsLoggingEnabled = !channelCommsLoggingEnabled;
             auto levels = channelCommsLoggingEnabled ? levels::ALL_COMMS : levels::NORMAL;
             channel->SetLogFilters(levels);
-            std::cout << "Channel logging set to: " << levels << std::endl;
+            std::cout << "Channel logging set to: " << levels.get_value() << std::endl;
             break;
         }
         case ('u'):
@@ -149,7 +144,7 @@ int main(int argc, char* argv[])
             masterCommsLoggingEnabled = !masterCommsLoggingEnabled;
             auto levels = masterCommsLoggingEnabled ? levels::ALL_COMMS : levels::NORMAL;
             master->SetLogFilters(levels);
-            std::cout << "Master logging set to: " << levels << std::endl;
+            std::cout << "Master logging set to: " << levels.get_value() << std::endl;
             break;
         }
         default:

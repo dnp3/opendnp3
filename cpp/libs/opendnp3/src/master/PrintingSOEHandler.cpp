@@ -17,7 +17,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "opendnp3/outstation/PrintingSOEHandler.h"
+#include "opendnp3/master/PrintingSOEHandler.h"
 
 namespace opendnp3
 {

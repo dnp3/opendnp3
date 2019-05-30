@@ -17,17 +17,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <asiopal/UTCTimeSource.h>
-
+#include <opendnp3/ConsoleLogger.h>
+#include <opendnp3/DNP3Manager.h>
 #include <opendnp3/LogLevels.h>
-#include <opendnp3/outstation/Database.h>
+#include <opendnp3/channel/PrintingChannelListener.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
-
-#include <asiodnp3/ConsoleLogger.h>
-#include <asiodnp3/DNP3Manager.h>
-#include <asiodnp3/PrintingChannelListener.h>
-#include <asiodnp3/PrintingSOEHandler.h>
-#include <asiodnp3/UpdateBuilder.h>
+#include <opendnp3/outstation/UpdateBuilder.h>
 
 #include <iostream>
 #include <string>
@@ -35,9 +30,6 @@
 
 using namespace std;
 using namespace opendnp3;
-using namespace openpal;
-using namespace asiopal;
-using namespace asiodnp3;
 
 void ConfigureDatabase(DatabaseConfig& config)
 {
@@ -75,7 +67,7 @@ int main(int argc, char* argv[])
 
     // Specify what log levels to use. NORMAL is warning and above
     // You can add all the comms logging by uncommenting below.
-    const uint32_t FILTERS = levels::NORMAL; // | levels::ALL_COMMS;
+    const auto logLevels = levels::NORMAL | levels::ALL_COMMS;
 
     // This is the main point of interaction with the stack
     // Allocate a single thread to the pool since this is a single outstation
@@ -84,7 +76,7 @@ int main(int argc, char* argv[])
     std::error_code ec;
 
     // Create a TCP server (listener)
-    auto channel = manager.AddTLSServer("server", FILTERS, ServerAcceptMode::CloseExisting, "0.0.0.0", 20001,
+    auto channel = manager.AddTLSServer("server", logLevels, ServerAcceptMode::CloseExisting, "0.0.0.0", 20001,
                                         TLSConfig(caCertificate, certificateChain, privateKey, 2),
                                         PrintingChannelListener::Create(), ec);
 

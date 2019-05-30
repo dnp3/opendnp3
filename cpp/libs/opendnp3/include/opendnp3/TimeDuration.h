@@ -24,6 +24,7 @@
 
 #include <chrono>
 #include <cstdint>
+#include <string>
 
 namespace opendnp3
 {
@@ -58,13 +59,15 @@ public:
 
     bool IsNegative() const;
 
-    exe4cpp::duration_t value;
+    std::string ToString() const;
 
     bool operator==(const TimeDuration& other) const;
     bool operator<(const TimeDuration& other) const;
     bool operator<=(const TimeDuration& other) const;
     bool operator>(const TimeDuration& other) const;
     bool operator>=(const TimeDuration& other) const;
+
+    exe4cpp::duration_t value;
 
 private:
     explicit TimeDuration(exe4cpp::duration_t value);

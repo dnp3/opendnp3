@@ -20,7 +20,7 @@
 
 #include "opendnp3/master/DefaultListenCallbacks.h"
 
-#include "opendnp3/outstation/PrintingSOEHandler.h"
+#include "opendnp3/master/PrintingSOEHandler.h"
 
 #include <sstream>
 

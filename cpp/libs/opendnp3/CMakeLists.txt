@@ -143,6 +143,7 @@ set(opendnp3_public_headers
     ./include/opendnp3/master/ISOEHandler.h
     ./include/opendnp3/master/ITaskCallback.h
     ./include/opendnp3/master/MasterParams.h
+    ./include/opendnp3/master/PrintingSOEHandler.h
     ./include/opendnp3/master/RestartOperationResult.h
     ./include/opendnp3/master/TaskConfig.h
     ./include/opendnp3/master/TaskId.h
@@ -161,7 +162,6 @@ set(opendnp3_public_headers
     ./include/opendnp3/outstation/OutstationConfig.h
     ./include/opendnp3/outstation/OutstationParams.h
     ./include/opendnp3/outstation/OutstationStackConfig.h
-    ./include/opendnp3/outstation/PrintingSOEHandler.h
     ./include/opendnp3/outstation/SimpleCommandHandler.h
     ./include/opendnp3/outstation/StaticTypeBitfield.h
     ./include/opendnp3/outstation/UpdateBuilder.h
@@ -543,6 +543,7 @@ set(opendnp3_src
     ./src/master/MeasurementHandler.cpp
     ./src/master/PollTaskBase.cpp
     ./src/master/PrintingCommandCallback.cpp
+    ./src/master/PrintingSOEHandler.cpp
     ./src/master/RestartOperationTask.cpp
     ./src/master/SerialTimeSyncTask.cpp
     ./src/master/StartupIntegrityPoll.cpp
@@ -566,7 +567,6 @@ set(opendnp3_src
     ./src/outstation/OutstationContext.cpp
     ./src/outstation/OutstationStack.cpp
     ./src/outstation/OutstationStates.cpp
-    ./src/outstation/PrintingSOEHandler.cpp
     ./src/outstation/ReadHandler.cpp
     ./src/outstation/RequestHistory.cpp
     ./src/outstation/ResponseContext.cpp
@@ -631,6 +631,7 @@ target_include_directories(opendnp3
     PUBLIC ./include
     PRIVATE ./src
 )
+set_target_properties(opendnp3 PROPERTIES FOLDER cpp/lib)
 
 if(DNP3_TLS)
     target_link_libraries(opendnp3 PRIVATE OpenSSL::SSL)

@@ -19,13 +19,14 @@
  */
 #include "ExampleListenCallbacks.h"
 
+#include <opendnp3/master/DefaultMasterApplication.h>
 #include <opendnp3/master/ISOEHandler.h>
-
-#include <asiodnp3/DefaultMasterApplication.h>
 
 #include <algorithm>
 #include <iostream>
 #include <sstream>
+
+using namespace opendnp3;
 
 /**
  * A crude example of a measurement handler on a per-outstation basis
@@ -34,72 +35,72 @@
  *
  * A real implementation would map the data and forward, save to a database, etc.
  */
-class ExampleSOEHandler : public opendnp3::ISOEHandler
+class ExampleSOEHandler : public ISOEHandler
 {
 public:
     explicit ExampleSOEHandler(const uint16_t address) : address(address) {}
 
-    void Process(const opendnp3::HeaderInfo& info,
-                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Binary>>& values) override
+    void Process(const HeaderInfo& info,
+                 const ICollection<Indexed<Binary>>& values) override
     {
     }
 
-    void Process(const opendnp3::HeaderInfo& info,
-                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::DoubleBitBinary>>& values) override
+    void Process(const HeaderInfo& info,
+                 const ICollection<Indexed<DoubleBitBinary>>& values) override
     {
     }
 
-    void Process(const opendnp3::HeaderInfo& info,
-                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Analog>>& values) override
+    void Process(const HeaderInfo& info,
+                 const ICollection<Indexed<Analog>>& values) override
     {
     }
 
-    void Process(const opendnp3::HeaderInfo& info,
-                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Counter>>& values) override
+    void Process(const HeaderInfo& info,
+                 const ICollection<Indexed<Counter>>& values) override
     {
     }
 
-    void Process(const opendnp3::HeaderInfo& info,
-                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::FrozenCounter>>& values) override
+    void Process(const HeaderInfo& info,
+                 const ICollection<Indexed<FrozenCounter>>& values) override
     {
     }
 
-    void Process(const opendnp3::HeaderInfo& info,
-                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryOutputStatus>>& values) override
+    void Process(const HeaderInfo& info,
+                 const ICollection<Indexed<BinaryOutputStatus>>& values) override
     {
     }
 
-    void Process(const opendnp3::HeaderInfo& info,
-                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogOutputStatus>>& values) override
+    void Process(const HeaderInfo& info,
+                 const ICollection<Indexed<AnalogOutputStatus>>& values) override
     {
     }
 
-    void Process(const opendnp3::HeaderInfo& info,
-                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::OctetString>>& values) override
+    void Process(const HeaderInfo& info,
+                 const ICollection<Indexed<OctetString>>& values) override
     {
     }
 
-    void Process(const opendnp3::HeaderInfo& info,
-                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::TimeAndInterval>>& values) override
+    void Process(const HeaderInfo& info,
+                 const ICollection<Indexed<TimeAndInterval>>& values) override
     {
     }
 
-    void Process(const opendnp3::HeaderInfo& info,
-                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryCommandEvent>>& values) override
+    void Process(const HeaderInfo& info,
+                 const ICollection<Indexed<BinaryCommandEvent>>& values) override
     {
     }
 
-    void Process(const opendnp3::HeaderInfo& info,
-                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogCommandEvent>>& values) override
+    void Process(const HeaderInfo& info,
+                 const ICollection<Indexed<AnalogCommandEvent>>& values) override
     {
     }
 
-    void Process(const opendnp3::HeaderInfo& info,
-                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::SecurityStat>>& values) override
+    void Process(const HeaderInfo& info,
+                 const ICollection<Indexed<SecurityStat>>& values) override
     {
     }
 
-    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::DNPTime>& values) override {}
+    void Process(const HeaderInfo& info, const ICollection<DNPTime>& values) override {}
 
 protected:
     const uint16_t address;
@@ -115,7 +116,7 @@ protected:
     }
 };
 
-std::shared_ptr<asiodnp3::IMasterSession> ExampleListenCallbacks::get_outstation_session(uint16_t address)
+std::shared_ptr<IMasterSession> ExampleListenCallbacks::get_outstation_session(uint16_t address)
 {
     std::lock_guard<std::mutex> lock(this->mutex);
     const auto iter = std::find_if(this->sessions.begin(), this->sessions.end(),
@@ -129,21 +130,21 @@ bool ExampleListenCallbacks::AcceptConnection(uint64_t sessionid, const std::str
     return true;
 }
 
-bool ExampleListenCallbacks::AcceptCertificate(uint64_t sessionid, const asiodnp3::X509Info& info)
+bool ExampleListenCallbacks::AcceptCertificate(uint64_t sessionid, const X509Info& info)
 {
     // not relevant since example doesn't use TLS
     return false;
 }
 
-openpal::TimeDuration ExampleListenCallbacks::GetFirstFrameTimeout()
+TimeDuration ExampleListenCallbacks::GetFirstFrameTimeout()
 {
     // tune this number for your application
-    return openpal::TimeDuration::Seconds(5);
+    return TimeDuration::Seconds(5);
 }
 
 void ExampleListenCallbacks::OnFirstFrame(uint64_t sessionid,
-                                          const opendnp3::LinkHeaderFields& header,
-                                          asiodnp3::ISessionAcceptor& acceptor)
+                                          const LinkHeaderFields& header,
+                                          ISessionAcceptor& acceptor)
 {
     std::lock_guard<std::mutex> lock(this->mutex);
 
@@ -161,7 +162,7 @@ void ExampleListenCallbacks::OnFirstFrame(uint64_t sessionid,
         this->sessions.erase(iter);
     }
 
-    asiodnp3::MasterStackConfig config;
+    MasterStackConfig config;
 
     // use the master and outstation addresses that the outstation is using
     config.link.LocalAddr = header.dest;
@@ -170,11 +171,11 @@ void ExampleListenCallbacks::OnFirstFrame(uint64_t sessionid,
     // don't disable unsolicited reporting when the master comes online
     config.master.disableUnsolOnStartup = false;
     // don't perform an integrity scan when the application layer comes online
-    config.master.startupIntegrityClassMask = opendnp3::ClassField::None();
+    config.master.startupIntegrityClassMask = ClassField::None();
 
     const auto session
         = acceptor.AcceptSession(GetSessionName(header.src, sessionid), std::make_shared<ExampleSOEHandler>(header.src),
-                                 std::make_shared<asiodnp3::DefaultMasterApplication>(), config);
+                                 std::make_shared<DefaultMasterApplication>(), config);
 
     // add to the list
     this->sessions.emplace_back(SessionInfo{sessionid, header.src, session});
@@ -183,7 +184,7 @@ void ExampleListenCallbacks::OnFirstFrame(uint64_t sessionid,
 }
 
 void ExampleListenCallbacks::OnConnectionClose(uint64_t sessionid,
-                                               const std::shared_ptr<asiodnp3::IMasterSession>& session)
+                                               const std::shared_ptr<IMasterSession>& session)
 {
     std::lock_guard<std::mutex> lock(this->mutex);
     const auto iter = std::find_if(this->sessions.begin(), this->sessions.end(),
@@ -195,7 +196,7 @@ void ExampleListenCallbacks::OnConnectionClose(uint64_t sessionid,
     }
 }
 
-void ExampleListenCallbacks::OnCertificateError(uint64_t sessionid, const asiodnp3::X509Info& info, int error)
+void ExampleListenCallbacks::OnCertificateError(uint64_t sessionid, const X509Info& info, int error)
 {
     // not relevant since example doesn't use TLS
 }

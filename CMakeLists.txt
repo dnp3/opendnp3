@@ -13,15 +13,33 @@ include(./cmake/ClangTidy.cmake)
 
 # Compilation options
 option(DNP3_TLS "Build TLS client/server support (requires OpenSSL)" OFF)
+option(DNP3_EXAMPLES "Build example applications" OFF)
 
 # External dependencies
-add_subdirectory(./deps)
+include(./deps/asio.cmake)
+include(./deps/exe4cpp.cmake)
+include(./deps/log4cpp.cmake)
+include(./deps/ser4cpp.cmake)
+
 if(DNP3_TLS)
     find_package(OpenSSL REQUIRED)
 endif()
 
-# Libraries
+# Library
 add_subdirectory(./cpp/libs/opendnp3)
+
+# Examples
+if(DNP3_EXAMPLES)
+    add_subdirectory(./cpp/examples/master)
+    add_subdirectory(./cpp/examples/master-gprs)
+    add_subdirectory(./cpp/examples/outstation)
+
+    if(DNP3_TLS)
+        add_subdirectory(./cpp/examples/tls/master)
+        add_subdirectory(./cpp/examples/tls/master-gprs)
+        add_subdirectory(./cpp/examples/tls/outstation)
+    endif()
+endif()
 
 # Define utility targets
 define_clang_format()

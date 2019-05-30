@@ -17,17 +17,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <asiopal/UTCTimeSource.h>
-
+#include <opendnp3/ConsoleLogger.h>
+#include <opendnp3/DNP3Manager.h>
 #include <opendnp3/LogLevels.h>
+#include <opendnp3/channel/PrintingChannelListener.h>
 #include <opendnp3/outstation/IUpdateHandler.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
-
-#include <asiodnp3/ConsoleLogger.h>
-#include <asiodnp3/DNP3Manager.h>
-#include <asiodnp3/PrintingChannelListener.h>
-#include <asiodnp3/PrintingSOEHandler.h>
-#include <asiodnp3/UpdateBuilder.h>
+#include <opendnp3/outstation/UpdateBuilder.h>
 
 #include <iostream>
 #include <string>
@@ -35,9 +31,6 @@
 
 using namespace std;
 using namespace opendnp3;
-using namespace openpal;
-using namespace asiopal;
-using namespace asiodnp3;
 
 void ConfigureDatabase(DatabaseConfig& config)
 {
@@ -63,7 +56,7 @@ int main(int argc, char* argv[])
 
     // Specify what log levels to use. NORMAL is warning and above
     // You can add all the comms logging by uncommenting below.
-    const uint32_t FILTERS = levels::NORMAL | levels::ALL_COMMS;
+    const auto logLevels = levels::NORMAL | levels::ALL_COMMS;
 
     // This is the main point of interaction with the stack
     // Allocate a single thread to the pool since this is a single outstation
@@ -71,7 +64,7 @@ int main(int argc, char* argv[])
     DNP3Manager manager(1, ConsoleLogger::Create());
 
     // Create a TCP server (listener)
-    auto channel = manager.AddTCPServer("server", FILTERS, ServerAcceptMode::CloseExisting, "0.0.0.0", 20001,
+    auto channel = manager.AddTCPServer("server", logLevels, ServerAcceptMode::CloseExisting, "0.0.0.0", 20000,
                                         PrintingChannelListener::Create());
 
     // The main object for a outstation. The defaults are useable,
@@ -91,7 +84,7 @@ int main(int argc, char* argv[])
     config.link.LocalAddr = 10;
     config.link.RemoteAddr = 1;
 
-    config.link.KeepAliveTimeout = openpal::TimeDuration::Max();
+    config.link.KeepAliveTimeout = TimeDuration::Max();
 
     // You can optionally change the default reporting variations or class assignment prior to enabling the outstation
     ConfigureDatabase(config.dbConfig);
@@ -162,7 +155,7 @@ void AddUpdates(UpdateBuilder& builder, State& state, const std::string& argumen
         }
         case ('o'):
         {
-            OctetString value(openpal::RSlice(&state.octetStringValue, 1));
+            OctetString value(ser4cpp::rseq_t(&state.octetStringValue, 1));
             builder.Update(value, 0);
             state.octetStringValue += 1;
             break;

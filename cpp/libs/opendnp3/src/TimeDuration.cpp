@@ -83,6 +83,13 @@ bool TimeDuration::IsNegative() const
     return *this < TimeDuration::Zero();
 }
 
+std::string TimeDuration::ToString() const
+{
+    const auto millis = std::chrono::duration_cast<std::chrono::milliseconds>(value).count();
+
+    return std::to_string(millis);
+}
+
 bool TimeDuration::operator==(const TimeDuration& other) const
 {
     return this->value == other.value;
