@@ -20,8 +20,6 @@
 #ifndef OPENDNP3_TIMEDURATION_H
 #define OPENDNP3_TIMEDURATION_H
 
-#include <exe4cpp/Typedefs.h>
-
 #include <chrono>
 #include <cstdint>
 #include <string>
@@ -67,10 +65,10 @@ public:
     bool operator>(const TimeDuration& other) const;
     bool operator>=(const TimeDuration& other) const;
 
-    exe4cpp::duration_t value;
+    std::chrono::steady_clock::duration value;
 
 private:
-    explicit TimeDuration(exe4cpp::duration_t value);
+    explicit TimeDuration(std::chrono::steady_clock::duration value);
 };
 
 } // namespace opendnp3

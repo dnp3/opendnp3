@@ -36,7 +36,7 @@ public:
     static Timestamp Min();
 
     Timestamp();
-    explicit Timestamp(exe4cpp::steady_time_t value);
+    explicit Timestamp(std::chrono::steady_clock::time_point value);
 
     bool IsMax() const;
     bool IsMin() const;
@@ -55,7 +55,7 @@ public:
     bool operator>(const Timestamp& other) const;
     bool operator>=(const Timestamp& other) const;
 
-    exe4cpp::steady_time_t value;
+    std::chrono::steady_clock::time_point value;
 };
 
 } // namespace opendnp3

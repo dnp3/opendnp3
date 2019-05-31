@@ -635,8 +635,8 @@ add_library(opendnp3
 )
 target_compile_features(opendnp3 PRIVATE cxx_std_14)
 target_link_libraries(opendnp3
-    PUBLIC ser4cpp exe4cpp log4cpp
-    PRIVATE asio
+    PUBLIC ser4cpp log4cpp
+    PRIVATE exe4cpp asio
 )
 target_include_directories(opendnp3
     PUBLIC ./include

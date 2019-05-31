@@ -19,6 +19,8 @@
  */
 #include "opendnp3/Timestamp.h"
 
+#include <exe4cpp/Typedefs.h>
+
 namespace opendnp3
 {
 
