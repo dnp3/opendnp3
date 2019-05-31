@@ -29,6 +29,7 @@ namespace opendnp3
 {
 
 HeaderBuilderT ConvertToLambda(const std::vector<Header>& headers);
+
 }
 
 #endif

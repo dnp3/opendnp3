@@ -301,12 +301,12 @@ set(opendnp3_private_headers
     ./src/master/CommandSetOps.h
     ./src/master/CommandTask.h
     ./src/master/CommandTaskResult.h
-    ./src/master/Conversions.h
     ./src/master/DisableUnsolicitedTask.h
     ./src/master/EmptyResponseTask.h
     ./src/master/EnableUnsolicitedTask.h
     ./src/master/EventScanTask.h
     ./src/master/HeaderBuilder.h
+    ./src/master/HeaderConversions.h
     ./src/master/ICommandHeader.h
     ./src/master/IMasterScheduler.h
     ./src/master/IMasterTask.h
@@ -530,13 +530,13 @@ set(opendnp3_src
     ./src/master/CommandSetOps.cpp
     ./src/master/CommandTask.cpp
     ./src/master/CommandTaskResult.cpp
-    ./src/master/Conversions.cpp
     ./src/master/DefaultListenCallbacks.cpp
     ./src/master/DefaultMasterApplication.cpp
     ./src/master/DisableUnsolicitedTask.cpp
     ./src/master/EmptyResponseTask.cpp
     ./src/master/EnableUnsolicitedTask.cpp
     ./src/master/EventScanTask.cpp
+    ./src/master/HeaderConversions.cpp
     ./src/master/HeaderTypes.cpp
     ./src/master/IMasterTask.cpp
     ./src/master/LANTimeSyncTask.cpp

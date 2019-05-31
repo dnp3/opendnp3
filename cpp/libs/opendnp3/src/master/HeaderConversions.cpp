@@ -17,7 +17,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "Conversions.h"
+#include "master/HeaderConversions.h"
 
 namespace opendnp3
 {

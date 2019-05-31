@@ -20,7 +20,7 @@
 
 #include "master/MasterSessionStack.h"
 
-#include "master/Conversions.h"
+#include "master/HeaderConversions.h"
 #include "link/LinkSession.h"
 
 #include <utility>

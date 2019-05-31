@@ -19,7 +19,7 @@
  */
 #include "master/MasterStack.h"
 
-#include "master/Conversions.h"
+#include "master/HeaderConversions.h"
 
 #include "app/APDUBuilders.h"
 #include "master/MasterContext.h"
