@@ -25,7 +25,7 @@
 #include "app/HeaderWriter.h"
 #include "app/parsing/IAPDUHandler.h"
 #include "opendnp3/gen/IndexQualifierMode.h"
-#include "opendnp3/master/CommandCallbackT.h"
+#include "opendnp3/master/CommandResultCallbackT.h"
 #include "opendnp3/master/CommandSet.h"
 
 namespace opendnp3
@@ -66,7 +66,7 @@ public:
     static bool Write(const CommandSet& set, HeaderWriter& writer, IndexQualifierMode mode);
 
     /// Invoke the callback for a response
-    static void InvokeCallback(const CommandSet& set, TaskCompletion result, const CommandCallbackT& callback);
+    static void InvokeCallback(const CommandSet& set, TaskCompletion result, const CommandResultCallbackT& callback);
 
     /**
      * parses a response to a select, applying each received header to the command set

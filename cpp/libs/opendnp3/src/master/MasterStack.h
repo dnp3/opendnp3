@@ -147,11 +147,11 @@ public:
     // ------- implement ICommandProcessor ---------
 
     void SelectAndOperate(CommandSet&& commands,
-                          const CommandCallbackT& callback,
+                          const CommandResultCallbackT& callback,
                           const TaskConfig& config) override;
 
     void DirectOperate(CommandSet&& commands,
-                       const CommandCallbackT& callback,
+                       const CommandResultCallbackT& callback,
                        const TaskConfig& config) override;
 
 protected:

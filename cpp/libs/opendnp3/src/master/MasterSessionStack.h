@@ -101,10 +101,10 @@ public:
     /// --- ICommandProcessor ---
 
     void SelectAndOperate(CommandSet&& commands,
-                                  const CommandCallbackT& callback,
+                                  const CommandResultCallbackT& callback,
                                   const TaskConfig& config) final;
     void DirectOperate(CommandSet&& commands,
-                               const CommandCallbackT& callback,
+                               const CommandResultCallbackT& callback,
                                const TaskConfig& config) final;
 
     MasterSessionStack(const log4cpp::Logger& logger,

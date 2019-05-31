@@ -125,8 +125,8 @@ set(opendnp3_public_headers
     ./include/opendnp3/link/LinkHeaderFields.h
     ./include/opendnp3/link/LinkStatistics.h
 
-    ./include/opendnp3/master/CommandCallbackT.h
     ./include/opendnp3/master/CommandPointResult.h
+    ./include/opendnp3/master/CommandResultCallbackT.h
     ./include/opendnp3/master/CommandSet.h
     ./include/opendnp3/master/DefaultListenCallbacks.h
     ./include/opendnp3/master/DefaultMasterApplication.h
@@ -549,7 +549,7 @@ set(opendnp3_src
     ./src/master/MasterTCPServer.cpp
     ./src/master/MeasurementHandler.cpp
     ./src/master/PollTaskBase.cpp
-    ./src/master/PrintingCommandCallback.cpp
+    ./src/master/PrintingCommandResultCallback.cpp
     ./src/master/PrintingSOEHandler.cpp
     ./src/master/RestartOperationTask.cpp
     ./src/master/SerialTimeSyncTask.cpp

@@ -17,8 +17,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_COMMAND_CALLBACK_T_H
-#define OPENDNP3_COMMAND_CALLBACK_T_H
+#ifndef OPENDNP3_COMMANDRESULTCALLBACKT_H
+#define OPENDNP3_COMMANDRESULTCALLBACKT_H
 
 #include "opendnp3/master/ICommandTaskResult.h"
 
@@ -27,7 +27,8 @@
 namespace opendnp3
 {
 
-typedef std::function<void(const ICommandTaskResult&)> CommandCallbackT;
+using CommandResultCallbackT = std::function<void(const ICommandTaskResult&)>;
+
 }
 
 #endif

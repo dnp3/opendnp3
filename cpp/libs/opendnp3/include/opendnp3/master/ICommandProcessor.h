@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_ICOMMANDPROCESSOR_H
 #define OPENDNP3_ICOMMANDPROCESSOR_H
 
-#include "opendnp3/master/CommandCallbackT.h"
+#include "opendnp3/master/CommandResultCallbackT.h"
 #include "opendnp3/master/CommandSet.h"
 #include "opendnp3/master/TaskConfig.h"
 
@@ -41,7 +41,7 @@ public:
      * @param config optional configuration that controls normal callbacks and allows the user to be specified for SA
      */
     virtual void SelectAndOperate(CommandSet&& commands,
-                                  const CommandCallbackT& callback,
+                                  const CommandResultCallbackT& callback,
                                   const TaskConfig& config = TaskConfig::Default())
         = 0;
 
@@ -53,7 +53,7 @@ public:
      * @param config optional configuration that controls normal callbacks and allows the user to be specified for SA
      */
     virtual void DirectOperate(CommandSet&& commands,
-                               const CommandCallbackT& callback,
+                               const CommandResultCallbackT& callback,
                                const TaskConfig& config = TaskConfig::Default())
         = 0;
 
@@ -68,7 +68,7 @@ public:
     template<class T>
     void SelectAndOperate(const T& command,
                           uint16_t index,
-                          const CommandCallbackT& callback,
+                          const CommandResultCallbackT& callback,
                           const TaskConfig& config = TaskConfig::Default());
 
     /**
@@ -82,14 +82,14 @@ public:
     template<class T>
     void DirectOperate(const T& command,
                        uint16_t index,
-                       const CommandCallbackT& callback,
+                       const CommandResultCallbackT& callback,
                        const TaskConfig& config = TaskConfig::Default());
 };
 
 template<class T>
 void ICommandProcessor::SelectAndOperate(const T& command,
                                          uint16_t index,
-                                         const CommandCallbackT& callback,
+                                         const CommandResultCallbackT& callback,
                                          const TaskConfig& config)
 {
     CommandSet commands({WithIndex(command, index)});
@@ -99,7 +99,7 @@ void ICommandProcessor::SelectAndOperate(const T& command,
 template<class T>
 void ICommandProcessor::DirectOperate(const T& command,
                                       uint16_t index,
-                                      const CommandCallbackT& callback,
+                                      const CommandResultCallbackT& callback,
                                       const TaskConfig& config)
 {
     CommandSet commands({WithIndex(command, index)});

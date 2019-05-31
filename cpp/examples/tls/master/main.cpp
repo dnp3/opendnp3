@@ -23,7 +23,7 @@
 #include <opendnp3/DNP3Manager.h>
 #include <opendnp3/channel/PrintingChannelListener.h>
 #include <opendnp3/master/DefaultMasterApplication.h>
-#include <opendnp3/master/PrintingCommandCallback.h>
+#include <opendnp3/master/PrintingCommandResultCallback.h>
 #include <opendnp3/master/PrintingSOEHandler.h>
 
 using namespace std;
@@ -145,7 +145,7 @@ int main(int argc, char* argv[])
         case ('c'):
         {
             ControlRelayOutputBlock crob(ControlCode::LATCH_ON);
-            master->SelectAndOperate(crob, 0, PrintingCommandCallback::Get());
+            master->SelectAndOperate(crob, 0, PrintingCommandResultCallback::Get());
             break;
         }
         default:

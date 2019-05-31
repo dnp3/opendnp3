@@ -167,7 +167,7 @@ void MContext::OnParsedHeader(const ser4cpp::rseq_t& /*apdu*/, const APDURespons
 
 /// --- command handlers ----
 
-void MContext::DirectOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config)
+void MContext::DirectOperate(CommandSet&& commands, const CommandResultCallbackT& callback, const TaskConfig& config)
 {
     const auto timeout = Timestamp(this->executor->get_time()) + params.taskStartTimeout;
     this->ScheduleAdhocTask(CommandTask::CreateDirectOperate(this->tasks.context, std::move(commands),
@@ -175,7 +175,7 @@ void MContext::DirectOperate(CommandSet&& commands, const CommandCallbackT& call
                                                              timeout, config, logger));
 }
 
-void MContext::SelectAndOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config)
+void MContext::SelectAndOperate(CommandSet&& commands, const CommandResultCallbackT& callback, const TaskConfig& config)
 {
     const auto timeout = Timestamp(this->executor->get_time()) + params.taskStartTimeout;
     this->ScheduleAdhocTask(CommandTask::CreateSelectAndOperate(this->tasks.context, std::move(commands),

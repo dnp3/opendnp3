@@ -29,7 +29,7 @@
 #include "app/AppSeqNum.h"
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/gen/RestartType.h"
-#include "opendnp3/master/CommandCallbackT.h"
+#include "opendnp3/master/CommandResultCallbackT.h"
 #include "opendnp3/master/CommandSet.h"
 #include "master/HeaderBuilder.h"
 #include "opendnp3/master/IMasterApplication.h"
@@ -108,9 +108,9 @@ public:
 
     // methods for initiating command sequences
 
-    void DirectOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config);
+    void DirectOperate(CommandSet&& commands, const CommandResultCallbackT& callback, const TaskConfig& config);
 
-    void SelectAndOperate(CommandSet&& commands, const CommandCallbackT& callback, const TaskConfig& config);
+    void SelectAndOperate(CommandSet&& commands, const CommandResultCallbackT& callback, const TaskConfig& config);
 
     // -----  public methods used to add tasks -----
 

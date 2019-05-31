@@ -47,7 +47,7 @@ public:
                 CommandSet&& commands,
                 IndexQualifierMode mode,
                 IMasterApplication& app,
-                CommandCallbackT callback,
+                CommandResultCallbackT callback,
                 const Timestamp& startExpiration,
                 const TaskConfig& config,
                 const log4cpp::Logger& logger);
@@ -56,7 +56,7 @@ public:
                                                             CommandSet&& set,
                                                             IndexQualifierMode mode,
                                                             IMasterApplication& app,
-                                                            const CommandCallbackT& callback,
+                                                            const CommandResultCallbackT& callback,
                                                             const Timestamp& startExpiration,
                                                             const TaskConfig& config,
                                                             log4cpp::Logger logger);
@@ -64,7 +64,7 @@ public:
                                                                CommandSet&& set,
                                                                IndexQualifierMode mode,
                                                                IMasterApplication& app,
-                                                               const CommandCallbackT& callback,
+                                                               const CommandResultCallbackT& callback,
                                                                const Timestamp& startExpiration,
                                                                const TaskConfig& config,
                                                                log4cpp::Logger logger);
@@ -117,7 +117,7 @@ private:
     std::deque<FunctionCode> functionCodes;
 
     CommandStatus statusResult;
-    const CommandCallbackT commandCallback;
+    const CommandResultCallbackT commandCallback;
     CommandSet commands;
     const IndexQualifierMode mode;
 };

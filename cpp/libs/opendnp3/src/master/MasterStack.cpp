@@ -178,7 +178,7 @@ void MasterStack::PerformFunction(const std::string& name,
 }
 
 void MasterStack::SelectAndOperate(CommandSet&& commands,
-                                   const CommandCallbackT& callback,
+                                   const CommandResultCallbackT& callback,
                                    const TaskConfig& config)
 {
     /// this is to work around the fact that c++11 doesn't have generic move capture
@@ -192,7 +192,7 @@ void MasterStack::SelectAndOperate(CommandSet&& commands,
 }
 
 void MasterStack::DirectOperate(CommandSet&& commands,
-                                const CommandCallbackT& callback,
+                                const CommandResultCallbackT& callback,
                                 const TaskConfig& config)
 {
     /// this is to work around the fact that c++11 doesn't have generic move capture

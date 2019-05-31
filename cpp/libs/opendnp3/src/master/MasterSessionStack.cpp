@@ -215,7 +215,7 @@ void MasterSessionStack::PerformFunction(const std::string& name,
 /// --- ICommandProcessor ---
 
 void MasterSessionStack::SelectAndOperate(CommandSet&& commands,
-                                          const CommandCallbackT& callback,
+                                          const CommandResultCallbackT& callback,
                                           const TaskConfig& config)
 {
     // this is required b/c move capture not supported in C++11
@@ -228,7 +228,7 @@ void MasterSessionStack::SelectAndOperate(CommandSet&& commands,
 }
 
 void MasterSessionStack::DirectOperate(CommandSet&& commands,
-                                       const CommandCallbackT& callback,
+                                       const CommandResultCallbackT& callback,
                                        const TaskConfig& config)
 {
     // this is required b/c move capture not supported in C++11

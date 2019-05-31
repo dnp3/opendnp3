@@ -63,7 +63,7 @@ bool CommandSetOps::Write(const CommandSet& set, HeaderWriter& writer, IndexQual
     return true;
 }
 
-void CommandSetOps::InvokeCallback(const CommandSet& set, TaskCompletion result, const CommandCallbackT& callback)
+void CommandSetOps::InvokeCallback(const CommandSet& set, TaskCompletion result, const CommandResultCallbackT& callback)
 {
     CommandTaskResult impl(result, set.m_headers);
     callback(impl);

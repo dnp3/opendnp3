@@ -17,25 +17,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#ifndef OPENDNP3_PRINTINGCOMMANDRESULTCALLBACK_H
+#define OPENDNP3_PRINTINGCOMMANDRESULTCALLBACK_H
 
-#include "opendnp3/master/PrintingCommandCallback.h"
+#include "opendnp3/StaticOnly.h"
 
-#include <iostream>
+#include "opendnp3/master/CommandResultCallbackT.h"
 
 namespace opendnp3
 {
 
-CommandCallbackT PrintingCommandCallback::Get()
+class PrintingCommandResultCallback : public StaticOnly
 {
-    return [](const ICommandTaskResult& result) -> void {
-        std::cout << "Received command result w/ summary: " << TaskCompletionToString(result.summary) << std::endl;
-        auto print = [](const CommandPointResult& res) {
-            std::cout << "Header: " << res.headerIndex << " Index: " << res.index
-                      << " State: " << CommandPointStateToString(res.state)
-                      << " Status: " << CommandStatusToString(res.status);
-        };
-        result.ForeachItem(print);
-    };
-}
+
+public:
+    static CommandResultCallbackT Get();
+};
 
 } // namespace opendnp3
+
+#endif

@@ -35,7 +35,7 @@ std::shared_ptr<IMasterTask> CommandTask::CreateDirectOperate(const std::shared_
                                                               CommandSet&& set,
                                                               IndexQualifierMode mode,
                                                               IMasterApplication& app,
-                                                              const CommandCallbackT& callback,
+                                                              const CommandResultCallbackT& callback,
                                                               const Timestamp& startExpiration,
                                                               const TaskConfig& config,
                                                               log4cpp::Logger logger)
@@ -50,7 +50,7 @@ std::shared_ptr<IMasterTask> CommandTask::CreateSelectAndOperate(const std::shar
                                                                  CommandSet&& set,
                                                                  IndexQualifierMode mode,
                                                                  IMasterApplication& app,
-                                                                 const CommandCallbackT& callback,
+                                                                 const CommandResultCallbackT& callback,
                                                                  const Timestamp& startExpiration,
                                                                  const TaskConfig& config,
                                                                  log4cpp::Logger logger)
@@ -65,7 +65,7 @@ CommandTask::CommandTask(const std::shared_ptr<TaskContext>& context,
                          CommandSet&& commands,
                          IndexQualifierMode mode,
                          IMasterApplication& app,
-                         CommandCallbackT callback,
+                         CommandResultCallbackT callback,
                          const Timestamp& startExpiration,
                          const TaskConfig& config,
                          const log4cpp::Logger& logger)
