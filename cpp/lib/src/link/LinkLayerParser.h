@@ -20,14 +20,16 @@
 #ifndef OPENDNP3_LINKLAYERPARSER_H
 #define OPENDNP3_LINKLAYERPARSER_H
 
-#include <ser4cpp/container/SequenceTypes.h>
-#include <log4cpp/Logger.h>
-
 #include "link/IFrameSink.h"
 #include "link/LinkFrame.h"
 #include "link/LinkHeader.h"
-#include "opendnp3/link/LinkStatistics.h"
 #include "link/ShiftableBuffer.h"
+
+#include "opendnp3/link/LinkStatistics.h"
+
+#include <ser4cpp/container/SequenceTypes.h>
+
+#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {

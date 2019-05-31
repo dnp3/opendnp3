@@ -20,9 +20,9 @@
 #ifndef OPENDNP3_REQUESTHISTORY_H
 #define OPENDNP3_REQUESTHISTORY_H
 
-#include <ser4cpp/container/SequenceTypes.h>
-
 #include "app/APDUHeader.h"
+
+#include <ser4cpp/container/SequenceTypes.h>
 
 #include <cstdint>
 

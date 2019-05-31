@@ -21,7 +21,6 @@
 #include "ASDUEventWriteHandler.h"
 
 #include "EventWriters.h"
-
 #include "gen/objects/Group11.h"
 #include "gen/objects/Group2.h"
 #include "gen/objects/Group22.h"

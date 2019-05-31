@@ -20,15 +20,17 @@
 #ifndef OPENDNP3_TRANSPORTTX_H
 #define OPENDNP3_TRANSPORTTX_H
 
-#include <ser4cpp/container/Settable.h>
-#include <ser4cpp/container/StaticBuffer.h>
-#include <log4cpp/Logger.h>
-
-#include "opendnp3/StackStatistics.h"
 #include "app/Message.h"
 #include "link/ITransportSegment.h"
 #include "transport/TransportConstants.h"
 #include "transport/TransportSeqNum.h"
+
+#include "opendnp3/StackStatistics.h"
+
+#include <ser4cpp/container/Settable.h>
+#include <ser4cpp/container/StaticBuffer.h>
+
+#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {

@@ -21,7 +21,6 @@
 #define OPENDNP3_MEASUREMENTFACTORY_H
 
 #include "opendnp3/StaticOnly.h"
-
 #include "opendnp3/app/AnalogCommandEvent.h"
 #include "opendnp3/app/AnalogOutput.h"
 #include "opendnp3/app/BinaryCommandEvent.h"

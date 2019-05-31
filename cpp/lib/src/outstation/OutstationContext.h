@@ -20,20 +20,11 @@
 #ifndef OPENDNP3_OUTSTATIONCONTEXT_H
 #define OPENDNP3_OUTSTATIONCONTEXT_H
 
-#include <exe4cpp/IExecutor.h>
-#include <ser4cpp/container/Pair.h>
-#include <log4cpp/Logger.h>
-
 #include "LayerInterfaces.h"
-#include "opendnp3/gen/SecurityStatIndex.h"
-#include "opendnp3/link/Addresses.h"
 #include "outstation/ControlState.h"
 #include "outstation/Database.h"
 #include "outstation/DeferredRequest.h"
-#include "opendnp3/outstation/ICommandHandler.h"
-#include "opendnp3/outstation/IOutstationApplication.h"
 #include "outstation/OutstationChannelStates.h"
-#include "opendnp3/outstation/OutstationConfig.h"
 #include "outstation/OutstationSeqNum.h"
 #include "outstation/OutstationStates.h"
 #include "outstation/ParsedRequest.h"
@@ -41,6 +32,18 @@
 #include "outstation/ResponseContext.h"
 #include "outstation/TimeSyncState.h"
 #include "outstation/event/EventBuffer.h"
+
+#include "opendnp3/gen/SecurityStatIndex.h"
+#include "opendnp3/link/Addresses.h"
+#include "opendnp3/outstation/ICommandHandler.h"
+#include "opendnp3/outstation/IOutstationApplication.h"
+#include "opendnp3/outstation/OutstationConfig.h"
+
+#include <ser4cpp/container/Pair.h>
+
+#include <exe4cpp/IExecutor.h>
+
+#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {

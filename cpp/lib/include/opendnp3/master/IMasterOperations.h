@@ -20,10 +20,8 @@
 #ifndef OPENDNP3_IMASTEROPERATIONS_H
 #define OPENDNP3_IMASTEROPERATIONS_H
 
-#include <log4cpp/LogLevels.h>
-
-#include "opendnp3/TimeDuration.h"
 #include "opendnp3/StackStatistics.h"
+#include "opendnp3/TimeDuration.h"
 #include "opendnp3/app/ClassField.h"
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/gen/FunctionCode.h"
@@ -33,6 +31,8 @@
 #include "opendnp3/master/IMasterScan.h"
 #include "opendnp3/master/RestartOperationResult.h"
 #include "opendnp3/master/TaskConfig.h"
+
+#include <log4cpp/LogLevels.h>
 
 #include <memory>
 #include <string>
@@ -69,8 +69,7 @@ public:
      */
     virtual std::shared_ptr<IMasterScan> AddAllObjectsScan(GroupVariationID gvId,
                                                            TimeDuration period,
-                                                           const TaskConfig& config
-                                                           = TaskConfig::Default())
+                                                           const TaskConfig& config = TaskConfig::Default())
         = 0;
 
     /**
@@ -79,8 +78,7 @@ public:
      */
     virtual std::shared_ptr<IMasterScan> AddClassScan(const ClassField& field,
                                                       TimeDuration period,
-                                                      const TaskConfig& config
-                                                      = TaskConfig::Default())
+                                                      const TaskConfig& config = TaskConfig::Default())
         = 0;
 
     /**
@@ -91,30 +89,23 @@ public:
                                                       uint16_t start,
                                                       uint16_t stop,
                                                       TimeDuration period,
-                                                      const TaskConfig& config
-                                                      = TaskConfig::Default())
+                                                      const TaskConfig& config = TaskConfig::Default())
         = 0;
 
     /**
      * Initiate a single user defined scan via a vector of headers
      */
-    virtual void Scan(const std::vector<Header>& headers,
-                      const TaskConfig& config = TaskConfig::Default())
-        = 0;
+    virtual void Scan(const std::vector<Header>& headers, const TaskConfig& config = TaskConfig::Default()) = 0;
 
     /**
      * Initiate a single scan that requests all objects (0x06 qualifier code) for a certain group and variation
      */
-    virtual void ScanAllObjects(GroupVariationID gvId,
-                                const TaskConfig& config = TaskConfig::Default())
-        = 0;
+    virtual void ScanAllObjects(GroupVariationID gvId, const TaskConfig& config = TaskConfig::Default()) = 0;
 
     /**
      * Initiate a single class-based scan
      */
-    virtual void ScanClasses(const ClassField& field,
-                             const TaskConfig& config = TaskConfig::Default())
-        = 0;
+    virtual void ScanClasses(const ClassField& field, const TaskConfig& config = TaskConfig::Default()) = 0;
     /**
      * Initiate a single start/stop (range) scan
      */
@@ -127,9 +118,7 @@ public:
     /**
      * Write a time and interval object to a specific index
      */
-    virtual void Write(const TimeAndInterval& value,
-                       uint16_t index,
-                       const TaskConfig& config = TaskConfig::Default())
+    virtual void Write(const TimeAndInterval& value, uint16_t index, const TaskConfig& config = TaskConfig::Default())
         = 0;
 
     /**

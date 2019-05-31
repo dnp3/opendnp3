@@ -20,13 +20,14 @@
 #ifndef OPENDNP3_WRITEHANDLER_H
 #define OPENDNP3_WRITEHANDLER_H
 
-#include "opendnp3/Timestamp.h"
-#include <log4cpp/Logger.h>
-
-#include "opendnp3/app/IINField.h"
 #include "app/parsing/IAPDUHandler.h"
-#include "opendnp3/outstation/IOutstationApplication.h"
 #include "outstation/TimeSyncState.h"
+
+#include "opendnp3/Timestamp.h"
+#include "opendnp3/app/IINField.h"
+#include "opendnp3/outstation/IOutstationApplication.h"
+
+#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {

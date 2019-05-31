@@ -20,12 +20,13 @@
 #ifndef OPENDNP3_STATICBUFFERS_H
 #define OPENDNP3_STATICBUFFERS_H
 
-#include <ser4cpp/container/Array.h>
-#include "opendnp3/Uncopyable.h"
-
-#include "opendnp3/outstation/Cell.h"
 #include "outstation/DatabaseConfigView.h"
+
+#include "opendnp3/Uncopyable.h"
+#include "opendnp3/outstation/Cell.h"
 #include "opendnp3/outstation/DatabaseSizes.h"
+
+#include <ser4cpp/container/Array.h>
 
 namespace opendnp3
 {

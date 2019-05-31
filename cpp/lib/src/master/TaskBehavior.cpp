@@ -32,8 +32,8 @@ TaskBehavior TaskBehavior::SingleExecutionNoRetry()
 
 TaskBehavior TaskBehavior::SingleExecutionNoRetry(const Timestamp& startExpiration)
 {
-    return TaskBehavior(TimeDuration::Min(),    // not periodic
-                        Timestamp::Min(), // run immediately
+    return TaskBehavior(TimeDuration::Min(), // not periodic
+                        Timestamp::Min(),    // run immediately
                         TimeDuration::Max(), TimeDuration::Max(), startExpiration);
 }
 
@@ -51,16 +51,16 @@ TaskBehavior TaskBehavior::ImmediatePeriodic(const TimeDuration& period,
 TaskBehavior TaskBehavior::SingleImmediateExecutionWithRetry(const TimeDuration& minRetryDelay,
                                                              const TimeDuration& maxRetryDelay)
 {
-    return TaskBehavior(TimeDuration::Min(),    // not periodic
-                        Timestamp::Min(), // run immediatey
+    return TaskBehavior(TimeDuration::Min(), // not periodic
+                        Timestamp::Min(),    // run immediatey
                         minRetryDelay, maxRetryDelay, Timestamp::Max());
 }
 
 TaskBehavior TaskBehavior::ReactsToIINOnly()
 {
-    return TaskBehavior(TimeDuration::Min(),    // not periodic
-                        Timestamp::Max(), // only run when needed
-                        TimeDuration::Max(),    // never retry
+    return TaskBehavior(TimeDuration::Min(), // not periodic
+                        Timestamp::Max(),    // only run when needed
+                        TimeDuration::Max(), // never retry
                         TimeDuration::Max(), Timestamp::Max());
 }
 

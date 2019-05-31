@@ -20,10 +20,9 @@
 #include "EnableUnsolicitedTask.h"
 
 #include "MasterTasks.h"
+#include "app/APDUBuilders.h"
 
 #include <exe4cpp/IExecutor.h>
-
-#include "app/APDUBuilders.h"
 
 namespace opendnp3
 {

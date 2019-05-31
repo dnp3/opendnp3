@@ -20,9 +20,9 @@
 
 #include "channel/IOHandler.h"
 
-#include <log4cpp/LogMacros.h>
-
 #include "opendnp3/LogLevels.h"
+
+#include <log4cpp/LogMacros.h>
 
 #include <utility>
 

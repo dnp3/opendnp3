@@ -19,12 +19,13 @@
  */
 #include "CommandTask.h"
 
-#include <log4cpp/LogMacros.h>
-
-#include "opendnp3/LogLevels.h"
 #include "app/parsing/APDUParser.h"
 #include "master/CommandSetOps.h"
 #include "master/ICommandHeader.h"
+
+#include "opendnp3/LogLevels.h"
+
+#include <log4cpp/LogMacros.h>
 
 #include <utility>
 

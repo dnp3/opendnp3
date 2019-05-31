@@ -62,20 +62,18 @@ ForEachMacros:
   - BOOST_FOREACH
 IncludeBlocks: Regroup
 IncludeCategories:
-  - Regex:           '^(<|")openpal/'
+  - Regex:           '^(<|")opendnp3/' # Public headers
+    Priority:        5
+  - Regex:           '^<ser4cpp/'
     Priority:        10
-  - Regex:           '^(<|")asiopal/'
+  - Regex:           '^<exe4cpp/'
     Priority:        11
-  - Regex:           '^(<|")opendnp3/'
+  - Regex:           '^<log4cpp/'
     Priority:        12
-  - Regex:           '^(<|")asiodnp3/'
-    Priority:        13
-  - Regex:           '^(<|")dnp3decode/'
-    Priority:        14
   - Regex:           '^(<|")dnp3mocks/'
-    Priority:        15
+    Priority:        13
   - Regex:           '^(<|")testlib/'
-    Priority:        16
+    Priority:        14
   - Regex:           '<(.+)\.(h|hpp)' # Other external includes
     Priority:        50
   - Regex:           '<[([:alnum:]|_).]+>' # System include

@@ -20,14 +20,14 @@
 #ifndef OPENDNP3_SERIALIOHANDLER_H
 #define OPENDNP3_SERIALIOHANDLER_H
 
-#include <exe4cpp/Timer.h>
+#include "channel/IOHandler.h"
+#include "channel/SerialChannel.h"
 
 #include "opendnp3/channel/ChannelRetry.h"
 #include "opendnp3/channel/IPEndpoint.h"
-#include "channel/SerialChannel.h"
 #include "opendnp3/channel/SerialSettings.h"
 
-#include "channel/IOHandler.h"
+#include <exe4cpp/Timer.h>
 
 namespace opendnp3
 {

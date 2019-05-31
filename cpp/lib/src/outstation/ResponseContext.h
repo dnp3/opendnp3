@@ -20,12 +20,12 @@
 #ifndef OPENDNP3_RESPONSECONTEXT_H
 #define OPENDNP3_RESPONSECONTEXT_H
 
-#include "opendnp3/Uncopyable.h"
-
 #include "app/AppControlField.h"
 #include "app/HeaderWriter.h"
 #include "app/Range.h"
 #include "outstation/IResponseLoader.h"
+
+#include "opendnp3/Uncopyable.h"
 
 namespace opendnp3
 {

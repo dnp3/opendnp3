@@ -22,6 +22,7 @@
 
 #include "app/APDURequest.h"
 #include "app/APDUResponse.h"
+
 #include "opendnp3/app/ClassField.h"
 
 namespace opendnp3

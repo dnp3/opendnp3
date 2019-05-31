@@ -21,10 +21,11 @@
 #define OPENDNP3_RESTART_OPERATION_TASK_H
 
 #include "app/parsing/IAPDUHandler.h"
-#include "opendnp3/gen/RestartType.h"
 #include "master/IMasterTask.h"
-#include "opendnp3/master/RestartOperationResult.h"
 #include "master/TaskPriority.h"
+
+#include "opendnp3/gen/RestartType.h"
+#include "opendnp3/master/RestartOperationResult.h"
 
 namespace opendnp3
 {

@@ -19,12 +19,12 @@
  */
 #include "SerialTimeSyncTask.h"
 
-#include <ser4cpp/serialization/LittleEndian.h>
-
 #include "app/APDUBuilders.h"
 #include "app/parsing/APDUParser.h"
-#include "master/TimeSyncHandler.h"
 #include "gen/objects/Group50.h"
+#include "master/TimeSyncHandler.h"
+
+#include <ser4cpp/serialization/LittleEndian.h>
 
 namespace opendnp3
 {

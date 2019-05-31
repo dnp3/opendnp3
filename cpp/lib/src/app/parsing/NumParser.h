@@ -20,11 +20,12 @@
 #ifndef OPENDNP3_NUMPARSER_H
 #define OPENDNP3_NUMPARSER_H
 
-#include <ser4cpp/container/SequenceTypes.h>
-#include <log4cpp/Logger.h>
-
 #include "app/Range.h"
 #include "app/parsing/ParseResult.h"
+
+#include <ser4cpp/container/SequenceTypes.h>
+
+#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {

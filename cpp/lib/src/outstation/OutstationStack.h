@@ -20,15 +20,15 @@
 #ifndef OPENDNP3_OUTSTATIONSTACK_H
 #define OPENDNP3_OUTSTATIONSTACK_H
 
-#include <exe4cpp/IExecutor.h>
-
+#include "StackBase.h"
+#include "channel/IOHandler.h"
 #include "outstation/OutstationContext.h"
 #include "transport/TransportStack.h"
 
-#include "channel/IOHandler.h"
 #include "opendnp3/outstation/IOutstation.h"
 #include "opendnp3/outstation/OutstationStackConfig.h"
-#include "StackBase.h"
+
+#include <exe4cpp/IExecutor.h>
 
 namespace opendnp3
 {

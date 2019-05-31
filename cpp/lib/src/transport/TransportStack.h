@@ -20,9 +20,10 @@
 #ifndef OPENDNP3_TRANSPORTSTACK_H
 #define OPENDNP3_TRANSPORTSTACK_H
 
-#include "opendnp3/link/ILinkListener.h"
 #include "link/LinkLayer.h"
 #include "transport/TransportLayer.h"
+
+#include "opendnp3/link/ILinkListener.h"
 
 namespace opendnp3
 {

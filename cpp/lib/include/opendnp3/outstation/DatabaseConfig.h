@@ -20,10 +20,10 @@
 #ifndef OPENDNP3_DATABASECONFIG_H
 #define OPENDNP3_DATABASECONFIG_H
 
-#include <ser4cpp/container/Array.h>
-
 #include "opendnp3/outstation/DatabaseSizes.h"
 #include "opendnp3/outstation/MeasurementConfig.h"
+
+#include <ser4cpp/container/Array.h>
 
 namespace opendnp3
 {

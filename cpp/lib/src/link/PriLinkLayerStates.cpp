@@ -19,10 +19,11 @@
  */
 #include "PriLinkLayerStates.h"
 
-#include <log4cpp/LogMacros.h>
+#include "link/LinkLayer.h"
 
 #include "opendnp3/LogLevels.h"
-#include "link/LinkLayer.h"
+
+#include <log4cpp/LogMacros.h>
 
 namespace opendnp3
 {

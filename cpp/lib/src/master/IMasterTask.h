@@ -20,16 +20,18 @@
 #ifndef OPENDNP3_IMASTERTASK_H
 #define OPENDNP3_IMASTERTASK_H
 
-#include <exe4cpp/IExecutor.h>
-#include <exe4cpp/Typedefs.h>
-#include <log4cpp/Logger.h>
-
 #include "app/APDUHeader.h"
 #include "app/APDURequest.h"
-#include "opendnp3/master/IMasterApplication.h"
 #include "master/TaskBehavior.h"
-#include "opendnp3/master/TaskConfig.h"
 #include "master/TaskContext.h"
+
+#include "opendnp3/master/IMasterApplication.h"
+#include "opendnp3/master/TaskConfig.h"
+
+#include <exe4cpp/IExecutor.h>
+#include <exe4cpp/Typedefs.h>
+
+#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {
@@ -110,9 +112,7 @@ public:
     /**
      * Handler for responses
      */
-    ResponseResult OnResponse(const APDUResponseHeader& response,
-                              const ser4cpp::rseq_t& objects,
-                              Timestamp now);
+    ResponseResult OnResponse(const APDUResponseHeader& response, const ser4cpp::rseq_t& objects, Timestamp now);
 
     /**
      * Called when a response times out

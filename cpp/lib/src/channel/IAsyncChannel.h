@@ -20,11 +20,13 @@
 #ifndef OPENDNP3_IASYNCCHANNEL_H
 #define OPENDNP3_IASYNCCHANNEL_H
 
-#include <ser4cpp/container/SequenceTypes.h>
+#include "channel/IChannelCallbacks.h"
+
 #include "opendnp3/Uncopyable.h"
 
+#include <ser4cpp/container/SequenceTypes.h>
+
 #include <exe4cpp/asio/StrandExecutor.h>
-#include "channel/IChannelCallbacks.h"
 
 #include <cassert>
 #include <memory>

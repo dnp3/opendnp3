@@ -20,9 +20,9 @@
 
 #include "channel/SerialIOHandler.h"
 
-#include <log4cpp/LogMacros.h>
-
 #include "opendnp3/LogLevels.h"
+
+#include <log4cpp/LogMacros.h>
 
 #include <utility>
 
@@ -34,10 +34,7 @@ SerialIOHandler::SerialIOHandler(const log4cpp::Logger& logger,
                                  const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                  const ChannelRetry& retry,
                                  SerialSettings settings)
-    : IOHandler(logger, false, listener),
-      executor(executor),
-      retry(retry),
-      settings(std::move(settings))
+    : IOHandler(logger, false, listener), executor(executor), retry(retry), settings(std::move(settings))
 {
 }
 

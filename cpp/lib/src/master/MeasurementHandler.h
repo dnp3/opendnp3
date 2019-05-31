@@ -20,16 +20,17 @@
 #ifndef OPENDNP3_MEASUREMENTHANDLER_H
 #define OPENDNP3_MEASUREMENTHANDLER_H
 
-#include <log4cpp/LogMacros.h>
-#include <log4cpp/Logger.h>
-
-#include "opendnp3/LogLevels.h"
 #include "app/APDUHeader.h"
 #include "app/parsing/Collections.h"
 #include "app/parsing/IAPDUHandler.h"
 #include "app/parsing/ParseResult.h"
+
+#include "opendnp3/LogLevels.h"
 #include "opendnp3/gen/Attributes.h"
 #include "opendnp3/master/ISOEHandler.h"
+
+#include <log4cpp/LogMacros.h>
+#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {

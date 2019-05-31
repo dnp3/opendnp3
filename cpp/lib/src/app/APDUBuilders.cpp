@@ -19,10 +19,11 @@
  */
 #include "APDUBuilders.h"
 
-#include <ser4cpp/serialization/LittleEndian.h>
+#include "gen/objects/Group60.h"
 
 #include "opendnp3/app/IINField.h"
-#include "gen/objects/Group60.h"
+
+#include <ser4cpp/serialization/LittleEndian.h>
 
 namespace opendnp3
 {

@@ -20,8 +20,9 @@
 #ifndef OPENDNP3_CONVERSIONS_H
 #define OPENDNP3_CONVERSIONS_H
 
-#include "opendnp3/master/HeaderTypes.h"
 #include "master/HeaderBuilder.h"
+
+#include "opendnp3/master/HeaderTypes.h"
 
 #include <vector>
 

@@ -19,11 +19,12 @@
  */
 #include "ClearRestartTask.h"
 
-#include <log4cpp/LogMacros.h>
-
-#include "opendnp3/LogLevels.h"
 #include "app/APDUBuilders.h"
 #include "master/MasterTasks.h"
+
+#include "opendnp3/LogLevels.h"
+
+#include <log4cpp/LogMacros.h>
 
 namespace opendnp3
 {

@@ -25,27 +25,27 @@ namespace opendnp3
 
 const char* LogFlagToString(const log4cpp::LogLevel& flag)
 {
-    if(flag == flags::EVENT)
+    if (flag == flags::EVENT)
         return "EVENT  ";
-    else if(flag == flags::ERR)
+    else if (flag == flags::ERR)
         return "ERROR  ";
-    else if(flag == flags::WARN)
+    else if (flag == flags::WARN)
         return "WARN   ";
-    else if(flag == flags::INFO)
+    else if (flag == flags::INFO)
         return "INFO   ";
-    else if(flag == flags::DBG)
+    else if (flag == flags::DBG)
         return "DEBUG  ";
-    else if(flag == flags::LINK_RX || flag == flags::LINK_RX_HEX)
+    else if (flag == flags::LINK_RX || flag == flags::LINK_RX_HEX)
         return "<-LL-- ";
-    else if(flag == flags::LINK_TX || flag == flags::LINK_TX_HEX)
+    else if (flag == flags::LINK_TX || flag == flags::LINK_TX_HEX)
         return "--LL-> ";
-    else if(flag == flags::TRANSPORT_RX)
+    else if (flag == flags::TRANSPORT_RX)
         return "<-TL-- ";
-    else if(flag == flags::TRANSPORT_TX)
+    else if (flag == flags::TRANSPORT_TX)
         return "--TL-> ";
-    else if(flag == flags::APP_HEADER_RX || flag == flags::APP_OBJECT_RX || flag == flags::APP_HEX_RX)
+    else if (flag == flags::APP_HEADER_RX || flag == flags::APP_OBJECT_RX || flag == flags::APP_HEX_RX)
         return "<-AL-- ";
-    else if(flag == flags::APP_HEADER_TX || flag == flags::APP_OBJECT_TX || flag == flags::APP_HEX_TX)
+    else if (flag == flags::APP_HEADER_TX || flag == flags::APP_OBJECT_TX || flag == flags::APP_HEX_TX)
         return "--AL-> ";
     return "UNKNOWN";
 }

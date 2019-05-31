@@ -20,13 +20,14 @@
 #ifndef OPENDNP3_COMMAND_SET_OPS_H
 #define OPENDNP3_COMMAND_SET_OPS_H
 
-#include <log4cpp/Logger.h>
-
 #include "app/HeaderWriter.h"
 #include "app/parsing/IAPDUHandler.h"
+
 #include "opendnp3/gen/IndexQualifierMode.h"
 #include "opendnp3/master/CommandResultCallbackT.h"
 #include "opendnp3/master/CommandSet.h"
+
+#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {

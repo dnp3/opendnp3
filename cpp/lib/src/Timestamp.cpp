@@ -44,24 +44,15 @@ bool Timestamp::IsMin() const
     return value == exe4cpp::steady_time_t::min();
 }
 
-Timestamp::Timestamp()
-    : value(exe4cpp::steady_time_t::min())
-{
+Timestamp::Timestamp() : value(exe4cpp::steady_time_t::min()) {}
 
-}
-
-Timestamp::Timestamp(exe4cpp::steady_time_t value)
-    : value(value)
-{
-
-}
+Timestamp::Timestamp(exe4cpp::steady_time_t value) : value(value) {}
 
 Timestamp Timestamp::operator+(const TimeDuration& duration) const
 {
     const auto maximum = exe4cpp::steady_time_t::max() - value;
 
-    return duration.value >= maximum ? Timestamp::Max()
-                                     : Timestamp(value + duration.value);
+    return duration.value >= maximum ? Timestamp::Max() : Timestamp(value + duration.value);
 }
 
 Timestamp& Timestamp::operator+=(const TimeDuration& duration)
@@ -75,8 +66,7 @@ Timestamp Timestamp::operator-(const TimeDuration& duration) const
 {
     const auto maximum = value - exe4cpp::steady_time_t::min();
 
-    return duration.value >= maximum ? Timestamp::Min()
-                                     : Timestamp(value - duration.value);
+    return duration.value >= maximum ? Timestamp::Min() : Timestamp(value - duration.value);
 }
 
 Timestamp& Timestamp::operator-=(const TimeDuration& duration)

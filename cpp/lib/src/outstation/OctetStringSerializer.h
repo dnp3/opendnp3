@@ -22,6 +22,7 @@
 #define OPENDNP3_OCTETSTRINGSERIALIZER_H
 
 #include "app/DNP3Serializer.h"
+
 #include "opendnp3/app/OctetString.h"
 
 namespace opendnp3

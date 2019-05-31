@@ -20,12 +20,11 @@
 #ifndef OPENDNP3_STATICWRITERS_H
 #define OPENDNP3_STATICWRITERS_H
 
-#include <ser4cpp/container/ArrayView.h>
-#include "opendnp3/Uncopyable.h"
-
 #include "app/HeaderWriter.h"
-#include "opendnp3/app/MeasurementTypeSpecs.h"
 #include "app/Range.h"
+
+#include "opendnp3/Uncopyable.h"
+#include "opendnp3/app/MeasurementTypeSpecs.h"
 #include "opendnp3/gen/StaticAnalogOutputStatusVariation.h"
 #include "opendnp3/gen/StaticAnalogVariation.h"
 #include "opendnp3/gen/StaticBinaryOutputStatusVariation.h"
@@ -34,6 +33,8 @@
 #include "opendnp3/gen/StaticDoubleBinaryVariation.h"
 #include "opendnp3/gen/StaticFrozenCounterVariation.h"
 #include "opendnp3/outstation/Cell.h"
+
+#include <ser4cpp/container/ArrayView.h>
 
 namespace opendnp3
 {

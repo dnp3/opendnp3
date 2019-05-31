@@ -19,8 +19,6 @@
  */
 #include "RangeParser.h"
 
-#include <log4cpp/LogMacros.h>
-
 #include "app/parsing/BufferedCollection.h"
 #include "gen/objects/Group1.h"
 #include "gen/objects/Group10.h"
@@ -30,6 +28,8 @@
 #include "gen/objects/Group30.h"
 #include "gen/objects/Group40.h"
 #include "gen/objects/Group50.h"
+
+#include <log4cpp/LogMacros.h>
 
 namespace opendnp3
 {

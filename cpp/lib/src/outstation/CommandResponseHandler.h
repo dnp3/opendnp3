@@ -20,11 +20,11 @@
 #ifndef OPENDNP3_COMMANDRESPONSEHANDLER_H
 #define OPENDNP3_COMMANDRESPONSEHANDLER_H
 
-#include <log4cpp/Logger.h>
-
 #include "app/APDUResponse.h"
 #include "app/parsing/IAPDUHandler.h"
 #include "outstation/ICommandAction.h"
+
+#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {

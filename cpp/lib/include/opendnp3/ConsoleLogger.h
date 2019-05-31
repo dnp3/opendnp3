@@ -20,8 +20,9 @@
 #ifndef OPENDNP3_CONSOLELOGGER_H
 #define OPENDNP3_CONSOLELOGGER_H
 
-#include <log4cpp/ILogHandler.h>
 #include "opendnp3/Uncopyable.h"
+
+#include <log4cpp/ILogHandler.h>
 
 #include <memory>
 #include <mutex>
@@ -38,7 +39,11 @@ class ConsoleLogger final : public log4cpp::ILogHandler, private Uncopyable
 {
 
 public:
-    void log(log4cpp::ModuleId module, const char* id, log4cpp::LogLevel level, char const* location, char const* message) final;
+    void log(log4cpp::ModuleId module,
+             const char* id,
+             log4cpp::LogLevel level,
+             char const* location,
+             char const* message) final;
 
     static std::shared_ptr<log4cpp::ILogHandler> Create(bool printLocation = false)
     {

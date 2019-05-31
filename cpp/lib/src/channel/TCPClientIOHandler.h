@@ -20,14 +20,14 @@
 #ifndef OPENDNP3_TCPCLIENTIOHANDLER_H
 #define OPENDNP3_TCPCLIENTIOHANDLER_H
 
-#include <exe4cpp/Timer.h>
+#include "channel/IOHandler.h"
+#include "channel/IPEndpointsList.h"
+#include "channel/TCPClient.h"
 
 #include "opendnp3/channel/ChannelRetry.h"
 #include "opendnp3/channel/IPEndpoint.h"
-#include "channel/TCPClient.h"
 
-#include "channel/IOHandler.h"
-#include "channel/IPEndpointsList.h"
+#include <exe4cpp/Timer.h>
 
 namespace opendnp3
 {

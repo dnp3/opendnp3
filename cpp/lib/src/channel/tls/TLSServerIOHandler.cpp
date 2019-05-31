@@ -20,11 +20,11 @@
 
 #include "channel/tls/TLSServerIOHandler.h"
 
-#include <log4cpp/LogMacros.h>
-
 #include "channel/tls/TLSStreamChannel.h"
 
 #include "opendnp3/LogLevels.h"
+
+#include <log4cpp/LogMacros.h>
 
 #include <utility>
 

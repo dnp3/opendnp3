@@ -21,11 +21,11 @@
 
 #include "TransportHeader.h"
 
-#include <log4cpp/LogMacros.h>
+#include "opendnp3/LogLevels.h"
 
 #include <ser4cpp/serialization/LittleEndian.h>
 
-#include "opendnp3/LogLevels.h"
+#include <log4cpp/LogMacros.h>
 
 #include <cassert>
 

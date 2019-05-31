@@ -20,9 +20,9 @@
 
 #include "opendnp3/master/CommandSet.h"
 
-#include "master/TypedCommandHeader.h"
 #include "gen/objects/Group12.h"
 #include "gen/objects/Group41.h"
+#include "master/TypedCommandHeader.h"
 
 namespace opendnp3
 {

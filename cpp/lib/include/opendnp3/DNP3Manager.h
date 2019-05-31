@@ -20,22 +20,20 @@
 #ifndef OPENDNP3_DNP3MANAGER_H
 #define OPENDNP3_DNP3MANAGER_H
 
-#include <log4cpp/ILogHandler.h>
-#include <log4cpp/LogLevels.h>
-
 #include "opendnp3/TimeDuration.h"
 #include "opendnp3/channel/ChannelRetry.h"
+#include "opendnp3/channel/IChannel.h"
+#include "opendnp3/channel/IChannelListener.h"
 #include "opendnp3/channel/IListener.h"
 #include "opendnp3/channel/IPEndpoint.h"
 #include "opendnp3/channel/SerialSettings.h"
 #include "opendnp3/channel/TLSConfig.h"
-
 #include "opendnp3/gen/ChannelState.h"
 #include "opendnp3/gen/ServerAcceptMode.h"
-
-#include "opendnp3/channel/IChannel.h"
-#include "opendnp3/channel/IChannelListener.h"
 #include "opendnp3/master/IListenCallbacks.h"
+
+#include <log4cpp/ILogHandler.h>
+#include <log4cpp/LogLevels.h>
 
 #include <memory>
 #include <system_error>
@@ -179,20 +177,20 @@ public:
      * Create a TCP listener that will be used to accept incoming connections
      */
     std::shared_ptr<IListener> CreateListener(std::string loggerid,
-                                                       const log4cpp::LogLevels& loglevel,
-                                                       IPEndpoint endpoint,
-                                                       const std::shared_ptr<IListenCallbacks>& callbacks,
-                                                       std::error_code& ec);
+                                              const log4cpp::LogLevels& loglevel,
+                                              IPEndpoint endpoint,
+                                              const std::shared_ptr<IListenCallbacks>& callbacks,
+                                              std::error_code& ec);
 
     /**
      * Create a TLS listener that will be used to accept incoming connections
      */
     std::shared_ptr<IListener> CreateListener(std::string loggerid,
-                                                       const log4cpp::LogLevels& loglevel,
-                                                       IPEndpoint endpoint,
-                                                       const TLSConfig& config,
-                                                       const std::shared_ptr<IListenCallbacks>& callbacks,
-                                                       std::error_code& ec);
+                                              const log4cpp::LogLevels& loglevel,
+                                              IPEndpoint endpoint,
+                                              const TLSConfig& config,
+                                              const std::shared_ptr<IListenCallbacks>& callbacks,
+                                              std::error_code& ec);
 
 private:
     std::unique_ptr<DNP3ManagerImpl> impl;

@@ -20,9 +20,10 @@
 #ifndef OPENDNP3_IEVENTRECEIVER_H
 #define OPENDNP3_IEVENTRECEIVER_H
 
+#include "outstation/Event.h"
+
 #include "opendnp3/app/MeasurementTypeSpecs.h"
 #include "opendnp3/app/SecurityStat.h"
-#include "outstation/Event.h"
 
 namespace opendnp3
 {

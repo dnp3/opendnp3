@@ -20,9 +20,9 @@
 #ifndef OPENDNP3_IVARIABLELENGTH_H
 #define OPENDNP3_IVARIABLELENGTH_H
 
-#include <ser4cpp/container/SequenceTypes.h>
-
 #include "opendnp3/app/GroupVariationID.h"
+
+#include <ser4cpp/container/SequenceTypes.h>
 
 namespace opendnp3
 {

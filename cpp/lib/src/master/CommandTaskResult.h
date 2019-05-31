@@ -22,7 +22,6 @@
 #define OPENDNP3_COMMAND_TASK_RESULT_H
 
 #include "opendnp3/Uncopyable.h"
-
 #include "opendnp3/master/CommandSet.h"
 #include "opendnp3/master/ICommandTaskResult.h"
 

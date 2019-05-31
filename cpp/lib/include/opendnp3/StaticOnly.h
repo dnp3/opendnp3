@@ -32,6 +32,6 @@ private:
     StaticOnly& operator=(const StaticOnly&) = delete;
 };
 
-}
+} // namespace opendnp3
 
 #endif

@@ -21,12 +21,12 @@
 #define OPENDNP3_EVENTBUFFER_H
 
 #include "EventStorage.h"
-
-#include "opendnp3/app/ClassField.h"
-#include "opendnp3/outstation/EventBufferConfig.h"
 #include "outstation/IEventReceiver.h"
 #include "outstation/IEventSelector.h"
 #include "outstation/IResponseLoader.h"
+
+#include "opendnp3/app/ClassField.h"
+#include "opendnp3/outstation/EventBufferConfig.h"
 
 namespace opendnp3
 {

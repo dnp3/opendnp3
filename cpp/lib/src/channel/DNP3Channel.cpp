@@ -19,13 +19,13 @@
  */
 #include "channel/DNP3Channel.h"
 
+#include "master/MasterSchedulerBackend.h"
 #include "master/MasterStack.h"
 #include "outstation/OutstationStack.h"
 
-#include <log4cpp/LogMacros.h>
-
 #include "opendnp3/LogLevels.h"
-#include "master/MasterSchedulerBackend.h"
+
+#include <log4cpp/LogMacros.h>
 
 #include <utility>
 

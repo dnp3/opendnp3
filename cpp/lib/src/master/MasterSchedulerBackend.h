@@ -20,10 +20,10 @@
 #ifndef OPENDNP3_MASTERSCHEDULERBACKEND_H
 #define OPENDNP3_MASTERSCHEDULERBACKEND_H
 
-#include <exe4cpp/Timer.h>
-
 #include "master/IMasterScheduler.h"
 #include "master/IMasterTaskRunner.h"
+
+#include <exe4cpp/Timer.h>
 
 #include <memory>
 #include <vector>

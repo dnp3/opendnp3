@@ -19,8 +19,6 @@
  */
 #include "CountIndexParser.h"
 
-#include <log4cpp/LogMacros.h>
-
 #include "app/parsing/BufferedCollection.h"
 #include "gen/objects/Group11.h"
 #include "gen/objects/Group12.h"
@@ -33,6 +31,8 @@
 #include "gen/objects/Group41.h"
 #include "gen/objects/Group42.h"
 #include "gen/objects/Group43.h"
+
+#include <log4cpp/LogMacros.h>
 
 namespace opendnp3
 {

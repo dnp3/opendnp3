@@ -21,12 +21,13 @@
 #define OPENDNP3_TYPED_COMMAND_HEADER_H
 
 #include "app/HeaderWriter.h"
+#include "master/ICommandHeader.h"
+
 #include "opendnp3/app/Indexed.h"
 #include "opendnp3/app/parsing/ICollection.h"
 #include "opendnp3/gen/CommandPointState.h"
 #include "opendnp3/gen/CommandStatus.h"
 #include "opendnp3/master/ICommandCollection.h"
-#include "master/ICommandHeader.h"
 
 #include <algorithm>
 #include <vector>

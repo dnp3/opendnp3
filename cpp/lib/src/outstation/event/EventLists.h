@@ -25,7 +25,6 @@
 #include "TypedEventRecord.h"
 
 #include "opendnp3/Uncopyable.h"
-
 #include "opendnp3/app/MeasurementTypeSpecs.h"
 #include "opendnp3/outstation/EventBufferConfig.h"
 

@@ -21,10 +21,11 @@
 #ifndef OPENDNP3_PARSEDEREQUEST_H
 #define OPENDNP3_PARSEDEREQUEST_H
 
-#include <ser4cpp/container/SequenceTypes.h>
-
 #include "app/APDUHeader.h"
+
 #include "opendnp3/link/Addresses.h"
+
+#include <ser4cpp/container/SequenceTypes.h>
 
 namespace opendnp3
 {

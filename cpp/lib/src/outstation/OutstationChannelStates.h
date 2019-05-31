@@ -20,10 +20,10 @@
 #ifndef OPENDNP3_OUTSTATIONCHANNEL_STATES_H
 #define OPENDNP3_OUTSTATIONCHANNEL_STATES_H
 
-#include "opendnp3/Uncopyable.h"
-
 #include "app/TxBuffer.h"
 #include "outstation/OutstationSeqNum.h"
+
+#include "opendnp3/Uncopyable.h"
 
 namespace opendnp3
 {

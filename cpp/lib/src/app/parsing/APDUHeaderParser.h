@@ -20,11 +20,13 @@
 #ifndef OPENDNP3_APDUHEADERPARSER_H
 #define OPENDNP3_APDUHEADERPARSER_H
 
-#include <ser4cpp/container/SequenceTypes.h>
-#include <log4cpp/Logger.h>
+#include "app/APDUHeader.h"
+
 #include "opendnp3/StaticOnly.h"
 
-#include "app/APDUHeader.h"
+#include <ser4cpp/container/SequenceTypes.h>
+
+#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {

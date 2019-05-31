@@ -20,13 +20,13 @@
 #include "StartupIntegrityPoll.h"
 
 #include "MasterTasks.h"
-
-#include <log4cpp/LogMacros.h>
-
-#include "opendnp3/LogLevels.h"
 #include "app/APDUBuilders.h"
 #include "app/parsing/APDUParser.h"
 #include "master/MeasurementHandler.h"
+
+#include "opendnp3/LogLevels.h"
+
+#include <log4cpp/LogMacros.h>
 
 namespace opendnp3
 {

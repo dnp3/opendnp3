@@ -53,9 +53,11 @@ public:
     }
 };
 
-template<class Source, class Target> const Target DownSampling<Source, Target>::TARGET_MAX(std::numeric_limits<Target>::max());
+template<class Source, class Target>
+const Target DownSampling<Source, Target>::TARGET_MAX(std::numeric_limits<Target>::max());
 
-template<class Source, class Target> const Target DownSampling<Source, Target>::TARGET_MIN(std::numeric_limits<Target>::min());
+template<class Source, class Target>
+const Target DownSampling<Source, Target>::TARGET_MIN(std::numeric_limits<Target>::min());
 
 } // namespace opendnp3
 

@@ -20,9 +20,9 @@
 #ifndef OPENDNP3_OUTSTATIONSTATES_H
 #define OPENDNP3_OUTSTATIONSTATES_H
 
-#include "opendnp3/Uncopyable.h"
-
 #include "outstation/ParsedRequest.h"
+
+#include "opendnp3/Uncopyable.h"
 
 namespace opendnp3
 {

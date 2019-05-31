@@ -19,11 +19,12 @@
  */
 #include "LinkLayerParser.h"
 
-#include <log4cpp/LogMacros.h>
-
-#include "opendnp3/LogLevels.h"
 #include "link/CRC.h"
 #include "link/IFrameSink.h"
+
+#include "opendnp3/LogLevels.h"
+
+#include <log4cpp/LogMacros.h>
 
 namespace opendnp3
 {

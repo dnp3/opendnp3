@@ -20,11 +20,12 @@
 #ifndef OPENDNP3_SECLINKLAYERSTATES_H
 #define OPENDNP3_SECLINKLAYERSTATES_H
 
-#include <log4cpp/LogMacros.h>
-
-#include "opendnp3/LogLevels.h"
 #include "link/LinkContext.h"
 #include "link/Singleton.h"
+
+#include "opendnp3/LogLevels.h"
+
+#include <log4cpp/LogMacros.h>
 
 namespace opendnp3
 {

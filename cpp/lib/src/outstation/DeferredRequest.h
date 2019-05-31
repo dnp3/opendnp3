@@ -22,8 +22,9 @@
 
 #include "ParsedRequest.h"
 
-#include <ser4cpp/container/Buffer.h>
 #include "opendnp3/Uncopyable.h"
+
+#include <ser4cpp/container/Buffer.h>
 
 namespace opendnp3
 {

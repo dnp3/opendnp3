@@ -20,9 +20,9 @@
 #ifndef OPENDNP3_WRITECONVERSIONTEMPLATES_H
 #define OPENDNP3_WRITECONVERSIONTEMPLATES_H
 
-#include "opendnp3/Uncopyable.h"
-
 #include "app/DownSampling.h"
+
+#include "opendnp3/Uncopyable.h"
 
 #include <cstdint>
 

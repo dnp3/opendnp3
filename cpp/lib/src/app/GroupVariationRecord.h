@@ -20,9 +20,9 @@
 #ifndef OPENDNP3_GROUPVARIATIONRECORD_H
 #define OPENDNP3_GROUPVARIATIONRECORD_H
 
-#include "opendnp3/Uncopyable.h"
-
 #include "app/Range.h"
+
+#include "opendnp3/Uncopyable.h"
 #include "opendnp3/gen/GroupVariation.h"
 #include "opendnp3/gen/QualifierCode.h"
 #include "opendnp3/gen/TimestampMode.h"

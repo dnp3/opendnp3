@@ -95,20 +95,20 @@ std::shared_ptr<IChannel> DNP3Manager::AddTLSServer(const std::string& id,
 }
 
 std::shared_ptr<IListener> DNP3Manager::CreateListener(std::string loggerid,
-                                                                const log4cpp::LogLevels& loglevel,
-                                                                IPEndpoint endpoint,
-                                                                const std::shared_ptr<IListenCallbacks>& callbacks,
-                                                                std::error_code& ec)
+                                                       const log4cpp::LogLevels& loglevel,
+                                                       IPEndpoint endpoint,
+                                                       const std::shared_ptr<IListenCallbacks>& callbacks,
+                                                       std::error_code& ec)
 {
     return impl->CreateListener(std::move(loggerid), loglevel, std::move(endpoint), callbacks, ec);
 }
 
 std::shared_ptr<IListener> DNP3Manager::CreateListener(std::string loggerid,
-                                                                const log4cpp::LogLevels& loglevel,
-                                                                IPEndpoint endpoint,
-                                                                const TLSConfig& config,
-                                                                const std::shared_ptr<IListenCallbacks>& callbacks,
-                                                                std::error_code& ec)
+                                                       const log4cpp::LogLevels& loglevel,
+                                                       IPEndpoint endpoint,
+                                                       const TLSConfig& config,
+                                                       const std::shared_ptr<IListenCallbacks>& callbacks,
+                                                       std::error_code& ec)
 {
     return impl->CreateListener(std::move(loggerid), loglevel, std::move(endpoint), config, callbacks, ec);
 }

@@ -20,9 +20,9 @@
 
 #include "channel/tls/SSLContext.h"
 
-#include <log4cpp/LogMacros.h>
-
 #include "opendnp3/LogLevels.h"
+
+#include <log4cpp/LogMacros.h>
 
 namespace opendnp3
 {

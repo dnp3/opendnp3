@@ -20,10 +20,10 @@
 #ifndef OPENDNP3_DATABASECONFIGVIEW_H
 #define OPENDNP3_DATABASECONFIGVIEW_H
 
-#include <ser4cpp/container/ArrayView.h>
-
 #include "opendnp3/app/MeasurementTypeSpecs.h"
 #include "opendnp3/outstation/Cell.h"
+
+#include <ser4cpp/container/ArrayView.h>
 
 namespace opendnp3
 {

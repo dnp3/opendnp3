@@ -19,10 +19,11 @@
  */
 #include "PollTaskBase.h"
 
-#include <log4cpp/LogMacros.h>
+#include "master/MeasurementHandler.h"
 
 #include "opendnp3/LogLevels.h"
-#include "master/MeasurementHandler.h"
+
+#include <log4cpp/LogMacros.h>
 
 namespace opendnp3
 {

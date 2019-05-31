@@ -22,6 +22,7 @@
 
 #include "app/GroupVariationRecord.h"
 #include "app/Range.h"
+
 #include "opendnp3/gen/AssignClassType.h"
 #include "opendnp3/gen/PointClass.h"
 

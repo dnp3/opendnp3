@@ -23,13 +23,13 @@
 namespace opendnp3
 {
 
-/** 
+/**
  * Inherited classes will not have default copy/assignment.
-*/
+ */
 class Uncopyable
 {
 protected:
-    Uncopyable() = default; //allow construction/destruction/move
+    Uncopyable() = default; // allow construction/destruction/move
     Uncopyable(Uncopyable&&) = default;
     virtual ~Uncopyable() = default;
     Uncopyable& operator=(Uncopyable&&) = default;
@@ -40,6 +40,6 @@ private:
     Uncopyable& operator=(const Uncopyable&) = delete;
 };
 
-}
+} // namespace opendnp3
 
 #endif

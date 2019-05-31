@@ -20,13 +20,13 @@
 #ifndef OPENDNP3_STACKBASE_H
 #define OPENDNP3_STACKBASE_H
 
-#include <exe4cpp/asio/StrandExecutor.h>
 #include "IResourceManager.h"
-
+#include "channel/IOHandler.h"
 #include "transport/TransportStack.h"
 
-#include "channel/IOHandler.h"
 #include "opendnp3/IStack.h"
+
+#include <exe4cpp/asio/StrandExecutor.h>
 
 namespace opendnp3
 {

@@ -20,11 +20,13 @@
 #ifndef OPENDNP3_TLSCLIENT_H
 #define OPENDNP3_TLSCLIENT_H
 
-#include <exe4cpp/asio/StrandExecutor.h>
-#include "opendnp3/channel/IPEndpoint.h"
 #include "channel/LoggingConnectionCondition.h"
-#include "opendnp3/channel/TLSConfig.h"
 #include "channel/tls/SSLContext.h"
+
+#include "opendnp3/channel/IPEndpoint.h"
+#include "opendnp3/channel/TLSConfig.h"
+
+#include <exe4cpp/asio/StrandExecutor.h>
 
 #include <asio/ssl.hpp>
 

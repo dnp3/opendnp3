@@ -22,10 +22,11 @@
 #include "TransportConstants.h"
 #include "TransportHeader.h"
 
-#include <log4cpp/LogMacros.h>
+#include "opendnp3/LogLevels.h"
+
 #include <ser4cpp/util/HexConversions.h>
 
-#include "opendnp3/LogLevels.h"
+#include <log4cpp/LogMacros.h>
 
 #include <cstring>
 

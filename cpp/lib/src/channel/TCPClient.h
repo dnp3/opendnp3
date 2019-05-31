@@ -20,12 +20,12 @@
 #ifndef OPENDNP3_TCPCLIENT_H
 #define OPENDNP3_TCPCLIENT_H
 
-#include <exe4cpp/asio/StrandExecutor.h>
+#include "channel/LoggingConnectionCondition.h"
 
 #include "opendnp3/Uncopyable.h"
-
 #include "opendnp3/channel/IPEndpoint.h"
-#include "channel/LoggingConnectionCondition.h"
+
+#include <exe4cpp/asio/StrandExecutor.h>
 
 namespace opendnp3
 {
@@ -45,7 +45,9 @@ public:
         return std::make_shared<TCPClient>(logger, executor, adapter);
     }
 
-    TCPClient(const log4cpp::Logger& logger, const std::shared_ptr<exe4cpp::StrandExecutor>& executor, std::string adapter);
+    TCPClient(const log4cpp::Logger& logger,
+              const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
+              std::string adapter);
 
     bool Cancel();
 

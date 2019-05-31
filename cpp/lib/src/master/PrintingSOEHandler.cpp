@@ -111,8 +111,7 @@ void PrintingSOEHandler::Process(const HeaderInfo& /*info*/, const ICollection<I
     values.ForeachItem(print);
 }
 
-void PrintingSOEHandler::Process(const HeaderInfo& /*info*/,
-                                 const ICollection<DNPTime>& values)
+void PrintingSOEHandler::Process(const HeaderInfo& /*info*/, const ICollection<DNPTime>& values)
 {
     auto print = [](const DNPTime& value) { std::cout << "DNPTime: " << value << std::endl; };
 

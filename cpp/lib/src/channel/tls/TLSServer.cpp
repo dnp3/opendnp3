@@ -20,9 +20,9 @@
 
 #include "channel/tls/TLSServer.h"
 
-#include <log4cpp/LogMacros.h>
-
 #include "opendnp3/LogLevels.h"
+
+#include <log4cpp/LogMacros.h>
 
 #include <sstream>
 
@@ -88,8 +88,8 @@ void TLSServer::StartAccept(std::error_code& ec)
     auto self(shared_from_this());
 
     // this could be a unique_ptr once move semantics are supported in lambdas
-    auto stream = std::make_shared<asio::ssl::stream<asio::ip::tcp::socket>>(*this->executor->get_context(),
-                                                                             self->ctx.value);
+    auto stream
+        = std::make_shared<asio::ssl::stream<asio::ip::tcp::socket>>(*this->executor->get_context(), self->ctx.value);
 
     auto verify = [this, ID](bool preverified, asio::ssl::verify_context& ctx) {
         return this->VerifyCallback(ID, preverified, ctx);

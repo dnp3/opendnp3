@@ -20,9 +20,9 @@
 #ifndef OPENDNP3_ILINKTX_H
 #define OPENDNP3_ILINKTX_H
 
-#include <ser4cpp/container/SequenceTypes.h>
-
 #include "link/ILinkSession.h"
+
+#include <ser4cpp/container/SequenceTypes.h>
 
 namespace opendnp3
 {

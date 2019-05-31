@@ -20,13 +20,13 @@
 #ifndef OPENDNP3_TCPSERVER_H
 #define OPENDNP3_TCPSERVER_H
 
-#include <log4cpp/Logger.h>
 #include "opendnp3/Uncopyable.h"
+#include "opendnp3/channel/IListener.h"
+#include "opendnp3/channel/IPEndpoint.h"
 
 #include <exe4cpp/asio/StrandExecutor.h>
 
-#include "opendnp3/channel/IListener.h"
-#include "opendnp3/channel/IPEndpoint.h"
+#include <log4cpp/Logger.h>
 
 #include <memory>
 
@@ -55,7 +55,9 @@ protected:
 
     virtual void OnShutdown() = 0;
 
-    virtual void AcceptConnection(uint64_t sessionid, const std::shared_ptr<exe4cpp::StrandExecutor>& executor, asio::ip::tcp::socket)
+    virtual void AcceptConnection(uint64_t sessionid,
+                                  const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
+                                  asio::ip::tcp::socket)
         = 0;
 
     /// Start asynchronously accepting connections on the strand

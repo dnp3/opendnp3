@@ -97,6 +97,7 @@ public:
      * @return a view of the current data
      */
     const Buffer ToBuffer() const;
+
 private:
     static const Buffer ToSlice(const char* input);
 

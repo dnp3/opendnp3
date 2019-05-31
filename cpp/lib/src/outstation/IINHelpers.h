@@ -20,8 +20,9 @@
 #ifndef OPENDNP3_IINHELPERS_H
 #define OPENDNP3_IINHELPERS_H
 
-#include "opendnp3/app/IINField.h"
 #include "app/parsing/ParseResult.h"
+
+#include "opendnp3/app/IINField.h"
 
 namespace opendnp3
 {

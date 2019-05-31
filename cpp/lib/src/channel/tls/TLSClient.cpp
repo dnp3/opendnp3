@@ -61,8 +61,8 @@ bool TLSClient::BeginConnect(const IPEndpoint& remote, const connect_callback_t&
     if (canceled)
         return false;
 
-    auto stream = std::make_shared<asio::ssl::stream<asio::ip::tcp::socket>>(*this->executor->get_context(),
-                                                                             this->ctx.value);
+    auto stream
+        = std::make_shared<asio::ssl::stream<asio::ip::tcp::socket>>(*this->executor->get_context(), this->ctx.value);
 
     auto verify = [self = shared_from_this()](bool preverified, asio::ssl::verify_context& ctx) -> bool {
         self->LogVerifyCallback(preverified, ctx);
@@ -112,8 +112,7 @@ bool TLSClient::BeginConnect(const IPEndpoint& remote, const connect_callback_t&
         std::stringstream portstr;
         portstr << remote.port;
 
-        resolver.async_resolve(asio::ip::tcp::resolver::query(remote.address, portstr.str()),
-                               executor->wrap(cb));
+        resolver.async_resolve(asio::ip::tcp::resolver::query(remote.address, portstr.str()), executor->wrap(cb));
 
         return true;
     }

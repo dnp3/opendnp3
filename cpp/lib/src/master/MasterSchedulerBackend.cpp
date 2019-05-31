@@ -24,8 +24,7 @@
 namespace opendnp3
 {
 
-MasterSchedulerBackend::MasterSchedulerBackend(const std::shared_ptr<exe4cpp::IExecutor>& executor)
-    : executor(executor)
+MasterSchedulerBackend::MasterSchedulerBackend(const std::shared_ptr<exe4cpp::IExecutor>& executor) : executor(executor)
 {
 }
 
@@ -194,7 +193,8 @@ void MasterSchedulerBackend::RestartTimeoutTimer()
     }
     else
     {
-        this->taskStartTimeout = this->executor->start(min.value, [this, self = shared_from_this()]() { this->TimeoutTasks(); });
+        this->taskStartTimeout
+            = this->executor->start(min.value, [this, self = shared_from_this()]() { this->TimeoutTasks(); });
     }
 }
 

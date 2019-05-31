@@ -20,12 +20,14 @@
 #ifndef OPENDNP3_OBJECTHEADERPARSER_H
 #define OPENDNP3_OBJECTHEADERPARSER_H
 
-#include <ser4cpp/container/SequenceTypes.h>
-#include <log4cpp/Logger.h>
-#include "opendnp3/StaticOnly.h"
-
 #include "app/parsing/ParseResult.h"
+
+#include "opendnp3/StaticOnly.h"
 #include "opendnp3/gen/GroupVariation.h"
+
+#include <ser4cpp/container/SequenceTypes.h>
+
+#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {

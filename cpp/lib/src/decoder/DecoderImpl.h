@@ -20,15 +20,15 @@
 #ifndef OPENDNP3_DECODERIMPL_H
 #define OPENDNP3_DECODERIMPL_H
 
-#include <ser4cpp/container/SequenceTypes.h>
-#include <log4cpp/Logger.h>
-
-#include "opendnp3/decoder/IDecoderCallbacks.h"
-
 #include "link/IFrameSink.h"
 #include "link/LinkLayerParser.h"
 #include "transport/TransportRx.h"
 
+#include "opendnp3/decoder/IDecoderCallbacks.h"
+
+#include <ser4cpp/container/SequenceTypes.h>
+
+#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {

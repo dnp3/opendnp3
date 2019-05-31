@@ -20,10 +20,10 @@
 
 #include "APDULogging.h"
 
-#include <log4cpp/LogMacros.h>
-
 #include "app/parsing/APDUHeaderParser.h"
 #include "app/parsing/APDUParser.h"
+
+#include <log4cpp/LogMacros.h>
 
 namespace opendnp3
 {

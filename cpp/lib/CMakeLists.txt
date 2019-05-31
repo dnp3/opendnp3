@@ -645,3 +645,6 @@ if(DNP3_TLS)
     target_link_libraries(opendnp3 PRIVATE OpenSSL::SSL)
     target_compile_definitions(opendnp3 PRIVATE OPENDNP3_USE_TLS)
 endif()
+
+clang_format(opendnp3 EXCLUDES .*/gen/.*)
+clang_tidy(opendnp3)

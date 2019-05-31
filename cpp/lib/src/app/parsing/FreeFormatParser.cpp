@@ -20,12 +20,14 @@
 
 #include "FreeFormatParser.h"
 
-#include <log4cpp/LogMacros.h>
-#include <ser4cpp/serialization/LittleEndian.h>
-
-#include "opendnp3/LogLevels.h"
 #include "app/GroupVariationRecord.h"
 #include "app/parsing/ObjectHeaderParser.h"
+
+#include "opendnp3/LogLevels.h"
+
+#include <ser4cpp/serialization/LittleEndian.h>
+
+#include <log4cpp/LogMacros.h>
 
 namespace opendnp3
 {

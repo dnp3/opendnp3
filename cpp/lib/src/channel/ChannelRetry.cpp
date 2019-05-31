@@ -23,9 +23,7 @@
 namespace opendnp3
 {
 
-ChannelRetry::ChannelRetry(TimeDuration minOpenRetry_,
-                           TimeDuration maxOpenRetry_,
-                           IOpenDelayStrategy& strategy_)
+ChannelRetry::ChannelRetry(TimeDuration minOpenRetry_, TimeDuration maxOpenRetry_, IOpenDelayStrategy& strategy_)
     : minOpenRetry(minOpenRetry_), maxOpenRetry(maxOpenRetry_), strategy(strategy_)
 {
 }

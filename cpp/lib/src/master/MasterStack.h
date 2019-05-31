@@ -20,12 +20,12 @@
 #ifndef OPENDNP3_MASTERSTACK_H
 #define OPENDNP3_MASTERSTACK_H
 
+#include "StackBase.h"
 #include "master/MasterContext.h"
+#include "master/MasterScan.h"
 
 #include "opendnp3/master/IMaster.h"
 #include "opendnp3/master/MasterStackConfig.h"
-#include "master/MasterScan.h"
-#include "StackBase.h"
 
 namespace opendnp3
 {
@@ -116,11 +116,8 @@ public:
                                               TimeDuration period,
                                               const TaskConfig& config) override;
 
-    std::shared_ptr<IMasterScan> AddRangeScan(GroupVariationID gvId,
-                                              uint16_t start,
-                                              uint16_t stop,
-                                              TimeDuration period,
-                                              const TaskConfig& config) override;
+    std::shared_ptr<IMasterScan> AddRangeScan(
+        GroupVariationID gvId, uint16_t start, uint16_t stop, TimeDuration period, const TaskConfig& config) override;
 
     void Scan(const std::vector<Header>& headers, const TaskConfig& config) override;
 
@@ -128,16 +125,11 @@ public:
 
     void ScanClasses(const ClassField& field, const TaskConfig& config) override;
 
-    void ScanRange(GroupVariationID gvId,
-                   uint16_t start,
-                   uint16_t stop,
-                   const TaskConfig& config) override;
+    void ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, const TaskConfig& config) override;
 
     void Write(const TimeAndInterval& value, uint16_t index, const TaskConfig& config) override;
 
-    void Restart(RestartType op,
-                 const RestartOperationCallbackT& callback,
-                 TaskConfig config) override;
+    void Restart(RestartType op, const RestartOperationCallbackT& callback, TaskConfig config) override;
 
     void PerformFunction(const std::string& name,
                          FunctionCode func,

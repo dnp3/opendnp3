@@ -19,9 +19,6 @@
  */
 #include "OutstationContext.h"
 
-#include <log4cpp/LogMacros.h>
-
-#include "opendnp3/LogLevels.h"
 #include "app/APDUBuilders.h"
 #include "app/APDULogging.h"
 #include "app/Functions.h"
@@ -35,6 +32,10 @@
 #include "outstation/IINHelpers.h"
 #include "outstation/ReadHandler.h"
 #include "outstation/WriteHandler.h"
+
+#include "opendnp3/LogLevels.h"
+
+#include <log4cpp/LogMacros.h>
 
 #include <utility>
 
@@ -528,7 +529,8 @@ ser4cpp::Pair<IINField, AppControlField> OContext::HandleRead(const ser4cpp::rse
     }
 
     this->rspContext.Reset();
-    return ser4cpp::Pair<IINField, AppControlField>(IINFromParseResult(result), AppControlField(true, true, false, false));
+    return ser4cpp::Pair<IINField, AppControlField>(IINFromParseResult(result),
+                                                    AppControlField(true, true, false, false));
 }
 
 IINField OContext::HandleWrite(const ser4cpp::rseq_t& objects)

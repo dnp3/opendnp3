@@ -20,11 +20,11 @@
 
 #include "TCPServerIOHandler.h"
 
-#include <log4cpp/LogMacros.h>
-
 #include "channel/SocketChannel.h"
 
 #include "opendnp3/LogLevels.h"
+
+#include <log4cpp/LogMacros.h>
 
 #include <utility>
 

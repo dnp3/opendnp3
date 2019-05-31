@@ -20,11 +20,12 @@
 #ifndef OPENDNP3_APDUWRAPPER_H
 #define OPENDNP3_APDUWRAPPER_H
 
-#include <ser4cpp/container/SequenceTypes.h>
-
 #include "app/AppControlField.h"
 #include "app/HeaderWriter.h"
+
 #include "opendnp3/gen/FunctionCode.h"
+
+#include <ser4cpp/container/SequenceTypes.h>
 
 namespace opendnp3
 {

@@ -293,14 +293,15 @@ bool StaticWriters::Write(ser4cpp::ArrayView<Cell<OctetStringSpec>, uint16_t>& v
         if (mapped.IsOneByte())
         {
             auto iter = writer.IterateOverRange<ser4cpp::UInt8>(QualifierCode::UINT8_START_STOP, serializer,
-                                                       static_cast<uint8_t>(mapped.start));
+                                                                static_cast<uint8_t>(mapped.start));
             const uint16_t num_written = WriteSomeOctetString(view, iter, range, sizeStartingSize);
             if (num_written == 0)
                 return false;
         }
         else
         {
-            auto iter = writer.IterateOverRange<ser4cpp::UInt16>(QualifierCode::UINT16_START_STOP, serializer, mapped.start);
+            auto iter
+                = writer.IterateOverRange<ser4cpp::UInt16>(QualifierCode::UINT16_START_STOP, serializer, mapped.start);
             const uint16_t num_written = WriteSomeOctetString(view, iter, range, sizeStartingSize);
             if (num_written == 0)
                 return false;

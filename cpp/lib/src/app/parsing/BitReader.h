@@ -20,9 +20,9 @@
 #ifndef OPENDNP3_BITREADER_H
 #define OPENDNP3_BITREADER_H
 
-#include <ser4cpp/container/SequenceTypes.h>
-
 #include "opendnp3/gen/DoubleBit.h"
+
+#include <ser4cpp/container/SequenceTypes.h>
 
 namespace opendnp3
 {

@@ -20,9 +20,9 @@
 #ifndef OPENDNP3_MESSAGE_H
 #define OPENDNP3_MESSAGE_H
 
-#include <ser4cpp/container/SequenceTypes.h>
-
 #include "opendnp3/link/Addresses.h"
+
+#include <ser4cpp/container/SequenceTypes.h>
 
 namespace opendnp3
 {

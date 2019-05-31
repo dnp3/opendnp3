@@ -21,15 +21,14 @@
 #ifndef OPENDNP3_TLSSERVERIOHANDLER_H
 #define OPENDNP3_TLSSERVERIOHANDLER_H
 
-#include <exe4cpp/Timer.h>
+#include "channel/IOHandler.h"
+#include "channel/tls/TLSServer.h"
 
 #include "opendnp3/channel/ChannelRetry.h"
 #include "opendnp3/channel/IPEndpoint.h"
-#include "channel/tls/TLSServer.h"
-
 #include "opendnp3/gen/ServerAcceptMode.h"
 
-#include "channel/IOHandler.h"
+#include <exe4cpp/Timer.h>
 
 namespace opendnp3
 {

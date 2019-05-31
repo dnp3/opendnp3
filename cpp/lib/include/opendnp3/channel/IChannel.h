@@ -20,20 +20,18 @@
 #ifndef OPENDNP3_ICHANNEL_H
 #define OPENDNP3_ICHANNEL_H
 
-#include "opendnp3/LogLevels.h"
-#include "opendnp3/master/IMaster.h"
-#include "opendnp3/master/MasterStackConfig.h"
-#include "opendnp3/outstation/IOutstation.h"
-#include "opendnp3/outstation/OutstationStackConfig.h"
-
 #include "opendnp3/IResource.h"
-
+#include "opendnp3/LogLevels.h"
 #include "opendnp3/gen/ChannelState.h"
 #include "opendnp3/link/LinkStatistics.h"
+#include "opendnp3/master/IMaster.h"
 #include "opendnp3/master/IMasterApplication.h"
 #include "opendnp3/master/ISOEHandler.h"
+#include "opendnp3/master/MasterStackConfig.h"
 #include "opendnp3/outstation/ICommandHandler.h"
+#include "opendnp3/outstation/IOutstation.h"
 #include "opendnp3/outstation/IOutstationApplication.h"
+#include "opendnp3/outstation/OutstationStackConfig.h"
 
 #include <memory>
 

@@ -20,11 +20,12 @@
 #ifndef OPENDNP3_DATABASE_H
 #define OPENDNP3_DATABASE_H
 
-#include "opendnp3/gen/AssignClassType.h"
-#include "opendnp3/gen/IndexMode.h"
 #include "outstation/DatabaseBuffers.h"
 #include "outstation/IDatabase.h"
 #include "outstation/IEventReceiver.h"
+
+#include "opendnp3/gen/AssignClassType.h"
+#include "opendnp3/gen/IndexMode.h"
 
 namespace opendnp3
 {

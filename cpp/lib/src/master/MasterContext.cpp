@@ -19,19 +19,20 @@
  */
 #include "MasterContext.h"
 
-#include <log4cpp/LogMacros.h>
-
-#include "opendnp3/LogLevels.h"
 #include "app/APDUBuilders.h"
 #include "app/APDULogging.h"
 #include "app/parsing/APDUHeaderParser.h"
+#include "gen/objects/Group12.h"
+#include "gen/objects/Group41.h"
 #include "master/CommandTask.h"
 #include "master/EmptyResponseTask.h"
 #include "master/MeasurementHandler.h"
 #include "master/RestartOperationTask.h"
 #include "master/UserPollTask.h"
-#include "gen/objects/Group12.h"
-#include "gen/objects/Group41.h"
+
+#include "opendnp3/LogLevels.h"
+
+#include <log4cpp/LogMacros.h>
 
 #include <utility>
 
@@ -159,7 +160,9 @@ void MContext::CompleteActiveTask()
     }
 }
 
-void MContext::OnParsedHeader(const ser4cpp::rseq_t& /*apdu*/, const APDUResponseHeader& header, const ser4cpp::rseq_t& objects)
+void MContext::OnParsedHeader(const ser4cpp::rseq_t& /*apdu*/,
+                              const APDUResponseHeader& header,
+                              const ser4cpp::rseq_t& objects)
 {
     // Note: this looks silly, but OnParsedHeader() is virtual and can be overriden to do SA
     this->ProcessAPDU(header, objects);
@@ -291,9 +294,7 @@ void MContext::StartResponseTimer()
     this->responseTimer = this->executor->start(this->params.responseTimeout.value, timeout);
 }
 
-std::shared_ptr<IMasterTask> MContext::AddScan(TimeDuration period,
-                                               const HeaderBuilderT& builder,
-                                               TaskConfig config)
+std::shared_ptr<IMasterTask> MContext::AddScan(TimeDuration period, const HeaderBuilderT& builder, TaskConfig config)
 {
     auto task = std::make_shared<UserPollTask>(
         this->tasks.context, builder,
@@ -303,17 +304,13 @@ std::shared_ptr<IMasterTask> MContext::AddScan(TimeDuration period,
     return task;
 }
 
-std::shared_ptr<IMasterTask> MContext::AddClassScan(const ClassField& field,
-                                                    TimeDuration period,
-                                                    TaskConfig config)
+std::shared_ptr<IMasterTask> MContext::AddClassScan(const ClassField& field, TimeDuration period, TaskConfig config)
 {
     auto build = [field](HeaderWriter& writer) -> bool { return build::WriteClassHeaders(writer, field); };
     return this->AddScan(period, build, config);
 }
 
-std::shared_ptr<IMasterTask> MContext::AddAllObjectsScan(GroupVariationID gvId,
-                                                         TimeDuration period,
-                                                         TaskConfig config)
+std::shared_ptr<IMasterTask> MContext::AddAllObjectsScan(GroupVariationID gvId, TimeDuration period, TaskConfig config)
 {
     auto build = [gvId](HeaderWriter& writer) -> bool { return writer.WriteHeader(gvId, QualifierCode::ALL_OBJECTS); };
     return this->AddScan(period, build, config);
@@ -364,7 +361,7 @@ void MContext::Write(const TimeAndInterval& value, uint16_t index, TaskConfig co
 {
     auto builder = [value, index](HeaderWriter& writer) -> bool {
         return writer.WriteSingleIndexedValue<ser4cpp::UInt16, TimeAndInterval>(QualifierCode::UINT16_CNT_UINT16_INDEX,
-                                                                       Group50Var4::Inst(), value, index);
+                                                                                Group50Var4::Inst(), value, index);
     };
 
     const auto timeout = Timestamp(this->executor->get_time()) + params.taskStartTimeout;
@@ -504,7 +501,8 @@ MContext::TaskState MContext::StartTask_TaskReady()
     return this->ResumeActiveTask();
 }
 
-MContext::TaskState MContext::OnResponse_WaitForResponse(const APDUResponseHeader& header, const ser4cpp::rseq_t& objects)
+MContext::TaskState MContext::OnResponse_WaitForResponse(const APDUResponseHeader& header,
+                                                         const ser4cpp::rseq_t& objects)
 {
     if (header.control.SEQ != this->solSeq)
     {

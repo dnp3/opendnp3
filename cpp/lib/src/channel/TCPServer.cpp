@@ -20,9 +20,9 @@
 
 #include "channel/TCPServer.h"
 
-#include <log4cpp/LogMacros.h>
-
 #include "opendnp3/LogLevels.h"
+
+#include <log4cpp/LogMacros.h>
 
 #include <sstream>
 

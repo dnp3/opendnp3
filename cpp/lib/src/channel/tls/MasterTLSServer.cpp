@@ -20,13 +20,12 @@
 
 #include "channel/tls/MasterTLSServer.h"
 
-#include <log4cpp/LogMacros.h>
-
 #include "channel/tls/TLSStreamChannel.h"
+#include "link/LinkSession.h"
 
 #include "opendnp3/LogLevels.h"
 
-#include "link/LinkSession.h"
+#include <log4cpp/LogMacros.h>
 
 #include <utility>
 

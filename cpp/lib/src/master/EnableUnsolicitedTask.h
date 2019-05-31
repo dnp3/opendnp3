@@ -20,9 +20,10 @@
 #ifndef OPENDNP3_ENABLEUNSOLICITEDTASK_H
 #define OPENDNP3_ENABLEUNSOLICITEDTASK_H
 
-#include "opendnp3/app/ClassField.h"
 #include "master/IMasterTask.h"
 #include "master/TaskPriority.h"
+
+#include "opendnp3/app/ClassField.h"
 
 namespace opendnp3
 {
@@ -71,8 +72,7 @@ private:
         return MasterTaskType::ENABLE_UNSOLICITED;
     }
 
-    virtual ResponseResult ProcessResponse(const APDUResponseHeader& header,
-                                           const ser4cpp::rseq_t& objects) override;
+    virtual ResponseResult ProcessResponse(const APDUResponseHeader& header, const ser4cpp::rseq_t& objects) override;
 
     virtual bool IsEnabled() const override;
 };

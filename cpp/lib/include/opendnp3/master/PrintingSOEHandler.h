@@ -43,40 +43,26 @@ public:
         return std::make_shared<PrintingSOEHandler>();
     }
 
-    virtual void Process(const HeaderInfo& info,
-                         const ICollection<Indexed<Binary>>& values) override;
-    virtual void Process(const HeaderInfo& info,
-                         const ICollection<Indexed<DoubleBitBinary>>& values) override;
-    virtual void Process(const HeaderInfo& info,
-                         const ICollection<Indexed<Analog>>& values) override;
-    virtual void Process(const HeaderInfo& info,
-                         const ICollection<Indexed<Counter>>& values) override;
-    virtual void Process(const HeaderInfo& info,
-                         const ICollection<Indexed<FrozenCounter>>& values) override;
-    virtual void Process(const HeaderInfo& info,
-                         const ICollection<Indexed<BinaryOutputStatus>>& values) override;
-    virtual void Process(const HeaderInfo& info,
-                         const ICollection<Indexed<AnalogOutputStatus>>& values) override;
-    virtual void Process(const HeaderInfo& info,
-                         const ICollection<Indexed<OctetString>>& values) override;
-    virtual void Process(const HeaderInfo& info,
-                         const ICollection<Indexed<TimeAndInterval>>& values) override;
-    virtual void Process(const HeaderInfo& info,
-                         const ICollection<Indexed<BinaryCommandEvent>>& values) override;
-    virtual void Process(const HeaderInfo& info,
-                         const ICollection<Indexed<AnalogCommandEvent>>& values) override;
-    virtual void Process(const HeaderInfo& info,
-                         const ICollection<Indexed<SecurityStat>>& values) override;
-    virtual void Process(const HeaderInfo& info,
-                         const ICollection<DNPTime>& values) override;
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) override;
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values) override;
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Analog>>& values) override;
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Counter>>& values) override;
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<FrozenCounter>>& values) override;
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryOutputStatus>>& values) override;
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputStatus>>& values) override;
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values) override;
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<TimeAndInterval>>& values) override;
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values) override;
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) override;
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values) override;
+    virtual void Process(const HeaderInfo& info, const ICollection<DNPTime>& values) override;
 
 protected:
     void Start() final {}
     void End() final {}
 
 private:
-    template<class T>
-    static void PrintAll(const HeaderInfo& info, const ICollection<Indexed<T>>& values)
+    template<class T> static void PrintAll(const HeaderInfo& info, const ICollection<Indexed<T>>& values)
     {
         auto print = [&](const Indexed<T>& pair) { Print<T>(info, pair.value, pair.index); };
         values.ForeachItem(print);

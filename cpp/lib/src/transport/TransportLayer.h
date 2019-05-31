@@ -20,15 +20,16 @@
 #ifndef OPENDNP3_TRANSPORTLAYER_H
 #define OPENDNP3_TRANSPORTLAYER_H
 
+#include "LayerInterfaces.h"
 #include "TransportRx.h"
 #include "TransportTx.h"
+#include "link/ILinkLayer.h"
+
+#include "opendnp3/StackStatistics.h"
 
 #include <exe4cpp/IExecutor.h>
-#include <log4cpp/Logger.h>
 
-#include "LayerInterfaces.h"
-#include "opendnp3/StackStatistics.h"
-#include "link/ILinkLayer.h"
+#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {

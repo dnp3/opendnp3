@@ -20,15 +20,15 @@
 #ifndef OPENDNP3_LOGGINGHANDLER_H
 #define OPENDNP3_LOGGINGHANDLER_H
 
-#include <log4cpp/LogMacros.h>
-#include <log4cpp/Logger.h>
+#include "app/parsing/IAPDUHandler.h"
+#include "decoder/Indent.h"
 
 #include "opendnp3/LogLevels.h"
 #include "opendnp3/decoder/IDecoderCallbacks.h"
 #include "opendnp3/gen/Attributes.h"
 
-#include "app/parsing/IAPDUHandler.h"
-#include "decoder/Indent.h"
+#include <log4cpp/LogMacros.h>
+#include <log4cpp/Logger.h>
 
 #include <cstdint>
 #include <sstream>

@@ -20,15 +20,16 @@
 #ifndef OPENDNP3_COUNTPARSER_H
 #define OPENDNP3_COUNTPARSER_H
 
-#include <ser4cpp/container/SequenceTypes.h>
-#include <log4cpp/Logger.h>
-
 #include "app/parsing/BufferedCollection.h"
 #include "app/parsing/Functions.h"
 #include "app/parsing/IAPDUHandler.h"
 #include "app/parsing/NumParser.h"
 #include "app/parsing/ParseResult.h"
 #include "app/parsing/ParserSettings.h"
+
+#include <ser4cpp/container/SequenceTypes.h>
+
+#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {

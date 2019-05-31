@@ -29,7 +29,8 @@ class SocketChannel final : public IAsyncChannel
 {
 
 public:
-    static std::shared_ptr<IAsyncChannel> Create(std::shared_ptr<exe4cpp::StrandExecutor> executor, asio::ip::tcp::socket socket)
+    static std::shared_ptr<IAsyncChannel> Create(std::shared_ptr<exe4cpp::StrandExecutor> executor,
+                                                 asio::ip::tcp::socket socket)
     {
         return std::make_shared<SocketChannel>(executor, std::move(socket));
     }

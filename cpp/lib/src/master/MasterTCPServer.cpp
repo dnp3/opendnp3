@@ -20,13 +20,12 @@
 
 #include "master/MasterTCPServer.h"
 
-#include <log4cpp/LogMacros.h>
-
 #include "channel/SocketChannel.h"
+#include "link/LinkSession.h"
 
 #include "opendnp3/LogLevels.h"
 
-#include "link/LinkSession.h"
+#include <log4cpp/LogMacros.h>
 
 #include <sstream>
 #include <utility>

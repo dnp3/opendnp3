@@ -20,6 +20,7 @@
 #include "AssignClassTask.h"
 
 #include "app/HeaderWriter.h"
+
 #include "opendnp3/master/IMasterApplication.h"
 
 namespace opendnp3

@@ -20,10 +20,11 @@
 
 #include "outstation/OutstationStates.h"
 
-#include <log4cpp/LogMacros.h>
+#include "outstation/OutstationContext.h"
 
 #include "opendnp3/LogLevels.h"
-#include "outstation/OutstationContext.h"
+
+#include <log4cpp/LogMacros.h>
 
 namespace opendnp3
 {

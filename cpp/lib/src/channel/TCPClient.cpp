@@ -27,7 +27,9 @@
 namespace opendnp3
 {
 
-TCPClient::TCPClient(const log4cpp::Logger& logger, const std::shared_ptr<exe4cpp::StrandExecutor>& executor, std::string adapter)
+TCPClient::TCPClient(const log4cpp::Logger& logger,
+                     const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
+                     std::string adapter)
     : condition(logger),
       executor(executor),
       adapter(std::move(adapter)),
@@ -77,8 +79,7 @@ bool TCPClient::BeginConnect(const IPEndpoint& remote, const connect_callback_t&
         std::stringstream portstr;
         portstr << remote.port;
 
-        resolver.async_resolve(asio::ip::tcp::resolver::query(remote.address, portstr.str()),
-                               executor->wrap(cb));
+        resolver.async_resolve(asio::ip::tcp::resolver::query(remote.address, portstr.str()), executor->wrap(cb));
 
         return true;
     }

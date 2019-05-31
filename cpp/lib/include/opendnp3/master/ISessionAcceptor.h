@@ -21,8 +21,8 @@
 #define OPENDNP3_ISESSION_ACCEPTOR_H
 
 #include "opendnp3/master/IMasterApplication.h"
-#include "opendnp3/master/ISOEHandler.h"
 #include "opendnp3/master/IMasterSession.h"
+#include "opendnp3/master/ISOEHandler.h"
 #include "opendnp3/master/MasterStackConfig.h"
 
 #include <memory>

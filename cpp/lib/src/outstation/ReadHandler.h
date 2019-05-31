@@ -20,12 +20,13 @@
 #ifndef OPENDNP3_READHANDLER_H
 #define OPENDNP3_READHANDLER_H
 
-#include <log4cpp/Logger.h>
-
 #include "app/parsing/IAPDUHandler.h"
 #include "outstation/IEventSelector.h"
 #include "outstation/IStaticSelector.h"
+
 #include "opendnp3/outstation/StaticTypeBitfield.h"
+
+#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {

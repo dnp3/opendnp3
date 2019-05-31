@@ -21,8 +21,9 @@
 #define OPENDNP3_ISTATICSELECTOR_H
 
 #include "app/GroupVariationRecord.h"
-#include "opendnp3/app/IINField.h"
 #include "app/Range.h"
+
+#include "opendnp3/app/IINField.h"
 
 namespace opendnp3
 {

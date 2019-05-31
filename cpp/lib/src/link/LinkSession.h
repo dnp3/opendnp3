@@ -21,18 +21,18 @@
 #ifndef OPENDNP3_LINKSESSION_H
 #define OPENDNP3_LINKSESSION_H
 
-#include <exe4cpp/Timer.h>
-#include <log4cpp/Logger.h>
-
-#include "channel/IAsyncChannel.h"
 #include "IResourceManager.h"
-
+#include "channel/IAsyncChannel.h"
 #include "link/ILinkTx.h"
 #include "link/LinkLayerParser.h"
-#include "opendnp3/link/LinkStatistics.h"
-
-#include "opendnp3/master/IListenCallbacks.h"
 #include "master/MasterSessionStack.h"
+
+#include "opendnp3/link/LinkStatistics.h"
+#include "opendnp3/master/IListenCallbacks.h"
+
+#include <exe4cpp/Timer.h>
+
+#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {
@@ -86,9 +86,9 @@ private:
 
     // ISessionAcceptor
     std::shared_ptr<IMasterSession> AcceptSession(const std::string& loggerid,
-                                                          std::shared_ptr<ISOEHandler> SOEHandler,
-                                                          std::shared_ptr<IMasterApplication> application,
-                                                          const MasterStackConfig& config) final;
+                                                  std::shared_ptr<ISOEHandler> SOEHandler,
+                                                  std::shared_ptr<IMasterApplication> application,
+                                                  const MasterStackConfig& config) final;
 
     void Start();
 

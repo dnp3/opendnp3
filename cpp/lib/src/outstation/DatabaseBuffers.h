@@ -21,16 +21,17 @@
 #define OPENDNP3_DATABASEBUFFERS_H
 
 #include "app/Range.h"
-#include "opendnp3/gen/IndexMode.h"
-#include "opendnp3/outstation/DatabaseSizes.h"
 #include "outstation/IClassAssigner.h"
 #include "outstation/IResponseLoader.h"
 #include "outstation/IStaticSelector.h"
 #include "outstation/IndexSearch.h"
 #include "outstation/SelectedRanges.h"
 #include "outstation/StaticBuffers.h"
-#include "opendnp3/outstation/StaticTypeBitfield.h"
 #include "outstation/StaticWriters.h"
+
+#include "opendnp3/gen/IndexMode.h"
+#include "opendnp3/outstation/DatabaseSizes.h"
+#include "opendnp3/outstation/StaticTypeBitfield.h"
 
 namespace opendnp3
 {
@@ -38,10 +39,7 @@ namespace opendnp3
 /**
 The database coordinates all updates of measurement data
 */
-class DatabaseBuffers final : public IStaticSelector,
-                              public IResponseLoader,
-                              public IClassAssigner,
-                              private Uncopyable
+class DatabaseBuffers final : public IStaticSelector, public IResponseLoader, public IClassAssigner, private Uncopyable
 {
 public:
     DatabaseBuffers(const DatabaseSizes&, StaticTypeBitField allowedClass0Types, IndexMode indexMode);

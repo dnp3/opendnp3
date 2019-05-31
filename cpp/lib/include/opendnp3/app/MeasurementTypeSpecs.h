@@ -20,12 +20,12 @@
 #ifndef OPENDNP3_MEASUREMENTTYPESPECS_H
 #define OPENDNP3_MEASUREMENTTYPESPECS_H
 
-#include <ser4cpp/container/SequenceTypes.h>
-
 #include "opendnp3/app/EventCells.h"
 #include "opendnp3/app/EventTriggers.h"
 #include "opendnp3/app/OctetString.h"
 #include "opendnp3/outstation/MeasurementConfig.h"
+
+#include <ser4cpp/container/SequenceTypes.h>
 
 namespace opendnp3
 {

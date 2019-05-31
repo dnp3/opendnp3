@@ -20,9 +20,9 @@
 #ifndef OPENDNP3_TIMESYNCSTATE_H
 #define OPENDNP3_TIMESYNCSTATE_H
 
-#include "opendnp3/Timestamp.h"
-
 #include "app/AppSeqNum.h"
+
+#include "opendnp3/Timestamp.h"
 
 namespace opendnp3
 {

@@ -21,23 +21,23 @@
 #ifndef OPENDNP3_DNP3MANAGERIMPL_H
 #define OPENDNP3_DNP3MANAGERIMPL_H
 
-#include <log4cpp/Logger.h>
-#include "opendnp3/Uncopyable.h"
-#include <exe4cpp/asio/ThreadPool.h>
-
-#include "opendnp3/channel/ChannelRetry.h"
-#include "opendnp3/channel/IListener.h"
-#include "opendnp3/channel/IPEndpoint.h"
 #include "ResourceManager.h"
-#include "opendnp3/channel/SerialSettings.h"
-#include "opendnp3/channel/TLSConfig.h"
 
 #include "opendnp3/LogLevels.h"
-#include "opendnp3/gen/ServerAcceptMode.h"
-
+#include "opendnp3/Uncopyable.h"
+#include "opendnp3/channel/ChannelRetry.h"
 #include "opendnp3/channel/IChannel.h"
 #include "opendnp3/channel/IChannelListener.h"
+#include "opendnp3/channel/IListener.h"
+#include "opendnp3/channel/IPEndpoint.h"
+#include "opendnp3/channel/SerialSettings.h"
+#include "opendnp3/channel/TLSConfig.h"
+#include "opendnp3/gen/ServerAcceptMode.h"
 #include "opendnp3/master/IListenCallbacks.h"
+
+#include <exe4cpp/asio/ThreadPool.h>
+
+#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {
@@ -94,17 +94,17 @@ public:
                                            std::error_code& ec);
 
     std::shared_ptr<IListener> CreateListener(std::string loggerid,
-                                                       const log4cpp::LogLevels& levels,
-                                                       IPEndpoint endpoint,
-                                                       const std::shared_ptr<IListenCallbacks>& callbacks,
-                                                       std::error_code& ec);
+                                              const log4cpp::LogLevels& levels,
+                                              IPEndpoint endpoint,
+                                              const std::shared_ptr<IListenCallbacks>& callbacks,
+                                              std::error_code& ec);
 
     std::shared_ptr<IListener> CreateListener(std::string loggerid,
-                                                       const log4cpp::LogLevels& levels,
-                                                       IPEndpoint endpoint,
-                                                       const TLSConfig& config,
-                                                       const std::shared_ptr<IListenCallbacks>& callbacks,
-                                                       std::error_code& ec);
+                                              const log4cpp::LogLevels& levels,
+                                              IPEndpoint endpoint,
+                                              const TLSConfig& config,
+                                              const std::shared_ptr<IListenCallbacks>& callbacks,
+                                              std::error_code& ec);
 
 private:
     log4cpp::Logger logger;

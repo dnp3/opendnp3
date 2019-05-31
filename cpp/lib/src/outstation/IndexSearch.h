@@ -20,12 +20,13 @@
 #ifndef OPENDNP3_INDEXSEARCH_H
 #define OPENDNP3_INDEXSEARCH_H
 
-#include <ser4cpp/container/ArrayView.h>
-#include "opendnp3/StaticOnly.h"
-
-#include "opendnp3/app/MeasurementTypes.h"
 #include "app/Range.h"
+
+#include "opendnp3/StaticOnly.h"
+#include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/outstation/Cell.h"
+
+#include <ser4cpp/container/ArrayView.h>
 
 namespace opendnp3
 {

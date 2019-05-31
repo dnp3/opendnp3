@@ -20,22 +20,25 @@
 #ifndef OPENDNP3_MASTERCONTEXT_H
 #define OPENDNP3_MASTERCONTEXT_H
 
-#include <ser4cpp/container/Buffer.h>
-#include <exe4cpp/asio/StrandExecutor.h>
-#include <exe4cpp/Timer.h>
-#include <log4cpp/Logger.h>
-
 #include "LayerInterfaces.h"
 #include "app/AppSeqNum.h"
+#include "master/HeaderBuilder.h"
+#include "master/IMasterScheduler.h"
+#include "master/MasterTasks.h"
+
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/gen/RestartType.h"
 #include "opendnp3/master/CommandResultCallbackT.h"
 #include "opendnp3/master/CommandSet.h"
-#include "master/HeaderBuilder.h"
 #include "opendnp3/master/IMasterApplication.h"
-#include "master/IMasterScheduler.h"
-#include "master/MasterTasks.h"
 #include "opendnp3/master/RestartOperationResult.h"
+
+#include <ser4cpp/container/Buffer.h>
+
+#include <exe4cpp/Timer.h>
+#include <exe4cpp/asio/StrandExecutor.h>
+
+#include <log4cpp/Logger.h>
 
 #include <deque>
 

@@ -20,14 +20,14 @@
 #ifndef OPENDNP3_MASTERSESSIONSTACK_H
 #define OPENDNP3_MASTERSESSIONSTACK_H
 
-#include <exe4cpp/asio/StrandExecutor.h>
-
 #include "master/MasterContext.h"
+#include "master/MasterScan.h"
 #include "transport/TransportStack.h"
 
 #include "opendnp3/master/IMasterSession.h"
-#include "master/MasterScan.h"
 #include "opendnp3/master/MasterStackConfig.h"
+
+#include <exe4cpp/asio/StrandExecutor.h>
 
 namespace opendnp3
 {
@@ -67,45 +67,33 @@ public:
 
     StackStatistics GetStackStatistics() final;
     std::shared_ptr<IMasterScan> AddScan(TimeDuration period,
-                                                 const std::vector<Header>& headers,
-                                                 const TaskConfig& config) final;
+                                         const std::vector<Header>& headers,
+                                         const TaskConfig& config) final;
     std::shared_ptr<IMasterScan> AddAllObjectsScan(GroupVariationID gvId,
-                                                           TimeDuration period,
-                                                           const TaskConfig& config) final;
+                                                   TimeDuration period,
+                                                   const TaskConfig& config) final;
     std::shared_ptr<IMasterScan> AddClassScan(const ClassField& field,
-                                                      TimeDuration period,
-                                                      const TaskConfig& config) final;
-    std::shared_ptr<IMasterScan> AddRangeScan(GroupVariationID gvId,
-                                                      uint16_t start,
-                                                      uint16_t stop,
-                                                      TimeDuration period,
-                                                      const TaskConfig& config) final;
+                                              TimeDuration period,
+                                              const TaskConfig& config) final;
+    std::shared_ptr<IMasterScan> AddRangeScan(
+        GroupVariationID gvId, uint16_t start, uint16_t stop, TimeDuration period, const TaskConfig& config) final;
     void Scan(const std::vector<Header>& headers, const TaskConfig& config) final;
     void ScanAllObjects(GroupVariationID gvId, const TaskConfig& config) final;
     void ScanClasses(const ClassField& field, const TaskConfig& config) final;
-    void ScanRange(GroupVariationID gvId,
-                           uint16_t start,
-                           uint16_t stop,
-                           const TaskConfig& config) final;
-    void Write(const TimeAndInterval& value,
-                       uint16_t index,
-                       const TaskConfig& config) final;
-    void Restart(RestartType op,
-                         const RestartOperationCallbackT& callback,
-                         TaskConfig config) final;
+    void ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, const TaskConfig& config) final;
+    void Write(const TimeAndInterval& value, uint16_t index, const TaskConfig& config) final;
+    void Restart(RestartType op, const RestartOperationCallbackT& callback, TaskConfig config) final;
     void PerformFunction(const std::string& name,
-                                 FunctionCode func,
-                                 const std::vector<Header>& headers,
-                                 const TaskConfig& config) final;
+                         FunctionCode func,
+                         const std::vector<Header>& headers,
+                         const TaskConfig& config) final;
 
     /// --- ICommandProcessor ---
 
     void SelectAndOperate(CommandSet&& commands,
-                                  const CommandResultCallbackT& callback,
-                                  const TaskConfig& config) final;
-    void DirectOperate(CommandSet&& commands,
-                               const CommandResultCallbackT& callback,
-                               const TaskConfig& config) final;
+                          const CommandResultCallbackT& callback,
+                          const TaskConfig& config) final;
+    void DirectOperate(CommandSet&& commands, const CommandResultCallbackT& callback, const TaskConfig& config) final;
 
     MasterSessionStack(const log4cpp::Logger& logger,
                        const std::shared_ptr<exe4cpp::StrandExecutor>& executor,

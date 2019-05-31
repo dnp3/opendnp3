@@ -20,14 +20,16 @@
 #ifndef OPENDNP3_TLSSERVER_H
 #define OPENDNP3_TLSSERVER_H
 
-#include <log4cpp/Logger.h>
-#include "opendnp3/Uncopyable.h"
-#include <exe4cpp/asio/StrandExecutor.h>
+#include "channel/tls/SSLContext.h"
 
+#include "opendnp3/Uncopyable.h"
 #include "opendnp3/channel/IListener.h"
 #include "opendnp3/channel/IPEndpoint.h"
 #include "opendnp3/channel/TLSConfig.h"
-#include "channel/tls/SSLContext.h"
+
+#include <exe4cpp/asio/StrandExecutor.h>
+
+#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {

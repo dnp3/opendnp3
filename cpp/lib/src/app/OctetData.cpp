@@ -31,7 +31,8 @@ OctetData::OctetData() : size(1) {}
 
 OctetData::OctetData(const char* input) : OctetData(ToSlice(input)) {}
 
-OctetData::OctetData(const Buffer& input) : size(input.length == 0 ? 1 : ser4cpp::min<uint32_t>(MAX_SIZE, static_cast<uint32_t>(input.length)))
+OctetData::OctetData(const Buffer& input)
+    : size(input.length == 0 ? 1 : ser4cpp::min<uint32_t>(MAX_SIZE, static_cast<uint32_t>(input.length)))
 {
     ser4cpp::rseq_t inputSlice(input.data, static_cast<uint32_t>(input.length));
     if (inputSlice.is_not_empty())
@@ -63,7 +64,8 @@ bool OctetData::Set(const Buffer& input)
 bool OctetData::Set(const char* input)
 {
     const size_t length = strlen(input);
-    return this->Set(Buffer(reinterpret_cast<const uint8_t*>(input), static_cast<uint32_t>(length > MAX_SIZE ? MAX_SIZE : length)));
+    return this->Set(
+        Buffer(reinterpret_cast<const uint8_t*>(input), static_cast<uint32_t>(length > MAX_SIZE ? MAX_SIZE : length)));
 }
 
 const Buffer OctetData::ToBuffer() const
@@ -77,7 +79,7 @@ const Buffer OctetData::ToSlice(const char* input)
     if (length == 0)
         return Buffer(nullptr, 0);
     return Buffer(reinterpret_cast<const uint8_t*>(input),
-                           length > MAX_SIZE ? MAX_SIZE : static_cast<uint32_t>(length));
+                  length > MAX_SIZE ? MAX_SIZE : static_cast<uint32_t>(length));
 }
 
 } // namespace opendnp3

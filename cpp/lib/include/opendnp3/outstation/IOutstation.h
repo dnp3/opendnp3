@@ -20,10 +20,10 @@
 #ifndef OPENDNP3_IOUTSTATION_H
 #define OPENDNP3_IOUTSTATION_H
 
-#include <log4cpp/LogLevels.h>
-
 #include "opendnp3/IStack.h"
 #include "opendnp3/outstation/Updates.h"
+
+#include <log4cpp/LogLevels.h>
 
 namespace opendnp3
 {

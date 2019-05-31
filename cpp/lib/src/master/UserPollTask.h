@@ -21,9 +21,10 @@
 #define OPENDNP3_USERPOLLTASK_H
 
 #include "master/HeaderBuilder.h"
-#include "opendnp3/master/ITaskCallback.h"
 #include "master/PollTaskBase.h"
 #include "master/TaskPriority.h"
+
+#include "opendnp3/master/ITaskCallback.h"
 
 #include <functional>
 

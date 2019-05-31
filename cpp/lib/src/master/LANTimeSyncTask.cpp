@@ -19,10 +19,10 @@
  */
 #include "LANTimeSyncTask.h"
 
-#include <ser4cpp/serialization/LittleEndian.h>
-
 #include "app/APDUBuilders.h"
 #include "gen/objects/Group50.h"
+
+#include <ser4cpp/serialization/LittleEndian.h>
 
 namespace opendnp3
 {

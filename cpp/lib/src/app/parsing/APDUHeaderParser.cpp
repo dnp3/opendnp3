@@ -19,12 +19,14 @@
  */
 #include "APDUHeaderParser.h"
 
-#include <ser4cpp/container/SequenceTypes.h>
-#include <log4cpp/LogMacros.h>
-#include "opendnp3/Uncopyable.h"
+#include "app/APDUHeader.h"
 
 #include "opendnp3/LogLevels.h"
-#include "app/APDUHeader.h"
+#include "opendnp3/Uncopyable.h"
+
+#include <ser4cpp/container/SequenceTypes.h>
+
+#include <log4cpp/LogMacros.h>
 
 namespace opendnp3
 {
@@ -47,7 +49,8 @@ APDUHeaderParser::Result<APDUResponseHeader> APDUHeaderParser::ParseResponse(con
 {
     if (apdu.length() < APDUHeader::RESPONSE_SIZE)
     {
-        FORMAT_LOGGER_BLOCK(logger, flags::WARN, "Response fragment  with insufficient size of %u bytes", apdu.length());
+        FORMAT_LOGGER_BLOCK(logger, flags::WARN, "Response fragment  with insufficient size of %u bytes",
+                            apdu.length());
         return Result<APDUResponseHeader>::Error();
     }
 

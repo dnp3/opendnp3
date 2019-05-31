@@ -20,11 +20,12 @@
 #ifndef OPENDNP3_TIMESYNCHANDLER_H
 #define OPENDNP3_TIMESYNCHANDLER_H
 
-#include <log4cpp/LogMacros.h>
-#include "opendnp3/Uncopyable.h"
+#include "app/parsing/IAPDUHandler.h"
 
 #include "opendnp3/LogLevels.h"
-#include "app/parsing/IAPDUHandler.h"
+#include "opendnp3/Uncopyable.h"
+
+#include <log4cpp/LogMacros.h>
 
 namespace opendnp3
 {

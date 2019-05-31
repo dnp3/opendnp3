@@ -21,10 +21,11 @@
 #ifndef OPENDNP3_APDULOGGING_H
 #define OPENDNP3_APDULOGGING_H
 
-#include <ser4cpp/container/SequenceTypes.h>
-#include <log4cpp/Logger.h>
-
 #include "app/APDUHeader.h"
+
+#include <ser4cpp/container/SequenceTypes.h>
+
+#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {

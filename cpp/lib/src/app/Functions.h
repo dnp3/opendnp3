@@ -22,7 +22,6 @@
 #define OPENDNP3_FUNCTIONS_H
 
 #include "opendnp3/StaticOnly.h"
-
 #include "opendnp3/gen/FunctionCode.h"
 
 namespace opendnp3

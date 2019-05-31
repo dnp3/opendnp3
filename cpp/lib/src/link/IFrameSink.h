@@ -20,9 +20,9 @@
 #ifndef OPENDNP3_IFRAMESINK_H
 #define OPENDNP3_IFRAMESINK_H
 
-#include <ser4cpp/container/SequenceTypes.h>
-
 #include "opendnp3/link/LinkHeaderFields.h"
+
+#include <ser4cpp/container/SequenceTypes.h>
 
 #include <cstdint>
 

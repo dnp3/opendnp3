@@ -20,12 +20,13 @@
 #ifndef OPENDNP3_LINKFRAME_H
 #define OPENDNP3_LINKFRAME_H
 
-#include <ser4cpp/container/SequenceTypes.h>
-#include <log4cpp/Logger.h>
 #include "opendnp3/StaticOnly.h"
-
 #include "opendnp3/gen/FunctionCode.h"
 #include "opendnp3/gen/LinkFunction.h"
+
+#include <ser4cpp/container/SequenceTypes.h>
+
+#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {

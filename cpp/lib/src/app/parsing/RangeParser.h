@@ -20,9 +20,6 @@
 #ifndef OPENDNP3_RANGEPARSER_H
 #define OPENDNP3_RANGEPARSER_H
 
-#include <ser4cpp/container/SequenceTypes.h>
-#include <log4cpp/Logger.h>
-
 #include "app/Range.h"
 #include "app/parsing/BitReader.h"
 #include "app/parsing/BufferedCollection.h"
@@ -30,6 +27,10 @@
 #include "app/parsing/NumParser.h"
 #include "app/parsing/ParseResult.h"
 #include "app/parsing/ParserSettings.h"
+
+#include <ser4cpp/container/SequenceTypes.h>
+
+#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {

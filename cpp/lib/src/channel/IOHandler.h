@@ -20,15 +20,14 @@
 #ifndef OPENDNP3_IOHANDLER_H
 #define OPENDNP3_IOHANDLER_H
 
-#include <log4cpp/Logger.h>
-
 #include "channel/IAsyncChannel.h"
-
-#include "opendnp3/link/Addresses.h"
 #include "link/ILinkTx.h"
 #include "link/LinkLayerParser.h"
 
 #include "opendnp3/channel/IChannelListener.h"
+#include "opendnp3/link/Addresses.h"
+
+#include <log4cpp/Logger.h>
 
 #include <deque>
 #include <vector>
@@ -41,9 +40,7 @@ namespace opendnp3
 Manages I/O for a number of link contexts
 
 */
-class IOHandler : private IFrameSink,
-                  public IChannelCallbacks,
-                  public std::enable_shared_from_this<IOHandler>
+class IOHandler : private IFrameSink, public IChannelCallbacks, public std::enable_shared_from_this<IOHandler>
 {
 
 public:
@@ -124,9 +121,7 @@ private:
     void BeginRead();
     void CheckForSend();
 
-    bool SendToSession(const Addresses& addresses,
-                       const LinkHeaderFields& header,
-                       const ser4cpp::rseq_t& userdata);
+    bool SendToSession(const Addresses& addresses, const LinkHeaderFields& header, const ser4cpp::rseq_t& userdata);
 
     class Session
     {

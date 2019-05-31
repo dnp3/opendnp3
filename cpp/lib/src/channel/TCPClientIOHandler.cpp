@@ -69,8 +69,8 @@ bool TCPClientIOHandler::StartConnect(const TimeDuration& delay)
         return false;
     }
 
-    auto cb = [=, self = shared_from_this()](const std::shared_ptr<exe4cpp::StrandExecutor>& executor, asio::ip::tcp::socket socket,
-                                             const std::error_code& ec) -> void {
+    auto cb = [=, self = shared_from_this()](const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
+                                             asio::ip::tcp::socket socket, const std::error_code& ec) -> void {
         if (ec)
         {
             FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Error Connecting: %s", ec.message().c_str());

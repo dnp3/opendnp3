@@ -20,7 +20,6 @@
 #include "DisableUnsolicitedTask.h"
 
 #include "MasterTasks.h"
-
 #include "app/APDUBuilders.h"
 
 namespace opendnp3

@@ -22,6 +22,8 @@
 
 #include "opendnp3/app/parsing/ICollection.h"
 
+#include <ser4cpp/container/SequenceTypes.h>
+
 namespace opendnp3
 {
 

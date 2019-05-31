@@ -20,8 +20,9 @@
 #ifndef OPENDNP3_MASTERTASKS_H
 #define OPENDNP3_MASTERTASKS_H
 
-#include "opendnp3/master/IMasterApplication.h"
 #include "master/IMasterScheduler.h"
+
+#include "opendnp3/master/IMasterApplication.h"
 #include "opendnp3/master/ISOEHandler.h"
 #include "opendnp3/master/MasterParams.h"
 

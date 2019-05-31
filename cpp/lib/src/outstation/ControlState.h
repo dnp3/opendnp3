@@ -20,11 +20,11 @@
 #ifndef OPENDNP3_CONTROLSTATE_H
 #define OPENDNP3_CONTROLSTATE_H
 
-#include "opendnp3/Timestamp.h"
-
 #include "app/AppSeqNum.h"
-#include "opendnp3/gen/CommandStatus.h"
 #include "link/CRC.h"
+
+#include "opendnp3/Timestamp.h"
+#include "opendnp3/gen/CommandStatus.h"
 
 namespace opendnp3
 {

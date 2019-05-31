@@ -20,20 +20,23 @@
 #ifndef OPENDNP3_LINK_CONTEXT_H
 #define OPENDNP3_LINK_CONTEXT_H
 
-#include <ser4cpp/container/Settable.h>
-#include <ser4cpp/container/StaticBuffer.h>
-#include <exe4cpp/IExecutor.h>
-#include <log4cpp/Logger.h>
-
-#include "opendnp3/Timestamp.h"
-#include "opendnp3/StackStatistics.h"
-#include "opendnp3/gen/LinkStatus.h"
 #include "link/ILinkLayer.h"
-#include "opendnp3/link/ILinkListener.h"
 #include "link/ILinkSession.h"
 #include "link/ILinkTx.h"
 #include "link/LinkLayerConfig.h"
 #include "link/LinkLayerConstants.h"
+
+#include "opendnp3/StackStatistics.h"
+#include "opendnp3/Timestamp.h"
+#include "opendnp3/gen/LinkStatus.h"
+#include "opendnp3/link/ILinkListener.h"
+
+#include <ser4cpp/container/Settable.h>
+#include <ser4cpp/container/StaticBuffer.h>
+
+#include <exe4cpp/IExecutor.h>
+
+#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {

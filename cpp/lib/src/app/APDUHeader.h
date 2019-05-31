@@ -21,6 +21,7 @@
 #define OPENDNP3_APDUHEADER_H
 
 #include "app/AppControlField.h"
+
 #include "opendnp3/app/IINField.h"
 #include "opendnp3/gen/FunctionCode.h"
 

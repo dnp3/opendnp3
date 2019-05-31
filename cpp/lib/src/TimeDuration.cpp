@@ -64,20 +64,13 @@ TimeDuration TimeDuration::Days(int64_t days)
     return TimeDuration(std::chrono::hours(24) * days);
 }
 
-TimeDuration::TimeDuration()
-    : value(std::chrono::milliseconds(0))
-{
-
-}
+TimeDuration::TimeDuration() : value(std::chrono::milliseconds(0)) {}
 
 TimeDuration TimeDuration::Double() const
 {
-    const bool doubling_would_cause_mult_overflow
-        = this->value >= exe4cpp::duration_t::max() / 2;
+    const bool doubling_would_cause_mult_overflow = this->value >= exe4cpp::duration_t::max() / 2;
 
-    return doubling_would_cause_mult_overflow
-        ? TimeDuration::Max()
-        : TimeDuration(this->value + this->value);
+    return doubling_would_cause_mult_overflow ? TimeDuration::Max() : TimeDuration(this->value + this->value);
 }
 
 bool TimeDuration::IsNegative() const
@@ -117,10 +110,6 @@ bool TimeDuration::operator>=(const TimeDuration& other) const
     return this->value >= other.value;
 }
 
-TimeDuration::TimeDuration(exe4cpp::duration_t value)
-    : value(value)
-{
-
-}
+TimeDuration::TimeDuration(exe4cpp::duration_t value) : value(value) {}
 
 } // namespace opendnp3

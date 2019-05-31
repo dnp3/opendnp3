@@ -66,8 +66,8 @@ namespace levels
     const log4cpp::LogLevels NOTHING = log4cpp::LogLevels::none();
     const log4cpp::LogLevels ALL = log4cpp::LogLevels::everything();
     const log4cpp::LogLevels NORMAL = NOTHING | flags::EVENT | flags::ERR | flags::WARN | flags::INFO;
-    const log4cpp::LogLevels ALL_APP_COMMS = NOTHING | flags::APP_HEADER_RX | flags::APP_HEADER_TX | flags::APP_OBJECT_RX
-        | flags::APP_OBJECT_TX | flags::APP_HEX_RX | flags::APP_HEX_TX;
+    const log4cpp::LogLevels ALL_APP_COMMS = NOTHING | flags::APP_HEADER_RX | flags::APP_HEADER_TX
+        | flags::APP_OBJECT_RX | flags::APP_OBJECT_TX | flags::APP_HEX_RX | flags::APP_HEX_TX;
     const log4cpp::LogLevels ALL_COMMS
         = ALL_APP_COMMS | flags::LINK_RX | flags::LINK_TX | flags::TRANSPORT_RX | flags::TRANSPORT_TX;
 

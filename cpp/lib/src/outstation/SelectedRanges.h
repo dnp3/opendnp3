@@ -20,9 +20,9 @@
 #ifndef OPENDNP3_SELECTEDRANGES_H
 #define OPENDNP3_SELECTEDRANGES_H
 
-#include "opendnp3/Uncopyable.h"
-
 #include "app/Range.h"
+
+#include "opendnp3/Uncopyable.h"
 
 namespace opendnp3
 {

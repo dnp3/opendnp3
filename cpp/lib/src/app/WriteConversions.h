@@ -20,7 +20,6 @@
 #ifndef OPENDNP3_WRITECONVERSIONS_H
 #define OPENDNP3_WRITECONVERSIONS_H
 
-#include "opendnp3/app/MeasurementTypes.h"
 #include "app/WriteConversionTemplates.h"
 #include "gen/objects/Group1.h"
 #include "gen/objects/Group10.h"
@@ -43,6 +42,8 @@
 #include "gen/objects/Group42.h"
 #include "gen/objects/Group43.h"
 #include "gen/objects/Group50.h"
+
+#include "opendnp3/app/MeasurementTypes.h"
 
 namespace opendnp3
 {

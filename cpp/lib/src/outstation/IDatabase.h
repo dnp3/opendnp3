@@ -23,6 +23,7 @@
 #include "outstation/IClassAssigner.h"
 #include "outstation/IResponseLoader.h"
 #include "outstation/IStaticSelector.h"
+
 #include "opendnp3/outstation/IUpdateHandler.h"
 
 namespace opendnp3

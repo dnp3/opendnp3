@@ -21,9 +21,10 @@
 #define OPENDNP3_DNP3CHANNEL_H
 
 #include "ResourceManager.h"
-#include "master/IMasterScheduler.h"
-#include "opendnp3/channel/IChannel.h"
 #include "channel/IOHandler.h"
+#include "master/IMasterScheduler.h"
+
+#include "opendnp3/channel/IChannel.h"
 
 namespace opendnp3
 {
@@ -58,14 +59,14 @@ public:
     void SetLogFilters(const log4cpp::LogLevels& filters) final;
 
     std::shared_ptr<IMaster> AddMaster(const std::string& id,
-                                               std::shared_ptr<ISOEHandler> SOEHandler,
-                                               std::shared_ptr<IMasterApplication> application,
-                                               const MasterStackConfig& config) final;
+                                       std::shared_ptr<ISOEHandler> SOEHandler,
+                                       std::shared_ptr<IMasterApplication> application,
+                                       const MasterStackConfig& config) final;
 
     std::shared_ptr<IOutstation> AddOutstation(const std::string& id,
-                                                       std::shared_ptr<ICommandHandler> commandHandler,
-                                                       std::shared_ptr<IOutstationApplication> application,
-                                                       const OutstationStackConfig& config) final;
+                                               std::shared_ptr<ICommandHandler> commandHandler,
+                                               std::shared_ptr<IOutstationApplication> application,
+                                               const OutstationStackConfig& config) final;
 
 private:
     void ShutdownImpl();

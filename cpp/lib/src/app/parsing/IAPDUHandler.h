@@ -20,26 +20,27 @@
 #ifndef OPENDNP3_IAPDUHANDLER_H
 #define OPENDNP3_IAPDUHANDLER_H
 
-#include "opendnp3/app/AnalogCommandEvent.h"
-#include "opendnp3/app/AnalogOutput.h"
-#include "opendnp3/app/BinaryCommandEvent.h"
-#include "opendnp3/app/ControlRelayOutputBlock.h"
 #include "app/GroupVariationRecord.h"
-#include "opendnp3/app/IINField.h"
 #include "app/IINValue.h"
-#include "opendnp3/app/Indexed.h"
-#include "opendnp3/app/MeasurementTypes.h"
-#include "opendnp3/app/OctetString.h"
 #include "app/Range.h"
-#include "opendnp3/app/parsing/ICollection.h"
 #include "app/parsing/IWhiteList.h"
-#include "opendnp3/gen/QualifierCode.h"
 #include "gen/objects/Group120.h"
 #include "gen/objects/Group121.h"
 #include "gen/objects/Group122.h"
 #include "gen/objects/Group50.h"
 #include "gen/objects/Group51.h"
 #include "gen/objects/Group52.h"
+
+#include "opendnp3/app/AnalogCommandEvent.h"
+#include "opendnp3/app/AnalogOutput.h"
+#include "opendnp3/app/BinaryCommandEvent.h"
+#include "opendnp3/app/ControlRelayOutputBlock.h"
+#include "opendnp3/app/IINField.h"
+#include "opendnp3/app/Indexed.h"
+#include "opendnp3/app/MeasurementTypes.h"
+#include "opendnp3/app/OctetString.h"
+#include "opendnp3/app/parsing/ICollection.h"
+#include "opendnp3/gen/QualifierCode.h"
 
 namespace opendnp3
 {

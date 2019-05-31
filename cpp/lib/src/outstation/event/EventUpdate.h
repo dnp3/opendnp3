@@ -22,7 +22,6 @@
 
 #include "EventLists.h"
 #include "EventTypeImpl.h"
-
 #include "outstation/Event.h"
 
 namespace opendnp3

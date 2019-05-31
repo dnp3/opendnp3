@@ -38,8 +38,7 @@ public:
     /**
      * The the next delay based on the current and the maximum.
      */
-    virtual TimeDuration GetNextDelay(const TimeDuration& current,
-                                      const TimeDuration& max) const = 0;
+    virtual TimeDuration GetNextDelay(const TimeDuration& current, const TimeDuration& max) const = 0;
 };
 
 /**
@@ -52,8 +51,7 @@ class ExponentialBackoffStrategy final : public IOpenDelayStrategy, private Unco
 public:
     static IOpenDelayStrategy& Instance();
 
-    TimeDuration GetNextDelay(const TimeDuration& current,
-                              const TimeDuration& max) const final;
+    TimeDuration GetNextDelay(const TimeDuration& current, const TimeDuration& max) const final;
 };
 
 } // namespace opendnp3

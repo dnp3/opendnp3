@@ -19,10 +19,10 @@
  */
 #include "CommandResponseHandler.h"
 
-#include <ser4cpp/serialization/LittleEndian.h>
-
 #include "gen/objects/Group12.h"
 #include "gen/objects/Group41.h"
+
+#include <ser4cpp/serialization/LittleEndian.h>
 
 namespace opendnp3
 {

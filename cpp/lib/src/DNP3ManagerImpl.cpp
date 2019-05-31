@@ -31,11 +31,12 @@
 #endif
 
 #include "channel/DNP3Channel.h"
-#include "opendnp3/ErrorCodes.h"
-#include "master/MasterTCPServer.h"
 #include "channel/SerialIOHandler.h"
 #include "channel/TCPClientIOHandler.h"
 #include "channel/TCPServerIOHandler.h"
+#include "master/MasterTCPServer.h"
+
+#include "opendnp3/ErrorCodes.h"
 
 namespace opendnp3
 {
@@ -184,15 +185,14 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSServer(const std::string& id,
 }
 
 std::shared_ptr<IListener> DNP3ManagerImpl::CreateListener(std::string loggerid,
-                                                                    const log4cpp::LogLevels& levels,
-                                                                    IPEndpoint endpoint,
-                                                                    const std::shared_ptr<IListenCallbacks>& callbacks,
-                                                                    std::error_code& ec)
+                                                           const log4cpp::LogLevels& levels,
+                                                           IPEndpoint endpoint,
+                                                           const std::shared_ptr<IListenCallbacks>& callbacks,
+                                                           std::error_code& ec)
 {
     auto create = [&]() -> std::shared_ptr<IListener> {
-        return MasterTCPServer::Create(this->logger.detach(loggerid, levels),
-                                                 exe4cpp::StrandExecutor::create(this->io), endpoint, callbacks,
-                                                 this->resources, ec);
+        return MasterTCPServer::Create(this->logger.detach(loggerid, levels), exe4cpp::StrandExecutor::create(this->io),
+                                       endpoint, callbacks, this->resources, ec);
     };
 
     auto listener = this->resources->Bind<IListener>(create);
@@ -206,19 +206,18 @@ std::shared_ptr<IListener> DNP3ManagerImpl::CreateListener(std::string loggerid,
 }
 
 std::shared_ptr<IListener> DNP3ManagerImpl::CreateListener(std::string loggerid,
-                                                                    const log4cpp::LogLevels& levels,
-                                                                    IPEndpoint endpoint,
-                                                                    const TLSConfig& config,
-                                                                    const std::shared_ptr<IListenCallbacks>& callbacks,
-                                                                    std::error_code& ec)
+                                                           const log4cpp::LogLevels& levels,
+                                                           IPEndpoint endpoint,
+                                                           const TLSConfig& config,
+                                                           const std::shared_ptr<IListenCallbacks>& callbacks,
+                                                           std::error_code& ec)
 {
 
 #ifdef OPENDNP3_USE_TLS
 
     auto create = [&]() -> std::shared_ptr<IListener> {
-        return MasterTLSServer::Create(this->logger.detach(loggerid, levels),
-                                       exe4cpp::StrandExecutor::create(this->io), endpoint, config, callbacks,
-                                       this->resources, ec);
+        return MasterTLSServer::Create(this->logger.detach(loggerid, levels), exe4cpp::StrandExecutor::create(this->io),
+                                       endpoint, config, callbacks, this->resources, ec);
     };
 
     auto listener = this->resources->Bind<IListener>(create);

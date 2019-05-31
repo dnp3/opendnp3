@@ -20,14 +20,14 @@
 #ifndef OPENDNP3_MASTERTLSSERVER_H
 #define OPENDNP3_MASTERTLSSERVER_H
 
-#include <log4cpp/Logger.h>
-
-#include "opendnp3/channel/IPEndpoint.h"
 #include "ResourceManager.h"
-#include "opendnp3/channel/TLSConfig.h"
 #include "channel/tls/TLSServer.h"
 
+#include "opendnp3/channel/IPEndpoint.h"
+#include "opendnp3/channel/TLSConfig.h"
 #include "opendnp3/master/IListenCallbacks.h"
+
+#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {

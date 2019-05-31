@@ -20,9 +20,9 @@
 #ifndef OPENDNP3_TXBUFFER_H
 #define OPENDNP3_TXBUFFER_H
 
-#include <ser4cpp/container/Buffer.h>
-
 #include "app/APDUResponse.h"
+
+#include <ser4cpp/container/Buffer.h>
 
 namespace opendnp3
 {

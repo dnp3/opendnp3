@@ -29,8 +29,7 @@ IOpenDelayStrategy& ExponentialBackoffStrategy::Instance()
     return instance;
 }
 
-TimeDuration ExponentialBackoffStrategy::GetNextDelay(const TimeDuration& current,
-                                                      const TimeDuration& max) const
+TimeDuration ExponentialBackoffStrategy::GetNextDelay(const TimeDuration& current, const TimeDuration& max) const
 {
     const auto doubled = current.Double();
     return (doubled > max) ? max : doubled;

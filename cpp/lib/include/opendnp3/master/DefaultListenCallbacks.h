@@ -42,9 +42,7 @@ public:
 
     virtual TimeDuration GetFirstFrameTimeout() override;
 
-    virtual void OnFirstFrame(uint64_t sessionid,
-                              const LinkHeaderFields& header,
-                              ISessionAcceptor& acceptor) override;
+    virtual void OnFirstFrame(uint64_t sessionid, const LinkHeaderFields& header, ISessionAcceptor& acceptor) override;
 
     virtual void OnConnectionClose(uint64_t sessionid, const std::shared_ptr<IMasterSession>& session) override;
 

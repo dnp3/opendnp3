@@ -20,14 +20,16 @@
 #ifndef OPENDNP3_FREEFORMATPARSER_H
 #define OPENDNP3_FREEFORMATPARSER_H
 
-#include <ser4cpp/container/SequenceTypes.h>
-#include <log4cpp/Logger.h>
-#include "opendnp3/StaticOnly.h"
-
 #include "app/parsing/IAPDUHandler.h"
 #include "app/parsing/ObjectHeaderParser.h"
 #include "app/parsing/ParseResult.h"
 #include "app/parsing/ParserSettings.h"
+
+#include "opendnp3/StaticOnly.h"
+
+#include <ser4cpp/container/SequenceTypes.h>
+
+#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {

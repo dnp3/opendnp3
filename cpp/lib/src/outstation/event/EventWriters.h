@@ -22,12 +22,11 @@
 #define OPENDNP3_EVENTWRITERS_H
 
 #include "IEventWriteHandler.h"
-
-#include <ser4cpp/serialization/LittleEndian.h>
-
 #include "app/DNP3Serializer.h"
 #include "app/HeaderWriter.h"
 #include "gen/objects/Group51.h"
+
+#include <ser4cpp/serialization/LittleEndian.h>
 
 namespace opendnp3
 {

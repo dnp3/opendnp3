@@ -20,9 +20,10 @@
 #ifndef OPENDNP3_STARTUPINTEGRITYPOLL_H
 #define OPENDNP3_STARTUPINTEGRITYPOLL_H
 
-#include "opendnp3/app/ClassField.h"
 #include "master/PollTaskBase.h"
 #include "master/TaskPriority.h"
+
+#include "opendnp3/app/ClassField.h"
 
 namespace opendnp3
 {

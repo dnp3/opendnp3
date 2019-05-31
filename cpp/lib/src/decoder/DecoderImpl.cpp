@@ -20,14 +20,13 @@
 
 #include "decoder/DecoderImpl.h"
 
-#include <log4cpp/LogMacros.h>
-
 #include "app/APDULogging.h"
 #include "app/parsing/APDUHeaderParser.h"
 #include "app/parsing/APDUParser.h"
-
 #include "decoder/Indent.h"
 #include "decoder/LoggingHandler.h"
+
+#include <log4cpp/LogMacros.h>
 
 namespace opendnp3
 {

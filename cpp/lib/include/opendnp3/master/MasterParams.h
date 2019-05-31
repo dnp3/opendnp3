@@ -21,7 +21,6 @@
 #define OPENDNP3_MASTERPARAMS_H
 
 #include "opendnp3/TimeDuration.h"
-
 #include "opendnp3/app/AppConstants.h"
 #include "opendnp3/app/ClassField.h"
 #include "opendnp3/gen/IndexQualifierMode.h"

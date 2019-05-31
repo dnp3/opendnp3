@@ -20,12 +20,12 @@
 #ifndef OPENDNP3_IMASTERAPPLICATION_H
 #define OPENDNP3_IMASTERAPPLICATION_H
 
-#include "opendnp3/master/IUTCTimeSource.h"
 #include "opendnp3/app/IINField.h"
 #include "opendnp3/gen/MasterTaskType.h"
 #include "opendnp3/gen/TaskCompletion.h"
 #include "opendnp3/link/ILinkListener.h"
 #include "opendnp3/master/HeaderTypes.h"
+#include "opendnp3/master/IUTCTimeSource.h"
 #include "opendnp3/master/TaskInfo.h"
 
 #include <functional>

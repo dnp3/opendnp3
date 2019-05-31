@@ -20,22 +20,21 @@
 
 #include "master/MasterSessionStack.h"
 
-#include "master/HeaderConversions.h"
 #include "link/LinkSession.h"
+#include "master/HeaderConversions.h"
 
 #include <utility>
 
 namespace opendnp3
 {
-std::shared_ptr<MasterSessionStack> MasterSessionStack::Create(
-    const log4cpp::Logger& logger,
-    const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
-    const std::shared_ptr<ISOEHandler>& SOEHandler,
-    const std::shared_ptr<IMasterApplication>& application,
-    const std::shared_ptr<IMasterScheduler>& scheduler,
-    const std::shared_ptr<LinkSession>& session,
-    ILinkTx& linktx,
-    const MasterStackConfig& config)
+std::shared_ptr<MasterSessionStack> MasterSessionStack::Create(const log4cpp::Logger& logger,
+                                                               const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
+                                                               const std::shared_ptr<ISOEHandler>& SOEHandler,
+                                                               const std::shared_ptr<IMasterApplication>& application,
+                                                               const std::shared_ptr<IMasterScheduler>& scheduler,
+                                                               const std::shared_ptr<LinkSession>& session,
+                                                               ILinkTx& linktx,
+                                                               const MasterStackConfig& config)
 {
     return std::make_shared<MasterSessionStack>(logger, executor, SOEHandler, application, scheduler, session, linktx,
                                                 config);

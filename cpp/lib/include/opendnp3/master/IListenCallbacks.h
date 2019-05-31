@@ -62,8 +62,7 @@ public:
     /**
      * Called when the first link-layer frame is received for a session
      */
-    virtual void OnFirstFrame(uint64_t sessionid, const LinkHeaderFields& header, ISessionAcceptor& acceptor)
-        = 0;
+    virtual void OnFirstFrame(uint64_t sessionid, const LinkHeaderFields& header, ISessionAcceptor& acceptor) = 0;
 
     /**
      * Called when a socket closes

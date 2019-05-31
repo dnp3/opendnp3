@@ -19,9 +19,6 @@
  */
 #include "APDUParser.h"
 
-#include <log4cpp/LogMacros.h>
-
-#include "opendnp3/LogLevels.h"
 #include "app/GroupVariationRecord.h"
 #include "app/MeasurementFactory.h"
 #include "app/parsing/CountIndexParser.h"
@@ -29,7 +26,11 @@
 #include "app/parsing/FreeFormatParser.h"
 #include "app/parsing/ObjectHeaderParser.h"
 #include "app/parsing/RangeParser.h"
+
+#include "opendnp3/LogLevels.h"
 #include "opendnp3/gen/QualifierCode.h"
+
+#include <log4cpp/LogMacros.h>
 
 namespace opendnp3
 {

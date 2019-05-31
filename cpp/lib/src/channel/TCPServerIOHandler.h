@@ -21,15 +21,14 @@
 #ifndef OPENDNP3_TCPSERVERIOHANDLER_H
 #define OPENDNP3_TCPSERVERIOHANDLER_H
 
-#include <exe4cpp/Timer.h>
+#include "channel/IOHandler.h"
+#include "channel/TCPServer.h"
 
 #include "opendnp3/channel/ChannelRetry.h"
 #include "opendnp3/channel/IPEndpoint.h"
-#include "channel/TCPServer.h"
-
 #include "opendnp3/gen/ServerAcceptMode.h"
 
-#include "channel/IOHandler.h"
+#include <exe4cpp/Timer.h>
 
 namespace opendnp3
 {
@@ -62,8 +61,8 @@ class TCPServerIOHandler final : public IOHandler
         void OnShutdown() final {}
 
         void AcceptConnection(uint64_t sessionid,
-                                      const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
-                                      asio::ip::tcp::socket) final;
+                              const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
+                              asio::ip::tcp::socket) final;
     };
 
 public:

@@ -19,9 +19,8 @@
  */
 #include "master/MasterStack.h"
 
-#include "master/HeaderConversions.h"
-
 #include "app/APDUBuilders.h"
+#include "master/HeaderConversions.h"
 #include "master/MasterContext.h"
 
 namespace opendnp3
@@ -191,9 +190,7 @@ void MasterStack::SelectAndOperate(CommandSet&& commands,
     this->executor->post(action);
 }
 
-void MasterStack::DirectOperate(CommandSet&& commands,
-                                const CommandResultCallbackT& callback,
-                                const TaskConfig& config)
+void MasterStack::DirectOperate(CommandSet&& commands, const CommandResultCallbackT& callback, const TaskConfig& config)
 {
     /// this is to work around the fact that c++11 doesn't have generic move capture
     auto set = std::make_shared<CommandSet>(std::move(commands));

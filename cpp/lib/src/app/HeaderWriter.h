@@ -20,18 +20,19 @@
 #ifndef OPENDNP3_HEADERWRITER_H
 #define OPENDNP3_HEADERWRITER_H
 
-#include <ser4cpp/container/Settable.h>
-#include <ser4cpp/serialization/LittleEndian.h>
-
 #include "app/BitfieldRangeWriteIterator.h"
 #include "app/CountWriteIterator.h"
 #include "app/DNP3Serializer.h"
-#include "opendnp3/app/GroupVariationID.h"
 #include "app/GroupVariationRecord.h"
 #include "app/IVariableLength.h"
 #include "app/PrefixedWriteIterator.h"
 #include "app/RangeWriteIterator.h"
+
+#include "opendnp3/app/GroupVariationID.h"
 #include "opendnp3/gen/QualifierCode.h"
+
+#include <ser4cpp/container/Settable.h>
+#include <ser4cpp/serialization/LittleEndian.h>
 
 namespace opendnp3
 {

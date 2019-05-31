@@ -22,9 +22,9 @@
 
 #include "EventLists.h"
 #include "IEventWriteHandler.h"
+#include "outstation/Event.h"
 
 #include "opendnp3/app/ClassField.h"
-#include "outstation/Event.h"
 
 #include <limits>
 

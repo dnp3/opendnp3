@@ -20,6 +20,7 @@
 #include "opendnp3/app/MeasurementTypes.h"
 
 #include "app/QualityFlags.h"
+
 #include "opendnp3/gen/BinaryQuality.h"
 
 namespace opendnp3

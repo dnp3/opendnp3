@@ -20,15 +20,16 @@
 #ifndef OPENDNP3_COMMANDTASK_H
 #define OPENDNP3_COMMANDTASK_H
 
-#include <log4cpp/Logger.h>
+#include "master/IMasterTask.h"
+#include "master/TaskPriority.h"
 
 #include "opendnp3/gen/FunctionCode.h"
 #include "opendnp3/gen/IndexQualifierMode.h"
 #include "opendnp3/master/CommandSet.h"
 #include "opendnp3/master/ICommandProcessor.h"
-#include "master/IMasterTask.h"
 #include "opendnp3/master/ITaskCallback.h"
-#include "master/TaskPriority.h"
+
+#include <log4cpp/Logger.h>
 
 #include <assert.h>
 

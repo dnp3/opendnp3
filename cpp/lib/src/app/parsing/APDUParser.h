@@ -20,13 +20,14 @@
 #ifndef OPENDNP3_APDUPARSER_H
 #define OPENDNP3_APDUPARSER_H
 
-#include <ser4cpp/container/SequenceTypes.h>
-#include "opendnp3/StaticOnly.h"
-
 #include "app/parsing/IAPDUHandler.h"
 #include "app/parsing/NumParser.h"
 #include "app/parsing/ParseResult.h"
 #include "app/parsing/ParserSettings.h"
+
+#include "opendnp3/StaticOnly.h"
+
+#include <ser4cpp/container/SequenceTypes.h>
 
 namespace opendnp3
 {

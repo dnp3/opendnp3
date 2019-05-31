@@ -19,10 +19,11 @@
  */
 #include "AssignClassHandler.h"
 
-#include <log4cpp/Logger.h>
-
 #include "app/parsing/IAPDUHandler.h"
+
 #include "opendnp3/outstation/IOutstationApplication.h"
+
+#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {
