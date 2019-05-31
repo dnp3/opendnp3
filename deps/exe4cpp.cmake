@@ -9,7 +9,6 @@ FetchContent_Declare(
 
 FetchContent_GetProperties(exe4cpp)
 if(NOT exe4cpp_POPULATED)
-    message(STATUS "Fetching exe4cpp")
     FetchContent_Populate(exe4cpp)
 
     add_library(exe4cpp INTERFACE)

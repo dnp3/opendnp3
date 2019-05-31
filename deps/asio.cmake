@@ -9,7 +9,6 @@ FetchContent_Declare(
 
 FetchContent_GetProperties(asio)
 if(NOT asio_POPULATED)
-    message(STATUS "Fetching asio")
     FetchContent_Populate(asio)
 
     find_package(Threads)

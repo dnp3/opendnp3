@@ -9,7 +9,6 @@ FetchContent_Declare(
 
 FetchContent_GetProperties(log4cpp)
 if(NOT log4cpp_POPULATED)
-    message(STATUS "Fetching log4cpp")
     FetchContent_Populate(log4cpp)
 
     add_library(log4cpp INTERFACE)

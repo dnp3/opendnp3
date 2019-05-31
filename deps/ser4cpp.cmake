@@ -9,7 +9,6 @@ FetchContent_Declare(
 
 FetchContent_GetProperties(ser4cpp)
 if(NOT ser4cpp_POPULATED)
-    message(STATUS "Fetching ser4cpp")
     FetchContent_Populate(ser4cpp)
 
     add_library(ser4cpp INTERFACE)

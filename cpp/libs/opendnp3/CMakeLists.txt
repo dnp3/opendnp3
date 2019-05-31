@@ -4,7 +4,6 @@ set(opendnp3_public_headers
     ./include/opendnp3/ErrorCodes.h
     ./include/opendnp3/IResource.h
     ./include/opendnp3/IStack.h
-    ./include/opendnp3/IUTCTimeSource.h
     ./include/opendnp3/LogLevels.h
     ./include/opendnp3/StackStatistics.h
     ./include/opendnp3/StaticOnly.h
@@ -145,6 +144,7 @@ set(opendnp3_public_headers
     ./include/opendnp3/master/ISessionAcceptor.h
     ./include/opendnp3/master/ISOEHandler.h
     ./include/opendnp3/master/ITaskCallback.h
+    ./include/opendnp3/master/IUTCTimeSource.h
     ./include/opendnp3/master/MasterParams.h
     ./include/opendnp3/master/PrintingSOEHandler.h
     ./include/opendnp3/master/RestartOperationResult.h
@@ -240,7 +240,6 @@ set(opendnp3_private_headers
     ./src/channel/TCPClientIOHandler.h
     ./src/channel/TCPServer.h
     ./src/channel/TCPServerIOHandler.h
-    ./src/channel/UTCTimeSource.h
 
     ./src/decoder/DecoderImpl.h
     ./src/decoder/Indent.h
@@ -454,7 +453,6 @@ set(opendnp3_src
     ./src/channel/TCPClientIOHandler.cpp
     ./src/channel/TCPServer.cpp
     ./src/channel/TCPServerIOHandler.cpp
-    ./src/channel/UTCTimeSource.cpp
 
     ./src/decoder/Decoder.cpp
     ./src/decoder/DecoderImpl.cpp
