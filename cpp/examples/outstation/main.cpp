@@ -155,7 +155,7 @@ void AddUpdates(UpdateBuilder& builder, State& state, const std::string& argumen
         }
         case ('o'):
         {
-            OctetString value(ser4cpp::rseq_t(&state.octetStringValue, 1));
+            OctetString value(Buffer(&state.octetStringValue, 1));
             builder.Update(value, 0);
             state.octetStringValue += 1;
             break;

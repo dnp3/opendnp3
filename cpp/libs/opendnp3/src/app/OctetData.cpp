@@ -31,29 +31,31 @@ OctetData::OctetData() : size(1) {}
 
 OctetData::OctetData(const char* input) : OctetData(ToSlice(input)) {}
 
-OctetData::OctetData(const ser4cpp::rseq_t& input) : size(input.is_empty() ? 1 : ser4cpp::min<uint32_t>(MAX_SIZE, input.length()))
+OctetData::OctetData(const Buffer& input) : size(input.length == 0 ? 1 : ser4cpp::min<uint32_t>(MAX_SIZE, static_cast<uint32_t>(input.length)))
 {
-    if (input.is_not_empty())
+    ser4cpp::rseq_t inputSlice(input.data, static_cast<uint32_t>(input.length));
+    if (inputSlice.is_not_empty())
     {
-        auto dest = buffer.as_wseq();
-        dest.copy_from(input.take(size));
+        ser4cpp::wseq_t dest(buffer.data(), static_cast<uint32_t>(buffer.size()));
+        dest.copy_from(inputSlice.take(size));
     }
 }
 
-bool OctetData::Set(const ser4cpp::rseq_t& input)
+bool OctetData::Set(const Buffer& input)
 {
-    if (input.is_empty())
+    ser4cpp::rseq_t inputSlice(input.data, static_cast<uint32_t>(input.length));
+    if (inputSlice.is_empty())
     {
         this->size = 0;
-        this->buffer.as_wseq()[0] = 0x00;
+        this->buffer[0] = 0x00;
         return false;
     }
 
-    const bool is_oversized = input.length() > MAX_SIZE;
-    const uint8_t usable_size = is_oversized ? MAX_SIZE : static_cast<uint8_t>(input.length());
+    const bool is_oversized = inputSlice.length() > MAX_SIZE;
+    const uint8_t usable_size = is_oversized ? MAX_SIZE : static_cast<uint8_t>(inputSlice.length());
 
-    auto dest = this->buffer.as_wseq();
-    dest.copy_from(input.take(usable_size));
+    ser4cpp::wseq_t dest(buffer.data(), static_cast<uint32_t>(buffer.size()));
+    dest.copy_from(inputSlice.take(usable_size));
     this->size = usable_size;
     return !is_oversized;
 }
@@ -61,21 +63,20 @@ bool OctetData::Set(const ser4cpp::rseq_t& input)
 bool OctetData::Set(const char* input)
 {
     const size_t length = strlen(input);
-    return this->Set(ser4cpp::rseq_t(reinterpret_cast<const uint8_t*>(input),
-                                     static_cast<uint32_t>(length > MAX_SIZE ? MAX_SIZE : length)));
+    return this->Set(Buffer(reinterpret_cast<const uint8_t*>(input), static_cast<uint32_t>(length > MAX_SIZE ? MAX_SIZE : length)));
 }
 
-ser4cpp::rseq_t OctetData::ToRSeq() const
+const Buffer OctetData::ToBuffer() const
 {
-    return buffer.as_seq(size);
+    return Buffer(buffer.data(), size);
 }
 
-ser4cpp::rseq_t OctetData::ToSlice(const char* input)
+const Buffer OctetData::ToSlice(const char* input)
 {
     const size_t length = strlen(input);
     if (length == 0)
-        return ser4cpp::rseq_t::empty();
-    return ser4cpp::rseq_t(reinterpret_cast<const uint8_t*>(input),
+        return Buffer(nullptr, 0);
+    return Buffer(reinterpret_cast<const uint8_t*>(input),
                            length > MAX_SIZE ? MAX_SIZE : static_cast<uint32_t>(length));
 }
 

@@ -144,7 +144,17 @@ object AuthVariableSizeGenerator {
       def fixedReads : Iterator[String] = {
 
         def toNumericReadOp(fs: FixedSizeField) : Iterator[String] = {
-          Iterator("%s::read_from(copy, this->%s);".format(FixedSizeHelpers.getCppFieldTypeParser(fs.typ), fs.name))
+          val tempVarName = "%sTemp".format(fs.name);
+          if(fs.typ == UInt48Field) {
+            Iterator(
+              "UInt48Type %s;".format(tempVarName),
+              "%s::read_from(copy, %s);".format(FixedSizeHelpers.getCppFieldTypeParser(fs.typ), tempVarName),
+              "this->%s = %s.Get();".format(fs.name, tempVarName)
+            )
+          }
+          else {
+            Iterator("%s::read_from(copy, this->%s);".format(FixedSizeHelpers.getCppFieldTypeParser(fs.typ), fs.name))
+          }
         }
 
         def toEnumReadOp(fs: FixedSizeField, e: EnumFieldType) : Iterator[String] = {
@@ -219,7 +229,12 @@ object AuthVariableSizeGenerator {
       def fixedWrites : Iterator[String] = {
 
         def toNumericWriteOp(fs: FixedSizeField) : String = {
-          "%s::write_to(buffer, this->%s);".format(FixedSizeHelpers.getCppFieldTypeParser(fs.typ), fs.name)
+          if(fs.typ == UInt48Field) {
+              "%s::write_to(buffer, UInt48Type(this->%s));".format(FixedSizeHelpers.getCppFieldTypeParser(fs.typ), fs.name)
+          }
+          else {
+            "%s::write_to(buffer, this->%s);".format(FixedSizeHelpers.getCppFieldTypeParser(fs.typ), fs.name)
+          }
         }
 
         def toEnumWriteOp(fs: FixedSizeField, e: EnumFieldType) : String = {

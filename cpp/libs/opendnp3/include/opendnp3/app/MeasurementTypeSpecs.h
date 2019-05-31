@@ -20,6 +20,8 @@
 #ifndef OPENDNP3_MEASUREMENTTYPESPECS_H
 #define OPENDNP3_MEASUREMENTTYPESPECS_H
 
+#include <ser4cpp/container/SequenceTypes.h>
+
 #include "opendnp3/app/EventCells.h"
 #include "opendnp3/app/EventTriggers.h"
 #include "opendnp3/app/OctetString.h"
@@ -131,7 +133,11 @@ struct OctetStringSpec : public OctetStringInfo
 
     inline static bool IsEvent(const OctetString& oldValue, const OctetString& newValue)
     {
-        return !oldValue.ToRSeq().equals(newValue.ToRSeq());
+        const auto oldValueBuffer = oldValue.ToBuffer();
+        const ser4cpp::rseq_t oldValueSeq(oldValueBuffer.data, static_cast<uint32_t>(oldValueBuffer.length));
+        const auto newValueBuffer = newValue.ToBuffer();
+        const ser4cpp::rseq_t newValueSeq(newValueBuffer.data, static_cast<uint32_t>(newValueBuffer.length));
+        return !oldValueSeq.equals(newValueSeq);
     }
 };
 

@@ -242,7 +242,8 @@ ParseResult CountIndexParser::ParseIndexPrefixedOctetData(ser4cpp::rseq_t& buffe
     {
         auto read = [&numparser, record](ser4cpp::rseq_t& buffer, uint32_t pos) -> Indexed<OctetString> {
             auto index = numparser.ReadNum(buffer);
-            OctetString octets(buffer.take(record.variation));
+            const auto octetStringSlice = buffer.take(record.variation);
+            OctetString octets(Buffer(static_cast<uint8_t const*>(octetStringSlice), octetStringSlice.length()));
             buffer.advance(record.variation);
             return WithIndex(octets, index);
         };

@@ -175,7 +175,8 @@ ParseResult RangeParser::ParseRangeOfOctetData(ser4cpp::rseq_t& buffer,
         if (pHandler != nullptr)
         {
             auto read = [range, record](ser4cpp::rseq_t& buffer, uint32_t pos) -> Indexed<OctetString> {
-                OctetString octets(buffer.take(record.variation));
+                const auto octetData = buffer.take(record.variation);
+                OctetString octets(Buffer(static_cast<uint8_t const*>(octetData), octetData.length()));
                 buffer.advance(record.variation);
                 return WithIndex(octets, range.start + pos);
             };

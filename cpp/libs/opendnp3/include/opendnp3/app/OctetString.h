@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_OCTETSTRING_H
 #define OPENDNP3_OCTETSTRING_H
 
-#include "OctetData.h"
+#include "opendnp3/app/OctetData.h"
 
 namespace opendnp3
 {
@@ -59,7 +59,7 @@ public:
      * If the length is 0, the default value of [0x00] is assigned
      * If the length is > 255, only the first 255 bytes are copied
      */
-    OctetString(const ser4cpp::rseq_t& buffer) : OctetData(buffer) {}
+    OctetString(const Buffer& buffer) : OctetData(buffer) {}
 };
 
 } // namespace opendnp3

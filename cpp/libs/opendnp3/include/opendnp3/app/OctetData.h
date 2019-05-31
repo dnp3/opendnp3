@@ -20,9 +20,9 @@
 #ifndef OPENDNP3_OCTETDATA_H
 #define OPENDNP3_OCTETDATA_H
 
-#include <ser4cpp/container/RSeq.h>
-#include <ser4cpp/container/StaticBuffer.h>
+#include "opendnp3/Buffer.h"
 
+#include <array>
 #include <cstdint>
 
 namespace opendnp3
@@ -62,7 +62,7 @@ public:
      *
      * The null terminator is NOT copied as part of buffer
      */
-    OctetData(const ser4cpp::rseq_t& input);
+    OctetData(const Buffer& input);
 
     inline uint8_t Size() const
     {
@@ -79,7 +79,7 @@ public:
      *
      * @return true if the input meets the length requirements, false otherwise
      */
-    bool Set(const ser4cpp::rseq_t& input);
+    bool Set(const Buffer& input);
 
     /**
      * Set the buffer equal to the supplied c-string
@@ -94,14 +94,13 @@ public:
     bool Set(const char* input);
 
     /**
-     * @return a view of the current data as a read-only slice
+     * @return a view of the current data
      */
-    ser4cpp::rseq_t ToRSeq() const;
-
+    const Buffer ToBuffer() const;
 private:
-    static ser4cpp::rseq_t ToSlice(const char* input);
+    static const Buffer ToSlice(const char* input);
 
-    ser4cpp::StaticBuffer<uint32_t, MAX_SIZE> buffer;
+    std::array<uint8_t, MAX_SIZE> buffer;
     uint8_t size;
 };
 

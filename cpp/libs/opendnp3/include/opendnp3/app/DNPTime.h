@@ -20,12 +20,12 @@
 #ifndef OPENDNP3_DNPTIME_H
 #define OPENDNP3_DNPTIME_H
 
-#include <ser4cpp/serialization/UInt48Type.h>
+#include <cstdint>
 
 namespace opendnp3
 {
 
-using DNPTime = ser4cpp::UInt48Type;
+using DNPTime = uint64_t;
 
 }
 

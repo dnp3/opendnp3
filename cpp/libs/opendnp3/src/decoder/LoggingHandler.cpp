@@ -93,7 +93,8 @@ IINField LoggingHandler::PrintOctets(const ICollection<Indexed<OctetString>>& it
 {
     Indent i(*callbacks);
     auto logItem = [this](const Indexed<OctetString>& item) {
-        auto slice = item.value.ToRSeq();
+        const auto buffer = item.value.ToBuffer();
+        const auto slice = ser4cpp::rseq_t(buffer.data, static_cast<uint32_t>(buffer.length));
         FORMAT_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "[%u] value: (length = %u)", item.index, slice.length());
         FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, slice, 18, 18);
     };

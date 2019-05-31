@@ -363,7 +363,9 @@ bool Group120Var7::Read(const rseq_t& buffer)
   uint8_t errorCodeRawValue;
   UInt8::read_from(copy, errorCodeRawValue);
   this->errorCode = AuthErrorCodeFromType(errorCodeRawValue);
-  UInt48::read_from(copy, this->time);
+  UInt48Type timeTemp;
+  UInt48::read_from(copy, timeTemp);
+  this->time = timeTemp.Get();
 
   this->errorText = copy; // whatever is left over
   return true;
@@ -380,7 +382,7 @@ bool Group120Var7::Write(ser4cpp::wseq_t& buffer) const
   UInt16::write_to(buffer, this->userNum);
   UInt16::write_to(buffer, this->assocId);
   UInt8::write_to(buffer, AuthErrorCodeToType(this->errorCode));
-  UInt48::write_to(buffer, this->time);
+  UInt48::write_to(buffer, UInt48Type(this->time));
 
   buffer.copy_from(errorText);
   return true;

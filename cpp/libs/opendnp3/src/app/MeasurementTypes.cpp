@@ -35,13 +35,6 @@ Binary::Binary(Flags flags) : TypedMeasurement(flags::GetBinaryValue(flags), fla
 
 Binary::Binary(Flags flags, DNPTime time) : TypedMeasurement(flags::GetBinaryValue(flags), flags, time) {}
 
-Binary::Binary(bool value, Flags flags) : TypedMeasurement(value, flags::GetBinaryFlags(flags, value)) {}
-
-Binary::Binary(bool value, Flags flags, DNPTime time)
-    : TypedMeasurement(value, flags::GetBinaryFlags(flags, value), time)
-{
-}
-
 // ------------ Double Bit Binary ---------------
 
 DoubleBitBinary::DoubleBitBinary() : TypedMeasurement(DoubleBit::INDETERMINATE, flags::RESTART) {}

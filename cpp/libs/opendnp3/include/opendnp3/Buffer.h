@@ -17,38 +17,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "opendnp3/decoder/Decoder.h"
+#ifndef OPENDNP3_BUFFER_H
+#define OPENDNP3_BUFFER_H
 
-#include "decoder/DecoderImpl.h"
+#include <cstdint>
 
 namespace opendnp3
 {
 
-Decoder::Decoder(IDecoderCallbacks& callbacks, const log4cpp::Logger& logger) : impl(new DecoderImpl(callbacks, logger))
+struct Buffer
 {
-}
+    Buffer(const uint8_t* data, std::size_t length) : data(data), length(length) {}
 
-void Decoder::DecodeLPDU(const Buffer& data)
-{
-    ser4cpp::rseq_t rseqData(data.data, static_cast<uint32_t>(data.length));
-    impl->DecodeLPDU(rseqData);
-}
-
-void Decoder::DecodeTPDU(const Buffer& data)
-{
-    ser4cpp::rseq_t rseqData(data.data, static_cast<uint32_t>(data.length));
-    impl->DecodeTPDU(rseqData);
-}
-
-void Decoder::DecodeAPDU(const Buffer& data)
-{
-    ser4cpp::rseq_t rseqData(data.data, static_cast<uint32_t>(data.length));
-    impl->DecodeAPDU(rseqData);
-}
-
-Decoder::~Decoder()
-{
-    delete impl;
-}
+    const uint8_t* data;
+    std::size_t length;
+};
 
 } // namespace opendnp3
+
+#endif

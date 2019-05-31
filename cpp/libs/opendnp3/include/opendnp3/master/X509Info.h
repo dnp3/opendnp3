@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_X509_INFO_H
 #define OPENDNP3_X509_INFO_H
 
-#include <ser4cpp/container/SequenceTypes.h>
+#include "opendnp3/Buffer.h"
 #include "opendnp3/Uncopyable.h"
 
 #include <string>
@@ -35,7 +35,7 @@ namespace opendnp3
 class X509Info : private Uncopyable
 {
 public:
-    X509Info(int depth_, const ser4cpp::rseq_t sha1thumbprint_, std::string subjectName_)
+    X509Info(int depth_, Buffer sha1thumbprint_, std::string subjectName_)
         : depth(depth_), sha1thumbprint(sha1thumbprint_), subjectName(subjectName_)
     {
     }
@@ -44,7 +44,7 @@ public:
     int depth;
 
     // the sha1 thumbprint
-    ser4cpp::rseq_t sha1thumbprint;
+    Buffer sha1thumbprint;
 
     // the extracted subject name
     std::string subjectName;

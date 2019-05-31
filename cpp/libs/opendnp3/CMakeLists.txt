@@ -1,4 +1,5 @@
 set(opendnp3_public_headers
+    ./include/opendnp3/Buffer.h
     ./include/opendnp3/ConsoleLogger.h
     ./include/opendnp3/DNP3Manager.h
     ./include/opendnp3/ErrorCodes.h
@@ -631,7 +632,7 @@ add_library(opendnp3
 )
 target_compile_features(opendnp3 PRIVATE cxx_std_14)
 target_link_libraries(opendnp3
-    PUBLIC ser4cpp log4cpp
+    PUBLIC log4cpp ser4cpp # This will be private once the master database refactoring is done
     PRIVATE exe4cpp asio
 )
 target_include_directories(opendnp3

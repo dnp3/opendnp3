@@ -25,7 +25,8 @@
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/decoder/Decoder.h>
 
-using namespace std;
+#include <array>
+
 using namespace opendnp3;
 
 enum class Mode
@@ -57,13 +58,13 @@ int main(int argc, char* argv[])
     IDecoderCallbacks callback;
     Decoder decoder(callback, logger);
 
-    ser4cpp::Buffer buffer(4096);
+    std::array<uint8_t, 4096> rawBuffer;
 
     const Mode MODE = (argc > 1) ? GetMode(argv[1]) : Mode::Link;
 
     while (true)
     {
-        const size_t numRead = fread(buffer.as_wslice(), 1, buffer.length(), stdin);
+        const size_t numRead = fread(rawBuffer.data(), 1, rawBuffer.size(), stdin);
 
         if (numRead == 0)
         {
@@ -73,13 +74,13 @@ int main(int argc, char* argv[])
         switch (MODE)
         {
         case (Mode::Link):
-            decoder.DecodeLPDU(buffer.as_rslice().take(static_cast<uint32_t>(numRead)));
+            decoder.DecodeLPDU(Buffer(rawBuffer.data(), numRead));
             break;
         case (Mode::Transport):
-            decoder.DecodeTPDU(buffer.as_rslice().take(static_cast<uint32_t>(numRead)));
+            decoder.DecodeTPDU(Buffer(rawBuffer.data(), numRead));
             break;
         default:
-            decoder.DecodeAPDU(buffer.as_rslice().take(static_cast<uint32_t>(numRead)));
+            decoder.DecodeAPDU(Buffer(rawBuffer.data(), numRead));
             break;
         }
     }

@@ -20,9 +20,9 @@
 #ifndef OPENDNP3_DECODER_H
 #define OPENDNP3_DECODER_H
 
-#include "IDecoderCallbacks.h"
+#include "opendnp3/Buffer.h"
+#include "opendnp3/decoder/IDecoderCallbacks.h"
 
-#include <ser4cpp/container/SequenceTypes.h>
 #include <log4cpp/Logger.h>
 
 namespace opendnp3
@@ -37,9 +37,9 @@ public:
     Decoder(IDecoderCallbacks& callbacks, const log4cpp::Logger& logger);
     ~Decoder();
 
-    void DecodeLPDU(const ser4cpp::rseq_t& data);
-    void DecodeTPDU(const ser4cpp::rseq_t& data);
-    void DecodeAPDU(const ser4cpp::rseq_t& data);
+    void DecodeLPDU(const Buffer& data);
+    void DecodeTPDU(const Buffer& data);
+    void DecodeAPDU(const Buffer& data);
 
 private:
     DecoderImpl* impl;

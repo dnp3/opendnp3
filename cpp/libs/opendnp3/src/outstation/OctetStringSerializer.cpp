@@ -34,7 +34,9 @@ bool OctetStringSerializer::Write(const OctetString& value, ser4cpp::wseq_t& buf
 {
     if (value.Size() > buffer.length())
         return false;
-    buffer.copy_from(value.ToRSeq());
+    const auto valueBuffer = value.ToBuffer();
+    const ser4cpp::rseq_t slice(valueBuffer.data, static_cast<uint32_t>(valueBuffer.length));
+    buffer.copy_from(slice);
     return true;
 }
 }; // namespace opendnp3

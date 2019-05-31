@@ -75,7 +75,7 @@ bool MasterTLSServer::VerifyCallback(uint64_t sessionid, bool preverified, asio:
         return false;
     }
 
-    X509Info info(depth, ser4cpp::rseq_t(sha1_hash, sha1_hash_len), // the thumbprint
+    X509Info info(depth, Buffer(sha1_hash, sha1_hash_len), // the thumbprint
                   std::string(subjectName));
 
     if (!preverified)
