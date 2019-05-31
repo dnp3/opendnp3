@@ -17,26 +17,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef __APDU_HELPERS_H_
-#define __APDU_HELPERS_H_
+#include "utils/APDUHelpers.h"
 
-#include <openpal/util/Uncopyable.h>
+uint8_t APDUHelpers::fixedBuffer[SIZE];
 
-#include <opendnp3/app/APDURequest.h>
-#include <opendnp3/app/APDUResponse.h>
-
-#include <assert.h>
-
-class APDUHelpers : private openpal::StaticOnly
+opendnp3::APDURequest APDUHelpers::Request(opendnp3::FunctionCode code, uint32_t size)
 {
-private:
-    static const uint32_t SIZE = 2048;
-    static uint8_t fixedBuffer[2048];
+    assert(size <= SIZE);
+    ser4cpp::wseq_t buffer(fixedBuffer, size);
+    opendnp3::APDURequest request(buffer);
+    request.SetFunction(code);
+    request.SetControl(opendnp3::AppControlField(true, true, false, false, 0));
+    return request;
+}
 
-public:
-    static opendnp3::APDURequest Request(opendnp3::FunctionCode code, uint32_t size = SIZE);
-
-    static opendnp3::APDUResponse Response(uint32_t size = SIZE);
-};
-
-#endif
+opendnp3::APDUResponse APDUHelpers::Response(uint32_t size)
+{
+    assert(size <= SIZE);
+    ser4cpp::wseq_t buffer(fixedBuffer, size);
+    opendnp3::APDUResponse response(buffer);
+    response.SetFunction(opendnp3::FunctionCode::RESPONSE);
+    response.SetControl(opendnp3::AppControlField(true, true, false, false, 0));
+    response.SetIIN(opendnp3::IINField::Empty());
+    return response;
+}

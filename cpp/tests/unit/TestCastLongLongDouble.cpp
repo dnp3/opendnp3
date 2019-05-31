@@ -21,6 +21,8 @@
 
 #include <cmath>
 #include <iostream>
+#include <sstream>
+#include <string>
 
 #define SUITE(name) "Casting - " name
 template<typename T1, typename T2> T2 TestCast(T1 input)

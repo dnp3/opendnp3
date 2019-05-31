@@ -42,6 +42,8 @@ public:
     Binary(Flags flags);
 
     Binary(Flags flags, DNPTime time);
+
+    Binary(bool value, Flags flags, DNPTime time);
 };
 
 /**

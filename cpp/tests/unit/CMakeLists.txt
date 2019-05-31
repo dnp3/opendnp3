@@ -3,6 +3,7 @@ set(unittests_mocks
     ./mocks/MockAPDUHeaderHandler.h
     ./mocks/MockLogHandler.h
 
+    ./utils/APDUHelpers.h
     ./utils/BufferHelpers.h
     ./utils/CopyableBuffer.h
 )
@@ -11,12 +12,12 @@ set(unittests_src
     ./main.cpp
 
     ./TestAPDUParsing.cpp
-#[[    ./TestAPDUWriting.cpp
+    ./TestAPDUWriting.cpp
     ./TestAuthRequestParser.cpp
     ./TestCastLongLongDouble.cpp
     ./TestCollectionTransform.cpp
     ./TestCRC.cpp
-    ./TestDatabase.cpp
+#[[    ./TestDatabase.cpp
     ./TestEventStorage.cpp
     ./TestGroup120Var1.cpp
     ./TestGroup120Var2.cpp
@@ -53,6 +54,7 @@ set(unittests_src
 
     ./mocks/MockLogHandler.cpp
 
+    ./utils/APDUHelpers.cpp
     ./utils/BufferHelpers.cpp
     ./utils/CopyableBuffer.cpp
 )

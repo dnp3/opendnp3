@@ -17,31 +17,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "mocks/APDUHelpers.h"
+#include "utils/APDUHelpers.h"
 
-#include <openpal/serialization/Serialization.h>
-#include <openpal/util/ToHex.h>
+#include <ser4cpp/serialization/LittleEndian.h>
+#include <ser4cpp/util/HexConversions.h>
 
-#include <opendnp3/app/APDURequest.h>
-#include <opendnp3/app/APDUResponse.h>
-#include <opendnp3/objects/Group1.h>
-#include <opendnp3/objects/Group12.h>
-#include <opendnp3/objects/Group2.h>
-#include <opendnp3/objects/Group20.h>
-#include <opendnp3/objects/Group30.h>
-#include <opendnp3/objects/Group50.h>
-#include <opendnp3/objects/Group51.h>
-#include <opendnp3/objects/Group60.h>
-
-#include <testlib/HexConversions.h>
+#include <app/APDURequest.h>
+#include <app/APDUResponse.h>
+#include <gen/objects/Group1.h>
+#include <gen/objects/Group12.h>
+#include <gen/objects/Group2.h>
+#include <gen/objects/Group20.h>
+#include <gen/objects/Group30.h>
+#include <gen/objects/Group50.h>
+#include <gen/objects/Group51.h>
+#include <gen/objects/Group60.h>
 
 #include <catch.hpp>
 
 #include <cassert>
 
-using namespace openpal;
 using namespace opendnp3;
-using namespace testlib;
+using namespace ser4cpp;
 
 #define SUITE(name) "APDUWritingTestSuite - " name
 
@@ -55,11 +52,11 @@ TEST_CASE(SUITE("AllObjectsAndRollback"))
     writer.WriteHeader(Group60Var3::ID(), QualifierCode::ALL_OBJECTS);
     writer.WriteHeader(Group60Var4::ID(), QualifierCode::ALL_OBJECTS);
 
-    REQUIRE("C0 01 3C 01 06 3C 02 06 3C 03 06 3C 04 06" == ToHex(request.ToRSlice()));
+    REQUIRE("C0 01 3C 01 06 3C 02 06 3C 03 06 3C 04 06" == HexConversions::to_hex(request.ToRSeq()));
 
     writer.Rollback();
 
-    REQUIRE("C0 01 3C 01 06 3C 02 06" == ToHex(request.ToRSlice()));
+    REQUIRE("C0 01 3C 01 06 3C 02 06" == HexConversions::to_hex(request.ToRSeq()));
 }
 
 TEST_CASE(SUITE("AllObjectsReturnsFalseWhenFull"))
@@ -70,7 +67,7 @@ TEST_CASE(SUITE("AllObjectsReturnsFalseWhenFull"))
     REQUIRE(writer.WriteHeader(Group60Var1::ID(), QualifierCode::ALL_OBJECTS));
     REQUIRE(!writer.WriteHeader(Group60Var1::ID(), QualifierCode::ALL_OBJECTS));
 
-    REQUIRE("C0 01 3C 01 06" == ToHex(request.ToRSlice()));
+    REQUIRE("C0 01 3C 01 06" == HexConversions::to_hex(request.ToRSeq()));
 }
 
 TEST_CASE(SUITE("RangeWriteIteratorStartStop"))
@@ -85,7 +82,7 @@ TEST_CASE(SUITE("RangeWriteIteratorStartStop"))
         REQUIRE(iterator.Write(Counter(7)));
     }
 
-    REQUIRE("C0 81 00 00 14 06 00 02 03 09 00 07 00" == ToHex(response.ToRSlice()));
+    REQUIRE("C0 81 00 00 14 06 00 02 03 09 00 07 00" == HexConversions::to_hex(response.ToRSeq()));
 }
 
 TEST_CASE(SUITE("RangeIterator UInt8 boundary condition"))
@@ -105,7 +102,7 @@ TEST_CASE(SUITE("RangeIterator UInt8 boundary condition"))
     }
 
     std::string beginsWith("C0 81 00 00 01 02 00 00 FF");
-    auto truncated = ToHex(response.ToRSlice()).substr(0, beginsWith.size());
+    auto truncated = HexConversions::to_hex(response.ToRSeq()).substr(0, beginsWith.size());
 
     REQUIRE(beginsWith == truncated);
 }
@@ -127,7 +124,7 @@ TEST_CASE(SUITE("CountIterator UInt8 boundary condition"))
     }
 
     std::string beginsWith("C0 81 00 00 01 02 07 FF");
-    auto truncated = ToHex(response.ToRSlice()).substr(0, beginsWith.size());
+    auto truncated = HexConversions::to_hex(response.ToRSeq()).substr(0, beginsWith.size());
 
     REQUIRE(beginsWith == truncated);
 }
@@ -141,7 +138,7 @@ TEST_CASE(SUITE("EmptyHeadersWhenNotEnoughSpaceForSingleValue"))
 
     REQUIRE(!iterator.IsValid());
 
-    REQUIRE("C0 81 00 00" == ToHex(response.ToRSlice()));
+    REQUIRE("C0 81 00 00" == HexConversions::to_hex(response.ToRSeq()));
 }
 
 TEST_CASE(SUITE("CountWriteIteratorAllowsCountOfZero"))
@@ -151,7 +148,7 @@ TEST_CASE(SUITE("CountWriteIteratorAllowsCountOfZero"))
 
     writer.IterateOverCount<UInt16, Analog>(QualifierCode::UINT16_CNT, Group30Var1::Inst());
 
-    REQUIRE("C0 81 00 00 1E 01 08 00 00" == ToHex(response.ToRSlice()));
+    REQUIRE("C0 81 00 00 1E 01 08 00 00" == HexConversions::to_hex(response.ToRSeq()));
 }
 
 TEST_CASE(SUITE("CountWriteIteratorFillsUpCorrectly"))
@@ -167,7 +164,7 @@ TEST_CASE(SUITE("CountWriteIteratorFillsUpCorrectly"))
         REQUIRE(!iter.Write(Analog(7, 0xFF))); // we're full
     }
 
-    REQUIRE("C0 81 00 00 1E 02 07 02 FF 09 00 FF 07 00" == ToHex(response.ToRSlice()));
+    REQUIRE("C0 81 00 00 1E 02 07 02 FF 09 00 FF 07 00" == HexConversions::to_hex(response.ToRSeq()));
 }
 
 TEST_CASE(SUITE("PrefixWriteIteratorWithSingleCROB"))
@@ -183,7 +180,7 @@ TEST_CASE(SUITE("PrefixWriteIteratorWithSingleCROB"))
         REQUIRE(iter.Write(crob, 0x21));
     }
 
-    REQUIRE("C0 81 00 00 0C 01 17 01 21 03 1F 10 00 00 00 AA 00 00 00 07" == ToHex(response.ToRSlice()));
+    REQUIRE("C0 81 00 00 0C 01 17 01 21 03 1F 10 00 00 00 AA 00 00 00 07" == HexConversions::to_hex(response.ToRSeq()));
 }
 
 TEST_CASE(SUITE("PrefixWriteIteratorCTO"))
@@ -204,7 +201,7 @@ TEST_CASE(SUITE("PrefixWriteIteratorCTO"))
     }
 
     REQUIRE("C0 81 00 00 33 01 07 01 AA 00 00 00 00 00 02 03 28 02 00 06 00 81 0B 00 07 00 81 0C 00"
-            == ToHex(response.ToRSlice()));
+            == HexConversions::to_hex(response.ToRSeq()));
 }
 
 TEST_CASE(SUITE("PrefixWriteIteratorCTOSpaceForOnly1Value"))
@@ -223,7 +220,7 @@ TEST_CASE(SUITE("PrefixWriteIteratorCTOSpaceForOnly1Value"))
         REQUIRE(!iter.Write(Binary(true, 0x01, DNPTime(0x0C)), 7));
     }
 
-    REQUIRE("C0 81 00 00 33 01 07 01 AA 00 00 00 00 00 02 03 28 01 00 06 00 81 0B 00" == ToHex(response.ToRSlice()));
+    REQUIRE("C0 81 00 00 33 01 07 01 AA 00 00 00 00 00 02 03 28 01 00 06 00 81 0B 00" == HexConversions::to_hex(response.ToRSeq()));
 }
 
 TEST_CASE(SUITE("PrefixWriteIteratorNotEnoughSpaceForAValue"))
@@ -240,7 +237,7 @@ TEST_CASE(SUITE("PrefixWriteIteratorNotEnoughSpaceForAValue"))
         REQUIRE(!iter.IsValid());
     }
 
-    REQUIRE("C0 81 00 00" == ToHex(response.ToRSlice()));
+    REQUIRE("C0 81 00 00" == HexConversions::to_hex(response.ToRSeq()));
 }
 
 TEST_CASE(SUITE("SingleValueWithIndexCROBLatchOn"))
@@ -252,7 +249,7 @@ TEST_CASE(SUITE("SingleValueWithIndexCROBLatchOn"))
 
     REQUIRE(writer.WriteSingleIndexedValue<UInt16>(QualifierCode::UINT16_CNT, Group12Var1::Inst(), crob, 0x21));
 
-    REQUIRE("C0 03 0C 01 08 01 00 21 00 03 1F 10 00 00 00 AA 00 00 00 07" == ToHex(request.ToRSlice()));
+    REQUIRE("C0 03 0C 01 08 01 00 21 00 03 1F 10 00 00 00 AA 00 00 00 07" == HexConversions::to_hex(request.ToRSeq()));
 }
 
 TEST_CASE(SUITE("SingleValueWithIndexCROBLatchOff"))
@@ -264,7 +261,7 @@ TEST_CASE(SUITE("SingleValueWithIndexCROBLatchOff"))
 
     REQUIRE(writer.WriteSingleIndexedValue<UInt16>(QualifierCode::UINT16_CNT, Group12Var1::Inst(), crob, 0x21));
 
-    REQUIRE("C0 03 0C 01 08 01 00 21 00 04 1F 10 00 00 00 AA 00 00 00 07" == ToHex(request.ToRSlice()));
+    REQUIRE("C0 03 0C 01 08 01 00 21 00 04 1F 10 00 00 00 AA 00 00 00 07" == HexConversions::to_hex(request.ToRSeq()));
 }
 
 TEST_CASE(SUITE("WriteSingleValue"))
@@ -276,7 +273,7 @@ TEST_CASE(SUITE("WriteSingleValue"))
     obj.time = DNPTime(0x1234);
     REQUIRE(writer.WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, obj));
 
-    REQUIRE("C0 02 32 01 07 01 34 12 00 00 00 00" == ToHex(request.ToRSlice()));
+    REQUIRE("C0 02 32 01 07 01 34 12 00 00 00 00" == HexConversions::to_hex(request.ToRSeq()));
 }
 
 TEST_CASE(SUITE("WriteIINRestart"))
@@ -291,5 +288,5 @@ TEST_CASE(SUITE("WriteIINRestart"))
         iter.Write(true);
     }
 
-    REQUIRE("C0 02 50 01 00 07 08 03" == ToHex(request.ToRSlice()));
+    REQUIRE("C0 02 50 01 00 07 08 03" == HexConversions::to_hex(request.ToRSeq()));
 }

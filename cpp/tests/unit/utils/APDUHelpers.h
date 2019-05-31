@@ -17,27 +17,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "APDUHelpers.h"
+#ifndef OPENDNP3_UNITTESTS_APDU_HELPERS_H
+#define OPENDNP3_UNITTESTS_APDU_HELPERS_H
 
-uint8_t APDUHelpers::fixedBuffer[SIZE];
+#include <opendnp3/StaticOnly.h>
 
-opendnp3::APDURequest APDUHelpers::Request(opendnp3::FunctionCode code, uint32_t size)
+#include <app/APDURequest.h>
+#include <app/APDUResponse.h>
+
+#include <cassert>
+
+class APDUHelpers : private opendnp3::StaticOnly
 {
-    assert(size <= SIZE);
-    openpal::WSlice buffer(fixedBuffer, size);
-    opendnp3::APDURequest request(buffer);
-    request.SetFunction(code);
-    request.SetControl(opendnp3::AppControlField(true, true, false, false, 0));
-    return request;
-}
+private:
+    static const uint32_t SIZE = 2048;
+    static uint8_t fixedBuffer[2048];
 
-opendnp3::APDUResponse APDUHelpers::Response(uint32_t size)
-{
-    assert(size <= SIZE);
-    openpal::WSlice buffer(fixedBuffer, size);
-    opendnp3::APDUResponse response(buffer);
-    response.SetFunction(opendnp3::FunctionCode::RESPONSE);
-    response.SetControl(opendnp3::AppControlField(true, true, false, false, 0));
-    response.SetIIN(opendnp3::IINField::Empty());
-    return response;
-}
+public:
+    static opendnp3::APDURequest Request(opendnp3::FunctionCode code, uint32_t size = SIZE);
+
+    static opendnp3::APDUResponse Response(uint32_t size = SIZE);
+};
+
+#endif

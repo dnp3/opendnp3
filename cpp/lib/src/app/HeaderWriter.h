@@ -144,7 +144,7 @@ bool HeaderWriter::WriteSingleValue(QualifierCode qc,
                                     const DNP3Serializer<ValueType>& serializer,
                                     const ValueType& value)
 {
-    auto reserveSize = CountType::SIZE + serializer.Size();
+    auto reserveSize = CountType::size + serializer.Size();
     if (this->WriteHeaderWithReserve(ValueType::ID, qc, reserveSize))
     {
         CountType::WSlice(*position, 1); // write the count
@@ -206,7 +206,7 @@ template<class CountType, class WriteType>
 CountWriteIterator<CountType, WriteType> HeaderWriter::IterateOverCount(QualifierCode qc,
                                                                         const DNP3Serializer<WriteType>& serializer)
 {
-    uint32_t reserveSize = CountType::SIZE + serializer.size();
+    uint32_t reserveSize = CountType::size + serializer.size();
     if (this->WriteHeaderWithReserve(serializer.ID(), qc, reserveSize))
     {
         return CountWriteIterator<CountType, WriteType>(serializer, *position);

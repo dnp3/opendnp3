@@ -39,13 +39,13 @@ public:
     CountWriteIterator(const ser4cpp::Serializer<WriteType>& serializer_, ser4cpp::wseq_t& position)
         : count(0),
           serializer(serializer_),
-          isValid(position.length() >= CountType::SIZE),
+          isValid(position.length() >= CountType::size),
           countPosition(position),
           pPosition(&position)
     {
         if (isValid)
         {
-            position.advance(CountType::SIZE);
+            position.advance(CountType::size);
         }
     }
 
@@ -59,7 +59,7 @@ public:
 
     bool Write(const WriteType& value)
     {
-        if (isValid && (serializer.size() <= pPosition->length()) && (count < CountType::Max))
+        if (isValid && (serializer.size() <= pPosition->length()) && (count < CountType::max_value))
         {
             serializer.write(value, *this->pPosition);
             ++count;
@@ -77,7 +77,7 @@ public:
     }
 
 private:
-    typename CountType::Type count;
+    typename CountType::type_t count;
     ser4cpp::Serializer<WriteType> serializer;
 
     bool isValid;
