@@ -17,19 +17,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <openpal/container/Buffer.h>
-#include <openpal/util/ToHex.h>
+#include <ser4cpp/container/Buffer.h>
+#include <ser4cpp/util/HexConversions.h>
 
-#include <opendnp3/objects/Group120.h>
+#include <gen/objects/Group120.h>
 
-#include <testlib/BufferHelpers.h>
-#include <testlib/HexConversions.h>
+#include "utils/BufferHelpers.h"
 
 #include <catch.hpp>
 
-using namespace openpal;
 using namespace opendnp3;
-using namespace testlib;
+using namespace ser4cpp;
 
 #define SUITE(name) "Group120Var2TestSuite - " name
 
@@ -38,7 +36,7 @@ TEST_CASE(SUITE("Parser rejects empty buffer"))
     HexSequence buffer("");
 
     Group120Var2 output;
-    REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
+    REQUIRE_FALSE(output.Read(buffer.ToRSeq()));
 }
 
 TEST_CASE(SUITE("Parser identifies data field"))
@@ -46,10 +44,10 @@ TEST_CASE(SUITE("Parser identifies data field"))
     HexSequence buffer("04 00 00 00 09 01 AB BA");
 
     Group120Var2 output;
-    REQUIRE(output.Read(buffer.ToRSlice()));
+    REQUIRE(output.Read(buffer.ToRSeq()));
     REQUIRE(output.challengeSeqNum == 4);
     REQUIRE(output.userNum == 265);
-    REQUIRE(ToHex(output.hmacValue) == "AB BA");
+    REQUIRE(HexConversions::to_hex(output.hmacValue) == "AB BA");
 }
 
 TEST_CASE(SUITE("Parser allows empty data field"))
@@ -57,15 +55,15 @@ TEST_CASE(SUITE("Parser allows empty data field"))
     HexSequence buffer("04 00 00 00 09 01");
 
     Group120Var2 output;
-    REQUIRE(output.Read(buffer.ToRSlice()));
+    REQUIRE(output.Read(buffer.ToRSeq()));
     REQUIRE(output.challengeSeqNum == 4);
     REQUIRE(output.userNum == 265);
-    REQUIRE(output.hmacValue.IsEmpty());
+    REQUIRE(output.hmacValue.is_empty());
 }
 
 TEST_CASE(SUITE("Parser rejects one less than min length"))
 {
     HexSequence buffer("04 00 00 00 09");
     Group120Var2 output;
-    REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
+    REQUIRE_FALSE(output.Read(buffer.ToRSeq()));
 }

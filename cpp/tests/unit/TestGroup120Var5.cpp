@@ -17,19 +17,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <openpal/container/Buffer.h>
-#include <openpal/util/ToHex.h>
+#include <ser4cpp/container/Buffer.h>
+#include <ser4cpp/util/HexConversions.h>
 
-#include <opendnp3/objects/Group120.h>
+#include <gen/objects/Group120.h>
 
-#include <testlib/BufferHelpers.h>
-#include <testlib/HexConversions.h>
+#include "utils/BufferHelpers.h"
 
 #include <catch.hpp>
 
-using namespace openpal;
 using namespace opendnp3;
-using namespace testlib;
+using namespace ser4cpp;
 
 #define SUITE(name) "Group120Var5TestSuite - " name
 
@@ -38,7 +36,7 @@ TEST_CASE(SUITE("Parser rejects empty buffer"))
     HexSequence buffer("");
 
     Group120Var5 output;
-    REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
+    REQUIRE_FALSE(output.Read(buffer.ToRSeq()));
 }
 
 TEST_CASE(SUITE("Parser accepts empty challenge data and hmac"))
@@ -47,14 +45,14 @@ TEST_CASE(SUITE("Parser accepts empty challenge data and hmac"))
     HexSequence buffer("01 00 00 00 07 00 02 01 04 00 00");
 
     Group120Var5 output;
-    REQUIRE(output.Read(buffer.ToRSlice()));
+    REQUIRE(output.Read(buffer.ToRSeq()));
     REQUIRE(output.keyChangeSeqNum == 1);
     REQUIRE(output.userNum == 7);
     REQUIRE(output.keyWrapAlgo == KeyWrapAlgorithm::AES_256);
     REQUIRE(output.keyStatus == KeyStatus::OK);
     REQUIRE(output.hmacAlgo == HMACType::HMAC_SHA256_TRUNC_16);
-    REQUIRE(output.challengeData.Size() == 0);
-    REQUIRE(output.hmacValue.Size() == 0);
+    REQUIRE(output.challengeData.length() == 0);
+    REQUIRE(output.hmacValue.length() == 0);
 }
 
 TEST_CASE(SUITE("Parser correctly interprets challenge data and hmac value"))
@@ -63,9 +61,9 @@ TEST_CASE(SUITE("Parser correctly interprets challenge data and hmac value"))
     HexSequence buffer("01 00 00 00 07 00 02 01 04 03 00 DE AD BE EF");
 
     Group120Var5 output;
-    REQUIRE(output.Read(buffer.ToRSlice()));
-    REQUIRE(ToHex(output.challengeData) == "DE AD BE");
-    REQUIRE(ToHex(output.hmacValue) == "EF");
+    REQUIRE(output.Read(buffer.ToRSeq()));
+    REQUIRE(HexConversions::to_hex(output.challengeData) == "DE AD BE");
+    REQUIRE(HexConversions::to_hex(output.hmacValue) == "EF");
 }
 
 TEST_CASE(SUITE("Parser rejects one less than minimum required data"))
@@ -75,7 +73,7 @@ TEST_CASE(SUITE("Parser rejects one less than minimum required data"))
     HexSequence buffer("01 00 00 00 07 00 02 01 04 00");
 
     Group120Var5 output;
-    REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
+    REQUIRE_FALSE(output.Read(buffer.ToRSeq()));
 }
 
 TEST_CASE(SUITE("Parser rejects if specified challenge data is missing"))
@@ -85,7 +83,7 @@ TEST_CASE(SUITE("Parser rejects if specified challenge data is missing"))
     HexSequence buffer("01 00 00 00 07 00 02 01 04 01 00");
 
     Group120Var5 output;
-    REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
+    REQUIRE_FALSE(output.Read(buffer.ToRSeq()));
 }
 
 TEST_CASE(SUITE("Formatter correctly writes when sufficient space"))
@@ -100,12 +98,12 @@ TEST_CASE(SUITE("Formatter correctly writes when sufficient space"))
 
     Buffer output(SIZE);
 
-    auto dest = output.GetWSlice();
+    auto dest = output.as_wslice();
     REQUIRE(status.Write(dest));
-    uint32_t numWritten = output.Size() - dest.Size();
+    uint32_t numWritten = output.length() - dest.length();
 
     REQUIRE(numWritten == SIZE);
-    REQUIRE(ToHex(output.ToRSlice().Take(SIZE)) == "08 00 00 00 03 00 02 01 05 02 00 DE AD BE EF");
+    REQUIRE(HexConversions::to_hex(output.as_rslice().take(SIZE)) == "08 00 00 00 03 00 02 01 05 02 00 DE AD BE EF");
 }
 
 TEST_CASE(SUITE("Formatter rejects when one less than required space"))
@@ -120,7 +118,7 @@ TEST_CASE(SUITE("Formatter rejects when one less than required space"))
 
     Buffer output(SIZE - 1);
 
-    auto dest = output.GetWSlice();
+    auto dest = output.as_wslice();
     REQUIRE_FALSE(status.Write(dest));
-    REQUIRE(dest.Size() == output.Size());
+    REQUIRE(dest.length() == output.length());
 }

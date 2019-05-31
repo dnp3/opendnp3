@@ -19,7 +19,7 @@
  */
 #include "mocks/MockEventWriteHandler.h"
 
-#include "opendnp3/outstation/event/EventStorage.h"
+#include <outstation/event/EventStorage.h>
 
 #include <catch.hpp>
 

@@ -17,19 +17,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <openpal/container/Buffer.h>
-#include <openpal/util/ToHex.h>
+#include <ser4cpp/container/Buffer.h>
+#include <ser4cpp/util/HexConversions.h>
 
-#include <opendnp3/objects/Group120.h>
+#include <gen/objects/Group120.h>
 
-#include <testlib/BufferHelpers.h>
-#include <testlib/HexConversions.h>
+#include "utils/BufferHelpers.h"
 
 #include <catch.hpp>
 
-using namespace openpal;
 using namespace opendnp3;
-using namespace testlib;
+using namespace ser4cpp;
 
 #define SUITE(name) "Group120Var1TestSuite - " name
 
@@ -38,7 +36,7 @@ TEST_CASE(SUITE("Parser rejects empty buffer"))
     HexSequence buffer("");
 
     Group120Var1 output;
-    REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
+    REQUIRE_FALSE(output.Read(buffer.ToRSeq()));
 }
 
 TEST_CASE(SUITE("Parser correctly interprets challenge data"))
@@ -47,12 +45,12 @@ TEST_CASE(SUITE("Parser correctly interprets challenge data"))
     HexSequence buffer("01 00 00 00 07 00 05 01 DE AD BE EF");
 
     Group120Var1 output;
-    REQUIRE(output.Read(buffer.ToRSlice()));
+    REQUIRE(output.Read(buffer.ToRSeq()));
     REQUIRE(output.challengeSeqNum == 1);
     REQUIRE(output.userNum == 7);
     REQUIRE(output.hmacAlgo == HMACType::HMAC_SHA1_TRUNC_8);
     REQUIRE(output.challengeReason == ChallengeReason::CRITICAL);
-    REQUIRE(ToHex(output.challengeData) == "DE AD BE EF");
+    REQUIRE(HexConversions::to_hex(output.challengeData) == "DE AD BE EF");
 }
 
 TEST_CASE(SUITE("Parser accepts empty challenge data"))
@@ -61,8 +59,8 @@ TEST_CASE(SUITE("Parser accepts empty challenge data"))
     HexSequence buffer("01 00 00 00 07 00 05 01");
 
     Group120Var1 output;
-    REQUIRE(output.Read(buffer.ToRSlice()));
-    REQUIRE(output.challengeData.Size() == 0);
+    REQUIRE(output.Read(buffer.ToRSeq()));
+    REQUIRE(output.challengeData.length() == 0);
 }
 
 TEST_CASE(SUITE("Parser rejects one less than minimum required data"))
@@ -71,33 +69,33 @@ TEST_CASE(SUITE("Parser rejects one less than minimum required data"))
     HexSequence buffer("01 00 00 00 07 00 05");
 
     Group120Var1 output;
-    REQUIRE_FALSE(output.Read(buffer.ToRSlice()));
+    REQUIRE_FALSE(output.Read(buffer.ToRSeq()));
 }
 
 TEST_CASE(SUITE("Formatter correctly writes when sufficient space"))
 {
     HexSequence challengeData("DE AD BE EF AB BA"); // 6 bytes
 
-    Group120Var1 challenge(9, 3, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, challengeData.ToRSlice());
+    Group120Var1 challenge(9, 3, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, challengeData.ToRSeq());
     const uint32_t SIZE = challenge.Size();
 
     Buffer output(64);
-    auto dest = output.GetWSlice();
+    auto dest = output.as_wslice();
     REQUIRE(challenge.Write(dest));
-    auto written = output.Size() - dest.Size();
+    auto written = output.length() - dest.length();
 
     REQUIRE(written == SIZE);
-    REQUIRE(ToHex(output.ToRSlice().Take(SIZE)) == "09 00 00 00 03 00 04 01 DE AD BE EF AB BA");
+    REQUIRE(HexConversions::to_hex(output.as_rslice().take(SIZE)) == "09 00 00 00 03 00 04 01 DE AD BE EF AB BA");
 }
 
 TEST_CASE(SUITE("Formatter return false when insufficient space"))
 {
     HexSequence challengeData("DE AD BE EF AB BA"); // 6 bytes
 
-    Group120Var1 challenge(9, 3, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, challengeData.ToRSlice());
+    Group120Var1 challenge(9, 3, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, challengeData.ToRSeq());
     const uint32_t SIZE = challenge.Size();
 
     Buffer output(SIZE - 1);
-    auto dest = output.GetWSlice();
+    auto dest = output.as_wslice();
     REQUIRE_FALSE(challenge.Write(dest));
 }

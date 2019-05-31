@@ -1,6 +1,7 @@
 set(unittests_mocks
     ./mocks/MeasurementComparisons.h
     ./mocks/MockAPDUHeaderHandler.h
+    ./mocks/MockEventWriteHandler.h
     ./mocks/MockLogHandler.h
 
     ./utils/APDUHelpers.h
@@ -17,12 +18,12 @@ set(unittests_src
     ./TestCastLongLongDouble.cpp
     ./TestCollectionTransform.cpp
     ./TestCRC.cpp
-#[[    ./TestDatabase.cpp
+#    ./TestDatabase.cpp
     ./TestEventStorage.cpp
     ./TestGroup120Var1.cpp
     ./TestGroup120Var2.cpp
     ./TestGroup120Var5.cpp
-    ./TestIndexSearch.cpp
+#[[    ./TestIndexSearch.cpp
     ./TestLinkFrame.cpp
     ./TestLinkLayer.cpp
     ./TestLinkLayerKeepAlive.cpp

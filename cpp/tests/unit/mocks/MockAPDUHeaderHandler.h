@@ -254,7 +254,7 @@ private:
     {
         auto add = [&items](const T& v) { items.push_back(v); };
         meas.ForeachItem(add);
-        return IINField::Empty();
+        return opendnp3::IINField::Empty();
     }
 };
 
