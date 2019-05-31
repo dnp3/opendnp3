@@ -17,9 +17,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <opendnp3/link/CRC.h>
+#include <link/CRC.h>
 
-#include <testlib/BufferHelpers.h>
+#include "utils/BufferHelpers.h"
 
 #include <catch.hpp>
 
@@ -28,9 +28,7 @@
 #include <string>
 #include <vector>
 
-using namespace std;
 using namespace opendnp3;
-using namespace testlib;
 
 #define SUITE(name) "CRC - " name
 

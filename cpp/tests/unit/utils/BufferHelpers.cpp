@@ -17,25 +17,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "BufferHelpers.h"
+#include "utils/BufferHelpers.h"
 
-#include "HexConversions.h"
-
-#include <openpal/util/ToHex.h>
-
-#include <memory.h>
+#include <ser4cpp/util/HexConversions.h>
 
 #include <algorithm>
 #include <cassert>
 #include <exception>
+#include <memory>
 #include <sstream>
 #include <stdexcept>
-
-using namespace std;
-using namespace openpal;
-
-namespace testlib
-{
 
 ByteStr::ByteStr(uint32_t length, uint8_t seed) : CopyableBuffer(length)
 {
@@ -59,7 +50,7 @@ bool ByteStr::operator==(const ByteStr& other) const
 
 std::string ByteStr::ToHex() const
 {
-    return testlib::ToHex(ToRSlice());
+    return ser4cpp::HexConversions::to_hex(ToRSeq());
 }
 
 HexSequence::HexSequence(const std::string& hex) : ByteStr(Validate(RemoveSpaces(hex)))
@@ -90,7 +81,7 @@ std::string HexSequence::RemoveSpaces(const std::string& hex)
 void HexSequence::RemoveSpacesInPlace(std::string& s)
 {
     size_t pos = s.find_first_of(' ');
-    if (pos != string::npos)
+    if (pos != std::string::npos)
     {
         s.replace(pos, 1, "");
         RemoveSpacesInPlace(s);
@@ -100,7 +91,7 @@ void HexSequence::RemoveSpacesInPlace(std::string& s)
 uint32_t HexSequence::Validate(const std::string& s)
 {
     // annoying when you accidentally put an 'O' instead of zero '0'
-    if (s.find_first_of("oO") != string::npos)
+    if (s.find_first_of("oO") != std::string::npos)
     {
         throw std::invalid_argument("Sequence contains 'o' or 'O'");
     }
@@ -112,5 +103,3 @@ uint32_t HexSequence::Validate(const std::string& s)
 
     return static_cast<uint32_t>(s.size() / 2);
 }
-
-} // namespace testlib

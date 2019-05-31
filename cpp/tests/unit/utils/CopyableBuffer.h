@@ -17,18 +17,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef TESTLIB_COPYABLEBUFFER_H
-#define TESTLIB_COPYABLEBUFFER_H
+#ifndef OPENDNP3_UNITTESTS_COPYABLEBUFFER_H
+#define OPENDNP3_UNITTESTS_COPYABLEBUFFER_H
 
-#include <openpal/container/RSlice.h>
+#include <ser4cpp/container/SequenceTypes.h>
 
 #include <stddef.h>
 
 #include <memory>
 #include <sstream>
-
-namespace testlib
-{
 
 /**
     Implements a dynamic buffer with a safe
@@ -43,7 +40,7 @@ public:
     CopyableBuffer();
     // Construct based on starting size of buffer
     CopyableBuffer(uint32_t size);
-    CopyableBuffer(const openpal::RSlice&);
+    CopyableBuffer(const ser4cpp::rseq_t&);
     CopyableBuffer(const uint8_t* data, uint32_t size);
     CopyableBuffer(const CopyableBuffer&);
     CopyableBuffer& operator=(const CopyableBuffer&);
@@ -55,9 +52,9 @@ public:
         return !(*this == other);
     }
 
-    openpal::RSlice ToRSlice() const
+    ser4cpp::rseq_t ToRSeq() const
     {
-        return openpal::RSlice(buffer, size);
+        return ser4cpp::rseq_t(buffer, size);
     }
 
     operator const uint8_t*() const
@@ -83,7 +80,5 @@ protected:
 private:
     uint32_t size;
 };
-
-} // namespace testlib
 
 #endif

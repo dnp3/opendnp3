@@ -17,23 +17,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "CopyableBuffer.h"
+#include "utils/CopyableBuffer.h"
 
-#include "HexConversions.h"
+#include <ser4cpp/util/HexConversions.h>
 
-#include <openpal/container/WSlice.h>
-#include <openpal/util/ToHex.h>
-
-#include <memory.h>
-
-using namespace testlib;
-
-namespace testlib
-{
+#include <memory>
 
 std::ostream& operator<<(std::ostream& output, const CopyableBuffer& arBuff)
 {
-    output << "[" << ToHex(arBuff.ToRSlice(), true) << "]";
+    output << "[" << ser4cpp::HexConversions::to_hex(arBuff.ToRSeq(), true) << "]";
     return output;
 }
 
@@ -44,7 +36,7 @@ CopyableBuffer::CopyableBuffer(uint32_t size) : buffer(new uint8_t[size]), size(
     this->Zero();
 }
 
-CopyableBuffer::CopyableBuffer(const openpal::RSlice& data) : CopyableBuffer(data, data.Size()) {}
+CopyableBuffer::CopyableBuffer(const ser4cpp::rseq_t& data) : CopyableBuffer(data, data.length()) {}
 
 CopyableBuffer::CopyableBuffer(const uint8_t* data, uint32_t size) : buffer(new uint8_t[size]), size(size)
 {
@@ -94,5 +86,3 @@ bool CopyableBuffer::operator==(const CopyableBuffer& other) const
 
     return true;
 }
-
-} // namespace testlib

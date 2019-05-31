@@ -2,9 +2,8 @@ include(FetchContent)
 
 FetchContent_Declare(
     asio
-    GIT_REPOSITORY https://github.com/chriskohlhoff/asio.git
-    GIT_TAG        asio-1-12-2
-    GIT_SHALLOW    ON
+    URL                 https://github.com/chriskohlhoff/asio/archive/asio-1-12-2.zip
+    URL_HASH            SHA1=23F74B271D984A7B2BF00640DE856F5BBA410A50
 )
 
 FetchContent_GetProperties(asio)

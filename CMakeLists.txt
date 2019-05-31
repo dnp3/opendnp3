@@ -18,6 +18,7 @@ include(./cmake/ClangTidy.cmake)
 
 # Compilation options
 option(DNP3_TLS "Build TLS client/server support (requires OpenSSL)" OFF)
+option(DNP3_TESTS "Build unit and integration tests" OFF)
 option(DNP3_EXAMPLES "Build example applications" OFF)
 
 # External dependencies
@@ -30,8 +31,19 @@ if(DNP3_TLS)
     find_package(OpenSSL REQUIRED)
 endif()
 
+if(DNP3_TESTS)
+    include(./deps/catch.cmake)
+endif()
+
 # Library
 add_subdirectory(./cpp/lib)
+
+# Tests
+if(DNP3_TESTS)
+    enable_testing()
+
+    add_subdirectory(./cpp/tests/unit)
+endif()
 
 # Examples
 if(DNP3_EXAMPLES)

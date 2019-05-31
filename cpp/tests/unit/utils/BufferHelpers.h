@@ -17,15 +17,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef TESTLIB_BUFFERHELPERS_H
-#define TESTLIB_BUFFERHELPERS_H
+#ifndef OPENDNP3_UNITTESTS_BUFFERHELPERS_H
+#define OPENDNP3_UNITTESTS_BUFFERHELPERS_H
 
-#include "CopyableBuffer.h"
+#include "utils/CopyableBuffer.h"
 
 #include <string>
-
-namespace testlib
-{
 
 class ByteStr : public CopyableBuffer
 {
@@ -45,9 +42,9 @@ class HexSequence : public ByteStr
 public:
     HexSequence(const std::string& hex);
 
-    operator openpal::RSlice()
+    operator ser4cpp::rseq_t()
     {
-        return this->ToRSlice();
+        return this->ToRSeq();
     }
 
 private:
@@ -55,7 +52,5 @@ private:
     void RemoveSpacesInPlace(std::string& s);
     static uint32_t Validate(const std::string& s);
 };
-
-} // namespace testlib
 
 #endif
