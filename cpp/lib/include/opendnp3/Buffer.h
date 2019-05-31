@@ -17,53 +17,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENPAL_RSLICE_H
-#define OPENPAL_RSLICE_H
+#ifndef OPENDNP3_BUFFER_H
+#define OPENDNP3_BUFFER_H
 
-#include "HasSize.h"
-
+#include <cstddef>
 #include <cstdint>
 
-namespace openpal
+namespace opendnp3
 {
 
-class WSlice;
-
-/**
- *	Represents a readonly slice of a buffer located elsewhere. Mediates reading from the buffer
- *	to prevent overreads and other errors.
- */
-class RSlice : public HasSize<uint32_t>
+struct Buffer
 {
+    Buffer(const uint8_t* data, std::size_t length) : data(data), length(length) {}
 
-public:
-    static RSlice Empty();
-
-    RSlice();
-
-    RSlice(uint8_t const* pBuffer, uint32_t size);
-
-    void Clear();
-
-    RSlice CopyTo(WSlice&) const;
-
-    RSlice Take(uint32_t count) const;
-
-    RSlice Skip(uint32_t count) const;
-
-    bool Equals(const RSlice& rhs) const;
-
-    void Advance(uint32_t count);
-
-    operator uint8_t const*() const
-    {
-        return pBuffer;
-    }
-
-private:
-    uint8_t const* pBuffer;
+    const uint8_t* data;
+    std::size_t length;
 };
 
-} // namespace openpal
+} // namespace opendnp3
 
 #endif

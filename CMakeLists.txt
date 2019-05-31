@@ -31,7 +31,7 @@ if(DNP3_TLS)
 endif()
 
 # Library
-add_subdirectory(./cpp/libs/opendnp3)
+add_subdirectory(./cpp/lib)
 
 # Examples
 if(DNP3_EXAMPLES)
