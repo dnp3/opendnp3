@@ -24,7 +24,7 @@
 
 #include "channel/IAsyncChannel.h"
 
-#include "Route.h"
+#include "opendnp3/link/Addresses.h"
 #include "link/ILinkTx.h"
 #include "link/LinkLayerParser.h"
 
@@ -63,7 +63,7 @@ public:
     void BeginTransmit(const std::shared_ptr<ILinkSession>& session, const ser4cpp::rseq_t& data);
 
     // Bind a link layer session to the handler
-    bool AddContext(const std::shared_ptr<ILinkSession>& session, const Route& route);
+    bool AddContext(const std::shared_ptr<ILinkSession>& session, const Addresses& addresses);
 
     // Begin sending messages to the context
     bool Enable(const std::shared_ptr<ILinkSession>& session);
@@ -75,7 +75,7 @@ public:
     bool Remove(const std::shared_ptr<ILinkSession>& session);
 
     // Query to see if a route is in use
-    bool IsRouteInUse(const Route& route) const;
+    bool IsRouteInUse(const Addresses& addresses) const;
 
 protected:
     // ------ Implement IChannelCallbacks -----
@@ -124,7 +124,7 @@ private:
     void BeginRead();
     void CheckForSend();
 
-    bool SendToSession(const Route& route,
+    bool SendToSession(const Addresses& addresses,
                        const LinkHeaderFields& header,
                        const ser4cpp::rseq_t& userdata);
 
@@ -132,8 +132,8 @@ private:
     {
 
     public:
-        Session(const std::shared_ptr<ILinkSession>& session, const Route& route)
-            : route(route), session(session)
+        Session(const std::shared_ptr<ILinkSession>& session, const Addresses& addresses)
+            : addresses(addresses), session(session)
         {
         }
 
@@ -143,9 +143,9 @@ private:
         {
             return this->session == session;
         }
-        inline bool Matches(const Route& route) const
+        inline bool Matches(const Addresses& addresses) const
         {
-            return this->route.Equals(route);
+            return this->addresses == addresses;
         }
 
         inline bool OnFrame(const LinkHeaderFields& header, const ser4cpp::rseq_t& userdata)
@@ -182,7 +182,7 @@ private:
         bool enabled = false;
 
     private:
-        Route route;
+        Addresses addresses;
         bool online = false;
         std::shared_ptr<ILinkSession> session;
     };

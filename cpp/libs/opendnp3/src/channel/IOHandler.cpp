@@ -107,11 +107,11 @@ void IOHandler::BeginTransmit(const std::shared_ptr<ILinkSession>& session, cons
     }
 }
 
-bool IOHandler::AddContext(const std::shared_ptr<ILinkSession>& session, const Route& route)
+bool IOHandler::AddContext(const std::shared_ptr<ILinkSession>& session, const Addresses& addresses)
 {
-    if (this->IsRouteInUse(route))
+    if (this->IsRouteInUse(addresses))
     {
-        FORMAT_LOG_BLOCK(logger, flags::ERR, "Route already in use: %u -> %u", route.source, route.destination);
+        FORMAT_LOG_BLOCK(logger, flags::ERR, "Route already in use: %u -> %u", addresses.source, addresses.destination);
         return false;
     }
 
@@ -121,7 +121,7 @@ bool IOHandler::AddContext(const std::shared_ptr<ILinkSession>& session, const R
         return false;
     }
 
-    sessions.emplace_back(session, route); // record is always disabled by default
+    sessions.emplace_back(session, addresses); // record is always disabled by default
 
     return true;
 }
@@ -239,7 +239,7 @@ void IOHandler::OnNewChannel(const std::shared_ptr<IAsyncChannel>& channel)
 
 bool IOHandler::OnFrame(const LinkHeaderFields& header, const ser4cpp::rseq_t& userdata)
 {
-    if (this->SendToSession(Route(header.src, header.dest), header, userdata))
+    if (this->SendToSession(Addresses(header.src, header.dest), header, userdata))
     {
         return true;
     }
@@ -262,7 +262,7 @@ void IOHandler::CheckForSend()
     this->channel->BeginWrite(this->txQueue.front().txdata);
 }
 
-bool IOHandler::SendToSession(const Route& /*route*/,
+bool IOHandler::SendToSession(const Addresses& /*addresses*/,
                               const LinkHeaderFields& header,
                               const ser4cpp::rseq_t& userdata)
 {
@@ -279,9 +279,9 @@ bool IOHandler::SendToSession(const Route& /*route*/,
     return accepted;
 }
 
-bool IOHandler::IsRouteInUse(const Route& route) const
+bool IOHandler::IsRouteInUse(const Addresses& addresses) const
 {
-    auto matches = [route](const Session& record) { return record.Matches(route); };
+    auto matches = [addresses](const Session& record) { return record.Matches(addresses); };
 
     return std::find_if(sessions.begin(), sessions.end(), matches) != sessions.end();
 }

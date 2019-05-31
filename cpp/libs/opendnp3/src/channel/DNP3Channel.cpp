@@ -129,7 +129,7 @@ std::shared_ptr<IOutstation> DNP3Channel::AddOutstation(const std::string& id,
 template<class T> std::shared_ptr<T> DNP3Channel::AddStack(const LinkConfig& link, const std::shared_ptr<T>& stack)
 {
 
-    auto create = [stack, route = Route(link.RemoteAddr, link.LocalAddr), self = this->shared_from_this()]() {
+    auto create = [stack, route = Addresses(link.RemoteAddr, link.LocalAddr), self = this->shared_from_this()]() {
         auto add = [stack, route, self]() -> bool { return self->iohandler->AddContext(stack, route); };
 
         return self->executor->return_from<bool>(add) ? stack : nullptr;

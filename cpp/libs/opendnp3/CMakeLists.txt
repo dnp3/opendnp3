@@ -176,7 +176,6 @@ set(opendnp3_private_headers
     ./src/IResourceManager.h
     ./src/LayerInterfaces.h
     ./src/ResourceManager.h
-    ./src/Route.h
     ./src/SequenceNum.h
     ./src/StackBase.h
 

@@ -27,7 +27,6 @@
 #include "channel/IAsyncChannel.h"
 #include "IResourceManager.h"
 
-#include "Route.h"
 #include "link/ILinkTx.h"
 #include "link/LinkLayerParser.h"
 #include "opendnp3/link/LinkStatistics.h"
@@ -105,7 +104,6 @@ private:
 
     LinkLayerParser parser;
     exe4cpp::Timer first_frame_timer;
-    Route route;
 
     std::shared_ptr<MasterSessionStack> stack; // initialized to null
 };
