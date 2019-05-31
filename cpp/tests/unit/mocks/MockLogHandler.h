@@ -18,33 +18,31 @@
  * limitations under the License.
  */
 
-#ifndef OPENPAL_MOCKLOGHANDLER_H
-#define OPENPAL_MOCKLOGHANDLER_H
+#ifndef OPENDNP3_UNITTESTS_MOCKLOGHANDLER_H
+#define OPENDNP3_UNITTESTS_MOCKLOGHANDLER_H
 
-#include <openpal/logging/Logger.h>
+#include <log4cpp/Logger.h>
 
 #include <mutex>
 #include <queue>
 #include <string>
 
-namespace testlib
-{
-
 class LogRecord
 {
 public:
     LogRecord() = default;
-    LogRecord(const openpal::LogEntry& entry);
+    LogRecord(log4cpp::ModuleId module, const char* id, log4cpp::LogLevel level, char const* location, char const* message);
 
+    log4cpp::ModuleId module;
     std::string id;
-    openpal::LogFilters filters = 0;
+    log4cpp::LogLevel level;
     std::string location;
     std::string message;
 };
 
-struct MockLogHandlerImpl : public openpal::ILogHandler
+struct MockLogHandlerImpl : public log4cpp::ILogHandler
 {
-    virtual void Log(const openpal::LogEntry& entry) override;
+    virtual void log(log4cpp::ModuleId module, const char* id, log4cpp::LogLevel level, char const* location, char const* message) override;
 
     std::mutex mutex;
     bool outputToStdIO = false;
@@ -55,7 +53,7 @@ class MockLogHandler
 {
 
 public:
-    MockLogHandler() : impl(std::make_shared<MockLogHandlerImpl>()), logger(impl, "test", ~0) {}
+    MockLogHandler() : impl(std::make_shared<MockLogHandlerImpl>()), logger(impl, log4cpp::ModuleId(), "test", log4cpp::LogLevels::everything()) {}
 
     void WriteToStdIo();
 
@@ -69,9 +67,7 @@ private:
     std::shared_ptr<MockLogHandlerImpl> impl;
 
 public:
-    openpal::Logger logger;
+    log4cpp::Logger logger;
 };
-
-} // namespace testlib
 
 #endif

@@ -19,27 +19,24 @@
  */
 #include "mocks/MeasurementComparisons.h"
 #include "mocks/MockAPDUHeaderHandler.h"
+#include "mocks/MockLogHandler.h"
+#include "utils/BufferHelpers.h"
 
-#include <openpal/util/ToHex.h>
+#include <ser4cpp/util/HexConversions.h>
 
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/app/ControlRelayOutputBlock.h>
 #include <opendnp3/app/Indexed.h>
-#include <opendnp3/app/parsing/APDUHeaderParser.h>
-#include <opendnp3/app/parsing/APDUParser.h>
-
-#include <testlib/BufferHelpers.h>
-#include <testlib/HexConversions.h>
-#include <testlib/MockLogHandler.h>
+#include <app/parsing/APDUHeaderParser.h>
+#include <app/parsing/APDUParser.h>
 
 #include <catch.hpp>
 
 #include <functional>
 
 using namespace std;
-using namespace openpal;
 using namespace opendnp3;
-using namespace testlib;
+using namespace ser4cpp;
 
 void TestComplex(const std::string& hex,
                  ParseResult expected,
@@ -49,8 +46,8 @@ void TestComplex(const std::string& hex,
     HexSequence buffer(hex);
     MockApduHeaderHandler mock;
 
-    testlib::MockLogHandler log;
-    auto result = APDUParser::Parse(buffer.ToRSlice(), mock, &log.logger);
+    MockLogHandler log;
+    auto result = APDUParser::Parse(buffer.ToRSeq(), mock, &log.logger);
 
     REQUIRE((result == expected));
     REQUIRE(numCalls == mock.records.size());
@@ -63,10 +60,16 @@ void TestSimple(const std::string& hex, ParseResult expected, size_t numCalls)
     TestComplex(hex, expected, numCalls, [](MockApduHeaderHandler&) {});
 }
 
-std::string BufferToString(const RSlice& buff)
+std::string BufferToString(const rseq_t& buff)
 {
     const uint8_t* pBuffer = buff;
-    return std::string(reinterpret_cast<const char*>(pBuffer), buff.Size());
+    return std::string(reinterpret_cast<const char*>(pBuffer), buff.length());
+}
+
+std::string BufferToString(const opendnp3::Buffer& buff)
+{
+    const uint8_t* pBuffer = buff.data;
+    return std::string(reinterpret_cast<const char*>(pBuffer), buff.length);
 }
 
 #define SUITE(name) "APDUParsingTestSuite - " name
@@ -74,34 +77,34 @@ std::string BufferToString(const RSlice& buff)
 TEST_CASE(SUITE("HeaderParsingEmptySring"))
 {
     HexSequence buffer("");
-    REQUIRE(!APDUHeaderParser::ParseRequest(buffer.ToRSlice()).success);
+    REQUIRE(!APDUHeaderParser::ParseRequest(buffer.ToRSeq()).success);
 }
 
-TEST_CASE(SUITE("HeaderParsesReqeust"))
+TEST_CASE(SUITE("HeaderParsesRequest"))
 {
     HexSequence buffer("C0 02 AB CD");
-    const auto result = APDUHeaderParser::ParseRequest(buffer.ToRSlice());
+    const auto result = APDUHeaderParser::ParseRequest(buffer.ToRSeq());
     REQUIRE(result.success);
     REQUIRE(result.header.control.ToByte() == AppControlField(true, true, false, false, 0).ToByte());
     REQUIRE(result.header.function == FunctionCode::WRITE);
-    REQUIRE("AB CD" == ToHex(result.objects));
+    REQUIRE("AB CD" == HexConversions::to_hex(result.objects));
 }
 
 TEST_CASE(SUITE("ResponseLessThanFour"))
 {
     HexSequence buffer("C0 02 01");
-    REQUIRE(!APDUHeaderParser::ParseResponse(buffer.ToRSlice()).success);
+    REQUIRE(!APDUHeaderParser::ParseResponse(buffer.ToRSeq()).success);
 }
 
 TEST_CASE(SUITE("HeaderParsesResponse"))
 {
     HexSequence buffer("C0 02 01 02 BE EF");
-    const auto result = APDUHeaderParser::ParseResponse(buffer.ToRSlice());
+    const auto result = APDUHeaderParser::ParseResponse(buffer.ToRSeq());
     REQUIRE(result.success);
     REQUIRE(result.header.control.ToByte() == AppControlField(true, true, false, false, 0).ToByte());
     REQUIRE(result.header.function == FunctionCode::WRITE);
     REQUIRE(result.header.IIN == IINField(01, 02));
-    REQUIRE("BE EF" == ToHex(result.objects));
+    REQUIRE("BE EF" == HexConversions::to_hex(result.objects));
 }
 
 TEST_CASE(SUITE("EmptyStringParsesOK"))
@@ -159,7 +162,7 @@ TEST_CASE(SUITE("Group1Var2RangeAsReadRange"))
 {
     HexSequence buffer("01 02 00 03 05");
     MockApduHeaderHandler mock;
-    auto result = APDUParser::Parse(buffer.ToRSlice(), mock, nullptr, ParserSettings::NoContents());
+    auto result = APDUParser::Parse(buffer.ToRSeq(), mock, nullptr, ParserSettings::NoContents());
     REQUIRE((result == ParseResult::OK));
 }
 
@@ -243,7 +246,7 @@ TEST_CASE(SUITE("ParserDoesNotAllowEmptyOctetStrings"))
     HexSequence buffer("6E 00 00 00 FF"); // 255 + 256
     MockApduHeaderHandler mock;
 
-    auto result = APDUParser::Parse(buffer.ToRSlice(), mock, nullptr);
+    auto result = APDUParser::Parse(buffer.ToRSeq(), mock, nullptr);
 
     REQUIRE((result == ParseResult::INVALID_OBJECT));
     REQUIRE(mock.records.empty());
@@ -368,9 +371,9 @@ TEST_CASE(SUITE("OctetStringEvents"))
                 [&](MockApduHeaderHandler& mock) {
                     REQUIRE(2 == mock.indexPrefixedOctets.size());
                     REQUIRE(4 == mock.indexPrefixedOctets[0].index);
-                    REQUIRE("hello" == BufferToString(mock.indexPrefixedOctets[0].value.ToRSlice()));
+                    REQUIRE("hello" == BufferToString(mock.indexPrefixedOctets[0].value.ToBuffer()));
                     REQUIRE(255 == mock.indexPrefixedOctets[1].index);
-                    REQUIRE("world" == BufferToString(mock.indexPrefixedOctets[1].value.ToRSlice()));
+                    REQUIRE("world" == BufferToString(mock.indexPrefixedOctets[1].value.ToBuffer()));
                 });
 }
 
@@ -381,9 +384,9 @@ TEST_CASE(SUITE("OctetStringStatic"))
     TestComplex("6E 05 00 07 08 68 65 6C 6C 6F 77 6F 72 6C 64", ParseResult::OK, 1, [&](MockApduHeaderHandler& mock) {
         REQUIRE(2 == mock.rangedOctets.size());
         REQUIRE(7 == mock.rangedOctets[0].index);
-        REQUIRE("hello" == BufferToString(mock.rangedOctets[0].value.ToRSlice()));
+        REQUIRE("hello" == BufferToString(mock.rangedOctets[0].value.ToBuffer()));
         REQUIRE(8 == mock.rangedOctets[1].index);
-        REQUIRE("world" == BufferToString(mock.rangedOctets[1].value.ToRSlice()));
+        REQUIRE("world" == BufferToString(mock.rangedOctets[1].value.ToBuffer()));
     });
 }
 

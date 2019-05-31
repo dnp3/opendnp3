@@ -17,12 +17,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef __MEASUREMENT_COMPARISONS_H_
-#define __MEASUREMENT_COMPARISONS_H_
+#ifndef OPENDNP3_UNITTESTS_MEASUREMENT_COMPARISONS_H
+#define OPENDNP3_UNITTESTS_MEASUREMENT_COMPARISONS_H
 
 #include <opendnp3/app/Indexed.h>
 #include <opendnp3/app/MeasurementTypes.h>
-#include <opendnp3/outstation/Event.h>
+#include <outstation/Event.h>
 
 template<class T> bool Equals(const opendnp3::TypedMeasurement<T>& lhs, const opendnp3::TypedMeasurement<T>& rhs)
 {

@@ -18,32 +18,27 @@
  * limitations under the License.
  */
 
-#include "MockLogHandler.h"
+#include "mocks/MockLogHandler.h"
 
-#include <openpal/logging/LogLevels.h>
+#include <opendnp3/LogLevels.h>
 
 #include <iostream>
 
-using namespace openpal;
-
-namespace testlib
-{
-
-LogRecord::LogRecord(const LogEntry& entry)
-    : id(entry.loggerid), filters(entry.filters), location(entry.location), message(entry.message)
+LogRecord::LogRecord(log4cpp::ModuleId module, const char* id, log4cpp::LogLevel level, char const* location, char const* message)
+    : module(module), id(id), level(level), location(location), message(message)
 {
 }
 
-void MockLogHandlerImpl::Log(const LogEntry& entry)
+void MockLogHandlerImpl::log(log4cpp::ModuleId module, const char* id, log4cpp::LogLevel level, char const* location, char const* message)
 {
     std::lock_guard<std::mutex> lock(this->mutex);
 
     if (outputToStdIO)
     {
-        std::cout << entry.loggerid << " - " << entry.message << std::endl;
+        std::cout << id << " - " << message << std::endl;
     }
 
-    this->messages.emplace_back(entry);
+    this->messages.emplace_back(module, id, level, location, message);
 }
 
 void MockLogHandler::ClearLog()
@@ -53,7 +48,7 @@ void MockLogHandler::ClearLog()
 
 void MockLogHandler::Log(const std::string& location, const std::string& message)
 {
-    this->impl->Log(LogEntry("test", openpal::logflags::EVENT, location.c_str(), message.c_str()));
+    this->impl->log(log4cpp::ModuleId(), "test", opendnp3::flags::EVENT, location.c_str(), message.c_str());
 }
 
 void MockLogHandler::WriteToStdIo()
@@ -70,5 +65,3 @@ bool MockLogHandler::GetNextEntry(LogRecord& record)
     impl->messages.pop_front();
     return true;
 }
-
-} // namespace testlib
