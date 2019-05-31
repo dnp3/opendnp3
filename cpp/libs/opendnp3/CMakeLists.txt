@@ -237,7 +237,6 @@ set(opendnp3_private_headers
     ./src/channel/SerialIOHandler.h
     ./src/channel/SocketChannel.h
     ./src/channel/SocketHelpers.h
-    ./src/channel/SteadyClock.h
     ./src/channel/TCPClient.h
     ./src/channel/TCPClientIOHandler.h
     ./src/channel/TCPServer.h

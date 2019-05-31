@@ -7,6 +7,11 @@ set(OPENDNP3_MICRO_VERSION 0)
 set(OPENDNP3_VERSION ${OPENDNP3_MAJOR_VERSION}.${OPENDNP3_MINOR_VERSION}.${OPENDNP3_MICRO_VERSION})
 project(opendnp3 VERSION ${OPENDNP3_VERSION})
 
+# Minimum compiler version
+if(MSVC_VERSION LESS 1900)
+    message(FATAL_ERROR "Visual Studio earlier than 2015 does not implement std::chrono::steady_clock properly. Use a modern compiler.")
+endif()
+
 # Clang utilities
 include(./cmake/ClangFormat.cmake)
 include(./cmake/ClangTidy.cmake)
