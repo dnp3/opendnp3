@@ -69,11 +69,12 @@ set(unittests_src
     ./TestOutstationStateMachine.cpp
     ./TestOutstationUnsolicitedResponses.cpp
     ./TestShiftableBuffer.cpp
+	./TestStaticDataMap.cpp
     ./TestTransportLayer.cpp
     ./TestTypedCommandHeader.cpp
     ./TestWriteConversions.cpp
-
-    ./mocks/MockFrameSink.cpp
+    
+	./mocks/MockFrameSink.cpp
     ./mocks/MockLogHandler.cpp
     ./mocks/MockLowerLayer.cpp
     ./mocks/MockTransportLayer.cpp
