@@ -31,32 +31,75 @@
 namespace opendnp3
 {
 
-template<class T> class StaticSelection : private Uncopyable
+enum class UpdateResult
 {
-    using map_iter = std::map<uint16_t, Cell<T>>::iterator;
+    point_not_defined,
+    no_change,
+    event
+};
+
+template<class Spec> class StaticDataMap : private Uncopyable
+{
+    using map_iter = typename std::map<uint16_t, Cell<Spec>>::iterator;
 
 public:
-
     class iterator
     {
         map_iter iter;
         Range& range;
 
     public:
-        explicit iterator(map_iter iter, Range& range) : iter(iter),  range(range) {}
+        explicit iterator(map_iter iter, Range& range) : iter(iter), range(range) {}
 
-        using value_type = Cell<T>;
+        using value_type = Cell<Spec>;
         using difference_type = std::ptrdiff_t;
-        using pointer = Cell<T>*;
-        using reference = Cell<T>&;
+        using pointer = Cell<Spec>*;
+        using reference = Cell<Spec>&;
         using iterator_category = std::input_iterator_tag;
     };
 
+    bool add(const typename Spec::meas_t& value, uint16_t index, typename Spec::config_t config);
+
+    UpdateResult update(const typename Spec::meas_t& value, uint16_t index);
+
 private:
 
-    std::map<uint16_t, Cell<T>> map;
+    std::map<uint16_t, Cell<Spec>> map;
     Range selected;
 };
+
+template<class Spec>
+bool StaticDataMap<Spec>::add(const typename Spec::meas_t& value, uint16_t index, typename Spec::config_t config)
+{
+    if (this->map.find(index) != this->map.end())
+    {
+        return false;
+    }
+
+    this->map[index] = Cell<Spec>{value, config, {}, {}};
+
+    return true;
+}
+
+template<class Spec> UpdateResult StaticDataMap<Spec>::update(const typename Spec::meas_t& value, uint16_t index)
+{
+    const auto iter = this->map.find(index);
+    if (iter == this->map.end())
+    {
+        return UpdateResult::point_not_defined;
+    }
+
+    const auto is_event = Spec::IsEvent(iter->second.event.lastEvent, value);
+
+    iter->second.value = value;
+
+    if (is_event)
+    {
+        iter->second.event.lastEvent = value;
+    }
+
+    return is_event ? UpdateResult::event : UpdateResult::no_change;
+}
 
 } // namespace opendnp3
 
