@@ -366,6 +366,7 @@ set(opendnp3_private_headers
     ./src/outstation/ResponseContext.h
     ./src/outstation/SelectedRanges.h
     ./src/outstation/StaticBuffers.h
+	./src/outstation/StaticDataMap.h
     ./src/outstation/StaticWriters.h
     ./src/outstation/TimeSyncState.h
     ./src/outstation/WriteHandler.h
