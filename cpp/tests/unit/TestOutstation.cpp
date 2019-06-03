@@ -17,18 +17,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "mocks/OutstationTestObject.h"
+#include "utils/OutstationTestObject.h"
+#include "utils/APDUHexBuilders.h"
 
-#include <dnp3mocks/APDUHexBuilders.h>
-
-#include <testlib/HexConversions.h>
+#include <ser4cpp/util/HexConversions.h>
 
 #include <catch.hpp>
 
-using namespace std;
 using namespace opendnp3;
-using namespace openpal;
-using namespace testlib;
+using namespace ser4cpp;
 
 #define SUITE(name) "OutstationTestSuite - " name
 
@@ -126,7 +123,7 @@ TEST_CASE(SUITE("NoResponseToNoAckCodes"))
         AppControlField control(true, true, false, false, sequence);
         bytes[0] = control.ToByte();
         bytes[1] = static_cast<uint8_t>(code);
-        auto request = ToHex(bytes, 2, true);
+        auto request = HexConversions::to_hex(bytes, 2, true);
 
         t.SendToOutstation(request);
         REQUIRE(t.lower->PopWriteAsHex().empty());
@@ -569,7 +566,7 @@ TEST_CASE(SUITE("Grp1Var1IsPromotedToGrp1Var2IfQualityNotOnline"))
         auto setVariation
             = [](Cell<BinarySpec>& cell) -> void { cell.config.svariation = StaticBinaryVariation::Group1Var1; };
 
-        view.binaries.foreach (setVariation);
+        view.binaries.foreach(setVariation);
     }
 
     t.LowerLayerUp();
@@ -637,7 +634,7 @@ template<class T> void TestStaticBinaryOutputStatus(T value, const std::string& 
     OutstationTestObject t(cfg, DatabaseSizes::BinaryOutputStatusOnly(1));
     t.LowerLayerUp();
 
-    t.Transaction([value](IUpdateHandler& db) { db.Update(BinaryOutputStatus(value, 0x01), 0); });
+    t.Transaction([value](IUpdateHandler& db) { db.Update(BinaryOutputStatus(value, opendnp3::Flags(0x01)), 0); });
 
     t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
     REQUIRE((t.lower->PopWriteAsHex() == response));
@@ -649,7 +646,7 @@ TEST_CASE(SUITE("ReadGrp10Var2"))
 }
 
 template<class T>
-void TestStaticAnalogOutputStatus(StaticAnalogOutputStatusVariation variation, T value, const string& response)
+void TestStaticAnalogOutputStatus(StaticAnalogOutputStatusVariation variation, T value, const std::string& response)
 {
     OutstationConfig cfg;
     auto configure

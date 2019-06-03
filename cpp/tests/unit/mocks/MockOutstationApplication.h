@@ -17,17 +17,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef __MOCK_OUTSTATION_APPLICATION_H_
-#define __MOCK_OUTSTATION_APPLICATION_H_
+#ifndef OPENDNP3_UNITTESTS_MOCK_OUTSTATION_APPLICATION_H
+#define OPENDNP3_UNITTESTS_MOCK_OUTSTATION_APPLICATION_H
 
 #include <opendnp3/outstation/IOutstationApplication.h>
 
 #include <deque>
+#include <tuple>
 
-namespace opendnp3
-{
-
-class MockOutstationApplication : public IOutstationApplication
+class MockOutstationApplication : public opendnp3::IOutstationApplication
 {
 public:
     MockOutstationApplication()
@@ -35,21 +33,21 @@ public:
           supportsAssignClass(false),
           supportsWriteTimeAndInterval(false),
           allowTimeWrite(true),
-          warmRestartSupport(RestartMode::UNSUPPORTED),
-          coldRestartSupport(RestartMode::UNSUPPORTED),
+          warmRestartSupport(opendnp3::RestartMode::UNSUPPORTED),
+          coldRestartSupport(opendnp3::RestartMode::UNSUPPORTED),
           warmRestartTimeDelay(0),
           coldRestartTimeDelay(0)
     {
     }
 
-    virtual void OnStateChange(LinkStatus value) override final {}
+    void OnStateChange(opendnp3::LinkStatus value) final {}
 
-    virtual bool SupportsWriteAbsoluteTime() override final
+    bool SupportsWriteAbsoluteTime() final
     {
         return supportsTimeWrite;
     }
 
-    virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) override final
+    bool WriteAbsoluteTime(const opendnp3::UTCTimestamp& timestamp) final
     {
         if (allowTimeWrite)
         {
@@ -62,53 +60,53 @@ public:
         }
     }
 
-    virtual bool SupportsWriteTimeAndInterval() override final
+    bool SupportsWriteTimeAndInterval() final
     {
         return supportsWriteTimeAndInterval;
     }
 
-    virtual bool WriteTimeAndInterval(const ICollection<Indexed<TimeAndInterval>>& meas) override final
+    bool WriteTimeAndInterval(const opendnp3::ICollection<opendnp3::Indexed<opendnp3::TimeAndInterval>>& meas) final
     {
-        auto push = [this](const Indexed<TimeAndInterval>& value) { this->timeAndIntervals.push_back(value); };
+        auto push = [this](const opendnp3::Indexed<opendnp3::TimeAndInterval>& value) { this->timeAndIntervals.push_back(value); };
 
         meas.ForeachItem(push);
         return true;
     }
 
-    virtual bool SupportsAssignClass() override final
+    bool SupportsAssignClass() final
     {
         return supportsAssignClass;
     }
 
-    virtual void RecordClassAssignment(AssignClassType type,
-                                       PointClass clazz,
+    void RecordClassAssignment(opendnp3::AssignClassType type,
+                                       opendnp3::PointClass clazz,
                                        uint16_t start,
-                                       uint16_t stop) override final
+                                       uint16_t stop) final
     {
         this->classAssignments.push_back(std::make_tuple(type, clazz, start, stop));
     }
 
-    virtual ApplicationIIN GetApplicationIIN() const override final
+    opendnp3::ApplicationIIN GetApplicationIIN() const final
     {
         return appIIN;
     }
 
-    virtual RestartMode ColdRestartSupport() const override final
+    opendnp3::RestartMode ColdRestartSupport() const final
     {
         return coldRestartSupport;
     }
 
-    virtual RestartMode WarmRestartSupport() const override final
+    opendnp3::RestartMode WarmRestartSupport() const final
     {
         return warmRestartSupport;
     }
 
-    virtual uint16_t ColdRestart() override final
+    uint16_t ColdRestart() final
     {
         return coldRestartTimeDelay;
     }
 
-    virtual uint16_t WarmRestart() override final
+    uint16_t WarmRestart() final
     {
         return warmRestartTimeDelay;
     }
@@ -119,19 +117,17 @@ public:
 
     bool allowTimeWrite;
 
-    RestartMode warmRestartSupport;
-    RestartMode coldRestartSupport;
+    opendnp3::RestartMode warmRestartSupport;
+    opendnp3::RestartMode coldRestartSupport;
 
     uint16_t warmRestartTimeDelay;
     uint16_t coldRestartTimeDelay;
 
-    ApplicationIIN appIIN;
+    opendnp3::ApplicationIIN appIIN;
 
-    std::deque<openpal::UTCTimestamp> timestamps;
-    std::deque<std::tuple<AssignClassType, PointClass, uint16_t, uint16_t>> classAssignments;
-    std::deque<Indexed<TimeAndInterval>> timeAndIntervals;
+    std::deque<opendnp3::UTCTimestamp> timestamps;
+    std::deque<std::tuple<opendnp3::AssignClassType, opendnp3::PointClass, uint16_t, uint16_t>> classAssignments;
+    std::deque<opendnp3::Indexed<opendnp3::TimeAndInterval>> timeAndIntervals;
 };
-
-} // namespace opendnp3
 
 #endif

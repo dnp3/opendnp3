@@ -17,13 +17,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "mocks/OutstationTestObject.h"
+#include "utils/OutstationTestObject.h"
 
 #include <catch.hpp>
 
-using namespace std;
 using namespace opendnp3;
-using namespace openpal;
 
 #define SUITE(name) "OutstationCommandResponsesTestSuite - " name
 

@@ -17,31 +17,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef __OUTSTATION_TEST_OBJECT_H_
-#define __OUTSTATION_TEST_OBJECT_H_
+#ifndef OPENDNP3_UNITTESTS_OUTSTATION_TEST_OBJECT_H
+#define OPENDNP3_UNITTESTS_OUTSTATION_TEST_OBJECT_H
 
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/app/ITransactable.h>
-#include <opendnp3/outstation/Database.h>
-#include <opendnp3/outstation/OutstationContext.h>
+#include <outstation/Database.h>
+#include <outstation/OutstationContext.h>
 
-#include <dnp3mocks/MockCommandHandler.h>
-#include <dnp3mocks/MockLowerLayer.h>
-#include <dnp3mocks/MockOutstationApplication.h>
+#include "mocks/MockCommandHandler.h"
+#include "mocks/MockLogHandler.h"
+#include "mocks/MockLowerLayer.h"
+#include "mocks/MockOutstationApplication.h"
 
-#include <testlib/MockExecutor.h>
-#include <testlib/MockLogHandler.h>
+#include <exe4cpp/MockExecutor.h>
 
 #include <functional>
-
-namespace opendnp3
-{
 
 class OutstationTestObject
 {
 
 public:
-    OutstationTestObject(const OutstationConfig& config, const DatabaseSizes& dbSizes = DatabaseSizes::Empty());
+    OutstationTestObject(const opendnp3::OutstationConfig& config, const opendnp3::DatabaseSizes& dbSizes = opendnp3::DatabaseSizes::Empty());
 
     size_t SendToOutstation(const std::string& hex);
 
@@ -55,11 +52,11 @@ public:
 
     bool AdvanceToNextTimer();
 
-    size_t AdvanceTime(const openpal::TimeDuration& td);
+    size_t AdvanceTime(const opendnp3::TimeDuration& td);
 
-    testlib::MockLogHandler log;
+    MockLogHandler log;
 
-    void Transaction(const std::function<void(IUpdateHandler&)>& apply)
+    void Transaction(const std::function<void(opendnp3::IUpdateHandler&)>& apply)
     {
         // auto& handler = context.GetUpdateHandler();
         apply(context.GetUpdateHandler());
@@ -67,15 +64,13 @@ public:
     }
 
 private:
-    const std::shared_ptr<testlib::MockExecutor> exe;
+    const std::shared_ptr<exe4cpp::MockExecutor> exe;
 
 public:
     const std::shared_ptr<MockLowerLayer> lower;
     const std::shared_ptr<MockCommandHandler> cmdHandler;
     const std::shared_ptr<MockOutstationApplication> application;
-    OContext context;
+    opendnp3::OContext context;
 };
-
-} // namespace opendnp3
 
 #endif

@@ -17,20 +17,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <opendnp3/master/MeasurementHandler.h>
+#include <master/MeasurementHandler.h>
 
-#include <dnp3mocks/MockSOEHandler.h>
+#include "utils/BufferHelpers.h"
 
-#include <testlib/BufferHelpers.h>
-#include <testlib/MockLogHandler.h>
+#include "mocks/MockLogHandler.h"
+#include "mocks/MockSOEHandler.h"
 
 #include <catch.hpp>
 
 #include <functional>
 
-using namespace openpal;
 using namespace opendnp3;
-using namespace testlib;
 
 /**
  * Test that the measurement handler correctly interprets measurement values in response data
@@ -114,8 +112,8 @@ TEST_CASE(SUITE("parses g50v1 correctly"))
     auto verify = [](MockSOEHandler& soe) {
         REQUIRE(soe.TotalReceived() == 2);
         REQUIRE(soe.timeSOE.size() == 2);
-        REQUIRE(soe.timeSOE[0].value == 0xABABABABABAB);
-        REQUIRE(soe.timeSOE[1].value == 0xBCBCBCBCBCBC);
+        REQUIRE(soe.timeSOE[0] == 0xABABABABABAB);
+        REQUIRE(soe.timeSOE[1] == 0xBCBCBCBCBCBC);
     };
 
     // g50v1 count of 2
@@ -129,11 +127,11 @@ ParseResult TestObjectHeaders(const std::string& objects,
                               const std::function<void(MockSOEHandler&)>& verify)
 {
     MockSOEHandler soe;
-    testlib::MockLogHandler log;
+    MockLogHandler log;
 
     HexSequence hex(objects);
 
-    auto result = MeasurementHandler::ProcessMeasurements(hex.ToRSlice(), log.logger, &soe);
+    auto result = MeasurementHandler::ProcessMeasurements(hex.ToRSeq(), log.logger, &soe);
     REQUIRE(result == expectedResult);
     verify(soe);
     return result;

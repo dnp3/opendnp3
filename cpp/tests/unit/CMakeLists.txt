@@ -1,11 +1,13 @@
 set(unittests_mocks
     ./mocks/MockAPDUHeaderHandler.h
+    ./mocks/MockCommandHandler.h
     ./mocks/MockEventWriteHandler.h
     ./mocks/MockFrameSink.h
     ./mocks/MockLinkListener.h
     ./mocks/MockLogHandler.h
     ./mocks/MockLowerLayer.h
     ./mocks/MockMasterApplication.h
+    ./mocks/MockOutstationApplication.h
     ./mocks/MockSOEHandler.h
     ./mocks/MockTaskCallback.h
     ./mocks/MockTransportLayer.h
@@ -24,6 +26,7 @@ set(unittests_mocks
     ./utils/LinkParserTest.h
     ./utils/MasterTestFixture.h
     ./utils/MeasurementComparisons.h
+    ./utils/OutstationTestObject.h
 )
 
 set(unittests_src
@@ -54,7 +57,7 @@ set(unittests_src
     ./TestMasterMultiCommandRequests.cpp
     ./TestMasterMultidrop.cpp
     ./TestMasterUnsolBehaviors.cpp
-#[[    ./TestMeasurementHandler.cpp
+    ./TestMeasurementHandler.cpp
     ./TestOutstation.cpp
     ./TestOutstationAssignClass.cpp
     ./TestOutstationCommandResponses.cpp
@@ -62,7 +65,7 @@ set(unittests_src
     ./TestOutstationEventResponses.cpp
     ./TestOutstationStateMachine.cpp
     ./TestOutstationUnsolicitedResponses.cpp
-    ./TestShiftableBuffer.cpp
+#[[    ./TestShiftableBuffer.cpp
     ./TestTransportLayer.cpp
     ./TestTypedCommandHeader.cpp
     ./TestTypes.cpp
@@ -85,6 +88,7 @@ set(unittests_src
     ./utils/LinkHex.cpp
     ./utils/LinkLayerTest.cpp
     ./utils/MasterTestFixture.cpp
+    ./utils/OutstationTestObject.cpp
 )
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}

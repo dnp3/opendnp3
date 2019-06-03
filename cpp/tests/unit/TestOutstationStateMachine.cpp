@@ -17,18 +17,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "mocks/OutstationTestObject.h"
+#include "utils/OutstationTestObject.h"
 
-#include <dnp3mocks/APDUHexBuilders.h>
+#include "utils/APDUHexBuilders.h"
 
-#include <testlib/HexConversions.h>
+#include <ser4cpp/util/HexConversions.h>
 
 #include <catch.hpp>
 
-using namespace std;
 using namespace opendnp3;
-using namespace openpal;
-using namespace testlib;
 
 #define SUITE(name) "OutstationStateMachineTestSuite - " name
 

@@ -17,18 +17,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "OutstationTestObject.h"
+#include "utils/OutstationTestObject.h"
 
-#include <testlib/BufferHelpers.h>
+#include "utils/BufferHelpers.h"
 
-using namespace openpal;
-using namespace testlib;
-
-namespace opendnp3
-{
+using namespace opendnp3;
 
 OutstationTestObject::OutstationTestObject(const OutstationConfig& config, const DatabaseSizes& dbSizes)
-    : exe(std::make_shared<MockExecutor>()),
+    : exe(std::make_shared<exe4cpp::MockExecutor>()),
       lower(std::make_shared<MockLowerLayer>()),
       cmdHandler(std::make_shared<MockCommandHandler>(CommandStatus::SUCCESS)),
       application(std::make_shared<MockOutstationApplication>()),
@@ -40,47 +36,45 @@ OutstationTestObject::OutstationTestObject(const OutstationConfig& config, const
 size_t OutstationTestObject::LowerLayerUp()
 {
     context.OnLowerLayerUp();
-    return exe->RunMany();
+    return exe->run_many();
 }
 
 size_t OutstationTestObject::LowerLayerDown()
 {
     context.OnLowerLayerDown();
-    return exe->RunMany();
+    return exe->run_many();
 }
 
 size_t OutstationTestObject::OnTxReady()
 {
     context.OnTxReady();
-    return exe->RunMany();
+    return exe->run_many();
 }
 
 size_t OutstationTestObject::SendToOutstation(const std::string& hex)
 {
     HexSequence hs(hex);
-    context.OnReceive(Message(Addresses(), hs.ToRSlice()));
-    return exe->RunMany();
+    context.OnReceive(Message(Addresses(), hs.ToRSeq()));
+    return exe->run_many();
 }
 
 size_t OutstationTestObject::NumPendingTimers() const
 {
-    return exe->NumPendingTimers();
+    return exe->num_pending_timers();
 }
 
 bool OutstationTestObject::AdvanceToNextTimer()
 {
-    if (exe->AdvanceToNextTimer())
+    if (exe->advance_to_next_timer())
     {
-        return exe->RunMany() > 0;
+        return exe->run_many() > 0;
     }
 
     return false;
 }
 
-size_t OutstationTestObject::AdvanceTime(const openpal::TimeDuration& td)
+size_t OutstationTestObject::AdvanceTime(const TimeDuration& td)
 {
-    exe->AdvanceTime(td);
-    return exe->RunMany();
+    exe->advance_time(td.value);
+    return exe->run_many();
 }
-
-} // namespace opendnp3

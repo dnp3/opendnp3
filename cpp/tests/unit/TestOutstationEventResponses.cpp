@@ -17,17 +17,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "mocks/OutstationTestObject.h"
-
-#include <dnp3mocks/APDUHexBuilders.h>
+#include "utils/OutstationTestObject.h"
+#include "utils/APDUHexBuilders.h"
 
 #include <catch.hpp>
 
 #include <functional>
 
-using namespace std;
 using namespace opendnp3;
-using namespace openpal;
 
 #define SUITE(name) "OutstationEventResponsesTestSuite - " name
 
@@ -402,7 +399,7 @@ TEST_CASE(SUITE("reports octet string events w/ same size in same header"))
 
     auto update = [](IUpdateHandler& db) {
         uint8_t bytes[2] = {0xCA, 0xFE};
-        OctetString data(RSlice(bytes, 2));
+        OctetString data(opendnp3::Buffer(bytes, 2));
 
         db.Update(data, 2);
         db.Update(data, 1);
@@ -424,12 +421,12 @@ TEST_CASE(SUITE("reports octet string events w/ different sizes in separate head
     auto update = [](IUpdateHandler& db) {
         {
             uint8_t bytes[2] = {0xCA, 0xFE};
-            OctetString data(RSlice(bytes, 2));
+            OctetString data(opendnp3::Buffer(bytes, 2));
             db.Update(data, 0);
         }
         {
             uint8_t bytes[4] = {0xCA, 0xFE, 0xBA, 0xBE};
-            OctetString data(RSlice(bytes, 4));
+            OctetString data(opendnp3::Buffer(bytes, 4));
             db.Update(data, 0);
         }
     };
