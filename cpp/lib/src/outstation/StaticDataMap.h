@@ -40,32 +40,102 @@ enum class UpdateResult
 
 template<class Spec> class StaticDataMap : private Uncopyable
 {
-    using map_iter = typename std::map<uint16_t, Cell<Spec>>::iterator;
+    using map_t = std::map<uint16_t, Cell<Spec>>;
+    using map_iter_t = typename map_t::iterator;
 
 public:
     class iterator
     {
-        map_iter iter;
+        map_iter_t iter;
+        map_iter_t end;
         Range& range;
 
     public:
-        explicit iterator(map_iter iter, Range& range) : iter(iter), range(range) {}
+        explicit iterator(map_iter_t begin, map_iter_t end, Range& range) : iter(begin), end(end), range(range) {}
 
-        using value_type = Cell<Spec>;
-        using difference_type = std::ptrdiff_t;
-        using pointer = Cell<Spec>*;
-        using reference = Cell<Spec>&;
+        using value_type = std::pair<uint16_t, typename SelectedValue<Spec>>;
+        using difference_type = typename map_iter_t::difference_type;
+        using pointer = typename map_iter_t::pointer;
+        using reference = std::pair<uint16_t, typename SelectedValue<Spec>&>;
         using iterator_category = std::input_iterator_tag;
+
+        bool operator==(const iterator& rhs)
+        {
+            return this->iter == rhs.iter;
+        }
+        bool operator!=(const iterator& rhs)
+        {
+            return this->iter != rhs.iter;
+        }
+
+        void operator++()
+        {
+            while (true)
+            {
+                iter++;
+
+                if (iter == this->end)
+                {
+                    return;
+                }
+
+                if (iter->second.selection.selected)
+                {
+                    return;
+                }
+            }
+        }
+
+        reference operator*()
+        {
+            return reference(iter->first, iter->second.selection);
+        }
     };
 
     bool add(const typename Spec::meas_t& value, uint16_t index, typename Spec::config_t config);
 
     UpdateResult update(const typename Spec::meas_t& value, uint16_t index);
 
-private:
+    Range get_selected_range() const
+    {
+        return this->selected;
+    }
 
+    size_t select_all()
+    {
+        return this->select_all([](auto var) { return var; }); // use the default
+    }
+
+    size_t select_all(typename Spec::static_variation_t variation)
+    {
+        return this->select_all([variation](auto var) { return variation; }); // override default
+    }
+
+    size_t select(Range range)
+    {
+        return this->select(range, [](auto var) { return var; });  // use the default
+    }
+
+	size_t select(Range range, typename Spec::static_variation_t variation)
+    {
+        return this->select_all([variation](auto var) { return variation; }); // override default
+    }
+
+    iterator begin();
+
+    iterator end();
+
+private:
     std::map<uint16_t, Cell<Spec>> map;
     Range selected;
+
+    // generic implementation of select_all that accepts a function
+    // that can use or override the default variation
+    template<class F> size_t select_all(F get_variation);
+
+    // generic implementation of select that accepts a function
+    // that can use or override the default variation
+    template<class F> size_t select(Range range, F get_variation);
 };
 
 template<class Spec>
@@ -99,6 +169,81 @@ template<class Spec> UpdateResult StaticDataMap<Spec>::update(const typename Spe
     }
 
     return is_event ? UpdateResult::event : UpdateResult::no_change;
+}
+
+template<class Spec> template<class F> size_t StaticDataMap<Spec>::select_all(F get_variation)
+{
+    if (map.empty())
+    {
+        return 0;
+    }
+    else
+    {
+        this->selected = Range::From(map.begin()->first, map.rbegin()->first);
+
+        for (auto& iter : this->map)
+        {
+            iter.second.selection = SelectedValue<Spec>{true, iter.second.value, get_variation(iter.second.config.svariation)};
+        }
+
+        return this->map.size();
+    }
+}
+
+template<class Spec> template<class F> size_t StaticDataMap<Spec>::select(Range range, F get_variation)
+{
+    if (!range.IsValid())
+    {
+        return 0;
+    }
+
+    const auto start = this->map.lower_bound(range.start);
+
+    if (start == this->map.end())
+    {
+        return 0;
+    }
+
+    if (!range.Contains(start->first))
+    {
+        return 0;
+    }
+
+    uint16_t stop = 0;
+    size_t count = 0;
+
+    for (auto iter = start; iter != this->map.end(); ++iter)
+    {
+        if (!range.Contains(iter->first))
+        {
+            break;
+        }
+
+        stop = iter->first;
+        iter->second.selection = SelectedValue<Spec>{true, iter->second.value, get_variation(iter->second.config.svariation)};
+        ++count;
+    }
+
+    this->selected = this->selected.Union(Range::From(start->first, stop));
+
+    return count;
+}
+
+template<class Spec> typename StaticDataMap<Spec>::iterator StaticDataMap<Spec>::begin()
+{
+    if (!this->selected.IsValid())
+    {
+        return iterator(this->map.end(), this->map.end(), this->selected);
+    }
+
+    const auto begin = this->map.lower_bound(this->selected.start);
+
+    return iterator(begin, this->map.end(), this->selected);
+}
+
+template<class Spec> typename StaticDataMap<Spec>::iterator StaticDataMap<Spec>::end()
+{
+    return iterator(this->map.end(), this->map.end(), Range::Invalid());
 }
 
 } // namespace opendnp3
