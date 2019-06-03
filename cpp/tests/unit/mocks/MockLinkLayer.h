@@ -17,30 +17,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef __MOCK_LINK_LAYER_H_
-#define __MOCK_LINK_LAYER_H_
+#ifndef OPENDNP3_UNITTESTS_MOCK_LINK_LAYER_H
+#define OPENDNP3_UNITTESTS_MOCK_LINK_LAYER_H
 
-#include <openpal/util/ToHex.h>
+#include <ser4cpp/util/HexConversions.h>
 
-#include <opendnp3/link/ILinkLayer.h>
+#include <link/ILinkLayer.h>
 
-#include <testlib/BufferHelpers.h>
-#include <testlib/HexConversions.h>
+#include "utils/BufferHelpers.h"
 
 #include <vector>
 
-namespace opendnp3
-{
-
-class MockLinkLayer : public ILinkLayer, public HasUpperLayer
+class MockLinkLayer : public opendnp3::ILinkLayer, public opendnp3::HasUpperLayer
 {
 
 public:
-    virtual bool Send(ITransportSegment& segments) override final
+    virtual bool Send(opendnp3::ITransportSegment& segments) override final
     {
         while (segments.HasValue())
         {
-            sends.push_back(testlib::ToHex(segments.GetSegment()));
+            sends.push_back(ser4cpp::HexConversions::to_hex(segments.GetSegment()));
             segments.Advance();
         }
 
@@ -55,19 +51,17 @@ public:
         return ret;
     }
 
-    bool SendUp(const std::string& hex, const Addresses& addresses = Addresses())
+    bool SendUp(const std::string& hex, const opendnp3::Addresses& addresses = opendnp3::Addresses())
     {
         if (pUpperLayer)
         {
-            testlib::HexSequence hs(hex);
-            return pUpperLayer->OnReceive(Message(addresses, hs.ToRSlice()));
+            HexSequence hs(hex);
+            return pUpperLayer->OnReceive(opendnp3::Message(addresses, hs.ToRSeq()));
         }
         return false;
     }
 
     std::vector<std::string> sends;
 };
-
-} // namespace opendnp3
 
 #endif

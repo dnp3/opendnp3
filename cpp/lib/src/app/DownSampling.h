@@ -23,6 +23,7 @@
 #include "opendnp3/Uncopyable.h"
 
 #include <cstdint>
+#include <limits>
 
 namespace opendnp3
 {

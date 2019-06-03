@@ -17,16 +17,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <openpal/container/Buffer.h>
+#include <ser4cpp/container/Buffer.h>
 
-#include <opendnp3/link/ShiftableBuffer.h>
+#include <link/ShiftableBuffer.h>
 
 #include <catch.hpp>
 
 #include <cstring>
 
 using namespace opendnp3;
-using namespace openpal;
+using namespace ser4cpp;
 
 #define SUITE(name) "ShiftableBufferSuite - " name
 
@@ -34,14 +34,14 @@ const static uint8_t SYNC[] = {0x05, 0x64};
 
 TEST_CASE(SUITE("ConstructDestruct"))
 {
-    Buffer buffer(100);
-    ShiftableBuffer b(buffer(), buffer.Size());
+    ser4cpp::Buffer buffer(100);
+    ShiftableBuffer b(buffer.as_wslice(), buffer.length());
 }
 
 TEST_CASE(SUITE("InitialState"))
 {
-    Buffer buffer(100);
-    ShiftableBuffer b(buffer(), buffer.Size());
+    ser4cpp::Buffer buffer(100);
+    ShiftableBuffer b(buffer.as_wslice(), buffer.length());
 
     REQUIRE(b.NumBytesRead() == 0);
     REQUIRE(b.NumWriteBytes() == 100);
@@ -50,8 +50,8 @@ TEST_CASE(SUITE("InitialState"))
 
 TEST_CASE(SUITE("ReadingWriting"))
 {
-    Buffer buffer(100);
-    ShiftableBuffer b(buffer(), buffer.Size());
+    ser4cpp::Buffer buffer(100);
+    ShiftableBuffer b(buffer.as_wslice(), buffer.length());
 
     b.AdvanceWrite(40);
     REQUIRE(b.NumWriteBytes() == 60);
@@ -72,8 +72,8 @@ TEST_CASE(SUITE("ReadingWriting"))
 
 TEST_CASE(SUITE("Shifting"))
 {
-    Buffer buffer(100);
-    ShiftableBuffer b(buffer(), buffer.Size());
+    ser4cpp::Buffer buffer(100);
+    ShiftableBuffer b(buffer.as_wslice(), buffer.length());
 
     // initialize buffer to all zeros
     for (size_t i = 0; i < b.NumWriteBytes(); ++i)
@@ -90,8 +90,8 @@ TEST_CASE(SUITE("Shifting"))
 
 TEST_CASE(SUITE("SyncNoPattern"))
 {
-    Buffer buffer(100);
-    ShiftableBuffer b(buffer(), buffer.Size());
+    ser4cpp::Buffer buffer(100);
+    ShiftableBuffer b(buffer.as_wslice(), buffer.length());
 
     for (size_t i = 0; i < b.NumWriteBytes(); ++i)
     {
@@ -108,8 +108,8 @@ TEST_CASE(SUITE("SyncNoPattern"))
 
 TEST_CASE(SUITE("SyncBeginning"))
 {
-    Buffer buffer(100);
-    ShiftableBuffer b(buffer(), buffer.Size());
+    ser4cpp::Buffer buffer(100);
+    ShiftableBuffer b(buffer.as_wslice(), buffer.length());
 
     for (size_t i = 0; i < b.NumWriteBytes(); ++i)
         b.WriteBuff()[i] = 0;
@@ -125,8 +125,8 @@ TEST_CASE(SUITE("SyncBeginning"))
 
 TEST_CASE(SUITE("SyncFullPattern"))
 {
-    Buffer buffer(100);
-    ShiftableBuffer b(buffer(), buffer.Size());
+    ser4cpp::Buffer buffer(100);
+    ShiftableBuffer b(buffer.as_wslice(), buffer.length());
 
     // initialize buffer to all zeros
     for (size_t i = 0; i < b.NumWriteBytes(); ++i)
@@ -143,8 +143,8 @@ TEST_CASE(SUITE("SyncFullPattern"))
 
 TEST_CASE(SUITE("SyncPartialPattern"))
 {
-    Buffer buffer(100);
-    ShiftableBuffer b(buffer(), buffer.Size());
+    ser4cpp::Buffer buffer(100);
+    ShiftableBuffer b(buffer.as_wslice(), buffer.length());
 
     // initialize buffer to all zeros
     for (size_t i = 0; i < b.NumWriteBytes(); ++i)

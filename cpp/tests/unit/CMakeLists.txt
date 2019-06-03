@@ -3,6 +3,7 @@ set(unittests_mocks
     ./mocks/MockCommandHandler.h
     ./mocks/MockEventWriteHandler.h
     ./mocks/MockFrameSink.h
+    ./mocks/MockLinkLayer.h
     ./mocks/MockLinkListener.h
     ./mocks/MockLogHandler.h
     ./mocks/MockLowerLayer.h
@@ -12,6 +13,7 @@ set(unittests_mocks
     ./mocks/MockTaskCallback.h
     ./mocks/MockTransportLayer.h
     ./mocks/MockTransportSegment.h
+    ./mocks/MockUpperLayer.h
 
     ./utils/APDUHelpers.h
     ./utils/APDUHexBuilders.h
@@ -27,6 +29,8 @@ set(unittests_mocks
     ./utils/MasterTestFixture.h
     ./utils/MeasurementComparisons.h
     ./utils/OutstationTestObject.h
+    ./utils/ProtocolUtil.h
+    ./utils/TransportTestObject.h
 )
 
 set(unittests_src
@@ -35,7 +39,6 @@ set(unittests_src
     ./TestAPDUParsing.cpp
     ./TestAPDUWriting.cpp
     ./TestAuthRequestParser.cpp
-    ./TestCastLongLongDouble.cpp
     ./TestCollectionTransform.cpp
     ./TestCRC.cpp
 #    ./TestDatabase.cpp
@@ -65,19 +68,17 @@ set(unittests_src
     ./TestOutstationEventResponses.cpp
     ./TestOutstationStateMachine.cpp
     ./TestOutstationUnsolicitedResponses.cpp
-#[[    ./TestShiftableBuffer.cpp
+    ./TestShiftableBuffer.cpp
     ./TestTransportLayer.cpp
     ./TestTypedCommandHeader.cpp
-    ./TestTypes.cpp
-    ./TestUtil.cpp
     ./TestWriteConversions.cpp
-]]
 
     ./mocks/MockFrameSink.cpp
     ./mocks/MockLogHandler.cpp
     ./mocks/MockLowerLayer.cpp
     ./mocks/MockTransportLayer.cpp
     ./mocks/MockTransportSegment.cpp
+    ./mocks/MockUpperLayer.cpp
 
     ./utils/APDUHelpers.cpp
     ./utils/APDUHexBuilders.cpp
@@ -89,6 +90,8 @@ set(unittests_src
     ./utils/LinkLayerTest.cpp
     ./utils/MasterTestFixture.cpp
     ./utils/OutstationTestObject.cpp
+    ./utils/ProtocolUtil.cpp
+    ./utils/TransportTestObject.cpp
 )
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}

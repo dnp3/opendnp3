@@ -17,17 +17,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef __PROTOCOL_UTIL_H_
-#define __PROTOCOL_UTIL_H_
-
-#include <cstdint>
+#include "utils/ProtocolUtil.h"
 
 // Given a buffer and max packet size, calculcate the
 // maximum number of packets the buffer can hold
-uint32_t CalcMaxPackets(uint32_t aBuffer, uint32_t aPayload);
+uint32_t CalcMaxPackets(uint32_t aBuffer, uint32_t aPayload)
+{
+    uint32_t remain = aBuffer % aPayload;
+    uint32_t num = aBuffer / aPayload;
+    return (remain == 0) ? num : num + 1;
+}
 
-// Given a buffer and max packet size, calculcate the
-// size of the last packet.
-uint32_t CalcLastPacketSize(uint32_t aBuffer, uint32_t aPayload);
-
-#endif
+uint32_t CalcLastPacketSize(uint32_t aBuffer, uint32_t aPayload)
+{
+    uint32_t remain = aBuffer % aPayload;
+    return (remain == 0) ? aPayload : remain;
+}

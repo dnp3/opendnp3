@@ -17,21 +17,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <openpal/container/StaticBuffer.h>
+#include <ser4cpp/container/StaticBuffer.h>
+#include <ser4cpp/util/HexConversions.h>
 
-#include <opendnp3/app/APDURequest.h>
-#include <opendnp3/master/CommandSetOps.h>
-#include <opendnp3/master/TypedCommandHeader.h>
-#include <opendnp3/objects/Group12.h>
-#include <opendnp3/objects/Group41.h>
-
-#include <testlib/HexConversions.h>
+#include <app/APDURequest.h>
+#include <master/CommandSetOps.h>
+#include <master/TypedCommandHeader.h>
+#include <gen/objects/Group12.h>
+#include <gen/objects/Group41.h>
 
 #include <catch.hpp>
 
 using namespace opendnp3;
-using namespace openpal;
-using namespace testlib;
+using namespace ser4cpp;
 
 std::string WriteToHex(const CommandSet& commands, IndexQualifierMode mode);
 
@@ -48,14 +46,14 @@ TEST_CASE(SUITE("Formats two-byte qualifier properly if enough space is availabl
     header.Add(AnalogOutputInt16(7), 10);
     header.Add(AnalogOutputInt16(8), 11);
 
-    StaticBuffer<100> buffer;
-    auto dest = buffer.GetWSlice();
+    StaticBuffer<uint32_t, 100> buffer;
+    auto dest = buffer.as_wseq();
     APDURequest request(dest);
     auto writer = request.GetWriter();
 
     REQUIRE(header.Write(writer, IndexQualifierMode::always_two_bytes));
 
-    auto hex = ToHex(request.ToRSlice().Skip(2));
+    auto hex = HexConversions::to_hex(request.ToRSeq().skip(2));
 
     REQUIRE(hex == "29 02 28 02 00 0A 00 07 00 00 0B 00 08 00 00");
 }
@@ -66,14 +64,14 @@ TEST_CASE(SUITE("Formats one-byte qualifier properly if enough space is availabl
     header.Add(AnalogOutputInt16(7), 10);
     header.Add(AnalogOutputInt16(8), 11);
 
-    StaticBuffer<100> buffer;
-    auto dest = buffer.GetWSlice();
+    StaticBuffer<uint32_t, 100> buffer;
+    auto dest = buffer.as_wseq();
     APDURequest request(dest);
     auto writer = request.GetWriter();
 
     REQUIRE(header.Write(writer, IndexQualifierMode::allow_one_byte));
 
-    auto hex = ToHex(request.ToRSlice().Skip(2));
+    auto hex = HexConversions::to_hex(request.ToRSeq().skip(2));
 
     REQUIRE(hex == "29 02 17 02 0A 07 00 00 0B 08 00 00");
 }
@@ -84,8 +82,8 @@ TEST_CASE(SUITE("Does not format if insufficient space"))
     header.Add(AnalogOutputInt16(7), 10);
     header.Add(AnalogOutputInt16(8), 11);
 
-    StaticBuffer<14> buffer;
-    auto dest = buffer.GetWSlice();
+    StaticBuffer<uint32_t, 14> buffer;
+    auto dest = buffer.as_wseq();
     APDURequest request(dest);
     auto writer = request.GetWriter();
 
@@ -108,11 +106,11 @@ TEST_CASE(SUITE("Command set can be moved and written"))
 
 std::string WriteToHex(const CommandSet& commands, IndexQualifierMode mode)
 {
-    StaticBuffer<100> buffer;
-    auto dest = buffer.GetWSlice();
+    StaticBuffer<uint32_t, 100> buffer;
+    auto dest = buffer.as_wseq();
     APDURequest request(dest);
     auto writer = request.GetWriter();
 
     REQUIRE(CommandSetOps::Write(commands, writer, mode));
-    return ToHex(request.ToRSlice().Skip(2));
+    return HexConversions::to_hex(request.ToRSeq().skip(2));
 }

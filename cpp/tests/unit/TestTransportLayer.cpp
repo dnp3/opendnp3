@@ -17,21 +17,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "mocks/TransportTestObject.h"
-
 #include <opendnp3/app/AppConstants.h>
-#include <opendnp3/transport/TransportConstants.h>
+#include <transport/TransportConstants.h>
 
-#include <dnp3mocks/ProtocolUtil.h>
+#include "utils/TransportTestObject.h"
+#include "utils/ProtocolUtil.h"
 
-#include <testlib/MockLogHandler.h>
+#include "mocks/MockLogHandler.h"
 
 #include <catch.hpp>
 
-using namespace std;
-using namespace openpal;
 using namespace opendnp3;
-using namespace testlib;
+using namespace ser4cpp;
 
 #define SUITE(name) "TransportLayerTestSuite - " name
 
@@ -40,14 +37,14 @@ TEST_CASE(SUITE("RepeatSendsDoNotLogOrChangeStatistics"))
     MockLogHandler log;
     TransportTx tx(log.logger);
     HexSequence hs("12 34 56");
-    tx.Configure(Message(Addresses(), hs.ToRSlice()));
+    tx.Configure(Message(Addresses(), hs.ToRSeq()));
 
     auto segment1 = tx.GetSegment();
-    REQUIRE("C0 12 34 56" == ToHex(segment1));
+    REQUIRE("C0 12 34 56" == HexConversions::to_hex(segment1));
     REQUIRE(tx.Statistics().numTransportTx == 1);
 
     auto segment2 = tx.GetSegment();
-    REQUIRE("C0 12 34 56" == ToHex(segment2));
+    REQUIRE("C0 12 34 56" == HexConversions::to_hex(segment2));
     REQUIRE(tx.Statistics().numTransportTx == 1);
 }
 
@@ -129,9 +126,9 @@ TEST_CASE(SUITE("ReceiveLargestPossibleAPDU"))
     uint32_t num_packets = CalcMaxPackets(opendnp3::DEFAULT_MAX_APDU_SIZE, MAX_TPDU_PAYLOAD);
     uint32_t last_packet_length = CalcLastPacketSize(opendnp3::DEFAULT_MAX_APDU_SIZE, MAX_TPDU_PAYLOAD);
 
-    vector<string> packets;
-    const string apdu = test.GeneratePacketSequence(packets, num_packets, last_packet_length);
-    for (const string& s : packets)
+    std::vector<std::string> packets;
+    const auto apdu = test.GeneratePacketSequence(packets, num_packets, last_packet_length);
+    for (const auto& s : packets)
     {
         test.link.SendUp(s);
     }
@@ -229,7 +226,7 @@ TEST_CASE(SUITE("SendFullAPDU"))
     uint32_t numPackets = CalcMaxPackets(opendnp3::DEFAULT_MAX_APDU_SIZE, MAX_TPDU_PAYLOAD);
     uint32_t lastPacketLength = CalcLastPacketSize(opendnp3::DEFAULT_MAX_APDU_SIZE, MAX_TPDU_PAYLOAD);
 
-    vector<string> packets;
+    std::vector<std::string> packets;
     std::string apdu = test.GeneratePacketSequence(packets, numPackets, lastPacketLength);
 
     test.upper.SendDown(apdu);

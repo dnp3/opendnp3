@@ -17,17 +17,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_MOCKUPPERLAYER_H
-#define OPENDNP3_MOCKUPPERLAYER_H
+#ifndef OPENDNP3_UNITTESTS_MOCKUPPERLAYER_H
+#define OPENDNP3_UNITTESTS_MOCKUPPERLAYER_H
 
-#include "DataSink.h"
+#include "utils/DataSink.h"
 
-#include <opendnp3/LayerInterfaces.h>
+#include <LayerInterfaces.h>
 
-namespace opendnp3
-{
-
-class MockUpperLayer final : public IUpperLayer, public HasLowerLayer
+class MockUpperLayer final : public opendnp3::IUpperLayer, public opendnp3::HasLowerLayer
 {
 public:
     struct Counters
@@ -44,8 +41,8 @@ public:
         return isOnline;
     }
 
-    bool SendDown(const std::string& hex, const Addresses& addresses = Addresses());
-    bool SendDown(const openpal::RSlice& data, const Addresses& addresses = Addresses());
+    bool SendDown(const std::string& hex, const opendnp3::Addresses& addresses = opendnp3::Addresses());
+    bool SendDown(const ser4cpp::rseq_t& data, const opendnp3::Addresses& addresses = opendnp3::Addresses());
 
     const Counters& GetCounters() const
     {
@@ -53,7 +50,7 @@ public:
     }
 
     // these are the NVII delegates
-    virtual bool OnReceive(const Message& message) override;
+    virtual bool OnReceive(const opendnp3::Message& message) override;
     virtual bool OnTxReady() override;
     virtual bool OnLowerLayerUp() override;
     virtual bool OnLowerLayerDown() override;
@@ -64,7 +61,5 @@ private:
     bool isOnline;
     Counters counters;
 };
-
-} // namespace opendnp3
 
 #endif

@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 #include <opendnp3/app/QualityMasks.h>
-#include <opendnp3/app/WriteConversions.h>
+#include <app/WriteConversions.h>
 
 #include <catch.hpp>
 

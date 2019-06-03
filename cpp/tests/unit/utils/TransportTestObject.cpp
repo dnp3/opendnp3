@@ -17,24 +17,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "TransportTestObject.h"
+#include "utils/TransportTestObject.h"
 
-#include <openpal/util/ToHex.h>
+#include <ser4cpp/util/HexConversions.h>
 
 #include "opendnp3/app/AppConstants.h"
-#include "opendnp3/transport/TransportHeader.h"
+#include "transport/TransportHeader.h"
 
-#include <testlib/BufferHelpers.h>
+#include "utils/BufferHelpers.h"
 
 #include <memory>
 #include <sstream>
 
-using namespace std;
-using namespace openpal;
-using namespace testlib;
-
-namespace opendnp3
-{
+using namespace opendnp3;
+using namespace ser4cpp;
 
 TransportTestObject::TransportTestObject(bool openOnStart, uint32_t maxRxFragmentSize)
     : transport(log.logger, maxRxFragmentSize)
@@ -53,7 +49,7 @@ TransportTestObject::TransportTestObject(bool openOnStart, uint32_t maxRxFragmen
 
 std::string TransportTestObject::GetData(const std::string& arHdr, uint8_t aSeed, uint32_t aLength)
 {
-    testlib::ByteStr buff(aLength);
+    ByteStr buff(aLength);
     uint8_t val = aSeed;
     for (size_t i = 0; i < aLength; ++i)
     {
@@ -61,18 +57,18 @@ std::string TransportTestObject::GetData(const std::string& arHdr, uint8_t aSeed
         ++val;
     }
 
-    ostringstream oss;
+    std::ostringstream oss;
     if (!arHdr.empty())
         oss << arHdr << " ";
-    oss << ToHex(buff, buff.Size(), true);
+    oss << HexConversions::to_hex(buff, buff.Size(), true);
     return oss.str();
 }
 
-std::string TransportTestObject::GeneratePacketSequence(vector<std::string>& arVec,
+std::string TransportTestObject::GeneratePacketSequence(std::vector<std::string>& arVec,
                                                         uint32_t aNumPackets,
                                                         uint32_t aLastPacketLength)
 {
-    ostringstream oss;
+    std::ostringstream oss;
     for (size_t i = 0; i < aNumPackets; ++i)
     {
         bool fir = i == 0;
@@ -82,10 +78,8 @@ std::string TransportTestObject::GeneratePacketSequence(vector<std::string>& arV
         uint8_t hdr = TransportHeader::ToByte(fir, fin, seq);
         std::string data = this->GetData("", 0, len); // raw data with no header
         oss << ((i == 0) ? "" : " ") << data;         // cache the data in the string stream
-        arVec.push_back(ToHex(&hdr, 1, true) + " " + data);
+        arVec.push_back(HexConversions::to_hex(&hdr, 1, true) + " " + data);
     }
 
     return oss.str();
 }
-
-} // namespace opendnp3

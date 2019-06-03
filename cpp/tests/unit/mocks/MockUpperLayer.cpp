@@ -17,20 +17,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "MockUpperLayer.h"
+#include "mocks/MockUpperLayer.h"
 
-#include <openpal/logging/LogMacros.h>
-#include <openpal/util/ToHex.h>
+#include <ser4cpp/util/HexConversions.h>
 
-#include <testlib/BufferHelpers.h>
+#include "utils/BufferHelpers.h"
 
 #include <memory>
 
-using namespace openpal;
-using namespace testlib;
-
-namespace opendnp3
-{
+using namespace opendnp3;
+using namespace ser4cpp;
 
 MockUpperLayer::MockUpperLayer() : isOnline(false) {}
 
@@ -60,7 +56,7 @@ bool MockUpperLayer::OnLowerLayerDown()
     return true;
 }
 
-bool MockUpperLayer::SendDown(const openpal::RSlice& data, const Addresses& addresses)
+bool MockUpperLayer::SendDown(const rseq_t& data, const Addresses& addresses)
 {
     return this->pLowerLayer != nullptr ? pLowerLayer->BeginTransmit(Message(addresses, data)) : false;
 }
@@ -68,7 +64,5 @@ bool MockUpperLayer::SendDown(const openpal::RSlice& data, const Addresses& addr
 bool MockUpperLayer::SendDown(const std::string& hex, const Addresses& addresses)
 {
     HexSequence hs(hex);
-    return this->SendDown(hs.ToRSlice(), addresses);
+    return this->SendDown(hs.ToRSeq(), addresses);
 }
-
-} // namespace opendnp3
