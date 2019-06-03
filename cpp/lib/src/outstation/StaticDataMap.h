@@ -96,6 +96,8 @@ public:
 
     UpdateResult update(const typename Spec::meas_t& value, uint16_t index);
 
+    void clear_selection();
+
     Range get_selected_range() const
     {
         return this->selected;
@@ -113,10 +115,10 @@ public:
 
     size_t select(Range range)
     {
-        return this->select(range, [](auto var) { return var; });  // use the default
+        return this->select(range, [](auto var) { return var; }); // use the default
     }
 
-	size_t select(Range range, typename Spec::static_variation_t variation)
+    size_t select(Range range, typename Spec::static_variation_t variation)
     {
         return this->select_all([variation](auto var) { return variation; }); // override default
     }
@@ -171,6 +173,14 @@ template<class Spec> UpdateResult StaticDataMap<Spec>::update(const typename Spe
     return is_event ? UpdateResult::event : UpdateResult::no_change;
 }
 
+template<class Spec> void StaticDataMap<Spec>::clear_selection()
+{
+	// the act of iterating clears the selection	
+    for (auto value : *this)
+    {
+    }
+}
+
 template<class Spec> template<class F> size_t StaticDataMap<Spec>::select_all(F get_variation)
 {
     if (map.empty())
@@ -183,7 +193,8 @@ template<class Spec> template<class F> size_t StaticDataMap<Spec>::select_all(F 
 
         for (auto& iter : this->map)
         {
-            iter.second.selection = SelectedValue<Spec>{true, iter.second.value, get_variation(iter.second.config.svariation)};
+            iter.second.selection
+                = SelectedValue<Spec>{true, iter.second.value, get_variation(iter.second.config.svariation)};
         }
 
         return this->map.size();
@@ -220,7 +231,8 @@ template<class Spec> template<class F> size_t StaticDataMap<Spec>::select(Range 
         }
 
         stop = iter->first;
-        iter->second.selection = SelectedValue<Spec>{true, iter->second.value, get_variation(iter->second.config.svariation)};
+        iter->second.selection
+            = SelectedValue<Spec>{true, iter->second.value, get_variation(iter->second.config.svariation)};
         ++count;
     }
 
