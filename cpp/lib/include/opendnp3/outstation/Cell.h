@@ -28,11 +28,16 @@ namespace opendnp3
  */
 template<class Spec> struct SelectedValue
 {
-    SelectedValue() : selected(false), value(), variation(Spec::DefaultStaticVariation) {}
+    SelectedValue() = default;
 
-    bool selected;
+    SelectedValue(bool selected, const typename Spec::meas_t& value, typename Spec::static_variation_t variation)
+        : selected(selected), value(value), variation(variation)
+    {
+    }
+
+    bool selected = false;
     typename Spec::meas_t value;
-    typename Spec::static_variation_t variation;
+    typename Spec::static_variation_t variation = Spec::DefaultStaticVariation;
 };
 
 /**
