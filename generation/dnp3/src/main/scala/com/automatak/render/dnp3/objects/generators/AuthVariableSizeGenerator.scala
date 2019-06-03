@@ -45,7 +45,7 @@ object AuthVariableSizeGenerator {
 
     def defaultConstructor = Iterator("%s();".format(x.name))
 
-    def Id = Iterator("virtual GroupVariationID InstanceID() const override final { return ID(); }".format(x.name))
+    def Id = Iterator("virtual GroupVariationID InstanceID() const override final { return ID(); }")
 
     def primaryConstructor(implicit indent: Indentation) : Iterator[String] = {
 
@@ -141,40 +141,6 @@ object AuthVariableSizeGenerator {
 
       def copy = Iterator("rseq_t copy(buffer); //mutable copy for parsing")
 
-      def fixedReads : Iterator[String] = {
-
-        def toNumericReadOp(fs: FixedSizeField) : Iterator[String] = {
-          val tempVarName = "%sTemp".format(fs.name);
-          if(fs.typ == UInt48Field) {
-            Iterator(
-              "UInt48Type %s;".format(tempVarName),
-              "%s::read_from(copy, %s);".format(FixedSizeHelpers.getCppFieldTypeParser(fs.typ), tempVarName),
-              "this->%s = %s.Get();".format(fs.name, tempVarName)
-            )
-          }
-          else {
-            Iterator("%s::read_from(copy, this->%s);".format(FixedSizeHelpers.getCppFieldTypeParser(fs.typ), fs.name))
-          }
-        }
-
-        def toEnumReadOp(fs: FixedSizeField, e: EnumFieldType) : Iterator[String] = {
-          val rawValueName = fs.name ++ "RawValue"
-          Iterator(
-            "uint8_t %s;".format(rawValueName),
-            "UInt8::read_from(copy, %s);".format(rawValueName),
-            "this->%s = %sFromType(%s);".format(fs.name, e.model.name, rawValueName)
-          )
-        }
-
-
-        def toReadOp(fs: FixedSizeField) : Iterator[String] = fs.typ match {
-          case x : EnumFieldType => toEnumReadOp(fs, x)
-          case _ => toNumericReadOp(fs)
-        }
-
-        if(x.fixedFields.isEmpty) Iterator.empty else x.fixedFields.flatMap(toReadOp).iterator ++ space
-      }
-
       def prefixedRead(x : List[VariableField]) : Iterator[String] =  {
         bailoutIf("!PrefixFields::Read(copy, %s)".format(x.map(_.name).mkString(", ")))
       }
@@ -194,7 +160,7 @@ object AuthVariableSizeGenerator {
         minSizeBailout ++
         copy ++
         space ++
-        fixedReads ++
+        FixedSizeHelpers.fixedReads(x.fixedFields, false, "copy", "this->") ++
         prefixedReads ++
         remainderRead ++
         Iterator("return true;")
@@ -226,29 +192,6 @@ object AuthVariableSizeGenerator {
 
       def bailoutClauses : Iterator[String] = bailoutIf(minSizeBailout) ++ uint16Bailouts
 
-      def fixedWrites : Iterator[String] = {
-
-        def toNumericWriteOp(fs: FixedSizeField) : String = {
-          if(fs.typ == UInt48Field) {
-              "%s::write_to(buffer, UInt48Type(this->%s));".format(FixedSizeHelpers.getCppFieldTypeParser(fs.typ), fs.name)
-          }
-          else {
-            "%s::write_to(buffer, this->%s);".format(FixedSizeHelpers.getCppFieldTypeParser(fs.typ), fs.name)
-          }
-        }
-
-        def toEnumWriteOp(fs: FixedSizeField, e: EnumFieldType) : String = {
-          "UInt8::write_to(buffer, %sToType(this->%s));".format(e.model.name, fs.name)
-        }
-
-        def toWriteOp(fs: FixedSizeField) : String = fs.typ match {
-          case x : EnumFieldType => toEnumWriteOp(fs, x)
-          case _ => toNumericWriteOp(fs)
-        }
-
-        if(x.fixedFields.isEmpty) Iterator.empty else x.fixedFields.map(toWriteOp).iterator ++ space
-      }
-
       def prefixedWrites : Iterator[String] = if(x.lengthFields.isEmpty) Iterator.empty else {
         val fields = x.lengthFields.map(f => f.name).mkString(", ")
         bailoutIf("!PrefixFields::Write(buffer, %s)".format(fields))
@@ -261,7 +204,7 @@ object AuthVariableSizeGenerator {
 
       writeSignature ++ bracket {
           bailoutClauses ++
-          fixedWrites ++
+          FixedSizeHelpers.fixedWrites(x.fixedFields, false, "buffer", "this->") ++
           prefixedWrites ++
           remainderWrite ++
           Iterator("return true;")

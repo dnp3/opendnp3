@@ -59,7 +59,7 @@ TEST_CASE(SUITE("ReceiveNewRequestSolConfirmWait"))
     OutstationTestObject t(config, DatabaseSizes::BinaryOnly(1));
     t.LowerLayerUp();
 
-    t.Transaction([](IUpdateHandler& db) { db.Update(Binary(true, 0x01), 0); });
+    t.Transaction([](IUpdateHandler& db) { db.Update(Binary(true, Flags(0x01)), 0); });
 
     t.SendToOutstation(hex::ClassPoll(0, PointClass::Class1));
     REQUIRE(t.lower->PopWriteAsHex() == "E0 81 80 00 02 01 28 01 00 00 00 81");
@@ -79,7 +79,7 @@ TEST_CASE(SUITE("ReadClass1WithSOE"))
 
     t.Transaction([](IUpdateHandler& db) {
         db.Update(Analog(0x1234, 0x01), 0x17); // 0x 12 34 00 00 in little endian
-        db.Update(Binary(true, 0x01), 0x10);
+        db.Update(Binary(true, Flags(0x01)), 0x10);
         db.Update(Analog(0x2222, 0x01), 0x17); // 0x 22 22 00 00 in little endian
     });
 
@@ -103,9 +103,9 @@ TEST_CASE(SUITE("EventBufferOverflowAndClear"))
     t.LowerLayerUp();
 
     t.Transaction([](IUpdateHandler& db) {
-        db.Update(Binary(true, 0x01), 0); // this event is lost in the overflow
-        db.Update(Binary(true, 0x01), 1);
-        db.Update(Binary(true, 0x01), 2);
+        db.Update(Binary(true, Flags(0x01)), 0); // this event is lost in the overflow
+        db.Update(Binary(true, Flags(0x01)), 1);
+        db.Update(Binary(true, Flags(0x01)), 2);
     });
 
     t.SendToOutstation("C0 01");
@@ -188,7 +188,7 @@ void TestEventRead(const std::string& request,
 
 TEST_CASE(SUITE("Class1"))
 {
-    auto update = [](IUpdateHandler& db) { db.Update(Binary(false, 0x01), 0); };
+    auto update = [](IUpdateHandler& db) { db.Update(Binary(false, Flags(0x01)), 0); };
 
     TestEventRead(hex::ClassPoll(0, PointClass::Class1), "E0 81 80 00 02 01 28 01 00 00 00 01", update);
 }
@@ -196,8 +196,8 @@ TEST_CASE(SUITE("Class1"))
 TEST_CASE(SUITE("Class1OneByteLimitedCount"))
 {
     auto update = [](IUpdateHandler& db) {
-        db.Update(Binary(false, 0x01), 2);
-        db.Update(Binary(true, 0x01), 1);
+        db.Update(Binary(false, Flags(0x01)), 2);
+        db.Update(Binary(true, Flags(0x01)), 1);
     };
 
     // reads a single event, IIB bit indicates more events present
@@ -207,9 +207,9 @@ TEST_CASE(SUITE("Class1OneByteLimitedCount"))
 TEST_CASE(SUITE("Class1TwoByteLimitedCount"))
 {
     auto update = [](IUpdateHandler& db) {
-        db.Update(Binary(false, 0x01), 2);
-        db.Update(Binary(true, 0x01), 1);
-        db.Update(Binary(true, 0x01), 3);
+        db.Update(Binary(false, Flags(0x01)), 2);
+        db.Update(Binary(true, Flags(0x01)), 1);
+        db.Update(Binary(true, Flags(0x01)), 3);
     };
 
     // reads a single event, IIB bit indicates more events present
@@ -225,13 +225,13 @@ TEST_CASE(SUITE("MixedClassLimitedCount"))
     };
 
     auto update = [](IUpdateHandler& db) {
-        db.Update(Binary(false, 0x01), 0);
+        db.Update(Binary(false, Flags(0x01)), 0);
 
-        db.Update(Binary(true, 0x01), 1);
-        db.Update(Binary(false, 0x01), 1);
+        db.Update(Binary(true, Flags(0x01)), 1);
+        db.Update(Binary(false, Flags(0x01)), 1);
 
-        db.Update(Binary(true, 0x01), 2);
-        db.Update(Binary(false, 0x01), 2);
+        db.Update(Binary(true, Flags(0x01)), 2);
+        db.Update(Binary(false, Flags(0x01)), 2);
     };
 
     // read 1 class 2 event and 1 class 3 event, 1 of each event type left in buffer
@@ -262,7 +262,7 @@ TEST_CASE(SUITE("reports g22v6 correctly"))
 
 TEST_CASE(SUITE("ReadGrp2Var0"))
 {
-    auto update = [](IUpdateHandler& db) { db.Update(Binary(false, 0x01), 0); };
+    auto update = [](IUpdateHandler& db) { db.Update(Binary(false, Flags(0x01)), 0); };
 
     TestEventRead("C0 01 02 00 06", "E0 81 80 00 02 01 28 01 00 00 00 01", update);
 }
@@ -313,7 +313,7 @@ TEST_CASE(SUITE("ReadGrp32Var5"))
 
 TEST_CASE(SUITE("ReadGrp2Var1"))
 {
-    auto update = [](IUpdateHandler& db) { db.Update(Binary(false, 0x01), 3); };
+    auto update = [](IUpdateHandler& db) { db.Update(Binary(false, Flags(0x01)), 3); };
 
     TestEventRead("C0 01 02 01 06", "E0 81 80 00 02 01 28 01 00 03 00 01", update); // 1 byte count == 1, ONLINE quality
 }
@@ -321,9 +321,9 @@ TEST_CASE(SUITE("ReadGrp2Var1"))
 TEST_CASE(SUITE("ReadGrp2Var1LimitedCount"))
 {
     auto update = [](IUpdateHandler& db) {
-        db.Update(Binary(false, 0x01), 3);
-        db.Update(Binary(true, 0x01), 2);
-        db.Update(Binary(false, 0x01), 1);
+        db.Update(Binary(false, Flags(0x01)), 3);
+        db.Update(Binary(true, Flags(0x01)), 2);
+        db.Update(Binary(false, Flags(0x01)), 1);
     };
 
     // read 2 events only, Class 1 data IIN still set

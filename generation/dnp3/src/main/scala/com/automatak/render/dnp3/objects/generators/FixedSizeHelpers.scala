@@ -19,6 +19,7 @@
  */
 package com.automatak.render.dnp3.objects.generators
 
+import com.automatak.render._
 import com.automatak.render.EnumModel
 import com.automatak.render.cpp._
 import com.automatak.render.dnp3.objects._
@@ -45,5 +46,98 @@ object FixedSizeHelpers {
      }
   }.flatten
 
+  def fixedReads(fixedFields: List[FixedSizeField], returnBool: Boolean, bufferName: String, outputLocation: String) : Iterator[String] = {
 
+    val returnStatement = returnBool match {
+      case true => "result &= "
+      case false => ""
+    }
+
+    def toNumericReadOp(fs: FixedSizeField) : Iterator[String] = {
+
+
+      val tempVarName = "%sTemp".format(fs.name);
+      if(fs.typ == UInt48Field) {
+        Iterator(
+          "UInt48Type %s;".format(tempVarName),
+          returnStatement + "%s::read_from(%s, %s);".format(FixedSizeHelpers.getCppFieldTypeParser(fs.typ), bufferName, tempVarName),
+          "%s%s = %s.Get();".format(outputLocation, fs.name, tempVarName)
+        )
+      }
+      else {
+        Iterator(returnStatement + "%s::read_from(%s, %s%s);".format(FixedSizeHelpers.getCppFieldTypeParser(fs.typ), bufferName, outputLocation, fs.name))
+      }
+    }
+
+    def toEnumReadOp(fs: FixedSizeField, e: EnumFieldType) : Iterator[String] = {
+      val rawValueName = fs.name ++ "RawValue"
+      Iterator(
+        "uint8_t %s;".format(rawValueName),
+        returnStatement + "UInt8::read_from(%s, %s);".format(bufferName, rawValueName),
+        "%s%s = %sFromType(%s);".format(outputLocation, fs.name, e.model.name, rawValueName)
+      )
+    }
+
+
+    def toReadOp(fs: FixedSizeField) : Iterator[String] = fs.typ match {
+      case x : EnumFieldType => toEnumReadOp(fs, x)
+      case _ => toNumericReadOp(fs)
+    }
+
+    var lines = List[String]()
+    if(returnBool) {
+      lines ++= Iterator("bool result = true;") ++ space
+    }
+    if(fixedFields.nonEmpty) {
+      lines ++= fixedFields.flatMap(toReadOp).iterator ++ space
+    }
+    if(returnBool) {
+      lines ++= Iterator("return result;")
+    }
+
+    lines.iterator
+  }
+
+  def fixedWrites(fixedFields: List[FixedSizeField], returnBool: Boolean, bufferName: String, inputLocation: String) : Iterator[String] = {
+
+    val returnStatement : String = returnBool match {
+      case true => "result &= "
+      case false => ""
+    }
+
+    def toNumericWriteOp(fs: FixedSizeField) : String = {
+      if(fs.typ == UInt48Field) {
+        "%s::write_to(%s, UInt48Type(%s%s));".format(FixedSizeHelpers.getCppFieldTypeParser(fs.typ),bufferName, inputLocation, fs.name)
+      }
+      else {
+        "%s::write_to(%s, %s%s);".format(FixedSizeHelpers.getCppFieldTypeParser(fs.typ), bufferName, inputLocation, fs.name)
+      }
+    }
+
+    def toEnumWriteOp(fs: FixedSizeField, e: EnumFieldType) : String = {
+      "UInt8::write_to(%s, %sToType(%s%s));".format(bufferName, e.model.name, inputLocation, fs.name)
+    }
+
+    def toWriteOp(fs: FixedSizeField) : String = {
+      val writeOperation = fs.typ match {
+        case x : EnumFieldType => toEnumWriteOp(fs, x)
+        case _ => toNumericWriteOp(fs)
+      }
+
+      returnStatement + writeOperation
+    }
+
+    var lines = List[String]()
+    if(returnBool) {
+      lines ++= Iterator("bool result = true;") ++ space
+    }
+    if(fixedFields.nonEmpty) {
+      lines ++= fixedFields.map(toWriteOp) ++ space
+    }
+    if(returnBool) {
+      lines ++= Iterator("return result;")
+    }
+
+    lines.iterator
+  }
 }

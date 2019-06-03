@@ -160,12 +160,22 @@ Group120Var3::Group120Var3() : challengeSeqNum(0), userNum(0)
 
 bool Group120Var3::Read(rseq_t& buffer, Group120Var3& output)
 {
-  return LittleEndian::read(buffer, output.challengeSeqNum, output.userNum);
+  bool result = true;
+
+  result &= UInt32::read_from(buffer, output.challengeSeqNum);
+  result &= UInt16::read_from(buffer, output.userNum);
+
+  return result;
 }
 
 bool Group120Var3::Write(const Group120Var3& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.challengeSeqNum, arg.userNum);
+  bool result = true;
+
+  result &= UInt32::write_to(buffer, arg.challengeSeqNum);
+  result &= UInt16::write_to(buffer, arg.userNum);
+
+  return result;
 }
 
 // ------- Group120Var4 -------
@@ -175,12 +185,20 @@ Group120Var4::Group120Var4() : userNum(0)
 
 bool Group120Var4::Read(rseq_t& buffer, Group120Var4& output)
 {
-  return LittleEndian::read(buffer, output.userNum);
+  bool result = true;
+
+  result &= UInt16::read_from(buffer, output.userNum);
+
+  return result;
 }
 
 bool Group120Var4::Write(const Group120Var4& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.userNum);
+  bool result = true;
+
+  result &= UInt16::write_to(buffer, arg.userNum);
+
+  return result;
 }
 
 // ------- Group120Var5 -------

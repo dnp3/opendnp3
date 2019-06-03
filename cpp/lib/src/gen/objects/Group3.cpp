@@ -46,12 +46,20 @@ Group3Var2::Group3Var2() : flags(0)
 
 bool Group3Var2::Read(rseq_t& buffer, Group3Var2& output)
 {
-  return LittleEndian::read(buffer, output.flags);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.flags);
+
+  return result;
 }
 
 bool Group3Var2::Write(const Group3Var2& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.flags);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.flags);
+
+  return result;
 }
 
 bool Group3Var2::ReadTarget(rseq_t& buff, DoubleBitBinary& output)

@@ -46,12 +46,22 @@ Group43Var1::Group43Var1() : status(0), value(0)
 
 bool Group43Var1::Read(rseq_t& buffer, Group43Var1& output)
 {
-  return LittleEndian::read(buffer, output.status, output.value);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.status);
+  result &= Int32::read_from(buffer, output.value);
+
+  return result;
 }
 
 bool Group43Var1::Write(const Group43Var1& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.status, arg.value);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.status);
+  result &= Int32::write_to(buffer, arg.value);
+
+  return result;
 }
 
 bool Group43Var1::ReadTarget(rseq_t& buff, AnalogCommandEvent& output)
@@ -80,12 +90,22 @@ Group43Var2::Group43Var2() : status(0), value(0)
 
 bool Group43Var2::Read(rseq_t& buffer, Group43Var2& output)
 {
-  return LittleEndian::read(buffer, output.status, output.value);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.status);
+  result &= Int16::read_from(buffer, output.value);
+
+  return result;
 }
 
 bool Group43Var2::Write(const Group43Var2& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.status, arg.value);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.status);
+  result &= Int16::write_to(buffer, arg.value);
+
+  return result;
 }
 
 bool Group43Var2::ReadTarget(rseq_t& buff, AnalogCommandEvent& output)
@@ -114,12 +134,26 @@ Group43Var3::Group43Var3() : status(0), value(0), time(0)
 
 bool Group43Var3::Read(rseq_t& buffer, Group43Var3& output)
 {
-  return LittleEndian::read(buffer, output.status, output.value, output.time);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.status);
+  result &= Int32::read_from(buffer, output.value);
+  UInt48Type timeTemp;
+  result &= UInt48::read_from(buffer, timeTemp);
+  output.time = timeTemp.Get();
+
+  return result;
 }
 
 bool Group43Var3::Write(const Group43Var3& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.status, arg.value, arg.time);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.status);
+  result &= Int32::write_to(buffer, arg.value);
+  result &= UInt48::write_to(buffer, UInt48Type(arg.time));
+
+  return result;
 }
 
 bool Group43Var3::ReadTarget(rseq_t& buff, AnalogCommandEvent& output)
@@ -148,12 +182,26 @@ Group43Var4::Group43Var4() : status(0), value(0), time(0)
 
 bool Group43Var4::Read(rseq_t& buffer, Group43Var4& output)
 {
-  return LittleEndian::read(buffer, output.status, output.value, output.time);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.status);
+  result &= Int16::read_from(buffer, output.value);
+  UInt48Type timeTemp;
+  result &= UInt48::read_from(buffer, timeTemp);
+  output.time = timeTemp.Get();
+
+  return result;
 }
 
 bool Group43Var4::Write(const Group43Var4& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.status, arg.value, arg.time);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.status);
+  result &= Int16::write_to(buffer, arg.value);
+  result &= UInt48::write_to(buffer, UInt48Type(arg.time));
+
+  return result;
 }
 
 bool Group43Var4::ReadTarget(rseq_t& buff, AnalogCommandEvent& output)
@@ -182,12 +230,22 @@ Group43Var5::Group43Var5() : status(0), value(0.0)
 
 bool Group43Var5::Read(rseq_t& buffer, Group43Var5& output)
 {
-  return LittleEndian::read(buffer, output.status, output.value);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.status);
+  result &= SingleFloat::read_from(buffer, output.value);
+
+  return result;
 }
 
 bool Group43Var5::Write(const Group43Var5& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.status, arg.value);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.status);
+  result &= SingleFloat::write_to(buffer, arg.value);
+
+  return result;
 }
 
 bool Group43Var5::ReadTarget(rseq_t& buff, AnalogCommandEvent& output)
@@ -216,12 +274,22 @@ Group43Var6::Group43Var6() : status(0), value(0.0)
 
 bool Group43Var6::Read(rseq_t& buffer, Group43Var6& output)
 {
-  return LittleEndian::read(buffer, output.status, output.value);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.status);
+  result &= DoubleFloat::read_from(buffer, output.value);
+
+  return result;
 }
 
 bool Group43Var6::Write(const Group43Var6& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.status, arg.value);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.status);
+  result &= DoubleFloat::write_to(buffer, arg.value);
+
+  return result;
 }
 
 bool Group43Var6::ReadTarget(rseq_t& buff, AnalogCommandEvent& output)
@@ -250,12 +318,26 @@ Group43Var7::Group43Var7() : status(0), value(0.0), time(0)
 
 bool Group43Var7::Read(rseq_t& buffer, Group43Var7& output)
 {
-  return LittleEndian::read(buffer, output.status, output.value, output.time);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.status);
+  result &= SingleFloat::read_from(buffer, output.value);
+  UInt48Type timeTemp;
+  result &= UInt48::read_from(buffer, timeTemp);
+  output.time = timeTemp.Get();
+
+  return result;
 }
 
 bool Group43Var7::Write(const Group43Var7& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.status, arg.value, arg.time);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.status);
+  result &= SingleFloat::write_to(buffer, arg.value);
+  result &= UInt48::write_to(buffer, UInt48Type(arg.time));
+
+  return result;
 }
 
 bool Group43Var7::ReadTarget(rseq_t& buff, AnalogCommandEvent& output)
@@ -284,12 +366,26 @@ Group43Var8::Group43Var8() : status(0), value(0.0), time(0)
 
 bool Group43Var8::Read(rseq_t& buffer, Group43Var8& output)
 {
-  return LittleEndian::read(buffer, output.status, output.value, output.time);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.status);
+  result &= DoubleFloat::read_from(buffer, output.value);
+  UInt48Type timeTemp;
+  result &= UInt48::read_from(buffer, timeTemp);
+  output.time = timeTemp.Get();
+
+  return result;
 }
 
 bool Group43Var8::Write(const Group43Var8& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.status, arg.value, arg.time);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.status);
+  result &= DoubleFloat::write_to(buffer, arg.value);
+  result &= UInt48::write_to(buffer, UInt48Type(arg.time));
+
+  return result;
 }
 
 bool Group43Var8::ReadTarget(rseq_t& buff, AnalogCommandEvent& output)

@@ -46,12 +46,24 @@ Group121Var1::Group121Var1() : flags(0), assocId(0), value(0)
 
 bool Group121Var1::Read(rseq_t& buffer, Group121Var1& output)
 {
-  return LittleEndian::read(buffer, output.flags, output.assocId, output.value);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.flags);
+  result &= UInt16::read_from(buffer, output.assocId);
+  result &= UInt32::read_from(buffer, output.value);
+
+  return result;
 }
 
 bool Group121Var1::Write(const Group121Var1& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.flags, arg.assocId, arg.value);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.flags);
+  result &= UInt16::write_to(buffer, arg.assocId);
+  result &= UInt32::write_to(buffer, arg.value);
+
+  return result;
 }
 
 bool Group121Var1::ReadTarget(rseq_t& buff, SecurityStat& output)

@@ -90,8 +90,8 @@ std::string QueryDiscontiguousBinary(const std::string& request)
     t.LowerLayerUp();
 
     t.Transaction([](IUpdateHandler& db) {
-        db.Update(Binary(true, 0x01), 2, EventMode::Suppress);
-        db.Update(Binary(false, 0x01), 4, EventMode::Suppress);
+        db.Update(Binary(true, Flags(0x01)), 2, EventMode::Suppress);
+        db.Update(Binary(false, Flags(0x01)), 4, EventMode::Suppress);
     });
 
     t.SendToOutstation(request);

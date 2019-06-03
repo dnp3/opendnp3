@@ -46,12 +46,20 @@ Group13Var1::Group13Var1() : flags(0)
 
 bool Group13Var1::Read(rseq_t& buffer, Group13Var1& output)
 {
-  return LittleEndian::read(buffer, output.flags);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.flags);
+
+  return result;
 }
 
 bool Group13Var1::Write(const Group13Var1& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.flags);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.flags);
+
+  return result;
 }
 
 bool Group13Var1::ReadTarget(rseq_t& buff, BinaryCommandEvent& output)
@@ -80,12 +88,24 @@ Group13Var2::Group13Var2() : flags(0), time(0)
 
 bool Group13Var2::Read(rseq_t& buffer, Group13Var2& output)
 {
-  return LittleEndian::read(buffer, output.flags, output.time);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.flags);
+  UInt48Type timeTemp;
+  result &= UInt48::read_from(buffer, timeTemp);
+  output.time = timeTemp.Get();
+
+  return result;
 }
 
 bool Group13Var2::Write(const Group13Var2& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.flags, arg.time);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.flags);
+  result &= UInt48::write_to(buffer, UInt48Type(arg.time));
+
+  return result;
 }
 
 bool Group13Var2::ReadTarget(rseq_t& buff, BinaryCommandEvent& output)

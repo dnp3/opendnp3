@@ -46,12 +46,22 @@ Group30Var1::Group30Var1() : flags(0), value(0)
 
 bool Group30Var1::Read(rseq_t& buffer, Group30Var1& output)
 {
-  return LittleEndian::read(buffer, output.flags, output.value);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.flags);
+  result &= Int32::read_from(buffer, output.value);
+
+  return result;
 }
 
 bool Group30Var1::Write(const Group30Var1& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.flags, arg.value);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.flags);
+  result &= Int32::write_to(buffer, arg.value);
+
+  return result;
 }
 
 bool Group30Var1::ReadTarget(rseq_t& buff, Analog& output)
@@ -80,12 +90,22 @@ Group30Var2::Group30Var2() : flags(0), value(0)
 
 bool Group30Var2::Read(rseq_t& buffer, Group30Var2& output)
 {
-  return LittleEndian::read(buffer, output.flags, output.value);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.flags);
+  result &= Int16::read_from(buffer, output.value);
+
+  return result;
 }
 
 bool Group30Var2::Write(const Group30Var2& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.flags, arg.value);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.flags);
+  result &= Int16::write_to(buffer, arg.value);
+
+  return result;
 }
 
 bool Group30Var2::ReadTarget(rseq_t& buff, Analog& output)
@@ -114,12 +134,20 @@ Group30Var3::Group30Var3() : value(0)
 
 bool Group30Var3::Read(rseq_t& buffer, Group30Var3& output)
 {
-  return LittleEndian::read(buffer, output.value);
+  bool result = true;
+
+  result &= Int32::read_from(buffer, output.value);
+
+  return result;
 }
 
 bool Group30Var3::Write(const Group30Var3& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.value);
+  bool result = true;
+
+  result &= Int32::write_to(buffer, arg.value);
+
+  return result;
 }
 
 bool Group30Var3::ReadTarget(rseq_t& buff, Analog& output)
@@ -148,12 +176,20 @@ Group30Var4::Group30Var4() : value(0)
 
 bool Group30Var4::Read(rseq_t& buffer, Group30Var4& output)
 {
-  return LittleEndian::read(buffer, output.value);
+  bool result = true;
+
+  result &= Int16::read_from(buffer, output.value);
+
+  return result;
 }
 
 bool Group30Var4::Write(const Group30Var4& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.value);
+  bool result = true;
+
+  result &= Int16::write_to(buffer, arg.value);
+
+  return result;
 }
 
 bool Group30Var4::ReadTarget(rseq_t& buff, Analog& output)
@@ -182,12 +218,22 @@ Group30Var5::Group30Var5() : flags(0), value(0.0)
 
 bool Group30Var5::Read(rseq_t& buffer, Group30Var5& output)
 {
-  return LittleEndian::read(buffer, output.flags, output.value);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.flags);
+  result &= SingleFloat::read_from(buffer, output.value);
+
+  return result;
 }
 
 bool Group30Var5::Write(const Group30Var5& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.flags, arg.value);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.flags);
+  result &= SingleFloat::write_to(buffer, arg.value);
+
+  return result;
 }
 
 bool Group30Var5::ReadTarget(rseq_t& buff, Analog& output)
@@ -216,12 +262,22 @@ Group30Var6::Group30Var6() : flags(0), value(0.0)
 
 bool Group30Var6::Read(rseq_t& buffer, Group30Var6& output)
 {
-  return LittleEndian::read(buffer, output.flags, output.value);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.flags);
+  result &= DoubleFloat::read_from(buffer, output.value);
+
+  return result;
 }
 
 bool Group30Var6::Write(const Group30Var6& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.flags, arg.value);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.flags);
+  result &= DoubleFloat::write_to(buffer, arg.value);
+
+  return result;
 }
 
 bool Group30Var6::ReadTarget(rseq_t& buff, Analog& output)

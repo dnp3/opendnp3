@@ -46,12 +46,20 @@ Group2Var1::Group2Var1() : flags(0)
 
 bool Group2Var1::Read(rseq_t& buffer, Group2Var1& output)
 {
-  return LittleEndian::read(buffer, output.flags);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.flags);
+
+  return result;
 }
 
 bool Group2Var1::Write(const Group2Var1& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.flags);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.flags);
+
+  return result;
 }
 
 bool Group2Var1::ReadTarget(rseq_t& buff, Binary& output)
@@ -80,12 +88,24 @@ Group2Var2::Group2Var2() : flags(0), time(0)
 
 bool Group2Var2::Read(rseq_t& buffer, Group2Var2& output)
 {
-  return LittleEndian::read(buffer, output.flags, output.time);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.flags);
+  UInt48Type timeTemp;
+  result &= UInt48::read_from(buffer, timeTemp);
+  output.time = timeTemp.Get();
+
+  return result;
 }
 
 bool Group2Var2::Write(const Group2Var2& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.flags, arg.time);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.flags);
+  result &= UInt48::write_to(buffer, UInt48Type(arg.time));
+
+  return result;
 }
 
 bool Group2Var2::ReadTarget(rseq_t& buff, Binary& output)
@@ -114,12 +134,22 @@ Group2Var3::Group2Var3() : flags(0), time(0)
 
 bool Group2Var3::Read(rseq_t& buffer, Group2Var3& output)
 {
-  return LittleEndian::read(buffer, output.flags, output.time);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.flags);
+  result &= UInt16::read_from(buffer, output.time);
+
+  return result;
 }
 
 bool Group2Var3::Write(const Group2Var3& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.flags, arg.time);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.flags);
+  result &= UInt16::write_to(buffer, arg.time);
+
+  return result;
 }
 
 bool Group2Var3::ReadTarget(rseq_t& buff, Binary& output)

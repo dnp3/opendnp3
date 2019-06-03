@@ -46,12 +46,20 @@ Group10Var2::Group10Var2() : flags(0)
 
 bool Group10Var2::Read(rseq_t& buffer, Group10Var2& output)
 {
-  return LittleEndian::read(buffer, output.flags);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.flags);
+
+  return result;
 }
 
 bool Group10Var2::Write(const Group10Var2& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.flags);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.flags);
+
+  return result;
 }
 
 bool Group10Var2::ReadTarget(rseq_t& buff, BinaryOutputStatus& output)

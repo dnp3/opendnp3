@@ -46,12 +46,22 @@ Group22Var1::Group22Var1() : flags(0), value(0)
 
 bool Group22Var1::Read(rseq_t& buffer, Group22Var1& output)
 {
-  return LittleEndian::read(buffer, output.flags, output.value);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.flags);
+  result &= UInt32::read_from(buffer, output.value);
+
+  return result;
 }
 
 bool Group22Var1::Write(const Group22Var1& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.flags, arg.value);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.flags);
+  result &= UInt32::write_to(buffer, arg.value);
+
+  return result;
 }
 
 bool Group22Var1::ReadTarget(rseq_t& buff, Counter& output)
@@ -80,12 +90,22 @@ Group22Var2::Group22Var2() : flags(0), value(0)
 
 bool Group22Var2::Read(rseq_t& buffer, Group22Var2& output)
 {
-  return LittleEndian::read(buffer, output.flags, output.value);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.flags);
+  result &= UInt16::read_from(buffer, output.value);
+
+  return result;
 }
 
 bool Group22Var2::Write(const Group22Var2& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.flags, arg.value);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.flags);
+  result &= UInt16::write_to(buffer, arg.value);
+
+  return result;
 }
 
 bool Group22Var2::ReadTarget(rseq_t& buff, Counter& output)
@@ -114,12 +134,26 @@ Group22Var5::Group22Var5() : flags(0), value(0), time(0)
 
 bool Group22Var5::Read(rseq_t& buffer, Group22Var5& output)
 {
-  return LittleEndian::read(buffer, output.flags, output.value, output.time);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.flags);
+  result &= UInt32::read_from(buffer, output.value);
+  UInt48Type timeTemp;
+  result &= UInt48::read_from(buffer, timeTemp);
+  output.time = timeTemp.Get();
+
+  return result;
 }
 
 bool Group22Var5::Write(const Group22Var5& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.flags, arg.value, arg.time);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.flags);
+  result &= UInt32::write_to(buffer, arg.value);
+  result &= UInt48::write_to(buffer, UInt48Type(arg.time));
+
+  return result;
 }
 
 bool Group22Var5::ReadTarget(rseq_t& buff, Counter& output)
@@ -148,12 +182,26 @@ Group22Var6::Group22Var6() : flags(0), value(0), time(0)
 
 bool Group22Var6::Read(rseq_t& buffer, Group22Var6& output)
 {
-  return LittleEndian::read(buffer, output.flags, output.value, output.time);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.flags);
+  result &= UInt16::read_from(buffer, output.value);
+  UInt48Type timeTemp;
+  result &= UInt48::read_from(buffer, timeTemp);
+  output.time = timeTemp.Get();
+
+  return result;
 }
 
 bool Group22Var6::Write(const Group22Var6& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.flags, arg.value, arg.time);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.flags);
+  result &= UInt16::write_to(buffer, arg.value);
+  result &= UInt48::write_to(buffer, UInt48Type(arg.time));
+
+  return result;
 }
 
 bool Group22Var6::ReadTarget(rseq_t& buff, Counter& output)

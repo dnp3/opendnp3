@@ -71,11 +71,11 @@ object FixedSizeGenerator {
     }
 
     def readFunction: Iterator[String] = readSignature ++ bracket {
-      Iterator("return LittleEndian::read(buffer, %s);".format(fieldParams("output")))
+      FixedSizeHelpers.fixedReads(x.fields, true, "buffer", "output.")
     }
 
     def writeFunction: Iterator[String] = writeSignature ++ bracket {
-      Iterator("return LittleEndian::write(buffer, %s);".format(fieldParams("arg")))
+      FixedSizeHelpers.fixedWrites(x.fields, true, "buffer", "arg.")
     }
 
     def defaultConstructor: Iterator[String] = defaultConstructorSignature

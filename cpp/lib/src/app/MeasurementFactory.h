@@ -45,7 +45,7 @@ struct BinaryFactory : private StaticOnly
 
     inline static Binary From(uint8_t flags, DNPTime time)
     {
-        return Binary(flags, time);
+        return Binary(Flags(flags), time);
     }
 };
 

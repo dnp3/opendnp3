@@ -58,7 +58,7 @@ template<class Source, class Target>
 const Target DownSampling<Source, Target>::TARGET_MAX(std::numeric_limits<Target>::max());
 
 template<class Source, class Target>
-const Target DownSampling<Source, Target>::TARGET_MIN(std::numeric_limits<Target>::min());
+const Target DownSampling<Source, Target>::TARGET_MIN(std::numeric_limits<Target>::lowest());
 
 } // namespace opendnp3
 

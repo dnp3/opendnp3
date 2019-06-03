@@ -44,12 +44,22 @@ Group51Var1::Group51Var1() : time(0)
 
 bool Group51Var1::Read(rseq_t& buffer, Group51Var1& output)
 {
-  return LittleEndian::read(buffer, output.time);
+  bool result = true;
+
+  UInt48Type timeTemp;
+  result &= UInt48::read_from(buffer, timeTemp);
+  output.time = timeTemp.Get();
+
+  return result;
 }
 
 bool Group51Var1::Write(const Group51Var1& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.time);
+  bool result = true;
+
+  result &= UInt48::write_to(buffer, UInt48Type(arg.time));
+
+  return result;
 }
 
 // ------- Group51Var2 -------
@@ -59,12 +69,22 @@ Group51Var2::Group51Var2() : time(0)
 
 bool Group51Var2::Read(rseq_t& buffer, Group51Var2& output)
 {
-  return LittleEndian::read(buffer, output.time);
+  bool result = true;
+
+  UInt48Type timeTemp;
+  result &= UInt48::read_from(buffer, timeTemp);
+  output.time = timeTemp.Get();
+
+  return result;
 }
 
 bool Group51Var2::Write(const Group51Var2& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.time);
+  bool result = true;
+
+  result &= UInt48::write_to(buffer, UInt48Type(arg.time));
+
+  return result;
 }
 
 

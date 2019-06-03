@@ -81,7 +81,7 @@ TEST_CASE(SUITE("SolicitedResponseWithData"))
     t.context->OnTxReady();
     t.SendToMaster("C0 81 00 00 01 02 00 02 02 81"); // group 2 var 1, index = 2, 0x81 = Online, true
     REQUIRE(t.meas->TotalReceived() == 1);
-    REQUIRE((Binary(true, 0x01) == t.meas->binarySOE[2].meas));
+    REQUIRE((Binary(true, Flags(0x01)) == t.meas->binarySOE[2].meas));
 }
 
 TEST_CASE(SUITE("UnsolDisableEnableOnStartup"))
@@ -182,20 +182,20 @@ TEST_CASE(SUITE("Retries use exponential backoff"))
 
     // advance to the retry
     REQUIRE(t.exe->advance_to_next_timer());
-    REQUIRE(t.exe->get_time() - startTime == std::chrono::milliseconds(1000));
+    REQUIRE(t.exe->get_time() - startTime == std::chrono::milliseconds(10000));
     REQUIRE(t.exe->run_many() > 0);
     REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(1));
     t.context->OnTxReady();
 
     // time out the response
     REQUIRE(t.exe->advance_to_next_timer());
-    REQUIRE(t.exe->get_time() - startTime == std::chrono::milliseconds(1500));
+    REQUIRE(t.exe->get_time() - startTime == std::chrono::milliseconds(15000));
     REQUIRE(t.exe->run_many() > 0);
     REQUIRE(t.lower->PopWriteAsHex().empty());
 
     // advance to the retry
     REQUIRE(t.exe->advance_to_next_timer());
-    REQUIRE(t.exe->get_time() - startTime == std::chrono::milliseconds(2500)); // this time the retry doubles to 10 seconds
+    REQUIRE(t.exe->get_time() - startTime == std::chrono::milliseconds(25000)); // this time the retry doubles to 10 seconds
     REQUIRE(t.exe->run_many() > 0);
     REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(2));
     t.context->OnTxReady();
@@ -275,11 +275,11 @@ TEST_CASE(SUITE("SolicitedMultiFragResponse"))
     t.context->OnTxReady();
     t.SendToMaster("80 81 00 00 01 02 00 02 02 81"); // partial response FIR = 1, FIN = 0
     REQUIRE(1 == t.meas->TotalReceived());
-    REQUIRE((Binary(true, 0x01) == t.meas->binarySOE[2].meas));
+    REQUIRE((Binary(true, Flags(0x01)) == t.meas->binarySOE[2].meas));
     REQUIRE(0 == t.lower->NumWrites());
     t.SendToMaster("41 81 00 00 01 02 00 03 03 02"); // final response FIR = 0, FIN = 1
     REQUIRE(2 == t.meas->TotalReceived());
-    REQUIRE((Binary(false, 0x02) == t.meas->binarySOE[3].meas));
+    REQUIRE((Binary(false, Flags(0x02)) == t.meas->binarySOE[3].meas));
 }
 
 TEST_CASE(SUITE("EventPoll"))
@@ -299,7 +299,7 @@ TEST_CASE(SUITE("EventPoll"))
     t.SendToMaster("C0 81 00 00 02 01 17 01 02 81"); // group 2 var 1, index = 2, 0x81 = Online, true
 
     REQUIRE(t.meas->TotalReceived() == 1);
-    REQUIRE((Binary(true, 0x01) == t.meas->binarySOE[2].meas));
+    REQUIRE((Binary(true, Flags(0x01)) == t.meas->binarySOE[2].meas));
 
     REQUIRE(t.exe->run_many() > 0);
 
@@ -308,7 +308,7 @@ TEST_CASE(SUITE("EventPoll"))
     t.SendToMaster("C1 81 00 00 02 01 17 01 03 01"); // group 2 var 1, index = 3, 0x81 = Online, true
 
     REQUIRE(t.meas->TotalReceived() == 2);
-    REQUIRE((Binary(false, 0x01) == t.meas->binarySOE[3].meas));
+    REQUIRE((Binary(false, Flags(0x01)) == t.meas->binarySOE[3].meas));
 }
 
 TEST_CASE(SUITE("ParsesOctetStringResponseWithFiveCharacters"))
@@ -715,5 +715,5 @@ TEST_CASE(SUITE("Warm restart fails with empty response"))
 
     REQUIRE(queue.responses.size() == 1);
     REQUIRE(queue.responses[0].summary == TaskCompletion::SUCCESS);
-    REQUIRE(queue.responses[0].restartTime == TimeDuration::Milliseconds(0xBBBB * 1000));
+    REQUIRE(queue.responses[0].restartTime == TimeDuration::Milliseconds(0xBBBB));
 }

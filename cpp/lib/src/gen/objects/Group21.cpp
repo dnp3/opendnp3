@@ -46,12 +46,22 @@ Group21Var1::Group21Var1() : flags(0), value(0)
 
 bool Group21Var1::Read(rseq_t& buffer, Group21Var1& output)
 {
-  return LittleEndian::read(buffer, output.flags, output.value);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.flags);
+  result &= UInt32::read_from(buffer, output.value);
+
+  return result;
 }
 
 bool Group21Var1::Write(const Group21Var1& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.flags, arg.value);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.flags);
+  result &= UInt32::write_to(buffer, arg.value);
+
+  return result;
 }
 
 bool Group21Var1::ReadTarget(rseq_t& buff, FrozenCounter& output)
@@ -80,12 +90,22 @@ Group21Var2::Group21Var2() : flags(0), value(0)
 
 bool Group21Var2::Read(rseq_t& buffer, Group21Var2& output)
 {
-  return LittleEndian::read(buffer, output.flags, output.value);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.flags);
+  result &= UInt16::read_from(buffer, output.value);
+
+  return result;
 }
 
 bool Group21Var2::Write(const Group21Var2& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.flags, arg.value);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.flags);
+  result &= UInt16::write_to(buffer, arg.value);
+
+  return result;
 }
 
 bool Group21Var2::ReadTarget(rseq_t& buff, FrozenCounter& output)
@@ -114,12 +134,26 @@ Group21Var5::Group21Var5() : flags(0), value(0), time(0)
 
 bool Group21Var5::Read(rseq_t& buffer, Group21Var5& output)
 {
-  return LittleEndian::read(buffer, output.flags, output.value, output.time);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.flags);
+  result &= UInt32::read_from(buffer, output.value);
+  UInt48Type timeTemp;
+  result &= UInt48::read_from(buffer, timeTemp);
+  output.time = timeTemp.Get();
+
+  return result;
 }
 
 bool Group21Var5::Write(const Group21Var5& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.flags, arg.value, arg.time);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.flags);
+  result &= UInt32::write_to(buffer, arg.value);
+  result &= UInt48::write_to(buffer, UInt48Type(arg.time));
+
+  return result;
 }
 
 bool Group21Var5::ReadTarget(rseq_t& buff, FrozenCounter& output)
@@ -148,12 +182,26 @@ Group21Var6::Group21Var6() : flags(0), value(0), time(0)
 
 bool Group21Var6::Read(rseq_t& buffer, Group21Var6& output)
 {
-  return LittleEndian::read(buffer, output.flags, output.value, output.time);
+  bool result = true;
+
+  result &= UInt8::read_from(buffer, output.flags);
+  result &= UInt16::read_from(buffer, output.value);
+  UInt48Type timeTemp;
+  result &= UInt48::read_from(buffer, timeTemp);
+  output.time = timeTemp.Get();
+
+  return result;
 }
 
 bool Group21Var6::Write(const Group21Var6& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.flags, arg.value, arg.time);
+  bool result = true;
+
+  result &= UInt8::write_to(buffer, arg.flags);
+  result &= UInt16::write_to(buffer, arg.value);
+  result &= UInt48::write_to(buffer, UInt48Type(arg.time));
+
+  return result;
 }
 
 bool Group21Var6::ReadTarget(rseq_t& buff, FrozenCounter& output)
@@ -182,12 +230,20 @@ Group21Var9::Group21Var9() : value(0)
 
 bool Group21Var9::Read(rseq_t& buffer, Group21Var9& output)
 {
-  return LittleEndian::read(buffer, output.value);
+  bool result = true;
+
+  result &= UInt32::read_from(buffer, output.value);
+
+  return result;
 }
 
 bool Group21Var9::Write(const Group21Var9& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.value);
+  bool result = true;
+
+  result &= UInt32::write_to(buffer, arg.value);
+
+  return result;
 }
 
 bool Group21Var9::ReadTarget(rseq_t& buff, FrozenCounter& output)
@@ -216,12 +272,20 @@ Group21Var10::Group21Var10() : value(0)
 
 bool Group21Var10::Read(rseq_t& buffer, Group21Var10& output)
 {
-  return LittleEndian::read(buffer, output.value);
+  bool result = true;
+
+  result &= UInt16::read_from(buffer, output.value);
+
+  return result;
 }
 
 bool Group21Var10::Write(const Group21Var10& arg, ser4cpp::wseq_t& buffer)
 {
-  return LittleEndian::write(buffer, arg.value);
+  bool result = true;
+
+  result &= UInt16::write_to(buffer, arg.value);
+
+  return result;
 }
 
 bool Group21Var10::ReadTarget(rseq_t& buff, FrozenCounter& output)
