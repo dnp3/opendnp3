@@ -17,23 +17,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "mocks/DNPHelpers.h"
+#include "utils/DNPHelpers.h"
 
-#include <openpal/container/Buffer.h>
-#include <openpal/util/ToHex.h>
+#include <ser4cpp/container/Buffer.h>
+#include <ser4cpp/util/HexConversions.h>
 
-#include <opendnp3/link/CRC.h>
-#include <opendnp3/link/LinkFrame.h>
-#include <opendnp3/link/LinkHeader.h>
+#include <link/CRC.h>
+#include <link/LinkFrame.h>
+#include <link/LinkHeader.h>
 
-#include <testlib/BufferHelpers.h>
-#include <testlib/HexConversions.h>
+#include "utils/BufferHelpers.h"
 
 #include <catch.hpp>
 
-using namespace testlib;
 using namespace opendnp3;
-using namespace openpal;
+using namespace ser4cpp;
 
 std::string FormatUserData(
     bool aIsMaster, bool aIsConfirmed, int aDest, int aSrc, const std::string& data, bool aFcb = false)
@@ -42,14 +40,14 @@ std::string FormatUserData(
     REQUIRE(hs.Size() < 250);
 
     uint8_t buffer[292];
-    WSlice wrapper(buffer, 292);
+    wseq_t wrapper(buffer, 292);
 
     if (aIsConfirmed)
     {
-        return ToHex(LinkFrame::FormatConfirmedUserData(wrapper, aIsMaster, aFcb, aDest, aSrc, hs, hs.Size(), nullptr));
+        return HexConversions::to_hex(LinkFrame::FormatConfirmedUserData(wrapper, aIsMaster, aFcb, aDest, aSrc, hs, hs.Size(), nullptr));
     }
 
-    return ToHex(LinkFrame::FormatUnconfirmedUserData(wrapper, aIsMaster, aDest, aSrc, hs, hs.Size(), nullptr));
+    return HexConversions::to_hex(LinkFrame::FormatUnconfirmedUserData(wrapper, aIsMaster, aDest, aSrc, hs, hs.Size(), nullptr));
 }
 
 #define SUITE(name) "DNPLinkFrame - " name
@@ -70,9 +68,9 @@ TEST_CASE(SUITE("ResetLinks"))
     Buffer buffer(292);
 
     // ResetLinkStates - Master
-    auto write = buffer.GetWSlice();
+    auto write = buffer.as_wslice();
     auto wrapper = LinkFrame::FormatResetLinkStates(write, true, 1, 1024, nullptr);
-    REQUIRE(ToHex(wrapper) == "05 64 05 C0 01 00 00 04 E9 21");
+    REQUIRE(HexConversions::to_hex(wrapper) == "05 64 05 C0 01 00 00 04 E9 21");
 }
 
 TEST_CASE(SUITE("RequestLinkStates"))
@@ -80,9 +78,9 @@ TEST_CASE(SUITE("RequestLinkStates"))
     Buffer buffer(292);
 
     // ResetLinkStates - Master
-    auto write = buffer.GetWSlice();
+    auto write = buffer.as_wslice();
     auto wrapper = LinkFrame::FormatRequestLinkStatus(write, false, 1, 1024, nullptr);
-    REQUIRE(ToHex(wrapper) == "05 64 05 49 01 00 00 04 D2 36");
+    REQUIRE(HexConversions::to_hex(wrapper) == "05 64 05 49 01 00 00 04 D2 36");
 }
 
 TEST_CASE(SUITE("ACK"))
@@ -91,30 +89,30 @@ TEST_CASE(SUITE("ACK"))
 
     {
         // ACK - Outstation (DFC = false)
-        auto writeTo = buffer.GetWSlice();
+        auto writeTo = buffer.as_wslice();
         auto wrapper = LinkFrame::FormatAck(writeTo, false, false, 1024, 1, nullptr);
-        REQUIRE(ToHex(wrapper) == "05 64 05 00 00 04 01 00 19 A6"); // ACK - Outstation
+        REQUIRE(HexConversions::to_hex(wrapper) == "05 64 05 00 00 04 01 00 19 A6"); // ACK - Outstation
     }
 
     {
         // ACK - Outstation (DFC = true)
-        auto writeTo = buffer.GetWSlice();
+        auto writeTo = buffer.as_wslice();
         auto wrapper = LinkFrame::FormatAck(writeTo, false, true, 1024, 1, nullptr);
-        REQUIRE(ToHex(wrapper) == "05 64 05 10 00 04 01 00 8B 0C"); // ACK - Outstation (with DFC set)
+        REQUIRE(HexConversions::to_hex(wrapper) == "05 64 05 10 00 04 01 00 8B 0C"); // ACK - Outstation (with DFC set)
     }
 
     {
         // ACK - Master (DFC = false)
-        auto writeTo = buffer.GetWSlice();
+        auto writeTo = buffer.as_wslice();
         auto wrapper = LinkFrame::FormatAck(writeTo, true, false, 1, 1024, nullptr);
-        REQUIRE(ToHex(wrapper) == "05 64 05 80 01 00 00 04 53 11");
+        REQUIRE(HexConversions::to_hex(wrapper) == "05 64 05 80 01 00 00 04 53 11");
     }
 
     {
         // ACK - Master (DFC = true)
-        auto writeTo = buffer.GetWSlice();
+        auto writeTo = buffer.as_wslice();
         auto wrapper = LinkFrame::FormatAck(writeTo, true, true, 1, 1024, nullptr);
-        REQUIRE(ToHex(wrapper) == "05 64 05 90 01 00 00 04 C1 BB");
+        REQUIRE(HexConversions::to_hex(wrapper) == "05 64 05 90 01 00 00 04 C1 BB");
     }
 }
 
@@ -143,9 +141,9 @@ TEST_CASE(SUITE("ResetLinkStates"))
     Buffer buffer(292);
 
     // Reset Link States - Outstation
-    auto writeTo = buffer.GetWSlice();
+    auto writeTo = buffer.as_wslice();
     auto wrapper = LinkFrame::FormatResetLinkStates(writeTo, false, 1024, 1, nullptr);
-    REQUIRE(ToHex(wrapper) == "05 64 05 40 00 04 01 00 A3 96");
+    REQUIRE(HexConversions::to_hex(wrapper) == "05 64 05 40 00 04 01 00 A3 96");
 }
 
 TEST_CASE(SUITE("UnconfirmedUserData"))
@@ -167,10 +165,10 @@ TEST_CASE(SUITE("LinkStatus"))
     Buffer buffer(292);
 
     // LinkStatus - Master (DFC = true)
-    auto writeTo = buffer.GetWSlice();
+    auto writeTo = buffer.as_wslice();
     auto wrapper = LinkFrame::FormatLinkStatus(writeTo, true, true, 1, 1024, nullptr);
     // take a length 10 frame, set the control to 9B and repair the CRC
-    REQUIRE(ToHex(wrapper) == RepairCRC("05 64 05 9B 01 00 00 04 E9 21"));
+    REQUIRE(HexConversions::to_hex(wrapper) == RepairCRC("05 64 05 9B 01 00 00 04 E9 21"));
 }
 
 TEST_CASE(SUITE("NotSupported"))
@@ -178,7 +176,7 @@ TEST_CASE(SUITE("NotSupported"))
     Buffer buffer(292);
 
     // Not Supported - Outstation (DFC = true)
-    auto writeTo = buffer.GetWSlice();
+    auto writeTo = buffer.as_wslice();
     auto wrapper = LinkFrame::FormatNotSupported(writeTo, false, true, 1, 1024, nullptr);
-    REQUIRE(ToHex(wrapper) == RepairCRC("05 64 05 1F 01 00 00 04 28 5A"));
+    REQUIRE(HexConversions::to_hex(wrapper) == RepairCRC("05 64 05 1F 01 00 00 04 28 5A"));
 }

@@ -1,12 +1,21 @@
 set(unittests_mocks
-    ./mocks/MeasurementComparisons.h
     ./mocks/MockAPDUHeaderHandler.h
     ./mocks/MockEventWriteHandler.h
+    ./mocks/MockFrameSink.h
+    ./mocks/MockLinkListener.h
     ./mocks/MockLogHandler.h
+    ./mocks/MockTransportLayer.h
+    ./mocks/MockTransportSegment.h
 
     ./utils/APDUHelpers.h
     ./utils/BufferHelpers.h
     ./utils/CopyableBuffer.h
+    ./utils/DataSink.h
+    ./utils/DNPHelpers.h
+    ./utils/LinkHex.h
+    ./utils/LinkLayerTest.h
+    ./utils/LinkParserTest.h
+    ./utils/MeasurementComparisons.h
 )
 
 set(unittests_src
@@ -23,13 +32,13 @@ set(unittests_src
     ./TestGroup120Var1.cpp
     ./TestGroup120Var2.cpp
     ./TestGroup120Var5.cpp
-#[[    ./TestIndexSearch.cpp
+    ./TestIndexSearch.cpp
+    ./TestLinkAddresses.cpp
     ./TestLinkFrame.cpp
     ./TestLinkLayer.cpp
     ./TestLinkLayerKeepAlive.cpp
     ./TestLinkReceiver.cpp
-    ./TestLinkRoute.cpp
-    ./TestList.cpp
+#[[    ./TestList.cpp
     ./TestLog.cpp
     ./TestMaster.cpp
     ./TestMasterAssignClass.cpp
@@ -53,11 +62,18 @@ set(unittests_src
     ./TestWriteConversions.cpp
 ]]
 
+    ./mocks/MockFrameSink.cpp
     ./mocks/MockLogHandler.cpp
+    ./mocks/MockTransportLayer.cpp
+    ./mocks/MockTransportSegment.cpp
 
     ./utils/APDUHelpers.cpp
     ./utils/BufferHelpers.cpp
     ./utils/CopyableBuffer.cpp
+    ./utils/DataSink.cpp
+    ./utils/DNPHelpers.cpp
+    ./utils/LinkHex.cpp
+    ./utils/LinkLayerTest.cpp
 )
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}

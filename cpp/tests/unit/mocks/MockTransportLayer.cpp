@@ -17,21 +17,51 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <opendnp3/Route.h>
+#include "mocks/MockTransportLayer.h"
 
-#include <catch.hpp>
+#include <ser4cpp/util/HexConversions.h>
 
-using namespace std;
+#include "utils/BufferHelpers.h"
+
 using namespace opendnp3;
+using namespace ser4cpp;
 
-#define SUITE(name) "LinkRouteSuite - " name
+MockTransportLayer::MockTransportLayer() : pLinkLayer(nullptr), isOnline(false) {}
 
-TEST_CASE(SUITE("LinkRouteEqualityComparison"))
+void MockTransportLayer::SetLinkLayer(ILinkLayer& linkLayer)
 {
-    Route lr1(1, 2);
-    Route lr2(1, 3);
-    Route lr3(1, 3);
+    this->pLinkLayer = &linkLayer;
+}
 
-    REQUIRE(!(lr1.Equals(lr2)));
-    REQUIRE(lr3.Equals(lr2));
+bool MockTransportLayer::SendDown(ITransportSegment& segments)
+{
+    return pLinkLayer->Send(segments);
+}
+
+bool MockTransportLayer::OnReceive(const Message& message)
+{
+    receivedQueue.push_back(HexConversions::to_hex(message.payload));
+    return true;
+}
+
+bool MockTransportLayer::OnTxReady()
+{
+    ++(this->counters.numTxReady);
+    return true;
+}
+
+bool MockTransportLayer::OnLowerLayerUp()
+{
+    assert(!isOnline);
+    isOnline = true;
+    ++counters.numLayerUp;
+    return true;
+}
+
+bool MockTransportLayer::OnLowerLayerDown()
+{
+    assert(isOnline);
+    isOnline = false;
+    ++counters.numLayerDown;
+    return true;
 }

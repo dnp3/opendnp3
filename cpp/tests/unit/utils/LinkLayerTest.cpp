@@ -17,20 +17,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "LinkLayerTest.h"
+#include "utils/LinkLayerTest.h"
 
-#include <testlib/HexConversions.h>
+#include <ser4cpp/util/HexConversions.h>
 
-using namespace testlib;
-using namespace openpal;
-
-namespace opendnp3
-{
+using namespace opendnp3;
+using namespace ser4cpp;
 
 LinkLayerTest::LinkLayerTest(const LinkConfig& config) : LinkLayerTest(LinkLayerConfig(config, false)) {}
 
 LinkLayerTest::LinkLayerTest(const LinkLayerConfig& config)
-    : exe(std::make_shared<testlib::MockExecutor>()),
+    : exe(std::make_shared<exe4cpp::MockExecutor>()),
       listener(std::make_shared<MockLinkListener>()),
       upper(std::make_shared<MockTransportLayer>()),
       link(log.logger, exe, upper, listener, config),
@@ -46,7 +43,7 @@ bool LinkLayerTest::OnFrame(LinkFunction func,
                             bool fcvdfc,
                             uint16_t dest,
                             uint16_t source,
-                            const openpal::RSlice& userdata)
+                            const ser4cpp::rseq_t& userdata)
 {
     LinkHeaderFields fields(func, isMaster, fcb, fcvdfc, dest, source);
     return link.OnFrame(fields, userdata);
@@ -74,15 +71,13 @@ uint32_t LinkLayerTest::NumTotalWrites()
     return numTotalWrites;
 }
 
-void LinkLayerTest::BeginTransmit(const openpal::RSlice& buffer, ILinkSession& /*context*/)
+void LinkLayerTest::BeginTransmit(const ser4cpp::rseq_t& buffer, ILinkSession& /*context*/)
 {
     ++numTotalWrites;
-    this->writeQueue.push_back(ToHex(buffer));
+    this->writeQueue.push_back(HexConversions::to_hex(buffer));
 }
 
 LinkLayerConfig LinkLayerTest::DefaultConfig()
 {
     return LinkLayerConfig(LinkConfig(true, false), false);
 }
-
-} // namespace opendnp3

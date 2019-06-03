@@ -17,12 +17,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "MockFrameSink.h"
+#include "mocks/MockFrameSink.h"
 
-using namespace openpal;
-
-namespace opendnp3
-{
+using namespace opendnp3;
+using namespace ser4cpp;
 
 MockFrameSink::MockFrameSink() : m_num_frames(0), mLowerOnline(false) {}
 
@@ -65,13 +63,13 @@ bool MockFrameSink::OnTxReady()
     return true;
 }
 
-bool MockFrameSink::OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata)
+bool MockFrameSink::OnFrame(const LinkHeaderFields& header, const rseq_t& userdata)
 {
     ++m_num_frames;
 
     this->m_last_header = header;
 
-    if (userdata.IsNotEmpty())
+    if (userdata.is_not_empty())
     {
         this->received.Write(userdata);
     }
@@ -93,5 +91,3 @@ void MockFrameSink::ExecuteAction()
         f();
     }
 }
-
-} // namespace opendnp3

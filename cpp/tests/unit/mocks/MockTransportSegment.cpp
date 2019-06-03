@@ -17,56 +17,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "mocks/MockTransportSegment.h"
 
-#include "DataSink.h"
+#include <ser4cpp/util/HexConversions.h>
 
-#include <openpal/util/ToHex.h>
-
-#include <testlib/BufferHelpers.h>
-#include <testlib/HexConversions.h>
-
+#include <algorithm>
+#include <cassert>
+#include <exception>
+#include <sstream>
 #include <memory>
-#include <stdexcept>
 
-using namespace openpal;
+using namespace std;
+using namespace opendnp3;
+using namespace ser4cpp;
 
-namespace opendnp3
+MockTransportSegment::MockTransportSegment(uint32_t segmentSize, const std::string& hex, const Addresses& addresses)
+    : addresses(addresses), segmentSize(segmentSize), hs(hex), remainder(hs.ToRSeq())
 {
-
-void DataSink::Write(const RSlice& data)
-{
-    for (size_t i = 0; i < data.Size(); ++i)
-    {
-        this->buffer.push_back(data[i]);
-    }
+    assert(segmentSize > 0);
 }
 
-void DataSink::Clear()
+void MockTransportSegment::Reset()
 {
-    buffer.clear();
+    remainder = hs.ToRSeq();
 }
 
-bool DataSink::Equals(const openpal::RSlice& data) const
+bool MockTransportSegment::HasValue() const
 {
-    if (data.Size() != this->buffer.size())
-        return false;
-
-    for (size_t i = 0; i < this->buffer.size(); i++)
-    {
-        if (data[i] != this->buffer[i])
-        {
-            return false;
-        }
-    }
-    return true;
+    return remainder.length() > 0;
 }
 
-std::string DataSink::AsHex(bool spaced) const
+ser4cpp::rseq_t MockTransportSegment::GetSegment()
 {
-    testlib::CopyableBuffer temp(static_cast<uint32_t>(this->buffer.size()));
-    for (size_t i = 0; i < this->buffer.size(); ++i)
-        temp[i] = this->buffer[i];
-    return testlib::ToHex(temp.ToRSlice(), spaced);
+    auto size = std::min(segmentSize, remainder.length());
+    auto chunk = remainder.take(size);
+    return chunk;
 }
 
-} // namespace opendnp3
+bool MockTransportSegment::Advance()
+{
+    auto size = std::min(segmentSize, remainder.length());
+    remainder.advance(size);
+    return remainder.is_not_empty();
+}

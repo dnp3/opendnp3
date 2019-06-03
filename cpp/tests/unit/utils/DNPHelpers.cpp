@@ -17,22 +17,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "DNPHelpers.h"
+#include "utils/DNPHelpers.h"
 
-#include <openpal/util/ToHex.h>
+#include <ser4cpp/util/HexConversions.h>
 
-#include <opendnp3/link/CRC.h>
-#include <opendnp3/link/LinkFrame.h>
+#include <link/CRC.h>
+#include <link/LinkFrame.h>
 
-#include <testlib/BufferHelpers.h>
-#include <testlib/HexConversions.h>
+#include "utils/BufferHelpers.h"
 
 #include <catch.hpp>
 
-using namespace testlib;
-
-namespace opendnp3
-{
+using namespace opendnp3;
+using namespace ser4cpp;
 
 std::string RepairCRC(const std::string& arData)
 {
@@ -68,7 +65,5 @@ std::string RepairCRC(const std::string& arData)
     if (partial_size > 0)
         CRC::AddCrc(ptr, partial_size - 2);
 
-    return testlib::ToHex(hs.ToRSlice(), true);
+    return HexConversions::to_hex(hs.ToRSeq(), true);
 }
-
-} // namespace opendnp3

@@ -17,22 +17,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_MOCKFRAMESINK_H
-#define OPENDNP3_MOCKFRAMESINK_H
+#ifndef OPENDNP3_UNITTESTS_MOCKFRAMESINK_H
+#define OPENDNP3_UNITTESTS_MOCKFRAMESINK_H
 
-#include "DataSink.h"
+#include "utils/DataSink.h"
 
 #include <opendnp3/gen/LinkFunction.h>
-#include <opendnp3/link/ILinkSession.h>
-#include <opendnp3/link/LinkLayerConstants.h>
+#include <link/ILinkSession.h>
+#include <link/LinkLayerConstants.h>
 
 #include <functional>
 #include <queue>
 
-namespace opendnp3
-{
-
-class MockFrameSink : public ILinkSession
+class MockFrameSink : public opendnp3::ILinkSession
 {
 public:
     MockFrameSink();
@@ -42,17 +39,17 @@ public:
     bool OnLowerLayerDown() override;
     bool OnTxReady() override;
 
-    virtual bool OnFrame(const LinkHeaderFields& header, const openpal::RSlice& userdata) override final;
+    bool OnFrame(const opendnp3::LinkHeaderFields& header, const ser4cpp::rseq_t& userdata) final;
 
     void Reset();
 
-    bool CheckLast(LinkFunction func, bool aIsMaster, uint16_t aDest, uint16_t aSrc);
-    bool CheckLastWithFCB(LinkFunction func, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc);
-    bool CheckLastWithDFC(LinkFunction func, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
+    bool CheckLast(opendnp3::LinkFunction func, bool aIsMaster, uint16_t aDest, uint16_t aSrc);
+    bool CheckLastWithFCB(opendnp3::LinkFunction func, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc);
+    bool CheckLastWithDFC(opendnp3::LinkFunction func, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
 
     // Last frame information
     size_t m_num_frames;
-    LinkHeaderFields m_last_header;
+    opendnp3::LinkHeaderFields m_last_header;
 
     bool mLowerOnline;
 
@@ -68,9 +65,7 @@ private:
 
     std::deque<std::function<void()>> m_actions;
 
-    void Update(LinkFunction aCode, bool aIsMaster, uint16_t aSrc, uint16_t aDest);
+    void Update(opendnp3::LinkFunction aCode, bool aIsMaster, uint16_t aSrc, uint16_t aDest);
 };
-
-} // namespace opendnp3
 
 #endif

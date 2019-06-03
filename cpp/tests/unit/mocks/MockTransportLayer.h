@@ -17,19 +17,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef __MOCK_LINK_LAYER_USER_H_
-#define __MOCK_LINK_LAYER_USER_H_
+#ifndef OPENDNP3_UNITTESTS_MOCK_LINK_LAYER_USER_H
+#define OPENDNP3_UNITTESTS_MOCK_LINK_LAYER_USER_H
 
-#include <opendnp3/LayerInterfaces.h>
-#include <opendnp3/link/ILinkLayer.h>
+#include <LayerInterfaces.h>
+#include <link/ILinkLayer.h>
 
 #include <deque>
 #include <string>
 
-namespace opendnp3
-{
-
-class MockTransportLayer final : public IUpperLayer
+class MockTransportLayer final : public opendnp3::IUpperLayer
 {
 
 public:
@@ -42,9 +39,9 @@ public:
 
     MockTransportLayer();
 
-    void SetLinkLayer(ILinkLayer& linkLayer);
+    void SetLinkLayer(opendnp3::ILinkLayer& linkLayer);
 
-    bool SendDown(ITransportSegment& segments);
+    bool SendDown(opendnp3::ITransportSegment& segments);
 
     bool IsOnline() const
     {
@@ -63,7 +60,7 @@ public:
     }
 
     // these are the NVII delegates
-    virtual bool OnReceive(const Message& message) override;
+    virtual bool OnReceive(const opendnp3::Message& message) override;
     virtual bool OnTxReady() override;
     virtual bool OnLowerLayerUp() override;
     virtual bool OnLowerLayerDown() override;
@@ -71,11 +68,9 @@ public:
     std::deque<std::string> receivedQueue;
 
 private:
-    ILinkLayer* pLinkLayer;
+    opendnp3::ILinkLayer* pLinkLayer;
     bool isOnline;
     Counters counters;
 };
-
-} // namespace opendnp3
 
 #endif

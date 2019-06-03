@@ -17,10 +17,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "mocks/MeasurementComparisons.h"
 #include "mocks/MockAPDUHeaderHandler.h"
 #include "mocks/MockLogHandler.h"
 #include "utils/BufferHelpers.h"
+#include "utils/MeasurementComparisons.h"
 
 #include <ser4cpp/util/HexConversions.h>
 

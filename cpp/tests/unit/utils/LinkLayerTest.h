@@ -17,51 +17,47 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_LINKLAYERTEST_H
-#define OPENDNP3_LINKLAYERTEST_H
+#ifndef OPENDNP3_UNITTESTS_LINKLAYERTEST_H
+#define OPENDNP3_UNITTESTS_LINKLAYERTEST_H
 
-#include "MockTransportLayer.h"
+#include "mocks/MockLinkListener.h"
+#include "mocks/MockLogHandler.h"
+#include "mocks/MockTransportLayer.h"
+
+#include <exe4cpp/MockExecutor.h>
 
 #include <opendnp3/LogLevels.h>
-#include <opendnp3/link/ILinkTx.h>
-#include <opendnp3/link/LinkLayer.h>
-
-#include <dnp3mocks/MockLinkListener.h>
-
-#include "testlib/MockExecutor.h"
-#include "testlib/MockLogHandler.h"
+#include <link/ILinkTx.h>
+#include <link/LinkLayer.h>
 
 #include <queue>
 
-namespace opendnp3
-{
-
-class LinkLayerTest : public ILinkTx
+class LinkLayerTest : public opendnp3::ILinkTx
 {
 public:
-    LinkLayerTest(const LinkConfig& config);
+    LinkLayerTest(const opendnp3::LinkConfig& config);
 
-    LinkLayerTest(const LinkLayerConfig& config = DefaultConfig());
+    LinkLayerTest(const opendnp3::LinkLayerConfig& config = DefaultConfig());
 
-    bool OnFrame(LinkFunction func,
+    bool OnFrame(opendnp3::LinkFunction func,
                  bool isMaster,
                  bool fcb,
                  bool fcvdfc,
                  uint16_t dest,
                  uint16_t source,
-                 const openpal::RSlice& userdata = openpal::RSlice::Empty());
+                 const ser4cpp::rseq_t& userdata = ser4cpp::rseq_t::empty());
 
     // ILinkTx interface
-    virtual void BeginTransmit(const openpal::RSlice& buffer, ILinkSession& context) override final;
+    void BeginTransmit(const ser4cpp::rseq_t& buffer, opendnp3::ILinkSession& context) final;
 
-    static LinkLayerConfig DefaultConfig();
+    static opendnp3::LinkLayerConfig DefaultConfig();
 
-    testlib::MockLogHandler log;
-    std::shared_ptr<testlib::MockExecutor> exe;
+    MockLogHandler log;
+    std::shared_ptr<exe4cpp::MockExecutor> exe;
     std::shared_ptr<MockLinkListener> listener;
     std::shared_ptr<MockTransportLayer> upper;
 
-    LinkLayer link;
+    opendnp3::LinkLayer link;
 
     std::string PopLastWriteAsHex();
     uint32_t NumTotalWrites();
@@ -71,7 +67,5 @@ private:
 
     std::deque<std::string> writeQueue;
 };
-
-} // namespace opendnp3
 
 #endif

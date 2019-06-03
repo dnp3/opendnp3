@@ -17,20 +17,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef __DNP_HELPERS_H_
-#define __DNP_HELPERS_H_
+#ifndef OPENDNP3_UNITTESTS_DATASINK_H
+#define OPENDNP3_UNITTESTS_DATASINK_H
 
+#include <ser4cpp/container/SequenceTypes.h>
+
+#include <cstdint>
 #include <string>
+#include <vector>
 
-namespace opendnp3
+class DataSink final
 {
+public:
+    DataSink() = default;
 
-class LinkFrame;
+    void Write(const ser4cpp::rseq_t& data);
 
-std::string RepairCRC(const std::string& arData);
+    bool Equals(const ser4cpp::rseq_t& data) const;
 
-std::string ToHex(LinkFrame& frame);
+    std::string AsHex(bool spaced = true) const;
 
-} // namespace opendnp3
+    inline bool IsEmpty() const
+    {
+        return buffer.size() == 0;
+    }
+
+    void Clear();
+
+    size_t Size() const
+    {
+        return buffer.size();
+    }
+
+private:
+    std::vector<uint8_t> buffer;
+};
 
 #endif

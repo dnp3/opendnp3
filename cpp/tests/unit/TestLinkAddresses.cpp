@@ -17,43 +17,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef __BUFFER_SEGMENT_H_
-#define __BUFFER_SEGMENT_H_
+#include <opendnp3/link/Addresses.h>
 
-#include <opendnp3/link/ITransportSegment.h>
+#include <catch.hpp>
 
-#include <testlib/BufferHelpers.h>
+using namespace opendnp3;
 
-#include <string>
+#define SUITE(name) "LinkAddressesSuite - " name
 
-namespace opendnp3
+TEST_CASE(SUITE("LinkAddressesEqualityComparison"))
 {
+    Addresses lr1(1, 2);
+    Addresses lr2(1, 3);
+    Addresses lr3(1, 3);
 
-class BufferSegment final : public ITransportSegment
-{
-public:
-    BufferSegment(uint32_t segmentSize, const std::string& hex, const Addresses& addresses);
-
-    const Addresses& GetAddresses() const override
-    {
-        return this->addresses;
-    }
-
-    bool HasValue() const override;
-
-    openpal::RSlice GetSegment() override;
-
-    bool Advance() override;
-
-    void Reset();
-
-private:
-    const Addresses addresses;
-    uint32_t segmentSize;
-    testlib::HexSequence hs;
-    openpal::RSlice remainder;
-};
-
-} // namespace opendnp3
-
-#endif
+    REQUIRE(lr1 != lr2);
+    REQUIRE(lr3 == lr2);
+}

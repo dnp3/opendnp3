@@ -17,35 +17,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "mocks/BufferSegment.h"
-#include "mocks/LinkHex.h"
-#include "mocks/LinkLayerTest.h"
+#include "mocks/MockTransportSegment.h"
+#include "utils/LinkHex.h"
+#include "utils/LinkLayerTest.h"
 
-#include <openpal/container/Buffer.h>
-#include <openpal/util/ToHex.h>
+#include <ser4cpp/container/Buffer.h>
+#include <ser4cpp/util/HexConversions.h>
 
-#include <opendnp3/link/LinkFrame.h>
-
-#include <testlib/HexConversions.h>
+#include <link/LinkFrame.h>
 
 #include <catch.hpp>
 
 #include <iostream>
 
-using namespace openpal;
 using namespace opendnp3;
-using namespace testlib;
+using namespace ser4cpp;
 
 #define SUITE(name) "LinkLayerKeepAliveTestSuite - " name
 
 TEST_CASE(SUITE("Timers activated and canceled in response to layer up/down"))
 {
     LinkLayerTest t;
-    REQUIRE(t.exe->NumPendingTimers() == 0);
+    REQUIRE(t.exe->num_pending_timers() == 0);
     t.link.OnLowerLayerUp();
-    REQUIRE(t.exe->NumPendingTimers() == 1);
+    REQUIRE(t.exe->num_pending_timers() == 1);
     t.link.OnLowerLayerDown();
-    REQUIRE(t.exe->NumPendingTimers() == 0);
+    REQUIRE(t.exe->num_pending_timers() == 0);
 }
 
 TEST_CASE(SUITE("ForwardsKeepAliveTimeouts"))
@@ -56,11 +53,11 @@ TEST_CASE(SUITE("ForwardsKeepAliveTimeouts"))
 
     t.link.OnLowerLayerUp();
 
-    REQUIRE(t.exe->NumPendingTimers() == 1);
+    REQUIRE(t.exe->num_pending_timers() == 1);
     REQUIRE(t.listener->numKeepAliveTransmissions == 0);
 
-    REQUIRE(t.exe->AdvanceToNextTimer());
-    REQUIRE(t.exe->RunMany() > 0);
+    REQUIRE(t.exe->advance_to_next_timer());
+    REQUIRE(t.exe->run_many() > 0);
     REQUIRE(t.listener->numKeepAliveTransmissions == 1);
 }
 
@@ -72,18 +69,18 @@ TEST_CASE(SUITE("KeepAliveFailureCallbackIsInvokedOnTimeout"))
 
     t.link.OnLowerLayerUp();
 
-    REQUIRE(t.exe->NumPendingTimers() == 1);
+    REQUIRE(t.exe->num_pending_timers() == 1);
     REQUIRE(t.listener->numKeepAliveTransmissions == 0);
 
-    REQUIRE(t.exe->AdvanceToNextTimer());
-    REQUIRE(t.exe->RunMany() > 0);
+    REQUIRE(t.exe->advance_to_next_timer());
+    REQUIRE(t.exe->run_many() > 0);
 
     REQUIRE(t.PopLastWriteAsHex() == LinkHex::RequestLinkStatus(true, 1024, 1));
-    REQUIRE(t.exe->NumPendingTimers() == 1);
+    REQUIRE(t.exe->num_pending_timers() == 1);
     t.link.OnTxReady();
-    REQUIRE(t.exe->NumPendingTimers() == 2);
-    t.exe->AdvanceTime(config.Timeout);
-    REQUIRE(t.exe->RunMany() > 0);
+    REQUIRE(t.exe->num_pending_timers() == 2);
+    t.exe->advance_time(config.Timeout.value);
+    REQUIRE(t.exe->run_many() > 0);
     REQUIRE(t.listener->numKeepAliveFailure == 1);
 }
 
@@ -95,19 +92,19 @@ TEST_CASE(SUITE("KeepAliveSuccessCallbackIsInvokedWhenLinkStatusReceived"))
 
     t.link.OnLowerLayerUp();
 
-    REQUIRE(t.exe->NumPendingTimers() == 1);
+    REQUIRE(t.exe->num_pending_timers() == 1);
     REQUIRE(t.listener->numKeepAliveTransmissions == 0);
 
-    REQUIRE(t.exe->AdvanceToNextTimer());
-    REQUIRE(t.exe->RunMany() > 0);
+    REQUIRE(t.exe->advance_to_next_timer());
+    REQUIRE(t.exe->run_many() > 0);
 
     REQUIRE(t.PopLastWriteAsHex() == LinkHex::RequestLinkStatus(true, 1024, 1));
-    REQUIRE(t.exe->NumPendingTimers() == 1);
+    REQUIRE(t.exe->num_pending_timers() == 1);
     t.link.OnTxReady();
-    REQUIRE(t.exe->NumPendingTimers() == 2);
+    REQUIRE(t.exe->num_pending_timers() == 2);
     t.OnFrame(LinkFunction::SEC_LINK_STATUS, false, false, false, 1, 1024);
     REQUIRE(t.listener->numKeepAliveReplys == 1);
-    REQUIRE(t.exe->NumPendingTimers() == 1);
+    REQUIRE(t.exe->num_pending_timers() == 1);
 }
 
 TEST_CASE(SUITE("KeepAliveIsPeriodicOnFailure"))
@@ -120,19 +117,19 @@ TEST_CASE(SUITE("KeepAliveIsPeriodicOnFailure"))
 
     for (int count = 0; count < 3; ++count)
     {
-        REQUIRE(t.exe->NumPendingTimers() == 1);
+        REQUIRE(t.exe->num_pending_timers() == 1);
         REQUIRE(t.listener->numKeepAliveTransmissions == count);
 
-        REQUIRE(t.exe->AdvanceToNextTimer());
-        REQUIRE(t.exe->RunMany() > 0);
+        REQUIRE(t.exe->advance_to_next_timer());
+        REQUIRE(t.exe->run_many() > 0);
 
         REQUIRE(t.PopLastWriteAsHex() == LinkHex::RequestLinkStatus(true, 1024, 1));
-        REQUIRE(t.exe->NumPendingTimers() == 1);
+        REQUIRE(t.exe->num_pending_timers() == 1);
         t.link.OnTxReady();
-        REQUIRE(t.exe->NumPendingTimers() == 2);
+        REQUIRE(t.exe->num_pending_timers() == 2);
 
-        t.exe->AdvanceTime(config.Timeout);
-        REQUIRE(t.exe->RunMany() > 0);
+        t.exe->advance_time(config.Timeout.value);
+        REQUIRE(t.exe->run_many() > 0);
         REQUIRE(t.listener->numKeepAliveFailure == (count + 1));
     }
 }
@@ -147,16 +144,16 @@ TEST_CASE(SUITE("KeepAliveIsPeriodicOnSuccess"))
 
     for (int count = 0; count < 3; ++count)
     {
-        REQUIRE(t.exe->NumPendingTimers() == 1);
+        REQUIRE(t.exe->num_pending_timers() == 1);
         REQUIRE(t.listener->numKeepAliveTransmissions == count);
 
-        REQUIRE(t.exe->AdvanceToNextTimer());
-        REQUIRE(t.exe->RunMany() > 0);
+        REQUIRE(t.exe->advance_to_next_timer());
+        REQUIRE(t.exe->run_many() > 0);
 
         REQUIRE(t.PopLastWriteAsHex() == LinkHex::RequestLinkStatus(true, 1024, 1));
-        REQUIRE(t.exe->NumPendingTimers() == 1);
+        REQUIRE(t.exe->num_pending_timers() == 1);
         t.link.OnTxReady();
-        REQUIRE(t.exe->NumPendingTimers() == 2);
+        REQUIRE(t.exe->num_pending_timers() == 2);
         t.OnFrame(LinkFunction::SEC_LINK_STATUS, false, false, false, 1, 1024);
         REQUIRE(t.listener->numKeepAliveReplys == (count + 1));
     }

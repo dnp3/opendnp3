@@ -17,18 +17,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "mocks/DNPHelpers.h"
-#include "mocks/LinkReceiverTest.h"
+#include "utils/DNPHelpers.h"
+#include "utils/LinkParserTest.h"
 
-#include <openpal/container/Buffer.h>
+#include <ser4cpp/container/Buffer.h>
 
-#include <testlib/BufferHelpers.h>
+#include "utils/BufferHelpers.h"
 
 #include <catch.hpp>
 
-using namespace openpal;
 using namespace opendnp3;
-using namespace testlib;
+using namespace ser4cpp;
 
 #define SUITE(name) "LinkParserTestSuite - " name
 
@@ -140,7 +139,7 @@ TEST_CASE(SUITE("ReadACK"))
 {
     Buffer buffer(292);
 
-    auto writeTo = buffer.GetWSlice();
+    auto writeTo = buffer.as_wslice();
     auto frame = LinkFrame::FormatAck(writeTo, true, false, 1, 2, nullptr);
 
     LinkParserTest t;
@@ -152,7 +151,7 @@ TEST_CASE(SUITE("ReadACK"))
 TEST_CASE(SUITE("ReadNACK"))
 {
     Buffer buffer(292);
-    auto writeTo = buffer.GetWSlice();
+    auto writeTo = buffer.as_wslice();
     auto frame = LinkFrame::FormatNack(writeTo, false, true, 1, 2, nullptr);
 
     LinkParserTest t;
@@ -164,7 +163,7 @@ TEST_CASE(SUITE("ReadNACK"))
 TEST_CASE(SUITE("LinkStatus"))
 {
     Buffer buffer(292);
-    auto writeTo = buffer.GetWSlice();
+    auto writeTo = buffer.as_wslice();
     auto frame = LinkFrame::FormatLinkStatus(writeTo, true, true, 1, 2, nullptr);
 
     LinkParserTest t;
@@ -176,7 +175,7 @@ TEST_CASE(SUITE("LinkStatus"))
 TEST_CASE(SUITE("NotSupported"))
 {
     Buffer buffer(292);
-    auto writeTo = buffer.GetWSlice();
+    auto writeTo = buffer.as_wslice();
     auto frame = LinkFrame::FormatNotSupported(writeTo, true, false, 1, 2, nullptr);
 
     LinkParserTest t;
@@ -192,7 +191,7 @@ TEST_CASE(SUITE("NotSupported"))
 TEST_CASE(SUITE("TestLinkStates"))
 {
     Buffer buffer(292);
-    auto writeTo = buffer.GetWSlice();
+    auto writeTo = buffer.as_wslice();
     auto frame = LinkFrame::FormatTestLinkStatus(writeTo, false, true, 1, 2, nullptr);
 
     LinkParserTest t;
@@ -204,7 +203,7 @@ TEST_CASE(SUITE("TestLinkStates"))
 TEST_CASE(SUITE("ResetLinkStates"))
 {
     Buffer buffer(292);
-    auto writeTo = buffer.GetWSlice();
+    auto writeTo = buffer.as_wslice();
     auto frame = LinkFrame::FormatResetLinkStates(writeTo, false, 1, 2, nullptr);
 
     LinkParserTest t;
@@ -216,7 +215,7 @@ TEST_CASE(SUITE("ResetLinkStates"))
 TEST_CASE(SUITE("RequestLinkStatus"))
 {
     Buffer buffer(292);
-    auto writeTo = buffer.GetWSlice();
+    auto writeTo = buffer.as_wslice();
     auto frame = LinkFrame::FormatRequestLinkStatus(writeTo, true, 1, 2, nullptr);
 
     LinkParserTest t;
@@ -230,14 +229,14 @@ TEST_CASE(SUITE("UnconfirmedUserData"))
     ByteStr data(250, 0); // initializes a buffer with increasing value
 
     Buffer buffer(292);
-    auto writeTo = buffer.GetWSlice();
+    auto writeTo = buffer.as_wslice();
     auto frame = LinkFrame::FormatUnconfirmedUserData(writeTo, true, 1, 2, data, data.Size(), nullptr);
 
     LinkParserTest t;
     t.WriteData(frame);
     REQUIRE(t.sink.m_num_frames == 1);
     REQUIRE(t.sink.CheckLast(LinkFunction::PRI_UNCONFIRMED_USER_DATA, true, 1, 2));
-    REQUIRE(t.sink.received.Equals(data.ToRSlice()));
+    REQUIRE(t.sink.received.Equals(data.ToRSeq()));
 }
 
 TEST_CASE(SUITE("ConfirmedUserData"))
@@ -245,14 +244,14 @@ TEST_CASE(SUITE("ConfirmedUserData"))
     ByteStr data(250, 0); // initializes a buffer with increasing value
 
     Buffer buffer(292);
-    auto writeTo = buffer.GetWSlice();
+    auto writeTo = buffer.as_wslice();
     auto frame = LinkFrame::FormatConfirmedUserData(writeTo, true, true, 1, 2, data, data.Size(), nullptr);
 
     LinkParserTest t;
     t.WriteData(frame);
     REQUIRE(t.sink.m_num_frames == 1);
     REQUIRE(t.sink.CheckLastWithFCB(LinkFunction::PRI_CONFIRMED_USER_DATA, true, true, 1, 2));
-    REQUIRE(t.sink.received.Equals(data.ToRSlice()));
+    REQUIRE(t.sink.received.Equals(data.ToRSeq()));
 }
 
 //////////////////////////////////////////
@@ -292,7 +291,7 @@ TEST_CASE(SUITE("ManyReceives"))
 {
 
     Buffer buffer(292);
-    auto writeTo = buffer.GetWSlice();
+    auto writeTo = buffer.as_wslice();
     auto frame = LinkFrame::FormatAck(writeTo, true, false, 1, 2, nullptr);
 
     LinkParserTest t;

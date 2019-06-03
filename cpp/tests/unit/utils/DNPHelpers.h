@@ -17,48 +17,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_MOCK_LINK_LISTENER_H_
-#define OPENDNP3_MOCK_LINK_LISTENER_H_
+#ifndef OPENDNP3_UNITTESTS_DNP_HELPERS_H
+#define OPENDNP3_UNITTESTS_DNP_HELPERS_H
 
-#include <opendnp3/link/ILinkListener.h>
+#include <link/LinkFrame.h>
 
-#include <vector>
+#include <string>
 
-namespace opendnp3
-{
+std::string RepairCRC(const std::string& arData);
 
-class MockLinkListener final : public ILinkListener
-{
-public:
-    MockLinkListener() : numKeepAliveTransmissions(0), numKeepAliveFailure(0), numKeepAliveReplys(0) {}
-
-    virtual void OnStateChange(LinkStatus value) override
-    {
-        statusValues.push_back(value);
-    }
-
-    virtual void OnKeepAliveInitiated() override
-    {
-        ++numKeepAliveTransmissions;
-    }
-
-    virtual void OnKeepAliveFailure() override
-    {
-        ++numKeepAliveFailure;
-    }
-
-    virtual void OnKeepAliveSuccess() override
-    {
-        ++numKeepAliveReplys;
-    }
-
-    uint32_t numKeepAliveTransmissions;
-    uint32_t numKeepAliveFailure;
-    uint32_t numKeepAliveReplys;
-
-    std::vector<LinkStatus> statusValues;
-};
-
-} // namespace opendnp3
+std::string ToHex(opendnp3::LinkFrame& frame);
 
 #endif

@@ -17,45 +17,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_DATASINK_H
-#define OPENDNP3_DATASINK_H
+#ifndef OPENDNP3_UNITTESTS_MOCK_TRANSPORT_SEGMENT_H
+#define OPENDNP3_UNITTESTS_MOCK_TRANSPORT_SEGMENT_H
 
-#include <openpal/container/RSlice.h>
+#include <link/ITransportSegment.h>
 
-#include <cstdint>
+#include "utils/BufferHelpers.h"
+
 #include <string>
-#include <vector>
 
-namespace opendnp3
-{
-
-class DataSink final
+class MockTransportSegment final : public opendnp3::ITransportSegment
 {
 public:
-    DataSink() = default;
+    MockTransportSegment(uint32_t segmentSize, const std::string& hex, const opendnp3::Addresses& addresses);
 
-    void Write(const openpal::RSlice& data);
-
-    bool Equals(const openpal::RSlice& data) const;
-
-    std::string AsHex(bool spaced = true) const;
-
-    inline bool IsEmpty() const
+    const opendnp3::Addresses& GetAddresses() const override
     {
-        return buffer.size() == 0;
+        return this->addresses;
     }
 
-    void Clear();
+    bool HasValue() const override;
 
-    size_t Size() const
-    {
-        return buffer.size();
-    }
+    ser4cpp::rseq_t GetSegment() override;
+
+    bool Advance() override;
+
+    void Reset();
 
 private:
-    std::vector<uint8_t> buffer;
+    const opendnp3::Addresses addresses;
+    uint32_t segmentSize;
+    HexSequence hs;
+    ser4cpp::rseq_t remainder;
 };
-
-} // namespace opendnp3
 
 #endif

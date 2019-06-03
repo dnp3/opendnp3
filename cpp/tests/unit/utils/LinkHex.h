@@ -17,21 +17,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_LINK_HEX_H
-#define OPENDNP3_LINK_HEX_H
+#ifndef OPENDNP3_UNITTESTS_LINK_HEX_H
+#define OPENDNP3_UNITTESTS_LINK_HEX_H
 
-#include <openpal/container/RSlice.h>
-#include <openpal/util/Uncopyable.h>
+#include <ser4cpp/container/SequenceTypes.h>
 
-#include "opendnp3/gen/FunctionCode.h"
-#include "opendnp3/gen/LinkFunction.h"
+#include <opendnp3/StaticOnly.h>
+#include <opendnp3/gen/FunctionCode.h>
+#include <opendnp3/gen/LinkFunction.h>
 
 #include <string>
 
-namespace opendnp3
-{
-
-class LinkHex : private openpal::StaticOnly
+class LinkHex : private opendnp3::StaticOnly
 {
 
 public:
@@ -55,7 +52,5 @@ public:
         bool master, bool fcb, uint16_t dest, uint16_t src, const std::string& userDataHex);
     static std::string UnconfirmedUserData(bool master, uint16_t dest, uint16_t src, const std::string& userDataHex);
 };
-
-} // namespace opendnp3
 
 #endif

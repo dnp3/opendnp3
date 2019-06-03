@@ -17,15 +17,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <openpal/container/Array.h>
+#include <ser4cpp/container/Array.h>
 
 #include <opendnp3/app/MeasurementTypeSpecs.h>
-#include <opendnp3/outstation/IndexSearch.h>
+#include <outstation/IndexSearch.h>
 
 #include <catch.hpp>
 
-using namespace openpal;
 using namespace opendnp3;
+using namespace ser4cpp;
 
 #define SUITE(name) "IndexSearch - " name
 
@@ -37,7 +37,7 @@ IndexSearch::Result TestResultLengthFour(uint16_t index)
     values[2].config.vIndex = 7;
     values[3].config.vIndex = 9;
 
-    return IndexSearch::FindClosestRawIndex(values.ToView(), index);
+    return IndexSearch::FindClosestRawIndex(values.to_view(), index);
 }
 
 TEST_CASE(SUITE("FindsExactMatchForLastValue"))
@@ -90,7 +90,7 @@ Range TestRangeSearch(const Range& range)
     values[2].config.vIndex = 7;
     values[3].config.vIndex = 9;
 
-    return IndexSearch::FindRawRange(values.ToView(), range);
+    return IndexSearch::FindRawRange(values.to_view(), range);
 }
 
 TEST_CASE(SUITE("FindsFullRangeIfInputBracketsEntireRange"))

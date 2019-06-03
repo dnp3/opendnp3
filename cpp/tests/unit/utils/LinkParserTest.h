@@ -17,51 +17,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef __LINK_PARSER_TEST_H_
-#define __LINK_PARSER_TEST_H_
+#ifndef OPENDNP3_UNITTESTS_LINK_PARSER_TEST_H
+#define OPENDNP3_UNITTESTS_LINK_PARSER_TEST_H
 
 #include <opendnp3/LogLevels.h>
-#include <opendnp3/link/LinkLayerParser.h>
+#include <link/LinkLayerParser.h>
 
-#include <dnp3mocks/MockFrameSink.h>
+#include "utils/BufferHelpers.h"
+#include "mocks/MockFrameSink.h"
+#include "mocks/MockLogHandler.h"
 
-#include <testlib/BufferHelpers.h>
-#include <testlib/MockLogHandler.h>
-
-#include <assert.h>
+#include <cassert>
 
 #include <cstring>
-
-namespace opendnp3
-{
 
 class LinkParserTest
 {
 public:
     LinkParserTest(bool aImmediate = false) : log(), sink(), parser(log.logger) {}
 
-    void WriteData(const openpal::RSlice& input)
+    void WriteData(const ser4cpp::rseq_t& input)
     {
         auto buff = parser.WriteBuff();
-        assert(input.Size() <= buff.Size());
-        input.CopyTo(buff);
-        parser.OnRead(input.Size(), sink);
+        assert(input.length() <= buff.length());
+        buff.copy_from(input);
+        parser.OnRead(input.length(), sink);
     }
 
     void WriteData(const std::string& hex)
     {
-        testlib::HexSequence hs(hex);
+        HexSequence hs(hex);
         auto buff = parser.WriteBuff();
-        assert(hs.Size() <= buff.Size());
+        assert(hs.Size() <= buff.length());
         memcpy(buff, hs, hs.Size());
         parser.OnRead(hs.Size(), sink);
     }
 
-    testlib::MockLogHandler log;
+    MockLogHandler log;
     MockFrameSink sink;
-    LinkLayerParser parser;
+    opendnp3::LinkLayerParser parser;
 };
-
-} // namespace opendnp3
 
 #endif
