@@ -17,8 +17,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef __APDU_HEX_BUILDERS_H_
-#define __APDU_HEX_BUILDERS_H_
+#ifndef OPENDNP3_UNITTESTS_APDU_HEX_BUILDERS_H
+#define OPENDNP3_UNITTESTS_APDU_HEX_BUILDERS_H
 
 #include <opendnp3/app/ClassField.h>
 #include <opendnp3/app/ControlRelayOutputBlock.h>

@@ -17,8 +17,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef __MOCK_MASTER_APPLICATION_H_
-#define __MOCK_MASTER_APPLICATION_H_
+#ifndef OPENDNP3_UNITTESTS_MOCK_MASTER_APPLICATION_H
+#define OPENDNP3_UNITTESTS_MOCK_MASTER_APPLICATION_H
 
 #include <opendnp3/master/IMasterApplication.h>
 
@@ -26,10 +26,7 @@
 #include <functional>
 #include <vector>
 
-namespace opendnp3
-{
-
-class MockMasterApplication final : public IMasterApplication
+class MockMasterApplication final : public opendnp3::IMasterApplication
 {
 
 public:
@@ -41,17 +38,17 @@ public:
 
     MockMasterApplication() : time(0) {}
 
-    virtual openpal::UTCTimestamp Now() override
+    virtual opendnp3::UTCTimestamp Now() override
     {
-        return openpal::UTCTimestamp(time);
+        return opendnp3::UTCTimestamp(time);
     }
 
-    virtual void OnReceiveIIN(const IINField& iin) override
+    virtual void OnReceiveIIN(const opendnp3::IINField& iin) override
     {
         rxIIN.push_back(iin);
     }
 
-    virtual void OnTaskStart(MasterTaskType type, TaskId id) override
+    virtual void OnTaskStart(opendnp3::MasterTaskType type, opendnp3::TaskId id) override
     {
         taskStartEvents.push_back(type);
     }
@@ -88,14 +85,12 @@ public:
 
     std::vector<opendnp3::Header> assignClassHeaders;
 
-    std::vector<IINField> rxIIN;
+    std::vector<opendnp3::IINField> rxIIN;
 
-    std::vector<MasterTaskType> taskStartEvents;
-    std::vector<TaskInfo> taskCompletionEvents;
+    std::vector<opendnp3::MasterTaskType> taskStartEvents;
+    std::vector<opendnp3::TaskInfo> taskCompletionEvents;
 
     uint64_t time;
 };
-
-} // namespace opendnp3
 
 #endif

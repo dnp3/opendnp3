@@ -17,26 +17,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef DNP3MOCKS_CALLBACK_QUEUE_H
-#define DNP3MOCKS_CALLBACK_QUEUE_H
+#ifndef OPENDNP3_UNITTESTS_MOCKLOWERLAYER_H
+#define OPENDNP3_UNITTESTS_MOCKLOWERLAYER_H
 
-#include <functional>
+#include <LayerInterfaces.h>
+
 #include <queue>
+#include <string>
 
-namespace opendnp3
-{
-
-template<class T> class CallbackQueue
+class MockLowerLayer : public opendnp3::ILowerLayer, public opendnp3::HasUpperLayer
 {
 public:
-    std::function<void(const T&)> Callback()
-    {
-        return [this](const T& rsp) -> void { responses.push_back(rsp); };
-    }
+    void SendUp(const ser4cpp::rseq_t& data, const opendnp3::Addresses& addresses = opendnp3::Addresses());
+    void SendUp(const std::string& arHexData, const opendnp3::Addresses& addresses = opendnp3::Addresses());
 
-    std::deque<T> responses;
+    void SendComplete();
+    void ThisLayerUp();
+    void ThisLayerDown();
+
+    bool HasNoData() const;
+
+    size_t NumWrites() const;
+    std::string PopWriteAsHex();
+
+    virtual bool BeginTransmit(const opendnp3::Message& message) override final;
+
+private:
+    std::queue<opendnp3::Message> sendQueue;
 };
-
-} // namespace opendnp3
 
 #endif

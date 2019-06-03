@@ -17,17 +17,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "mocks/MasterTestFixture.h"
+#include "utils/MasterTestFixture.h"
 
-#include <dnp3mocks/APDUHexBuilders.h>
+#include "utils/APDUHexBuilders.h"
 
-#include <testlib/HexConversions.h>
+#include <ser4cpp/util/HexConversions.h>
 
 #include <catch.hpp>
 
-using namespace std;
 using namespace opendnp3;
-using namespace openpal;
 
 #define SUITE(name) "MasterAssignClassTestSuite - " name
 
@@ -41,12 +39,12 @@ TEST_CASE(SUITE("AssignsClassAfterConnect"))
 
     t.context->OnLowerLayerUp();
 
-    REQUIRE(t.exe->RunMany() > 0);
+    REQUIRE(t.exe->run_many() > 0);
 
     REQUIRE(t.lower->PopWriteAsHex() == "C0 16 3C 02 06 03 00 06");
     t.context->OnTxReady();
     t.SendToMaster("C0 81 00 00");
-    t.exe->RunMany();
+    t.exe->run_many();
 
     REQUIRE(t.context->tstate == MContext::TaskState::IDLE);
     REQUIRE(t.lower->PopWriteAsHex().empty());
@@ -70,7 +68,7 @@ TEST_CASE(SUITE("DisableUnsolBeforeAssignClass"))
 
     t.context->OnLowerLayerUp();
 
-    REQUIRE(t.exe->RunMany() > 0);
+    REQUIRE(t.exe->run_many() > 0);
 
     REQUIRE(t.lower->PopWriteAsHex()
             == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));

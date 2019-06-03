@@ -60,7 +60,7 @@ public:
 
     MContext(const Addresses& addresses,
              const log4cpp::Logger& logger,
-             const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
+             const std::shared_ptr<exe4cpp::IExecutor>& executor,
              std::shared_ptr<ILowerLayer> lower,
              const std::shared_ptr<ISOEHandler>& SOEHandler,
              const std::shared_ptr<IMasterApplication>& application,
@@ -68,7 +68,7 @@ public:
              const MasterParams& params);
 
     log4cpp::Logger logger;
-    const std::shared_ptr<exe4cpp::StrandExecutor> executor;
+    const std::shared_ptr<exe4cpp::IExecutor> executor;
     const std::shared_ptr<ILowerLayer> lower;
 
     // ------- configuration --------

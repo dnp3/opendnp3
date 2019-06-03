@@ -4,17 +4,25 @@ set(unittests_mocks
     ./mocks/MockFrameSink.h
     ./mocks/MockLinkListener.h
     ./mocks/MockLogHandler.h
+    ./mocks/MockLowerLayer.h
+    ./mocks/MockMasterApplication.h
+    ./mocks/MockSOEHandler.h
+    ./mocks/MockTaskCallback.h
     ./mocks/MockTransportLayer.h
     ./mocks/MockTransportSegment.h
 
     ./utils/APDUHelpers.h
+    ./utils/APDUHexBuilders.h
     ./utils/BufferHelpers.h
+    ./utils/CallbackQueue.h
+    ./utils/CommandCallbackQueue.h
     ./utils/CopyableBuffer.h
     ./utils/DataSink.h
     ./utils/DNPHelpers.h
     ./utils/LinkHex.h
     ./utils/LinkLayerTest.h
     ./utils/LinkParserTest.h
+    ./utils/MasterTestFixture.h
     ./utils/MeasurementComparisons.h
 )
 
@@ -38,7 +46,7 @@ set(unittests_src
     ./TestLinkLayer.cpp
     ./TestLinkLayerKeepAlive.cpp
     ./TestLinkReceiver.cpp
-#[[    ./TestList.cpp
+    ./TestList.cpp
     ./TestLog.cpp
     ./TestMaster.cpp
     ./TestMasterAssignClass.cpp
@@ -46,7 +54,7 @@ set(unittests_src
     ./TestMasterMultiCommandRequests.cpp
     ./TestMasterMultidrop.cpp
     ./TestMasterUnsolBehaviors.cpp
-    ./TestMeasurementHandler.cpp
+#[[    ./TestMeasurementHandler.cpp
     ./TestOutstation.cpp
     ./TestOutstationAssignClass.cpp
     ./TestOutstationCommandResponses.cpp
@@ -64,16 +72,19 @@ set(unittests_src
 
     ./mocks/MockFrameSink.cpp
     ./mocks/MockLogHandler.cpp
+    ./mocks/MockLowerLayer.cpp
     ./mocks/MockTransportLayer.cpp
     ./mocks/MockTransportSegment.cpp
 
     ./utils/APDUHelpers.cpp
+    ./utils/APDUHexBuilders.cpp
     ./utils/BufferHelpers.cpp
     ./utils/CopyableBuffer.cpp
     ./utils/DataSink.cpp
     ./utils/DNPHelpers.cpp
     ./utils/LinkHex.cpp
     ./utils/LinkLayerTest.cpp
+    ./utils/MasterTestFixture.cpp
 )
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}

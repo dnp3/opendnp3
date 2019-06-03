@@ -17,41 +17,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef __MOCK_COMMAND_CALLBACK_H_
-#define __MOCK_COMMAND_CALLBACK_H_
+#ifndef OPENDNP3_UNITTESTS_CALLBACK_QUEUE_H
+#define OPENDNP3_UNITTESTS_CALLBACK_QUEUE_H
 
-#include <opendnp3/master/ITaskCallback.h>
-
+#include <functional>
 #include <queue>
 
-namespace opendnp3
-{
-
-class MockTaskCallback : public ITaskCallback
+template<class T> class CallbackQueue
 {
 public:
-    virtual void OnStart() override final
+    std::function<void(const T&)> Callback()
     {
-        ++numStart;
+        return [this](const T& rsp) -> void { responses.push_back(rsp); };
     }
 
-    virtual void OnComplete(TaskCompletion result) override final
-    {
-        results.push_back(result);
-    }
-
-    virtual void OnDestroyed() override final
-    {
-        ++numDestroyed;
-    }
-
-    uint32_t numStart = 0;
-
-    uint32_t numDestroyed = 0;
-
-    std::deque<TaskCompletion> results;
+    std::deque<T> responses;
 };
-
-} // namespace opendnp3
 
 #endif

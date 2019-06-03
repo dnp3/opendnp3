@@ -19,16 +19,13 @@
  */
 #include "MockLowerLayer.h"
 
-#include <testlib/BufferHelpers.h>
-#include <testlib/HexConversions.h>
+#include "utils/BufferHelpers.h"
+#include <ser4cpp/util/HexConversions.h>
 
 #include <cassert>
 
-using namespace openpal;
-using namespace testlib;
-
-namespace opendnp3
-{
+using namespace opendnp3;
+using namespace ser4cpp;
 
 bool MockLowerLayer::HasNoData() const
 {
@@ -49,7 +46,7 @@ std::string MockLowerLayer::PopWriteAsHex()
 
     auto ret = sendQueue.front();
     sendQueue.pop();
-    return ToHex(ret.payload);
+    return HexConversions::to_hex(ret.payload);
 }
 
 bool MockLowerLayer::BeginTransmit(const Message& message)
@@ -58,7 +55,7 @@ bool MockLowerLayer::BeginTransmit(const Message& message)
     return true;
 }
 
-void MockLowerLayer::SendUp(const openpal::RSlice& data, const Addresses& addresses)
+void MockLowerLayer::SendUp(const rseq_t& data, const Addresses& addresses)
 {
     if (pUpperLayer != nullptr)
     {
@@ -69,7 +66,7 @@ void MockLowerLayer::SendUp(const openpal::RSlice& data, const Addresses& addres
 void MockLowerLayer::SendUp(const std::string& arHexData, const Addresses& addresses)
 {
     HexSequence hs(arHexData);
-    this->SendUp(hs.ToRSlice(), addresses);
+    this->SendUp(hs.ToRSeq(), addresses);
 }
 
 void MockLowerLayer::SendComplete()
@@ -94,5 +91,3 @@ void MockLowerLayer::ThisLayerDown()
         pUpperLayer->OnLowerLayerDown();
     }
 }
-
-} // namespace opendnp3

@@ -17,11 +17,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <openpal/logging/LogMacros.h>
+#include <log4cpp/LogMacros.h>
 
 #include <opendnp3/LogLevels.h>
 
-#include <testlib/MockLogHandler.h>
+#include "mocks/MockLogHandler.h"
 
 #include <catch.hpp>
 
@@ -29,7 +29,6 @@
 #include <vector>
 
 using namespace opendnp3;
-using namespace openpal;
 
 #define SUITE(name) "LogTest - " name
 

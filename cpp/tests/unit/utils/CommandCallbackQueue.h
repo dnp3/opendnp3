@@ -17,54 +17,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef DNP3MOCKS_COMMAND_CALLBACK_QUEUE_H
-#define DNP3MOCKS_COMMAND_CALLBACK_QUEUE_H
+#ifndef OPENDNP3_UNITTESTS_COMMAND_CALLBACK_QUEUE_H
+#define OPENDNP3_UNITTESTS_COMMAND_CALLBACK_QUEUE_H
 
 #include <opendnp3/master/CommandPointResult.h>
+#include <opendnp3/master/ICommandTaskResult.h>
 
 #include <functional>
 #include <queue>
 
-namespace opendnp3
-{
-
-class MockCommandResultType final : public IVisitor<CommandPointResult>
+class MockCommandResultType final : public opendnp3::IVisitor<opendnp3::CommandPointResult>
 {
 public:
-    MockCommandResultType(TaskCompletion result_) : summary(result_) {}
+    MockCommandResultType(opendnp3::TaskCompletion result_) : summary(result_) {}
 
-    virtual void OnValue(const CommandPointResult& value) override
+    void OnValue(const opendnp3::CommandPointResult& value) final
     {
         results.push_back(value);
     }
 
-    bool Equals(TaskCompletion summary_, CommandPointResult result) const
+    bool Equals(opendnp3::TaskCompletion summary_, opendnp3::CommandPointResult result) const
     {
         return (results.size() == 1) && (summary_ == summary) && result.Equals(results.front());
     }
 
-    TaskCompletion summary;
+    opendnp3::TaskCompletion summary;
     std::vector<opendnp3::CommandPointResult> results;
 };
 
 class CommandCallbackQueue
 {
 public:
-    std::function<void(const ICommandTaskResult&)> Callback()
+    std::function<void(const opendnp3::ICommandTaskResult&)> Callback()
     {
-        return [this](const ICommandTaskResult& rsp) -> void {
+        return [this](const opendnp3::ICommandTaskResult& rsp) -> void {
             MockCommandResultType result(rsp.summary);
             rsp.Foreach(result);
             values.push_back(result);
         };
     }
 
-    bool PopOnlyEqualValue(TaskCompletion summary, CommandPointResult item)
+    bool PopOnlyEqualValue(opendnp3::TaskCompletion summary, opendnp3::CommandPointResult item)
     {
         return PopOnlyEqualValue(summary, {item});
     }
 
-    bool PopOnlyEqualValue(TaskCompletion summary, std::initializer_list<CommandPointResult> list)
+    bool PopOnlyEqualValue(opendnp3::TaskCompletion summary, std::initializer_list<opendnp3::CommandPointResult> list)
     {
         if (values.size() != 1)
             return false;
@@ -99,7 +97,5 @@ public:
 
     std::deque<MockCommandResultType> values;
 };
-
-} // namespace opendnp3
 
 #endif

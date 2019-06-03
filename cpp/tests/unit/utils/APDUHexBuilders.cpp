@@ -17,40 +17,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "APDUHexBuilders.h"
+#include "utils/APDUHexBuilders.h"
 
-#include <openpal/container/Buffer.h>
+#include <ser4cpp/container/Buffer.h>
+#include <ser4cpp/util/HexConversions.h>
 
-#include <opendnp3/app/APDUBuilders.h>
-#include <opendnp3/app/APDURequest.h>
-#include <opendnp3/app/APDUResponse.h>
+#include <app/APDUBuilders.h>
+#include <app/APDURequest.h>
+#include <app/APDUResponse.h>
+#include <gen/objects/Group12.h>
+#include <gen/objects/Group120.h>
 #include <opendnp3/app/AppConstants.h>
-#include <opendnp3/objects/Group12.h>
-#include <opendnp3/objects/Group120.h>
 
-#include <testlib/BufferHelpers.h>
-#include <testlib/HexConversions.h>
+#include "utils/BufferHelpers.h"
 
-using namespace std;
-using namespace openpal;
 using namespace opendnp3;
-using namespace testlib;
+using namespace ser4cpp;
 
 namespace hex
 {
+
 std::string repeat(uint8_t value, uint16_t count)
 {
     Buffer buffer(count);
-    buffer.GetWSlice().SetAllTo(value);
-    return ToHex(buffer.ToRSlice());
+    buffer.as_wslice().set_all_to(value);
+    return HexConversions::to_hex(buffer.as_rslice());
 }
 
 std::string ClassTask(FunctionCode fc, uint8_t seq, const ClassField& field)
 {
     Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-    APDURequest request(buffer.GetWSlice());
+    APDURequest request(buffer.as_wslice());
     opendnp3::build::ClassRequest(request, fc, field, seq);
-    return ToHex(request.ToRSlice());
+    return HexConversions::to_hex(request.ToRSeq());
 }
 
 std::string DisableUnsol(uint8_t seq, const opendnp3::ClassField& field)
@@ -76,25 +75,25 @@ std::string EventPoll(uint8_t seq, const ClassField& field)
 std::string ClearRestartIIN(uint8_t seq)
 {
     Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-    APDURequest request(buffer.GetWSlice());
+    APDURequest request(buffer.as_wslice());
     build::ClearRestartIIN(request, seq);
-    return ToHex(request.ToRSlice());
+    return HexConversions::to_hex(request.ToRSeq());
 }
 
 std::string MeasureDelay(uint8_t seq)
 {
     Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-    APDURequest request(buffer.GetWSlice());
+    APDURequest request(buffer.as_wslice());
     build::MeasureDelay(request, seq);
-    return ToHex(request.ToRSlice());
+    return HexConversions::to_hex(request.ToRSeq());
 }
 
 std::string RecordCurrentTime(uint8_t seq)
 {
     Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-    APDURequest request(buffer.GetWSlice());
+    APDURequest request(buffer.as_wslice());
     build::RecordCurrentTime(request, seq);
-    return ToHex(request.ToRSlice());
+    return HexConversions::to_hex(request.ToRSeq());
 }
 
 std::string Control(opendnp3::FunctionCode code,
@@ -103,7 +102,7 @@ std::string Control(opendnp3::FunctionCode code,
                     uint16_t index)
 {
     Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-    APDURequest request(buffer.GetWSlice());
+    APDURequest request(buffer.as_wslice());
 
     request.SetControl(AppControlField::Request(seq));
     request.SetFunction(code);
@@ -112,35 +111,35 @@ std::string Control(opendnp3::FunctionCode code,
     writer.WriteSingleIndexedValue<UInt16, ControlRelayOutputBlock>(QualifierCode::UINT16_CNT_UINT16_INDEX,
                                                                     Group12Var1::Inst(), crob, index);
 
-    return ToHex(request.ToRSlice());
+    return HexConversions::to_hex(request.ToRSeq());
 }
 
 std::string EmptyResponse(uint8_t seq, const opendnp3::IINField& iin)
 {
     Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-    APDUResponse response(buffer.GetWSlice());
+    APDUResponse response(buffer.as_wslice());
     response.SetFunction(FunctionCode::RESPONSE);
     response.SetControl(AppControlField(true, true, false, false, seq));
     response.SetIIN(iin);
-    return ToHex(response.ToRSlice());
+    return HexConversions::to_hex(response.ToRSeq());
 }
 
 std::string EmptyAuthResponse(uint8_t seq, const opendnp3::IINField& iin)
 {
     Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-    APDUResponse response(buffer.GetWSlice());
+    APDUResponse response(buffer.as_wslice());
     response.SetFunction(FunctionCode::AUTH_RESPONSE);
     response.SetControl(AppControlField(true, true, false, false, seq));
     response.SetIIN(iin);
-    return ToHex(response.ToRSlice());
+    return HexConversions::to_hex(response.ToRSeq());
 }
 
 std::string NullUnsolicited(uint8_t seq, const IINField& iin)
 {
     Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-    APDUResponse response(buffer.GetWSlice());
+    APDUResponse response(buffer.as_wslice());
     build::NullUnsolicited(response, seq, iin);
-    return ToHex(response.ToRSlice());
+    return HexConversions::to_hex(response.ToRSeq());
 }
 
 std::string SolicitedConfirm(uint8_t seq)
@@ -156,10 +155,10 @@ std::string UnsolConfirm(uint8_t seq)
 std::string Confirm(uint8_t seq, bool unsol)
 {
     Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-    APDURequest apdu(buffer.GetWSlice());
+    APDURequest apdu(buffer.as_wslice());
     apdu.SetControl(AppControlField(true, true, false, unsol, seq));
     apdu.SetFunction(FunctionCode::CONFIRM);
-    return ToHex(apdu.ToRSlice());
+    return HexConversions::to_hex(apdu.ToRSeq());
 }
 
 // ----------- sec auth -------------
@@ -167,13 +166,13 @@ std::string Confirm(uint8_t seq, bool unsol)
 std::string RequestKeyStatus(uint8_t seq, uint16_t user)
 {
     Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-    APDURequest apdu(buffer.GetWSlice());
+    APDURequest apdu(buffer.as_wslice());
     apdu.SetControl(AppControlField(true, true, false, false, seq));
     apdu.SetFunction(FunctionCode::AUTH_REQUEST);
     Group120Var4 status;
     status.userNum = user;
     apdu.GetWriter().WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, status);
-    return ToHex(apdu.ToRSlice());
+    return HexConversions::to_hex(apdu.ToRSeq());
 }
 
 std::string AuthErrorResponse(opendnp3::IINField iin,
@@ -186,7 +185,7 @@ std::string AuthErrorResponse(opendnp3::IINField iin,
                               const std::string& hexErrorText)
 {
     Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-    APDUResponse apdu(buffer.GetWSlice());
+    APDUResponse apdu(buffer.as_wslice());
 
     apdu.SetControl(AppControlField(true, true, false, false, appSeq));
     apdu.SetFunction(FunctionCode::AUTH_RESPONSE);
@@ -194,11 +193,11 @@ std::string AuthErrorResponse(opendnp3::IINField iin,
 
     HexSequence hexErrorTextBuff(hexErrorText);
 
-    Group120Var7 error(challengeSeqNum, user, assocId, code, timestamp, hexErrorTextBuff.ToRSlice());
+    Group120Var7 error(challengeSeqNum, user, assocId, code, timestamp, hexErrorTextBuff.ToRSeq());
 
     apdu.GetWriter().WriteFreeFormat(error);
 
-    return ToHex(apdu.ToRSlice());
+    return HexConversions::to_hex(apdu.ToRSeq());
 }
 
 std::string ChallengeResponse(opendnp3::IINField iin,
@@ -210,7 +209,7 @@ std::string ChallengeResponse(opendnp3::IINField iin,
                               const std::string& challengeDataHex)
 {
     Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-    APDUResponse apdu(buffer.GetWSlice());
+    APDUResponse apdu(buffer.as_wslice());
 
     apdu.SetControl(AppControlField(true, true, false, false, seq));
     apdu.SetFunction(FunctionCode::AUTH_RESPONSE);
@@ -218,28 +217,28 @@ std::string ChallengeResponse(opendnp3::IINField iin,
 
     HexSequence challengeBuff(challengeDataHex);
 
-    Group120Var1 rsp(csq, user, hmacType, reason, challengeBuff.ToRSlice());
+    Group120Var1 rsp(csq, user, hmacType, reason, challengeBuff.ToRSeq());
 
     apdu.GetWriter().WriteFreeFormat(rsp);
 
-    return ToHex(apdu.ToRSlice());
+    return HexConversions::to_hex(apdu.ToRSeq());
 }
 
 std::string ChallengeReply(uint8_t appSeq, uint32_t challengeSeqNum, uint16_t userNum, const std::string& hmacHex)
 {
     Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-    APDURequest apdu(buffer.GetWSlice());
+    APDURequest apdu(buffer.as_wslice());
 
     apdu.SetControl(AppControlField(true, true, false, false, appSeq));
     apdu.SetFunction(FunctionCode::AUTH_REQUEST);
 
     HexSequence hmacBuff(hmacHex);
 
-    Group120Var2 rsp(challengeSeqNum, userNum, hmacBuff.ToRSlice());
+    Group120Var2 rsp(challengeSeqNum, userNum, hmacBuff.ToRSeq());
 
     apdu.GetWriter().WriteFreeFormat(rsp);
 
-    return ToHex(apdu.ToRSlice());
+    return HexConversions::to_hex(apdu.ToRSeq());
 }
 
 std::string KeyStatusResponse(IINField iin,
@@ -253,7 +252,7 @@ std::string KeyStatusResponse(IINField iin,
                               const std::string& hmac)
 {
     Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-    APDUResponse apdu(buffer.GetWSlice());
+    APDUResponse apdu(buffer.as_wslice());
     apdu.SetControl(AppControlField(true, true, false, false, seq));
     apdu.SetFunction(FunctionCode::AUTH_RESPONSE);
     apdu.SetIIN(iin);
@@ -267,18 +266,18 @@ std::string KeyStatusResponse(IINField iin,
     rsp.keyWrapAlgo = keyWrap;
     rsp.keyStatus = status;
     rsp.hmacAlgo = hmacType;
-    rsp.challengeData = challengeBuff.ToRSlice();
-    rsp.hmacValue = hmacBuff.ToRSlice();
+    rsp.challengeData = challengeBuff.ToRSeq();
+    rsp.hmacValue = hmacBuff.ToRSeq();
 
     apdu.GetWriter().WriteFreeFormat(rsp);
 
-    return ToHex(apdu.ToRSlice());
+    return HexConversions::to_hex(apdu.ToRSeq());
 }
 
 std::string KeyChangeRequest(uint8_t seq, uint32_t ksq, uint16_t user, const std::string& keyWrapData)
 {
     Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-    APDURequest apdu(buffer.GetWSlice());
+    APDURequest apdu(buffer.as_wslice());
     apdu.SetControl(AppControlField(true, true, false, false, seq));
     apdu.SetFunction(FunctionCode::AUTH_REQUEST);
 
@@ -287,11 +286,11 @@ std::string KeyChangeRequest(uint8_t seq, uint32_t ksq, uint16_t user, const std
     Group120Var6 rsp;
     rsp.keyChangeSeqNum = ksq;
     rsp.userNum = user;
-    rsp.keyWrapData = keyBuffer.ToRSlice();
+    rsp.keyWrapData = keyBuffer.ToRSeq();
 
     apdu.GetWriter().WriteFreeFormat(rsp);
 
-    return ToHex(apdu.ToRSlice());
+    return HexConversions::to_hex(apdu.ToRSeq());
 }
 
 std::string UserStatusChangeRequest(uint8_t seq,
@@ -305,20 +304,20 @@ std::string UserStatusChangeRequest(uint8_t seq,
                                     const std::string& certificationDataHex)
 {
     Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-    APDURequest apdu(buffer.GetWSlice());
+    APDURequest apdu(buffer.as_wslice());
     apdu.SetControl(AppControlField(true, true, false, false, seq));
     apdu.SetFunction(FunctionCode::AUTH_REQUEST);
 
-    RSlice name(reinterpret_cast<const uint8_t*>(userName.c_str()), static_cast<uint32_t>(userName.size()));
+    rseq_t name(reinterpret_cast<const uint8_t*>(userName.c_str()), static_cast<uint32_t>(userName.size()));
     HexSequence userPublicKeyBuffer(userPublicKeyHex);
     HexSequence certificationDataBuffer(certificationDataHex);
 
     Group120Var10 statusChange(keyChangeMethod, userOperation, statusChangeSeqNum, userRole, userRoleExpDays, name,
-                               userPublicKeyBuffer.ToRSlice(), certificationDataBuffer.ToRSlice());
+                               userPublicKeyBuffer.ToRSeq(), certificationDataBuffer.ToRSeq());
 
     apdu.GetWriter().WriteFreeFormat(statusChange);
 
-    return ToHex(apdu.ToRSlice());
+    return HexConversions::to_hex(apdu.ToRSeq());
 }
 
 std::string BeginUpdateKeyChangeRequest(uint8_t seq,
@@ -327,16 +326,16 @@ std::string BeginUpdateKeyChangeRequest(uint8_t seq,
                                         const std::string& masterChallenge)
 {
     Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-    APDURequest apdu(buffer.GetWSlice());
+    APDURequest apdu(buffer.as_wslice());
     apdu.SetControl(AppControlField(true, true, false, false, seq));
     apdu.SetFunction(FunctionCode::AUTH_REQUEST);
 
-    RSlice name(reinterpret_cast<const uint8_t*>(username.c_str()), static_cast<uint32_t>(username.size()));
+    rseq_t name(reinterpret_cast<const uint8_t*>(username.c_str()), static_cast<uint32_t>(username.size()));
     HexSequence challenge(masterChallenge);
 
     apdu.GetWriter().WriteFreeFormat(Group120Var11(method, name, challenge));
 
-    return ToHex(apdu.ToRSlice());
+    return HexConversions::to_hex(apdu.ToRSeq());
 }
 
 std::string BeginUpdateKeyChangeResponse(uint8_t seq,
@@ -345,7 +344,7 @@ std::string BeginUpdateKeyChangeResponse(uint8_t seq,
                                          const std::string& outstationChallenge)
 {
     Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-    APDUResponse apdu(buffer.GetWSlice());
+    APDUResponse apdu(buffer.as_wslice());
     apdu.SetControl(AppControlField(true, true, false, false, seq));
     apdu.SetFunction(FunctionCode::AUTH_RESPONSE);
     apdu.SetIIN(IINBit::DEVICE_RESTART);
@@ -354,14 +353,14 @@ std::string BeginUpdateKeyChangeResponse(uint8_t seq,
 
     apdu.GetWriter().WriteFreeFormat(Group120Var12(ksq, user, challenge));
 
-    return ToHex(apdu.ToRSlice());
+    return HexConversions::to_hex(apdu.ToRSeq());
 }
 
 std::string FinishUpdateKeyChangeRequest(
     uint8_t seq, uint32_t ksq, uint16_t user, const std::string& encryptedData, const std::string& hmac)
 {
     Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-    APDURequest apdu(buffer.GetWSlice());
+    APDURequest apdu(buffer.as_wslice());
     apdu.SetControl(AppControlField(true, true, false, false, seq));
     apdu.SetFunction(FunctionCode::AUTH_REQUEST);
 
@@ -370,40 +369,40 @@ std::string FinishUpdateKeyChangeRequest(
 
     auto writer = apdu.GetWriter();
 
-    writer.WriteFreeFormat(Group120Var13(ksq, user, encryptedBuffer.ToRSlice()));
-    writer.WriteFreeFormat(Group120Var15(hmacBuffer.ToRSlice()));
+    writer.WriteFreeFormat(Group120Var13(ksq, user, encryptedBuffer.ToRSeq()));
+    writer.WriteFreeFormat(Group120Var15(hmacBuffer.ToRSeq()));
 
-    return ToHex(apdu.ToRSlice());
+    return HexConversions::to_hex(apdu.ToRSeq());
 }
 
 std::string FinishUpdateKeyChangeResponse(uint8_t seq, const std::string& hmac)
 {
     Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-    APDUResponse apdu(buffer.GetWSlice());
+    APDUResponse apdu(buffer.as_wslice());
     apdu.SetControl(AppControlField(true, true, false, false, seq));
     apdu.SetFunction(FunctionCode::AUTH_RESPONSE);
     apdu.SetIIN(IINBit::DEVICE_RESTART);
 
     HexSequence hmacBuffer(hmac);
 
-    apdu.GetWriter().WriteFreeFormat(Group120Var15(hmacBuffer.ToRSlice()));
+    apdu.GetWriter().WriteFreeFormat(Group120Var15(hmacBuffer.ToRSeq()));
 
-    return ToHex(apdu.ToRSlice());
+    return HexConversions::to_hex(apdu.ToRSeq());
 }
 
 std::string KeyWrapData(uint16_t keyLengthBytes, uint8_t keyRepeatValue, const std::string& keyStatusMsg)
 {
     Buffer key(keyLengthBytes);
-    key.GetWSlice().SetAllTo(keyRepeatValue);
-    auto keyHex = ToHex(key.ToRSlice());
+    key.as_wslice().set_all_to(keyRepeatValue);
+    auto keyHex = HexConversions::to_hex(key.as_rslice());
     HexSequence statusBuffer(keyStatusMsg);
 
     Buffer lengthBuff(2);
-    auto lenDest = lengthBuff.GetWSlice();
-    UInt16::WriteBuffer(lenDest, keyLengthBytes);
-    auto lengthHex = ToHex(lengthBuff.ToRSlice());
+    auto lenDest = lengthBuff.as_wslice();
+    UInt16::write_to(lenDest, keyLengthBytes);
+    auto lengthHex = HexConversions::to_hex(lengthBuff.as_rslice());
 
-    return AppendHex({lengthHex, keyHex, keyHex, keyStatusMsg});
+    return HexConversions::append_hex({lengthHex, keyHex, keyHex, keyStatusMsg});
 }
 
 } // namespace hex

@@ -17,16 +17,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "MasterTestFixture.h"
+#include "utils/MasterTestFixture.h"
 
-#include <asiodnp3/DefaultMasterApplication.h>
+#include <opendnp3/master/DefaultMasterApplication.h>
 
-#include <testlib/BufferHelpers.h>
+#include "utils/BufferHelpers.h"
 
-using namespace testlib;
-
-namespace opendnp3
-{
+using namespace opendnp3;
 
 MasterParams NoStartupTasks()
 {
@@ -40,18 +37,18 @@ MasterParams NoStartupTasks()
 MasterTestFixture::MasterTestFixture(const MasterParams& params,
                                      const Addresses& addresses,
                                      const std::string& id,
-                                     const std::shared_ptr<openpal::ILogHandler>& log,
-                                     const std::shared_ptr<testlib::MockExecutor>& executor,
+                                     const std::shared_ptr<log4cpp::ILogHandler>& log,
+                                     const std::shared_ptr<exe4cpp::MockExecutor>& executor,
                                      const std::shared_ptr<IMasterScheduler>& scheduler)
     : addresses(addresses),
       log(log),
-      exe(executor ? executor : std::make_shared<MockExecutor>()),
+      exe(executor ? executor : std::make_shared<exe4cpp::MockExecutor>()),
       meas(std::make_shared<MockSOEHandler>()),
       lower(std::make_shared<MockLowerLayer>()),
       application(std::make_shared<MockMasterApplication>()),
       scheduler(scheduler ? scheduler : std::make_shared<MasterSchedulerBackend>(exe)),
       context(std::make_shared<MContext>(
-          addresses, openpal::Logger(log, id, ~0), exe, lower, meas, application, this->scheduler, params))
+          addresses, log4cpp::Logger(log, log4cpp::ModuleId(), id, log4cpp::LogLevels::everything()), exe, lower, meas, application, this->scheduler, params))
 {
 }
 
@@ -63,7 +60,5 @@ MasterTestFixture::~MasterTestFixture()
 bool MasterTestFixture::SendToMaster(const std::string& hex)
 {
     HexSequence hs(hex);
-    return context->OnReceive(Message(this->addresses.Reverse(), hs.ToRSlice()));
+    return context->OnReceive(Message(this->addresses.Reverse(), hs.ToRSeq()));
 }
-
-} // namespace opendnp3

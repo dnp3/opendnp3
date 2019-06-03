@@ -17,38 +17,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_MOCKLOWERLAYER_H
-#define OPENDNP3_MOCKLOWERLAYER_H
+#ifndef OPENDNP3_UNITTESTS_MOCK_COMMAND_CALLBACK_H
+#define OPENDNP3_UNITTESTS_MOCK_COMMAND_CALLBACK_H
 
-#include <opendnp3/LayerInterfaces.h>
+#include <opendnp3/master/ITaskCallback.h>
 
 #include <queue>
-#include <string>
 
-namespace opendnp3
-{
-
-class MockLowerLayer : public ILowerLayer, public HasUpperLayer
+class MockTaskCallback : public opendnp3::ITaskCallback
 {
 public:
-    void SendUp(const openpal::RSlice& data, const Addresses& addresses = Addresses());
-    void SendUp(const std::string& arHexData, const Addresses& addresses = Addresses());
+    void OnStart() final
+    {
+        ++numStart;
+    }
 
-    void SendComplete();
-    void ThisLayerUp();
-    void ThisLayerDown();
+    void OnComplete(opendnp3::TaskCompletion result) final
+    {
+        results.push_back(result);
+    }
 
-    bool HasNoData() const;
+    void OnDestroyed() final
+    {
+        ++numDestroyed;
+    }
 
-    size_t NumWrites() const;
-    std::string PopWriteAsHex();
+    uint32_t numStart = 0;
 
-    virtual bool BeginTransmit(const Message& message) override final;
+    uint32_t numDestroyed = 0;
 
-private:
-    std::queue<Message> sendQueue;
+    std::deque<opendnp3::TaskCompletion> results;
 };
-
-} // namespace opendnp3
 
 #endif

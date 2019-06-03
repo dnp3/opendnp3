@@ -17,20 +17,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "mocks/MasterTestFixture.h"
-#include "mocks/MeasurementComparisons.h"
+#include "utils/MasterTestFixture.h"
+#include "utils/MeasurementComparisons.h"
 
-#include <opendnp3/app/APDUBuilders.h>
-#include <opendnp3/app/APDUResponse.h>
+#include <app/APDUBuilders.h>
+#include <app/APDUResponse.h>
 
-#include <dnp3mocks/APDUHexBuilders.h>
-#include <dnp3mocks/CallbackQueue.h>
-
-#include <testlib/HexConversions.h>
+#include "utils/APDUHexBuilders.h"
+#include "utils/CallbackQueue.h"
 
 #include <catch.hpp>
 
-using namespace openpal;
 using namespace opendnp3;
 
 #define SUITE(name) "MasterUnsolTestSuite - " name
@@ -45,7 +42,7 @@ TEST_CASE(SUITE("ReceiveUnsolBeforeTransmit"))
 
     t.SendToMaster(hex::NullUnsolicited(0, IINField::Empty()));
 
-    REQUIRE(t.exe->RunMany());
+    REQUIRE(t.exe->run_many());
 
     REQUIRE(t.lower->PopWriteAsHex() == hex::UnsolConfirm(0));
     t.context->OnTxReady();

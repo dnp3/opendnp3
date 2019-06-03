@@ -17,21 +17,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "mocks/MasterTestFixture.h"
-#include "mocks/MeasurementComparisons.h"
+#include "utils/MasterTestFixture.h"
+#include "utils/MeasurementComparisons.h"
 
-#include <opendnp3/app/APDUBuilders.h>
-#include <opendnp3/app/APDUResponse.h>
+#include <app/APDUBuilders.h>
+#include <app/APDUResponse.h>
 
-#include <dnp3mocks/APDUHexBuilders.h>
-#include <dnp3mocks/CommandCallbackQueue.h>
-
-#include <testlib/HexConversions.h>
+#include "utils/APDUHexBuilders.h"
+#include "utils/CommandCallbackQueue.h"
 
 #include <catch.hpp>
 
 using namespace opendnp3;
-using namespace openpal;
 
 #define SUITE(name) "MasterMultiCommandRequestsTestSuite - " name
 
@@ -49,7 +46,7 @@ TEST_CASE(SUITE("command set ignores empty headers"))
     CommandCallbackQueue queue;
     t.context->DirectOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
 
-    REQUIRE(t.exe->RunMany() > 0);
+    REQUIRE(t.exe->run_many() > 0);
 
     // writes just the 2nd call to Add()
     REQUIRE(t.lower->PopWriteAsHex() == "C0 05 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00");
@@ -71,13 +68,13 @@ TEST_CASE(SUITE("DirectOperateTwoCROB"))
 
     CommandCallbackQueue queue;
     t.context->DirectOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
-    REQUIRE(t.exe->RunMany() > 0);
+    REQUIRE(t.exe->run_many() > 0);
 
     REQUIRE(t.lower->PopWriteAsHex() == "C0 05 " + crobstr); // DO
     t.context->OnTxReady();
     t.SendToMaster("C0 81 00 00 " + crobstr);
 
-    REQUIRE(t.exe->RunMany() > 0);
+    REQUIRE(t.exe->run_many() > 0);
 
     REQUIRE(t.lower->PopWriteAsHex().empty()); // nore more packets
 
@@ -107,7 +104,7 @@ TEST_CASE(SUITE("SelectAndOperateTwoCROBSOneAO"))
 
     CommandCallbackQueue queue;
     t.context->SelectAndOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
-    REQUIRE(t.exe->RunMany() > 0);
+    REQUIRE(t.exe->run_many() > 0);
 
     REQUIRE(t.lower->PopWriteAsHex() == "C0 03 " + headers); // select
     t.context->OnTxReady();
@@ -117,7 +114,7 @@ TEST_CASE(SUITE("SelectAndOperateTwoCROBSOneAO"))
     t.context->OnTxReady();
     t.SendToMaster("C1 81 00 00 " + headers);
 
-    REQUIRE(t.exe->RunMany() > 0);
+    REQUIRE(t.exe->run_many() > 0);
 
     REQUIRE(t.lower->PopWriteAsHex().empty()); // nore more packets
 
