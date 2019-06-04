@@ -47,7 +47,8 @@ public:
     // ------- IStaticSelector -------------
 
     IINField SelectAll(GroupVariation gv) override;
-    IINField SelectRange(GroupVariation gv, const Range& range) override;
+    IINField SelectRange(GroupVariation gv, const Range& range) override;    
+    void Unselect() override;   
 
     // ------- IResponseLoader -------------
 
@@ -61,9 +62,6 @@ public:
 
     Range AssignClassToAll(AssignClassType type, PointClass clazz) override;
     Range AssignClassToRange(AssignClassType type, PointClass clazz, const Range& range) override;
-
-    // used to unselect selected points
-    void Unselect() override;   
 
 private:
 

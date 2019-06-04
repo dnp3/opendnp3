@@ -24,7 +24,7 @@ namespace opendnp3
 
 DatabaseMaps::DatabaseMaps(const DatabaseConfigNew& config,
                                  StaticTypeBitField allowed_class_zero_types)
-    : maps(config), allowed_class_zero_types(allowed_class_zero_types)
+    : maps(config, allowed_class_zero_types), allowed_class_zero_types(allowed_class_zero_types)
 {
 }
 

@@ -25,6 +25,7 @@
 
 #include <opendnp3/outstation/DatabaseConfigNew.h>
 #include <opendnp3/app/MeasurementTypeSpecs.h>
+#include <opendnp3/outstation/StaticTypeBitfield.h>
 
 namespace opendnp3
 {
@@ -33,7 +34,7 @@ class StaticDataMaps final : public IStaticSelector
 {
 public:
 
-	StaticDataMaps(const DatabaseConfigNew& config);
+	StaticDataMaps(const DatabaseConfigNew& config, StaticTypeBitField allowed_class_zero_types);
 
 	bool has_any_selection() const;
 
@@ -44,6 +45,23 @@ public:
     void Unselect() override;
 
 private:
+
+	StaticTypeBitField allowed_class_zero_types;
+    
+	StaticDataMap<BinarySpec> binary_input;
+    StaticDataMap<DoubleBitBinarySpec> double_binary;
+    StaticDataMap<AnalogSpec> analog_input;
+    StaticDataMap<CounterSpec> counter;
+    StaticDataMap<FrozenCounterSpec> frozen_counter;
+    StaticDataMap<BinaryOutputStatusSpec> binary_output_status;
+    StaticDataMap<AnalogOutputStatusSpec> analog_output_status;
+    StaticDataMap<TimeAndIntervalSpec> time_and_interval;
+    StaticDataMap<OctetStringSpec> octet_string;
+
+	// ----- helper methods ------ 
+
+	template<class Spec>
+	void SelectAllClassZero(StaticDataMap<Spec>& map);
 
 	template<class Spec> 
 	static IINField SelectAll(StaticDataMap<Spec>& map);
@@ -58,17 +76,8 @@ private:
     static IINField SelectRange(StaticDataMap<Spec>& map,
                                 const Range& range,
                                 typename Spec::static_variation_t variation);
-
-    StaticDataMap<BinarySpec> binary_input;
-    StaticDataMap<DoubleBitBinarySpec> double_binary;
-    StaticDataMap<AnalogSpec> analog_input;
-    StaticDataMap<CounterSpec> counter;
-    StaticDataMap<FrozenCounterSpec> frozen_counter;
-    StaticDataMap<BinaryOutputStatusSpec> binary_output_status;
-    StaticDataMap<AnalogOutputStatusSpec> analog_output_status;
-    StaticDataMap<TimeAndIntervalSpec> time_and_interval;
-    StaticDataMap<OctetStringSpec> octet_string;
 };
+    
 
 } // namespace opendnp3
 
