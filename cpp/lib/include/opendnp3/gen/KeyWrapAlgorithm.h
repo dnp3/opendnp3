@@ -33,6 +33,7 @@
 #define OPENDNP3_KEYWRAPALGORITHM_H
 
 #include <cstdint>
+#include <ser4cpp/serialization/LittleEndian.h>
 
 namespace opendnp3 {
 
@@ -52,6 +53,15 @@ uint8_t KeyWrapAlgorithmToType(KeyWrapAlgorithm arg);
 KeyWrapAlgorithm KeyWrapAlgorithmFromType(uint8_t arg);
 char const* KeyWrapAlgorithmToString(KeyWrapAlgorithm arg);
 
+}
+
+namespace ser4cpp
+{
+  namespace custom_serializers
+  {
+    bool write_one(wseq_t& dest, const opendnp3::KeyWrapAlgorithm& value);
+    bool read_one(rseq_t& input, opendnp3::KeyWrapAlgorithm& out);
+  }
 }
 
 #endif

@@ -63,3 +63,21 @@ char const* ParityToString(Parity arg)
 }
 
 }
+
+namespace ser4cpp
+{
+  namespace custom_serializers
+  {
+    bool write_one(wseq_t& dest, const opendnp3::Parity& value)
+    {
+      return UInt8::write_to(dest, opendnp3::ParityToType(value));
+    }
+    bool read_one(rseq_t& input, opendnp3::Parity& out)
+    {
+      UInt8::type_t tempParity;
+      bool result = UInt8::read_from(input, tempParity);
+      out = opendnp3::ParityFromType(tempParity);
+      return result;
+    }
+  }
+}

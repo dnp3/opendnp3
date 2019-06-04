@@ -95,3 +95,21 @@ char const* AuthErrorCodeToString(AuthErrorCode arg)
 }
 
 }
+
+namespace ser4cpp
+{
+  namespace custom_serializers
+  {
+    bool write_one(wseq_t& dest, const opendnp3::AuthErrorCode& value)
+    {
+      return UInt8::write_to(dest, opendnp3::AuthErrorCodeToType(value));
+    }
+    bool read_one(rseq_t& input, opendnp3::AuthErrorCode& out)
+    {
+      UInt8::type_t tempAuthErrorCode;
+      bool result = UInt8::read_from(input, tempAuthErrorCode);
+      out = opendnp3::AuthErrorCodeFromType(tempAuthErrorCode);
+      return result;
+    }
+  }
+}

@@ -51,7 +51,7 @@ trait GroupVariation {
   /// --- Includes for h/cpp files ----
 
   def headerIncludes : List[String] = List(""""opendnp3/app/GroupVariationID.h"""") // always included in headers
-  def implIncludes : List[String] = Nil
+  def implIncludes : List[String] = List(""""app/parsing/DNPTimeParsing.h"""")
 
   /// --- actual source lines for the h/cpp ---
 

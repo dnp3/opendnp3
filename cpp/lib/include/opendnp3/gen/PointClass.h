@@ -54,4 +54,5 @@ enum class PointClass : uint8_t
 
 }
 
+
 #endif

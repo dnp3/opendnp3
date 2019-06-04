@@ -33,6 +33,7 @@
 #define OPENDNP3_COMMANDSTATUS_H
 
 #include <cstdint>
+#include <ser4cpp/serialization/LittleEndian.h>
 
 namespace opendnp3 {
 
@@ -90,6 +91,15 @@ uint8_t CommandStatusToType(CommandStatus arg);
 CommandStatus CommandStatusFromType(uint8_t arg);
 char const* CommandStatusToString(CommandStatus arg);
 
+}
+
+namespace ser4cpp
+{
+  namespace custom_serializers
+  {
+    bool write_one(wseq_t& dest, const opendnp3::CommandStatus& value);
+    bool read_one(rseq_t& input, opendnp3::CommandStatus& out);
+  }
 }
 
 #endif

@@ -363,12 +363,12 @@ TEST_CASE(SUITE("ParsesGroup2Var3Correctly"))
     REQUIRE(t.meas->binarySOE.size() == 2);
     {
         auto record = t.meas->binarySOE[7];
-        REQUIRE(record.meas.time == 5);
+        REQUIRE(record.meas.time.value == 5);
         REQUIRE(record.info.gv == GroupVariation::Group2Var3);
     }
     {
         auto record = t.meas->binarySOE[8];
-        REQUIRE(record.meas.time == 6);
+        REQUIRE(record.meas.time.value == 6);
         REQUIRE(record.info.gv == GroupVariation::Group2Var3);
     }
 }
@@ -389,7 +389,7 @@ TEST_CASE(SUITE("ParsesGroup50Var4"))
 
     REQUIRE(1 == t.meas->timeAndIntervalSOE.size());
     REQUIRE(t.meas->timeAndIntervalSOE[0].meas.interval == 3);
-    REQUIRE(t.meas->timeAndIntervalSOE[0].meas.time == 9);
+    REQUIRE(t.meas->timeAndIntervalSOE[0].meas.time.value == 9);
     REQUIRE(t.meas->timeAndIntervalSOE[0].meas.GetUnitsEnum() == IntervalUnits::Days);
 }
 

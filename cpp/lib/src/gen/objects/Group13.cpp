@@ -31,6 +31,7 @@
 
 #include "Group13.h"
 
+#include "app/parsing/DNPTimeParsing.h"
 #include <ser4cpp/serialization/LittleEndian.h>
 #include "app/MeasurementFactory.h"
 #include "app/WriteConversions.h"
@@ -46,20 +47,12 @@ Group13Var1::Group13Var1() : flags(0)
 
 bool Group13Var1::Read(rseq_t& buffer, Group13Var1& output)
 {
-  bool result = true;
-
-  result &= UInt8::read_from(buffer, output.flags);
-
-  return result;
+  return LittleEndian::read(buffer, output.flags);
 }
 
 bool Group13Var1::Write(const Group13Var1& arg, ser4cpp::wseq_t& buffer)
 {
-  bool result = true;
-
-  result &= UInt8::write_to(buffer, arg.flags);
-
-  return result;
+  return LittleEndian::write(buffer, arg.flags);
 }
 
 bool Group13Var1::ReadTarget(rseq_t& buff, BinaryCommandEvent& output)
@@ -88,24 +81,12 @@ Group13Var2::Group13Var2() : flags(0), time(0)
 
 bool Group13Var2::Read(rseq_t& buffer, Group13Var2& output)
 {
-  bool result = true;
-
-  result &= UInt8::read_from(buffer, output.flags);
-  UInt48Type timeTemp;
-  result &= UInt48::read_from(buffer, timeTemp);
-  output.time = timeTemp.Get();
-
-  return result;
+  return LittleEndian::read(buffer, output.flags, output.time);
 }
 
 bool Group13Var2::Write(const Group13Var2& arg, ser4cpp::wseq_t& buffer)
 {
-  bool result = true;
-
-  result &= UInt8::write_to(buffer, arg.flags);
-  result &= UInt48::write_to(buffer, UInt48Type(arg.time));
-
-  return result;
+  return LittleEndian::write(buffer, arg.flags, arg.time);
 }
 
 bool Group13Var2::ReadTarget(rseq_t& buff, BinaryCommandEvent& output)

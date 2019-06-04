@@ -49,4 +49,5 @@ enum class StaticFrozenCounterVariation : uint8_t
 
 }
 
+
 #endif

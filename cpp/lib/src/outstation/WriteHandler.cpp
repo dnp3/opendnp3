@@ -72,7 +72,7 @@ IINField WriteHandler::ProcessHeader(const CountHeader& /*header*/, const IColle
         return IINBit::PARAM_ERROR;
 
     this->wroteTime = true;
-    return application->WriteAbsoluteTime(UTCTimestamp(value.time)) ? IINField::Empty() : IINBit::PARAM_ERROR;
+    return application->WriteAbsoluteTime(UTCTimestamp(value.time.value)) ? IINField::Empty() : IINBit::PARAM_ERROR;
 }
 
 IINField WriteHandler::ProcessHeader(const CountHeader& /*header*/, const ICollection<Group50Var3>& values)
@@ -91,7 +91,7 @@ IINField WriteHandler::ProcessHeader(const CountHeader& /*header*/, const IColle
         return IINBit::PARAM_ERROR;
 
     const UTCTimestamp time(
-        value.time
+        value.time.value
         + std::chrono::duration_cast<std::chrono::milliseconds>(this->timeSyncState->GetDifference().value).count());
 
     this->wroteTime = true;

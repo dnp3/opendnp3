@@ -31,6 +31,7 @@
 
 #include "Group120.h"
 
+#include "app/parsing/DNPTimeParsing.h"
 #include <ser4cpp/serialization/EndianHelpers.h>
 #include "app/parsing/PrefixFields.h"
 #include <ser4cpp/serialization/LittleEndian.h>
@@ -73,15 +74,7 @@ bool Group120Var1::Read(const rseq_t& buffer)
 
   rseq_t copy(buffer); //mutable copy for parsing
 
-  UInt32::read_from(copy, this->challengeSeqNum);
-  UInt16::read_from(copy, this->userNum);
-  uint8_t hmacAlgoRawValue;
-  UInt8::read_from(copy, hmacAlgoRawValue);
-  this->hmacAlgo = HMACTypeFromType(hmacAlgoRawValue);
-  uint8_t challengeReasonRawValue;
-  UInt8::read_from(copy, challengeReasonRawValue);
-  this->challengeReason = ChallengeReasonFromType(challengeReasonRawValue);
-
+  LittleEndian::read(copy, this->challengeSeqNum, this->userNum, this->hmacAlgo, this->challengeReason);
   this->challengeData = copy; // whatever is left over
   return true;
 }
@@ -93,11 +86,7 @@ bool Group120Var1::Write(ser4cpp::wseq_t& buffer) const
     return false;
   }
 
-  UInt32::write_to(buffer, this->challengeSeqNum);
-  UInt16::write_to(buffer, this->userNum);
-  UInt8::write_to(buffer, HMACTypeToType(this->hmacAlgo));
-  UInt8::write_to(buffer, ChallengeReasonToType(this->challengeReason));
-
+  LittleEndian::write(buffer, this->challengeSeqNum, this->userNum, this->hmacAlgo, this->challengeReason);
   buffer.copy_from(challengeData);
   return true;
 }
@@ -132,9 +121,7 @@ bool Group120Var2::Read(const rseq_t& buffer)
 
   rseq_t copy(buffer); //mutable copy for parsing
 
-  UInt32::read_from(copy, this->challengeSeqNum);
-  UInt16::read_from(copy, this->userNum);
-
+  LittleEndian::read(copy, this->challengeSeqNum, this->userNum);
   this->hmacValue = copy; // whatever is left over
   return true;
 }
@@ -146,9 +133,7 @@ bool Group120Var2::Write(ser4cpp::wseq_t& buffer) const
     return false;
   }
 
-  UInt32::write_to(buffer, this->challengeSeqNum);
-  UInt16::write_to(buffer, this->userNum);
-
+  LittleEndian::write(buffer, this->challengeSeqNum, this->userNum);
   buffer.copy_from(hmacValue);
   return true;
 }
@@ -160,22 +145,12 @@ Group120Var3::Group120Var3() : challengeSeqNum(0), userNum(0)
 
 bool Group120Var3::Read(rseq_t& buffer, Group120Var3& output)
 {
-  bool result = true;
-
-  result &= UInt32::read_from(buffer, output.challengeSeqNum);
-  result &= UInt16::read_from(buffer, output.userNum);
-
-  return result;
+  return LittleEndian::read(buffer, output.challengeSeqNum, output.userNum);
 }
 
 bool Group120Var3::Write(const Group120Var3& arg, ser4cpp::wseq_t& buffer)
 {
-  bool result = true;
-
-  result &= UInt32::write_to(buffer, arg.challengeSeqNum);
-  result &= UInt16::write_to(buffer, arg.userNum);
-
-  return result;
+  return LittleEndian::write(buffer, arg.challengeSeqNum, arg.userNum);
 }
 
 // ------- Group120Var4 -------
@@ -185,20 +160,12 @@ Group120Var4::Group120Var4() : userNum(0)
 
 bool Group120Var4::Read(rseq_t& buffer, Group120Var4& output)
 {
-  bool result = true;
-
-  result &= UInt16::read_from(buffer, output.userNum);
-
-  return result;
+  return LittleEndian::read(buffer, output.userNum);
 }
 
 bool Group120Var4::Write(const Group120Var4& arg, ser4cpp::wseq_t& buffer)
 {
-  bool result = true;
-
-  result &= UInt16::write_to(buffer, arg.userNum);
-
-  return result;
+  return LittleEndian::write(buffer, arg.userNum);
 }
 
 // ------- Group120Var5 -------
@@ -239,18 +206,7 @@ bool Group120Var5::Read(const rseq_t& buffer)
 
   rseq_t copy(buffer); //mutable copy for parsing
 
-  UInt32::read_from(copy, this->keyChangeSeqNum);
-  UInt16::read_from(copy, this->userNum);
-  uint8_t keyWrapAlgoRawValue;
-  UInt8::read_from(copy, keyWrapAlgoRawValue);
-  this->keyWrapAlgo = KeyWrapAlgorithmFromType(keyWrapAlgoRawValue);
-  uint8_t keyStatusRawValue;
-  UInt8::read_from(copy, keyStatusRawValue);
-  this->keyStatus = KeyStatusFromType(keyStatusRawValue);
-  uint8_t hmacAlgoRawValue;
-  UInt8::read_from(copy, hmacAlgoRawValue);
-  this->hmacAlgo = HMACTypeFromType(hmacAlgoRawValue);
-
+  LittleEndian::read(copy, this->keyChangeSeqNum, this->userNum, this->keyWrapAlgo, this->keyStatus, this->hmacAlgo);
   if(!PrefixFields::Read(copy, challengeData))
   {
     return false;
@@ -273,12 +229,7 @@ bool Group120Var5::Write(ser4cpp::wseq_t& buffer) const
     return false;
   }
 
-  UInt32::write_to(buffer, this->keyChangeSeqNum);
-  UInt16::write_to(buffer, this->userNum);
-  UInt8::write_to(buffer, KeyWrapAlgorithmToType(this->keyWrapAlgo));
-  UInt8::write_to(buffer, KeyStatusToType(this->keyStatus));
-  UInt8::write_to(buffer, HMACTypeToType(this->hmacAlgo));
-
+  LittleEndian::write(buffer, this->keyChangeSeqNum, this->userNum, this->keyWrapAlgo, this->keyStatus, this->hmacAlgo);
   if(!PrefixFields::Write(buffer, challengeData))
   {
     return false;
@@ -318,9 +269,7 @@ bool Group120Var6::Read(const rseq_t& buffer)
 
   rseq_t copy(buffer); //mutable copy for parsing
 
-  UInt32::read_from(copy, this->keyChangeSeqNum);
-  UInt16::read_from(copy, this->userNum);
-
+  LittleEndian::read(copy, this->keyChangeSeqNum, this->userNum);
   this->keyWrapData = copy; // whatever is left over
   return true;
 }
@@ -332,9 +281,7 @@ bool Group120Var6::Write(ser4cpp::wseq_t& buffer) const
     return false;
   }
 
-  UInt32::write_to(buffer, this->keyChangeSeqNum);
-  UInt16::write_to(buffer, this->userNum);
-
+  LittleEndian::write(buffer, this->keyChangeSeqNum, this->userNum);
   buffer.copy_from(keyWrapData);
   return true;
 }
@@ -375,16 +322,7 @@ bool Group120Var7::Read(const rseq_t& buffer)
 
   rseq_t copy(buffer); //mutable copy for parsing
 
-  UInt32::read_from(copy, this->challengeSeqNum);
-  UInt16::read_from(copy, this->userNum);
-  UInt16::read_from(copy, this->assocId);
-  uint8_t errorCodeRawValue;
-  UInt8::read_from(copy, errorCodeRawValue);
-  this->errorCode = AuthErrorCodeFromType(errorCodeRawValue);
-  UInt48Type timeTemp;
-  UInt48::read_from(copy, timeTemp);
-  this->time = timeTemp.Get();
-
+  LittleEndian::read(copy, this->challengeSeqNum, this->userNum, this->assocId, this->errorCode, this->time);
   this->errorText = copy; // whatever is left over
   return true;
 }
@@ -396,12 +334,7 @@ bool Group120Var7::Write(ser4cpp::wseq_t& buffer) const
     return false;
   }
 
-  UInt32::write_to(buffer, this->challengeSeqNum);
-  UInt16::write_to(buffer, this->userNum);
-  UInt16::write_to(buffer, this->assocId);
-  UInt8::write_to(buffer, AuthErrorCodeToType(this->errorCode));
-  UInt48::write_to(buffer, UInt48Type(this->time));
-
+  LittleEndian::write(buffer, this->challengeSeqNum, this->userNum, this->assocId, this->errorCode, this->time);
   buffer.copy_from(errorText);
   return true;
 }
@@ -436,13 +369,7 @@ bool Group120Var8::Read(const rseq_t& buffer)
 
   rseq_t copy(buffer); //mutable copy for parsing
 
-  uint8_t keyChangeMethodRawValue;
-  UInt8::read_from(copy, keyChangeMethodRawValue);
-  this->keyChangeMethod = KeyChangeMethodFromType(keyChangeMethodRawValue);
-  uint8_t certificateTypeRawValue;
-  UInt8::read_from(copy, certificateTypeRawValue);
-  this->certificateType = CertificateTypeFromType(certificateTypeRawValue);
-
+  LittleEndian::read(copy, this->keyChangeMethod, this->certificateType);
   this->certificate = copy; // whatever is left over
   return true;
 }
@@ -454,9 +381,7 @@ bool Group120Var8::Write(ser4cpp::wseq_t& buffer) const
     return false;
   }
 
-  UInt8::write_to(buffer, KeyChangeMethodToType(this->keyChangeMethod));
-  UInt8::write_to(buffer, CertificateTypeToType(this->certificateType));
-
+  LittleEndian::write(buffer, this->keyChangeMethod, this->certificateType);
   buffer.copy_from(certificate);
   return true;
 }
@@ -534,16 +459,7 @@ bool Group120Var10::Read(const rseq_t& buffer)
 
   rseq_t copy(buffer); //mutable copy for parsing
 
-  uint8_t keyChangeMethodRawValue;
-  UInt8::read_from(copy, keyChangeMethodRawValue);
-  this->keyChangeMethod = KeyChangeMethodFromType(keyChangeMethodRawValue);
-  uint8_t userOperationRawValue;
-  UInt8::read_from(copy, userOperationRawValue);
-  this->userOperation = UserOperationFromType(userOperationRawValue);
-  UInt32::read_from(copy, this->statusChangeSeqNum);
-  UInt16::read_from(copy, this->userRole);
-  UInt16::read_from(copy, this->userRoleExpDays);
-
+  LittleEndian::read(copy, this->keyChangeMethod, this->userOperation, this->statusChangeSeqNum, this->userRole, this->userRoleExpDays);
   if(!PrefixFields::Read(copy, userName, userPublicKey, certificationData))
   {
     return false;
@@ -572,12 +488,7 @@ bool Group120Var10::Write(ser4cpp::wseq_t& buffer) const
     return false;
   }
 
-  UInt8::write_to(buffer, KeyChangeMethodToType(this->keyChangeMethod));
-  UInt8::write_to(buffer, UserOperationToType(this->userOperation));
-  UInt32::write_to(buffer, this->statusChangeSeqNum);
-  UInt16::write_to(buffer, this->userRole);
-  UInt16::write_to(buffer, this->userRoleExpDays);
-
+  LittleEndian::write(buffer, this->keyChangeMethod, this->userOperation, this->statusChangeSeqNum, this->userRole, this->userRoleExpDays);
   if(!PrefixFields::Write(buffer, userName, userPublicKey, certificationData))
   {
     return false;
@@ -616,10 +527,7 @@ bool Group120Var11::Read(const rseq_t& buffer)
 
   rseq_t copy(buffer); //mutable copy for parsing
 
-  uint8_t keyChangeMethodRawValue;
-  UInt8::read_from(copy, keyChangeMethodRawValue);
-  this->keyChangeMethod = KeyChangeMethodFromType(keyChangeMethodRawValue);
-
+  LittleEndian::read(copy, this->keyChangeMethod);
   if(!PrefixFields::Read(copy, userName, challengeData))
   {
     return false;
@@ -648,8 +556,7 @@ bool Group120Var11::Write(ser4cpp::wseq_t& buffer) const
     return false;
   }
 
-  UInt8::write_to(buffer, KeyChangeMethodToType(this->keyChangeMethod));
-
+  LittleEndian::write(buffer, this->keyChangeMethod);
   if(!PrefixFields::Write(buffer, userName, challengeData))
   {
     return false;
@@ -688,9 +595,7 @@ bool Group120Var12::Read(const rseq_t& buffer)
 
   rseq_t copy(buffer); //mutable copy for parsing
 
-  UInt32::read_from(copy, this->keyChangeSeqNum);
-  UInt16::read_from(copy, this->userNum);
-
+  LittleEndian::read(copy, this->keyChangeSeqNum, this->userNum);
   if(!PrefixFields::Read(copy, challengeData))
   {
     return false;
@@ -719,9 +624,7 @@ bool Group120Var12::Write(ser4cpp::wseq_t& buffer) const
     return false;
   }
 
-  UInt32::write_to(buffer, this->keyChangeSeqNum);
-  UInt16::write_to(buffer, this->userNum);
-
+  LittleEndian::write(buffer, this->keyChangeSeqNum, this->userNum);
   if(!PrefixFields::Write(buffer, challengeData))
   {
     return false;
@@ -760,9 +663,7 @@ bool Group120Var13::Read(const rseq_t& buffer)
 
   rseq_t copy(buffer); //mutable copy for parsing
 
-  UInt32::read_from(copy, this->keyChangeSeqNum);
-  UInt16::read_from(copy, this->userNum);
-
+  LittleEndian::read(copy, this->keyChangeSeqNum, this->userNum);
   if(!PrefixFields::Read(copy, encryptedUpdateKey))
   {
     return false;
@@ -791,9 +692,7 @@ bool Group120Var13::Write(ser4cpp::wseq_t& buffer) const
     return false;
   }
 
-  UInt32::write_to(buffer, this->keyChangeSeqNum);
-  UInt16::write_to(buffer, this->userNum);
-
+  LittleEndian::write(buffer, this->keyChangeSeqNum, this->userNum);
   if(!PrefixFields::Write(buffer, encryptedUpdateKey))
   {
     return false;

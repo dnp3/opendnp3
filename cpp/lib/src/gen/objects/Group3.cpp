@@ -31,6 +31,7 @@
 
 #include "Group3.h"
 
+#include "app/parsing/DNPTimeParsing.h"
 #include <ser4cpp/serialization/LittleEndian.h>
 #include "app/MeasurementFactory.h"
 #include "app/WriteConversions.h"
@@ -46,20 +47,12 @@ Group3Var2::Group3Var2() : flags(0)
 
 bool Group3Var2::Read(rseq_t& buffer, Group3Var2& output)
 {
-  bool result = true;
-
-  result &= UInt8::read_from(buffer, output.flags);
-
-  return result;
+  return LittleEndian::read(buffer, output.flags);
 }
 
 bool Group3Var2::Write(const Group3Var2& arg, ser4cpp::wseq_t& buffer)
 {
-  bool result = true;
-
-  result &= UInt8::write_to(buffer, arg.flags);
-
-  return result;
+  return LittleEndian::write(buffer, arg.flags);
 }
 
 bool Group3Var2::ReadTarget(rseq_t& buff, DoubleBitBinary& output)

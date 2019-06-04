@@ -62,4 +62,5 @@ enum class AnalogOutputStatusQuality : uint8_t
 
 }
 
+
 #endif

@@ -98,7 +98,7 @@ TEST_CASE(SUITE("parses g122v2 correctly"))
         REQUIRE(stat.info.isEventVariation);
         REQUIRE(stat.meas.value.count == 8);
         REQUIRE(stat.meas.value.assocId == 7);
-        REQUIRE(stat.meas.time == 9);
+        REQUIRE(stat.meas.time.value == 9);
     };
 
     // g122v1 - 1 byte count and prefix - 1 count - index: 3, flags: 0x01, assoc = 7, count = 8, time = 9
@@ -112,8 +112,8 @@ TEST_CASE(SUITE("parses g50v1 correctly"))
     auto verify = [](MockSOEHandler& soe) {
         REQUIRE(soe.TotalReceived() == 2);
         REQUIRE(soe.timeSOE.size() == 2);
-        REQUIRE(soe.timeSOE[0] == 0xABABABABABAB);
-        REQUIRE(soe.timeSOE[1] == 0xBCBCBCBCBCBC);
+        REQUIRE(soe.timeSOE[0].value == 0xABABABABABAB);
+        REQUIRE(soe.timeSOE[1].value == 0xBCBCBCBCBCBC);
     };
 
     // g50v1 count of 2

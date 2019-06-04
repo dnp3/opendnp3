@@ -44,4 +44,5 @@ enum class StaticTimeAndIntervalVariation : uint8_t
 
 }
 
+
 #endif

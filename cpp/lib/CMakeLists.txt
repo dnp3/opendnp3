@@ -215,6 +215,7 @@ set(opendnp3_private_headers
     ./src/app/parsing/Collections.h
     ./src/app/parsing/CountIndexParser.h
     ./src/app/parsing/CountParser.h
+    ./src/app/parsing/DNPTimeParsing.h
     ./src/app/parsing/FreeFormatParser.h
     ./src/app/parsing/Functions.h
     ./src/app/parsing/IAPDUHandler.h

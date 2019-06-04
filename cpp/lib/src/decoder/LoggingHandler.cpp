@@ -42,8 +42,8 @@ void LoggingHandler::OnHeaderResult(const HeaderRecord& /*record*/, const IINFie
 
 std::string LoggingHandler::ToUTCString(const DNPTime& dnptime)
 {
-    auto seconds = static_cast<time_t>(dnptime / 1000);
-    auto milliseconds = static_cast<uint16_t>(dnptime % 1000);
+    auto seconds = static_cast<time_t>(dnptime.value / 1000);
+    auto milliseconds = static_cast<uint16_t>(dnptime.value % 1000);
 
 #ifdef WIN32
     tm t;

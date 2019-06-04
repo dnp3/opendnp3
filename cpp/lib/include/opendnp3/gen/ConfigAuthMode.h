@@ -50,4 +50,5 @@ enum class ConfigAuthMode : uint8_t
 
 }
 
+
 #endif

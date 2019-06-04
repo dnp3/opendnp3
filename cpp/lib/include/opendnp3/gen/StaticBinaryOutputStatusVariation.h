@@ -44,4 +44,5 @@ enum class StaticBinaryOutputStatusVariation : uint8_t
 
 }
 
+
 #endif

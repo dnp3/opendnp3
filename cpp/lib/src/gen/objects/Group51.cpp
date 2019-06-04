@@ -31,6 +31,7 @@
 
 #include "Group51.h"
 
+#include "app/parsing/DNPTimeParsing.h"
 #include <ser4cpp/serialization/LittleEndian.h>
 
 using namespace ser4cpp;
@@ -44,22 +45,12 @@ Group51Var1::Group51Var1() : time(0)
 
 bool Group51Var1::Read(rseq_t& buffer, Group51Var1& output)
 {
-  bool result = true;
-
-  UInt48Type timeTemp;
-  result &= UInt48::read_from(buffer, timeTemp);
-  output.time = timeTemp.Get();
-
-  return result;
+  return LittleEndian::read(buffer, output.time);
 }
 
 bool Group51Var1::Write(const Group51Var1& arg, ser4cpp::wseq_t& buffer)
 {
-  bool result = true;
-
-  result &= UInt48::write_to(buffer, UInt48Type(arg.time));
-
-  return result;
+  return LittleEndian::write(buffer, arg.time);
 }
 
 // ------- Group51Var2 -------
@@ -69,22 +60,12 @@ Group51Var2::Group51Var2() : time(0)
 
 bool Group51Var2::Read(rseq_t& buffer, Group51Var2& output)
 {
-  bool result = true;
-
-  UInt48Type timeTemp;
-  result &= UInt48::read_from(buffer, timeTemp);
-  output.time = timeTemp.Get();
-
-  return result;
+  return LittleEndian::read(buffer, output.time);
 }
 
 bool Group51Var2::Write(const Group51Var2& arg, ser4cpp::wseq_t& buffer)
 {
-  bool result = true;
-
-  result &= UInt48::write_to(buffer, UInt48Type(arg.time));
-
-  return result;
+  return LittleEndian::write(buffer, arg.time);
 }
 
 

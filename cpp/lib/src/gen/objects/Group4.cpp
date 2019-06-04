@@ -31,6 +31,7 @@
 
 #include "Group4.h"
 
+#include "app/parsing/DNPTimeParsing.h"
 #include <ser4cpp/serialization/LittleEndian.h>
 #include "app/MeasurementFactory.h"
 #include "app/WriteConversions.h"
@@ -46,20 +47,12 @@ Group4Var1::Group4Var1() : flags(0)
 
 bool Group4Var1::Read(rseq_t& buffer, Group4Var1& output)
 {
-  bool result = true;
-
-  result &= UInt8::read_from(buffer, output.flags);
-
-  return result;
+  return LittleEndian::read(buffer, output.flags);
 }
 
 bool Group4Var1::Write(const Group4Var1& arg, ser4cpp::wseq_t& buffer)
 {
-  bool result = true;
-
-  result &= UInt8::write_to(buffer, arg.flags);
-
-  return result;
+  return LittleEndian::write(buffer, arg.flags);
 }
 
 bool Group4Var1::ReadTarget(rseq_t& buff, DoubleBitBinary& output)
@@ -88,24 +81,12 @@ Group4Var2::Group4Var2() : flags(0), time(0)
 
 bool Group4Var2::Read(rseq_t& buffer, Group4Var2& output)
 {
-  bool result = true;
-
-  result &= UInt8::read_from(buffer, output.flags);
-  UInt48Type timeTemp;
-  result &= UInt48::read_from(buffer, timeTemp);
-  output.time = timeTemp.Get();
-
-  return result;
+  return LittleEndian::read(buffer, output.flags, output.time);
 }
 
 bool Group4Var2::Write(const Group4Var2& arg, ser4cpp::wseq_t& buffer)
 {
-  bool result = true;
-
-  result &= UInt8::write_to(buffer, arg.flags);
-  result &= UInt48::write_to(buffer, UInt48Type(arg.time));
-
-  return result;
+  return LittleEndian::write(buffer, arg.flags, arg.time);
 }
 
 bool Group4Var2::ReadTarget(rseq_t& buff, DoubleBitBinary& output)
@@ -134,22 +115,12 @@ Group4Var3::Group4Var3() : flags(0), time(0)
 
 bool Group4Var3::Read(rseq_t& buffer, Group4Var3& output)
 {
-  bool result = true;
-
-  result &= UInt8::read_from(buffer, output.flags);
-  result &= UInt16::read_from(buffer, output.time);
-
-  return result;
+  return LittleEndian::read(buffer, output.flags, output.time);
 }
 
 bool Group4Var3::Write(const Group4Var3& arg, ser4cpp::wseq_t& buffer)
 {
-  bool result = true;
-
-  result &= UInt8::write_to(buffer, arg.flags);
-  result &= UInt16::write_to(buffer, arg.time);
-
-  return result;
+  return LittleEndian::write(buffer, arg.flags, arg.time);
 }
 
 bool Group4Var3::ReadTarget(rseq_t& buff, DoubleBitBinary& output)

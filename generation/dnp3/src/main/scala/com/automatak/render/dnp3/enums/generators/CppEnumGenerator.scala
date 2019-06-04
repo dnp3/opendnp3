@@ -39,24 +39,28 @@ object CppEnumGenerator {
     def writeEnumToFiles(cfg: EnumConfig): Unit = {
 
       val conversions = if(cfg.conversions) List(EnumToType, EnumFromType) else Nil
+      val conversionsOutsideNamespace = if(cfg.conversions) List(EnumSerialization) else Nil
       val stringify = if(cfg.stringConv) List(EnumToString) else Nil
 
       val renders = conversions ::: stringify
 
       def writeHeader() {
         def license = commented(LicenseHeader())
+        def includes = cstdint ++ { if(cfg.conversions) littleEndian else Iterator.empty }
         def enum = EnumModelRenderer.render(cfg.model)
-        def signatures = renders.map(c => c.header.render(cfg.model)).flatten.toIterator
-        def lines = license ++ space ++ includeGuards(cfg.model.name)(cstdint ++ space ++ namespace(cppNamespace)(enum ++ space ++ signatures))
+        def signatures = renders.flatMap(c => c.header.render(cfg.model))
+        def signaturesOutsideNamespace = conversionsOutsideNamespace.flatMap(c => c.header.render(cfg.model))
+        def lines = license ++ space ++ includeGuards(cfg.model.name)(includes ++ space ++ namespace(cppNamespace)(enum ++ space ++ signatures) ++ space ++ signaturesOutsideNamespace)
         writeTo(headerPath(cfg.model))(lines)
         println("Wrote: " + headerPath(cfg.model))
       }
 
       def writeImpl() {
         def license = commented(LicenseHeader())
-        def funcs = renders.map(r => r.impl.render(cfg.model)).flatten.toIterator
+        def funcs = renders.flatMap(r => r.impl.render(cfg.model)).toIterator
+        def funcsOutsidenamespace = conversionsOutsideNamespace.flatMap(r => r.impl.render(cfg.model))
         def inc = quoted(String.format(incFormatString, headerName(cfg.model)))
-        def lines = license ++ space ++ Iterator(include(inc)) ++ space ++ namespace(cppNamespace)(funcs)
+        def lines = license ++ space ++ Iterator(include(inc)) ++ space ++ namespace(cppNamespace)(funcs) ++ space ++ funcsOutsidenamespace
 
         if(cfg.conversions || cfg.stringConv)
         {

@@ -51,4 +51,5 @@ enum class EventAnalogVariation : uint8_t
 
 }
 
+
 #endif

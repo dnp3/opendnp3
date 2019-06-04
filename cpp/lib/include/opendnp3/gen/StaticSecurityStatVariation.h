@@ -44,4 +44,5 @@ enum class StaticSecurityStatVariation : uint8_t
 
 }
 
+
 #endif

@@ -71,7 +71,7 @@ void PrintingSOEHandler::Process(const HeaderInfo& /*info*/, const ICollection<I
 {
     auto print = [](const Indexed<TimeAndInterval>& pair) {
         std::cout << "TimeAndInterval: "
-                  << "[" << pair.index << "] : " << pair.value.time << " : " << pair.value.interval << " : "
+                  << "[" << pair.index << "] : " << pair.value.time.value << " : " << pair.value.interval << " : "
                   << IntervalUnitsToString(pair.value.GetUnitsEnum()) << std::endl;
     };
 
@@ -82,7 +82,7 @@ void PrintingSOEHandler::Process(const HeaderInfo& /*info*/, const ICollection<I
 {
     auto print = [](const Indexed<BinaryCommandEvent>& pair) {
         std::cout << "BinaryCommandEvent: "
-                  << "[" << pair.index << "] : " << pair.value.time << " : " << pair.value.value << " : "
+                  << "[" << pair.index << "] : " << pair.value.time.value << " : " << pair.value.value << " : "
                   << CommandStatusToString(pair.value.status) << std::endl;
     };
 
@@ -93,7 +93,7 @@ void PrintingSOEHandler::Process(const HeaderInfo& /*info*/, const ICollection<I
 {
     auto print = [](const Indexed<AnalogCommandEvent>& pair) {
         std::cout << "AnalogCommandEvent: "
-                  << "[" << pair.index << "] : " << pair.value.time << " : " << pair.value.value << " : "
+                  << "[" << pair.index << "] : " << pair.value.time.value << " : " << pair.value.value << " : "
                   << CommandStatusToString(pair.value.status) << std::endl;
     };
 
@@ -104,7 +104,7 @@ void PrintingSOEHandler::Process(const HeaderInfo& /*info*/, const ICollection<I
 {
     auto print = [](const Indexed<SecurityStat>& pair) {
         std::cout << "SecurityStat: "
-                  << "[" << pair.index << "] : " << pair.value.time << " : " << pair.value.value.count << " : "
+                  << "[" << pair.index << "] : " << pair.value.time.value << " : " << pair.value.value.count << " : "
                   << static_cast<int>(pair.value.quality) << " : " << pair.value.value.assocId << std::endl;
     };
 
@@ -113,7 +113,7 @@ void PrintingSOEHandler::Process(const HeaderInfo& /*info*/, const ICollection<I
 
 void PrintingSOEHandler::Process(const HeaderInfo& /*info*/, const ICollection<DNPTime>& values)
 {
-    auto print = [](const DNPTime& value) { std::cout << "DNPTime: " << value << std::endl; };
+    auto print = [](const DNPTime& value) { std::cout << "DNPTime: " << value.value << std::endl; };
 
     values.ForeachItem(print);
 }

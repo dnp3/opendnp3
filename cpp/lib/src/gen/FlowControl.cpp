@@ -63,3 +63,21 @@ char const* FlowControlToString(FlowControl arg)
 }
 
 }
+
+namespace ser4cpp
+{
+  namespace custom_serializers
+  {
+    bool write_one(wseq_t& dest, const opendnp3::FlowControl& value)
+    {
+      return UInt8::write_to(dest, opendnp3::FlowControlToType(value));
+    }
+    bool read_one(rseq_t& input, opendnp3::FlowControl& out)
+    {
+      UInt8::type_t tempFlowControl;
+      bool result = UInt8::read_from(input, tempFlowControl);
+      out = opendnp3::FlowControlFromType(tempFlowControl);
+      return result;
+    }
+  }
+}

@@ -67,3 +67,21 @@ char const* DoubleBitToString(DoubleBit arg)
 }
 
 }
+
+namespace ser4cpp
+{
+  namespace custom_serializers
+  {
+    bool write_one(wseq_t& dest, const opendnp3::DoubleBit& value)
+    {
+      return UInt8::write_to(dest, opendnp3::DoubleBitToType(value));
+    }
+    bool read_one(rseq_t& input, opendnp3::DoubleBit& out)
+    {
+      UInt8::type_t tempDoubleBit;
+      bool result = UInt8::read_from(input, tempDoubleBit);
+      out = opendnp3::DoubleBitFromType(tempDoubleBit);
+      return result;
+    }
+  }
+}

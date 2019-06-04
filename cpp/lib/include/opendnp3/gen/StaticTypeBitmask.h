@@ -55,4 +55,5 @@ enum class StaticTypeBitmask : uint16_t
 
 }
 
+
 #endif

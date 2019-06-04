@@ -52,4 +52,5 @@ enum class TimestampMode : uint8_t
 
 }
 
+
 #endif

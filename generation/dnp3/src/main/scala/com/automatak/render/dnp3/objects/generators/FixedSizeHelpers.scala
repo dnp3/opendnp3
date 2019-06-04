@@ -46,7 +46,7 @@ object FixedSizeHelpers {
      }
   }.flatten
 
-  def fixedReads(fixedFields: List[FixedSizeField], returnBool: Boolean, bufferName: String, outputLocation: String) : Iterator[String] = {
+  def fixedReadsOLD(fixedFields: List[FixedSizeField], returnBool: Boolean, bufferName: String, outputLocation: String) : Iterator[String] = {
 
     val returnStatement = returnBool match {
       case true => "result &= "
@@ -54,14 +54,13 @@ object FixedSizeHelpers {
     }
 
     def toNumericReadOp(fs: FixedSizeField) : Iterator[String] = {
+      val tempVarName = "%sTemp".format(fs.name)
 
-
-      val tempVarName = "%sTemp".format(fs.name);
       if(fs.typ == UInt48Field) {
         Iterator(
           "UInt48Type %s;".format(tempVarName),
           returnStatement + "%s::read_from(%s, %s);".format(FixedSizeHelpers.getCppFieldTypeParser(fs.typ), bufferName, tempVarName),
-          "%s%s = %s.Get();".format(outputLocation, fs.name, tempVarName)
+          "%s%s = DNPTime(%s.Get());".format(outputLocation, fs.name, tempVarName)
         )
       }
       else {
@@ -98,46 +97,39 @@ object FixedSizeHelpers {
     lines.iterator
   }
 
+  def fixedReads(fixedFields: List[FixedSizeField], returnBool: Boolean, bufferName: String, inputLocation: String) : Iterator[String] = {
+
+    def fieldParams() : String = {
+      fixedFields.map(fs => "%s%s".format(inputLocation, fs.name)).mkString(", ")
+    }
+
+    if(fixedFields.isEmpty) {
+      Iterator.empty
+    }
+    else {
+      val returnStatement = returnBool match {
+        case true => "return "
+        case false => ""
+      }
+      Iterator(returnStatement + "LittleEndian::read(%s, %s);".format(bufferName, fieldParams))
+    }
+  }
+
   def fixedWrites(fixedFields: List[FixedSizeField], returnBool: Boolean, bufferName: String, inputLocation: String) : Iterator[String] = {
 
-    val returnStatement : String = returnBool match {
-      case true => "result &= "
-      case false => ""
+    def fieldParams() : String = {
+      fixedFields.map(fs => "%s%s".format(inputLocation, fs.name)).mkString(", ")
     }
 
-    def toNumericWriteOp(fs: FixedSizeField) : String = {
-      if(fs.typ == UInt48Field) {
-        "%s::write_to(%s, UInt48Type(%s%s));".format(FixedSizeHelpers.getCppFieldTypeParser(fs.typ),bufferName, inputLocation, fs.name)
+    if(fixedFields.isEmpty) {
+      Iterator.empty
+    }
+    else {
+      val returnStatement = returnBool match {
+        case true => "return "
+        case false => ""
       }
-      else {
-        "%s::write_to(%s, %s%s);".format(FixedSizeHelpers.getCppFieldTypeParser(fs.typ), bufferName, inputLocation, fs.name)
-      }
+      Iterator(returnStatement + "LittleEndian::write(%s, %s);".format(bufferName, fieldParams))
     }
-
-    def toEnumWriteOp(fs: FixedSizeField, e: EnumFieldType) : String = {
-      "UInt8::write_to(%s, %sToType(%s%s));".format(bufferName, e.model.name, inputLocation, fs.name)
-    }
-
-    def toWriteOp(fs: FixedSizeField) : String = {
-      val writeOperation = fs.typ match {
-        case x : EnumFieldType => toEnumWriteOp(fs, x)
-        case _ => toNumericWriteOp(fs)
-      }
-
-      returnStatement + writeOperation
-    }
-
-    var lines = List[String]()
-    if(returnBool) {
-      lines ++= Iterator("bool result = true;") ++ space
-    }
-    if(fixedFields.nonEmpty) {
-      lines ++= fixedFields.map(toWriteOp) ++ space
-    }
-    if(returnBool) {
-      lines ++= Iterator("return result;")
-    }
-
-    lines.iterator
   }
 }

@@ -31,6 +31,7 @@
 
 #include "Group50.h"
 
+#include "app/parsing/DNPTimeParsing.h"
 #include <ser4cpp/serialization/LittleEndian.h>
 #include "app/MeasurementFactory.h"
 #include "app/WriteConversions.h"
@@ -46,22 +47,12 @@ Group50Var1::Group50Var1() : time(0)
 
 bool Group50Var1::Read(rseq_t& buffer, Group50Var1& output)
 {
-  bool result = true;
-
-  UInt48Type timeTemp;
-  result &= UInt48::read_from(buffer, timeTemp);
-  output.time = timeTemp.Get();
-
-  return result;
+  return LittleEndian::read(buffer, output.time);
 }
 
 bool Group50Var1::Write(const Group50Var1& arg, ser4cpp::wseq_t& buffer)
 {
-  bool result = true;
-
-  result &= UInt48::write_to(buffer, UInt48Type(arg.time));
-
-  return result;
+  return LittleEndian::write(buffer, arg.time);
 }
 
 // ------- Group50Var3 -------
@@ -71,22 +62,12 @@ Group50Var3::Group50Var3() : time(0)
 
 bool Group50Var3::Read(rseq_t& buffer, Group50Var3& output)
 {
-  bool result = true;
-
-  UInt48Type timeTemp;
-  result &= UInt48::read_from(buffer, timeTemp);
-  output.time = timeTemp.Get();
-
-  return result;
+  return LittleEndian::read(buffer, output.time);
 }
 
 bool Group50Var3::Write(const Group50Var3& arg, ser4cpp::wseq_t& buffer)
 {
-  bool result = true;
-
-  result &= UInt48::write_to(buffer, UInt48Type(arg.time));
-
-  return result;
+  return LittleEndian::write(buffer, arg.time);
 }
 
 // ------- Group50Var4 -------
@@ -96,26 +77,12 @@ Group50Var4::Group50Var4() : time(0), interval(0), units(0)
 
 bool Group50Var4::Read(rseq_t& buffer, Group50Var4& output)
 {
-  bool result = true;
-
-  UInt48Type timeTemp;
-  result &= UInt48::read_from(buffer, timeTemp);
-  output.time = timeTemp.Get();
-  result &= UInt32::read_from(buffer, output.interval);
-  result &= UInt8::read_from(buffer, output.units);
-
-  return result;
+  return LittleEndian::read(buffer, output.time, output.interval, output.units);
 }
 
 bool Group50Var4::Write(const Group50Var4& arg, ser4cpp::wseq_t& buffer)
 {
-  bool result = true;
-
-  result &= UInt48::write_to(buffer, UInt48Type(arg.time));
-  result &= UInt32::write_to(buffer, arg.interval);
-  result &= UInt8::write_to(buffer, arg.units);
-
-  return result;
+  return LittleEndian::write(buffer, arg.time, arg.interval, arg.units);
 }
 
 bool Group50Var4::ReadTarget(rseq_t& buff, TimeAndInterval& output)

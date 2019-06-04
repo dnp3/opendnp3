@@ -47,4 +47,5 @@ enum class StaticAnalogOutputStatusVariation : uint8_t
 
 }
 
+
 #endif

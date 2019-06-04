@@ -62,4 +62,5 @@ enum class FrozenCounterQuality : uint8_t
 
 }
 
+
 #endif

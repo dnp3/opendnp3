@@ -71,7 +71,7 @@ private:
     template<class T> static void Print(const HeaderInfo& info, const T& value, uint16_t index)
     {
         std::cout << "[" << index << "] : " << ValueToString(value) << " : " << static_cast<int>(value.flags.value)
-                  << " : " << value.time << std::endl;
+                  << " : " << value.time.value << std::endl;
     }
 
     template<class T> static std::string ValueToString(const T& meas)

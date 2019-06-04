@@ -587,3 +587,21 @@ char const* GroupVariationToString(GroupVariation arg)
 }
 
 }
+
+namespace ser4cpp
+{
+  namespace custom_serializers
+  {
+    bool write_one(wseq_t& dest, const opendnp3::GroupVariation& value)
+    {
+      return UInt16::write_to(dest, opendnp3::GroupVariationToType(value));
+    }
+    bool read_one(rseq_t& input, opendnp3::GroupVariation& out)
+    {
+      UInt16::type_t tempGroupVariation;
+      bool result = UInt16::read_from(input, tempGroupVariation);
+      out = opendnp3::GroupVariationFromType(tempGroupVariation);
+      return result;
+    }
+  }
+}

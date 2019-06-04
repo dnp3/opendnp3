@@ -27,6 +27,7 @@
 
 namespace opendnp3
 {
+
 // A safe down sampling class
 template<class Source, class Target> class DownSampling : private Uncopyable
 {

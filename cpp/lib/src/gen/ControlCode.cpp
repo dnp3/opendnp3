@@ -111,3 +111,21 @@ char const* ControlCodeToString(ControlCode arg)
 }
 
 }
+
+namespace ser4cpp
+{
+  namespace custom_serializers
+  {
+    bool write_one(wseq_t& dest, const opendnp3::ControlCode& value)
+    {
+      return UInt8::write_to(dest, opendnp3::ControlCodeToType(value));
+    }
+    bool read_one(rseq_t& input, opendnp3::ControlCode& out)
+    {
+      UInt8::type_t tempControlCode;
+      bool result = UInt8::read_from(input, tempControlCode);
+      out = opendnp3::ControlCodeFromType(tempControlCode);
+      return result;
+    }
+  }
+}

@@ -46,4 +46,5 @@ enum class EventDoubleBinaryVariation : uint8_t
 
 }
 
+
 #endif

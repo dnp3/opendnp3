@@ -31,6 +31,7 @@
 
 #include "Group12.h"
 
+#include "app/parsing/DNPTimeParsing.h"
 #include <ser4cpp/serialization/LittleEndian.h>
 #include "app/MeasurementFactory.h"
 #include "app/WriteConversions.h"
@@ -46,28 +47,12 @@ Group12Var1::Group12Var1() : code(0), count(0), onTime(0), offTime(0), status(0)
 
 bool Group12Var1::Read(rseq_t& buffer, Group12Var1& output)
 {
-  bool result = true;
-
-  result &= UInt8::read_from(buffer, output.code);
-  result &= UInt8::read_from(buffer, output.count);
-  result &= UInt32::read_from(buffer, output.onTime);
-  result &= UInt32::read_from(buffer, output.offTime);
-  result &= UInt8::read_from(buffer, output.status);
-
-  return result;
+  return LittleEndian::read(buffer, output.code, output.count, output.onTime, output.offTime, output.status);
 }
 
 bool Group12Var1::Write(const Group12Var1& arg, ser4cpp::wseq_t& buffer)
 {
-  bool result = true;
-
-  result &= UInt8::write_to(buffer, arg.code);
-  result &= UInt8::write_to(buffer, arg.count);
-  result &= UInt32::write_to(buffer, arg.onTime);
-  result &= UInt32::write_to(buffer, arg.offTime);
-  result &= UInt8::write_to(buffer, arg.status);
-
-  return result;
+  return LittleEndian::write(buffer, arg.code, arg.count, arg.onTime, arg.offTime, arg.status);
 }
 
 bool Group12Var1::ReadTarget(rseq_t& buff, ControlRelayOutputBlock& output)

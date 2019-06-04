@@ -17,27 +17,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_DNPTIME_H
-#define OPENDNP3_DNPTIME_H
+#ifndef OPENDNP3_DNPTIMEPARSING_H
+#define OPENDNP3_DNPTIMEPARSING_H
 
-#include <cstdint>
+#include <ser4cpp/serialization/LittleEndian.h>
 
-namespace opendnp3
+#include "opendnp3/app/DNPTime.h"
+
+namespace ser4cpp
+{
+namespace custom_serializers
 {
 
-struct DNPTime
+// To use LittleEndian::write(...)
+inline bool write_one(wseq_t& dest, const opendnp3::DNPTime& value)
 {
-    DNPTime() : value(0) {}
-    explicit DNPTime(uint64_t value) : value(value) {}
-
-    bool operator==(const DNPTime& rhs) const
-    {
-        return this->value == rhs.value;
-    }
-
-    uint64_t value;
-};
-
+    return UInt48::write_to(dest, UInt48Type(value.value));
 }
 
-#endif // namespace opendnp3
+inline bool read_one(rseq_t& input, opendnp3::DNPTime& out)
+{
+    UInt48Type temp;
+    bool result = UInt48::read_from(input, temp);
+    out.value = temp.Get();
+    return result;
+}
+
+} // namespace custom_serializers
+} // namespace ser4cpp
+
+#endif

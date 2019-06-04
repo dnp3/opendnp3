@@ -31,6 +31,7 @@
 
 #include "Group122.h"
 
+#include "app/parsing/DNPTimeParsing.h"
 #include <ser4cpp/serialization/LittleEndian.h>
 #include "app/MeasurementFactory.h"
 #include "app/WriteConversions.h"
@@ -46,24 +47,12 @@ Group122Var1::Group122Var1() : flags(0), assocId(0), value(0)
 
 bool Group122Var1::Read(rseq_t& buffer, Group122Var1& output)
 {
-  bool result = true;
-
-  result &= UInt8::read_from(buffer, output.flags);
-  result &= UInt16::read_from(buffer, output.assocId);
-  result &= UInt32::read_from(buffer, output.value);
-
-  return result;
+  return LittleEndian::read(buffer, output.flags, output.assocId, output.value);
 }
 
 bool Group122Var1::Write(const Group122Var1& arg, ser4cpp::wseq_t& buffer)
 {
-  bool result = true;
-
-  result &= UInt8::write_to(buffer, arg.flags);
-  result &= UInt16::write_to(buffer, arg.assocId);
-  result &= UInt32::write_to(buffer, arg.value);
-
-  return result;
+  return LittleEndian::write(buffer, arg.flags, arg.assocId, arg.value);
 }
 
 bool Group122Var1::ReadTarget(rseq_t& buff, SecurityStat& output)
@@ -92,28 +81,12 @@ Group122Var2::Group122Var2() : flags(0), assocId(0), value(0), time(0)
 
 bool Group122Var2::Read(rseq_t& buffer, Group122Var2& output)
 {
-  bool result = true;
-
-  result &= UInt8::read_from(buffer, output.flags);
-  result &= UInt16::read_from(buffer, output.assocId);
-  result &= UInt32::read_from(buffer, output.value);
-  UInt48Type timeTemp;
-  result &= UInt48::read_from(buffer, timeTemp);
-  output.time = timeTemp.Get();
-
-  return result;
+  return LittleEndian::read(buffer, output.flags, output.assocId, output.value, output.time);
 }
 
 bool Group122Var2::Write(const Group122Var2& arg, ser4cpp::wseq_t& buffer)
 {
-  bool result = true;
-
-  result &= UInt8::write_to(buffer, arg.flags);
-  result &= UInt16::write_to(buffer, arg.assocId);
-  result &= UInt32::write_to(buffer, arg.value);
-  result &= UInt48::write_to(buffer, UInt48Type(arg.time));
-
-  return result;
+  return LittleEndian::write(buffer, arg.flags, arg.assocId, arg.value, arg.time);
 }
 
 bool Group122Var2::ReadTarget(rseq_t& buff, SecurityStat& output)

@@ -153,7 +153,7 @@ IINField MeasurementHandler::ProcessWithCTO(const HeaderRecord& record, const IC
 
     auto transform = [cto](const Indexed<T>& input) -> Indexed<T> {
         Indexed<T> copy(input);
-        copy.value.time = DNPTime(input.value.time + cto);
+        copy.value.time = DNPTime(input.value.time.value + cto.value);
         return copy;
     };
 

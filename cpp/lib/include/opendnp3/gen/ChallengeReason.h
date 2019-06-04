@@ -33,6 +33,7 @@
 #define OPENDNP3_CHALLENGEREASON_H
 
 #include <cstdint>
+#include <ser4cpp/serialization/LittleEndian.h>
 
 namespace opendnp3 {
 
@@ -51,6 +52,15 @@ uint8_t ChallengeReasonToType(ChallengeReason arg);
 ChallengeReason ChallengeReasonFromType(uint8_t arg);
 char const* ChallengeReasonToString(ChallengeReason arg);
 
+}
+
+namespace ser4cpp
+{
+  namespace custom_serializers
+  {
+    bool write_one(wseq_t& dest, const opendnp3::ChallengeReason& value);
+    bool read_one(rseq_t& input, opendnp3::ChallengeReason& out);
+  }
 }
 
 #endif

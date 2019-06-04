@@ -94,10 +94,10 @@ private:
                 return false;
 
             // can't encode timestamps that go backwards
-            if (meas.time < this->cto)
+            if (meas.time.value < this->cto.value)
                 return false;
 
-            const auto diff = meas.time - this->cto;
+            const auto diff = meas.time.value - this->cto.value;
 
             // can't encode timestamps where the diff is greater than uint16_t
             if (diff > ser4cpp::UInt16::max_value)

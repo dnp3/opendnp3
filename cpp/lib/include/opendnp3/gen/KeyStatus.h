@@ -33,6 +33,7 @@
 #define OPENDNP3_KEYSTATUS_H
 
 #include <cstdint>
+#include <ser4cpp/serialization/LittleEndian.h>
 
 namespace opendnp3 {
 
@@ -56,6 +57,15 @@ uint8_t KeyStatusToType(KeyStatus arg);
 KeyStatus KeyStatusFromType(uint8_t arg);
 char const* KeyStatusToString(KeyStatus arg);
 
+}
+
+namespace ser4cpp
+{
+  namespace custom_serializers
+  {
+    bool write_one(wseq_t& dest, const opendnp3::KeyStatus& value);
+    bool read_one(rseq_t& input, opendnp3::KeyStatus& out);
+  }
 }
 
 #endif

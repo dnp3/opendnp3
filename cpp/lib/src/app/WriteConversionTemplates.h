@@ -156,7 +156,7 @@ template<class Target, class Source, class Downcast> struct ConvertQTDowncast : 
     {
         Target t;
         t.flags = src.flags.value;
-        t.time = static_cast<Downcast>(src.time);
+        t.time = static_cast<Downcast>(src.time.value);
         return t;
     }
 };

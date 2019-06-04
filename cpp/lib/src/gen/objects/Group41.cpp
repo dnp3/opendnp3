@@ -31,6 +31,7 @@
 
 #include "Group41.h"
 
+#include "app/parsing/DNPTimeParsing.h"
 #include <ser4cpp/serialization/LittleEndian.h>
 #include "app/MeasurementFactory.h"
 #include "app/WriteConversions.h"
@@ -46,22 +47,12 @@ Group41Var1::Group41Var1() : value(0), status(0)
 
 bool Group41Var1::Read(rseq_t& buffer, Group41Var1& output)
 {
-  bool result = true;
-
-  result &= Int32::read_from(buffer, output.value);
-  result &= UInt8::read_from(buffer, output.status);
-
-  return result;
+  return LittleEndian::read(buffer, output.value, output.status);
 }
 
 bool Group41Var1::Write(const Group41Var1& arg, ser4cpp::wseq_t& buffer)
 {
-  bool result = true;
-
-  result &= Int32::write_to(buffer, arg.value);
-  result &= UInt8::write_to(buffer, arg.status);
-
-  return result;
+  return LittleEndian::write(buffer, arg.value, arg.status);
 }
 
 bool Group41Var1::ReadTarget(rseq_t& buff, AnalogOutputInt32& output)
@@ -90,22 +81,12 @@ Group41Var2::Group41Var2() : value(0), status(0)
 
 bool Group41Var2::Read(rseq_t& buffer, Group41Var2& output)
 {
-  bool result = true;
-
-  result &= Int16::read_from(buffer, output.value);
-  result &= UInt8::read_from(buffer, output.status);
-
-  return result;
+  return LittleEndian::read(buffer, output.value, output.status);
 }
 
 bool Group41Var2::Write(const Group41Var2& arg, ser4cpp::wseq_t& buffer)
 {
-  bool result = true;
-
-  result &= Int16::write_to(buffer, arg.value);
-  result &= UInt8::write_to(buffer, arg.status);
-
-  return result;
+  return LittleEndian::write(buffer, arg.value, arg.status);
 }
 
 bool Group41Var2::ReadTarget(rseq_t& buff, AnalogOutputInt16& output)
@@ -134,22 +115,12 @@ Group41Var3::Group41Var3() : value(0.0), status(0)
 
 bool Group41Var3::Read(rseq_t& buffer, Group41Var3& output)
 {
-  bool result = true;
-
-  result &= SingleFloat::read_from(buffer, output.value);
-  result &= UInt8::read_from(buffer, output.status);
-
-  return result;
+  return LittleEndian::read(buffer, output.value, output.status);
 }
 
 bool Group41Var3::Write(const Group41Var3& arg, ser4cpp::wseq_t& buffer)
 {
-  bool result = true;
-
-  result &= SingleFloat::write_to(buffer, arg.value);
-  result &= UInt8::write_to(buffer, arg.status);
-
-  return result;
+  return LittleEndian::write(buffer, arg.value, arg.status);
 }
 
 bool Group41Var3::ReadTarget(rseq_t& buff, AnalogOutputFloat32& output)
@@ -178,22 +149,12 @@ Group41Var4::Group41Var4() : value(0.0), status(0)
 
 bool Group41Var4::Read(rseq_t& buffer, Group41Var4& output)
 {
-  bool result = true;
-
-  result &= DoubleFloat::read_from(buffer, output.value);
-  result &= UInt8::read_from(buffer, output.status);
-
-  return result;
+  return LittleEndian::read(buffer, output.value, output.status);
 }
 
 bool Group41Var4::Write(const Group41Var4& arg, ser4cpp::wseq_t& buffer)
 {
-  bool result = true;
-
-  result &= DoubleFloat::write_to(buffer, arg.value);
-  result &= UInt8::write_to(buffer, arg.status);
-
-  return result;
+  return LittleEndian::write(buffer, arg.value, arg.status);
 }
 
 bool Group41Var4::ReadTarget(rseq_t& buff, AnalogOutputDouble64& output)

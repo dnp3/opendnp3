@@ -62,4 +62,5 @@ enum class BinaryQuality : uint8_t
 
 }
 
+
 #endif

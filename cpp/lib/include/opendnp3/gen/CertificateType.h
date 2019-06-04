@@ -33,6 +33,7 @@
 #define OPENDNP3_CERTIFICATETYPE_H
 
 #include <cstdint>
+#include <ser4cpp/serialization/LittleEndian.h>
 
 namespace opendnp3 {
 
@@ -53,6 +54,15 @@ uint8_t CertificateTypeToType(CertificateType arg);
 CertificateType CertificateTypeFromType(uint8_t arg);
 char const* CertificateTypeToString(CertificateType arg);
 
+}
+
+namespace ser4cpp
+{
+  namespace custom_serializers
+  {
+    bool write_one(wseq_t& dest, const opendnp3::CertificateType& value);
+    bool read_one(rseq_t& input, opendnp3::CertificateType& out);
+  }
 }
 
 #endif

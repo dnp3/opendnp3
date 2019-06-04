@@ -56,4 +56,5 @@ char const* MasterTaskTypeToString(MasterTaskType arg);
 
 }
 
+
 #endif

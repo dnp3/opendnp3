@@ -45,4 +45,5 @@ enum class StaticBinaryVariation : uint8_t
 
 }
 
+
 #endif

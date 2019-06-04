@@ -431,7 +431,7 @@ TEST_CASE(SUITE("TestTimeAndIntervalWrite"))
 
     REQUIRE(t.application->timeAndIntervals.size() == 1);
     REQUIRE(t.application->timeAndIntervals[0].index == 7);
-    REQUIRE(t.application->timeAndIntervals[0].value.time == 9);
+    REQUIRE(t.application->timeAndIntervals[0].value.time.value == 9);
 }
 
 // ---- Static data reads ----- //

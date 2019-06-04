@@ -47,4 +47,5 @@ enum class EventFrozenCounterVariation : uint8_t
 
 }
 
+
 #endif
