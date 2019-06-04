@@ -49,6 +49,10 @@ template<class Spec> struct Cell
     typename Spec::config_t config;    // configuration
     typename Spec::event_cell_t event; // event cell
     SelectedValue<Spec> selection;     // selected value
+
+	Cell() = default;
+    Cell(const typename Spec::meas_t& value, const typename Spec::config_t& config) : value(value), config(config) {}
+	Cell(const typename Spec::config_t& config) : config(config) {}
 };
 
 } // namespace opendnp3

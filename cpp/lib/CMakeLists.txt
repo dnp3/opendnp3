@@ -156,6 +156,7 @@ set(opendnp3_public_headers
     ./include/opendnp3/outstation/ApplicationIIN.h
     ./include/opendnp3/outstation/Cell.h
     ./include/opendnp3/outstation/DatabaseConfig.h
+    ./include/opendnp3/outstation/DatabaseConfigNew.h
     ./include/opendnp3/outstation/DatabaseSizes.h
     ./include/opendnp3/outstation/EventBufferConfig.h
     ./include/opendnp3/outstation/ICommandHandler.h

@@ -44,6 +44,9 @@ template<class Spec> class StaticDataMap : private Uncopyable
     using map_iter_t = typename map_t::iterator;
 
 public:
+    StaticDataMap() = default;
+    StaticDataMap(const std::map<uint16_t, typename Spec::config_t>& config);
+
     class iterator
     {
         map_iter_t iter;
@@ -71,7 +74,7 @@ public:
         void operator++()
         {
             // unselect the point
-            this->iter->second.selection.selected = false;            
+            this->iter->second.selection.selected = false;
 
             while (true)
             {
@@ -83,8 +86,8 @@ public:
                     return;
                 }
 
-				// shorten the range
-                this->range.start = iter->first; 
+                // shorten the range
+                this->range.start = iter->first;
 
                 if (iter->second.selection.selected)
                 {
@@ -147,6 +150,14 @@ private:
     template<class F> size_t select(Range range, F get_variation);
 };
 
+template<class Spec> StaticDataMap<Spec>::StaticDataMap(const std::map<uint16_t, typename Spec::config_t>& config)
+{
+    for (const auto& item : config)
+    {
+        this->map[item.first] = Cell<Spec>{item.second};
+    }
+}
+
 template<class Spec>
 bool StaticDataMap<Spec>::add(const typename Spec::meas_t& value, uint16_t index, typename Spec::config_t config)
 {
@@ -155,7 +166,7 @@ bool StaticDataMap<Spec>::add(const typename Spec::meas_t& value, uint16_t index
         return false;
     }
 
-    this->map[index] = Cell<Spec>{value, config, {}, {}};
+    this->map[index] = Cell<Spec>{value, config};
 
     return true;
 }
