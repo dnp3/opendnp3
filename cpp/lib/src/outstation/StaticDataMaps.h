@@ -21,6 +21,7 @@
 #define OPENDNP3_STATICDATAMAPS_H
 
 #include "outstation/StaticDataMap.h"
+#include "outstation/IStaticSelector.h"
 
 #include <opendnp3/outstation/DatabaseConfigNew.h>
 #include <opendnp3/app/MeasurementTypeSpecs.h>
@@ -28,7 +29,7 @@
 namespace opendnp3
 {
 
-class StaticDataMaps
+class StaticDataMaps final : public IStaticSelector
 {
 public:
 
@@ -36,6 +37,27 @@ public:
 
 	bool has_any_selection() const;
 
+    // ------- IStaticSelector -------------
+
+    IINField SelectAll(GroupVariation gv) override;
+    IINField SelectRange(GroupVariation gv, const Range& range) override;    
+    void Unselect() override;
+
+private:
+
+	template<class Spec> 
+	static IINField SelectAll(StaticDataMap<Spec>& map);
+
+	template<class Spec> IINField 
+	static SelectAll(StaticDataMap<Spec>& map, typename Spec::static_variation_t variation);
+
+	template<class Spec>
+    static IINField SelectRange(StaticDataMap<Spec>& map, const Range& range);
+
+	template<class Spec>
+    static IINField SelectRange(StaticDataMap<Spec>& map,
+                                const Range& range,
+                                typename Spec::static_variation_t variation);
 
     StaticDataMap<BinarySpec> binary_input;
     StaticDataMap<DoubleBitBinarySpec> double_binary;
