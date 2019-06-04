@@ -167,6 +167,7 @@ bool MasterSchedulerBackend::CheckForTaskRun()
 
     auto callback = [this, self = shared_from_this()]() { this->CheckForTaskRun(); };
 
+    this->taskTimer.cancel();
     this->taskTimer = this->executor->start(best_task->task->ExpirationTime().value, callback);
 
     return false;
@@ -187,12 +188,10 @@ void MasterSchedulerBackend::RestartTimeoutTimer()
         }
     }
 
-    if (min == Timestamp::Max())
+    this->taskStartTimeout.cancel();
+    if (min != Timestamp::Max())
     {
         this->taskStartTimeout.cancel();
-    }
-    else
-    {
         this->taskStartTimeout
             = this->executor->start(min.value, [this, self = shared_from_this()]() { this->TimeoutTasks(); });
     }

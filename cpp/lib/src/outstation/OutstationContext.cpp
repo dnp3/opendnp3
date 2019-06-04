@@ -318,6 +318,7 @@ void OContext::RestartConfirmTimer()
         this->CheckForTaskStart();
     };
 
+    this->confirmTimer.cancel();
     this->confirmTimer = this->executor->start(this->params.unsolConfirmTimeout.value, timeout);
 }
 
