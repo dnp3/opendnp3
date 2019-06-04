@@ -18,10 +18,10 @@
  * limitations under the License.
  */
 
-#include <catch.hpp>
-
-#include <outstation/StaticDataMap.h>
 #include <opendnp3/app/MeasurementTypeSpecs.h>
+
+#include <catch.hpp>
+#include <outstation/StaticDataMap.h>
 
 using namespace opendnp3;
 
@@ -56,9 +56,9 @@ TEST_CASE(SUITE("can select all points using default variation and iterate"))
     REQUIRE(map.add(Binary(true), 3, BinaryConfig()));
     REQUIRE(map.add(Binary(false), 7, BinaryConfig()));
 
-	REQUIRE(map.get_selected_range().Count() == 0);
+    REQUIRE(map.get_selected_range().Count() == 0);
     REQUIRE(map.select_all() == 3);
-    
+
     std::vector<StaticDataMap<BinarySpec>::iterator::value_type> items;
     for (auto& item : map)
     {
@@ -96,7 +96,6 @@ TEST_CASE(SUITE("can select all points using specified variation and iterate"))
     {
         REQUIRE(item.second.variation == other_variation);
     }
-
 }
 
 TEST_CASE(SUITE("can select a range and iterate"))
@@ -110,8 +109,8 @@ TEST_CASE(SUITE("can select a range and iterate"))
     REQUIRE(map.add(Binary(true), 3, BinaryConfig()));
     REQUIRE(map.add(Binary(false), 7, BinaryConfig()));
 
-	REQUIRE(map.select(Range::From(0, 9)) == 3);
-	const auto selected = map.get_selected_range();
+    REQUIRE(map.select(Range::From(0, 9)) == 3);
+    const auto selected = map.get_selected_range();
     REQUIRE(selected.start == 1);
     REQUIRE(selected.stop == 7);
 
@@ -121,13 +120,96 @@ TEST_CASE(SUITE("can select a range and iterate"))
         items.push_back(item);
     }
 
-    REQUIRE(items.size() == 3);    
+    REQUIRE(items.size() == 3);
+}
+
+TEST_CASE(SUITE("can select beyond the first entry"))
+{
+    const auto other_variation = StaticBinaryVariation::Group1Var1;
+
+    REQUIRE(BinarySpec::DefaultStaticVariation != other_variation);
+
+    StaticDataMap<BinarySpec> map;
+    REQUIRE(map.add(Binary(false), 1, BinaryConfig()));
+    REQUIRE(map.add(Binary(true), 3, BinaryConfig()));
+    REQUIRE(map.add(Binary(false), 7, BinaryConfig()));
+
+    REQUIRE(map.select(Range::From(3, 8)) == 2);
+
+    std::vector<StaticDataMap<BinarySpec>::iterator::value_type> items;
+    for (auto& item : map)
+    {
+        items.push_back(item);
+    }
+
+    REQUIRE(items.size() == 2);
+    REQUIRE(items[0].first == 3);
+    REQUIRE(items[1].first == 7);
+}
+
+TEST_CASE(SUITE("iterating over part of the selection clears it"))
+{
+    const auto other_variation = StaticBinaryVariation::Group1Var1;
+
+    REQUIRE(BinarySpec::DefaultStaticVariation != other_variation);
+
+    StaticDataMap<BinarySpec> map;
+    REQUIRE(map.add(Binary(false), 1, BinaryConfig()));
+    REQUIRE(map.add(Binary(true), 3, BinaryConfig()));
+    REQUIRE(map.add(Binary(false), 7, BinaryConfig()));
+
+    REQUIRE(map.select_all() == 3);
+
+    // the first time through we increment entries for 1 and 3, but not 7
+    for (auto& item : map)
+    {
+        if (item.first == 7)
+        {
+            break;
+        }
+    }
+
+    // the second iteration there's only 7 remaining
+    std::vector<StaticDataMap<BinarySpec>::iterator::value_type> items;
+    for (auto& item : map)
+    {
+        items.push_back(item);
+    }
+    REQUIRE(items.size() == 1);
+    REQUIRE(items[0].first == 7);
+}
+
+TEST_CASE(SUITE("iterating over the entire selection clears it"))
+{
+    const auto other_variation = StaticBinaryVariation::Group1Var1;
+
+    REQUIRE(BinarySpec::DefaultStaticVariation != other_variation);
+
+    StaticDataMap<BinarySpec> map;
+    REQUIRE(map.add(Binary(false), 1, BinaryConfig()));
+    REQUIRE(map.add(Binary(true), 3, BinaryConfig()));
+    REQUIRE(map.add(Binary(false), 7, BinaryConfig()));
+
+    REQUIRE(map.select_all() == 3);
+
+    // iterate through the entire selection
+    for (auto& item : map)
+    {}
+    
+
+    // the second iteration there's only 7 remaining
+    std::vector<StaticDataMap<BinarySpec>::iterator::value_type> items;
+    for (auto& item : map)
+    {
+        items.push_back(item);
+    }
+    REQUIRE(items.size() == 0);    
 }
 
 TEST_CASE(SUITE("selecting a range that doesn't match anything return Range::Invalid"))
-{   
+{
     StaticDataMap<BinarySpec> map;
-    REQUIRE(map.add(Binary(false), 1, BinaryConfig()));    
+    REQUIRE(map.add(Binary(false), 1, BinaryConfig()));
     REQUIRE(map.add(Binary(false), 7, BinaryConfig()));
 
     REQUIRE(map.select(Range::From(2, 6)) == 0);
@@ -142,7 +224,7 @@ TEST_CASE(SUITE("selecting the lower bound only returns a partial range"))
 
     REQUIRE(map.select(Range::From(1, 6)) == 1);
 
-	const auto selected = map.get_selected_range();
+    const auto selected = map.get_selected_range();
     REQUIRE(selected.start == 1);
     REQUIRE(selected.stop == 1);
 }
@@ -155,7 +237,7 @@ TEST_CASE(SUITE("selecting the upper bound only returns a partial range"))
 
     REQUIRE(map.select(Range::From(2, 8)) == 1);
 
-	const auto selected = map.get_selected_range();
+    const auto selected = map.get_selected_range();
     REQUIRE(selected.start == 7);
     REQUIRE(selected.stop == 7);
 }
@@ -168,7 +250,7 @@ TEST_CASE(SUITE("selecting the beyond the full range returns a partial range"))
 
     REQUIRE(map.select(Range::From(0, 8)) == 2);
 
-	const auto selected = map.get_selected_range();
+    const auto selected = map.get_selected_range();
     REQUIRE(selected.start == 1);
     REQUIRE(selected.stop == 7);
 }
@@ -188,14 +270,14 @@ TEST_CASE(SUITE("can select disjoint ranges and iterate over them"))
     REQUIRE(selected.start == 1);
     REQUIRE(selected.stop == 9);
 
-	std::vector<StaticDataMap<BinarySpec>::iterator::value_type> items;
+    std::vector<StaticDataMap<BinarySpec>::iterator::value_type> items;
     for (auto& item : map)
     {
         items.push_back(item);
     }
 
-	// doesn't include index 5
-	REQUIRE(items.size() == 3);
+    // doesn't include index 5
+    REQUIRE(items.size() == 3);
     REQUIRE(items[0].first == 1);
     REQUIRE(items[1].first == 2);
     REQUIRE(items[2].first == 9);
