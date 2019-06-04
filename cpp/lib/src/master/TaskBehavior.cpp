@@ -105,7 +105,7 @@ void TaskBehavior::Disable()
 
 TimeDuration TaskBehavior::CalcNextRetryTimeout() const
 {
-    const auto doubled = this->maxRetryDelay.Double();
+    const auto doubled = this->currentRetryDelay.Double();
     return (doubled > this->maxRetryDelay) ? this->maxRetryDelay : doubled;
 }
 

@@ -55,7 +55,7 @@ jobs:
           command: cmake -DCMAKE_BUILD_TYPE=Debug -DDNP3_EXAMPLES=ON -DDNP3_TESTS=ON -DDNP3_TLS=ON ..
           working_directory: build
       - run: *build
-      #- run: *test
+      - run: *test
       #- run: *build_java
       #- run: *test_java
       #- run: *package
@@ -73,7 +73,7 @@ jobs:
           command: cmake -DCMAKE_BUILD_TYPE=Release -DDNP3_EXAMPLES=ON -DDNP3_TESTS=ON -DDNP3_TLS=ON ..
           working_directory: build
       - run: *build
-      #- run: *test
+      - run: *test
       #- run: *build_java
       #- run: *test_java
       #- run: *package
@@ -91,7 +91,7 @@ jobs:
           command: cmake -DCMAKE_BUILD_TYPE=Debug -DDNP3_EXAMPLES=ON -DDNP3_TESTS=ON -DDNP3_TLS=ON ..
           working_directory: build
       - run: *build
-      #- run: *test
+      - run: *test
       #- run: *build_java
       #- run: *test_java
       #- run: *package
@@ -109,7 +109,7 @@ jobs:
           command: cmake -DCMAKE_BUILD_TYPE=Release -DDNP3_EXAMPLES=ON -DDNP3_TESTS=ON -DDNP3_TLS=ON ..
           working_directory: build
       - run: *build
-      #- run: *test
+      - run: *test
       #- run: *build_java
       #- run: *test_java
       #- run: *package

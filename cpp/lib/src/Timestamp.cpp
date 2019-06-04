@@ -86,6 +86,11 @@ bool Timestamp::operator==(const Timestamp& other) const
     return this->value == other.value;
 }
 
+bool Timestamp::operator!=(const Timestamp& other) const
+{
+    return this->value != other.value;
+}
+
 bool Timestamp::operator<(const Timestamp& other) const
 {
     return this->value < other.value;

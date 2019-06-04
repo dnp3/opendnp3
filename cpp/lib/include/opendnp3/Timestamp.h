@@ -50,6 +50,7 @@ public:
     TimeDuration operator-(const Timestamp& timestamp) const;
 
     bool operator==(const Timestamp& other) const;
+    bool operator!=(const Timestamp& other) const;
     bool operator<(const Timestamp& other) const;
     bool operator<=(const Timestamp& other) const;
     bool operator>(const Timestamp& other) const;
