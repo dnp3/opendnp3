@@ -61,9 +61,12 @@ char const* KeyChangeMethodToString(KeyChangeMethod arg);
 
 namespace ser4cpp
 {
-  namespace custom_serializers
+  namespace serializers
   {
+    template<>
     bool write_one(wseq_t& dest, const opendnp3::KeyChangeMethod& value);
+
+    template<>
     bool read_one(rseq_t& input, opendnp3::KeyChangeMethod& out);
   }
 }

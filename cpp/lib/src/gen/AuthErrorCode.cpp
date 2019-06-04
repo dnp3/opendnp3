@@ -98,12 +98,15 @@ char const* AuthErrorCodeToString(AuthErrorCode arg)
 
 namespace ser4cpp
 {
-  namespace custom_serializers
+  namespace serializers
   {
+    template<>
     bool write_one(wseq_t& dest, const opendnp3::AuthErrorCode& value)
     {
       return UInt8::write_to(dest, opendnp3::AuthErrorCodeToType(value));
     }
+
+    template<>
     bool read_one(rseq_t& input, opendnp3::AuthErrorCode& out)
     {
       UInt8::type_t tempAuthErrorCode;

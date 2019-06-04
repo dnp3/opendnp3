@@ -55,9 +55,12 @@ char const* FlowControlToString(FlowControl arg);
 
 namespace ser4cpp
 {
-  namespace custom_serializers
+  namespace serializers
   {
+    template<>
     bool write_one(wseq_t& dest, const opendnp3::FlowControl& value);
+
+    template<>
     bool read_one(rseq_t& input, opendnp3::FlowControl& out);
   }
 }

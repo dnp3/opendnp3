@@ -83,9 +83,12 @@ char const* ControlCodeToString(ControlCode arg);
 
 namespace ser4cpp
 {
-  namespace custom_serializers
+  namespace serializers
   {
+    template<>
     bool write_one(wseq_t& dest, const opendnp3::ControlCode& value);
+
+    template<>
     bool read_one(rseq_t& input, opendnp3::ControlCode& out);
   }
 }

@@ -590,12 +590,15 @@ char const* GroupVariationToString(GroupVariation arg)
 
 namespace ser4cpp
 {
-  namespace custom_serializers
+  namespace serializers
   {
+    template<>
     bool write_one(wseq_t& dest, const opendnp3::GroupVariation& value)
     {
       return UInt16::write_to(dest, opendnp3::GroupVariationToType(value));
     }
+
+    template<>
     bool read_one(rseq_t& input, opendnp3::GroupVariation& out)
     {
       UInt16::type_t tempGroupVariation;

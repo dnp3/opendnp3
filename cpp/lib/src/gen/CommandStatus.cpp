@@ -138,12 +138,15 @@ char const* CommandStatusToString(CommandStatus arg)
 
 namespace ser4cpp
 {
-  namespace custom_serializers
+  namespace serializers
   {
+    template<>
     bool write_one(wseq_t& dest, const opendnp3::CommandStatus& value)
     {
       return UInt8::write_to(dest, opendnp3::CommandStatusToType(value));
     }
+
+    template<>
     bool read_one(rseq_t& input, opendnp3::CommandStatus& out)
     {
       UInt8::type_t tempCommandStatus;

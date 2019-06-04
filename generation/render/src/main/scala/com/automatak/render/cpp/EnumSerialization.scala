@@ -27,7 +27,7 @@ object EnumSerialization extends HeaderImplModelRender[EnumModel] {
   def impl: ModelRenderer[EnumModel]  = ImplRender
 
   private def ser4cppNamespace = "namespace ser4cpp"
-  private def customSerializersNamespace = "namespace custom_serializers"
+  private def customSerializersNamespace = "namespace serializers"
   private def namespaced(inner: Iterator[String])(implicit indent: Indentation) : Iterator[String] = {
     Iterator(ser4cppNamespace) ++ bracket {
       Iterator(customSerializersNamespace) ++ bracket {
@@ -36,12 +36,13 @@ object EnumSerialization extends HeaderImplModelRender[EnumModel] {
     }
   }
 
+  private def template = "template<>"
   private def writeSignature(enum: EnumModel) = "bool write_one(wseq_t& dest, const opendnp3::%s& value)".format(enum.name)
-  private def readSignature(enum: EnumModel) = "bool read_one(rseq_t& input, opendnp3::%s& out)".format(enum.name)
+  private def readSignature(enum: EnumModel)  = "bool read_one(rseq_t& input, opendnp3::%s& out)".format(enum.name)
 
   private object HeaderRender extends ModelRenderer[EnumModel] {
     def render(em: EnumModel)(implicit i: Indentation) : Iterator[String] = {
-      namespaced(Iterator(writeSignature(em) + ";", readSignature(em) + ";"))
+      namespaced(Iterator(template, writeSignature(em) + ";") ++ space ++ Iterator(template, readSignature(em) + ";"))
     }
   }
 
@@ -49,10 +50,10 @@ object EnumSerialization extends HeaderImplModelRender[EnumModel] {
 
     def render(em: EnumModel)(implicit i: Indentation) : Iterator[String] = {
 
-      def writeOne = Iterator(writeSignature(em)) ++ bracket {
+      def writeOne = Iterator(template, writeSignature(em)) ++ bracket {
         Iterator("return %s::write_to(dest, opendnp3::%sToType(value));".format(em.enumType, em.name))
       }
-      def readOne = Iterator(readSignature(em)) ++ bracket {
+      def readOne = Iterator(template, readSignature(em)) ++ bracket {
         val tempValueName = "temp%s".format(em.name)
         Iterator(
           "%s::type_t %s;".format(em.enumType, tempValueName),
@@ -62,7 +63,7 @@ object EnumSerialization extends HeaderImplModelRender[EnumModel] {
         )
       }
 
-      namespaced(writeOne ++ readOne)
+      namespaced(writeOne ++ space ++ readOne)
     }
   }
 }
