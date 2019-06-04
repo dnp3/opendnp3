@@ -235,7 +235,7 @@ TEST_CASE(SUITE("ClassScanCanRepeat"))
 
     // 2nd poll
     REQUIRE(t.exe->num_pending_timers() == 1);
-    REQUIRE(t.exe->next_timer_expiration_abs() - startTime == std::chrono::seconds(10000));
+    REQUIRE(t.exe->next_timer_expiration_abs() - startTime == std::chrono::seconds(10));
     t.exe->advance_time(std::chrono::seconds(10));
     REQUIRE(t.exe->run_many() > 0);
     REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(1));

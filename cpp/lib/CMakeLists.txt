@@ -646,12 +646,12 @@ set(opendnp3_tls_src
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}
     FILES ${opendnp3_public_headers} ${opendnp3_private_headers} ${opendnp3_src}
-    $<$<BOOL:DNP3_TLS>:${opendnp3_tls_private_headers} ${opendnp3_tls_src}>
+    $<$<BOOL:${DNP3_TLS}>:${opendnp3_tls_private_headers} ${opendnp3_tls_src}>
 )
 
 add_library(opendnp3
     ${opendnp3_public_headers} ${opendnp3_private_headers} ${opendnp3_src}
-    $<$<BOOL:DNP3_TLS>:${opendnp3_tls_private_headers} ${opendnp3_tls_src}>
+    $<$<BOOL:${DNP3_TLS}>:${opendnp3_tls_private_headers} ${opendnp3_tls_src}>
 )
 target_compile_features(opendnp3 PRIVATE cxx_std_14)
 target_link_libraries(opendnp3
