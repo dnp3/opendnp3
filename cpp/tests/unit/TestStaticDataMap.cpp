@@ -60,13 +60,13 @@ TEST_CASE(SUITE("can select all points using default variation and iterate"))
     REQUIRE(map.select_all() == 3);
 
     std::vector<StaticDataMap<BinarySpec>::iterator::value_type> items;
-    for (auto& item : map)
+    for (const auto& item : map)
     {
         items.push_back(item);
     }
 
     REQUIRE(items.size() == 3);
-    for (auto& item : map)
+    for (const auto& item : map)
     {
         REQUIRE(item.second.variation == BinarySpec::DefaultStaticVariation);
     }
@@ -87,13 +87,13 @@ TEST_CASE(SUITE("can select all points using specified variation and iterate"))
     REQUIRE(map.select_all(other_variation) == 3);
 
     std::vector<StaticDataMap<BinarySpec>::iterator::value_type> items;
-    for (auto& item : map)
+    for (const auto& item : map)
     {
         items.push_back(item);
     }
 
     REQUIRE(items.size() == 3);
-    for (auto& item : map)
+    for (const auto& item : map)
     {
         REQUIRE(item.second.variation == other_variation);
     }
@@ -117,7 +117,7 @@ TEST_CASE(SUITE("can select a range and iterate"))
     REQUIRE(selected.stop == 7);
 
     std::vector<StaticDataMap<BinarySpec>::iterator::value_type> items;
-    for (auto& item : map)
+    for (const auto& item : map)
     {
         items.push_back(item);
     }
@@ -140,7 +140,7 @@ TEST_CASE(SUITE("can select beyond the first entry"))
     REQUIRE(map.select(Range::From(3, 8)) == 2);
 
     std::vector<StaticDataMap<BinarySpec>::iterator::value_type> items;
-    for (auto& item : map)
+    for (const auto& item : map)
     {
         items.push_back(item);
     }
@@ -165,7 +165,7 @@ TEST_CASE(SUITE("iterating over part of the selection clears it"))
     REQUIRE(map.select_all() == 3);
 
     // the first time through we increment entries for 1 and 3, but not 7
-    for (auto& item : map)
+    for (const auto& item : map)
     {
         if (item.first == 7)
         {
@@ -175,7 +175,7 @@ TEST_CASE(SUITE("iterating over part of the selection clears it"))
 
     // the second iteration there's only 7 remaining
     std::vector<StaticDataMap<BinarySpec>::iterator::value_type> items;
-    for (auto& item : map)
+    for (const auto& item : map)
     {
         items.push_back(item);
     }
@@ -198,12 +198,12 @@ TEST_CASE(SUITE("iterating over the entire selection clears it"))
     REQUIRE(map.select_all() == 3);
 
     // iterate through the entire selection
-    for (auto& item : map)
+    for (const auto& item : map)
     {}
 
     // the second iteration there's only 7 remaining
     std::vector<StaticDataMap<BinarySpec>::iterator::value_type> items;
-    for (auto& item : map)
+    for (const auto& item : map)
     {
         items.push_back(item);
     }
@@ -279,7 +279,7 @@ TEST_CASE(SUITE("can select disjoint ranges and iterate over them"))
     REQUIRE(selected.stop == 9);
 
     std::vector<StaticDataMap<BinarySpec>::iterator::value_type> items;
-    for (auto& item : map)
+    for (const auto& item : map)
     {
         items.push_back(item);
     }

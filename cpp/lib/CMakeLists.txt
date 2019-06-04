@@ -453,7 +453,8 @@ set(opendnp3_src
     ./src/app/GroupVariationRecord.cpp
     ./src/app/HeaderWriter.cpp
     ./src/app/IINField.cpp
-    ./src/app/MeasurementTypes.cpp
+	./src/app/MeasurementInfo.cpp
+	./src/app/MeasurementTypes.cpp
     ./src/app/OctetData.cpp
     ./src/app/QualityFlags.cpp
     ./src/app/SecurityStat.cpp

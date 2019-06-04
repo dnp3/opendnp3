@@ -57,10 +57,10 @@ public:
     public:
         explicit iterator(map_iter_t begin, map_iter_t end, Range& range) : iter(begin), end(end), range(range) {}
 
-        using value_type = std::pair<uint16_t, typename SelectedValue<Spec>>;
+        using value_type = std::pair<uint16_t, SelectedValue<Spec>>;
         using difference_type = typename map_iter_t::difference_type;
         using pointer = typename map_iter_t::pointer;
-        using reference = std::pair<uint16_t, typename SelectedValue<Spec>&>;
+        using reference = std::pair<uint16_t, SelectedValue<Spec>&>;
         using iterator_category = std::input_iterator_tag;
 
         bool operator==(const iterator& rhs)
@@ -281,7 +281,7 @@ template<class Spec> typename StaticDataMap<Spec>::iterator StaticDataMap<Spec>:
 
 template<class Spec> typename StaticDataMap<Spec>::iterator StaticDataMap<Spec>::end()
 {
-    return iterator(this->map.end(), this->map.end(), Range::Invalid());
+    return iterator(this->map.end(), this->map.end(), this->selected);
 }
 
 } // namespace opendnp3

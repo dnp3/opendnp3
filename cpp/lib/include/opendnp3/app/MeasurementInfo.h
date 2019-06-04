@@ -57,10 +57,10 @@ struct BinaryInfo : private StaticOnly
     typedef EventBinaryVariation event_variation_t;
     typedef StaticBinaryVariation static_variation_t;
 
-    static const EventType EventTypeEnum = EventType::Binary;
-    static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::BinaryInput;
-    static const event_variation_t DefaultEventVariation = EventBinaryVariation::Group2Var1;
-    static const static_variation_t DefaultStaticVariation = StaticBinaryVariation::Group1Var2;
+    static const EventType EventTypeEnum;
+    static const StaticTypeBitmask StaticTypeEnum;
+    static const event_variation_t DefaultEventVariation;
+    static const static_variation_t DefaultStaticVariation;
 };
 
 struct DoubleBitBinaryInfo : private StaticOnly
@@ -70,24 +70,23 @@ struct DoubleBitBinaryInfo : private StaticOnly
     typedef EventDoubleBinaryVariation event_variation_t;
     typedef StaticDoubleBinaryVariation static_variation_t;
 
-    static const EventType EventTypeEnum = EventType::DoubleBitBinary;
-    static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::DoubleBinaryInput;
-    static const event_variation_t DefaultEventVariation = EventDoubleBinaryVariation::Group4Var1;
-    static const static_variation_t DefaultStaticVariation = StaticDoubleBinaryVariation::Group3Var2;
+    static const EventType EventTypeEnum;
+    static const StaticTypeBitmask StaticTypeEnum;
+    static const event_variation_t DefaultEventVariation;
+    static const static_variation_t DefaultStaticVariation;
 };
 
-class BinaryOutputStatusInfo : private StaticOnly
+struct BinaryOutputStatusInfo : private StaticOnly
 {
-public:
     typedef BinaryOutputStatus meas_t;
     typedef bool value_t;
     typedef EventBinaryOutputStatusVariation event_variation_t;
     typedef StaticBinaryOutputStatusVariation static_variation_t;
 
-    static const EventType EventTypeEnum = EventType::BinaryOutputStatus;
-    static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::BinaryOutputStatus;
-    static const event_variation_t DefaultEventVariation = EventBinaryOutputStatusVariation::Group11Var1;
-    static const static_variation_t DefaultStaticVariation = StaticBinaryOutputStatusVariation::Group10Var2;
+    static const EventType EventTypeEnum;
+    static const StaticTypeBitmask StaticTypeEnum;
+    static const event_variation_t DefaultEventVariation;
+    static const static_variation_t DefaultStaticVariation;
 };
 
 struct AnalogInfo : private StaticOnly
@@ -97,10 +96,10 @@ struct AnalogInfo : private StaticOnly
     typedef EventAnalogVariation event_variation_t;
     typedef StaticAnalogVariation static_variation_t;
 
-    static const EventType EventTypeEnum = EventType::Analog;
-    static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::AnalogInput;
-    static const event_variation_t DefaultEventVariation = EventAnalogVariation::Group32Var1;
-    static const static_variation_t DefaultStaticVariation = StaticAnalogVariation::Group30Var1;
+    static const EventType EventTypeEnum;
+    static const StaticTypeBitmask StaticTypeEnum;
+    static const event_variation_t DefaultEventVariation;
+    static const static_variation_t DefaultStaticVariation;
 };
 
 struct CounterInfo : private StaticOnly
@@ -110,10 +109,10 @@ struct CounterInfo : private StaticOnly
     typedef EventCounterVariation event_variation_t;
     typedef StaticCounterVariation static_variation_t;
 
-    static const EventType EventTypeEnum = EventType::Counter;
-    static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::Counter;
-    static const event_variation_t DefaultEventVariation = EventCounterVariation::Group22Var1;
-    static const static_variation_t DefaultStaticVariation = StaticCounterVariation::Group20Var1;
+    static const EventType EventTypeEnum;
+    static const StaticTypeBitmask StaticTypeEnum;
+    static const event_variation_t DefaultEventVariation;
+    static const static_variation_t DefaultStaticVariation;
 };
 
 struct FrozenCounterInfo : private StaticOnly
@@ -123,10 +122,10 @@ struct FrozenCounterInfo : private StaticOnly
     typedef EventFrozenCounterVariation event_variation_t;
     typedef StaticFrozenCounterVariation static_variation_t;
 
-    static const EventType EventTypeEnum = EventType::FrozenCounter;
-    static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::FrozenCounter;
-    static const event_variation_t DefaultEventVariation = EventFrozenCounterVariation::Group23Var1;
-    static const static_variation_t DefaultStaticVariation = StaticFrozenCounterVariation::Group21Var1;
+    static const EventType EventTypeEnum;
+    static const StaticTypeBitmask StaticTypeEnum;
+    static const event_variation_t DefaultEventVariation;
+    static const static_variation_t DefaultStaticVariation;
 };
 
 struct AnalogOutputStatusInfo : private StaticOnly
@@ -136,10 +135,10 @@ struct AnalogOutputStatusInfo : private StaticOnly
     typedef EventAnalogOutputStatusVariation event_variation_t;
     typedef StaticAnalogOutputStatusVariation static_variation_t;
 
-    static const EventType EventTypeEnum = EventType::AnalogOutputStatus;
-    static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::AnalogOutputStatus;
-    static const event_variation_t DefaultEventVariation = EventAnalogOutputStatusVariation::Group42Var1;
-    static const static_variation_t DefaultStaticVariation = StaticAnalogOutputStatusVariation::Group40Var1;
+    static const EventType EventTypeEnum;
+    static const StaticTypeBitmask StaticTypeEnum;
+    static const event_variation_t DefaultEventVariation;
+    static const static_variation_t DefaultStaticVariation;
 };
 
 struct OctetStringInfo : private StaticOnly
@@ -148,10 +147,10 @@ struct OctetStringInfo : private StaticOnly
     typedef EventOctetStringVariation event_variation_t;
     typedef StaticOctetStringVariation static_variation_t;
 
-    static const EventType EventTypeEnum = EventType::OctetString;
-    static const StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::OctetString;
-    static const event_variation_t DefaultEventVariation = EventOctetStringVariation::Group111Var0;
-    static const static_variation_t DefaultStaticVariation = StaticOctetStringVariation::Group110Var0;
+    static const EventType EventTypeEnum;
+    static const StaticTypeBitmask StaticTypeEnum;
+    static const event_variation_t DefaultEventVariation;
+    static const static_variation_t DefaultStaticVariation;
 };
 
 struct TimeAndIntervalInfo : private StaticOnly
@@ -159,8 +158,8 @@ struct TimeAndIntervalInfo : private StaticOnly
     typedef TimeAndInterval meas_t;
     typedef StaticTimeAndIntervalVariation static_variation_t;
 
-    const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::TimeAndInterval;
-    const static StaticTimeAndIntervalVariation DefaultStaticVariation = StaticTimeAndIntervalVariation::Group50Var4;
+    static const StaticTypeBitmask StaticTypeEnum;
+    static const StaticTimeAndIntervalVariation DefaultStaticVariation;
 };
 
 struct SecurityStatInfo : private StaticOnly
@@ -170,8 +169,8 @@ struct SecurityStatInfo : private StaticOnly
     typedef EventSecurityStatVariation event_variation_t;
     typedef StaticSecurityStatVariation static_variation_t;
 
-    const static event_variation_t DefaultEventVariation = EventSecurityStatVariation::Group122Var1;
-    const static static_variation_t DefaultStaticVariation = StaticSecurityStatVariation::Group121Var1;
+    static const event_variation_t DefaultEventVariation;
+    static const static_variation_t DefaultStaticVariation;
 };
 
 } // namespace opendnp3

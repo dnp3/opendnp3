@@ -160,6 +160,8 @@ IINField DatabaseMaps::GenericSelect(Range range,
                                         bool useDefault,
                                         typename T::static_variation_t variation)
 {
+    return IINField();
+    /* TODO
     if (range.IsValid())
     {
         auto allowed = range.Intersection(RangeOf(view.length()));
@@ -197,6 +199,7 @@ IINField DatabaseMaps::GenericSelect(Range range,
     {
         return IINField();
     }
+    */
 }
 
 template<class T> bool DatabaseMaps::LoadType(HeaderWriter& writer)
