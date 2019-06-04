@@ -108,6 +108,11 @@ public:
 
     void clear_selection();
 
+    bool has_any_selection() const
+    {
+        return this->selected.IsValid();
+	}
+
     Range get_selected_range() const
     {
         return this->selected;

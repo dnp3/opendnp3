@@ -17,27 +17,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_DATABASECONFIGNEW_H
-#define OPENDNP3_DATABASECONFIGNEW_H
+#ifndef OPENDNP3_STATICDATAMAPS_H
+#define OPENDNP3_STATICDATAMAPS_H
 
-#include "opendnp3/outstation/MeasurementConfig.h"
+#include "outstation/StaticDataMap.h"
 
-#include <map>
+#include <opendnp3/outstation/DatabaseConfigNew.h>
+#include <opendnp3/app/MeasurementTypeSpecs.h>
 
 namespace opendnp3
 {
 
-struct DatabaseConfigNew
-{   
-    std::map<uint16_t, BinaryConfig> binary_input;
-    std::map<uint16_t, DoubleBitBinaryConfig> double_binary;
-    std::map<uint16_t, AnalogConfig> analog_input;
-    std::map<uint16_t, CounterConfig> counter;
-    std::map<uint16_t, FrozenCounterConfig> frozen_counter;
-    std::map<uint16_t, BOStatusConfig> binary_output_status;
-    std::map<uint16_t, AOStatusConfig> analog_output_status;
-    std::map<uint16_t, TimeAndIntervalConfig> time_and_interval;
-    std::map<uint16_t, OctetStringConfig> octet_string;
+class StaticDataMaps
+{
+public:
+
+	StaticDataMaps(const DatabaseConfigNew& config);
+
+	bool has_any_selection() const;
+
+
+    StaticDataMap<BinarySpec> binary_input;
+    StaticDataMap<DoubleBitBinarySpec> double_binary;
+    StaticDataMap<AnalogSpec> analog_input;
+    StaticDataMap<CounterSpec> counter;
+    StaticDataMap<FrozenCounterSpec> frozen_counter;
+    StaticDataMap<BinaryOutputStatusSpec> binary_output_status;
+    StaticDataMap<AnalogOutputStatusSpec> analog_output_status;
+    StaticDataMap<TimeAndIntervalSpec> time_and_interval;
+    StaticDataMap<OctetStringSpec> octet_string;
 };
 
 } // namespace opendnp3

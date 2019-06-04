@@ -17,29 +17,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_DATABASECONFIGNEW_H
-#define OPENDNP3_DATABASECONFIGNEW_H
 
-#include "opendnp3/outstation/MeasurementConfig.h"
-
-#include <map>
+#include "StaticDataMaps.h"
 
 namespace opendnp3
 {
 
-struct DatabaseConfigNew
-{   
-    std::map<uint16_t, BinaryConfig> binary_input;
-    std::map<uint16_t, DoubleBitBinaryConfig> double_binary;
-    std::map<uint16_t, AnalogConfig> analog_input;
-    std::map<uint16_t, CounterConfig> counter;
-    std::map<uint16_t, FrozenCounterConfig> frozen_counter;
-    std::map<uint16_t, BOStatusConfig> binary_output_status;
-    std::map<uint16_t, AOStatusConfig> analog_output_status;
-    std::map<uint16_t, TimeAndIntervalConfig> time_and_interval;
-    std::map<uint16_t, OctetStringConfig> octet_string;
-};
+StaticDataMaps::StaticDataMaps(const DatabaseConfigNew& config)
+    : binary_input(config.binary_input),
+      double_binary(config.double_binary),
+      analog_input(config.analog_input),
+      counter(config.counter),
+      frozen_counter(config.frozen_counter),
+      binary_output_status(config.binary_output_status),
+      analog_output_status(config.analog_output_status),
+      time_and_interval(config.time_and_interval),
+      octet_string(config.octet_string)
+{
+}
+
+bool StaticDataMaps::has_any_selection() const
+{
+    return 
+		binary_input.has_any_selection() 
+		|| double_binary.has_any_selection() 
+		|| analog_input.has_any_selection()
+        || counter.has_any_selection()
+		|| frozen_counter.has_any_selection()
+		|| binary_output_status.has_any_selection()
+        || analog_output_status.has_any_selection()
+		|| time_and_interval.has_any_selection()
+        || octet_string.has_any_selection();
+}
 
 } // namespace opendnp3
-
-#endif
