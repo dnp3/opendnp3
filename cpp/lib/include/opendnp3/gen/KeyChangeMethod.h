@@ -33,7 +33,6 @@
 #define OPENDNP3_KEYCHANGEMETHOD_H
 
 #include <cstdint>
-#include <ser4cpp/serialization/LittleEndian.h>
 
 namespace opendnp3 {
 
@@ -57,18 +56,6 @@ uint8_t KeyChangeMethodToType(KeyChangeMethod arg);
 KeyChangeMethod KeyChangeMethodFromType(uint8_t arg);
 char const* KeyChangeMethodToString(KeyChangeMethod arg);
 
-}
-
-namespace ser4cpp
-{
-  namespace serializers
-  {
-    template<>
-    bool write_one(wseq_t& dest, const opendnp3::KeyChangeMethod& value);
-
-    template<>
-    bool read_one(rseq_t& input, opendnp3::KeyChangeMethod& out);
-  }
 }
 
 #endif

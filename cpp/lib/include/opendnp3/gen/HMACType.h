@@ -33,7 +33,6 @@
 #define OPENDNP3_HMACTYPE_H
 
 #include <cstdint>
-#include <ser4cpp/serialization/LittleEndian.h>
 
 namespace opendnp3 {
 
@@ -62,18 +61,6 @@ uint8_t HMACTypeToType(HMACType arg);
 HMACType HMACTypeFromType(uint8_t arg);
 char const* HMACTypeToString(HMACType arg);
 
-}
-
-namespace ser4cpp
-{
-  namespace serializers
-  {
-    template<>
-    bool write_one(wseq_t& dest, const opendnp3::HMACType& value);
-
-    template<>
-    bool read_one(rseq_t& input, opendnp3::HMACType& out);
-  }
 }
 
 #endif

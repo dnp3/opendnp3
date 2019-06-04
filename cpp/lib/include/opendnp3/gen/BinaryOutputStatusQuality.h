@@ -62,5 +62,4 @@ enum class BinaryOutputStatusQuality : uint8_t
 
 }
 
-
 #endif

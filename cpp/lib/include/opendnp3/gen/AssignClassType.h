@@ -53,5 +53,4 @@ enum class AssignClassType : uint8_t
 
 }
 
-
 #endif

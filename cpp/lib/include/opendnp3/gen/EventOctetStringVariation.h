@@ -44,5 +44,4 @@ enum class EventOctetStringVariation : uint8_t
 
 }
 
-
 #endif

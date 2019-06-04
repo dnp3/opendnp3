@@ -62,5 +62,4 @@ enum class CounterQuality : uint8_t
 
 }
 
-
 #endif

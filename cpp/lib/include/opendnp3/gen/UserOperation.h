@@ -33,7 +33,6 @@
 #define OPENDNP3_USEROPERATION_H
 
 #include <cstdint>
-#include <ser4cpp/serialization/LittleEndian.h>
 
 namespace opendnp3 {
 
@@ -52,18 +51,6 @@ uint8_t UserOperationToType(UserOperation arg);
 UserOperation UserOperationFromType(uint8_t arg);
 char const* UserOperationToString(UserOperation arg);
 
-}
-
-namespace ser4cpp
-{
-  namespace serializers
-  {
-    template<>
-    bool write_one(wseq_t& dest, const opendnp3::UserOperation& value);
-
-    template<>
-    bool read_one(rseq_t& input, opendnp3::UserOperation& out);
-  }
 }
 
 #endif

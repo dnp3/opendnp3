@@ -59,5 +59,4 @@ char const* CommandPointStateToString(CommandPointState arg);
 
 }
 
-
 #endif

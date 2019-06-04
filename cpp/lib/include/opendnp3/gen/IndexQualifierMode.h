@@ -50,5 +50,4 @@ enum class IndexQualifierMode : uint8_t
 
 }
 
-
 #endif

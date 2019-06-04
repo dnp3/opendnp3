@@ -33,7 +33,6 @@
 #define OPENDNP3_DOUBLEBIT_H
 
 #include <cstdint>
-#include <ser4cpp/serialization/LittleEndian.h>
 
 namespace opendnp3 {
 
@@ -56,18 +55,6 @@ uint8_t DoubleBitToType(DoubleBit arg);
 DoubleBit DoubleBitFromType(uint8_t arg);
 char const* DoubleBitToString(DoubleBit arg);
 
-}
-
-namespace ser4cpp
-{
-  namespace serializers
-  {
-    template<>
-    bool write_one(wseq_t& dest, const opendnp3::DoubleBit& value);
-
-    template<>
-    bool read_one(rseq_t& input, opendnp3::DoubleBit& out);
-  }
 }
 
 #endif

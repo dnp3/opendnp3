@@ -51,5 +51,4 @@ char const* LinkStatusToString(LinkStatus arg);
 
 }
 
-
 #endif

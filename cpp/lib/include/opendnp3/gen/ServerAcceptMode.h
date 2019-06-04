@@ -48,5 +48,4 @@ enum class ServerAcceptMode : uint8_t
 
 }
 
-
 #endif

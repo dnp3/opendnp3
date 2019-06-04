@@ -49,4 +49,3 @@ char const* ChannelStateToString(ChannelState arg)
 }
 
 }
-

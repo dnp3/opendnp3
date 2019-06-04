@@ -52,5 +52,4 @@ enum class RestartMode : uint8_t
 
 }
 
-
 #endif

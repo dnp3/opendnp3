@@ -44,5 +44,4 @@ enum class StaticOctetStringVariation : uint8_t
 
 }
 
-
 #endif

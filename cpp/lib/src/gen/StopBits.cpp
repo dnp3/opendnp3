@@ -67,24 +67,3 @@ char const* StopBitsToString(StopBits arg)
 }
 
 }
-
-namespace ser4cpp
-{
-  namespace serializers
-  {
-    template<>
-    bool write_one(wseq_t& dest, const opendnp3::StopBits& value)
-    {
-      return UInt8::write_to(dest, opendnp3::StopBitsToType(value));
-    }
-
-    template<>
-    bool read_one(rseq_t& input, opendnp3::StopBits& out)
-    {
-      UInt8::type_t tempStopBits;
-      bool result = UInt8::read_from(input, tempStopBits);
-      out = opendnp3::StopBitsFromType(tempStopBits);
-      return result;
-    }
-  }
-}

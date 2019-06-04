@@ -52,5 +52,4 @@ enum class OperateType : uint8_t
 
 }
 
-
 #endif

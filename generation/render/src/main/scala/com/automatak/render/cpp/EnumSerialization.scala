@@ -21,10 +21,7 @@ package com.automatak.render.cpp
 
 import com.automatak.render._
 
-object EnumSerialization extends HeaderImplModelRender[EnumModel] {
-
-  def header: ModelRenderer[EnumModel] = HeaderRender
-  def impl: ModelRenderer[EnumModel]  = ImplRender
+object EnumSerialization extends ModelRenderer[EnumModel] {
 
   private def ser4cppNamespace = "namespace ser4cpp"
   private def customSerializersNamespace = "namespace serializers"
@@ -37,33 +34,24 @@ object EnumSerialization extends HeaderImplModelRender[EnumModel] {
   }
 
   private def template = "template<>"
-  private def writeSignature(enum: EnumModel) = "bool write_one(wseq_t& dest, const opendnp3::%s& value)".format(enum.name)
-  private def readSignature(enum: EnumModel)  = "bool read_one(rseq_t& input, opendnp3::%s& out)".format(enum.name)
+  private def writeSignature(enum: EnumModel) = Iterator("template<>", "inline bool write_one(wseq_t& dest, const opendnp3::%s& value)".format(enum.name))
+  private def readSignature(enum: EnumModel)  = Iterator("template<>", "inline bool read_one(rseq_t& input, opendnp3::%s& out)".format(enum.name))
 
-  private object HeaderRender extends ModelRenderer[EnumModel] {
-    def render(em: EnumModel)(implicit i: Indentation) : Iterator[String] = {
-      namespaced(Iterator(template, writeSignature(em) + ";") ++ space ++ Iterator(template, readSignature(em) + ";"))
+  def render(em: EnumModel)(implicit i: Indentation) : Iterator[String] = {
+
+    def writeOne = writeSignature(em) ++ bracket {
+      Iterator("return %s::write_to(dest, opendnp3::%sToType(value));".format(em.enumType, em.name))
     }
-  }
-
-  private object ImplRender extends ModelRenderer[EnumModel] {
-
-    def render(em: EnumModel)(implicit i: Indentation) : Iterator[String] = {
-
-      def writeOne = Iterator(template, writeSignature(em)) ++ bracket {
-        Iterator("return %s::write_to(dest, opendnp3::%sToType(value));".format(em.enumType, em.name))
-      }
-      def readOne = Iterator(template, readSignature(em)) ++ bracket {
-        val tempValueName = "temp%s".format(em.name)
-        Iterator(
-          "%s::type_t %s;".format(em.enumType, tempValueName),
-          "bool result = %s::read_from(input, %s);".format(em.enumType, tempValueName),
-          "out = opendnp3::%sFromType(%s);".format(em.name, tempValueName),
-          "return result;"
-        )
-      }
-
-      namespaced(writeOne ++ space ++ readOne)
+    def readOne = readSignature(em) ++ bracket {
+      val tempValueName = "temp%s".format(em.name)
+      Iterator(
+        "%s::type_t %s;".format(em.enumType, tempValueName),
+        "bool result = %s::read_from(input, %s);".format(em.enumType, tempValueName),
+        "out = opendnp3::%sFromType(%s);".format(em.name, tempValueName),
+        "return result;"
+      )
     }
+
+    namespaced(writeOne ++ space ++ readOne)
   }
 }

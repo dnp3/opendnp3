@@ -61,4 +61,3 @@ char const* MasterTaskTypeToString(MasterTaskType arg)
 }
 
 }
-

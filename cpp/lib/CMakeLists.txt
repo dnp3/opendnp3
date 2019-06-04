@@ -247,6 +247,28 @@ set(opendnp3_private_headers
     ./src/decoder/Indent.h
     ./src/decoder/LoggingHandler.h
 
+    ./src/gen/AuthErrorCodeSerialization.h
+    ./src/gen/CertificateTypeSerialization.h
+    ./src/gen/ChallengeReasonSerialization.h
+    ./src/gen/CommandStatusSerialization.h
+    ./src/gen/ControlCodeSerialization.h
+    ./src/gen/DoubleBitSerialization.h
+    ./src/gen/FlagsTypeSerialization.h
+    ./src/gen/FlowControlSerialization.h
+    ./src/gen/FunctionCodeSerialization.h
+    ./src/gen/GroupVariationSerialization.h
+    ./src/gen/HMACTypeSerialization.h
+    ./src/gen/IntervalUnitsSerialization.h
+    ./src/gen/KeyChangeMethodSerialization.h
+    ./src/gen/KeyStatusSerialization.h
+    ./src/gen/KeyWrapAlgorithmSerialization.h
+    ./src/gen/LinkFunctionSerialization.h
+    ./src/gen/ParitySerialization.h
+    ./src/gen/QualifierCodeSerialization.h
+    ./src/gen/StopBitsSerialization.h
+    ./src/gen/UserOperationSerialization.h
+    ./src/gen/UserRoleSerialization.h
+
     ./src/gen/objects/Group1.h
     ./src/gen/objects/Group2.h
     ./src/gen/objects/Group3.h

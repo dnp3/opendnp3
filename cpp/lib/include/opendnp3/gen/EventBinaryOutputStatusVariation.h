@@ -45,5 +45,4 @@ enum class EventBinaryOutputStatusVariation : uint8_t
 
 }
 
-
 #endif

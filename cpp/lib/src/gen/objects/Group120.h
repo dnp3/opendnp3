@@ -36,14 +36,14 @@
 #include <ser4cpp/container/SequenceTypes.h>
 #include "opendnp3/app/DNPTime.h"
 #include "app/IVariableLength.h"
-#include "opendnp3/gen/HMACType.h"
-#include "opendnp3/gen/ChallengeReason.h"
-#include "opendnp3/gen/KeyWrapAlgorithm.h"
-#include "opendnp3/gen/KeyStatus.h"
-#include "opendnp3/gen/AuthErrorCode.h"
-#include "opendnp3/gen/KeyChangeMethod.h"
-#include "opendnp3/gen/CertificateType.h"
-#include "opendnp3/gen/UserOperation.h"
+#include "gen/HMACTypeSerialization.h"
+#include "gen/ChallengeReasonSerialization.h"
+#include "gen/KeyWrapAlgorithmSerialization.h"
+#include "gen/KeyStatusSerialization.h"
+#include "gen/AuthErrorCodeSerialization.h"
+#include "gen/KeyChangeMethodSerialization.h"
+#include "gen/CertificateTypeSerialization.h"
+#include "gen/UserOperationSerialization.h"
 
 namespace opendnp3 {
 

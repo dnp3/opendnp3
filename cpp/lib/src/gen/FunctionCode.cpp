@@ -199,24 +199,3 @@ char const* FunctionCodeToString(FunctionCode arg)
 }
 
 }
-
-namespace ser4cpp
-{
-  namespace serializers
-  {
-    template<>
-    bool write_one(wseq_t& dest, const opendnp3::FunctionCode& value)
-    {
-      return UInt8::write_to(dest, opendnp3::FunctionCodeToType(value));
-    }
-
-    template<>
-    bool read_one(rseq_t& input, opendnp3::FunctionCode& out)
-    {
-      UInt8::type_t tempFunctionCode;
-      bool result = UInt8::read_from(input, tempFunctionCode);
-      out = opendnp3::FunctionCodeFromType(tempFunctionCode);
-      return result;
-    }
-  }
-}

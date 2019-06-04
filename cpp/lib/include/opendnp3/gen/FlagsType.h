@@ -33,7 +33,6 @@
 #define OPENDNP3_FLAGSTYPE_H
 
 #include <cstdint>
-#include <ser4cpp/serialization/LittleEndian.h>
 
 namespace opendnp3 {
 
@@ -55,18 +54,6 @@ uint8_t FlagsTypeToType(FlagsType arg);
 FlagsType FlagsTypeFromType(uint8_t arg);
 char const* FlagsTypeToString(FlagsType arg);
 
-}
-
-namespace ser4cpp
-{
-  namespace serializers
-  {
-    template<>
-    bool write_one(wseq_t& dest, const opendnp3::FlagsType& value);
-
-    template<>
-    bool read_one(rseq_t& input, opendnp3::FlagsType& out);
-  }
 }
 
 #endif

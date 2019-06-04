@@ -47,5 +47,4 @@ enum class EventCounterVariation : uint8_t
 
 }
 
-
 #endif

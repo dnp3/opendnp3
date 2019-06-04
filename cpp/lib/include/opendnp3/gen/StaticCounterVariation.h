@@ -47,5 +47,4 @@ enum class StaticCounterVariation : uint8_t
 
 }
 
-
 #endif

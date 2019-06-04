@@ -53,4 +53,3 @@ char const* TaskCompletionToString(TaskCompletion arg)
 }
 
 }
-

@@ -32,25 +32,25 @@ object CppEnumGenerator {
 
     def headerPath(model: EnumModel) = incDirectory.resolve(headerName(model))
     def implPath(model: EnumModel) = implDirectory.resolve(implName(model))
+    def privateHeaderPath(model: EnumModel) = implDirectory.resolve(privateHeaderName(model))
 
     def headerName(model: EnumModel) = model.name + ".h"
     def implName(model: EnumModel) = model.name + ".cpp"
+    def privateHeaderName(model: EnumModel) = model.name + "Serialization" + ".h"
 
     def writeEnumToFiles(cfg: EnumConfig): Unit = {
 
       val conversions = if(cfg.conversions) List(EnumToType, EnumFromType) else Nil
-      val conversionsOutsideNamespace = if(cfg.conversions) List(EnumSerialization) else Nil
       val stringify = if(cfg.stringConv) List(EnumToString) else Nil
 
       val renders = conversions ::: stringify
 
       def writeHeader() {
         def license = commented(LicenseHeader())
-        def includes = cstdint ++ { if(cfg.conversions) littleEndian else Iterator.empty }
+        def includes = cstdint
         def enum = EnumModelRenderer.render(cfg.model)
         def signatures = renders.flatMap(c => c.header.render(cfg.model))
-        def signaturesOutsideNamespace = conversionsOutsideNamespace.flatMap(c => c.header.render(cfg.model))
-        def lines = license ++ space ++ includeGuards(cfg.model.name)(includes ++ space ++ namespace(cppNamespace)(enum ++ space ++ signatures) ++ space ++ signaturesOutsideNamespace)
+        def lines = license ++ space ++ includeGuards(cfg.model.name)(includes ++ space ++ namespace(cppNamespace)(enum ++ space ++ signatures))
         writeTo(headerPath(cfg.model))(lines)
         println("Wrote: " + headerPath(cfg.model))
       }
@@ -58,9 +58,8 @@ object CppEnumGenerator {
       def writeImpl() {
         def license = commented(LicenseHeader())
         def funcs = renders.flatMap(r => r.impl.render(cfg.model)).toIterator
-        def funcsOutsidenamespace = conversionsOutsideNamespace.flatMap(r => r.impl.render(cfg.model))
         def inc = quoted(String.format(incFormatString, headerName(cfg.model)))
-        def lines = license ++ space ++ Iterator(include(inc)) ++ space ++ namespace(cppNamespace)(funcs) ++ space ++ funcsOutsidenamespace
+        def lines = license ++ space ++ Iterator(include(inc)) ++ space ++ namespace(cppNamespace)(funcs)
 
         if(cfg.conversions || cfg.stringConv)
         {
@@ -69,8 +68,23 @@ object CppEnumGenerator {
         }
       }
 
+      def writePrivateHeader()  {
+        def license = commented(LicenseHeader())
+        def includes = Iterator(include(quoted(String.format(incFormatString, headerName(cfg.model))))) ++ littleEndian
+        def funcs = EnumSerialization.render(cfg.model)
+        def lines = license ++ space ++ includes ++ space ++ funcs
+
+        if(cfg.conversions)
+        {
+          val path = privateHeaderPath(cfg.model)
+          writeTo(path)(lines)
+          println("Wrote: " + path)
+        }
+      }
+
       writeHeader()
       writeImpl()
+      writePrivateHeader()
     }
 
     enums.foreach { e =>

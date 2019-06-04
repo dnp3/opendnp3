@@ -63,24 +63,3 @@ char const* CertificateTypeToString(CertificateType arg)
 }
 
 }
-
-namespace ser4cpp
-{
-  namespace serializers
-  {
-    template<>
-    bool write_one(wseq_t& dest, const opendnp3::CertificateType& value)
-    {
-      return UInt8::write_to(dest, opendnp3::CertificateTypeToType(value));
-    }
-
-    template<>
-    bool read_one(rseq_t& input, opendnp3::CertificateType& out)
-    {
-      UInt8::type_t tempCertificateType;
-      bool result = UInt8::read_from(input, tempCertificateType);
-      out = opendnp3::CertificateTypeFromType(tempCertificateType);
-      return result;
-    }
-  }
-}

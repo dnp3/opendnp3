@@ -87,24 +87,3 @@ char const* UserRoleToString(UserRole arg)
 }
 
 }
-
-namespace ser4cpp
-{
-  namespace serializers
-  {
-    template<>
-    bool write_one(wseq_t& dest, const opendnp3::UserRole& value)
-    {
-      return UInt16::write_to(dest, opendnp3::UserRoleToType(value));
-    }
-
-    template<>
-    bool read_one(rseq_t& input, opendnp3::UserRole& out)
-    {
-      UInt16::type_t tempUserRole;
-      bool result = UInt16::read_from(input, tempUserRole);
-      out = opendnp3::UserRoleFromType(tempUserRole);
-      return result;
-    }
-  }
-}

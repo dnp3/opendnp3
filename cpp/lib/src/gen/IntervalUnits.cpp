@@ -99,24 +99,3 @@ char const* IntervalUnitsToString(IntervalUnits arg)
 }
 
 }
-
-namespace ser4cpp
-{
-  namespace serializers
-  {
-    template<>
-    bool write_one(wseq_t& dest, const opendnp3::IntervalUnits& value)
-    {
-      return UInt8::write_to(dest, opendnp3::IntervalUnitsToType(value));
-    }
-
-    template<>
-    bool read_one(rseq_t& input, opendnp3::IntervalUnits& out)
-    {
-      UInt8::type_t tempIntervalUnits;
-      bool result = UInt8::read_from(input, tempIntervalUnits);
-      out = opendnp3::IntervalUnitsFromType(tempIntervalUnits);
-      return result;
-    }
-  }
-}

@@ -33,7 +33,6 @@
 #define OPENDNP3_PARITY_H
 
 #include <cstdint>
-#include <ser4cpp/serialization/LittleEndian.h>
 
 namespace opendnp3 {
 
@@ -51,18 +50,6 @@ uint8_t ParityToType(Parity arg);
 Parity ParityFromType(uint8_t arg);
 char const* ParityToString(Parity arg);
 
-}
-
-namespace ser4cpp
-{
-  namespace serializers
-  {
-    template<>
-    bool write_one(wseq_t& dest, const opendnp3::Parity& value);
-
-    template<>
-    bool read_one(rseq_t& input, opendnp3::Parity& out);
-  }
 }
 
 #endif

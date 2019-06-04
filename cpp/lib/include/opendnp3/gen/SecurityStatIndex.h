@@ -82,5 +82,4 @@ enum class SecurityStatIndex : uint8_t
 
 }
 
-
 #endif

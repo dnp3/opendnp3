@@ -33,7 +33,6 @@
 #define OPENDNP3_INTERVALUNITS_H
 
 #include <cstdint>
-#include <ser4cpp/serialization/LittleEndian.h>
 
 namespace opendnp3 {
 
@@ -72,18 +71,6 @@ uint8_t IntervalUnitsToType(IntervalUnits arg);
 IntervalUnits IntervalUnitsFromType(uint8_t arg);
 char const* IntervalUnitsToString(IntervalUnits arg);
 
-}
-
-namespace ser4cpp
-{
-  namespace serializers
-  {
-    template<>
-    bool write_one(wseq_t& dest, const opendnp3::IntervalUnits& value);
-
-    template<>
-    bool read_one(rseq_t& input, opendnp3::IntervalUnits& out);
-  }
 }
 
 #endif

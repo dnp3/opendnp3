@@ -44,5 +44,4 @@ enum class StaticDoubleBinaryVariation : uint8_t
 
 }
 
-
 #endif

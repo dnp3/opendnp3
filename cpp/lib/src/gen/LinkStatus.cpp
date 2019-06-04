@@ -47,4 +47,3 @@ char const* LinkStatusToString(LinkStatus arg)
 }
 
 }
-

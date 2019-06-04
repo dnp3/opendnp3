@@ -87,24 +87,3 @@ char const* KeyChangeMethodToString(KeyChangeMethod arg)
 }
 
 }
-
-namespace ser4cpp
-{
-  namespace serializers
-  {
-    template<>
-    bool write_one(wseq_t& dest, const opendnp3::KeyChangeMethod& value)
-    {
-      return UInt8::write_to(dest, opendnp3::KeyChangeMethodToType(value));
-    }
-
-    template<>
-    bool read_one(rseq_t& input, opendnp3::KeyChangeMethod& out)
-    {
-      UInt8::type_t tempKeyChangeMethod;
-      bool result = UInt8::read_from(input, tempKeyChangeMethod);
-      out = opendnp3::KeyChangeMethodFromType(tempKeyChangeMethod);
-      return result;
-    }
-  }
-}

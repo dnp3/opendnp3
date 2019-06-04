@@ -50,5 +50,4 @@ enum class RestartType : uint8_t
 
 }
 
-
 #endif

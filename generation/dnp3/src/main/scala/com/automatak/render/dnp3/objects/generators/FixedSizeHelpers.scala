@@ -41,7 +41,7 @@ object FixedSizeHelpers {
   // Any special headers required for fixed-size fields
   def fieldHeaders(fields: List[FixedSizeField]): List[String] = fields.map { f =>
      f.typ match {
-       case ef : EnumFieldType => List(quoted("opendnp3/gen/%s.h".format(ef.model.name)))
+       case ef : EnumFieldType => List(quoted("gen/%sSerialization.h".format(ef.model.name)))
        case _ => Nil
      }
   }.flatten

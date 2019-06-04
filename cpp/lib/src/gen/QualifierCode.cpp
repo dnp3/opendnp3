@@ -87,24 +87,3 @@ char const* QualifierCodeToString(QualifierCode arg)
 }
 
 }
-
-namespace ser4cpp
-{
-  namespace serializers
-  {
-    template<>
-    bool write_one(wseq_t& dest, const opendnp3::QualifierCode& value)
-    {
-      return UInt8::write_to(dest, opendnp3::QualifierCodeToType(value));
-    }
-
-    template<>
-    bool read_one(rseq_t& input, opendnp3::QualifierCode& out)
-    {
-      UInt8::type_t tempQualifierCode;
-      bool result = UInt8::read_from(input, tempQualifierCode);
-      out = opendnp3::QualifierCodeFromType(tempQualifierCode);
-      return result;
-    }
-  }
-}
