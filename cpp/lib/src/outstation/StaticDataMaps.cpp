@@ -49,15 +49,15 @@ IINField StaticDataMaps::SelectAll(GroupVariation gv)
 {
     if (gv == GroupVariation::Group60Var1)
     {
-        this->SelectAllClassZero<BinarySpec>(this->binary_input);
-        this->SelectAllClassZero<DoubleBitBinarySpec>(this->double_binary);
-        this->SelectAllClassZero<BinaryOutputStatusSpec>(this->binary_output_status);
-        this->SelectAllClassZero<CounterSpec>(this->counter);
-        this->SelectAllClassZero<FrozenCounterSpec>(this->frozen_counter);
-        this->SelectAllClassZero<AnalogSpec>(this->analog_input);
-        this->SelectAllClassZero<AnalogOutputStatusSpec>(this->analog_output_status);
-        this->SelectAllClassZero<TimeAndIntervalSpec>(this->time_and_interval);
-        this->SelectAllClassZero<OctetStringSpec>(this->octet_string);
+        this->select_all_class_zero<BinarySpec>(this->binary_input);
+        this->select_all_class_zero<DoubleBitBinarySpec>(this->double_binary);
+        this->select_all_class_zero<BinaryOutputStatusSpec>(this->binary_output_status);
+        this->select_all_class_zero<CounterSpec>(this->counter);
+        this->select_all_class_zero<FrozenCounterSpec>(this->frozen_counter);
+        this->select_all_class_zero<AnalogSpec>(this->analog_input);
+        this->select_all_class_zero<AnalogOutputStatusSpec>(this->analog_output_status);
+        this->select_all_class_zero<TimeAndIntervalSpec>(this->time_and_interval);
+        this->select_all_class_zero<OctetStringSpec>(this->octet_string);
 
         return IINField::Empty();
     }
@@ -65,85 +65,84 @@ IINField StaticDataMaps::SelectAll(GroupVariation gv)
     switch (gv)
     {
     case (GroupVariation::Group1Var0):
-        return SelectAll<BinarySpec>(this->binary_input);
+        return select_all<BinarySpec>(this->binary_input);
     case (GroupVariation::Group1Var1):
-        return SelectAll<BinarySpec>(this->binary_input, StaticBinaryVariation::Group1Var1);
+        return select_all<BinarySpec>(this->binary_input, StaticBinaryVariation::Group1Var1);
     case (GroupVariation::Group1Var2):
-        return SelectAll<BinarySpec>(this->binary_input, StaticBinaryVariation::Group1Var2);
+        return select_all<BinarySpec>(this->binary_input, StaticBinaryVariation::Group1Var2);
 
     case (GroupVariation::Group3Var0):
-        return SelectAll<DoubleBitBinarySpec>(this->double_binary);
+        return select_all<DoubleBitBinarySpec>(this->double_binary);
     case (GroupVariation::Group3Var2):
-        return SelectAll<DoubleBitBinarySpec>(this->double_binary, StaticDoubleBinaryVariation::Group3Var2);
+        return select_all<DoubleBitBinarySpec>(this->double_binary, StaticDoubleBinaryVariation::Group3Var2);
 
     case (GroupVariation::Group10Var0):
-        return SelectAll<BinaryOutputStatusSpec>(this->binary_output_status);
+        return select_all<BinaryOutputStatusSpec>(this->binary_output_status);
     case (GroupVariation::Group10Var2):
-        return SelectAll<BinaryOutputStatusSpec>(this->binary_output_status,
-                                                       StaticBinaryOutputStatusVariation::Group10Var2);
+        return select_all<BinaryOutputStatusSpec>(this->binary_output_status,
+                                                 StaticBinaryOutputStatusVariation::Group10Var2);
 
     case (GroupVariation::Group20Var0):
-        return SelectAll<CounterSpec>(this->counter);
+        return select_all<CounterSpec>(this->counter);
     case (GroupVariation::Group20Var1):
-        return SelectAll<CounterSpec>(this->counter, StaticCounterVariation::Group20Var1);
+        return select_all<CounterSpec>(this->counter, StaticCounterVariation::Group20Var1);
     case (GroupVariation::Group20Var2):
-        return SelectAll<CounterSpec>(this->counter, StaticCounterVariation::Group20Var2);
+        return select_all<CounterSpec>(this->counter, StaticCounterVariation::Group20Var2);
     case (GroupVariation::Group20Var5):
-        return SelectAll<CounterSpec>(this->counter, StaticCounterVariation::Group20Var5);
+        return select_all<CounterSpec>(this->counter, StaticCounterVariation::Group20Var5);
     case (GroupVariation::Group20Var6):
-        return SelectAll<CounterSpec>(this->counter, StaticCounterVariation::Group20Var6);
+        return select_all<CounterSpec>(this->counter, StaticCounterVariation::Group20Var6);
 
     case (GroupVariation::Group21Var0):
-        return SelectAll<FrozenCounterSpec>(this->frozen_counter);
+        return select_all<FrozenCounterSpec>(this->frozen_counter);
     case (GroupVariation::Group21Var1):
-        return SelectAll<FrozenCounterSpec>(this->frozen_counter, StaticFrozenCounterVariation::Group21Var1);
+        return select_all<FrozenCounterSpec>(this->frozen_counter, StaticFrozenCounterVariation::Group21Var1);
     case (GroupVariation::Group21Var2):
-        return SelectAll<FrozenCounterSpec>(this->frozen_counter, StaticFrozenCounterVariation::Group21Var2);
+        return select_all<FrozenCounterSpec>(this->frozen_counter, StaticFrozenCounterVariation::Group21Var2);
     case (GroupVariation::Group21Var5):
-        return SelectAll<FrozenCounterSpec>(this->frozen_counter, StaticFrozenCounterVariation::Group21Var5);
+        return select_all<FrozenCounterSpec>(this->frozen_counter, StaticFrozenCounterVariation::Group21Var5);
     case (GroupVariation::Group21Var6):
-        return SelectAll<FrozenCounterSpec>(this->frozen_counter, StaticFrozenCounterVariation::Group21Var6);
+        return select_all<FrozenCounterSpec>(this->frozen_counter, StaticFrozenCounterVariation::Group21Var6);
     case (GroupVariation::Group21Var9):
-        return SelectAll<FrozenCounterSpec>(this->frozen_counter, StaticFrozenCounterVariation::Group21Var9);
+        return select_all<FrozenCounterSpec>(this->frozen_counter, StaticFrozenCounterVariation::Group21Var9);
     case (GroupVariation::Group21Var10):
-        return SelectAll<FrozenCounterSpec>(this->frozen_counter, StaticFrozenCounterVariation::Group21Var10);
+        return select_all<FrozenCounterSpec>(this->frozen_counter, StaticFrozenCounterVariation::Group21Var10);
 
     case (GroupVariation::Group30Var0):
-        return SelectAll<AnalogSpec>(this->analog_input);
+        return select_all<AnalogSpec>(this->analog_input);
     case (GroupVariation::Group30Var1):
-        return SelectAll<AnalogSpec>(this->analog_input, StaticAnalogVariation::Group30Var1);
+        return select_all<AnalogSpec>(this->analog_input, StaticAnalogVariation::Group30Var1);
     case (GroupVariation::Group30Var2):
-        return SelectAll<AnalogSpec>(this->analog_input, StaticAnalogVariation::Group30Var2);
+        return select_all<AnalogSpec>(this->analog_input, StaticAnalogVariation::Group30Var2);
     case (GroupVariation::Group30Var3):
-        return SelectAll<AnalogSpec>(this->analog_input, StaticAnalogVariation::Group30Var3);
+        return select_all<AnalogSpec>(this->analog_input, StaticAnalogVariation::Group30Var3);
     case (GroupVariation::Group30Var4):
-        return SelectAll<AnalogSpec>(this->analog_input, StaticAnalogVariation::Group30Var4);
+        return select_all<AnalogSpec>(this->analog_input, StaticAnalogVariation::Group30Var4);
     case (GroupVariation::Group30Var5):
-        return SelectAll<AnalogSpec>(this->analog_input, StaticAnalogVariation::Group30Var5);
+        return select_all<AnalogSpec>(this->analog_input, StaticAnalogVariation::Group30Var5);
     case (GroupVariation::Group30Var6):
-        return SelectAll<AnalogSpec>(this->analog_input, StaticAnalogVariation::Group30Var6);
+        return select_all<AnalogSpec>(this->analog_input, StaticAnalogVariation::Group30Var6);
 
     case (GroupVariation::Group40Var0):
-        return SelectAll<AnalogOutputStatusSpec>(this->analog_output_status);
+        return select_all<AnalogOutputStatusSpec>(this->analog_output_status);
     case (GroupVariation::Group40Var1):
-        return SelectAll<AnalogOutputStatusSpec>(this->analog_output_status,
-                                                       StaticAnalogOutputStatusVariation::Group40Var1);
+        return select_all<AnalogOutputStatusSpec>(this->analog_output_status,
+                                                 StaticAnalogOutputStatusVariation::Group40Var1);
     case (GroupVariation::Group40Var2):
-        return SelectAll<AnalogOutputStatusSpec>(this->analog_output_status,
-                                                       StaticAnalogOutputStatusVariation::Group40Var2);
+        return select_all<AnalogOutputStatusSpec>(this->analog_output_status,
+                                                 StaticAnalogOutputStatusVariation::Group40Var2);
     case (GroupVariation::Group40Var3):
-        return SelectAll<AnalogOutputStatusSpec>(this->analog_output_status,
-                                                       StaticAnalogOutputStatusVariation::Group40Var3);
+        return select_all<AnalogOutputStatusSpec>(this->analog_output_status,
+                                                 StaticAnalogOutputStatusVariation::Group40Var3);
     case (GroupVariation::Group40Var4):
-        return SelectAll<AnalogOutputStatusSpec>(this->analog_output_status,
-                                                       StaticAnalogOutputStatusVariation::Group40Var4);
+        return select_all<AnalogOutputStatusSpec>(this->analog_output_status,
+                                                 StaticAnalogOutputStatusVariation::Group40Var4);
 
     case (GroupVariation::Group50Var4):
-        return SelectAll<TimeAndIntervalSpec>(this->time_and_interval,
-                                                    StaticTimeAndIntervalVariation::Group50Var4);
+        return select_all<TimeAndIntervalSpec>(this->time_and_interval, StaticTimeAndIntervalVariation::Group50Var4);
 
     case (GroupVariation::Group110Var0):
-        return SelectAll<OctetStringSpec>(this->octet_string);
+        return select_all<OctetStringSpec>(this->octet_string);
 
     default:
         return IINField(IINBit::FUNC_NOT_SUPPORTED);
@@ -155,92 +154,85 @@ IINField StaticDataMaps::SelectRange(GroupVariation gv, const Range& range)
     switch (gv)
     {
     case (GroupVariation::Group1Var0):
-        return SelectRange<BinarySpec>(this->binary_input, range);
+        return select_range<BinarySpec>(this->binary_input, range);
     case (GroupVariation::Group1Var1):
-        return SelectRange<BinarySpec>(this->binary_input, range, StaticBinaryVariation::Group1Var1);
+        return select_range<BinarySpec>(this->binary_input, range, StaticBinaryVariation::Group1Var1);
     case (GroupVariation::Group1Var2):
-        return SelectRange<BinarySpec>(this->binary_input, range, StaticBinaryVariation::Group1Var2);
+        return select_range<BinarySpec>(this->binary_input, range, StaticBinaryVariation::Group1Var2);
 
     case (GroupVariation::Group3Var0):
-        return SelectRange<DoubleBitBinarySpec>(this->double_binary, range);
+        return select_range<DoubleBitBinarySpec>(this->double_binary, range);
     case (GroupVariation::Group3Var2):
-        return SelectRange<DoubleBitBinarySpec>(this->double_binary, range,
-                                                      StaticDoubleBinaryVariation::Group3Var2);
+        return select_range<DoubleBitBinarySpec>(this->double_binary, range, StaticDoubleBinaryVariation::Group3Var2);
 
     case (GroupVariation::Group10Var0):
-        return SelectRange<BinaryOutputStatusSpec>(this->binary_output_status, range);
+        return select_range<BinaryOutputStatusSpec>(this->binary_output_status, range);
     case (GroupVariation::Group10Var2):
-        return SelectRange<BinaryOutputStatusSpec>(this->binary_output_status, range,
-                                                         StaticBinaryOutputStatusVariation::Group10Var2);
+        return select_range<BinaryOutputStatusSpec>(this->binary_output_status, range,
+                                                   StaticBinaryOutputStatusVariation::Group10Var2);
 
     case (GroupVariation::Group20Var0):
-        return SelectRange<CounterSpec>(this->counter, range);
+        return select_range<CounterSpec>(this->counter, range);
     case (GroupVariation::Group20Var1):
-        return SelectRange<CounterSpec>(this->counter, range, StaticCounterVariation::Group20Var1);
+        return select_range<CounterSpec>(this->counter, range, StaticCounterVariation::Group20Var1);
     case (GroupVariation::Group20Var2):
-        return SelectRange<CounterSpec>(this->counter, range, StaticCounterVariation::Group20Var2);
+        return select_range<CounterSpec>(this->counter, range, StaticCounterVariation::Group20Var2);
     case (GroupVariation::Group20Var5):
-        return SelectRange<CounterSpec>(this->counter, range, StaticCounterVariation::Group20Var5);
+        return select_range<CounterSpec>(this->counter, range, StaticCounterVariation::Group20Var5);
     case (GroupVariation::Group20Var6):
-        return SelectRange<CounterSpec>(this->counter, range, StaticCounterVariation::Group20Var6);
+        return select_range<CounterSpec>(this->counter, range, StaticCounterVariation::Group20Var6);
 
     case (GroupVariation::Group21Var0):
-        return SelectRange<FrozenCounterSpec>(this->frozen_counter, range);
+        return select_range<FrozenCounterSpec>(this->frozen_counter, range);
     case (GroupVariation::Group21Var1):
-        return SelectRange<FrozenCounterSpec>(this->frozen_counter, range,
-                                                    StaticFrozenCounterVariation::Group21Var1);
+        return select_range<FrozenCounterSpec>(this->frozen_counter, range, StaticFrozenCounterVariation::Group21Var1);
     case (GroupVariation::Group21Var2):
-        return SelectRange<FrozenCounterSpec>(this->frozen_counter, range,
-                                                    StaticFrozenCounterVariation::Group21Var2);
+        return select_range<FrozenCounterSpec>(this->frozen_counter, range, StaticFrozenCounterVariation::Group21Var2);
     case (GroupVariation::Group21Var5):
-        return SelectRange<FrozenCounterSpec>(this->frozen_counter, range,
-                                                    StaticFrozenCounterVariation::Group21Var5);
+        return select_range<FrozenCounterSpec>(this->frozen_counter, range, StaticFrozenCounterVariation::Group21Var5);
     case (GroupVariation::Group21Var6):
-        return SelectRange<FrozenCounterSpec>(this->frozen_counter, range,
-                                                    StaticFrozenCounterVariation::Group21Var6);
+        return select_range<FrozenCounterSpec>(this->frozen_counter, range, StaticFrozenCounterVariation::Group21Var6);
     case (GroupVariation::Group21Var9):
-        return SelectRange<FrozenCounterSpec>(this->frozen_counter, range,
-                                                    StaticFrozenCounterVariation::Group21Var9);
+        return select_range<FrozenCounterSpec>(this->frozen_counter, range, StaticFrozenCounterVariation::Group21Var9);
     case (GroupVariation::Group21Var10):
-        return SelectRange<FrozenCounterSpec>(this->frozen_counter, range,
-                                                    StaticFrozenCounterVariation::Group21Var10);
+        return select_range<FrozenCounterSpec>(this->frozen_counter, range, StaticFrozenCounterVariation::Group21Var10);
 
     case (GroupVariation::Group30Var0):
-        return SelectRange<AnalogSpec>(this->analog_input, range);
+        return select_range<AnalogSpec>(this->analog_input, range);
     case (GroupVariation::Group30Var1):
-        return SelectRange<AnalogSpec>(this->analog_input, range, StaticAnalogVariation::Group30Var1);
+        return select_range<AnalogSpec>(this->analog_input, range, StaticAnalogVariation::Group30Var1);
     case (GroupVariation::Group30Var2):
-        return SelectRange<AnalogSpec>(this->analog_input, range, StaticAnalogVariation::Group30Var2);
+        return select_range<AnalogSpec>(this->analog_input, range, StaticAnalogVariation::Group30Var2);
     case (GroupVariation::Group30Var3):
-        return SelectRange<AnalogSpec>(this->analog_input, range, StaticAnalogVariation::Group30Var3);
+        return select_range<AnalogSpec>(this->analog_input, range, StaticAnalogVariation::Group30Var3);
     case (GroupVariation::Group30Var4):
-        return SelectRange<AnalogSpec>(this->analog_input, range, StaticAnalogVariation::Group30Var4);
+        return select_range<AnalogSpec>(this->analog_input, range, StaticAnalogVariation::Group30Var4);
     case (GroupVariation::Group30Var5):
-        return SelectRange<AnalogSpec>(this->analog_input, range, StaticAnalogVariation::Group30Var5);
+        return select_range<AnalogSpec>(this->analog_input, range, StaticAnalogVariation::Group30Var5);
     case (GroupVariation::Group30Var6):
-        return SelectRange<AnalogSpec>(this->analog_input, range, StaticAnalogVariation::Group30Var6);
+        return select_range<AnalogSpec>(this->analog_input, range, StaticAnalogVariation::Group30Var6);
 
     case (GroupVariation::Group40Var0):
-        return SelectRange<AnalogOutputStatusSpec>(this->analog_output_status, range);
+        return select_range<AnalogOutputStatusSpec>(this->analog_output_status, range);
     case (GroupVariation::Group40Var1):
-        return SelectRange<AnalogOutputStatusSpec>(this->analog_output_status, range,
-                                                         StaticAnalogOutputStatusVariation::Group40Var1);
+        return select_range<AnalogOutputStatusSpec>(this->analog_output_status, range,
+                                                   StaticAnalogOutputStatusVariation::Group40Var1);
     case (GroupVariation::Group40Var2):
-        return SelectRange<AnalogOutputStatusSpec>(this->analog_output_status, range,
-                                                         StaticAnalogOutputStatusVariation::Group40Var2);
+        return select_range<AnalogOutputStatusSpec>(this->analog_output_status, range,
+                                                   StaticAnalogOutputStatusVariation::Group40Var2);
     case (GroupVariation::Group40Var3):
-        return SelectRange<AnalogOutputStatusSpec>(this->analog_output_status, range,
-                                                         StaticAnalogOutputStatusVariation::Group40Var3);
+        return select_range<AnalogOutputStatusSpec>(this->analog_output_status, range,
+                                                   StaticAnalogOutputStatusVariation::Group40Var3);
     case (GroupVariation::Group40Var4):
-        return SelectRange<AnalogOutputStatusSpec>(this->analog_output_status, range,
-                                                         StaticAnalogOutputStatusVariation::Group40Var4);
+        return select_range<AnalogOutputStatusSpec>(this->analog_output_status, range,
+                                                   StaticAnalogOutputStatusVariation::Group40Var4);
 
     case (GroupVariation::Group50Var4):
-        return SelectRange<TimeAndIntervalSpec>(this->time_and_interval, range,
-                                                      StaticTimeAndIntervalVariation::Group50Var4);
+        return select_range<TimeAndIntervalSpec>(this->time_and_interval, range,
+                                                StaticTimeAndIntervalVariation::Group50Var4);
 
     case (GroupVariation::Group110Var0):
-        return SelectRange<OctetStringSpec>(this->octet_string, range, StaticOctetStringVariation::Group110Var0);
+        return select_range<OctetStringSpec>(this->octet_string, range, StaticOctetStringVariation::Group110Var0);
 
     default:
         return IINField(IINBit::FUNC_NOT_SUPPORTED);
@@ -260,35 +252,81 @@ void StaticDataMaps::Unselect()
     this->octet_string.clear_selection();
 }
 
-template<class Spec> void StaticDataMaps::SelectAllClassZero(StaticDataMap<Spec>& map)
+Range StaticDataMaps::AssignClassToAll(AssignClassType type, PointClass clazz)
 {
-    if (this->allowed_class_zero_types.IsSet(Spec::StaticTypeEnum))
+    switch (type)
     {
-        SelectAll<Spec>(map);
+    case (AssignClassType::BinaryInput):
+        return assign_class_to_all(this->binary_input, clazz);
+    case (AssignClassType::DoubleBinaryInput):
+        return assign_class_to_all(this->double_binary, clazz);
+    case (AssignClassType::Counter):
+        return assign_class_to_all(this->counter, clazz);
+    case (AssignClassType::FrozenCounter):
+        return assign_class_to_all(this->frozen_counter, clazz);
+    case (AssignClassType::AnalogInput):
+        return assign_class_to_all(this->analog_input, clazz);
+    case (AssignClassType::BinaryOutputStatus):
+        return assign_class_to_all(this->binary_output_status, clazz);
+    case (AssignClassType::AnalogOutputStatus):
+        return assign_class_to_all(this->analog_output_status, clazz);
+    default:
+        return Range::Invalid();
     }
 }
 
-template<class Spec> IINField StaticDataMaps::SelectAll(StaticDataMap<Spec>& map)
+Range StaticDataMaps::AssignClassToRange(AssignClassType type, PointClass clazz, const Range& range)
+{
+    switch (type)
+    {
+    case (AssignClassType::BinaryInput):
+        return assign_class_to_range(this->binary_input, clazz, range);
+    case (AssignClassType::DoubleBinaryInput):
+        return assign_class_to_range(this->double_binary, clazz, range);
+    case (AssignClassType::Counter):
+        return assign_class_to_range(this->counter, clazz, range);
+    case (AssignClassType::FrozenCounter):
+        return assign_class_to_range(this->frozen_counter, clazz, range);
+    case (AssignClassType::AnalogInput):
+        return assign_class_to_range(this->analog_input, clazz, range);
+    case (AssignClassType::BinaryOutputStatus):
+        return assign_class_to_range(this->binary_output_status, clazz, range);
+    case (AssignClassType::AnalogOutputStatus):
+        return assign_class_to_range(this->analog_output_status, clazz, range);
+    default:
+        return Range::Invalid();
+    }
+}
+
+template<class Spec> void StaticDataMaps::select_all_class_zero(StaticDataMap<Spec>& map)
+{
+    if (this->allowed_class_zero_types.IsSet(Spec::StaticTypeEnum))
+    {
+        select_all<Spec>(map);
+    }
+}
+
+template<class Spec> IINField StaticDataMaps::select_all(StaticDataMap<Spec>& map)
 {
     map.select_all();
     return IINField::Empty();
 }
 
 template<class Spec>
-IINField StaticDataMaps::SelectAll(StaticDataMap<Spec>& map, typename Spec::static_variation_t variation)
+IINField StaticDataMaps::select_all(StaticDataMap<Spec>& map, typename Spec::static_variation_t variation)
 {
     map.select_all(variation);
     return IINField::Empty();
 }
 
-template<class Spec> IINField StaticDataMaps::SelectRange(StaticDataMap<Spec>& map, const Range& range)
+template<class Spec> IINField StaticDataMaps::select_range(StaticDataMap<Spec>& map, const Range& range)
 {
     const auto count = map.select(range);
     return (count != range.Count()) ? IINField(IINBit::PARAM_ERROR) : IINField::Empty();
 }
 
 template<class Spec>
-IINField StaticDataMaps::SelectRange(StaticDataMap<Spec>& map,
+IINField StaticDataMaps::select_range(StaticDataMap<Spec>& map,
                                      const Range& range,
                                      typename Spec::static_variation_t variation)
 {

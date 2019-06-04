@@ -22,6 +22,7 @@
 
 #include "outstation/StaticDataMap.h"
 #include "outstation/IStaticSelector.h"
+#include "outstation/IClassAssigner.h"
 
 #include <opendnp3/outstation/DatabaseConfigNew.h>
 #include <opendnp3/app/MeasurementTypeSpecs.h>
@@ -30,7 +31,7 @@
 namespace opendnp3
 {
 
-class StaticDataMaps final : public IStaticSelector
+class StaticDataMaps final : public IStaticSelector, public IClassAssigner
 {
 public:
 
@@ -39,10 +40,13 @@ public:
 	bool has_any_selection() const;
 
     // ------- IStaticSelector -------------
-
     IINField SelectAll(GroupVariation gv) override;
-    IINField SelectRange(GroupVariation gv, const Range& range) override;    
+    IINField SelectRange(GroupVariation gv, const Range& range) override;
     void Unselect() override;
+
+	// ------- IIClassAssigner -------------
+    Range AssignClassToAll(AssignClassType type, PointClass clazz) override;
+    Range AssignClassToRange(AssignClassType type, PointClass clazz, const Range& range) override;
 
 private:
 
@@ -61,21 +65,28 @@ private:
 	// ----- helper methods ------ 
 
 	template<class Spec>
-	void SelectAllClassZero(StaticDataMap<Spec>& map);
+	void select_all_class_zero(StaticDataMap<Spec>& map);
 
 	template<class Spec> 
-	static IINField SelectAll(StaticDataMap<Spec>& map);
+	static IINField select_all(StaticDataMap<Spec>& map);
 
 	template<class Spec> IINField 
-	static SelectAll(StaticDataMap<Spec>& map, typename Spec::static_variation_t variation);
+	static select_all(StaticDataMap<Spec>& map, typename Spec::static_variation_t variation);
 
 	template<class Spec>
-    static IINField SelectRange(StaticDataMap<Spec>& map, const Range& range);
+    static IINField select_range(StaticDataMap<Spec>& map, const Range& range);
 
 	template<class Spec>
-    static IINField SelectRange(StaticDataMap<Spec>& map,
+    static IINField select_range(StaticDataMap<Spec>& map,
                                 const Range& range,
                                 typename Spec::static_variation_t variation);
+
+	template<class Spec>
+	static Range assign_class_to_all(StaticDataMap<Spec>& map, PointClass clazz);
+
+	template<class Spec>
+    static Range assign_class_to_range(StaticDataMap<Spec>& map, PointClass clazz, const Range& range);
+	
 };
     
 
