@@ -33,10 +33,10 @@ TEST_CASE(SUITE("update returns 'point_not_defined' for values that don't exist"
     REQUIRE(map.update(Binary(true), 0) == UpdateResult::point_not_defined);
 }
 
+
 TEST_CASE(SUITE("can only add points that aren't already defined"))
 {
     StaticDataMap<BinarySpec> map{{{0, {}}}};
-
     REQUIRE_FALSE(map.add(Binary(), 0, BinaryConfig()));
 }
 
@@ -199,8 +199,7 @@ TEST_CASE(SUITE("iterating over the entire selection clears it"))
 
     // iterate through the entire selection
     for (auto& item : map)
-    {
-    }
+    {}
 
     // the second iteration there's only 7 remaining
     std::vector<StaticDataMap<BinarySpec>::iterator::value_type> items;
@@ -208,7 +207,6 @@ TEST_CASE(SUITE("iterating over the entire selection clears it"))
     {
         items.push_back(item);
     }
-    REQUIRE(items.size() == 0);
 }
 
 TEST_CASE(SUITE("selecting a range that doesn't match anything return Range::Invalid"))

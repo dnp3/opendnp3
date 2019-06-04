@@ -44,6 +44,7 @@ template<class Spec> class StaticDataMap : private Uncopyable
     using map_iter_t = typename map_t::iterator;
 
 public:
+
     StaticDataMap() = default;
     StaticDataMap(const std::map<uint16_t, typename Spec::config_t>& config);
 
@@ -74,7 +75,8 @@ public:
         void operator++()
         {
             // unselect the point
-            this->iter->second.selection.selected = false;
+            this->iter->second.selection.selected = false;            
+
 
             while (true)
             {
@@ -86,8 +88,8 @@ public:
                     return;
                 }
 
-                // shorten the range
-                this->range.start = iter->first;
+				// shorten the range
+                this->range.start = iter->first; 
 
                 if (iter->second.selection.selected)
                 {
@@ -154,6 +156,7 @@ private:
     // that can use or override the default variation
     template<class F> size_t select(Range range, F get_variation);
 };
+
 
 template<class Spec> StaticDataMap<Spec>::StaticDataMap(const std::map<uint16_t, typename Spec::config_t>& config)
 {
