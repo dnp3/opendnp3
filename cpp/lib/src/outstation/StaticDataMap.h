@@ -70,14 +70,21 @@ public:
 
         void operator++()
         {
+            // unselect the point
+            this->iter->second.selection.selected = false;            
+
             while (true)
             {
                 iter++;
 
                 if (iter == this->end)
                 {
+                    this->range = Range::Invalid();
                     return;
                 }
+
+				// shorten the range
+                this->range.start = iter->first; 
 
                 if (iter->second.selection.selected)
                 {
@@ -175,7 +182,7 @@ template<class Spec> UpdateResult StaticDataMap<Spec>::update(const typename Spe
 
 template<class Spec> void StaticDataMap<Spec>::clear_selection()
 {
-	// the act of iterating clears the selection	
+    // the act of iterating clears the selection
     for (auto value : *this)
     {
     }
