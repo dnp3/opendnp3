@@ -1,4 +1,5 @@
 set(dnp3mocks_public_headers
+    ./include/dnp3mocks/DatabaseHelpers.h
     ./include/dnp3mocks/DataSink.h
     ./include/dnp3mocks/MockAPDUHeaderHandler.h
     ./include/dnp3mocks/MockCommandHandler.h
@@ -17,6 +18,7 @@ set(dnp3mocks_public_headers
 )
 
 set(dnp3mocks_src
+    ./src/DatabaseHelpers.cpp
     ./src/DataSink.cpp
     ./src/MockFrameSink.cpp
     ./src/MockLogHandler.cpp

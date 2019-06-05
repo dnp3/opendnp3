@@ -20,7 +20,8 @@
 
 #include "utils/OutstationTestObject.h"
 #include "utils/APDUHexBuilders.h"
-#include "utils/DatabaseHelpers.h"
+
+#include <dnp3mocks/DatabaseHelpers.h>
 
 #include <catch.hpp>
 

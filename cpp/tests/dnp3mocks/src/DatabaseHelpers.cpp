@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-#include "DatabaseHelpers.h"
+#include "dnp3mocks/DatabaseHelpers.h"
 
 namespace configure
 {

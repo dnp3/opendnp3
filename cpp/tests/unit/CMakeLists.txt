@@ -5,8 +5,7 @@ set(unittests_headers
     ./utils/BufferHelpers.h
     ./utils/CallbackQueue.h
     ./utils/CommandCallbackQueue.h
-    ./utils/CopyableBuffer.h
-	./utils/DatabaseHelpers.h    
+    ./utils/CopyableBuffer.h	
     ./utils/DNPHelpers.h
     ./utils/LinkHex.h
     ./utils/LinkLayerTest.h
@@ -64,7 +63,6 @@ set(unittests_src
     ./utils/APDUHexBuilders.cpp
     ./utils/BufferHelpers.cpp
     ./utils/CopyableBuffer.cpp	
-	./utils/DatabaseHelpers.cpp
     ./utils/DNPHelpers.cpp
     ./utils/LinkHex.cpp
     ./utils/LinkLayerTest.cpp

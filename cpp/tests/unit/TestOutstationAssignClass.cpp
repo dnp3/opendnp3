@@ -18,8 +18,9 @@
  * limitations under the License.
  */
 #include "utils/APDUHexBuilders.h"
-#include "utils/DatabaseHelpers.h"
 #include "utils/OutstationTestObject.h"
+
+#include <dnp3mocks/DatabaseHelpers.h>
 
 #include <catch.hpp>
 
