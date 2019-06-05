@@ -21,7 +21,7 @@
 #define OPENDNP3_UNITTESTS_MOCK_EVENT_WRITE_HANDLER_H
 
 #include <opendnp3/app/EventType.h>
-#include <opendnp3/app/MeasurementTypeSpecs.h>
+#include <opendnp3/app/MeasurementInfo.h>
 #include <outstation/event/IEventWriteHandler.h>
 
 #include <deque>
@@ -59,22 +59,22 @@ private:
 public:
     void Expect(opendnp3::EventBinaryVariation variation, uint16_t count)
     {
-        this->ExpectType<opendnp3::BinarySpec>(variation, count);
+        this->ExpectType<opendnp3::BinaryInfo>(variation, count);
     }
 
     void Expect(opendnp3::EventDoubleBinaryVariation variation, uint16_t count)
     {
-        this->ExpectType<opendnp3::DoubleBitBinarySpec>(variation, count);
+        this->ExpectType<opendnp3::DoubleBitBinaryInfo>(variation, count);
     }
 
     void Expect(opendnp3::EventCounterVariation variation, uint16_t count)
     {
-        this->ExpectType<opendnp3::CounterSpec>(variation, count);
+        this->ExpectType<opendnp3::CounterInfo>(variation, count);
     }
 
     void Expect(opendnp3::EventAnalogVariation variation, uint16_t count)
     {
-        this->ExpectType<opendnp3::AnalogSpec>(variation, count);
+        this->ExpectType<opendnp3::AnalogInfo>(variation, count);
     }
 
     void AssertEmpty()
@@ -89,56 +89,56 @@ public:
                            const opendnp3::Binary& first,
                            opendnp3::IEventCollection<opendnp3::Binary>& items) override
     {
-        return this->WriteAny<opendnp3::BinarySpec>(variation, items);
+        return this->WriteAny<opendnp3::BinaryInfo>(variation, items);
     }
 
     virtual uint16_t Write(opendnp3::EventDoubleBinaryVariation variation,
                            const opendnp3::DoubleBitBinary& first,
                            opendnp3::IEventCollection<opendnp3::DoubleBitBinary>& items) override
     {
-        return this->WriteAny<opendnp3::DoubleBitBinarySpec>(variation, items);
+        return this->WriteAny<opendnp3::DoubleBitBinaryInfo>(variation, items);
     }
 
     virtual uint16_t Write(opendnp3::EventCounterVariation variation,
                            const opendnp3::Counter& first,
                            opendnp3::IEventCollection<opendnp3::Counter>& items) override
     {
-        return this->WriteAny<opendnp3::CounterSpec>(variation, items);
+        return this->WriteAny<opendnp3::CounterInfo>(variation, items);
     }
 
     virtual uint16_t Write(opendnp3::EventFrozenCounterVariation variation,
                            const opendnp3::FrozenCounter& first,
                            opendnp3::IEventCollection<opendnp3::FrozenCounter>& items) override
     {
-        return this->WriteAny<opendnp3::FrozenCounterSpec>(variation, items);
+        return this->WriteAny<opendnp3::FrozenCounterInfo>(variation, items);
     }
 
     virtual uint16_t Write(opendnp3::EventAnalogVariation variation,
                            const opendnp3::Analog& first,
                            opendnp3::IEventCollection<opendnp3::Analog>& items) override
     {
-        return this->WriteAny<opendnp3::AnalogSpec>(variation, items);
+        return this->WriteAny<opendnp3::AnalogInfo>(variation, items);
     }
 
     virtual uint16_t Write(opendnp3::EventBinaryOutputStatusVariation variation,
                            const opendnp3::BinaryOutputStatus& first,
                            opendnp3::IEventCollection<opendnp3::BinaryOutputStatus>& items) override
     {
-        return this->WriteAny<opendnp3::BinaryOutputStatusSpec>(variation, items);
+        return this->WriteAny<opendnp3::BinaryOutputStatusInfo>(variation, items);
     }
 
     virtual uint16_t Write(opendnp3::EventAnalogOutputStatusVariation variation,
                            const opendnp3::AnalogOutputStatus& first,
                            opendnp3::IEventCollection<opendnp3::AnalogOutputStatus>& items) override
     {
-        return this->WriteAny<opendnp3::AnalogOutputStatusSpec>(variation, items);
+        return this->WriteAny<opendnp3::AnalogOutputStatusInfo>(variation, items);
     }
 
     virtual uint16_t Write(opendnp3::EventOctetStringVariation variation,
                            const opendnp3::OctetString& first,
                            opendnp3::IEventCollection<opendnp3::OctetString>& items) override
     {
-        return this->WriteAny<opendnp3::OctetStringSpec>(variation, items);
+        return this->WriteAny<opendnp3::OctetStringInfo>(variation, items);
     }
 
 private:

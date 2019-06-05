@@ -384,7 +384,6 @@ set(opendnp3_private_headers
     ./src/outstation/ReadHandler.h
     ./src/outstation/RequestHistory.h
     ./src/outstation/ResponseContext.h
-    ./src/outstation/SelectedRanges.h
 	./src/outstation/StaticDataMap.h
 	./src/outstation/StaticDataMaps.h
     ./src/outstation/StaticWriters.h
@@ -597,8 +596,7 @@ set(opendnp3_src
     ./src/outstation/OutstationStates.cpp
     ./src/outstation/ReadHandler.cpp
     ./src/outstation/RequestHistory.cpp
-    ./src/outstation/ResponseContext.cpp
-    ./src/outstation/SelectedRanges.cpp
+    ./src/outstation/ResponseContext.cpp    
     ./src/outstation/SimpleCommandHandler.cpp
     ./src/outstation/StaticDataMap.cpp
     ./src/outstation/StaticDataMaps.cpp
