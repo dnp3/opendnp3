@@ -17,28 +17,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef TESTLIB_MOCKUTCTIMESOURCE_H_
-#define TESTLIB_MOCKUTCTIMESOURCE_H_
+#include <opendnp3/outstation/UpdateBuilder.h>
 
-#include <openpal/executor/IUTCTimeSource.h>
+#include <catch.hpp>
 
-namespace testlib
+using namespace opendnp3;
+
+#define SUITE(name) "UpdateBuilderTestSuite - " name
+
+TEST_CASE(SUITE("builder is cleared after building"))
 {
+    UpdateBuilder builder;
+    builder.Update(Counter(42), 0);
 
-class MockUTCTimeSource : public openpal::IUTCTimeSource
-{
-
-public:
-    MockUTCTimeSource() : time(0) {}
-
-    virtual openpal::UTCTimestamp Now() override final
     {
-        return openpal::UTCTimestamp(time);
+        const auto updates = builder.Build();
+        REQUIRE_FALSE(updates.IsEmpty());
     }
 
-    uint64_t time;
-};
-
-} // namespace testlib
-
-#endif
+    {
+        const auto updates = builder.Build();
+        REQUIRE(updates.IsEmpty());
+    }
+}

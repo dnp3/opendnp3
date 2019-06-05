@@ -17,29 +17,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "catch.hpp"
 
-#include "asiopal/UTCTimeSource.h"
+#include <opendnp3/ConsoleLogger.h>
+#include <opendnp3/DNP3Manager.h>
+#include <opendnp3/LogLevels.h>
+#include <opendnp3/master/DefaultListenCallbacks.h>
+#include <opendnp3/master/DefaultMasterApplication.h>
+#include <opendnp3/master/ISOEHandler.h>
+#include <opendnp3/master/PrintingSOEHandler.h>
+#include <opendnp3/outstation/IOutstationApplication.h>
+#include <opendnp3/outstation/SimpleCommandHandler.h>
 
-#include "opendnp3/LogLevels.h"
-#include "opendnp3/master/ISOEHandler.h"
-#include "opendnp3/outstation/IOutstationApplication.h"
-#include "opendnp3/outstation/SimpleCommandHandler.h"
+#include "mocks/NullSOEHandler.h"
 
-#include "asiodnp3/ConsoleLogger.h"
-#include "asiodnp3/DNP3Manager.h"
-#include "asiodnp3/DefaultListenCallbacks.h"
-#include "asiodnp3/DefaultMasterApplication.h"
-
-#include "dnp3mocks/NullSOEHandler.h"
+#include <catch.hpp>
 
 #include <atomic>
 #include <thread>
 
 using namespace opendnp3;
-using namespace asiodnp3;
-using namespace asiopal;
-using namespace openpal;
 
 #define SUITE(name) "MasterServerSmokeTestSuite - " name
 
@@ -51,8 +47,7 @@ struct TestComponents
     {
         for (int i = 0; i < numOutstations; ++i)
         {
-            auto channel = manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(), "127.0.0.1", "0.0.0.0",
-                                                20000, nullptr);
+            auto channel = manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(), { IPEndpoint("127.0.0.1", 20000) }, "0.0.0.0", nullptr);
             auto outstation = channel->AddOutstation("outstation", SuccessCommandHandler::Create(),
                                                      DefaultOutstationApplication::Create(), GetConfig());
 
@@ -112,9 +107,9 @@ public:
         return true;
     }
 
-    openpal::TimeDuration GetFirstFrameTimeout() override
+    TimeDuration GetFirstFrameTimeout() override
     {
-        return openpal::TimeDuration::Seconds(30);
+        return TimeDuration::Seconds(30);
     }
 
     void OnFirstFrame(uint64_t sessionid, const opendnp3::LinkHeaderFields& header, ISessionAcceptor& acceptor) override
@@ -161,7 +156,7 @@ TEST_CASE(SUITE("Double BeginShutdown"))
     OutstationStackConfig outstationConfig(DatabaseSizes::Empty());
     outstationConfig.outstation.params.allowUnsolicited = true;
     auto channel
-        = manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(), "127.0.0.1", "", 20000, nullptr);
+        = manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(), {IPEndpoint("127.0.0.1", 20000) }, "", nullptr);
     auto outstation = channel->AddOutstation("outstation", SuccessCommandHandler::Create(),
                                              DefaultOutstationApplication::Create(), outstationConfig);
 

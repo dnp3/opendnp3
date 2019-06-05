@@ -18,16 +18,13 @@
  * limitations under the License.
  */
 
-#ifndef OPENDNP3_COUNTINGSOEHANDLER_H
-#define OPENDNP3_COUNTINGSOEHANDLER_H
+#ifndef OPENDNP3_INTEGRATIONTESTS_COUNTINGSOEHANDLER_H
+#define OPENDNP3_INTEGRATIONTESTS_COUNTINGSOEHANDLER_H
 
-#include "opendnp3/master/ISOEHandler.h"
+#include <opendnp3/master/ISOEHandler.h>
 
 #include <condition_variable>
 #include <mutex>
-
-namespace opendnp3
-{
 
 class CountingSOEHandler final : public opendnp3::ISOEHandler
 {
@@ -48,78 +45,76 @@ public:
         count -= num;
     }
 
-    virtual void Start() override
+    void Start() final
     {
         mutex.lock();
     }
 
-    virtual void End() override
+    void End() final
     {
         mutex.unlock();
         cv.notify_all();
     }
 
-    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) override
+    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Binary>>& values) final
     {
         count += values.Count();
     }
-    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values) override
+    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::DoubleBitBinary>>& values) final
     {
         count += values.Count();
     }
-    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Analog>>& values) override
+    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Analog>>& values) final
     {
         count += values.Count();
     }
-    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Counter>>& values) override
+    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Counter>>& values) final
     {
         count += values.Count();
     }
-    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<FrozenCounter>>& values) override
+    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::FrozenCounter>>& values) final
     {
         count += values.Count();
     }
-    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryOutputStatus>>& values) override
+    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryOutputStatus>>& values) final
     {
         count += values.Count();
     }
-    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputStatus>>& values) override
-    {
-        count += values.Count();
-    }
-
-    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values) override
+    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogOutputStatus>>& values) final
     {
         count += values.Count();
     }
 
-    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values) override
+    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::OctetString>>& values) final
     {
         count += values.Count();
     }
 
-    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) override
+    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryCommandEvent>>& values) final
     {
         count += values.Count();
     }
 
-    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<TimeAndInterval>>& values) override
+    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogCommandEvent>>& values) final
     {
         count += values.Count();
     }
 
-    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values) override
+    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::TimeAndInterval>>& values) final
     {
         count += values.Count();
     }
 
-    virtual void Process(const opendnp3::HeaderInfo& info,
-                         const opendnp3::ICollection<opendnp3::DNPTime>& values) override
+    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::SecurityStat>>& values) final
+    {
+        count += values.Count();
+    }
+
+    void Process(const opendnp3::HeaderInfo& info,
+                         const opendnp3::ICollection<opendnp3::DNPTime>& values) final
     {
         count += values.Count();
     }
 };
-
-} // namespace opendnp3
 
 #endif

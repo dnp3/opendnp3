@@ -18,11 +18,10 @@
  * limitations under the License.
  */
 
-#include "PerformanceStackPair.h"
+#include "mocks/PerformanceStackPair.h"
 
-#include "opendnp3/outstation/SimpleCommandHandler.h"
-
-#include "asiodnp3/DefaultMasterApplication.h"
+#include <opendnp3/master/DefaultMasterApplication.h>
+#include <opendnp3/outstation/SimpleCommandHandler.h>
 
 #include <exception>
 #include <iostream>
@@ -31,11 +30,8 @@
 
 using namespace opendnp3;
 
-namespace asiodnp3
-{
-
-PerformanceStackPair::PerformanceStackPair(uint32_t levels,
-                                           openpal::TimeDuration timeout,
+PerformanceStackPair::PerformanceStackPair(log4cpp::LogLevels levels,
+                                           TimeDuration timeout,
                                            DNP3Manager& manager,
                                            uint16_t port,
                                            uint16_t numPointsPerType,
@@ -114,7 +110,7 @@ void PerformanceStackPair::WaitForValues(std::chrono::steady_clock::duration tim
 
 OutstationStackConfig PerformanceStackPair::GetOutstationStackConfig(uint16_t numPointsPerType,
                                                                      uint16_t eventBufferSize,
-                                                                     openpal::TimeDuration timeout)
+                                                                     TimeDuration timeout)
 {
     OutstationStackConfig config(DatabaseSizes::AllTypes(numPointsPerType));
 
@@ -125,7 +121,7 @@ OutstationStackConfig PerformanceStackPair::GetOutstationStackConfig(uint16_t nu
     return config;
 }
 
-MasterStackConfig PerformanceStackPair::GetMasterStackConfig(openpal::TimeDuration timeout)
+MasterStackConfig PerformanceStackPair::GetMasterStackConfig(TimeDuration timeout)
 {
     MasterStackConfig config;
 
@@ -138,22 +134,22 @@ MasterStackConfig PerformanceStackPair::GetMasterStackConfig(openpal::TimeDurati
     return config;
 }
 
-std::shared_ptr<IMaster> PerformanceStackPair::CreateMaster(uint32_t levels,
-                                                            openpal::TimeDuration timeout,
+std::shared_ptr<IMaster> PerformanceStackPair::CreateMaster(log4cpp::LogLevels levels,
+                                                            TimeDuration timeout,
                                                             DNP3Manager& manager,
                                                             uint16_t port,
                                                             std::shared_ptr<ISOEHandler> soehandler,
                                                             std::shared_ptr<IChannelListener> listener)
 {
-    auto channel = manager.AddTCPClient(GetId("client", port), levels, asiopal::ChannelRetry::Default(), "127.0.0.1",
-                                        "127.0.0.1", port, std::move(listener));
+    auto channel = manager.AddTCPClient(GetId("client", port), levels, ChannelRetry::Default(), { IPEndpoint("127.0.0.1", port) },
+                                        "127.0.0.1", std::move(listener));
 
     return channel->AddMaster(GetId("master", port), std::move(soehandler), DefaultMasterApplication::Create(),
                               GetMasterStackConfig(timeout));
 }
 
-std::shared_ptr<IOutstation> PerformanceStackPair::CreateOutstation(uint32_t levels,
-                                                                    openpal::TimeDuration timeout,
+std::shared_ptr<IOutstation> PerformanceStackPair::CreateOutstation(log4cpp::LogLevels levels,
+                                                                    TimeDuration timeout,
                                                                     DNP3Manager& manager,
                                                                     uint16_t port,
                                                                     uint16_t numPointsPerType,
@@ -174,5 +170,3 @@ std::string PerformanceStackPair::GetId(const char* name, uint16_t port)
     oss << name << ":" << port;
     return oss.str();
 }
-
-} // namespace asiodnp3

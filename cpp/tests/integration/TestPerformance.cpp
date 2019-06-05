@@ -20,8 +20,8 @@
 
 #include "mocks/PerformanceStackPair.h"
 
-#include <asiodnp3/ConsoleLogger.h>
-#include <asiodnp3/DNP3Manager.h>
+#include <opendnp3/ConsoleLogger.h>
+#include <opendnp3/DNP3Manager.h>
 
 #include <catch.hpp>
 
@@ -30,7 +30,6 @@
 #include <thread>
 
 using namespace opendnp3;
-using namespace asiodnp3;
 
 #define SUITE(name) "PerformanceTestSuite - " name
 
@@ -43,10 +42,10 @@ TEST_CASE(SUITE("PointsPerSecond"))
     const uint16_t EVENTS_PER_ITERATION = 50;
     const int NUM_ITERATIONS = 100;
 
-    const uint32_t LEVELS = flags::ERR | flags::WARN;
+    const auto LEVELS = levels::NOTHING | flags::ERR | flags::WARN;
 
     const auto TEST_TIMEOUT = std::chrono::seconds(5);
-    const auto STACK_TIMEOUT = openpal::TimeDuration::Seconds(1);
+    const auto STACK_TIMEOUT = TimeDuration::Seconds(1);
 
     // run with at least a concurrency of 2, but more if there are more cores
     const auto concurrency = std::max<unsigned int>(std::thread::hardware_concurrency(), 2);

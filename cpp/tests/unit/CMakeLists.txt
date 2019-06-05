@@ -47,6 +47,7 @@ set(unittests_src
     ./TestGroup120Var2.cpp
     ./TestGroup120Var5.cpp
     ./TestIndexSearch.cpp
+    ./TestIPEndpointsList.cpp
     ./TestLinkAddresses.cpp
     ./TestLinkFrame.cpp
     ./TestLinkLayer.cpp
@@ -71,6 +72,7 @@ set(unittests_src
     ./TestShiftableBuffer.cpp
     ./TestTransportLayer.cpp
     ./TestTypedCommandHeader.cpp
+    ./TestUpdateBuilder.cpp
     ./TestWriteConversions.cpp
 
     ./mocks/MockFrameSink.cpp

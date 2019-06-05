@@ -1,6 +1,8 @@
 set(integrationtests_mocks
+    ./mocks/CountingSOEHandler.h
     ./mocks/ExpectedValue.h
     ./mocks/NullSOEHandler.h
+    ./mocks/PerformanceStackPair.h
     ./mocks/QueuedChannelListener.h
     ./mocks/QueuingSOEHandler.h
     ./mocks/StackPair.h
@@ -10,10 +12,14 @@ set(integrationtests_mocks
 set(integrationtests_src
     ./main.cpp
 
+    ./TestDeadlock.cpp
     ./TestDNP3Manager.cpp
     ./TestEventIntegration.cpp
+    ./TestMasterServerSmoke.cpp
+    ./TestPerformance.cpp
 
     ./mocks/NullSOEHandler.cpp
+    ./mocks/PerformanceStackPair.cpp
     ./mocks/StackPair.cpp
 )
 

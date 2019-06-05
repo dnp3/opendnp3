@@ -17,28 +17,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <asiopal/UTCTimeSource.h>
-
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
 
-#include <asiodnp3/ConsoleLogger.h>
-#include <asiodnp3/DNP3Manager.h>
-#include <asiodnp3/DefaultMasterApplication.h>
-#include <asiodnp3/PrintingChannelListener.h>
-#include <asiodnp3/PrintingCommandCallback.h>
-#include <asiodnp3/PrintingSOEHandler.h>
+#include <opendnp3/ConsoleLogger.h>
+#include <opendnp3/DNP3Manager.h>
+#include <opendnp3/channel/PrintingChannelListener.h>
+#include <opendnp3/master/DefaultMasterApplication.h>
+#include <opendnp3/master/PrintingSOEHandler.h>
+#include <opendnp3/master/PrintingCommandResultCallback.h>
 
 #include <catch.hpp>
 
 #include <thread>
 
-using namespace openpal;
-using namespace asiopal;
-using namespace asiodnp3;
 using namespace opendnp3;
 
-const uint32_t FILTERS = levels::NOTHING;
+const auto FILTERS = levels::NOTHING;
 const uint32_t NUM_THREADS = 1;
 
 void start_outstation(DNP3Manager& manager)
@@ -55,9 +50,9 @@ void start_master(DNP3Manager& manager)
 {
     const auto channel
         = manager.AddTCPClient("client", FILTERS, ChannelRetry(TimeDuration::Seconds(0), TimeDuration::Seconds(0)),
-                               "127.0.0.1", "127.0.0.1", 20000, nullptr);
+                               { IPEndpoint("127.0.0.1", 20000) }, "127.0.0.1", nullptr);
     const auto master = channel->AddMaster("master", PrintingSOEHandler::Create(),
-                                           asiodnp3::DefaultMasterApplication::Create(), MasterStackConfig());
+                                           DefaultMasterApplication::Create(), MasterStackConfig());
     const auto scan = master->AddClassScan(ClassField::AllClasses(), TimeDuration::Milliseconds(1));
     master->Enable();
 }
@@ -71,8 +66,8 @@ TEST_CASE("TestDeadlock")
             INFO("start iteration: " << i);
         }
 
-        DNP3Manager manager2(NUM_THREADS);
         DNP3Manager manager1(NUM_THREADS);
+        DNP3Manager manager2(NUM_THREADS);
 
         const bool is_even = (i % 2) == 0;
 

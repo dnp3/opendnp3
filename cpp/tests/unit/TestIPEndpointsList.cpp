@@ -18,12 +18,11 @@
  * limitations under the License.
  */
 
-#include <asiodnp3/IPEndpointsList.h>
+#include "channel/IPEndpointsList.h"
 
 #include <catch.hpp>
 
-using namespace asiopal;
-using namespace asiodnp3;
+using namespace opendnp3;
 
 TEST_CASE("TestIPEndpointsList")
 {
