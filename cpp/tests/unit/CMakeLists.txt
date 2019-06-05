@@ -107,7 +107,7 @@ target_compile_features(unittests PRIVATE cxx_std_14)
 target_link_libraries(unittests PRIVATE catch opendnp3 log4cpp ser4cpp exe4cpp asio)
 target_include_directories(unittests PRIVATE ./ ../../lib/src)
 set_target_properties(unittests PROPERTIES FOLDER cpp/tests)
-add_test(unittests unittests)
+add_test(NAME unittests COMMAND unittests)
 
 clang_format(unittests)
 clang_tidy(unittests)

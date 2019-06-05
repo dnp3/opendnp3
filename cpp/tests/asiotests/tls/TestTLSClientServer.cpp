@@ -35,13 +35,6 @@ template<class F> void WithIO(const F& fun)
     io->RunUntilOutOfWork();
 }
 
-std::string get_path(const std::string& file)
-{
-    std::ostringstream oss;
-    oss << "../cpp/tests/asiopal/tls-certs/" << file;
-    return oss.str();
-}
-
 bool exists(const std::string& file)
 {
     std::ifstream infile(file);
@@ -50,10 +43,10 @@ bool exists(const std::string& file)
 
 TEST_CASE(SUITE("client and server can connect"))
 {
-    const auto key1 = get_path("entity1_key.pem");
-    const auto key2 = get_path("entity2_key.pem");
-    const auto cert1 = get_path("entity1_cert.pem");
-    const auto cert2 = get_path("entity2_cert.pem");
+    const auto key1 = "entity1_key.pem";
+    const auto key2 = "entity2_key.pem";
+    const auto cert1 = "entity1_cert.pem";
+    const auto cert2 = "entity2_cert.pem";
 
     if (!(exists(key1) && exists(key2) && exists(cert1) && exists(cert2)))
     {
