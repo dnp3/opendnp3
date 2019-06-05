@@ -26,7 +26,7 @@
 namespace opendnp3
 {
 
-Database::Database(const DatabaseConfigNew& config,
+Database::Database(const DatabaseConfig& config,
                    IEventReceiver& event_receiver,                   
                    StaticTypeBitField allowed_class_zero_types)
     : event_receiver(event_receiver), 

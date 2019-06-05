@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_STATICDATAMAPS_H
 #define OPENDNP3_STATICDATAMAPS_H
 
-#include <opendnp3/outstation/DatabaseConfigNew.h>
+#include <opendnp3/outstation/DatabaseConfig.h>
 #include <opendnp3/app/MeasurementTypeSpecs.h>
 #include <opendnp3/outstation/StaticTypeBitfield.h>
 
@@ -36,7 +36,7 @@ class StaticDataMaps final : public IStaticSelector, public IClassAssigner, publ
 {
 public:
 
-	StaticDataMaps(const DatabaseConfigNew& config, StaticTypeBitField allowed_class_zero_types);
+	StaticDataMaps(const DatabaseConfig& config, StaticTypeBitField allowed_class_zero_types);
 
     // ------- IStaticSelector -------------
     IINField SelectAll(GroupVariation gv) override;

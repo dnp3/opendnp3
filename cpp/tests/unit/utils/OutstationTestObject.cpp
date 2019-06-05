@@ -24,7 +24,7 @@
 using namespace opendnp3;
 
 OutstationTestObject::OutstationTestObject(const OutstationConfig& config,
-                                           const opendnp3::DatabaseConfigNew& db_config)
+                                           const opendnp3::DatabaseConfig& db_config)
     : exe(std::make_shared<exe4cpp::MockExecutor>()),
       lower(std::make_shared<MockLowerLayer>()),
       cmdHandler(std::make_shared<MockCommandHandler>(CommandStatus::SUCCESS)),

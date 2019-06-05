@@ -155,13 +155,13 @@ TEST_CASE(SUITE("MultipleClasses"))
 void TestEventRead(const std::string& request,
                    const std::string& response,
                    const std::function<void(IUpdateHandler& db)>& loadFun,
-                   const std::function<void(DatabaseConfigNew& db)>& configure = [](DatabaseConfigNew& view) {})
+                   const std::function<void(DatabaseConfig& db)>& configure = [](DatabaseConfig& view) {})
 {
 
     OutstationConfig config;
     config.eventBufferConfig = EventBufferConfig::AllTypes(10);
 
-	DatabaseConfigNew database = configure::by_count_of::all_types(5);
+	DatabaseConfig database = configure::by_count_of::all_types(5);
     configure(database);
 
     OutstationTestObject t(config, std::move(database));    
@@ -206,7 +206,7 @@ TEST_CASE(SUITE("Class1TwoByteLimitedCount"))
 
 TEST_CASE(SUITE("MixedClassLimitedCount"))
 {
-    auto configure = [](DatabaseConfigNew& db) {
+    auto configure = [](DatabaseConfig& db) {
         db.binary_input[0].clazz = PointClass::Class1;
         db.binary_input[1].clazz = PointClass::Class2;
         db.binary_input[2].clazz = PointClass::Class3;
@@ -232,7 +232,7 @@ TEST_CASE(SUITE("reports g22v5 correctly"))
     auto update = [](IUpdateHandler& db) { db.Update(Counter(23, 0x01, DNPTime(1512595515000)), 0); };
 
     auto configure
-        = [](DatabaseConfigNew& db) { db.counter[0].evariation = EventCounterVariation::Group22Var5; };
+        = [](DatabaseConfig& db) { db.counter[0].evariation = EventCounterVariation::Group22Var5; };
 
     TestEventRead("C0 01 3C 02 06", "E0 81 80 00 16 05 28 01 00 00 00 01 17 00 00 00 78 E6 B7 2D 60 01", update,
                   configure);
@@ -243,7 +243,7 @@ TEST_CASE(SUITE("reports g22v6 correctly"))
     auto update = [](IUpdateHandler& db) { db.Update(Counter(23, 0x01, DNPTime(1512595515000)), 0); };
 
     auto configure
-        = [](DatabaseConfigNew& db) { db.counter[0].evariation = EventCounterVariation::Group22Var6; };
+        = [](DatabaseConfig& db) { db.counter[0].evariation = EventCounterVariation::Group22Var6; };
 
     TestEventRead("C0 01 3C 02 06", "E0 81 80 00 16 06 28 01 00 00 00 01 17 00 78 E6 B7 2D 60 01", update, configure);
 }
@@ -277,11 +277,11 @@ TEST_CASE(SUITE("ReadGrp32Var7"))
 
     // specifically read this variation, but let the default be something else
     TestEventRead("C0 01 20 07 06", response, update,
-                  [](DatabaseConfigNew& db) { db.analog_input[0].evariation = EventAnalogVariation::Group32Var1; });
+                  [](DatabaseConfig& db) { db.analog_input[0].evariation = EventAnalogVariation::Group32Var1; });
 
     // configure this as the default variation and ask for variation 0
     TestEventRead("C0 01 20 00 06", response, update,
-                  [](DatabaseConfigNew& db) { db.analog_input[0].evariation = EventAnalogVariation::Group32Var7; });
+                  [](DatabaseConfig& db) { db.analog_input[0].evariation = EventAnalogVariation::Group32Var7; });
 }
 
 TEST_CASE(SUITE("ReadGrp32Var5"))
@@ -292,11 +292,11 @@ TEST_CASE(SUITE("ReadGrp32Var5"))
 
     // specifically read this variation, but let the default be something else
     TestEventRead("C0 01 20 05 06", response, update,
-                  [](DatabaseConfigNew& db) { db.analog_input[0].evariation = EventAnalogVariation::Group32Var1; });
+                  [](DatabaseConfig& db) { db.analog_input[0].evariation = EventAnalogVariation::Group32Var1; });
 
     // configure this as the default variation and ask for variation 0
     TestEventRead("C0 01 20 00 06", response, update,
-                  [](DatabaseConfigNew& db) { db.analog_input[0].evariation = EventAnalogVariation::Group32Var5; });
+                  [](DatabaseConfig& db) { db.analog_input[0].evariation = EventAnalogVariation::Group32Var5; });
 }
 
 TEST_CASE(SUITE("ReadGrp2Var1"))

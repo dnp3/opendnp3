@@ -44,7 +44,7 @@ namespace opendnp3
 
 OContext::OContext(const Addresses& addresses,
                    const OutstationConfig& config,
-                   const DatabaseConfigNew& db_config,
+                   const DatabaseConfig& db_config,
                    const log4cpp::Logger& logger,
                    const std::shared_ptr<exe4cpp::IExecutor>& executor,
                    std::shared_ptr<ILowerLayer> lower,

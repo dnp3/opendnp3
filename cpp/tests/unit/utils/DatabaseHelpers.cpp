@@ -25,58 +25,58 @@ namespace configure
 
 namespace by_count_of
 {
-    opendnp3::DatabaseConfigNew all_types(uint16_t num)
+    opendnp3::DatabaseConfig all_types(uint16_t num)
     {
         return database_by_sizes(num, num, num, num, num, num, num, num, num);
     }
 
-    opendnp3::DatabaseConfigNew binary_input(uint16_t num)
+    opendnp3::DatabaseConfig binary_input(uint16_t num)
     {
         return database_by_sizes(num, 0, 0, 0, 0, 0, 0, 0, 0);
     }
 
-    opendnp3::DatabaseConfigNew counter(uint16_t num)
+    opendnp3::DatabaseConfig counter(uint16_t num)
     {
         return database_by_sizes(0, 0, 0, num, 0, 0, 0, 0, 0);
     }
 
-    opendnp3::DatabaseConfigNew binary_output_status(uint16_t num)
+    opendnp3::DatabaseConfig binary_output_status(uint16_t num)
     {
         return database_by_sizes(0, 0, 0, 0, 0, num, 0, 0, 0);
     }
 
-    opendnp3::DatabaseConfigNew analog_input(uint16_t num)
+    opendnp3::DatabaseConfig analog_input(uint16_t num)
     {
         return database_by_sizes(0, 0, num, 0, 0, 0, 0, 0, 0);
     }
 
-    opendnp3::DatabaseConfigNew analog_output_status(uint16_t num)
+    opendnp3::DatabaseConfig analog_output_status(uint16_t num)
 	{
         return database_by_sizes(0, 0, 0, 0, 0, 0, num, 0, 0);
 	}
 
-    opendnp3::DatabaseConfigNew time_and_interval(uint16_t num)
+    opendnp3::DatabaseConfig time_and_interval(uint16_t num)
     {
         return database_by_sizes(0, 0, 0, 0, 0, 0, 0, num, 0);
     }
 
-    opendnp3::DatabaseConfigNew octet_string(uint16_t num)
+    opendnp3::DatabaseConfig octet_string(uint16_t num)
     {
         return database_by_sizes(0, 0, 0, 0, 0, 0, 0, 0, num);
     }
 
 } // namespace by_count_of
 
-opendnp3::DatabaseConfigNew from(std::map<uint16_t, opendnp3::AnalogConfig> map)
+opendnp3::DatabaseConfig from(std::map<uint16_t, opendnp3::AnalogConfig> map)
 {
-    opendnp3::DatabaseConfigNew config;
+    opendnp3::DatabaseConfig config;
     config.analog_input = std::move(map);
     return config;
 }
 
-opendnp3::DatabaseConfigNew from(std::map<uint16_t, opendnp3::BinaryConfig> map)
+opendnp3::DatabaseConfig from(std::map<uint16_t, opendnp3::BinaryConfig> map)
 {
-    opendnp3::DatabaseConfigNew config;
+    opendnp3::DatabaseConfig config;
     config.binary_input = std::move(map);
     return config;
 }
@@ -88,7 +88,7 @@ opendnp3::AnalogConfig analog(opendnp3::StaticAnalogVariation variation)
     return config;
 }
 
-opendnp3::DatabaseConfigNew database_by_sizes(uint16_t num_binary,
+opendnp3::DatabaseConfig database_by_sizes(uint16_t num_binary,
                                               uint16_t num_double_binary,
                                               uint16_t num_analog,
                                               uint16_t num_counter,
@@ -98,7 +98,7 @@ opendnp3::DatabaseConfigNew database_by_sizes(uint16_t num_binary,
                                               uint16_t num_time_and_interval,
                                               uint16_t num_octet_string)
 {
-    opendnp3::DatabaseConfigNew config;
+    opendnp3::DatabaseConfig config;
 
     for (uint16_t i = 0; i < num_binary; ++i)
     {

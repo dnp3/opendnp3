@@ -504,7 +504,7 @@ TEST_CASE(SUITE("ReadByRangeHeader"))
 
 template<class PointType>
 void TestStaticType(const OutstationConfig& config,
-                    const DatabaseConfigNew& database,
+                    const DatabaseConfig& database,
                     PointType value,
                     const std::string& rsp)
 {
@@ -529,7 +529,7 @@ template<class T> void TestStaticCounter(StaticCounterVariation variation, T val
 TEST_CASE(SUITE("ReadGrp1Var1"))
 {
     OutstationConfig cfg;
-    DatabaseConfigNew database = configure::by_count_of::binary_input(10);
+    DatabaseConfig database = configure::by_count_of::binary_input(10);
 
     for (auto& item : database.binary_input)
     {
@@ -547,7 +547,7 @@ TEST_CASE(SUITE("ReadGrp1Var1"))
 
 TEST_CASE(SUITE("Grp1Var1IsPromotedToGrp1Var2IfQualityNotOnline"))
 {
-    DatabaseConfigNew database = configure::by_count_of::binary_input(2);
+    DatabaseConfig database = configure::by_count_of::binary_input(2);
 
     for (auto& item : database.binary_input)
     {

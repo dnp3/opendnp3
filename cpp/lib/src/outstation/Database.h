@@ -24,7 +24,7 @@
 #include "outstation/IEventReceiver.h"
 #include "outstation/StaticDataMaps.h"
 
-#include "opendnp3/outstation/DatabaseConfigNew.h"
+#include "opendnp3/outstation/DatabaseConfig.h"
 #include "opendnp3/gen/AssignClassType.h"
 #include "opendnp3/gen/IndexMode.h"
 
@@ -37,7 +37,7 @@ The database coordinates all updates of measurement data
 class Database final : public IDatabase, private Uncopyable
 {
 public:
-    Database(const DatabaseConfigNew& config,
+    Database(const DatabaseConfig& config,
              IEventReceiver& event_receiver,             
              StaticTypeBitField allowed_class_zero_types);
 

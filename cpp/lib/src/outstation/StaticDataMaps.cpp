@@ -23,7 +23,7 @@
 namespace opendnp3
 {
 
-StaticDataMaps::StaticDataMaps(const DatabaseConfigNew& config, StaticTypeBitField allowed_class_zero_types)
+StaticDataMaps::StaticDataMaps(const DatabaseConfig& config, StaticTypeBitField allowed_class_zero_types)
     : allowed_class_zero_types(allowed_class_zero_types),
       binary_input(config.binary_input),
       double_binary(config.double_binary),
