@@ -37,14 +37,6 @@ StaticDataMaps::StaticDataMaps(const DatabaseConfigNew& config, StaticTypeBitFie
 {
 }
 
-bool StaticDataMaps::has_any_selection() const
-{
-    return binary_input.has_any_selection() || double_binary.has_any_selection() || analog_input.has_any_selection()
-        || counter.has_any_selection() || frozen_counter.has_any_selection() || binary_output_status.has_any_selection()
-        || analog_output_status.has_any_selection() || time_and_interval.has_any_selection()
-        || octet_string.has_any_selection();
-}
-
 IINField StaticDataMaps::SelectAll(GroupVariation gv)
 {
     if (gv == GroupVariation::Group60Var1)
@@ -80,7 +72,7 @@ IINField StaticDataMaps::SelectAll(GroupVariation gv)
         return select_all<BinaryOutputStatusSpec>(this->binary_output_status);
     case (GroupVariation::Group10Var2):
         return select_all<BinaryOutputStatusSpec>(this->binary_output_status,
-                                                 StaticBinaryOutputStatusVariation::Group10Var2);
+                                                  StaticBinaryOutputStatusVariation::Group10Var2);
 
     case (GroupVariation::Group20Var0):
         return select_all<CounterSpec>(this->counter);
@@ -127,16 +119,16 @@ IINField StaticDataMaps::SelectAll(GroupVariation gv)
         return select_all<AnalogOutputStatusSpec>(this->analog_output_status);
     case (GroupVariation::Group40Var1):
         return select_all<AnalogOutputStatusSpec>(this->analog_output_status,
-                                                 StaticAnalogOutputStatusVariation::Group40Var1);
+                                                  StaticAnalogOutputStatusVariation::Group40Var1);
     case (GroupVariation::Group40Var2):
         return select_all<AnalogOutputStatusSpec>(this->analog_output_status,
-                                                 StaticAnalogOutputStatusVariation::Group40Var2);
+                                                  StaticAnalogOutputStatusVariation::Group40Var2);
     case (GroupVariation::Group40Var3):
         return select_all<AnalogOutputStatusSpec>(this->analog_output_status,
-                                                 StaticAnalogOutputStatusVariation::Group40Var3);
+                                                  StaticAnalogOutputStatusVariation::Group40Var3);
     case (GroupVariation::Group40Var4):
         return select_all<AnalogOutputStatusSpec>(this->analog_output_status,
-                                                 StaticAnalogOutputStatusVariation::Group40Var4);
+                                                  StaticAnalogOutputStatusVariation::Group40Var4);
 
     case (GroupVariation::Group50Var4):
         return select_all<TimeAndIntervalSpec>(this->time_and_interval, StaticTimeAndIntervalVariation::Group50Var4);
@@ -169,7 +161,7 @@ IINField StaticDataMaps::SelectRange(GroupVariation gv, const Range& range)
         return select_range<BinaryOutputStatusSpec>(this->binary_output_status, range);
     case (GroupVariation::Group10Var2):
         return select_range<BinaryOutputStatusSpec>(this->binary_output_status, range,
-                                                   StaticBinaryOutputStatusVariation::Group10Var2);
+                                                    StaticBinaryOutputStatusVariation::Group10Var2);
 
     case (GroupVariation::Group20Var0):
         return select_range<CounterSpec>(this->counter, range);
@@ -216,20 +208,20 @@ IINField StaticDataMaps::SelectRange(GroupVariation gv, const Range& range)
         return select_range<AnalogOutputStatusSpec>(this->analog_output_status, range);
     case (GroupVariation::Group40Var1):
         return select_range<AnalogOutputStatusSpec>(this->analog_output_status, range,
-                                                   StaticAnalogOutputStatusVariation::Group40Var1);
+                                                    StaticAnalogOutputStatusVariation::Group40Var1);
     case (GroupVariation::Group40Var2):
         return select_range<AnalogOutputStatusSpec>(this->analog_output_status, range,
-                                                   StaticAnalogOutputStatusVariation::Group40Var2);
+                                                    StaticAnalogOutputStatusVariation::Group40Var2);
     case (GroupVariation::Group40Var3):
         return select_range<AnalogOutputStatusSpec>(this->analog_output_status, range,
-                                                   StaticAnalogOutputStatusVariation::Group40Var3);
+                                                    StaticAnalogOutputStatusVariation::Group40Var3);
     case (GroupVariation::Group40Var4):
         return select_range<AnalogOutputStatusSpec>(this->analog_output_status, range,
-                                                   StaticAnalogOutputStatusVariation::Group40Var4);
+                                                    StaticAnalogOutputStatusVariation::Group40Var4);
 
     case (GroupVariation::Group50Var4):
         return select_range<TimeAndIntervalSpec>(this->time_and_interval, range,
-                                                StaticTimeAndIntervalVariation::Group50Var4);
+                                                 StaticTimeAndIntervalVariation::Group50Var4);
 
     case (GroupVariation::Group110Var0):
         return select_range<OctetStringSpec>(this->octet_string, range, StaticOctetStringVariation::Group110Var0);
@@ -298,6 +290,65 @@ Range StaticDataMaps::AssignClassToRange(AssignClassType type, PointClass clazz,
     }
 }
 
+bool StaticDataMaps::HasAnySelection() const
+{
+    return binary_input.has_any_selection() || double_binary.has_any_selection() || analog_input.has_any_selection()
+        || counter.has_any_selection() || frozen_counter.has_any_selection() || binary_output_status.has_any_selection()
+        || analog_output_status.has_any_selection() || time_and_interval.has_any_selection()
+        || octet_string.has_any_selection();
+}
+
+bool StaticDataMaps::Load(HeaderWriter& writer)
+{
+    // TODO
+    return false;
+}
+
+bool StaticDataMaps::Update(const Binary& meas, uint16_t index)
+{
+    return this->binary_input.update(meas, index) == UpdateResult::event;
+}
+
+bool StaticDataMaps::Update(const DoubleBitBinary& meas, uint16_t index)
+{
+    return this->double_binary.update(meas, index) == UpdateResult::event;
+}
+
+bool StaticDataMaps::Update(const Analog& meas, uint16_t index)
+{
+    return this->analog_input.update(meas, index) == UpdateResult::event;
+}
+
+bool StaticDataMaps::Update(const Counter& meas, uint16_t index)
+{
+    return this->counter.update(meas, index) == UpdateResult::event;
+}
+
+bool StaticDataMaps::Update(const FrozenCounter& meas, uint16_t index)
+{
+    return this->frozen_counter.update(meas, index) == UpdateResult::event;
+}
+
+bool StaticDataMaps::Update(const BinaryOutputStatus& meas, uint16_t index)
+{
+    return this->binary_output_status.update(meas, index) == UpdateResult::event;
+}
+
+bool StaticDataMaps::Update(const AnalogOutputStatus& meas, uint16_t index)
+{
+    return this->analog_output_status.update(meas, index) == UpdateResult::event;
+}
+
+bool StaticDataMaps::Update(const OctetString& meas, uint16_t index)
+{
+    return this->octet_string.update(meas, index) == UpdateResult::event;
+}
+
+bool StaticDataMaps::Update(const TimeAndInterval& meas, uint16_t index)
+{
+    return this->time_and_interval.update(meas, index) == UpdateResult::event;
+}
+
 template<class Spec> void StaticDataMaps::select_all_class_zero(StaticDataMap<Spec>& map)
 {
     if (this->allowed_class_zero_types.IsSet(Spec::StaticTypeEnum))
@@ -327,11 +378,24 @@ template<class Spec> IINField StaticDataMaps::select_range(StaticDataMap<Spec>& 
 
 template<class Spec>
 IINField StaticDataMaps::select_range(StaticDataMap<Spec>& map,
-                                     const Range& range,
-                                     typename Spec::static_variation_t variation)
+                                      const Range& range,
+                                      typename Spec::static_variation_t variation)
 {
     const auto count = map.select(range, variation);
     return (count != range.Count()) ? IINField(IINBit::PARAM_ERROR) : IINField::Empty();
+}
+
+template<class Spec> Range StaticDataMaps::assign_class_to_all(StaticDataMap<Spec>& map, PointClass clazz)
+{
+	// TODO
+    return Range::Invalid();
+}
+
+template<class Spec>
+Range StaticDataMaps::assign_class_to_range(StaticDataMap<Spec>& map, PointClass clazz, const Range& range)
+{
+    // TODO
+    return Range::Invalid();
 }
 
 } // namespace opendnp3

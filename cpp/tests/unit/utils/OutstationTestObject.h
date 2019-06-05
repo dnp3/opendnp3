@@ -38,7 +38,7 @@ class OutstationTestObject
 {
 
 public:
-    OutstationTestObject(const opendnp3::OutstationConfig& config, const opendnp3::DatabaseSizes& dbSizes = opendnp3::DatabaseSizes::Empty());
+    OutstationTestObject(const opendnp3::OutstationConfig& config, const opendnp3::DatabaseConfigNew& db_config = opendnp3::DatabaseConfigNew());
 
     size_t SendToOutstation(const std::string& hex);
 

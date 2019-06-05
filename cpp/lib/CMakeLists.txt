@@ -364,7 +364,6 @@ set(opendnp3_private_headers
     ./src/outstation/ConstantCommandAction.h
     ./src/outstation/ControlState.h
     ./src/outstation/Database.h
-    ./src/outstation/DatabaseBuffers.h
     ./src/outstation/DatabaseConfigView.h	
     ./src/outstation/DeferredRequest.h
     ./src/outstation/Event.h
@@ -374,8 +373,7 @@ set(opendnp3_private_headers
     ./src/outstation/IEventReceiver.h
     ./src/outstation/IEventRecorder.h
     ./src/outstation/IEventSelector.h
-    ./src/outstation/IINHelpers.h
-    ./src/outstation/IndexSearch.h
+    ./src/outstation/IINHelpers.h    
     ./src/outstation/IResponseLoader.h
     ./src/outstation/IStaticSelector.h
     ./src/outstation/OctetStringSerializer.h
@@ -389,7 +387,6 @@ set(opendnp3_private_headers
     ./src/outstation/RequestHistory.h
     ./src/outstation/ResponseContext.h
     ./src/outstation/SelectedRanges.h
-    ./src/outstation/StaticBuffers.h
 	./src/outstation/StaticDataMap.h
 	./src/outstation/StaticDataMaps.h
     ./src/outstation/StaticWriters.h
@@ -592,7 +589,6 @@ set(opendnp3_src
     ./src/outstation/CommandActionAdapter.cpp
     ./src/outstation/CommandResponseHandler.cpp
     ./src/outstation/Database.cpp
-    ./src/outstation/DatabaseBuffers.cpp
     ./src/outstation/DatabaseConfigView.cpp	
     ./src/outstation/DeferredRequest.cpp
     ./src/outstation/EventBufferConfig.cpp
@@ -607,7 +603,7 @@ set(opendnp3_src
     ./src/outstation/ResponseContext.cpp
     ./src/outstation/SelectedRanges.cpp
     ./src/outstation/SimpleCommandHandler.cpp
-    ./src/outstation/StaticBuffers.cpp
+    ./src/outstation/StaticDataMap.cpp
     ./src/outstation/StaticDataMaps.cpp
     ./src/outstation/StaticWriters.cpp
     ./src/outstation/UpdateBuilder.cpp

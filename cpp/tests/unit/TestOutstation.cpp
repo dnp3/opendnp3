@@ -17,8 +17,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "utils/OutstationTestObject.h"
 #include "utils/APDUHexBuilders.h"
+#include "utils/DatabaseHelpers.h"
+#include "utils/OutstationTestObject.h"
 
 #include <ser4cpp/util/HexConversions.h>
 
@@ -262,7 +263,7 @@ TEST_CASE(SUITE("WriteTimeDateNotAsking"))
 TEST_CASE(SUITE("WriteTimeDateMultipleObjects"))
 {
     OutstationConfig cfg;
-    OutstationTestObject t(cfg, DatabaseSizes::Empty());
+    OutstationTestObject t(cfg);
     t.LowerLayerUp();
 
     t.SendToOutstation(
@@ -283,15 +284,9 @@ TEST_CASE(SUITE("BlankIntegrityPoll"))
 
 TEST_CASE(SUITE("MixedVariationAssignments"))
 {
-    OutstationConfig config;
-    OutstationTestObject t(config, DatabaseSizes::AnalogOnly(2));
-
-    {
-        // configure two different default variations
-        auto view = t.context.GetConfigView();
-        view.analogs[0].config.svariation = StaticAnalogVariation::Group30Var1;
-        view.analogs[1].config.svariation = StaticAnalogVariation::Group30Var2;
-    }
+    OutstationTestObject t(OutstationConfig(),
+                           configure::from({{0, configure::analog(StaticAnalogVariation::Group30Var1)},
+                                              {1, configure::analog(StaticAnalogVariation::Group30Var2)}}));
 
     t.LowerLayerUp();
 
@@ -305,7 +300,8 @@ TEST_CASE(SUITE("TypesCanBeOmittedFromClass0ViaConfig"))
 {
     OutstationConfig config;
     config.params.typesAllowedInClass0 = StaticTypeBitField::AllTypes().Except(StaticTypeBitmask::DoubleBinaryInput);
-    OutstationTestObject t(config, DatabaseSizes(1, 1, 0, 0, 0, 0, 0, 0, 0)); // 1 binary and 1 double binary
+    OutstationTestObject t(config,
+                           configure::database_by_sizes(1, 1, 0, 0, 0, 0, 0, 0, 0)); // 1 binary and 1 double binary
 
     t.LowerLayerUp();
     t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
@@ -316,7 +312,7 @@ TEST_CASE(SUITE("octet strings can be returned as part of a class 0 scan"))
 {
     OutstationConfig config;
     config.params.typesAllowedInClass0 = StaticTypeBitField::AllTypes();
-    OutstationTestObject t(config, DatabaseSizes::OctetStringOnly(3));
+    OutstationTestObject t(config, configure::by_count_of::octet_string(3));
 
     t.LowerLayerUp();
     t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
@@ -327,7 +323,7 @@ TEST_CASE(SUITE("octet strings can be returned by reading g110v0"))
 {
     OutstationConfig config;
     config.params.typesAllowedInClass0 = StaticTypeBitField::AllTypes();
-    OutstationTestObject t(config, DatabaseSizes::OctetStringOnly(3));
+    OutstationTestObject t(config, configure::by_count_of::octet_string(3));
 
     t.LowerLayerUp();
     t.SendToOutstation("C0 01 6E 00 06"); // g110v0
@@ -338,7 +334,7 @@ TEST_CASE(SUITE("ReadClass0MultiFragAnalog"))
 {
     OutstationConfig config;
     config.params.maxTxFragSize = 20; // override to use a fragment length of 20
-    OutstationTestObject t(config, DatabaseSizes::AnalogOnly(8));
+    OutstationTestObject t(config, configure::by_count_of::analog_input(8));
     t.LowerLayerUp();
 
     t.Transaction([](IUpdateHandler& db) {
@@ -381,7 +377,7 @@ TEST_CASE(SUITE("ReadFuncNotSupported"))
 void NewTestStaticRead(const std::string& request, const std::string& response)
 {
     OutstationConfig config;
-    OutstationTestObject t(config, DatabaseSizes::AllTypes(1));
+    OutstationTestObject t(config, configure::by_count_of::all_types(1));
     t.LowerLayerUp();
 
     t.SendToOutstation(request);
@@ -393,7 +389,7 @@ void NewTestStaticRead(const std::string& request, const std::string& response)
 void TestTimeAndIntervalRead(const std::string& request)
 {
     OutstationConfig config;
-    OutstationTestObject t(config, DatabaseSizes::TimeAndIntervalOnly(1));
+    OutstationTestObject t(config, configure::by_count_of::time_and_interval(1));
     t.LowerLayerUp();
 
     t.Transaction([](IUpdateHandler& db) { db.Update(TimeAndInterval(DNPTime(9), 3, IntervalUnits::Days), 0); });
@@ -420,7 +416,7 @@ TEST_CASE(SUITE("TimeAndIntervalViaDirectRangeRequest"))
 TEST_CASE(SUITE("TestTimeAndIntervalWrite"))
 {
     OutstationConfig config;
-    OutstationTestObject t(config, DatabaseSizes::TimeAndIntervalOnly(1));
+    OutstationTestObject t(config, configure::by_count_of::time_and_interval(1));
     t.LowerLayerUp();
 
     t.application->supportsWriteTimeAndInterval = true;
@@ -494,7 +490,7 @@ TEST_CASE(SUITE("ReadGrp40Var0ViaIntegrity"))
 TEST_CASE(SUITE("ReadByRangeHeader"))
 {
     OutstationConfig config;
-    OutstationTestObject t(config, DatabaseSizes::AnalogOnly(10));
+    OutstationTestObject t(config, configure::by_count_of::analog_input(1));
     t.LowerLayerUp();
 
     t.Transaction([](IUpdateHandler& db) {
@@ -508,15 +504,11 @@ TEST_CASE(SUITE("ReadByRangeHeader"))
 
 template<class PointType>
 void TestStaticType(const OutstationConfig& config,
-                    const DatabaseSizes& tmp,
+                    const DatabaseConfigNew& database,
                     PointType value,
-                    const std::string& rsp,
-                    const std::function<void(DatabaseConfigView&)>& configure)
+                    const std::string& rsp)
 {
-    OutstationTestObject t(config, tmp);
-
-    auto view = t.context.GetConfigView();
-    configure(view);
+    OutstationTestObject t(config, database);
 
     t.LowerLayerUp();
 
@@ -528,26 +520,23 @@ void TestStaticType(const OutstationConfig& config,
 }
 
 template<class T> void TestStaticCounter(StaticCounterVariation variation, T value, const std::string& response)
-{
-    OutstationConfig cfg;
-    auto configure = [variation](DatabaseConfigView& view) { view.counters[0].config.svariation = variation; };
-    TestStaticType<Counter>(cfg, DatabaseSizes::CounterOnly(1), value, response, configure);
+{   
+    auto database = configure::by_count_of::counter(1);
+    database.counter[0].svariation = variation;
+    TestStaticType<Counter>(OutstationConfig(), std::move(database), value, response);
 }
 
 TEST_CASE(SUITE("ReadGrp1Var1"))
 {
     OutstationConfig cfg;
-    OutstationTestObject t(cfg, DatabaseSizes::BinaryOnly(10));
+    DatabaseConfigNew database = configure::by_count_of::binary_input(10);
 
+    for (auto& item : database.binary_input)
     {
-        auto view = t.context.GetConfigView();
-        auto setValue = [](Cell<BinarySpec>& cell) -> void {
-            cell.value = Binary(false);
-            cell.config.svariation = StaticBinaryVariation::Group1Var1;
-        };
-
-        view.binaries.foreach (setValue);
+        item.second.svariation = StaticBinaryVariation::Group1Var1;
     }
+
+    OutstationTestObject t(cfg, std::move(database));
 
     t.LowerLayerUp();
 
@@ -558,16 +547,14 @@ TEST_CASE(SUITE("ReadGrp1Var1"))
 
 TEST_CASE(SUITE("Grp1Var1IsPromotedToGrp1Var2IfQualityNotOnline"))
 {
-    OutstationConfig cfg;
-    OutstationTestObject t(cfg, DatabaseSizes::BinaryOnly(2));
+    DatabaseConfigNew database = configure::by_count_of::binary_input(2);
 
+    for (auto& item : database.binary_input)
     {
-        auto view = t.context.GetConfigView();
-        auto setVariation
-            = [](Cell<BinarySpec>& cell) -> void { cell.config.svariation = StaticBinaryVariation::Group1Var1; };
-
-        view.binaries.foreach(setVariation);
+        item.second.svariation = StaticBinaryVariation::Group1Var1;
     }
+    
+    OutstationTestObject t(OutstationConfig(), std::move(database));  
 
     t.LowerLayerUp();
 
@@ -598,9 +585,9 @@ TEST_CASE(SUITE("ReadGrp20Var6"))
 
 template<class T> void TestStaticAnalog(StaticAnalogVariation variation, T value, const std::string& response)
 {
-    OutstationConfig cfg;
-    auto configure = [variation](DatabaseConfigView& view) { view.analogs[0].config.svariation = variation; };
-    TestStaticType<Analog>(cfg, DatabaseSizes::AnalogOnly(1), value, response, configure);
+    auto database = configure::by_count_of::analog_input(1);
+    database.analog_input[0].svariation = variation;
+    TestStaticType<Analog>(OutstationConfig(), std::move(database), value, response);
 }
 
 TEST_CASE(SUITE("ReadGrp30Var2"))
@@ -631,7 +618,7 @@ TEST_CASE(SUITE("ReadGrp30Var6"))
 template<class T> void TestStaticBinaryOutputStatus(T value, const std::string& response)
 {
     OutstationConfig cfg;
-    OutstationTestObject t(cfg, DatabaseSizes::BinaryOutputStatusOnly(1));
+    OutstationTestObject t(cfg, configure::by_count_of::binary_output_status(1));
     t.LowerLayerUp();
 
     t.Transaction([value](IUpdateHandler& db) { db.Update(BinaryOutputStatus(value, opendnp3::Flags(0x01)), 0); });
@@ -648,10 +635,11 @@ TEST_CASE(SUITE("ReadGrp10Var2"))
 template<class T>
 void TestStaticAnalogOutputStatus(StaticAnalogOutputStatusVariation variation, T value, const std::string& response)
 {
-    OutstationConfig cfg;
-    auto configure
-        = [variation](DatabaseConfigView& view) { view.analogOutputStatii[0].config.svariation = variation; };
-    TestStaticType<AnalogOutputStatus>(cfg, DatabaseSizes::AnalogOutputStatusOnly(1), value, response, configure);
+    auto database = configure::by_count_of::analog_output_status(1);
+    database.analog_output_status[0].svariation = variation;
+
+
+    TestStaticType<AnalogOutputStatus>(OutstationConfig(), std::move(database), value, response);
 }
 
 TEST_CASE(SUITE("ReadGrp40Var1"))

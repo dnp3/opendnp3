@@ -28,14 +28,7 @@ namespace opendnp3
 {
 
 // All entries have this information
-struct IndexConfig
-{
-    // virtual index for discontiguous data, as opposed to the raw array index
-    uint16_t vIndex = 0;
-};
-
-// All entries have this information
-template<class Info> struct StaticConfig : IndexConfig
+template<class Info> struct StaticConfig
 {
     typename Info::static_variation_t svariation = Info::DefaultStaticVariation;
 };
@@ -51,34 +44,43 @@ template<class Info> struct DeadbandConfig : EventConfig<Info>
     typename Info::value_t deadband = 0;
 };
 
-class BinaryConfig : public EventConfig<BinaryInfo>
+struct BinaryConfig : public EventConfig<BinaryInfo>
 {
 };
-class DoubleBitBinaryConfig : public EventConfig<DoubleBitBinaryInfo>
+
+struct DoubleBitBinaryConfig : public EventConfig<DoubleBitBinaryInfo>
 {
 };
-class AnalogConfig : public DeadbandConfig<AnalogInfo>
+
+struct AnalogConfig : public DeadbandConfig<AnalogInfo>
+{    
+};
+
+struct CounterConfig : public DeadbandConfig<CounterInfo>
 {
 };
-class CounterConfig : public DeadbandConfig<CounterInfo>
+
+struct FrozenCounterConfig : public DeadbandConfig<FrozenCounterInfo>
 {
 };
-class FrozenCounterConfig : public DeadbandConfig<FrozenCounterInfo>
+
+struct BOStatusConfig : public EventConfig<BinaryOutputStatusInfo>
 {
 };
-class BOStatusConfig : public EventConfig<BinaryOutputStatusInfo>
+
+struct AOStatusConfig : public DeadbandConfig<AnalogOutputStatusInfo>
 {
 };
-class AOStatusConfig : public DeadbandConfig<AnalogOutputStatusInfo>
+
+struct OctetStringConfig : public EventConfig<OctetStringInfo>
 {
 };
-class OctetStringConfig : public EventConfig<OctetStringInfo>
+
+struct TimeAndIntervalConfig : public StaticConfig<TimeAndIntervalInfo>
 {
 };
-class TimeAndIntervalConfig : public StaticConfig<TimeAndIntervalInfo>
-{
-};
-class SecurityStatConfig : public IndexConfig
+
+struct SecurityStatConfig
 {
 };
 

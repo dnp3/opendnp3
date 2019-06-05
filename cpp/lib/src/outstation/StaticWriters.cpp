@@ -92,6 +92,7 @@ bool LoadWithBitfieldIterator(ser4cpp::ArrayView<Cell<Spec>, uint16_t>& view,
 template<class Spec, class GV>
 bool WriteSingleBitfield(ser4cpp::ArrayView<Cell<Spec>, uint16_t>& view, HeaderWriter& writer, Range& range)
 {
+    /* TODO
     auto start = view[range.start].config.vIndex;
     auto stop = view[range.stop].config.vIndex;
     auto mapped = Range::From(start, stop);
@@ -106,11 +107,15 @@ bool WriteSingleBitfield(ser4cpp::ArrayView<Cell<Spec>, uint16_t>& view, HeaderW
     auto iter
         = writer.IterateOverSingleBitfield<ser4cpp::UInt16>(GV::ID(), QualifierCode::UINT16_START_STOP, mapped.start);
     return LoadWithBitfieldIterator<Spec, ser4cpp::UInt16>(view, iter, range);
+	*/
+    return false;
 }
 
 template<class Spec, class Serializer>
 bool WriteWithSerializer(ser4cpp::ArrayView<Cell<Spec>, uint16_t>& view, HeaderWriter& writer, Range& range)
 {
+    return false;
+    /* TODO
     auto start = view[range.start].config.vIndex;
     auto stop = view[range.stop].config.vIndex;
     auto mapped = Range::From(start, stop);
@@ -125,6 +130,7 @@ bool WriteWithSerializer(ser4cpp::ArrayView<Cell<Spec>, uint16_t>& view, HeaderW
     auto iter = writer.IterateOverRange<ser4cpp::UInt16, typename Serializer::Target>(QualifierCode::UINT16_START_STOP,
                                                                                       Serializer::Inst(), mapped.start);
     return LoadWithRangeIterator<Spec, ser4cpp::UInt16>(view, iter, range);
+	*/
 }
 
 StaticWrite<BinarySpec>::func_t StaticWriters::Get(StaticBinaryVariation variation)
@@ -281,6 +287,8 @@ uint16_t WriteSomeOctetString(ser4cpp::ArrayView<Cell<OctetStringSpec>, uint16_t
 
 bool StaticWriters::Write(ser4cpp::ArrayView<Cell<OctetStringSpec>, uint16_t>& view, HeaderWriter& writer, Range& range)
 {
+    return false;
+    /* TODO
     auto start = view[range.start].config.vIndex;
     auto stop = view[range.stop].config.vIndex;
     auto mapped = Range::From(start, stop);
@@ -309,6 +317,7 @@ bool StaticWriters::Write(ser4cpp::ArrayView<Cell<OctetStringSpec>, uint16_t>& v
     }
 
     return true;
+	*/
 }
 
 } // namespace opendnp3

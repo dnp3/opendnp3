@@ -20,33 +20,47 @@
 #ifndef OPENDNP3_STATICDATAMAPS_H
 #define OPENDNP3_STATICDATAMAPS_H
 
-#include "outstation/StaticDataMap.h"
-#include "outstation/IStaticSelector.h"
-#include "outstation/IClassAssigner.h"
-
 #include <opendnp3/outstation/DatabaseConfigNew.h>
 #include <opendnp3/app/MeasurementTypeSpecs.h>
 #include <opendnp3/outstation/StaticTypeBitfield.h>
 
+#include "outstation/StaticDataMap.h"
+#include "outstation/IStaticSelector.h"
+#include "outstation/IClassAssigner.h"
+#include "outstation/IResponseLoader.h"
+
 namespace opendnp3
 {
 
-class StaticDataMaps final : public IStaticSelector, public IClassAssigner
+class StaticDataMaps final : public IStaticSelector, public IClassAssigner, public IResponseLoader
 {
 public:
 
 	StaticDataMaps(const DatabaseConfigNew& config, StaticTypeBitField allowed_class_zero_types);
-
-	bool has_any_selection() const;
 
     // ------- IStaticSelector -------------
     IINField SelectAll(GroupVariation gv) override;
     IINField SelectRange(GroupVariation gv, const Range& range) override;
     void Unselect() override;
 
-	// ------- IIClassAssigner -------------
+	// ------- IClassAssigner -------------
     Range AssignClassToAll(AssignClassType type, PointClass clazz) override;
     Range AssignClassToRange(AssignClassType type, PointClass clazz, const Range& range) override;
+
+	// ------- IResponseLoader -------------
+    bool HasAnySelection() const override;
+    bool Load(HeaderWriter& writer) override;
+
+	// ------- update methods ---------------
+    bool Update(const Binary& meas, uint16_t index);
+    bool Update(const DoubleBitBinary& meas, uint16_t index);
+    bool Update(const Analog& meas, uint16_t index);
+    bool Update(const Counter& meas, uint16_t index);
+    bool Update(const FrozenCounter& meas, uint16_t index);
+    bool Update(const BinaryOutputStatus& meas, uint16_t index);
+    bool Update(const AnalogOutputStatus& meas, uint16_t index);
+    bool Update(const OctetString& meas, uint16_t index);
+    bool Update(const TimeAndInterval& meas, uint16_t index);
 
 private:
 

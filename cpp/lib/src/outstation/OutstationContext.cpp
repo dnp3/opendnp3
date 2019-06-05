@@ -44,7 +44,7 @@ namespace opendnp3
 
 OContext::OContext(const Addresses& addresses,
                    const OutstationConfig& config,
-                   const DatabaseSizes& dbSizes,
+                   const DatabaseConfigNew& db_config,
                    const log4cpp::Logger& logger,
                    const std::shared_ptr<exe4cpp::IExecutor>& executor,
                    std::shared_ptr<ILowerLayer> lower,
@@ -59,7 +59,7 @@ OContext::OContext(const Addresses& addresses,
       commandHandler(std::move(commandHandler)),
       application(std::move(application)),
       eventBuffer(config.eventBufferConfig),
-      database(dbSizes, eventBuffer, config.params.indexMode, config.params.typesAllowedInClass0),
+      database(db_config, eventBuffer,  config.params.typesAllowedInClass0),
       rspContext(database.GetResponseLoader(), eventBuffer),
       params(config.params),
       isOnline(false),
@@ -457,11 +457,6 @@ void OContext::SetRestartIIN()
 IUpdateHandler& OContext::GetUpdateHandler()
 {
     return this->database;
-}
-
-DatabaseConfigView OContext::GetConfigView()
-{
-    return this->database.GetConfigView();
 }
 
 //// ----------------------------- function handlers -----------------------------

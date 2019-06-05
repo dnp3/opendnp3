@@ -1,4 +1,4 @@
-set(unittests_mocks
+set(unittests_headers
     ./mocks/MockAPDUHeaderHandler.h
     ./mocks/MockCommandHandler.h
     ./mocks/MockEventWriteHandler.h
@@ -21,6 +21,7 @@ set(unittests_mocks
     ./utils/CallbackQueue.h
     ./utils/CommandCallbackQueue.h
     ./utils/CopyableBuffer.h
+	./utils/DatabaseHelpers.h
     ./utils/DataSink.h
     ./utils/DNPHelpers.h
     ./utils/LinkHex.h
@@ -41,12 +42,10 @@ set(unittests_src
     ./TestAuthRequestParser.cpp
     ./TestCollectionTransform.cpp
     ./TestCRC.cpp
-#    ./TestDatabase.cpp
     ./TestEventStorage.cpp
     ./TestGroup120Var1.cpp
     ./TestGroup120Var2.cpp
-    ./TestGroup120Var5.cpp
-    ./TestIndexSearch.cpp
+    ./TestGroup120Var5.cpp    
     ./TestLinkAddresses.cpp
     ./TestLinkFrame.cpp
     ./TestLinkLayer.cpp
@@ -85,7 +84,8 @@ set(unittests_src
     ./utils/APDUHexBuilders.cpp
     ./utils/BufferHelpers.cpp
     ./utils/CopyableBuffer.cpp
-    ./utils/DataSink.cpp
+	./utils/DataSink.cpp
+	./utils/DatabaseHelpers.cpp
     ./utils/DNPHelpers.cpp
     ./utils/LinkHex.cpp
     ./utils/LinkLayerTest.cpp

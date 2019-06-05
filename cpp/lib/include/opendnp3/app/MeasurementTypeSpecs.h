@@ -40,9 +40,9 @@ struct BinarySpec : public BinaryInfo
         return (binary.flags.value & 0b01111111) == static_cast<uint8_t>(BinaryQuality::ONLINE);
     }
 
-    inline static bool IsEvent(const Binary& oldValue, const Binary& newValue)
+    inline static bool IsEvent(const Binary& old_value, const Binary& new_value, const config_t& config)
     {
-        return oldValue.flags.value != newValue.flags.value;
+        return old_value.flags.value != new_value.flags.value;
     }
 };
 
@@ -51,9 +51,11 @@ struct DoubleBitBinarySpec : public DoubleBitBinaryInfo
     typedef DoubleBitBinaryConfig config_t;
     typedef SimpleEventCell<DoubleBitBinarySpec> event_cell_t;
 
-    inline static bool IsEvent(const DoubleBitBinary& oldValue, const DoubleBitBinary& newValue)
+    inline static bool IsEvent(const DoubleBitBinary& old_value,
+                               const DoubleBitBinary& new_value,
+                               const config_t& config)
     {
-        return oldValue.flags.value != newValue.flags.value;
+        return old_value.flags.value != new_value.flags.value;
     }
 };
 
@@ -62,9 +64,11 @@ struct BinaryOutputStatusSpec : public BinaryOutputStatusInfo
     typedef BOStatusConfig config_t;
     typedef SimpleEventCell<BinaryOutputStatusSpec> event_cell_t;
 
-    inline static bool IsEvent(const BinaryOutputStatus& oldValue, const BinaryOutputStatus& newValue)
+    inline static bool IsEvent(const BinaryOutputStatus& old_value,
+                               const BinaryOutputStatus& new_value,
+                               const config_t& config)
     {
-        return oldValue.flags.value != newValue.flags.value;
+        return old_value.flags.value != new_value.flags.value;
     }
 };
 
@@ -73,9 +77,9 @@ struct AnalogSpec : public AnalogInfo
     typedef AnalogConfig config_t;
     typedef DeadbandEventCell<AnalogSpec> event_cell_t;
 
-    inline static bool IsEvent(const Analog& oldValue, const Analog& newValue, double deadband)
+    inline static bool IsEvent(const Analog& old_value, const Analog& new_value, const config_t& config)
     {
-        return measurements::IsEvent(newValue, oldValue, deadband);
+        return measurements::IsEvent(new_value, old_value, config.deadband);
     }
 };
 
@@ -84,15 +88,15 @@ struct CounterSpec : public CounterInfo
     typedef CounterConfig config_t;
     typedef DeadbandEventCell<CounterSpec> event_cell_t;
 
-    inline static bool IsEvent(const Counter& oldValue, const Counter& newValue, uint32_t deadband)
+    inline static bool IsEvent(const Counter& old_value, const Counter& new_value, const config_t& config)
     {
-        if (oldValue.flags.value != newValue.flags.value)
+        if (old_value.flags.value != new_value.flags.value)
         {
             return true;
         }
         else
         {
-            return measurements::IsEvent<uint32_t, uint64_t>(oldValue.value, newValue.value, deadband);
+            return measurements::IsEvent<uint32_t, uint64_t>(old_value.value, new_value.value, config.deadband);
         }
     }
 };
@@ -102,15 +106,15 @@ struct FrozenCounterSpec : public FrozenCounterInfo
     typedef FrozenCounterConfig config_t;
     typedef DeadbandEventCell<FrozenCounterSpec> event_cell_t;
 
-    inline static bool IsEvent(const FrozenCounter& oldValue, const FrozenCounter& newValue, uint32_t deadband)
+    inline static bool IsEvent(const FrozenCounter& old_value, const FrozenCounter& new_value, const config_t& config)
     {
-        if (oldValue.flags.value != newValue.flags.value)
+        if (old_value.flags.value != new_value.flags.value)
         {
             return true;
         }
         else
         {
-            return measurements::IsEvent<uint32_t, uint64_t>(oldValue.value, newValue.value, deadband);
+            return measurements::IsEvent<uint32_t, uint64_t>(old_value.value, new_value.value, config.deadband);
         }
     }
 };
@@ -120,9 +124,11 @@ struct AnalogOutputStatusSpec : public AnalogOutputStatusInfo
     typedef AOStatusConfig config_t;
     typedef DeadbandEventCell<AnalogOutputStatusSpec> event_cell_t;
 
-    inline static bool IsEvent(const AnalogOutputStatus& oldValue, const AnalogOutputStatus& newValue, double deadband)
+    inline static bool IsEvent(const AnalogOutputStatus& old_value,
+                               const AnalogOutputStatus& new_value,
+                               const config_t& config)
     {
-        return measurements::IsEvent(newValue, oldValue, deadband);
+        return measurements::IsEvent(new_value, old_value, config.deadband);
     }
 };
 
@@ -131,13 +137,13 @@ struct OctetStringSpec : public OctetStringInfo
     typedef OctetStringConfig config_t;
     typedef SimpleEventCell<OctetStringSpec> event_cell_t;
 
-    inline static bool IsEvent(const OctetString& oldValue, const OctetString& newValue)
+    inline static bool IsEvent(const OctetString& old_value, const OctetString& new_value, const config_t& config)
     {
-        const auto oldValueBuffer = oldValue.ToBuffer();
-        const ser4cpp::rseq_t oldValueSeq(oldValueBuffer.data, static_cast<uint32_t>(oldValueBuffer.length));
-        const auto newValueBuffer = newValue.ToBuffer();
-        const ser4cpp::rseq_t newValueSeq(newValueBuffer.data, static_cast<uint32_t>(newValueBuffer.length));
-        return !oldValueSeq.equals(newValueSeq);
+        const auto old_value_buffer = old_value.ToBuffer();
+        const ser4cpp::rseq_t old_value_seq(old_value_buffer.data, static_cast<uint32_t>(old_value_buffer.length));
+        const auto new_value_buffer = new_value.ToBuffer();
+        const ser4cpp::rseq_t new_value_seq(new_value_buffer.data, static_cast<uint32_t>(new_value_buffer.length));
+        return !old_value_seq.equals(new_value_seq);
     }
 };
 
@@ -152,15 +158,15 @@ struct SecurityStatSpec : public SecurityStatInfo
     typedef SecurityStatConfig config_t;
     typedef EmptyEventCell event_cell_t;
 
-    inline static bool IsEvent(const SecurityStat& oldValue, const SecurityStat& newValue, uint32_t deadband)
+    inline static bool IsEvent(const SecurityStat& old_value, const SecurityStat& new_value, const config_t& config)
     {
-        if (oldValue.quality != newValue.quality)
+        if (old_value.quality != new_value.quality)
         {
             return true;
         }
         else
         {
-            return measurements::IsEvent<uint32_t, uint64_t>(oldValue.value.count, newValue.value.count, deadband);
+            return measurements::IsEvent<uint32_t, uint64_t>(old_value.value.count, new_value.value.count, 0);
         }
     }
 };

@@ -20,10 +20,11 @@
 #ifndef OPENDNP3_DATABASE_H
 #define OPENDNP3_DATABASE_H
 
-#include "outstation/DatabaseBuffers.h"
 #include "outstation/IDatabase.h"
 #include "outstation/IEventReceiver.h"
+#include "outstation/StaticDataMaps.h"
 
+#include "opendnp3/outstation/DatabaseConfigNew.h"
 #include "opendnp3/gen/AssignClassType.h"
 #include "opendnp3/gen/IndexMode.h"
 
@@ -36,10 +37,9 @@ The database coordinates all updates of measurement data
 class Database final : public IDatabase, private Uncopyable
 {
 public:
-    Database(const DatabaseSizes&,
-             IEventReceiver& eventReceiver,
-             IndexMode indexMode,
-             StaticTypeBitField allowedClass0Types);
+    Database(const DatabaseConfigNew& config,
+             IEventReceiver& event_receiver,             
+             StaticTypeBitField allowed_class_zero_types);
 
     // ------- IDatabase --------------
 
@@ -56,45 +56,36 @@ public:
 
     // ------- Misc ---------------
 
-    IResponseLoader& GetResponseLoader() override final
+    IResponseLoader& GetResponseLoader() override
     {
-        return buffers;
+        return data_maps;
     }
-    IStaticSelector& GetStaticSelector() override final
+    IStaticSelector& GetStaticSelector() override
     {
-        return buffers;
+        return data_maps;
     }
-    IClassAssigner& GetClassAssigner() override final
+    IClassAssigner& GetClassAssigner() override
     {
-        return buffers;
-    }
-
-    /**
-     * @return A view of all the static data for configuration purposes
-     */
-    DatabaseConfigView GetConfigView()
-    {
-        return buffers.buffers.GetView();
-    }
+        return data_maps;
+    }    
 
 private:
-    template<class Spec> uint16_t GetRawIndex(uint16_t index);
 
-    IEventReceiver* eventReceiver;
-    IndexMode indexMode;
-
+	StaticDataMaps data_maps;
+    IEventReceiver& event_receiver;    
+   
     static bool ConvertToEventClass(PointClass pc, EventClass& ec);
 
     template<class Spec> bool UpdateEvent(const typename Spec::meas_t& value, uint16_t index, EventMode mode);
 
-    template<class Spec> bool UpdateAny(Cell<Spec>& cell, const typename Spec::meas_t& value, EventMode mode);
+    //template<class Spec> bool UpdateAny(Cell<Spec>& cell, const typename Spec::meas_t& value, EventMode mode);
 
     template<class Spec> void TryCreateEvent(Cell<Spec>& cell, const typename Spec::meas_t& value);
 
     template<class Spec> bool Modify(uint16_t start, uint16_t stop, uint8_t flags);
 
     // stores the most recent values, selected values, and metadata
-    DatabaseBuffers buffers;
+    
 };
 
 } // namespace opendnp3

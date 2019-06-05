@@ -17,39 +17,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_OUTSTATIONSTACKCONFIG_H
-#define OPENDNP3_OUTSTATIONSTACKCONFIG_H
 
-#include "opendnp3/link/LinkConfig.h"
-#include "opendnp3/outstation/DatabaseConfigNew.h"
-#include "opendnp3/outstation/DatabaseSizes.h"
-#include "opendnp3/outstation/EventBufferConfig.h"
-#include "opendnp3/outstation/OutstationConfig.h"
+#include "StaticDataMap.h"
 
 namespace opendnp3
 {
 
-/**
-    A composite configuration struct that contains all the config
-    information for a dnp3 outstation stack
-*/
-struct OutstationStackConfig
+template<> UpdateResult StaticDataMap<TimeAndIntervalSpec>::update(const TimeAndInterval& value, uint16_t index)
 {
+    const auto iter = this->map.find(index);
+    if (iter == this->map.end())
+    {
+        return UpdateResult::point_not_defined;
+    }    
 
-    OutstationStackConfig(const DatabaseConfigNew& db_config) : db_config(db_config), link(false, false) {}
+    iter->second.value = value;
 
-    OutstationStackConfig() = delete;
-
-    // Configuration of the database
-    DatabaseConfigNew db_config;
-
-    /// Outstation config
-    OutstationConfig outstation;
-
-    /// Link layer config
-    LinkConfig link;
-};
+	return UpdateResult::no_change;
+}
 
 } // namespace opendnp3
 
-#endif
+
