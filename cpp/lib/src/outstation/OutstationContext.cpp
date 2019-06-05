@@ -60,7 +60,7 @@ OContext::OContext(const Addresses& addresses,
       application(std::move(application)),
       eventBuffer(config.eventBufferConfig),
       database(db_config, eventBuffer,  config.params.typesAllowedInClass0),
-      rspContext(database.GetResponseLoader(), eventBuffer),
+      rspContext(database, eventBuffer),
       params(config.params),
       isOnline(false),
       isTransmitting(false),
@@ -513,9 +513,9 @@ ser4cpp::Pair<IINField, AppControlField> OContext::HandleRead(const ser4cpp::rse
 {
     this->rspContext.Reset();
     this->eventBuffer.Unselect(); // always un-select any previously selected points when we start a new read request
-    this->database.GetStaticSelector().Unselect();
+    this->database.Unselect();
 
-    ReadHandler handler(this->database.GetStaticSelector(), this->eventBuffer);
+    ReadHandler handler(this->database, this->eventBuffer);
     auto result = APDUParser::Parse(objects, handler, &this->logger,
                                     ParserSettings::NoContents()); // don't expect range/count context on a READ
     if (result == ParseResult::OK)
@@ -664,7 +664,7 @@ IINField OContext::HandleAssignClass(const ser4cpp::rseq_t& objects)
 {
     if (this->application->SupportsAssignClass())
     {
-        AssignClassHandler handler(*this->executor, *this->application, this->database.GetClassAssigner());
+        AssignClassHandler handler(*this->executor, *this->application, this->database);
         auto result = APDUParser::Parse(objects, handler, &this->logger, ParserSettings::NoContents());
         return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
     }

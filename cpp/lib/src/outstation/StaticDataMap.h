@@ -20,8 +20,8 @@
 #ifndef OPENDNP3_STATICDATAMAP_H
 #define OPENDNP3_STATICDATAMAP_H
 
-#include "app/Range.h"
 #include "app/MeasurementTypeSpecs.h"
+#include "app/Range.h"
 #include "outstation/StaticDataCell.h"
 
 #include "opendnp3/Uncopyable.h"
@@ -45,7 +45,6 @@ template<class Spec> class StaticDataMap : private Uncopyable
     using map_iter_t = typename map_t::iterator;
 
 public:
-
     StaticDataMap() = default;
     StaticDataMap(const std::map<uint16_t, typename Spec::config_t>& config);
 
@@ -76,8 +75,7 @@ public:
         void operator++()
         {
             // unselect the point
-            this->iter->second.selection.selected = false;            
-
+            this->iter->second.selection.selected = false;
 
             while (true)
             {
@@ -89,8 +87,8 @@ public:
                     return;
                 }
 
-				// shorten the range
-                this->range.start = iter->first; 
+                // shorten the range
+                this->range.start = iter->first;
 
                 if (iter->second.selection.selected)
                 {
@@ -107,14 +105,14 @@ public:
 
     bool add(const typename Spec::meas_t& value, uint16_t index, typename Spec::config_t config);
 
-    UpdateResult update(const typename Spec::meas_t& value, uint16_t index);	
+    UpdateResult update(const typename Spec::meas_t& value, uint16_t index);
 
     void clear_selection();
 
     bool has_any_selection() const
     {
         return this->selected.IsValid();
-	}
+    }
 
     Range get_selected_range() const
     {
@@ -141,13 +139,17 @@ public:
         return this->select_all([variation](auto var) { return variation; }); // override default
     }
 
+    bool modify(uint16_t start, uint16_t stop, uint8_t flags);
+
     iterator begin();
 
     iterator end();
 
 private:
-    std::map<uint16_t, StaticDataCell<Spec>> map;
+    map_t map;
     Range selected;
+
+    UpdateResult update(const map_iter_t& iter, const typename Spec::meas_t& new_value);
 
     // generic implementation of select_all that accepts a function
     // that can use or override the default variation
@@ -157,7 +159,6 @@ private:
     // that can use or override the default variation
     template<class F> size_t select(Range range, F get_variation);
 };
-
 
 template<class Spec> StaticDataMap<Spec>::StaticDataMap(const std::map<uint16_t, typename Spec::config_t>& config)
 {
@@ -184,22 +185,7 @@ template<> UpdateResult StaticDataMap<TimeAndIntervalSpec>::update(const TimeAnd
 
 template<class Spec> UpdateResult StaticDataMap<Spec>::update(const typename Spec::meas_t& value, uint16_t index)
 {
-    const auto iter = this->map.find(index);
-    if (iter == this->map.end())
-    {
-        return UpdateResult::point_not_defined;
-    }
-
-    const auto is_event = Spec::IsEvent(iter->second.event.lastEvent, value, iter->second.config);
-
-    iter->second.value = value;
-
-    if (is_event)
-    {
-        iter->second.event.lastEvent = value;
-    }
-
-    return is_event ? UpdateResult::event : UpdateResult::no_change;
+    return update(this->map.find(index), value);
 }
 
 template<class Spec> void StaticDataMap<Spec>::clear_selection()
@@ -208,6 +194,26 @@ template<class Spec> void StaticDataMap<Spec>::clear_selection()
     for (auto value : *this)
     {
     }
+}
+
+template<class Spec>
+UpdateResult StaticDataMap<Spec>::update(const map_iter_t& iter, const typename Spec::meas_t& new_value) 
+{
+    if (iter == this->map.end())
+    {
+        return UpdateResult::point_not_defined;
+    }
+
+    const auto is_event = Spec::IsEvent(iter->second.event.lastEvent, new_value, iter->second.config);
+
+    iter->second.value = new_value;
+
+    if (is_event)
+    {
+        iter->second.event.lastEvent = new_value;
+    }
+
+    return is_event ? UpdateResult::event : UpdateResult::no_change;
 }
 
 template<class Spec> template<class F> size_t StaticDataMap<Spec>::select_all(F get_variation)
@@ -268,6 +274,28 @@ template<class Spec> template<class F> size_t StaticDataMap<Spec>::select(Range 
     this->selected = this->selected.Union(Range::From(start->first, stop));
 
     return count;
+}
+
+template<class Spec> bool StaticDataMap<Spec>::modify(uint16_t start, uint16_t stop, uint8_t flags)
+{
+    if (stop < start)
+    {
+        return false;
+    }
+
+    for (auto iter = this->map.lower_bound(start); iter != this->map.end(); ++iter)
+    {
+        if (iter->first > stop)
+        {
+            return false;
+        }
+
+        auto new_value = iter->second.value;
+        new_value.flags = flags;
+        this->update(iter, new_value);
+    }
+
+    return true;
 }
 
 template<class Spec> typename StaticDataMap<Spec>::iterator StaticDataMap<Spec>::begin()

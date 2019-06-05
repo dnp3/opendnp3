@@ -367,7 +367,6 @@ set(opendnp3_private_headers
     ./src/outstation/Event.h
     ./src/outstation/IClassAssigner.h
     ./src/outstation/ICommandAction.h
-    ./src/outstation/IDatabase.h
     ./src/outstation/IEventReceiver.h
     ./src/outstation/IEventRecorder.h
     ./src/outstation/IEventSelector.h
@@ -384,8 +383,7 @@ set(opendnp3_private_headers
     ./src/outstation/ReadHandler.h
     ./src/outstation/RequestHistory.h
     ./src/outstation/ResponseContext.h
-	./src/outstation/StaticDataMap.h
-	./src/outstation/StaticDataMaps.h
+	./src/outstation/StaticDataMap.h	
     ./src/outstation/StaticWriters.h
     ./src/outstation/TimeSyncState.h
     ./src/outstation/WriteHandler.h
@@ -599,8 +597,7 @@ set(opendnp3_src
     ./src/outstation/RequestHistory.cpp
     ./src/outstation/ResponseContext.cpp    
     ./src/outstation/SimpleCommandHandler.cpp
-    ./src/outstation/StaticDataMap.cpp
-    ./src/outstation/StaticDataMaps.cpp
+    ./src/outstation/StaticDataMap.cpp    
     ./src/outstation/StaticWriters.cpp
     ./src/outstation/UpdateBuilder.cpp
     ./src/outstation/WriteHandler.cpp
