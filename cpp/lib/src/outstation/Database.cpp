@@ -127,7 +127,7 @@ template<class Spec> bool Database::UpdateEvent(const typename Spec::meas_t& val
     return true;
 }
 
-template<class Spec> void Database::TryCreateEvent(Cell<Spec>& cell, const typename Spec::meas_t& value)
+template<class Spec> void Database::TryCreateEvent(StaticDataCell<Spec>& cell, const typename Spec::meas_t& value)
 {
     EventClass ec;
     // don't create an event if point is assigned to Class 0

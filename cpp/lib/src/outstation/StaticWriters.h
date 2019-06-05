@@ -42,7 +42,9 @@ namespace opendnp3
 
 template<class Spec> struct StaticWrite : private StaticOnly
 {
-    typedef bool (*func_t)(ser4cpp::ArrayView<Cell<Spec>, uint16_t>& view, HeaderWriter& writer, Range& range);
+    typedef bool (*func_t)(ser4cpp::ArrayView<StaticDataCell<Spec>, uint16_t>& view,
+                           HeaderWriter& writer,
+                           Range& range);
 };
 
 class StaticWriters : private StaticOnly
@@ -60,7 +62,9 @@ public:
     static StaticWrite<TimeAndIntervalSpec>::func_t Get(StaticTimeAndIntervalVariation variation);
 
 private:
-    static bool Write(ser4cpp::ArrayView<Cell<OctetStringSpec>, uint16_t>& view, HeaderWriter& writer, Range& range);
+    static bool Write(ser4cpp::ArrayView<StaticDataCell<OctetStringSpec>, uint16_t>& view,
+                      HeaderWriter& writer,
+                      Range& range);
 };
 
 } // namespace opendnp3

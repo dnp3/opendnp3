@@ -22,7 +22,7 @@
 
 #include "app/Range.h"
 #include "app/MeasurementTypeSpecs.h"
-#include "outstation/Cell.h"
+#include "outstation/StaticDataCell.h"
 
 #include "opendnp3/Uncopyable.h"
 
@@ -41,7 +41,7 @@ enum class UpdateResult
 
 template<class Spec> class StaticDataMap : private Uncopyable
 {
-    using map_t = std::map<uint16_t, Cell<Spec>>;
+    using map_t = std::map<uint16_t, StaticDataCell<Spec>>;
     using map_iter_t = typename map_t::iterator;
 
 public:
@@ -146,7 +146,7 @@ public:
     iterator end();
 
 private:
-    std::map<uint16_t, Cell<Spec>> map;
+    std::map<uint16_t, StaticDataCell<Spec>> map;
     Range selected;
 
     // generic implementation of select_all that accepts a function
@@ -163,7 +163,7 @@ template<class Spec> StaticDataMap<Spec>::StaticDataMap(const std::map<uint16_t,
 {
     for (const auto& item : config)
     {
-        this->map[item.first] = Cell<Spec>{item.second};
+        this->map[item.first] = StaticDataCell<Spec>{item.second};
     }
 }
 
@@ -175,7 +175,7 @@ bool StaticDataMap<Spec>::add(const typename Spec::meas_t& value, uint16_t index
         return false;
     }
 
-    this->map[index] = Cell<Spec>{value, config};
+    this->map[index] = StaticDataCell<Spec>{value, config};
 
     return true;
 }

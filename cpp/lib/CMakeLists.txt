@@ -356,7 +356,7 @@ set(opendnp3_private_headers
     ./src/master/UserPollTask.h
 
     ./src/outstation/AssignClassHandler.h
-	./src/outstation/Cell.h
+	./src/outstation/StaticDataCell.h
     ./src/outstation/ClassBasedRequestHandler.h
     ./src/outstation/CommandActionAdapter.h
     ./src/outstation/CommandResponseHandler.h

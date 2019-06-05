@@ -33,11 +33,11 @@ namespace opendnp3
 {
 
 template<class Spec, class IndexType>
-bool LoadWithRangeIterator(ser4cpp::ArrayView<Cell<Spec>, uint16_t>& view,
+bool LoadWithRangeIterator(ser4cpp::ArrayView<StaticDataCell<Spec>, uint16_t>& view,
                            RangeWriteIterator<IndexType, typename Spec::meas_t>& iterator,
                            Range& range)
 {
-    const Cell<Spec>& start = view[range.start];
+    const StaticDataCell<Spec>& start = view[range.start];
     uint16_t nextIndex = start.config.vIndex;
 
     while (range.IsValid() && view[range.start].selection.selected
@@ -61,11 +61,11 @@ bool LoadWithRangeIterator(ser4cpp::ArrayView<Cell<Spec>, uint16_t>& view,
 }
 
 template<class Spec, class IndexType>
-bool LoadWithBitfieldIterator(ser4cpp::ArrayView<Cell<Spec>, uint16_t>& view,
+bool LoadWithBitfieldIterator(ser4cpp::ArrayView<StaticDataCell<Spec>, uint16_t>& view,
                               BitfieldRangeWriteIterator<IndexType>& iterator,
                               Range& range)
 {
-    const Cell<Spec>& start = view[range.start];
+    const StaticDataCell<Spec>& start = view[range.start];
 
     uint16_t nextIndex = start.config.vIndex;
 
@@ -90,7 +90,7 @@ bool LoadWithBitfieldIterator(ser4cpp::ArrayView<Cell<Spec>, uint16_t>& view,
 }
 
 template<class Spec, class GV>
-bool WriteSingleBitfield(ser4cpp::ArrayView<Cell<Spec>, uint16_t>& view, HeaderWriter& writer, Range& range)
+bool WriteSingleBitfield(ser4cpp::ArrayView<StaticDataCell<Spec>, uint16_t>& view, HeaderWriter& writer, Range& range)
 {
     /* TODO
     auto start = view[range.start].config.vIndex;
@@ -112,7 +112,7 @@ bool WriteSingleBitfield(ser4cpp::ArrayView<Cell<Spec>, uint16_t>& view, HeaderW
 }
 
 template<class Spec, class Serializer>
-bool WriteWithSerializer(ser4cpp::ArrayView<Cell<Spec>, uint16_t>& view, HeaderWriter& writer, Range& range)
+bool WriteWithSerializer(ser4cpp::ArrayView<StaticDataCell<Spec>, uint16_t>& view, HeaderWriter& writer, Range& range)
 {
     return false;
     /* TODO
@@ -254,12 +254,12 @@ StaticWrite<TimeAndIntervalSpec>::func_t StaticWriters::Get(StaticTimeAndInterva
 }
 
 template<class Iterator>
-uint16_t WriteSomeOctetString(ser4cpp::ArrayView<Cell<OctetStringSpec>, uint16_t>& view,
+uint16_t WriteSomeOctetString(ser4cpp::ArrayView<StaticDataCell<OctetStringSpec>, uint16_t>& view,
                               Iterator& iterator,
                               Range& range,
                               uint8_t size)
 {
-    const Cell<OctetStringSpec>& start = view[range.start];
+    const StaticDataCell<OctetStringSpec>& start = view[range.start];
     uint16_t nextIndex = start.config.vIndex;
 
     uint16_t num_written = 0;
@@ -285,7 +285,7 @@ uint16_t WriteSomeOctetString(ser4cpp::ArrayView<Cell<OctetStringSpec>, uint16_t
     return num_written;
 }
 
-bool StaticWriters::Write(ser4cpp::ArrayView<Cell<OctetStringSpec>, uint16_t>& view, HeaderWriter& writer, Range& range)
+bool StaticWriters::Write(ser4cpp::ArrayView<StaticDataCell<OctetStringSpec>, uint16_t>& view, HeaderWriter& writer, Range& range)
 {
     return false;
     /* TODO

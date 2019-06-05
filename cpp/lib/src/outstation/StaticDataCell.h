@@ -36,7 +36,6 @@ template<class Spec> struct SelectedValue
     }
 
     bool selected = false;
-
     typename Spec::meas_t value;
     typename Spec::static_variation_t variation = Spec::DefaultStaticVariation;
 };
@@ -53,7 +52,9 @@ template<class Spec> struct StaticDataCell
 
 	StaticDataCell() = default;
     StaticDataCell(const typename Spec::meas_t& value, const typename Spec::config_t& config)
-        : value(value), config(config) {}
+        : value(value), config(config)
+    {
+    }
     StaticDataCell(const typename Spec::config_t& config) : config(config) {}
 };
 

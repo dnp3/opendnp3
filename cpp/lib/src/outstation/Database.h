@@ -80,7 +80,7 @@ private:
 
     //template<class Spec> bool UpdateAny(Cell<Spec>& cell, const typename Spec::meas_t& value, EventMode mode);
 
-    template<class Spec> void TryCreateEvent(Cell<Spec>& cell, const typename Spec::meas_t& value);
+    template<class Spec> void TryCreateEvent(StaticDataCell<Spec>& cell, const typename Spec::meas_t& value);
 
     template<class Spec> bool Modify(uint16_t start, uint16_t stop, uint8_t flags);
 
