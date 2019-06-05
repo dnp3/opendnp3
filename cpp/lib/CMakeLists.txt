@@ -154,7 +154,6 @@ set(opendnp3_public_headers
     ./include/opendnp3/master/TaskInfo.h
 
     ./include/opendnp3/outstation/ApplicationIIN.h
-    ./include/opendnp3/outstation/Cell.h
     ./include/opendnp3/outstation/DatabaseConfig.h
     ./include/opendnp3/outstation/DatabaseSizes.h
     ./include/opendnp3/outstation/EventBufferConfig.h
@@ -357,6 +356,7 @@ set(opendnp3_private_headers
     ./src/master/UserPollTask.h
 
     ./src/outstation/AssignClassHandler.h
+	./src/outstation/Cell.h
     ./src/outstation/ClassBasedRequestHandler.h
     ./src/outstation/CommandActionAdapter.h
     ./src/outstation/CommandResponseHandler.h

@@ -22,6 +22,7 @@
 
 #include "app/HeaderWriter.h"
 #include "app/Range.h"
+#include "outstation/Cell.h"
 
 #include "opendnp3/Uncopyable.h"
 #include "opendnp3/app/MeasurementTypeSpecs.h"
@@ -32,7 +33,7 @@
 #include "opendnp3/gen/StaticCounterVariation.h"
 #include "opendnp3/gen/StaticDoubleBinaryVariation.h"
 #include "opendnp3/gen/StaticFrozenCounterVariation.h"
-#include "opendnp3/outstation/Cell.h"
+
 
 #include <ser4cpp/container/ArrayView.h>
 

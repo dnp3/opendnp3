@@ -21,9 +21,9 @@
 #define OPENDNP3_STATICDATAMAP_H
 
 #include "app/Range.h"
+#include "outstation/Cell.h"
 
 #include "opendnp3/Uncopyable.h"
-#include "opendnp3/outstation/Cell.h"
 #include "opendnp3/app/MeasurementTypeSpecs.h"
 
 #include <iterator>
@@ -181,19 +181,6 @@ bool StaticDataMap<Spec>::add(const typename Spec::meas_t& value, uint16_t index
 }
 
 template<> UpdateResult StaticDataMap<TimeAndIntervalSpec>::update(const TimeAndInterval& value, uint16_t index);
-/*
-{
-    const auto iter = this->map.find(index);
-    if (iter == this->map.end())
-    {
-        return UpdateResult::point_not_defined;
-    }    
-
-    iter->second.value = value;
-
-	return UpdateResult::no_change;
-}
-*/
 
 template<class Spec> UpdateResult StaticDataMap<Spec>::update(const typename Spec::meas_t& value, uint16_t index)
 {

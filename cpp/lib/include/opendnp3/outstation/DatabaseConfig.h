@@ -17,8 +17,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_DatabaseConfig_H
-#define OPENDNP3_DatabaseConfig_H
+#ifndef OPENDNP3_DATABASECONFIG_H
+#define OPENDNP3_DATABASECONFIG_H
 
 #include "opendnp3/outstation/MeasurementConfig.h"
 
