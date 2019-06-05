@@ -22,9 +22,11 @@
 
 #include "app/MeasurementTypeSpecs.h"
 #include "app/Range.h"
+#include "outstation/IEventReceiver.h"
 #include "outstation/StaticDataCell.h"
 
 #include "opendnp3/Uncopyable.h"
+#include "opendnp3/gen/EventMode.h"
 
 #include <iterator>
 #include <map>
@@ -32,12 +34,7 @@
 namespace opendnp3
 {
 
-enum class UpdateResult
-{
-    point_not_defined,
-    no_change,
-    event
-};
+bool convert_to_event_class(PointClass pc, EventClass& ec);
 
 template<class Spec> class StaticDataMap : private Uncopyable
 {
@@ -105,7 +102,9 @@ public:
 
     bool add(const typename Spec::meas_t& value, uint16_t index, typename Spec::config_t config);
 
-    UpdateResult update(const typename Spec::meas_t& value, uint16_t index);
+    bool update(const typename Spec::meas_t& value, uint16_t index, EventMode mode, IEventReceiver& receiver);
+
+    bool modify(uint16_t start, uint16_t stop, uint8_t flags, IEventReceiver& receiver);
 
     void clear_selection();
 
@@ -139,8 +138,6 @@ public:
         return this->select_all([variation](auto var) { return variation; }); // override default
     }
 
-    bool modify(uint16_t start, uint16_t stop, uint8_t flags);
-
     iterator begin();
 
     iterator end();
@@ -149,7 +146,10 @@ private:
     map_t map;
     Range selected;
 
-    UpdateResult update(const map_iter_t& iter, const typename Spec::meas_t& new_value);
+    bool update(const map_iter_t& iter,
+                const typename Spec::meas_t& new_value,
+                EventMode mode,
+                IEventReceiver& receiver);
 
     // generic implementation of select_all that accepts a function
     // that can use or override the default variation
@@ -181,11 +181,19 @@ bool StaticDataMap<Spec>::add(const typename Spec::meas_t& value, uint16_t index
     return true;
 }
 
-template<> UpdateResult StaticDataMap<TimeAndIntervalSpec>::update(const TimeAndInterval& value, uint16_t index);
+template<>
+bool StaticDataMap<TimeAndIntervalSpec>::update(const TimeAndInterval& value,
+                                                uint16_t index,
+                                                EventMode mode,
+                                                IEventReceiver& receiver);
 
-template<class Spec> UpdateResult StaticDataMap<Spec>::update(const typename Spec::meas_t& value, uint16_t index)
+template<class Spec>
+bool StaticDataMap<Spec>::update(const typename Spec::meas_t& value,
+                                 uint16_t index,
+                                 EventMode mode,
+                                 IEventReceiver& receiver)
 {
-    return update(this->map.find(index), value);
+    return update(this->map.find(index), value, mode, receiver);
 }
 
 template<class Spec> void StaticDataMap<Spec>::clear_selection()
@@ -197,23 +205,58 @@ template<class Spec> void StaticDataMap<Spec>::clear_selection()
 }
 
 template<class Spec>
-UpdateResult StaticDataMap<Spec>::update(const map_iter_t& iter, const typename Spec::meas_t& new_value) 
-{
+bool StaticDataMap<Spec>::update(const map_iter_t& iter,
+                                 const typename Spec::meas_t& new_value,
+                                 EventMode mode,
+                                 IEventReceiver& receiver)
+{    
     if (iter == this->map.end())
     {
-        return UpdateResult::point_not_defined;
+        return false;
     }
 
-    const auto is_event = Spec::IsEvent(iter->second.event.lastEvent, new_value, iter->second.config);
+    if (mode != EventMode::EventOnly)
+    {
+        iter->second.value = new_value;
+    }
 
-    iter->second.value = new_value;
-
-    if (is_event)
+    if (mode == EventMode::Force || Spec::IsEvent(iter->second.event.lastEvent, new_value, iter->second.config))
     {
         iter->second.event.lastEvent = new_value;
+        if (mode != EventMode::Suppress)
+        {
+            EventClass ec;
+            if (convert_to_event_class(iter->second.config.clazz, ec))
+            {
+                receiver.Update(Event<Spec>(iter->second.value, iter->first, ec, iter->second.config.evariation));
+            }
+        }
     }
 
-    return is_event ? UpdateResult::event : UpdateResult::no_change;
+    return true;
+}
+
+template<class Spec>
+bool StaticDataMap<Spec>::modify(uint16_t start, uint16_t stop, uint8_t flags, IEventReceiver& receiver)
+{
+    if (stop < start)
+    {
+        return false;
+    }
+
+    for (auto iter = this->map.lower_bound(start); iter != this->map.end(); ++iter)
+    {
+        if (iter->first > stop)
+        {
+            return false;
+        }
+
+        auto new_value = iter->second.value;
+        new_value.flags = flags;
+        this->update(iter, new_value, EventMode::Detect, receiver);
+    }
+
+    return true;
 }
 
 template<class Spec> template<class F> size_t StaticDataMap<Spec>::select_all(F get_variation)
@@ -274,28 +317,6 @@ template<class Spec> template<class F> size_t StaticDataMap<Spec>::select(Range 
     this->selected = this->selected.Union(Range::From(start->first, stop));
 
     return count;
-}
-
-template<class Spec> bool StaticDataMap<Spec>::modify(uint16_t start, uint16_t stop, uint8_t flags)
-{
-    if (stop < start)
-    {
-        return false;
-    }
-
-    for (auto iter = this->map.lower_bound(start); iter != this->map.end(); ++iter)
-    {
-        if (iter->first > stop)
-        {
-            return false;
-        }
-
-        auto new_value = iter->second.value;
-        new_value.flags = flags;
-        this->update(iter, new_value);
-    }
-
-    return true;
 }
 
 template<class Spec> typename StaticDataMap<Spec>::iterator StaticDataMap<Spec>::begin()

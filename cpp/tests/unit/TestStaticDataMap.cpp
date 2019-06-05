@@ -19,19 +19,65 @@
  */
 
 #include <catch.hpp>
-
 #include <outstation/StaticDataMap.h>
 
 using namespace opendnp3;
 
+struct EventReceiver : public IEventReceiver
+{
+    size_t count = 0;
+
+    void Update(const Event<BinarySpec>& evt)
+    {
+        ++count;
+    }
+
+    void Update(const Event<DoubleBitBinarySpec>& evt)
+    {
+        ++count;
+    }
+
+    void Update(const Event<AnalogSpec>& evt)
+    {
+        ++count;
+    }
+
+    void Update(const Event<CounterSpec>& evt)
+    {
+        ++count;
+    }
+
+    void Update(const Event<FrozenCounterSpec>& evt)
+    {
+        ++count;
+    }
+
+    void Update(const Event<BinaryOutputStatusSpec>& evt)
+    {
+        ++count;
+    }
+
+    void Update(const Event<AnalogOutputStatusSpec>& evt)
+    {
+        ++count;
+    }
+
+    void Update(const Event<OctetStringSpec>& evt)
+    {
+        ++count;
+    }
+};
+
 #define SUITE(name) "StaticDataMap - " name
 
-TEST_CASE(SUITE("update returns 'point_not_defined' for values that don't exist"))
+TEST_CASE(SUITE("update returns false for values that don't exist"))
 {
     StaticDataMap<BinarySpec> map;
-    REQUIRE(map.update(Binary(true), 0) == UpdateResult::point_not_defined);
-}
 
+	EventReceiver receiver;
+    REQUIRE(map.update(Binary(true), 0, EventMode::Detect, receiver));
+    REQUIRE(receiver.count == 0);
+}
 
 TEST_CASE(SUITE("can only add points that aren't already defined"))
 {
@@ -43,8 +89,11 @@ TEST_CASE(SUITE("can detect events on existing point"))
 {
     StaticDataMap<BinarySpec> map{{{0, {}}}};
 
-    REQUIRE(map.update(Binary(true), 0) == UpdateResult::event);
-    REQUIRE(map.update(Binary(true), 0) == UpdateResult::no_change);
+	EventReceiver receiver;
+    REQUIRE(map.update(Binary(true), 0, EventMode::Detect, receiver));
+    REQUIRE(receiver.count == 1);
+    REQUIRE(map.update(Binary(true), 0, EventMode::Detect, receiver));
+    REQUIRE(receiver.count == 1);
 }
 
 TEST_CASE(SUITE("can select all points using default variation and iterate"))
@@ -198,7 +247,8 @@ TEST_CASE(SUITE("iterating over the entire selection clears it"))
 
     // iterate through the entire selection
     for (const auto& item : map)
-    {}
+    {
+    }
 
     // the second iteration there's only 7 remaining
     std::vector<StaticDataMap<BinarySpec>::iterator::value_type> items;

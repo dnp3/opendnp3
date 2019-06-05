@@ -71,6 +71,7 @@ public:
 
 private:
 
+	IEventReceiver& event_receiver;
 	StaticTypeBitField allowed_class_zero_types;
     
 	StaticDataMap<BinarySpec> binary_input;
@@ -83,7 +84,7 @@ private:
     StaticDataMap<TimeAndIntervalSpec> time_and_interval;
     StaticDataMap<OctetStringSpec> octet_string;
 
-	// ----- helper methods ------ 
+	// ----- helper methods ------ 	
 
 	template<class Spec>
 	void select_all_class_zero(StaticDataMap<Spec>& map);

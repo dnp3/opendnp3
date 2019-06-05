@@ -23,19 +23,39 @@
 namespace opendnp3
 {
 
-template<> UpdateResult StaticDataMap<TimeAndIntervalSpec>::update(const TimeAndInterval& value, uint16_t index)
+bool convert_to_event_class(PointClass pc, EventClass& ec)
+{
+    switch (pc)
+    {
+    case (PointClass::Class1):
+        ec = EventClass::EC1;
+        return true;
+    case (PointClass::Class2):
+        ec = EventClass::EC2;
+        return true;
+    case (PointClass::Class3):
+        ec = EventClass::EC3;
+        return true;
+    default:
+        return false;
+    }
+}
+
+template<>
+bool StaticDataMap<TimeAndIntervalSpec>::update(const TimeAndInterval& value,
+                                                uint16_t index,
+                                                EventMode /*mode*/,
+                                                IEventReceiver& /*receiver*/)
 {
     const auto iter = this->map.find(index);
     if (iter == this->map.end())
     {
-        return UpdateResult::point_not_defined;
-    }    
+        return false;
+    }
 
     iter->second.value = value;
 
-	return UpdateResult::no_change;
+    return true;
 }
 
 } // namespace opendnp3
-
-

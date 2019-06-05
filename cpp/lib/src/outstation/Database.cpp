@@ -24,9 +24,10 @@ namespace opendnp3
 {
 
 Database::Database(const DatabaseConfig& config,
-                         IEventReceiver& event_receiver,
-                         StaticTypeBitField allowed_class_zero_types)
+                   IEventReceiver& event_receiver,
+                   StaticTypeBitField allowed_class_zero_types)
     : allowed_class_zero_types(allowed_class_zero_types),
+      event_receiver(event_receiver),
       binary_input(config.binary_input),
       double_binary(config.double_binary),
       analog_input(config.analog_input),
@@ -308,47 +309,47 @@ bool Database::Load(HeaderWriter& writer)
 
 bool Database::Update(const Binary& meas, uint16_t index, EventMode mode)
 {
-    return this->binary_input.update(meas, index) == UpdateResult::event;
+    return this->binary_input.update(meas, index, mode, event_receiver);
 }
 
 bool Database::Update(const DoubleBitBinary& meas, uint16_t index, EventMode mode)
 {
-    return this->double_binary.update(meas, index) == UpdateResult::event;
+    return this->double_binary.update(meas, index, mode, event_receiver);
 }
 
 bool Database::Update(const Analog& meas, uint16_t index, EventMode mode)
 {
-    return this->analog_input.update(meas, index) == UpdateResult::event;
+    return this->analog_input.update(meas, index, mode, event_receiver);
 }
 
 bool Database::Update(const Counter& meas, uint16_t index, EventMode mode)
 {
-    return this->counter.update(meas, index) == UpdateResult::event;
+    return this->counter.update(meas, index, mode, event_receiver);
 }
 
 bool Database::Update(const FrozenCounter& meas, uint16_t index, EventMode mode)
 {
-    return this->frozen_counter.update(meas, index) == UpdateResult::event;
+    return this->frozen_counter.update(meas, index, mode, event_receiver);
 }
 
 bool Database::Update(const BinaryOutputStatus& meas, uint16_t index, EventMode mode)
 {
-    return this->binary_output_status.update(meas, index) == UpdateResult::event;
+    return this->binary_output_status.update(meas, index, mode, event_receiver);
 }
 
 bool Database::Update(const AnalogOutputStatus& meas, uint16_t index, EventMode mode)
 {
-    return this->analog_output_status.update(meas, index) == UpdateResult::event;
+    return this->analog_output_status.update(meas, index, mode, event_receiver);
 }
 
 bool Database::Update(const OctetString& meas, uint16_t index, EventMode mode)
 {
-    return this->octet_string.update(meas, index) == UpdateResult::event;
+    return this->octet_string.update(meas, index, mode, event_receiver);
 }
 
 bool Database::Update(const TimeAndInterval& meas, uint16_t index)
 {
-    return this->time_and_interval.update(meas, index) == UpdateResult::event;
+    return this->time_and_interval.update(meas, index, EventMode::Suppress, event_receiver);
 }
 
 bool Database::Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t flags)
@@ -356,19 +357,19 @@ bool Database::Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t fla
     switch (type)
     {
     case (FlagsType::BinaryInput):
-        return this->binary_input.modify(start, stop, flags);
+        return this->binary_input.modify(start, stop, flags, this->event_receiver);
     case (FlagsType::DoubleBinaryInput):
-        return this->double_binary.modify(start, stop, flags);
+        return this->double_binary.modify(start, stop, flags, this->event_receiver);
     case (FlagsType::AnalogInput):
-        return this->analog_input.modify(start, stop, flags);
+        return this->analog_input.modify(start, stop, flags, this->event_receiver);
     case (FlagsType::Counter):
-        return this->counter.modify(start, stop, flags);
+        return this->counter.modify(start, stop, flags, this->event_receiver);
     case (FlagsType::FrozenCounter):
-        return this->frozen_counter.modify(start, stop, flags);
+        return this->frozen_counter.modify(start, stop, flags, this->event_receiver);
     case (FlagsType::BinaryOutputStatus):
-        return this->binary_output_status.modify(start, stop, flags);
+        return this->binary_output_status.modify(start, stop, flags, this->event_receiver);
     case (FlagsType::AnalogOutputStatus):
-        return this->analog_output_status.modify(start, stop, flags);
+        return this->analog_output_status.modify(start, stop, flags, this->event_receiver);
     }
 
     return false;
@@ -403,8 +404,8 @@ template<class Spec> IINField Database::select_range(StaticDataMap<Spec>& map, c
 
 template<class Spec>
 IINField Database::select_range(StaticDataMap<Spec>& map,
-                                      const Range& range,
-                                      typename Spec::static_variation_t variation)
+                                const Range& range,
+                                typename Spec::static_variation_t variation)
 {
     const auto count = map.select(range, variation);
     return (count != range.Count()) ? IINField(IINBit::PARAM_ERROR) : IINField::Empty();
