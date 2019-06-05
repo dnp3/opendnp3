@@ -23,6 +23,8 @@
 #include <opendnp3/master/DefaultMasterApplication.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
 
+#include <dnp3mocks/DatabaseHelpers.h>
+
 #include <exception>
 #include <iostream>
 #include <sstream>
@@ -112,7 +114,7 @@ OutstationStackConfig PerformanceStackPair::GetOutstationStackConfig(uint16_t nu
                                                                      uint16_t eventBufferSize,
                                                                      TimeDuration timeout)
 {
-    OutstationStackConfig config(DatabaseSizes::AllTypes(numPointsPerType));
+    OutstationStackConfig config(configure::by_count_of::all_types(numPointsPerType));
 
     config.outstation.params.unsolConfirmTimeout = timeout;
     config.outstation.eventBufferConfig = EventBufferConfig::AllTypes(eventBufferSize);

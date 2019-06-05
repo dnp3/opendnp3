@@ -27,6 +27,8 @@
 #include <opendnp3/master/PrintingSOEHandler.h>
 #include <opendnp3/master/PrintingCommandResultCallback.h>
 
+#include <dnp3mocks/DatabaseHelpers.h>
+
 #include <catch.hpp>
 
 #include <thread>
@@ -41,8 +43,7 @@ void start_outstation(DNP3Manager& manager)
     const auto channel
         = manager.AddTCPServer("server", FILTERS, ServerAcceptMode::CloseNew, "127.0.0.1", 20000, nullptr);
     const auto outstation
-        = channel->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(),
-                                 OutstationStackConfig(DatabaseSizes::AllTypes(0)));
+        = channel->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), OutstationStackConfig(configure::by_count_of::all_types(0)));
     outstation->Enable();
 }
 

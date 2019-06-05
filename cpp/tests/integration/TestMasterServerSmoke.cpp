@@ -30,6 +30,8 @@
 
 #include "mocks/NullSOEHandler.h"
 
+#include <dnp3mocks/DatabaseHelpers.h>
+
 #include <catch.hpp>
 
 #include <atomic>
@@ -66,7 +68,7 @@ struct TestComponents
 
     static OutstationStackConfig GetConfig()
     {
-        OutstationStackConfig config(DatabaseSizes::Empty());
+        OutstationStackConfig config(configure::by_count_of::all_types(0));
         config.outstation.params.allowUnsolicited = true;
         return config;
     }
@@ -153,7 +155,7 @@ TEST_CASE(SUITE("Double BeginShutdown"))
     auto listener = manager.CreateListener("listener", levels::ALL, IPEndpoint::Localhost(20000), listenCallbacks, ec);
 
     // Outstation
-    OutstationStackConfig outstationConfig(DatabaseSizes::Empty());
+    OutstationStackConfig outstationConfig(configure::by_count_of::all_types(0));
     outstationConfig.outstation.params.allowUnsolicited = true;
     auto channel
         = manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(), {IPEndpoint("127.0.0.1", 20000) }, "", nullptr);

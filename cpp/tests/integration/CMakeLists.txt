@@ -31,7 +31,7 @@ add_executable(integrationtests
     ${integrationtests_headers} ${integrationtests_src}
 )
 target_compile_features(integrationtests PRIVATE cxx_std_14)
-target_link_libraries(integrationtests PRIVATE catch opendnp3)
+target_link_libraries(integrationtests PRIVATE catch opendnp3 dnp3mocks)
 target_include_directories(integrationtests PRIVATE ./)
 set_target_properties(integrationtests PROPERTIES FOLDER cpp/tests)
 add_test(NAME integrationtests COMMAND integrationtests)

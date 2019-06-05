@@ -27,6 +27,8 @@
 
 #include "mocks/NullSOEHandler.h"
 
+#include <dnp3mocks/DatabaseHelpers.h>
+
 #include <catch.hpp>
 
 #include <iostream>
@@ -58,7 +60,7 @@ struct Components : Channels
           outstation(server->AddOutstation("outstation",
                                            SuccessCommandHandler::Create(),
                                            DefaultOutstationApplication::Create(),
-                                           OutstationStackConfig(DatabaseSizes::Empty()))),
+                                           OutstationStackConfig(configure::by_count_of::all_types(0)))),
           master(client->AddMaster(
               "master", NullSOEHandler::Create(), DefaultMasterApplication::Create(), MasterStackConfig()))
     {
