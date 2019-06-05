@@ -17,24 +17,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <openpal/container/Buffer.h>
-#include <openpal/logging/Logger.h>
-
 #include <opendnp3/LogLevels.h>
 
-#include <asiodnp3/ConsoleLogger.h>
+#include <opendnp3/ConsoleLogger.h>
 
-#include <dnp3decode/Decoder.h>
+#include <opendnp3/decoder/Decoder.h>
 
-using namespace std;
-using namespace openpal;
 using namespace opendnp3;
-using namespace asiodnp3;
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t* Data, size_t Size)
 {
-    RSlice buffer(Data, Size);
-    openpal::Logger logger(ConsoleLogger::Create(), "decoder", LogFilters(0));
+    Buffer buffer(Data, Size);
+    log4cpp::Logger logger(ConsoleLogger::Create(), log4cpp::ModuleId(), "decoder", levels::NOTHING);
     IDecoderCallbacks callback;
     Decoder decoder(callback, logger);
 

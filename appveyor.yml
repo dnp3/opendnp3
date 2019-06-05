@@ -10,7 +10,7 @@ install:
 build_script:
 - cmd: MKDIR build
 - cmd: CD build
-- cmd: cmake .. -DCMAKE_BUILD_TYPE=Release -DDNP3_TEST=ON -DDNP3_TLS=ON -DDNP3_DOTNET=ON
+- cmd: cmake .. -DCMAKE_BUILD_TYPE=Release -DDNP3_TLS=ON -DDNP3_TESTS=ON -DDNP3_EXAMPLES=ON -DDNP3_FUZZING=ON -DDNP3_DOTNET=ON
 - cmd: cmake --build . --config Release
 after_build:
 - ps: >-
@@ -18,10 +18,7 @@ after_build:
       nuget pack c:\projects\dnp3\build\Release\opendnp3.nuspec -Version "$env:APPVEYOR_REPO_TAG_NAME"
     }
 test_script:
-- cmd: c:\projects\dnp3\build\Release\testasiodnp3.exe
-- cmd: c:\projects\dnp3\build\Release\testasiopal.exe
-- cmd: c:\projects\dnp3\build\Release\testopendnp3.exe
-- cmd: c:\projects\dnp3\build\Release\testopenpal.exe
+- cmd: ctest -VV -C Release .
 artifacts:
 - path: '**\*.nupkg'
   name: nuget

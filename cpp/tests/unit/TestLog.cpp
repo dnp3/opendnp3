@@ -21,7 +21,7 @@
 
 #include <opendnp3/LogLevels.h>
 
-#include "mocks/MockLogHandler.h"
+#include "dnp3mocks/MockLogHandler.h"
 
 #include <catch.hpp>
 

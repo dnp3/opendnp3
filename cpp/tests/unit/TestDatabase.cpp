@@ -17,8 +17,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "mocks/DatabaseTestObject.h"
-#include "mocks/MeasurementComparisons.h"
+#include "dnp3mocks/DatabaseTestObject.h"
+#include "dnp3mocks/MeasurementComparisons.h"
 
 #include <opendnp3/app/QualityMasks.h>
 

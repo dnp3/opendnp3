@@ -23,7 +23,7 @@
 #include "utils/TransportTestObject.h"
 #include "utils/ProtocolUtil.h"
 
-#include "mocks/MockLogHandler.h"
+#include "dnp3mocks/MockLogHandler.h"
 
 #include <catch.hpp>
 

@@ -17,7 +17,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "mocks/MockAPDUHeaderHandler.h"
+#include "dnp3mocks/MockAPDUHeaderHandler.h"
 #include "utils/BufferHelpers.h"
 
 #include <ser4cpp/util/HexConversions.h>

@@ -24,8 +24,8 @@
 #include <link/LinkLayerParser.h>
 
 #include "utils/BufferHelpers.h"
-#include "mocks/MockFrameSink.h"
-#include "mocks/MockLogHandler.h"
+#include "dnp3mocks/MockFrameSink.h"
+#include "dnp3mocks/MockLogHandler.h"
 
 #include <cassert>
 

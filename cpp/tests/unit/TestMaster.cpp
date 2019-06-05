@@ -21,7 +21,7 @@
 #include "utils/CallbackQueue.h"
 #include "utils/MasterTestFixture.h"
 #include "utils/MeasurementComparisons.h"
-#include "mocks/MockTaskCallback.h"
+#include "dnp3mocks/MockTaskCallback.h"
 
 #include <app/APDUBuilders.h>
 #include <app/APDUResponse.h>

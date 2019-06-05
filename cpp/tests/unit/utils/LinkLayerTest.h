@@ -20,9 +20,9 @@
 #ifndef OPENDNP3_UNITTESTS_LINKLAYERTEST_H
 #define OPENDNP3_UNITTESTS_LINKLAYERTEST_H
 
-#include "mocks/MockLinkListener.h"
-#include "mocks/MockLogHandler.h"
-#include "mocks/MockTransportLayer.h"
+#include "dnp3mocks/MockLinkListener.h"
+#include "dnp3mocks/MockLogHandler.h"
+#include "dnp3mocks/MockTransportLayer.h"
 
 #include <exe4cpp/MockExecutor.h>
 
