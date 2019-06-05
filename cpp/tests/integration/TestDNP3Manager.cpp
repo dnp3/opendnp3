@@ -17,18 +17,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <asiopal/UTCTimeSource.h>
-
+#include <opendnp3/ConsoleLogger.h>
+#include <opendnp3/DNP3Manager.h>
 #include <opendnp3/LogLevels.h>
+#include <opendnp3/master/DefaultMasterApplication.h>
 #include <opendnp3/master/ISOEHandler.h>
 #include <opendnp3/outstation/IOutstationApplication.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
 
-#include <asiodnp3/ConsoleLogger.h>
-#include <asiodnp3/DNP3Manager.h>
-#include <asiodnp3/DefaultMasterApplication.h>
-
-#include <dnp3mocks/NullSOEHandler.h>
+#include "mocks/NullSOEHandler.h"
 
 #include <catch.hpp>
 
@@ -36,9 +33,6 @@
 #include <thread>
 
 using namespace opendnp3;
-using namespace asiodnp3;
-using namespace asiopal;
-using namespace openpal;
 
 #define SUITE(name) "DNP3ManagerTestSuite - " name
 
@@ -47,7 +41,7 @@ const int ITERATIONS = 100;
 struct Channels
 {
     explicit Channels(DNP3Manager& manager)
-        : client(manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(), "127.0.0.1", "", 20000, nullptr)),
+        : client(manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(), { opendnp3::IPEndpoint("127.0.0.1", 20000) }, "", nullptr)),
           server(
               manager.AddTCPServer("server", levels::ALL, ServerAcceptMode::CloseExisting, "0.0.0.0", 20000, nullptr))
     {
@@ -66,7 +60,7 @@ struct Components : Channels
                                            DefaultOutstationApplication::Create(),
                                            OutstationStackConfig(DatabaseSizes::Empty()))),
           master(client->AddMaster(
-              "master", NullSOEHandler::Create(), asiodnp3::DefaultMasterApplication::Create(), MasterStackConfig()))
+              "master", NullSOEHandler::Create(), DefaultMasterApplication::Create(), MasterStackConfig()))
     {
     }
 

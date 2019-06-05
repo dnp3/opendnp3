@@ -18,17 +18,14 @@
  * limitations under the License.
  */
 
-#ifndef OPENDNP3_EXPECTEDVALUE_H
-#define OPENDNP3_EXPECTEDVALUE_H
+#ifndef OPENDNP3_INTEGRATIONTESTS_EXPECTEDVALUE_H
+#define OPENDNP3_INTEGRATIONTESTS_EXPECTEDVALUE_H
 
-#include "opendnp3/app/MeasurementTypes.h"
-#include "opendnp3/gen/StaticTypeBitmask.h"
+#include <opendnp3/app/MeasurementTypes.h>
+#include <opendnp3/gen/StaticTypeBitmask.h>
 
 #include <cstdint>
 #include <sstream>
-
-namespace opendnp3
-{
 
 enum class ValueType
 {
@@ -75,25 +72,25 @@ public:
     uint16_t index;
     ValueType type;
 
-    ExpectedValue(const Binary& value, uint16_t index) : ExpectedValue(value.value, index, ValueType::Binary) {}
-    ExpectedValue(const DoubleBitBinary& value, uint16_t index)
+    ExpectedValue(const opendnp3::Binary& value, uint16_t index) : ExpectedValue(value.value, index, ValueType::Binary) {}
+    ExpectedValue(const opendnp3::DoubleBitBinary& value, uint16_t index)
         : ExpectedValue(static_cast<int64_t>(value.value), index, ValueType::DoubleBitBinary)
     {
     }
-    ExpectedValue(const Analog& value, uint16_t index)
+    ExpectedValue(const opendnp3::Analog& value, uint16_t index)
         : ExpectedValue(static_cast<int64_t>(value.value), index, ValueType::Analog)
     {
     }
-    ExpectedValue(const Counter& value, uint16_t index) : ExpectedValue(value.value, index, ValueType::Counter) {}
-    ExpectedValue(const FrozenCounter& value, uint16_t index)
+    ExpectedValue(const opendnp3::Counter& value, uint16_t index) : ExpectedValue(value.value, index, ValueType::Counter) {}
+    ExpectedValue(const opendnp3::FrozenCounter& value, uint16_t index)
         : ExpectedValue(value.value, index, ValueType::FrozenCounter)
     {
     }
-    ExpectedValue(const AnalogOutputStatus& value, uint16_t index)
+    ExpectedValue(const opendnp3::AnalogOutputStatus& value, uint16_t index)
         : ExpectedValue(static_cast<int64_t>(value.value), index, ValueType::AnalogOutputStatus)
     {
     }
-    ExpectedValue(const BinaryOutputStatus& value, uint16_t index)
+    ExpectedValue(const opendnp3::BinaryOutputStatus& value, uint16_t index)
         : ExpectedValue(value.value, index, ValueType::BinaryOutputStatus)
     {
     }
@@ -104,7 +101,5 @@ inline std::ostream& operator<<(std::ostream& os, const ExpectedValue& v)
     os << v.index << " - " << ExpectedValue::ToString(v.type) << "(" << v.value << ")";
     return os;
 }
-
-} // namespace opendnp3
 
 #endif

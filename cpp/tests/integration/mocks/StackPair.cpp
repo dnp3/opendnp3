@@ -18,11 +18,10 @@
  * limitations under the License.
  */
 
-#include "StackPair.h"
+#include "mocks/StackPair.h"
 
-#include "opendnp3/outstation/SimpleCommandHandler.h"
-
-#include "asiodnp3/DefaultMasterApplication.h"
+#include <opendnp3/master/DefaultMasterApplication.h>
+#include <opendnp3/outstation/SimpleCommandHandler.h>
 
 #include <exception>
 #include <iostream>
@@ -31,18 +30,15 @@
 
 using namespace opendnp3;
 
-namespace asiodnp3
-{
-
-StackPair::StackPair(uint32_t levels,
-                     openpal::TimeDuration timeout,
+StackPair::StackPair(log4cpp::LogLevels levels,
+                     TimeDuration timeout,
                      DNP3Manager& manager,
                      uint16_t port,
                      uint16_t numPointsPerType,
                      uint32_t eventsPerIteration)
     : PORT(port),
       EVENTS_PER_ITERATION(eventsPerIteration),
-      soeHandler(std::make_shared<opendnp3::QueuingSOEHandler>()),
+      soeHandler(std::make_shared<QueuingSOEHandler>()),
       clientListener(std::make_shared<QueuedChannelListener>()),
       serverListener(std::make_shared<QueuedChannelListener>()),
       master(CreateMaster(levels, timeout, manager, port, this->soeHandler, this->clientListener)),
@@ -59,12 +55,12 @@ StackPair::StackPair(uint32_t levels,
 
 void StackPair::WaitForChannelsOnline(std::chrono::steady_clock::duration timeout)
 {
-    if (!this->clientListener->WaitForState(opendnp3::ChannelState::OPEN, timeout))
+    if (!this->clientListener->WaitForState(ChannelState::OPEN, timeout))
     {
         throw std::runtime_error("client timed out before opening");
     }
 
-    if (!this->serverListener->WaitForState(opendnp3::ChannelState::OPEN, timeout))
+    if (!this->serverListener->WaitForState(ChannelState::OPEN, timeout))
     {
         throw std::runtime_error("server timed out before opening");
     }
@@ -129,43 +125,43 @@ ExpectedValue StackPair::AddRandomValue(UpdateBuilder& builder)
     {
     case (0):
     {
-        opendnp3::Binary value(bool_distribution(generator) == 0);
+        Binary value(bool_distribution(generator) == 0);
         builder.Update(value, index, EventMode::Force);
         return ExpectedValue(value, index);
     }
     case (1):
     {
-        opendnp3::DoubleBitBinary value(static_cast<DoubleBit>(bool_distribution(generator)));
+        DoubleBitBinary value(static_cast<DoubleBit>(bool_distribution(generator)));
         builder.Update(value, index, EventMode::Force);
         return ExpectedValue(value, index);
     }
     case (2):
     {
-        opendnp3::Analog value(static_cast<double>(int_distribution(generator)));
+        Analog value(static_cast<double>(int_distribution(generator)));
         builder.Update(value, index, EventMode::Force);
         return ExpectedValue(value, index);
     }
     case (3):
     {
-        opendnp3::Counter value(int_distribution(generator));
+        Counter value(int_distribution(generator));
         builder.Update(value, index, EventMode::Force);
         return ExpectedValue(value, index);
     }
     case (4):
     {
-        opendnp3::FrozenCounter value(int_distribution(generator));
+        FrozenCounter value(int_distribution(generator));
         builder.Update(value, index, EventMode::Force);
         return ExpectedValue(value, index);
     }
     case (5):
     {
-        opendnp3::BinaryOutputStatus value(bool_distribution(generator) == 0);
+        BinaryOutputStatus value(bool_distribution(generator) == 0);
         builder.Update(value, index, EventMode::Force);
         return ExpectedValue(value, index);
     }
     default:
     {
-        opendnp3::AnalogOutputStatus value(static_cast<double>(int_distribution(generator)));
+        AnalogOutputStatus value(static_cast<double>(int_distribution(generator)));
         builder.Update(value, index, EventMode::Force);
         return ExpectedValue(value, index);
     }
@@ -174,46 +170,46 @@ ExpectedValue StackPair::AddRandomValue(UpdateBuilder& builder)
 
 OutstationStackConfig StackPair::GetOutstationStackConfig(uint16_t numPointsPerType,
                                                           uint16_t eventBufferSize,
-                                                          openpal::TimeDuration timeout)
+                                                          TimeDuration timeout)
 {
-    OutstationStackConfig config(opendnp3::DatabaseSizes::AllTypes(numPointsPerType));
+    OutstationStackConfig config(DatabaseSizes::AllTypes(numPointsPerType));
 
     config.outstation.params.unsolConfirmTimeout = timeout;
-    config.outstation.eventBufferConfig = opendnp3::EventBufferConfig::AllTypes(eventBufferSize);
+    config.outstation.eventBufferConfig = EventBufferConfig::AllTypes(eventBufferSize);
     config.outstation.params.allowUnsolicited = true;
 
     return config;
 }
 
-MasterStackConfig StackPair::GetMasterStackConfig(openpal::TimeDuration timeout)
+MasterStackConfig StackPair::GetMasterStackConfig(TimeDuration timeout)
 {
     MasterStackConfig config;
 
     config.master.responseTimeout = timeout;
     config.master.taskRetryPeriod = timeout;
     config.master.disableUnsolOnStartup = false;
-    config.master.startupIntegrityClassMask = opendnp3::ClassField::None();
-    config.master.unsolClassMask = opendnp3::ClassField::AllEventClasses();
+    config.master.startupIntegrityClassMask = ClassField::None();
+    config.master.unsolClassMask = ClassField::AllEventClasses();
 
     return config;
 }
 
-std::shared_ptr<IMaster> StackPair::CreateMaster(uint32_t levels,
-                                                 openpal::TimeDuration timeout,
+std::shared_ptr<IMaster> StackPair::CreateMaster(log4cpp::LogLevels levels,
+                                                 TimeDuration timeout,
                                                  DNP3Manager& manager,
                                                  uint16_t port,
-                                                 std::shared_ptr<opendnp3::ISOEHandler> soehandler,
+                                                 std::shared_ptr<ISOEHandler> soehandler,
                                                  std::shared_ptr<IChannelListener> listener)
 {
-    auto channel = manager.AddTCPClient(GetId("client", port), levels, asiopal::ChannelRetry::Default(), "127.0.0.1",
-                                        "127.0.0.1", port, std::move(listener));
+    auto channel = manager.AddTCPClient(GetId("client", port), levels, ChannelRetry::Default(), { IPEndpoint("127.0.0.1", port) },
+                                        "127.0.0.1", std::move(listener));
 
     return channel->AddMaster(GetId("master", port), std::move(soehandler), DefaultMasterApplication::Create(),
                               GetMasterStackConfig(timeout));
 }
 
-std::shared_ptr<IOutstation> StackPair::CreateOutstation(uint32_t levels,
-                                                         openpal::TimeDuration timeout,
+std::shared_ptr<IOutstation> StackPair::CreateOutstation(log4cpp::LogLevels levels,
+                                                         TimeDuration timeout,
                                                          DNP3Manager& manager,
                                                          uint16_t port,
                                                          uint16_t numPointsPerType,
@@ -223,8 +219,8 @@ std::shared_ptr<IOutstation> StackPair::CreateOutstation(uint32_t levels,
     auto channel = manager.AddTCPServer(GetId("server", port), levels, ServerAcceptMode::CloseExisting, "127.0.0.1",
                                         port, std::move(listener));
 
-    return channel->AddOutstation(GetId("outstation", port), opendnp3::SuccessCommandHandler::Create(),
-                                  opendnp3::DefaultOutstationApplication::Create(),
+    return channel->AddOutstation(GetId("outstation", port), SuccessCommandHandler::Create(),
+                                  DefaultOutstationApplication::Create(),
                                   GetOutstationStackConfig(numPointsPerType, eventBufferSize, timeout));
 }
 
@@ -234,4 +230,3 @@ std::string StackPair::GetId(const char* name, uint16_t port)
     oss << name << ":" << port;
     return oss.str();
 }
-} // namespace asiodnp3

@@ -18,16 +18,14 @@
  * limitations under the License.
  */
 
-#ifndef OPENDNP3_SYNCHRONIZEDQUEUE_H
-#define OPENDNP3_SYNCHRONIZEDQUEUE_H
+#ifndef OPENDNP3_INTEGRATIONTESTS_SYNCHRONIZEDQUEUE_H
+#define OPENDNP3_INTEGRATIONTESTS_SYNCHRONIZEDQUEUE_H
 
 #include <chrono>
 #include <condition_variable>
 #include <deque>
 #include <mutex>
 
-namespace asiodnp3
-{
 template<class T> class SynchronizedQueue
 {
     std::deque<T> queue;
@@ -76,7 +74,5 @@ public:
         return ret;
     }
 };
-
-} // namespace asiodnp3
 
 #endif

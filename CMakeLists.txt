@@ -43,6 +43,7 @@ if(DNP3_TESTS)
     enable_testing()
 
     add_subdirectory(./cpp/tests/unit)
+    add_subdirectory(./cpp/tests/integration)
 endif()
 
 # Examples

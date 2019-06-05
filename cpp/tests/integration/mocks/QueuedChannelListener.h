@@ -18,10 +18,40 @@
  * limitations under the License.
  */
 
-#include "NullSOEHandler.h"
+#ifndef OPENDNP3_INTEGRATIONTESTS_QUEUEDCHANNELISTENER_H
+#define OPENDNP3_INTEGRATIONTESTS_QUEUEDCHANNELISTENER_H
 
-namespace opendnp3
+#include "mocks/SynchronizedQueue.h"
+
+#include <opendnp3/channel/IChannelListener.h>
+
+#include <vector>
+
+class QueuedChannelListener : public opendnp3::IChannelListener
 {
+    SynchronizedQueue<opendnp3::ChannelState> states;
 
-NullSOEHandler NullSOEHandler::instance;
-} // namespace opendnp3
+public:
+    virtual void OnStateChange(opendnp3::ChannelState state) override
+    {
+        states.Add(state);
+    }
+
+    bool WaitForState(opendnp3::ChannelState state, std::chrono::steady_clock::duration timeout)
+    {
+        std::vector<opendnp3::ChannelState> output;
+        while (states.DrainTo(output, timeout) > 0)
+        {
+            for (auto& s : output)
+            {
+                if (s == state)
+                    return true;
+            }
+            output.clear();
+        }
+
+        return false;
+    }
+};
+
+#endif
