@@ -66,9 +66,9 @@ size_t MockIO::RunUntilTimeout(const std::function<bool()>& condition, std::chro
     return iterations;
 }
 
-void MockIO::CompleteInXIterations(size_t expectedIterations,
-                                   const std::function<bool()>& condition,
-                                   std::chrono::steady_clock::duration timeout)
+void MockIO::CompleteInMaxXIterations(size_t expectedIterations,
+                                      const std::function<bool()>& condition,
+                                      std::chrono::steady_clock::duration timeout)
 {
     size_t iterations = 0;
 
@@ -96,13 +96,6 @@ void MockIO::CompleteInXIterations(size_t expectedIterations,
 
         ++iterations;
         this->io->reset();
-    }
-
-    if (iterations != expectedIterations)
-    {
-        std::ostringstream oss;
-        oss << "completed after " << iterations << " iterations, (expected " << expectedIterations << ")";
-        throw std::logic_error(oss.str());
     }
 }
 
