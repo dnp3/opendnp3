@@ -20,6 +20,7 @@ include(./cmake/ClangTidy.cmake)
 option(DNP3_TLS "Build TLS client/server support (requires OpenSSL)" OFF)
 option(DNP3_TESTS "Build unit and integration tests" OFF)
 option(DNP3_EXAMPLES "Build example applications" OFF)
+option(DNP3_FUZZING "Build Google OSS-Fuzz targets" OFF)
 
 # External dependencies
 include(./deps/asio.cmake)
@@ -59,6 +60,11 @@ if(DNP3_EXAMPLES)
         add_subdirectory(./cpp/examples/tls/master-gprs)
         add_subdirectory(./cpp/examples/tls/outstation)
     endif()
+endif()
+
+# Fuzzing
+if(DNP3_FUZZING)
+    add_subdirectory(./cpp/tests/fuzz)
 endif()
 
 # Define utility targets
