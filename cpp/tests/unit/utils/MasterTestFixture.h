@@ -24,13 +24,13 @@
 #include <master/MasterContext.h>
 #include <master/MasterSchedulerBackend.h>
 
-#include "mocks/MockLowerLayer.h"
-#include "mocks/MockMasterApplication.h"
-#include "mocks/MockSOEHandler.h"
+#include "dnp3mocks/MockLowerLayer.h"
+#include "dnp3mocks/MockMasterApplication.h"
+#include "dnp3mocks/MockSOEHandler.h"
 
 #include <exe4cpp/MockExecutor.h>
 
-#include "mocks/MockLogHandler.h"
+#include "dnp3mocks/MockLogHandler.h"
 
 opendnp3::MasterParams NoStartupTasks();
 

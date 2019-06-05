@@ -1,4 +1,4 @@
-set(integrationtests_mocks
+set(integrationtests_headers
     ./mocks/CountingSOEHandler.h
     ./mocks/ExpectedValue.h
     ./mocks/NullSOEHandler.h
@@ -24,11 +24,11 @@ set(integrationtests_src
 )
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}
-    FILES ${integrationtests_mocks} ${integrationtests_src}
+    FILES ${integrationtests_headers} ${integrationtests_src}
 )
 
 add_executable(integrationtests
-    ${integrationtests_mocks} ${integrationtests_src}
+    ${integrationtests_headers} ${integrationtests_src}
 )
 target_compile_features(integrationtests PRIVATE cxx_std_14)
 target_link_libraries(integrationtests PRIVATE catch opendnp3)

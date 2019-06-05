@@ -17,51 +17,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "mocks/MockTransportLayer.h"
+#include "utils/MockTransportSegment.h"
 
 #include <ser4cpp/util/HexConversions.h>
 
-#include "utils/BufferHelpers.h"
+#include <algorithm>
+#include <cassert>
+#include <exception>
+#include <sstream>
+#include <memory>
 
+using namespace std;
 using namespace opendnp3;
 using namespace ser4cpp;
 
-MockTransportLayer::MockTransportLayer() : pLinkLayer(nullptr), isOnline(false) {}
-
-void MockTransportLayer::SetLinkLayer(ILinkLayer& linkLayer)
+MockTransportSegment::MockTransportSegment(uint32_t segmentSize, const std::string& hex, const Addresses& addresses)
+    : addresses(addresses), segmentSize(segmentSize), hs(hex), remainder(hs.ToRSeq())
 {
-    this->pLinkLayer = &linkLayer;
+    assert(segmentSize > 0);
 }
 
-bool MockTransportLayer::SendDown(ITransportSegment& segments)
+void MockTransportSegment::Reset()
 {
-    return pLinkLayer->Send(segments);
+    remainder = hs.ToRSeq();
 }
 
-bool MockTransportLayer::OnReceive(const Message& message)
+bool MockTransportSegment::HasValue() const
 {
-    receivedQueue.push_back(HexConversions::to_hex(message.payload));
-    return true;
+    return remainder.length() > 0;
 }
 
-bool MockTransportLayer::OnTxReady()
+ser4cpp::rseq_t MockTransportSegment::GetSegment()
 {
-    ++(this->counters.numTxReady);
-    return true;
+    auto size = std::min(segmentSize, remainder.length());
+    auto chunk = remainder.take(size);
+    return chunk;
 }
 
-bool MockTransportLayer::OnLowerLayerUp()
+bool MockTransportSegment::Advance()
 {
-    assert(!isOnline);
-    isOnline = true;
-    ++counters.numLayerUp;
-    return true;
-}
-
-bool MockTransportLayer::OnLowerLayerDown()
-{
-    assert(isOnline);
-    isOnline = false;
-    ++counters.numLayerDown;
-    return true;
+    auto size = std::min(segmentSize, remainder.length());
+    remainder.advance(size);
+    return remainder.is_not_empty();
 }

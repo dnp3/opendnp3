@@ -17,46 +17,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "mocks/MockTransportSegment.h"
+#include "dnp3mocks/MockUpperLayer.h"
 
 #include <ser4cpp/util/HexConversions.h>
 
-#include <algorithm>
-#include <cassert>
-#include <exception>
-#include <sstream>
 #include <memory>
 
-using namespace std;
 using namespace opendnp3;
 using namespace ser4cpp;
 
-MockTransportSegment::MockTransportSegment(uint32_t segmentSize, const std::string& hex, const Addresses& addresses)
-    : addresses(addresses), segmentSize(segmentSize), hs(hex), remainder(hs.ToRSeq())
+MockUpperLayer::MockUpperLayer() : isOnline(false) {}
+
+bool MockUpperLayer::OnReceive(const Message& message)
 {
-    assert(segmentSize > 0);
+    this->received.Write(message.payload);
+    return true;
 }
 
-void MockTransportSegment::Reset()
+bool MockUpperLayer::OnTxReady()
 {
-    remainder = hs.ToRSeq();
+    ++counters.numTxReady;
+    return true;
 }
 
-bool MockTransportSegment::HasValue() const
+bool MockUpperLayer::OnLowerLayerUp()
 {
-    return remainder.length() > 0;
+    isOnline = true;
+    ++counters.numLayerUp;
+    return true;
 }
 
-ser4cpp::rseq_t MockTransportSegment::GetSegment()
+bool MockUpperLayer::OnLowerLayerDown()
 {
-    auto size = std::min(segmentSize, remainder.length());
-    auto chunk = remainder.take(size);
-    return chunk;
+    isOnline = false;
+    ++counters.numLayerDown;
+    return true;
 }
 
-bool MockTransportSegment::Advance()
+bool MockUpperLayer::SendDown(const rseq_t& data, const Addresses& addresses)
 {
-    auto size = std::min(segmentSize, remainder.length());
-    remainder.advance(size);
-    return remainder.is_not_empty();
+    return this->pLowerLayer != nullptr ? pLowerLayer->BeginTransmit(Message(addresses, data)) : false;
+}
+
+bool MockUpperLayer::SendDown(const std::string& hex, const Addresses& addresses)
+{
+    const auto buffer = HexConversions::from_hex(hex);
+    return this->SendDown(buffer->as_rslice(), addresses);
 }

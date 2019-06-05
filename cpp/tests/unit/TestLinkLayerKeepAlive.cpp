@@ -17,7 +17,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "mocks/MockTransportSegment.h"
+#include "utils/MockTransportSegment.h"
 #include "utils/LinkHex.h"
 #include "utils/LinkLayerTest.h"
 

@@ -17,50 +17,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#include "utils/DataSink.h"
+#include "dnp3mocks/MockTransportLayer.h"
 
 #include <ser4cpp/util/HexConversions.h>
 
-#include "utils/BufferHelpers.h"
-
-#include <memory>
-#include <stdexcept>
-
+using namespace opendnp3;
 using namespace ser4cpp;
 
-void DataSink::Write(const rseq_t& data)
+MockTransportLayer::MockTransportLayer() : pLinkLayer(nullptr), isOnline(false) {}
+
+void MockTransportLayer::SetLinkLayer(ILinkLayer& linkLayer)
 {
-    for (size_t i = 0; i < data.length(); ++i)
-    {
-        this->buffer.push_back(data[i]);
-    }
+    this->pLinkLayer = &linkLayer;
 }
 
-void DataSink::Clear()
+bool MockTransportLayer::SendDown(ITransportSegment& segments)
 {
-    buffer.clear();
+    return pLinkLayer->Send(segments);
 }
 
-bool DataSink::Equals(const rseq_t& data) const
+bool MockTransportLayer::OnReceive(const Message& message)
 {
-    if (data.length() != this->buffer.size())
-        return false;
-
-    for (size_t i = 0; i < this->buffer.size(); i++)
-    {
-        if (data[i] != this->buffer[i])
-        {
-            return false;
-        }
-    }
+    receivedQueue.push_back(HexConversions::to_hex(message.payload));
     return true;
 }
 
-std::string DataSink::AsHex(bool spaced) const
+bool MockTransportLayer::OnTxReady()
 {
-    CopyableBuffer temp(static_cast<uint32_t>(this->buffer.size()));
-    for (size_t i = 0; i < this->buffer.size(); ++i)
-        temp[i] = this->buffer[i];
-    return HexConversions::to_hex(temp.ToRSeq(), spaced);
+    ++(this->counters.numTxReady);
+    return true;
+}
+
+bool MockTransportLayer::OnLowerLayerUp()
+{
+    assert(!isOnline);
+    isOnline = true;
+    ++counters.numLayerUp;
+    return true;
+}
+
+bool MockTransportLayer::OnLowerLayerDown()
+{
+    assert(isOnline);
+    isOnline = false;
+    ++counters.numLayerDown;
+    return true;
 }

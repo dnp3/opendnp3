@@ -17,52 +17,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "mocks/MockUpperLayer.h"
+
+#include "dnp3mocks/DataSink.h"
 
 #include <ser4cpp/util/HexConversions.h>
 
-#include "utils/BufferHelpers.h"
-
 #include <memory>
+#include <stdexcept>
 
-using namespace opendnp3;
 using namespace ser4cpp;
 
-MockUpperLayer::MockUpperLayer() : isOnline(false) {}
-
-bool MockUpperLayer::OnReceive(const Message& message)
+void DataSink::Write(const rseq_t& data)
 {
-    this->received.Write(message.payload);
+    for (size_t i = 0; i < data.length(); ++i)
+    {
+        this->buffer.push_back(data[i]);
+    }
+}
+
+void DataSink::Clear()
+{
+    buffer.clear();
+}
+
+bool DataSink::Equals(const rseq_t& data) const
+{
+    if (data.length() != this->buffer.size())
+        return false;
+
+    for (size_t i = 0; i < this->buffer.size(); i++)
+    {
+        if (data[i] != this->buffer[i])
+        {
+            return false;
+        }
+    }
     return true;
 }
 
-bool MockUpperLayer::OnTxReady()
+std::string DataSink::AsHex(bool spaced) const
 {
-    ++counters.numTxReady;
-    return true;
-}
-
-bool MockUpperLayer::OnLowerLayerUp()
-{
-    isOnline = true;
-    ++counters.numLayerUp;
-    return true;
-}
-
-bool MockUpperLayer::OnLowerLayerDown()
-{
-    isOnline = false;
-    ++counters.numLayerDown;
-    return true;
-}
-
-bool MockUpperLayer::SendDown(const rseq_t& data, const Addresses& addresses)
-{
-    return this->pLowerLayer != nullptr ? pLowerLayer->BeginTransmit(Message(addresses, data)) : false;
-}
-
-bool MockUpperLayer::SendDown(const std::string& hex, const Addresses& addresses)
-{
-    HexSequence hs(hex);
-    return this->SendDown(hs.ToRSeq(), addresses);
+    const ser4cpp::rseq_t temp(this->buffer.data(), static_cast<uint32_t>(this->buffer.size()));
+    return HexConversions::to_hex(temp, spaced);
 }

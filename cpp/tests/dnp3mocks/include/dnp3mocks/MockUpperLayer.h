@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_UNITTESTS_MOCKUPPERLAYER_H
 #define OPENDNP3_UNITTESTS_MOCKUPPERLAYER_H
 
-#include "utils/DataSink.h"
+#include "dnp3mocks/DataSink.h"
 
 #include <LayerInterfaces.h>
 

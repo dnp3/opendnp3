@@ -25,10 +25,10 @@
 #include <outstation/Database.h>
 #include <outstation/OutstationContext.h>
 
-#include "mocks/MockCommandHandler.h"
-#include "mocks/MockLogHandler.h"
-#include "mocks/MockLowerLayer.h"
-#include "mocks/MockOutstationApplication.h"
+#include "dnp3mocks/MockCommandHandler.h"
+#include "dnp3mocks/MockLogHandler.h"
+#include "dnp3mocks/MockLowerLayer.h"
+#include "dnp3mocks/MockOutstationApplication.h"
 
 #include <exe4cpp/MockExecutor.h>
 

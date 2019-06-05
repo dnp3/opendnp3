@@ -26,9 +26,9 @@
 #include <transport/TransportLayer.h>
 
 #include <exe4cpp/MockExecutor.h>
-#include "mocks/MockLinkLayer.h"
-#include "mocks/MockLogHandler.h"
-#include "mocks/MockUpperLayer.h"
+#include "dnp3mocks/MockLinkLayer.h"
+#include "dnp3mocks/MockLogHandler.h"
+#include "dnp3mocks/MockUpperLayer.h"
 
 #include <string>
 #include <vector>

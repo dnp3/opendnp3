@@ -43,6 +43,7 @@ add_subdirectory(./cpp/lib)
 if(DNP3_TESTS)
     enable_testing()
 
+    add_subdirectory(./cpp/tests/dnp3mocks)
     add_subdirectory(./cpp/tests/unit)
     add_subdirectory(./cpp/tests/asiotests)
     add_subdirectory(./cpp/tests/integration)
@@ -64,6 +65,10 @@ endif()
 
 # Fuzzing
 if(DNP3_FUZZING)
+    if(NOT DNP3_TESTS)
+        # DNP3 mocks is needed for the fuzzing
+        add_subdirectory(./cpp/tests/dnp3mocks)
+    endif()
     add_subdirectory(./cpp/tests/fuzz)
 endif()
 

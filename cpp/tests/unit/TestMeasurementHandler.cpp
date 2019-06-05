@@ -21,8 +21,8 @@
 
 #include "utils/BufferHelpers.h"
 
-#include "mocks/MockLogHandler.h"
-#include "mocks/MockSOEHandler.h"
+#include "dnp3mocks/MockLogHandler.h"
+#include "dnp3mocks/MockSOEHandler.h"
 
 #include <catch.hpp>
 

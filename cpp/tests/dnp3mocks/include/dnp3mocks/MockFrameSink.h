@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_UNITTESTS_MOCKFRAMESINK_H
 #define OPENDNP3_UNITTESTS_MOCKFRAMESINK_H
 
-#include "utils/DataSink.h"
+#include "dnp3mocks/DataSink.h"
 
 #include <opendnp3/gen/LinkFunction.h>
 #include <link/ILinkSession.h>

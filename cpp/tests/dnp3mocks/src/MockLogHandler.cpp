@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-#include "mocks/MockLogHandler.h"
+#include "dnp3mocks/MockLogHandler.h"
 
 #include <opendnp3/LogLevels.h>
 

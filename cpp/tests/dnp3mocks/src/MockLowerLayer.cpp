@@ -17,9 +17,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "MockLowerLayer.h"
+#include "dnp3mocks/MockLowerLayer.h"
 
-#include "utils/BufferHelpers.h"
 #include <ser4cpp/util/HexConversions.h>
 
 #include <cassert>
@@ -65,8 +64,8 @@ void MockLowerLayer::SendUp(const rseq_t& data, const Addresses& addresses)
 
 void MockLowerLayer::SendUp(const std::string& arHexData, const Addresses& addresses)
 {
-    HexSequence hs(arHexData);
-    this->SendUp(hs.ToRSeq(), addresses);
+    const auto buffer = HexConversions::from_hex(arHexData);
+    this->SendUp(buffer->as_rslice(), addresses);
 }
 
 void MockLowerLayer::SendComplete()

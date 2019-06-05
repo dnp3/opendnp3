@@ -17,7 +17,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "mocks/MockFrameSink.h"
+#include "dnp3mocks/MockFrameSink.h"
 
 using namespace opendnp3;
 using namespace ser4cpp;
