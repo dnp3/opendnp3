@@ -21,10 +21,10 @@
 #define OPENDNP3_STATICDATAMAP_H
 
 #include "app/Range.h"
+#include "app/MeasurementTypeSpecs.h"
 #include "outstation/Cell.h"
 
 #include "opendnp3/Uncopyable.h"
-#include "opendnp3/app/MeasurementTypeSpecs.h"
 
 #include <iterator>
 #include <map>

@@ -25,13 +25,14 @@ import com.automatak.render.dnp3.objects.FixedSize
 
 object ConversionHeaders {
 
-  val measurementTypeSpecs = quoted("opendnp3/app/MeasurementTypeSpecs.h")
   val timeAndInterval = quoted("opendnp3/app/TimeAndInterval.h")
   val securityStat = quoted("opendnp3/app/SecurityStat.h")
   val crob = quoted("opendnp3/app/ControlRelayOutputBlock.h")
   val ao = quoted("opendnp3/app/AnalogOutput.h")
   val binaryCommandEvent = quoted("opendnp3/app/BinaryCommandEvent.h")
   val analogCommandEvent = quoted("opendnp3/app/AnalogCommandEvent.h")
+
+  val measurementTypeSpecs = quoted("app/MeasurementTypeSpecs.h")
   val factory = quoted("app/MeasurementFactory.h")
   val serializer = quoted("app/DNP3Serializer.h")
   val conversions = quoted("app/WriteConversions.h")

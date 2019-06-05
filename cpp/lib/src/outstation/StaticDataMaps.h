@@ -21,9 +21,9 @@
 #define OPENDNP3_STATICDATAMAPS_H
 
 #include <opendnp3/outstation/DatabaseConfig.h>
-#include <opendnp3/app/MeasurementTypeSpecs.h>
 #include <opendnp3/outstation/StaticTypeBitfield.h>
 
+#include "app/MeasurementTypeSpecs.h"
 #include "outstation/StaticDataMap.h"
 #include "outstation/IStaticSelector.h"
 #include "outstation/IClassAssigner.h"

@@ -31,7 +31,6 @@ set(opendnp3_public_headers
     ./include/opendnp3/app/ITransactable.h
     ./include/opendnp3/app/MeasurementInfo.h
     ./include/opendnp3/app/MeasurementTypes.h
-    ./include/opendnp3/app/MeasurementTypeSpecs.h
     ./include/opendnp3/app/OctetData.h
     ./include/opendnp3/app/OctetString.h
     ./include/opendnp3/app/QualityMasks.h
@@ -197,6 +196,7 @@ set(opendnp3_private_headers
     ./src/app/IINValue.h
     ./src/app/IVariableLength.h
     ./src/app/MeasurementFactory.h
+	./src/app/MeasurementTypeSpecs.h
     ./src/app/Message.h
     ./src/app/PrefixedWriteIterator.h
     ./src/app/QualityFlags.h

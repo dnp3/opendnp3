@@ -21,11 +21,11 @@
 #define OPENDNP3_STATICWRITERS_H
 
 #include "app/HeaderWriter.h"
+#include "app/MeasurementTypeSpecs.h"
 #include "app/Range.h"
 #include "outstation/Cell.h"
 
 #include "opendnp3/Uncopyable.h"
-#include "opendnp3/app/MeasurementTypeSpecs.h"
 #include "opendnp3/gen/StaticAnalogOutputStatusVariation.h"
 #include "opendnp3/gen/StaticAnalogVariation.h"
 #include "opendnp3/gen/StaticBinaryOutputStatusVariation.h"

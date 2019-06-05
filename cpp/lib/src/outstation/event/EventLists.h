@@ -23,9 +23,9 @@
 #include "ClazzCount.h"
 #include "EventRecord.h"
 #include "TypedEventRecord.h"
+#include "app/MeasurementTypeSpecs.h"
 
 #include "opendnp3/Uncopyable.h"
-#include "opendnp3/app/MeasurementTypeSpecs.h"
 #include "opendnp3/outstation/EventBufferConfig.h"
 
 namespace opendnp3

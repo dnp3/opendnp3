@@ -18,9 +18,8 @@
  * limitations under the License.
  */
 
-#include <opendnp3/app/MeasurementTypeSpecs.h>
-
 #include <catch.hpp>
+
 #include <outstation/StaticDataMap.h>
 
 using namespace opendnp3;
