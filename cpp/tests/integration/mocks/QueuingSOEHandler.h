@@ -36,7 +36,7 @@ class QueuingSOEHandler final : public opendnp3::ISOEHandler
 
     template<class T> void ProcessAny(const opendnp3::ICollection<opendnp3::Indexed<T>>& values)
     {
-        auto add = [this](const Indexed<T>& item) { temp.push_back(ExpectedValue(item.value, item.index)); };
+        auto add = [this](const opendnp3::Indexed<T>& item) { temp.push_back(ExpectedValue(item.value, item.index)); };
 
         values.ForeachItem(add);
     }
