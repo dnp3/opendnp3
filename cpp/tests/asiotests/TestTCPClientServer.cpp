@@ -17,42 +17,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "mocks/MockTCPPair.h"
 
-#ifndef ASIOPAL_MOCKTCPPAIR_H
-#define ASIOPAL_MOCKTCPPAIR_H
+#include <catch.hpp>
 
-#include "MockIO.h"
-#include "MockTCPClientHandler.h"
-#include "MockTCPServer.h"
+#include <iostream>
 
-#include "asiopal/TCPClient.h"
+using namespace opendnp3;
 
-#include "testlib/MockLogHandler.h"
+#define SUITE(name) "TCPClientServerSuite - " name
 
-namespace asiopal
+template<class F> void WithIO(const F& fun)
 {
+    auto io = std::make_shared<MockIO>();
+    fun(io);
+    io->RunUntilOutOfWork();
+}
 
-class MockTCPPair
+TEST_CASE(SUITE("Client and server can connect"))
 {
+    auto iteration = []() {
+        auto test = [](const std::shared_ptr<MockIO>& io) {
+            MockTCPPair pair(io, 20000);
+            pair.Connect(1);
+        };
 
-public:
-    MockTCPPair(const std::shared_ptr<MockIO>& io, uint16_t port, std::error_code ec = std::error_code());
+        WithIO(test);
+    };
 
-    ~MockTCPPair();
-
-    void Connect(size_t num = 1);
-
-    bool NumConnectionsEqual(size_t num) const;
-
-private:
-    testlib::MockLogHandler log;
-    std::shared_ptr<MockIO> io;
-    uint16_t port;
-    std::shared_ptr<MockTCPClientHandler> chandler;
-    std::shared_ptr<TCPClient> client;
-    std::shared_ptr<MockTCPServer> server;
-};
-
-} // namespace asiopal
-
-#endif
+    // run multiple times to ensure the test is cleaning up after itself in terms of system resources
+    for (int i = 0; i < 5; ++i)
+    {
+        iteration();
+        // std::cout << "iteration: " << i << " complete" << std::endl;
+    }
+}

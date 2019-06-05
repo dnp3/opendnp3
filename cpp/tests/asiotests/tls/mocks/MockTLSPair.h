@@ -17,5 +17,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#define CATCH_CONFIG_MAIN
-#include <catch.hpp>
+
+#ifndef OPENDNP3_ASIOTESTS_MOCKTLSPAIR_H
+#define OPENDNP3_ASIOTESTS_MOCKTLSPAIR_H
+
+#include "mocks/MockIO.h"
+#include "tls/mocks/MockTLSClientHandler.h"
+#include "tls/mocks/MockTLSServer.h"
+
+#include "channel/tls/TLSClient.h"
+
+#include <log4cpp/MockLogHandler.h>
+
+class MockTLSPair
+{
+
+public:
+    MockTLSPair(const std::shared_ptr<MockIO>& io,
+                uint16_t port,
+                const opendnp3::TLSConfig& client,
+                const opendnp3::TLSConfig& server,
+                std::error_code ec = std::error_code());
+
+    ~MockTLSPair();
+
+    void Connect(size_t num = 1);
+
+    bool NumConnectionsEqual(size_t num) const;
+
+    log4cpp::MockLogHandler log;
+
+private:
+    std::shared_ptr<MockIO> io;
+    uint16_t port;
+    std::shared_ptr<MockTLSClientHandler> chandler;
+    std::shared_ptr<opendnp3::TLSClient> client;
+    std::shared_ptr<MockTLSServer> server;
+};
+
+#endif

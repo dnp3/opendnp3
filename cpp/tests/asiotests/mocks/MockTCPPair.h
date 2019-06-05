@@ -17,45 +17,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <openpal/container/StaticBuffer.h>
 
-#include <catch.hpp>
+#ifndef OPENDNP3_ASIOTESTS_MOCKTCPPAIR_H
+#define OPENDNP3_ASIOTESTS_MOCKTCPPAIR_H
 
-using namespace openpal;
+#include "mocks/MockIO.h"
+#include "mocks/MockTCPClientHandler.h"
+#include "mocks/MockTCPServer.h"
 
-using namespace std;
+#include "channel/TCPClient.h"
 
-#define SUITE(name) "StaticBuffer - " name
+#include <log4cpp/MockLogHandler.h>
 
-TEST_CASE(SUITE("Static buffers can be copied"))
+class MockTCPPair
 {
-    StaticBuffer<4> buffer;
 
-    buffer()[0] = 0xDE;
-    buffer()[1] = 0xAD;
-    buffer()[2] = 0xBE;
-    buffer()[3] = 0xEF;
+public:
+    MockTCPPair(std::shared_ptr<MockIO> io, uint16_t port, std::error_code ec = std::error_code());
 
-    StaticBuffer<4> copy(buffer);
-    REQUIRE(copy()[0] == 0xDE);
-    REQUIRE(copy()[1] == 0xAD);
-    REQUIRE(copy()[2] == 0xBE);
-    REQUIRE(copy()[3] == 0xEF);
-}
+    ~MockTCPPair();
 
-TEST_CASE(SUITE("Static buffers can be assigned"))
-{
-    StaticBuffer<4> buffer;
+    void Connect(size_t num = 1);
 
-    buffer()[0] = 0xDE;
-    buffer()[1] = 0xAD;
-    buffer()[2] = 0xBE;
-    buffer()[3] = 0xEF;
+    bool NumConnectionsEqual(size_t num) const;
 
-    StaticBuffer<4> copy;
-    copy = buffer;
-    REQUIRE(copy()[0] == 0xDE);
-    REQUIRE(copy()[1] == 0xAD);
-    REQUIRE(copy()[2] == 0xBE);
-    REQUIRE(copy()[3] == 0xEF);
-}
+private:
+    log4cpp::MockLogHandler log;
+    std::shared_ptr<MockIO> io;
+    uint16_t port;
+    std::shared_ptr<MockTCPClientHandler> chandler;
+    std::shared_ptr<opendnp3::TCPClient> client;
+    std::shared_ptr<MockTCPServer> server;
+};
+
+#endif

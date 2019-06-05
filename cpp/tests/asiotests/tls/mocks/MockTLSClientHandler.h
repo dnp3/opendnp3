@@ -18,46 +18,46 @@
  * limitations under the License.
  */
 
-#ifndef ASIOPAL_MOCKTLSPAIR_H
-#define ASIOPAL_MOCKTLSPAIR_H
+#ifndef OPENDNP3_ASIOTESTS_MOCKTLSCLIENTHANDLER_H
+#define OPENDNP3_ASIOTESTS_MOCKTLSCLIENTHANDLER_H
 
-#include "../../mocks/MockIO.h"
-#include "MockTLSClientHandler.h"
-#include "MockTLSServer.h"
+#include "channel/IAsyncChannel.h"
+#include "channel/tls/TLSStreamChannel.h"
 
-#include "asiopal/tls/TLSClient.h"
+#include <asio/ssl.hpp>
 
-#include "testlib/MockLogHandler.h"
+#include <deque>
 
-namespace asiopal
-{
-
-class MockTLSPair
+class MockTLSClientHandler final
 {
 
 public:
-    MockTLSPair(const std::shared_ptr<MockIO>& io,
-                uint16_t port,
-                const TLSConfig& client,
-                const TLSConfig& server,
-                std::error_code ec = std::error_code());
+    void OnConnect(const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
+                   const std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>>& stream,
+                   const std::error_code& ec)
+    {
+        if (ec)
+        {
+            ++num_error;
+            throw std::logic_error(ec.message());
+        }
+        else
+        {
+            channels.push_back(opendnp3::TLSStreamChannel::Create(executor, stream));
+        }
+    }
 
-    ~MockTLSPair();
+    ~MockTLSClientHandler()
+    {
+        for (auto& channel : channels)
+        {
+            channel->Shutdown();
+        }
+    }
 
-    void Connect(size_t num = 1);
+    size_t num_error = 0;
 
-    bool NumConnectionsEqual(size_t num) const;
-
-    testlib::MockLogHandler log;
-
-private:
-    std::shared_ptr<MockIO> io;
-    uint16_t port;
-    std::shared_ptr<MockTLSClientHandler> chandler;
-    std::shared_ptr<TLSClient> client;
-    std::shared_ptr<MockTLSServer> server;
+    std::deque<std::shared_ptr<opendnp3::IAsyncChannel>> channels;
 };
-
-} // namespace asiopal
 
 #endif

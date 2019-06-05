@@ -17,18 +17,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <asiopal/Executor.h>
-#include <asiopal/ThreadPool.h>
+#include <exe4cpp/asio/StrandExecutor.h>
+#include <exe4cpp/asio/ThreadPool.h>
 
 #include <opendnp3/LogLevels.h>
 
 #include <catch.hpp>
 
-using namespace std;
-using namespace std::chrono;
-using namespace openpal;
-using namespace opendnp3;
-using namespace asiopal;
+using namespace exe4cpp;
 
 #define SUITE(name) "ExecutorTestSuite - " name
 
@@ -40,17 +36,17 @@ TEST_CASE(SUITE("Test automatic resource reclaimation"))
 
     uint32_t counter[NUM_STRAND] = {0};
 
-    auto io = std::make_shared<IO>();
+    auto io = std::make_shared<asio::io_context>();
 
-    ThreadPool pool(Logger::Empty(), io, NUM_THREAD);
+    ThreadPool pool(io, NUM_THREAD);
 
     auto setup = [&](uint32_t& counter) {
-        auto exe = pool.CreateExecutor();
+        auto exe = std::make_shared<exe4cpp::StrandExecutor>(io);
         auto increment = [&]() { ++counter; };
         for (int i = 0; i < NUM_OPS; ++i)
         {
-            exe->Post(increment);
-            exe->Start(TimeDuration::Milliseconds(0), increment);
+            exe->post(increment);
+            exe->start(std::chrono::milliseconds(0), increment);
         }
     };
 
@@ -59,7 +55,7 @@ TEST_CASE(SUITE("Test automatic resource reclaimation"))
         setup(i);
     }
 
-    pool.Shutdown();
+    pool.shutdown();
 
     for (unsigned int i : counter)
     {
@@ -72,18 +68,18 @@ TEST_CASE(SUITE("Executor dispatch is from only one thread at a time"))
     const int NUM_THREAD = 10;
     const int NUM_OPS = 1000;
 
-    auto io = std::make_shared<IO>();
+    auto io = std::make_shared<asio::io_context>();
 
     int sum = 0;
 
     {
-        ThreadPool pool(Logger::Empty(), io, NUM_THREAD);
-        auto exe = pool.CreateExecutor();
+        ThreadPool pool(io, NUM_THREAD);
+        auto exe = std::make_shared<exe4cpp::StrandExecutor>(io);
 
         for (int i = 0; i < NUM_OPS; ++i)
         {
             auto increment = [&sum]() { ++sum; };
-            exe->Post(increment);
+            exe->post(increment);
         }
     }
 
@@ -95,14 +91,14 @@ TEST_CASE(SUITE("Executor dispatch is in same order as post order"))
     const int NUM_THREAD = 10;
     const int NUM_OPS = 1000;
 
-    auto io = std::make_shared<IO>();
+    auto io = std::make_shared<asio::io_context>();
 
     int order = 0;
     bool is_ordered = true;
 
     {
-        ThreadPool pool(Logger::Empty(), io, NUM_THREAD);
-        auto exe = pool.CreateExecutor();
+        ThreadPool pool(io, NUM_THREAD);
+        auto exe = std::make_shared<exe4cpp::StrandExecutor>(io);
 
         for (int i = 0; i < NUM_OPS; ++i)
         {
@@ -119,7 +115,7 @@ TEST_CASE(SUITE("Executor dispatch is in same order as post order"))
                     }
                 }
             };
-            exe->Post(test_order);
+            exe->post(test_order);
         }
     }
 
@@ -132,16 +128,16 @@ TEST_CASE(SUITE("Test ReturnFrom<T>()"))
     const int NUM_ACTIONS = 100;
     int counter = 0;
 
-    auto io = std::make_shared<IO>();
+    auto io = std::make_shared<asio::io_context>();
 
     {
-        ThreadPool pool(Logger::Empty(), io, NUM_THREAD);
-        auto exe = pool.CreateExecutor();
+        ThreadPool pool(io, NUM_THREAD);
+        auto exe = std::make_shared<exe4cpp::StrandExecutor>(io);
 
         for (int i = 0; i < NUM_ACTIONS; ++i)
         {
             auto getvalue = []() -> int { return 1; };
-            counter += exe->ReturnFrom<int>(getvalue);
+            counter += exe->return_from<int>(getvalue);
         }
     }
 

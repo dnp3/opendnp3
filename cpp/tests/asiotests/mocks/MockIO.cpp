@@ -18,12 +18,9 @@
  * limitations under the License.
  */
 
-#include "MockIO.h"
+#include "mocks/MockIO.h"
 
 #include <sstream>
-
-namespace asiopal
-{
 
 MockIO::Timeout::Timeout(asio::io_context& service, std::chrono::steady_clock::duration timeout)
     : timer(std::make_shared<asio::basic_waitable_timer<std::chrono::steady_clock>>(service, timeout))
@@ -46,12 +43,12 @@ MockIO::Timeout::~Timeout()
 size_t MockIO::RunUntilTimeout(const std::function<bool()>& condition, std::chrono::steady_clock::duration timeout)
 {
     size_t iterations = 0;
-    Timeout to(this->service, timeout);
+    Timeout to(*this->io, timeout);
 
     while (!condition())
     {
         std::error_code ec;
-        const auto num = this->service.run_one(ec);
+        const auto num = this->io->run_one(ec);
         if (ec)
             throw std::logic_error(ec.message());
         if (num == 0)
@@ -63,7 +60,7 @@ size_t MockIO::RunUntilTimeout(const std::function<bool()>& condition, std::chro
 
         ++iterations;
 
-        this->service.reset();
+        this->io.reset();
     }
 
     return iterations;
@@ -75,7 +72,7 @@ void MockIO::CompleteInXIterations(size_t expectedIterations,
 {
     size_t iterations = 0;
 
-    Timeout to(this->service, timeout);
+    Timeout to(*this->io, timeout);
 
     while (!condition())
     {
@@ -87,7 +84,7 @@ void MockIO::CompleteInXIterations(size_t expectedIterations,
         }
 
         std::error_code ec;
-        const auto num = this->service.run_one(ec);
+        const auto num = this->io->run_one(ec);
         if (ec)
             throw std::logic_error(ec.message());
         if (num == 0)
@@ -98,7 +95,7 @@ void MockIO::CompleteInXIterations(size_t expectedIterations,
         }
 
         ++iterations;
-        this->service.reset();
+        this->io->reset();
     }
 
     if (iterations != expectedIterations)
@@ -116,7 +113,7 @@ size_t MockIO::RunUntilOutOfWork()
     while (true)
     {
         std::error_code ec;
-        const auto num = this->service.poll_one(ec);
+        const auto num = this->io->poll_one(ec);
         if (ec)
             throw std::logic_error(ec.message());
 
@@ -127,8 +124,6 @@ size_t MockIO::RunUntilOutOfWork()
 
         ++iterations;
 
-        this->service.reset();
+        this->io->reset();
     }
 }
-
-} // namespace asiopal

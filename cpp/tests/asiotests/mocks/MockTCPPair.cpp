@@ -20,11 +20,11 @@
 
 #include "MockTCPPair.h"
 
-namespace asiopal
-{
+using namespace opendnp3;
 
-MockTCPPair::MockTCPPair(const std::shared_ptr<MockIO>& io, uint16_t port, std::error_code ec)
-    : io(io),
+MockTCPPair::MockTCPPair(std::shared_ptr<MockIO> io, uint16_t port, std::error_code ec)
+    : log("test"),
+      io(io),
       port(port),
       chandler(std::make_shared<MockTCPClientHandler>()),
       client(TCPClient::Create(log.logger, io->GetExecutor(), "127.0.0.1")),
@@ -44,7 +44,7 @@ MockTCPPair::~MockTCPPair()
 
 void MockTCPPair::Connect(size_t num)
 {
-    auto callback = [handler = this->chandler](const std::shared_ptr<Executor>& executor, asio::ip::tcp::socket socket,
+    auto callback = [handler = this->chandler](const std::shared_ptr<exe4cpp::StrandExecutor>& executor, asio::ip::tcp::socket socket,
                                                const std::error_code& ec) {
         handler->OnConnect(executor, std::move(socket), ec);
     };
@@ -63,5 +63,3 @@ bool MockTCPPair::NumConnectionsEqual(size_t num) const
 {
     return (this->server->channels.size() == num) && (this->chandler->channels.size() == num);
 }
-
-} // namespace asiopal

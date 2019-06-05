@@ -18,35 +18,32 @@
  * limitations under the License.
  */
 
-#ifndef ASIOPAL_MOCKTLSSERVER_H
-#define ASIOPAL_MOCKTLSSERVER_H
+#ifndef OPENDNP3_ASIOTESTS_MOCKTLSSERVER_H
+#define OPENDNP3_ASIOTESTS_MOCKTLSSERVER_H
 
-#include "asiopal/IAsyncChannel.h"
-#include "asiopal/tls/TLSServer.h"
-#include "asiopal/tls/TLSStreamChannel.h"
+#include "channel/IAsyncChannel.h"
+#include "channel/tls/TLSServer.h"
+#include "channel/tls/TLSStreamChannel.h"
 
 #include <deque>
 
-namespace asiopal
-{
-
-class MockTLSServer final : public TLSServer
+class MockTLSServer final : public opendnp3::TLSServer
 {
 
 public:
-    MockTLSServer(const openpal::Logger& logger,
-                  std::shared_ptr<Executor> executor,
-                  IPEndpoint endpoint,
-                  const TLSConfig& config,
+    MockTLSServer(const log4cpp::Logger& logger,
+                  std::shared_ptr<exe4cpp::StrandExecutor> executor,
+                  opendnp3::IPEndpoint endpoint,
+                  const opendnp3::TLSConfig& config,
                   std::error_code& ec)
         : TLSServer(logger, executor, endpoint, config, ec)
     {
     }
 
-    static std::shared_ptr<MockTLSServer> Create(const openpal::Logger& logger,
-                                                 std::shared_ptr<Executor> executor,
-                                                 IPEndpoint endpoint,
-                                                 const TLSConfig& config,
+    static std::shared_ptr<MockTLSServer> Create(const log4cpp::Logger& logger,
+                                                 std::shared_ptr<exe4cpp::StrandExecutor> executor,
+                                                 opendnp3::IPEndpoint endpoint,
+                                                 const opendnp3::TLSConfig& config,
                                                  std::error_code& ec)
     {
         auto server = std::make_shared<MockTLSServer>(logger, executor, endpoint, config, ec);
@@ -73,10 +70,10 @@ public:
     }
 
     void AcceptStream(uint64_t sessionid,
-                      const std::shared_ptr<Executor>& executor,
+                      const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                       std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>> stream) override
     {
-        channels.push_back(TLSStreamChannel::Create(executor, stream));
+        channels.push_back(opendnp3::TLSStreamChannel::Create(executor, stream));
     }
 
     void OnShutdown() override {}
@@ -89,9 +86,7 @@ public:
         }
     }
 
-    std::deque<std::shared_ptr<IAsyncChannel>> channels;
+    std::deque<std::shared_ptr<opendnp3::IAsyncChannel>> channels;
 };
-
-} // namespace asiopal
 
 #endif

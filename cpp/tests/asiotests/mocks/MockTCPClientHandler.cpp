@@ -18,29 +18,29 @@
  * limitations under the License.
  */
 
-#ifndef ASIOPAL_MOCKTCPCLIENTHANDLER_H
-#define ASIOPAL_MOCKTCPCLIENTHANDLER_H
+#include "MockTCPClientHandler.h"
 
-#include "asiopal/IAsyncChannel.h"
+#include "channel/SocketChannel.h"
 
-#include <deque>
+using namespace opendnp3;
 
-namespace asiopal
+void MockTCPClientHandler::OnConnect(const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
+                                     asio::ip::tcp::socket socket,
+                                     const std::error_code& ec)
 {
+    if (ec)
+    {
+        ++this->num_error;
+        throw std::logic_error(ec.message());
+    }
 
-class MockTCPClientHandler final
+    this->channels.push_back(SocketChannel::Create(executor, std::move(socket)));
+}
+
+MockTCPClientHandler::~MockTCPClientHandler()
 {
-
-public:
-    void OnConnect(const std::shared_ptr<Executor>& executor, asio::ip::tcp::socket socket, const std::error_code& ec);
-
-    ~MockTCPClientHandler();
-
-    size_t num_error = 0;
-
-    std::deque<std::shared_ptr<IAsyncChannel>> channels;
-};
-
-} // namespace asiopal
-
-#endif
+    for (auto& channel : channels)
+    {
+        channel->Shutdown();
+    }
+}

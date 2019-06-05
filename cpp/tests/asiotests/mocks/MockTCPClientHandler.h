@@ -17,46 +17,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <asio.hpp>
-#include <catch.hpp>
 
-#include <chrono>
-#include <functional>
-#include <iostream>
+#ifndef OPENDNP3_ASIOTESTS_MOCKTCPCLIENTHANDLER_H
+#define OPENDNP3_ASIOTESTS_MOCKTCPCLIENTHANDLER_H
 
-using namespace std;
-using namespace asio;
+#include "channel/IAsyncChannel.h"
 
-namespace asio
+#include <deque>
+
+class MockTCPClientHandler final
 {
-using steady_timer = asio::basic_waitable_timer<std::chrono::steady_clock>;
-} // namespace asio
 
-void AssertCanceled(bool* apFlag, const std::error_code& ec)
-{
-    if (ec)
-        *apFlag = true;
-}
+public:
+    void OnConnect(const std::shared_ptr<exe4cpp::StrandExecutor>& executor, asio::ip::tcp::socket socket, const std::error_code& ec);
 
-void Cancel(asio::basic_waitable_timer<std::chrono::steady_clock>* aptimer)
-{
-    aptimer->cancel();
-}
+    ~MockTCPClientHandler();
 
-#define SUITE(name) "TestBoostASIO - " name
+    size_t num_error = 0;
 
-TEST_CASE(SUITE("TimerCancel"))
-{
-    bool flag = false;
+    std::deque<std::shared_ptr<opendnp3::IAsyncChannel>> channels;
+};
 
-    io_context io;
-    steady_timer t1(io, std::chrono::seconds(0));
-    steady_timer t2(io, std::chrono::seconds(1));
-
-    t1.async_wait(std::bind(Cancel, &t2));
-    t2.async_wait(std::bind(AssertCanceled, &flag, std::placeholders::_1));
-
-    io.run();
-
-    REQUIRE(flag);
-}
+#endif

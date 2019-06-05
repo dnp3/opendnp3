@@ -18,33 +18,30 @@
  * limitations under the License.
  */
 
-#ifndef ASIOPAL_MOCKTCPSERVER_H
-#define ASIOPAL_MOCKTCPSERVER_H
+#ifndef OPENDNP3_ASIOTESTS_MOCKTCPSERVER_H
+#define OPENDNP3_ASIOTESTS_MOCKTCPSERVER_H
 
-#include "asiopal/IAsyncChannel.h"
-#include "asiopal/SocketChannel.h"
-#include "asiopal/TCPServer.h"
+#include "channel/IAsyncChannel.h"
+#include "channel/SocketChannel.h"
+#include "channel/TCPServer.h"
 
 #include <deque>
 
-namespace asiopal
-{
-
-class MockTCPServer final : public TCPServer
+class MockTCPServer final : public opendnp3::TCPServer
 {
 
 public:
-    MockTCPServer(const openpal::Logger& logger,
-                  std::shared_ptr<Executor> executor,
-                  IPEndpoint endpoint,
+    MockTCPServer(const log4cpp::Logger& logger,
+                  std::shared_ptr<exe4cpp::StrandExecutor> executor,
+                  opendnp3::IPEndpoint endpoint,
                   std::error_code& ec)
         : TCPServer(logger, executor, endpoint, ec)
     {
     }
 
-    static std::shared_ptr<MockTCPServer> Create(const openpal::Logger& logger,
-                                                 std::shared_ptr<Executor> executor,
-                                                 IPEndpoint endpoint,
+    static std::shared_ptr<MockTCPServer> Create(const log4cpp::Logger& logger,
+                                                 std::shared_ptr<exe4cpp::StrandExecutor> executor,
+                                                 opendnp3::IPEndpoint endpoint,
                                                  std::error_code& ec)
     {
         auto server = std::make_shared<MockTCPServer>(logger, executor, endpoint, ec);
@@ -58,10 +55,10 @@ public:
     }
 
     virtual void AcceptConnection(uint64_t sessionid,
-                                  const std::shared_ptr<Executor>& executor,
+                                  const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                   asio::ip::tcp::socket socket) override
     {
-        this->channels.push_back(SocketChannel::Create(executor, std::move(socket)));
+        this->channels.push_back(opendnp3::SocketChannel::Create(executor, std::move(socket)));
     }
 
     virtual void OnShutdown() override {}
@@ -74,9 +71,7 @@ public:
         }
     }
 
-    std::deque<std::shared_ptr<IAsyncChannel>> channels;
+    std::deque<std::shared_ptr<opendnp3::IAsyncChannel>> channels;
 };
-
-} // namespace asiopal
 
 #endif

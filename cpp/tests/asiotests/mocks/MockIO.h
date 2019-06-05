@@ -18,17 +18,14 @@
  * limitations under the License.
  */
 
-#ifndef ASIOPAL_MOCKIO_H
-#define ASIOPAL_MOCKIO_H
+#ifndef OPENDNP3_ASIOTESTS_MOCKIO_H
+#define OPENDNP3_ASIOTESTS_MOCKIO_H
 
-#include "asiopal/Executor.h"
+#include <exe4cpp/asio/StrandExecutor.h>
 
 #include <memory>
 
-namespace asiopal
-{
-
-class MockIO final : public IO, public std::enable_shared_from_this<MockIO>
+class MockIO final : public std::enable_shared_from_this<MockIO>
 {
     class Timeout
     {
@@ -43,14 +40,16 @@ class MockIO final : public IO, public std::enable_shared_from_this<MockIO>
     };
 
 public:
+    MockIO() : io(std::make_shared<asio::io_context>()) {}
+
     static std::shared_ptr<MockIO> Create()
     {
         return std::make_shared<MockIO>();
     }
 
-    std::shared_ptr<Executor> GetExecutor()
+    std::shared_ptr<exe4cpp::StrandExecutor> GetExecutor()
     {
-        return Executor::Create(this->shared_from_this());
+        return exe4cpp::StrandExecutor::create(this->io);
     }
 
     size_t RunUntilTimeout(const std::function<bool()>& condition,
@@ -61,8 +60,8 @@ public:
                                std::chrono::steady_clock::duration timeout = std::chrono::seconds(1));
 
     size_t RunUntilOutOfWork();
-};
 
-} // namespace asiopal
+    std::shared_ptr<asio::io_context> io;
+};
 
 #endif
