@@ -17,33 +17,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_DATABASECONFIG_H
-#define OPENDNP3_DATABASECONFIG_H
 
-#include "opendnp3/outstation/MeasurementConfig.h"
-
-#include <map>
+#include "opendnp3/outstation/DatabaseConfig.h"
 
 namespace opendnp3
 {
 
-struct DatabaseConfig
+template<class T> void initialize(std::map<uint16_t, T>& map, uint16_t count)
+{
+    for (uint16_t i = 0; i < count; ++i)
+    {
+        map[i] = {};
+    }
+}
+
+DatabaseConfig::DatabaseConfig(uint16_t all_types)
 {   
-	DatabaseConfig() = default;
-
-	DatabaseConfig(uint16_t all_types);
-
-    std::map<uint16_t, BinaryConfig> binary_input;
-    std::map<uint16_t, DoubleBitBinaryConfig> double_binary;
-    std::map<uint16_t, AnalogConfig> analog_input;
-    std::map<uint16_t, CounterConfig> counter;
-    std::map<uint16_t, FrozenCounterConfig> frozen_counter;
-    std::map<uint16_t, BOStatusConfig> binary_output_status;
-    std::map<uint16_t, AOStatusConfig> analog_output_status;
-    std::map<uint16_t, TimeAndIntervalConfig> time_and_interval;
-    std::map<uint16_t, OctetStringConfig> octet_string;
+    initialize(this->binary_input, all_types);
+    initialize(this->double_binary, all_types);
+    initialize(this->analog_input, all_types);
+    initialize(this->counter, all_types);
+    initialize(this->frozen_counter, all_types);
+    initialize(this->binary_output_status, all_types);
+    initialize(this->analog_output_status, all_types);
+    initialize(this->time_and_interval, all_types);
+    initialize(this->octet_string, all_types);
 };
 
 } // namespace opendnp3
-
-#endif

@@ -32,12 +32,15 @@
 using namespace std;
 using namespace opendnp3;
 
-void ConfigureDatabase(DatabaseConfig& config)
+DatabaseConfig ConfigureDatabase()
 {
-    // example of configuring analog index 0 for Class2 with floating point variations by default
-    config.analog[0].clazz = PointClass::Class2;
-    config.analog[0].svariation = StaticAnalogVariation::Group30Var5;
-    config.analog[0].evariation = EventAnalogVariation::Group32Var7;
+    DatabaseConfig config(10); // 10 of each type
+            
+    config.analog_input[0].clazz = PointClass::Class2;
+    config.analog_input[0].svariation = StaticAnalogVariation::Group30Var5;
+    config.analog_input[0].evariation = EventAnalogVariation::Group32Var7;
+            
+    return config;
 }
 
 struct State
@@ -69,7 +72,7 @@ int main(int argc, char* argv[])
 
     // The main object for a outstation. The defaults are useable,
     // but understanding the options are important.
-    OutstationStackConfig config(DatabaseSizes::AllTypes(10));
+    OutstationStackConfig config(ConfigureDatabase());
 
     // Specify the maximum size of the event buffers
     config.outstation.eventBufferConfig = EventBufferConfig::AllTypes(10);
@@ -83,11 +86,7 @@ int main(int argc, char* argv[])
     // in this example we've changed the default link layer addressing
     config.link.LocalAddr = 10;
     config.link.RemoteAddr = 1;
-
-    config.link.KeepAliveTimeout = TimeDuration::Max();
-
-    // You can optionally change the default reporting variations or class assignment prior to enabling the outstation
-    ConfigureDatabase(config.dbConfig);
+    config.link.KeepAliveTimeout = TimeDuration::Max();    
 
     // Create a new outstation with a log level, command handler, and
     // config info this	returns a thread-safe interface used for

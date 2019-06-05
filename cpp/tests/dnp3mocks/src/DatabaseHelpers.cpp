@@ -27,7 +27,7 @@ namespace by_count_of
 {
     opendnp3::DatabaseConfig all_types(uint16_t num)
     {
-        return database_by_sizes(num, num, num, num, num, num, num, num, num);
+        return opendnp3::DatabaseConfig(num);
     }
 
     opendnp3::DatabaseConfig binary_input(uint16_t num)

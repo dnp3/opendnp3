@@ -362,7 +362,7 @@ set(opendnp3_private_headers
     ./src/outstation/CommandResponseHandler.h
     ./src/outstation/ConstantCommandAction.h
     ./src/outstation/ControlState.h
-    ./src/outstation/Database.h    
+    ./src/outstation/Database.h
     ./src/outstation/DeferredRequest.h
     ./src/outstation/Event.h
     ./src/outstation/IClassAssigner.h
@@ -586,6 +586,7 @@ set(opendnp3_src
     ./src/outstation/CommandActionAdapter.cpp
     ./src/outstation/CommandResponseHandler.cpp
     ./src/outstation/Database.cpp
+    ./src/outstation/DatabaseConfig.cpp
     ./src/outstation/DeferredRequest.cpp
     ./src/outstation/EventBufferConfig.cpp
     ./src/outstation/IINHelpers.cpp
