@@ -21,6 +21,14 @@ option(DNP3_TLS "Build TLS client/server support (requires OpenSSL)" OFF)
 option(DNP3_TESTS "Build unit and integration tests" OFF)
 option(DNP3_EXAMPLES "Build example applications" OFF)
 option(DNP3_FUZZING "Build Google OSS-Fuzz targets" OFF)
+option(DNP3_EVERYTHING "Build all optional targets" OFF)
+
+if(DNP3_EVERYTHING)    
+	set(DNP3_TLS ON)
+	set(DNP3_TESTS ON)
+	set(DNP3_EXAMPLES ON)
+	set(DNP3_FUZZING ON)
+endif()
 
 # External dependencies
 include(./deps/asio.cmake)
