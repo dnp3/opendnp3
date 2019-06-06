@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_IDECODERCALLBACKS_H
 #define OPENDNP3_IDECODERCALLBACKS_H
 
-#include "opendnp3/Uncopyable.h"
+#include "opendnp3/util/Uncopyable.h"
 
 namespace opendnp3
 {

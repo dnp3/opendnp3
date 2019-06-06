@@ -22,7 +22,7 @@
 
 #include "channel/tls/SSLContext.h"
 
-#include "opendnp3/Uncopyable.h"
+#include "opendnp3/util/Uncopyable.h"
 #include "opendnp3/channel/IListener.h"
 #include "opendnp3/channel/IPEndpoint.h"
 #include "opendnp3/channel/TLSConfig.h"

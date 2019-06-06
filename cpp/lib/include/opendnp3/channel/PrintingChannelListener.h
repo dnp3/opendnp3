@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_PRINTINGCHANNELLISTENER_H
 #define OPENDNP3_PRINTINGCHANNELLISTENER_H
 
-#include "opendnp3/Uncopyable.h"
+#include "opendnp3/util/Uncopyable.h"
 #include "opendnp3/channel/IChannelListener.h"
 
 #include <iostream>

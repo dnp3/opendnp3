@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_TASKCONTEXT_H
 #define OPENDNP3_TASKCONTEXT_H
 
-#include "opendnp3/Uncopyable.h"
+#include "opendnp3/util/Uncopyable.h"
 
 #include <set>
 

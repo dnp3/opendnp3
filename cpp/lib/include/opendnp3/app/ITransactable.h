@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_ITRANSACTABLE_H
 #define OPENDNP3_ITRANSACTABLE_H
 
-#include "opendnp3/Uncopyable.h"
+#include "opendnp3/util/Uncopyable.h"
 
 namespace opendnp3
 {

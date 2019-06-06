@@ -1,16 +1,14 @@
 set(opendnp3_public_headers
-    ./include/opendnp3/Buffer.h
+    
     ./include/opendnp3/ConsoleLogger.h
     ./include/opendnp3/DNP3Manager.h
     ./include/opendnp3/ErrorCodes.h
     ./include/opendnp3/IResource.h
     ./include/opendnp3/IStack.h
     ./include/opendnp3/LogLevels.h
-    ./include/opendnp3/StackStatistics.h
-    ./include/opendnp3/StaticOnly.h
+    ./include/opendnp3/StackStatistics.h    
     ./include/opendnp3/TimeDuration.h
-    ./include/opendnp3/Timestamp.h
-    ./include/opendnp3/Uncopyable.h
+    ./include/opendnp3/Timestamp.h    
     ./include/opendnp3/UTCTimestamp.h
 
     ./include/opendnp3/app/AnalogCommandEvent.h
@@ -167,6 +165,10 @@ set(opendnp3_public_headers
     ./include/opendnp3/outstation/StaticTypeBitfield.h
     ./include/opendnp3/outstation/UpdateBuilder.h
     ./include/opendnp3/outstation/Updates.h
+
+	./include/opendnp3/util/Buffer.h
+	./include/opendnp3/util/StaticOnly.h
+	./include/opendnp3/util/Uncopyable.h
 )
 
 set(opendnp3_private_headers

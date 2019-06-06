@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_OCTETDATA_H
 #define OPENDNP3_OCTETDATA_H
 
-#include "opendnp3/Buffer.h"
+#include "opendnp3/util/Buffer.h"
 
 #include <array>
 #include <cstdint>

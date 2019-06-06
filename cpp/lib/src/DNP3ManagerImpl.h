@@ -24,7 +24,7 @@
 #include "ResourceManager.h"
 
 #include "opendnp3/LogLevels.h"
-#include "opendnp3/Uncopyable.h"
+#include "opendnp3/util/Uncopyable.h"
 #include "opendnp3/channel/ChannelRetry.h"
 #include "opendnp3/channel/IChannel.h"
 #include "opendnp3/channel/IChannelListener.h"

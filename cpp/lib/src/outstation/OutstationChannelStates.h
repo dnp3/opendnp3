@@ -23,7 +23,7 @@
 #include "app/TxBuffer.h"
 #include "outstation/OutstationSeqNum.h"
 
-#include "opendnp3/Uncopyable.h"
+#include "opendnp3/util/Uncopyable.h"
 
 namespace opendnp3
 {

@@ -25,7 +25,7 @@
 #include "outstation/IEventReceiver.h"
 #include "outstation/StaticDataCell.h"
 
-#include "opendnp3/Uncopyable.h"
+#include "opendnp3/util/Uncopyable.h"
 #include "opendnp3/gen/EventMode.h"
 
 #include <iterator>

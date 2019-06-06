@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_SOCKET_HELPERS_H
 #define OPENDNP3_SOCKET_HELPERS_H
 
-#include "opendnp3/StaticOnly.h"
+#include "opendnp3/util/StaticOnly.h"
 
 #include <asio.hpp>
 

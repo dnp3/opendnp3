@@ -25,7 +25,7 @@
 #include "app/Range.h"
 #include "outstation/IResponseLoader.h"
 
-#include "opendnp3/Uncopyable.h"
+#include "opendnp3/util/Uncopyable.h"
 
 namespace opendnp3
 {

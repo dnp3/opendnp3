@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_SSLCONTEXT_H
 #define OPENDNP3_SSLCONTEXT_H
 
-#include "opendnp3/Uncopyable.h"
+#include "opendnp3/util/Uncopyable.h"
 #include "opendnp3/channel/TLSConfig.h"
 
 #include <log4cpp/Logger.h>

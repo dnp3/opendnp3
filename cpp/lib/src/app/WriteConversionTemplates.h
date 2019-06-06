@@ -22,7 +22,7 @@
 
 #include "app/DownSampling.h"
 
-#include "opendnp3/StaticOnly.h"
+#include "opendnp3/util/StaticOnly.h"
 
 #include <cstdint>
 

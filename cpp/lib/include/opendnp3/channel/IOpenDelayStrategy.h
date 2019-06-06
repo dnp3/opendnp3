@@ -21,7 +21,7 @@
 #define OPENDNP3_IOPENDELAYSTRATEGY_H
 
 #include "opendnp3/TimeDuration.h"
-#include "opendnp3/Uncopyable.h"
+#include "opendnp3/util/Uncopyable.h"
 
 namespace opendnp3
 {

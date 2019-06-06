@@ -20,8 +20,8 @@
 #ifndef OPENDNP3_X509_INFO_H
 #define OPENDNP3_X509_INFO_H
 
-#include "opendnp3/Buffer.h"
-#include "opendnp3/Uncopyable.h"
+#include "opendnp3/util/Buffer.h"
+#include "opendnp3/util/Uncopyable.h"
 
 #include <string>
 

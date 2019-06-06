@@ -24,7 +24,7 @@
 #include "app/MeasurementTypeSpecs.h"
 #include "outstation/StaticDataMap.h"
 
-#include "opendnp3/StaticOnly.h"
+#include "opendnp3/util/StaticOnly.h"
 #include "opendnp3/gen/StaticAnalogOutputStatusVariation.h"
 #include "opendnp3/gen/StaticAnalogVariation.h"
 #include "opendnp3/gen/StaticBinaryOutputStatusVariation.h"

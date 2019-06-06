@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_CONSOLELOGGER_H
 #define OPENDNP3_CONSOLELOGGER_H
 
-#include "opendnp3/Uncopyable.h"
+#include "opendnp3/util/Uncopyable.h"
 
 #include <log4cpp/ILogHandler.h>
 

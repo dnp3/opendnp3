@@ -22,7 +22,7 @@
 
 #include "app/APDUHeader.h"
 
-#include "opendnp3/StaticOnly.h"
+#include "opendnp3/util/StaticOnly.h"
 
 #include <ser4cpp/container/SequenceTypes.h>
 

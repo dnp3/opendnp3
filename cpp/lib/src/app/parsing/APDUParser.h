@@ -25,7 +25,7 @@
 #include "app/parsing/ParseResult.h"
 #include "app/parsing/ParserSettings.h"
 
-#include "opendnp3/StaticOnly.h"
+#include "opendnp3/util/StaticOnly.h"
 
 #include <ser4cpp/container/SequenceTypes.h>
 

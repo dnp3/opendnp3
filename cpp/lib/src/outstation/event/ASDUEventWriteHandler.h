@@ -24,7 +24,7 @@
 #include "app/DNP3Serializer.h"
 #include "app/HeaderWriter.h"
 
-#include "opendnp3/Uncopyable.h"
+#include "opendnp3/util/Uncopyable.h"
 
 namespace opendnp3
 {

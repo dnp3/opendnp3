@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_PREFIXFIELDS_H
 #define OPENDNP3_PREFIXFIELDS_H
 
-#include "opendnp3/StaticOnly.h"
+#include "opendnp3/util/StaticOnly.h"
 
 #include <ser4cpp/container/SequenceTypes.h>
 #include <ser4cpp/serialization/LittleEndian.h>

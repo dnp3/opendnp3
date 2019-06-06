@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_DECODER_H
 #define OPENDNP3_DECODER_H
 
-#include "opendnp3/Buffer.h"
+#include "opendnp3/util/Buffer.h"
 #include "opendnp3/decoder/IDecoderCallbacks.h"
 
 #include <log4cpp/Logger.h>

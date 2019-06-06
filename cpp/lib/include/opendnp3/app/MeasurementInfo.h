@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_MEASUREMENTINFO_H
 #define OPENDNP3_MEASUREMENTINFO_H
 
-#include "opendnp3/StaticOnly.h"
+#include "opendnp3/util/StaticOnly.h"
 #include "opendnp3/app/EventType.h"
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/OctetString.h"
