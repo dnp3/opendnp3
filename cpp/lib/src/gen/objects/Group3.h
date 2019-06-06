@@ -70,6 +70,7 @@ struct Group3Var2
   static bool ReadTarget(ser4cpp::rseq_t&, DoubleBitBinary&);
   static bool WriteTarget(const DoubleBitBinary&, ser4cpp::wseq_t&);
   static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  static const StaticDoubleBinaryVariation svariation = StaticDoubleBinaryVariation::Group3Var2;
 };
 
 

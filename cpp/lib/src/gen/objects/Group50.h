@@ -88,6 +88,7 @@ struct Group50Var4
   static bool ReadTarget(ser4cpp::rseq_t&, TimeAndInterval&);
   static bool WriteTarget(const TimeAndInterval&, ser4cpp::wseq_t&);
   static DNP3Serializer<TimeAndInterval> Inst() { return DNP3Serializer<TimeAndInterval>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  static const StaticTimeAndIntervalVariation svariation = StaticTimeAndIntervalVariation::Group50Var4;
 };
 
 

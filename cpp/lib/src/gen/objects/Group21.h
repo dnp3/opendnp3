@@ -66,6 +66,7 @@ struct Group21Var1
   static bool ReadTarget(ser4cpp::rseq_t&, FrozenCounter&);
   static bool WriteTarget(const FrozenCounter&, ser4cpp::wseq_t&);
   static DNP3Serializer<FrozenCounter> Inst() { return DNP3Serializer<FrozenCounter>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  static const StaticFrozenCounterVariation svariation = StaticFrozenCounterVariation::Group21Var1;
 };
 
 // Frozen Counter - 16-bit With Flag
@@ -88,6 +89,7 @@ struct Group21Var2
   static bool ReadTarget(ser4cpp::rseq_t&, FrozenCounter&);
   static bool WriteTarget(const FrozenCounter&, ser4cpp::wseq_t&);
   static DNP3Serializer<FrozenCounter> Inst() { return DNP3Serializer<FrozenCounter>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  static const StaticFrozenCounterVariation svariation = StaticFrozenCounterVariation::Group21Var2;
 };
 
 // Frozen Counter - 32-bit With Flag and Time
@@ -111,6 +113,7 @@ struct Group21Var5
   static bool ReadTarget(ser4cpp::rseq_t&, FrozenCounter&);
   static bool WriteTarget(const FrozenCounter&, ser4cpp::wseq_t&);
   static DNP3Serializer<FrozenCounter> Inst() { return DNP3Serializer<FrozenCounter>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  static const StaticFrozenCounterVariation svariation = StaticFrozenCounterVariation::Group21Var5;
 };
 
 // Frozen Counter - 16-bit With Flag and Time
@@ -134,6 +137,7 @@ struct Group21Var6
   static bool ReadTarget(ser4cpp::rseq_t&, FrozenCounter&);
   static bool WriteTarget(const FrozenCounter&, ser4cpp::wseq_t&);
   static DNP3Serializer<FrozenCounter> Inst() { return DNP3Serializer<FrozenCounter>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  static const StaticFrozenCounterVariation svariation = StaticFrozenCounterVariation::Group21Var6;
 };
 
 // Frozen Counter - 32-bit Without Flag
@@ -155,6 +159,7 @@ struct Group21Var9
   static bool ReadTarget(ser4cpp::rseq_t&, FrozenCounter&);
   static bool WriteTarget(const FrozenCounter&, ser4cpp::wseq_t&);
   static DNP3Serializer<FrozenCounter> Inst() { return DNP3Serializer<FrozenCounter>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  static const StaticFrozenCounterVariation svariation = StaticFrozenCounterVariation::Group21Var9;
 };
 
 // Frozen Counter - 16-bit Without Flag
@@ -176,6 +181,7 @@ struct Group21Var10
   static bool ReadTarget(ser4cpp::rseq_t&, FrozenCounter&);
   static bool WriteTarget(const FrozenCounter&, ser4cpp::wseq_t&);
   static DNP3Serializer<FrozenCounter> Inst() { return DNP3Serializer<FrozenCounter>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  static const StaticFrozenCounterVariation svariation = StaticFrozenCounterVariation::Group21Var10;
 };
 
 

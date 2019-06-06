@@ -27,11 +27,11 @@ import com.automatak.render.dnp3.objects.generators.{AttributeGenerator, GroupVa
 
 object Generate {
 
-  val dnp3GenHeaderPath = FileSystems.getDefault.getPath("../cpp/lib/include/opendnp3/gen")
-  val dnp3GenImplPath = FileSystems.getDefault.getPath("../cpp/lib/src/gen")
-  val csharpGenPath = FileSystems.getDefault.getPath("../dotnet/CLRInterface/src/gen")
-  val dnp3ObjectPath = FileSystems.getDefault.getPath("../cpp/lib/src/gen/objects")
-  val javaGenPath = FileSystems.getDefault.getPath("../java/bindings/src/main/java/com/automatak/dnp3/enums")
+  private val dnp3GenHeaderPath = FileSystems.getDefault.getPath("../cpp/lib/include/opendnp3/gen")
+  private val dnp3GenImplPath = FileSystems.getDefault.getPath("../cpp/lib/src/gen")
+  private val csharpGenPath = FileSystems.getDefault.getPath("../dotnet/CLRInterface/src/gen")
+  private val dnp3ObjectPath = FileSystems.getDefault.getPath("../cpp/lib/src/gen/objects")
+  private val javaGenPath = FileSystems.getDefault.getPath("../java/bindings/src/main/java/com/automatak/dnp3/enums")
 
   def main(args: Array[String]): Unit = {
 

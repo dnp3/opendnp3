@@ -66,6 +66,7 @@ struct Group40Var1
   static bool ReadTarget(ser4cpp::rseq_t&, AnalogOutputStatus&);
   static bool WriteTarget(const AnalogOutputStatus&, ser4cpp::wseq_t&);
   static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  static const StaticAnalogOutputStatusVariation svariation = StaticAnalogOutputStatusVariation::Group40Var1;
 };
 
 // Analog Output Status - 16-bit With Flag
@@ -88,6 +89,7 @@ struct Group40Var2
   static bool ReadTarget(ser4cpp::rseq_t&, AnalogOutputStatus&);
   static bool WriteTarget(const AnalogOutputStatus&, ser4cpp::wseq_t&);
   static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  static const StaticAnalogOutputStatusVariation svariation = StaticAnalogOutputStatusVariation::Group40Var2;
 };
 
 // Analog Output Status - Single-precision With Flag
@@ -110,6 +112,7 @@ struct Group40Var3
   static bool ReadTarget(ser4cpp::rseq_t&, AnalogOutputStatus&);
   static bool WriteTarget(const AnalogOutputStatus&, ser4cpp::wseq_t&);
   static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  static const StaticAnalogOutputStatusVariation svariation = StaticAnalogOutputStatusVariation::Group40Var3;
 };
 
 // Analog Output Status - Double-precision With Flag
@@ -132,6 +135,7 @@ struct Group40Var4
   static bool ReadTarget(ser4cpp::rseq_t&, AnalogOutputStatus&);
   static bool WriteTarget(const AnalogOutputStatus&, ser4cpp::wseq_t&);
   static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  static const StaticAnalogOutputStatusVariation svariation = StaticAnalogOutputStatusVariation::Group40Var4;
 };
 
 

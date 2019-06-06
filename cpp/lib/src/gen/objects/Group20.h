@@ -66,6 +66,7 @@ struct Group20Var1
   static bool ReadTarget(ser4cpp::rseq_t&, Counter&);
   static bool WriteTarget(const Counter&, ser4cpp::wseq_t&);
   static DNP3Serializer<Counter> Inst() { return DNP3Serializer<Counter>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  static const StaticCounterVariation svariation = StaticCounterVariation::Group20Var1;
 };
 
 // Counter - 16-bit With Flag
@@ -88,6 +89,7 @@ struct Group20Var2
   static bool ReadTarget(ser4cpp::rseq_t&, Counter&);
   static bool WriteTarget(const Counter&, ser4cpp::wseq_t&);
   static DNP3Serializer<Counter> Inst() { return DNP3Serializer<Counter>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  static const StaticCounterVariation svariation = StaticCounterVariation::Group20Var2;
 };
 
 // Counter - 32-bit Without Flag
@@ -109,6 +111,7 @@ struct Group20Var5
   static bool ReadTarget(ser4cpp::rseq_t&, Counter&);
   static bool WriteTarget(const Counter&, ser4cpp::wseq_t&);
   static DNP3Serializer<Counter> Inst() { return DNP3Serializer<Counter>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  static const StaticCounterVariation svariation = StaticCounterVariation::Group20Var5;
 };
 
 // Counter - 16-bit Without Flag
@@ -130,6 +133,7 @@ struct Group20Var6
   static bool ReadTarget(ser4cpp::rseq_t&, Counter&);
   static bool WriteTarget(const Counter&, ser4cpp::wseq_t&);
   static DNP3Serializer<Counter> Inst() { return DNP3Serializer<Counter>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  static const StaticCounterVariation svariation = StaticCounterVariation::Group20Var6;
 };
 
 

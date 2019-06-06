@@ -66,6 +66,7 @@ struct Group30Var1
   static bool ReadTarget(ser4cpp::rseq_t&, Analog&);
   static bool WriteTarget(const Analog&, ser4cpp::wseq_t&);
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  static const StaticAnalogVariation svariation = StaticAnalogVariation::Group30Var1;
 };
 
 // Analog Input - 16-bit With Flag
@@ -88,6 +89,7 @@ struct Group30Var2
   static bool ReadTarget(ser4cpp::rseq_t&, Analog&);
   static bool WriteTarget(const Analog&, ser4cpp::wseq_t&);
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  static const StaticAnalogVariation svariation = StaticAnalogVariation::Group30Var2;
 };
 
 // Analog Input - 32-bit Without Flag
@@ -109,6 +111,7 @@ struct Group30Var3
   static bool ReadTarget(ser4cpp::rseq_t&, Analog&);
   static bool WriteTarget(const Analog&, ser4cpp::wseq_t&);
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  static const StaticAnalogVariation svariation = StaticAnalogVariation::Group30Var3;
 };
 
 // Analog Input - 16-bit Without Flag
@@ -130,6 +133,7 @@ struct Group30Var4
   static bool ReadTarget(ser4cpp::rseq_t&, Analog&);
   static bool WriteTarget(const Analog&, ser4cpp::wseq_t&);
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  static const StaticAnalogVariation svariation = StaticAnalogVariation::Group30Var4;
 };
 
 // Analog Input - Single-precision With Flag
@@ -152,6 +156,7 @@ struct Group30Var5
   static bool ReadTarget(ser4cpp::rseq_t&, Analog&);
   static bool WriteTarget(const Analog&, ser4cpp::wseq_t&);
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  static const StaticAnalogVariation svariation = StaticAnalogVariation::Group30Var5;
 };
 
 // Analog Input - Double-precision With Flag
@@ -174,6 +179,7 @@ struct Group30Var6
   static bool ReadTarget(ser4cpp::rseq_t&, Analog&);
   static bool WriteTarget(const Analog&, ser4cpp::wseq_t&);
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  static const StaticAnalogVariation svariation = StaticAnalogVariation::Group30Var6;
 };
 
 

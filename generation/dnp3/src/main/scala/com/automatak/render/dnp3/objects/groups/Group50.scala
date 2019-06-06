@@ -40,5 +40,5 @@ object Group50Var4 extends FixedSize(Group50, 4, "Indexed absolute time and long
   time48,
   FixedSizeField("interval", UInt32Field),
   FixedSizeField("units", UInt8Field)
-) with ConversionToTimeAndInterval
+) with ConversionToTimeAndInterval with StaticVariation.TimeAndInterval
 
