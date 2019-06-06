@@ -30,8 +30,6 @@
 namespace opendnp3
 {
 
-std::ostringstream& operator<<(std::ostringstream& ss, const log4cpp::LogLevels& filters);
-
 /**
  * LogHandler that prints all log messages to the console
  */
