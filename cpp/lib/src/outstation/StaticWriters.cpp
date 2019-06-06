@@ -32,11 +32,6 @@
 namespace opendnp3
 {
 
-template<class Spec> bool mock_write(StaticDataMap<Spec>& map, HeaderWriter& writer)
-{
-    return false;
-}
-
 template<class Spec, class IndexType>
 bool LoadWithRangeIterator(StaticDataMap<Spec>& map,
                            RangeWriteIterator<IndexType, typename Spec::meas_t>& writer,
@@ -44,7 +39,7 @@ bool LoadWithRangeIterator(StaticDataMap<Spec>& map,
 {
     auto next_index = map.get_selected_range().start;
 
-    for (auto& elem : map)
+    for (const auto& elem : map)
     {
         if (elem.second.variation != variation)
         {
@@ -76,7 +71,7 @@ bool LoadWithBitfieldIterator(StaticDataMap<Spec>& map,
 {
     auto next_index = map.get_selected_range().start;
 
-    for (auto& elem : map)
+    for (const auto& elem : map)
     {
         if (elem.second.variation != variation)
         {
@@ -260,7 +255,7 @@ bool write_some_octet_strings(StaticDataMap<OctetStringSpec>& map, Writer& write
 {
     auto next_index = map.get_selected_range().start;
 
-    for (auto& elem : map)
+    for (const auto& elem : map)
     {       
         if (elem.first != next_index)
         {
