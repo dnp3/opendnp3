@@ -84,7 +84,6 @@ set(opendnp3_public_headers
     ./include/opendnp3/gen/FunctionCode.h
     ./include/opendnp3/gen/GroupVariation.h
     ./include/opendnp3/gen/HMACType.h
-    ./include/opendnp3/gen/IndexMode.h
     ./include/opendnp3/gen/IndexQualifierMode.h
     ./include/opendnp3/gen/IntervalUnits.h
     ./include/opendnp3/gen/KeyChangeMethod.h

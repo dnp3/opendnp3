@@ -43,7 +43,6 @@ object CSharpEnumGroup {
     QualifierCode(),
     GroupVariationEnum(),
     EventMode(),
-    IndexMode(),
     UserOperation(),
     UserRole(),
     KeyWrapAlgorithm(),
