@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_UNITTESTS_APDU_HELPERS_H
 #define OPENDNP3_UNITTESTS_APDU_HELPERS_H
 
-#include <opendnp3/StaticOnly.h>
+#include <opendnp3/util/StaticOnly.h>
 
 #include <app/APDURequest.h>
 #include <app/APDUResponse.h>

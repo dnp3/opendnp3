@@ -22,7 +22,7 @@
 
 #include <ser4cpp/container/SequenceTypes.h>
 
-#include <opendnp3/StaticOnly.h>
+#include <opendnp3/util/StaticOnly.h>
 #include <opendnp3/gen/FunctionCode.h>
 #include <opendnp3/gen/LinkFunction.h>
 
