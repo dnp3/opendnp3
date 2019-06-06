@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_OUTSTATIONCONFIG_H
 #define OPENDNP3_OUTSTATIONCONFIG_H
 
-#include "opendnp3/TimeDuration.h"
+#include "opendnp3/util/TimeDuration.h"
 #include "opendnp3/outstation/EventBufferConfig.h"
 #include "opendnp3/outstation/OutstationParams.h"
 

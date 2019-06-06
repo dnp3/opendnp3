@@ -22,7 +22,7 @@
 
 #include "app/AppSeqNum.h"
 
-#include "opendnp3/Timestamp.h"
+#include "opendnp3/util/Timestamp.h"
 
 namespace opendnp3
 {

@@ -7,9 +7,6 @@ set(opendnp3_public_headers
     ./include/opendnp3/IStack.h
     ./include/opendnp3/LogLevels.h
     ./include/opendnp3/StackStatistics.h    
-    ./include/opendnp3/TimeDuration.h
-    ./include/opendnp3/Timestamp.h    
-    ./include/opendnp3/UTCTimestamp.h
 
     ./include/opendnp3/app/AnalogCommandEvent.h
     ./include/opendnp3/app/AnalogOutput.h
@@ -168,7 +165,10 @@ set(opendnp3_public_headers
 
 	./include/opendnp3/util/Buffer.h
 	./include/opendnp3/util/StaticOnly.h
-	./include/opendnp3/util/Uncopyable.h
+	./include/opendnp3/util/TimeDuration.h
+    ./include/opendnp3/util/Timestamp.h
+	./include/opendnp3/util/Uncopyable.h	
+    ./include/opendnp3/util/UTCTimestamp.h
 )
 
 set(opendnp3_private_headers
@@ -423,9 +423,7 @@ set(opendnp3_src
     ./src/DNP3ManagerImpl.cpp
     ./src/ErrorCodes.cpp
     ./src/LogLevels.cpp
-    ./src/ResourceManager.cpp
-    ./src/TimeDuration.cpp
-    ./src/Timestamp.cpp
+    ./src/ResourceManager.cpp    
 
     ./src/app/AnalogCommandEvent.cpp
     ./src/app/AnalogOutput.cpp
@@ -617,6 +615,9 @@ set(opendnp3_src
     ./src/transport/TransportRx.cpp
     ./src/transport/TransportStack.cpp
     ./src/transport/TransportTx.cpp
+
+	./src/util/TimeDuration.cpp
+    ./src/util/Timestamp.cpp
 )
 
 set(opendnp3_tls_private_headers

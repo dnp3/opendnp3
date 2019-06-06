@@ -23,7 +23,7 @@
 #include "app/AppSeqNum.h"
 #include "link/CRC.h"
 
-#include "opendnp3/Timestamp.h"
+#include "opendnp3/util/Timestamp.h"
 #include "opendnp3/gen/CommandStatus.h"
 
 namespace opendnp3

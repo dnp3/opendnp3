@@ -21,7 +21,7 @@
 #define OPENDNP3_IMASTEROPERATIONS_H
 
 #include "opendnp3/StackStatistics.h"
-#include "opendnp3/TimeDuration.h"
+#include "opendnp3/util/TimeDuration.h"
 #include "opendnp3/app/ClassField.h"
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/gen/FunctionCode.h"

@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_TIMESTAMP_H
 #define OPENDNP3_TIMESTAMP_H
 
-#include "opendnp3/TimeDuration.h"
+#include "TimeDuration.h"
 
 namespace opendnp3
 {

@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_APPCONSTANTS_H
 #define OPENDNP3_APPCONSTANTS_H
 
-#include "opendnp3/TimeDuration.h"
+#include "opendnp3/util/TimeDuration.h"
 
 #include <cstdint>
 

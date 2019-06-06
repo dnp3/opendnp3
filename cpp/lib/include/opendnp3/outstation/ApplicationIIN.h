@@ -20,7 +20,6 @@
 #ifndef OPENDNP3_APPLICATIONIIN_H
 #define OPENDNP3_APPLICATIONIIN_H
 
-#include "opendnp3/UTCTimestamp.h"
 #include "opendnp3/app/IINField.h"
 
 namespace opendnp3

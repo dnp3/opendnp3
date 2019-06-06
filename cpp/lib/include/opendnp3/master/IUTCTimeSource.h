@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_IUTCTIMESOURCE_H
 #define OPENDNP3_IUTCTIMESOURCE_H
 
-#include "opendnp3/UTCTimestamp.h"
+#include "opendnp3/util/UTCTimestamp.h"
 
 namespace opendnp3
 {

@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_SERIALTYPES_H
 #define OPENDNP3_SERIALTYPES_H
 
-#include "opendnp3/TimeDuration.h"
+#include "opendnp3/util/TimeDuration.h"
 #include "opendnp3/gen/FlowControl.h"
 #include "opendnp3/gen/Parity.h"
 #include "opendnp3/gen/StopBits.h"

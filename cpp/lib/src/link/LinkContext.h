@@ -27,7 +27,7 @@
 #include "link/LinkLayerConstants.h"
 
 #include "opendnp3/StackStatistics.h"
-#include "opendnp3/Timestamp.h"
+#include "opendnp3/util/Timestamp.h"
 #include "opendnp3/gen/LinkStatus.h"
 #include "opendnp3/link/ILinkListener.h"
 

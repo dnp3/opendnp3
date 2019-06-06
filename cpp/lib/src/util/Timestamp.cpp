@@ -17,7 +17,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "opendnp3/Timestamp.h"
+#include "opendnp3/util/Timestamp.h"
 
 #include <exe4cpp/Typedefs.h>
 

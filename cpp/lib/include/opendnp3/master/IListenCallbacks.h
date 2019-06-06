@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_ILISTENCALLBACKS_H
 #define OPENDNP3_ILISTENCALLBACKS_H
 
-#include "opendnp3/TimeDuration.h"
+#include "opendnp3/util/TimeDuration.h"
 #include "opendnp3/link/LinkHeaderFields.h"
 #include "opendnp3/master/ISessionAcceptor.h"
 #include "opendnp3/master/X509Info.h"

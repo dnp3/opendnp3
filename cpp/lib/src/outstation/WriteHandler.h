@@ -23,7 +23,7 @@
 #include "app/parsing/IAPDUHandler.h"
 #include "outstation/TimeSyncState.h"
 
-#include "opendnp3/Timestamp.h"
+#include "opendnp3/util/Timestamp.h"
 #include "opendnp3/app/IINField.h"
 #include "opendnp3/outstation/IOutstationApplication.h"
 

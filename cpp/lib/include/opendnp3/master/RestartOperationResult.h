@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_RESTART_OPERATION_RESULT_H
 #define OPENDNP3_RESTART_OPERATION_RESULT_H
 
-#include "opendnp3/TimeDuration.h"
+#include "opendnp3/util/TimeDuration.h"
 #include "opendnp3/gen/TaskCompletion.h"
 
 #include <cstdint>

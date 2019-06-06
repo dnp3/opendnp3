@@ -21,8 +21,8 @@
 #ifndef OPENDNP3_TASKBEHAVIOR_H
 #define OPENDNP3_TASKBEHAVIOR_H
 
-#include "opendnp3/TimeDuration.h"
-#include "opendnp3/Timestamp.h"
+#include "opendnp3/util/TimeDuration.h"
+#include "opendnp3/util/Timestamp.h"
 
 namespace opendnp3
 {
