@@ -20,8 +20,9 @@
 #include "utils/APDUHexBuilders.h"
 #include "utils/OutstationTestObject.h"
 
-#include <dnp3mocks/DatabaseHelpers.h>
 #include <ser4cpp/util/HexConversions.h>
+
+#include <dnp3mocks/DatabaseHelpers.h>
 
 #include <catch.hpp>
 
@@ -286,7 +287,7 @@ TEST_CASE(SUITE("MixedVariationAssignments"))
 {
     OutstationTestObject t(OutstationConfig(),
                            configure::from({{0, configure::analog(StaticAnalogVariation::Group30Var1)},
-                                              {1, configure::analog(StaticAnalogVariation::Group30Var2)}}));
+                                            {1, configure::analog(StaticAnalogVariation::Group30Var2)}}));
 
     t.LowerLayerUp();
 
@@ -520,7 +521,7 @@ void TestStaticType(const OutstationConfig& config,
 }
 
 template<class T> void TestStaticCounter(StaticCounterVariation variation, T value, const std::string& response)
-{   
+{
     auto database = configure::by_count_of::counter(1);
     database.counter[0].svariation = variation;
     TestStaticType<Counter>(OutstationConfig(), std::move(database), Counter(value), response);
@@ -538,6 +539,14 @@ TEST_CASE(SUITE("ReadGrp1Var1"))
 
     OutstationTestObject t(cfg, std::move(database));
 
+    // set all the values to ONLINE so that they don't get promoted
+    t.Transaction(
+		[](IUpdateHandler& handler)
+		{ 
+			handler.Modify(FlagsType::BinaryInput, 0, 9, 0x01);
+		}
+	);
+
     t.LowerLayerUp();
 
     t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
@@ -553,8 +562,8 @@ TEST_CASE(SUITE("Group1Var1 is promoted to Group1Var2 if quality not online"))
     {
         item.second.svariation = StaticBinaryVariation::Group1Var1;
     }
-    
-    OutstationTestObject t(OutstationConfig(), std::move(database));  
+
+    OutstationTestObject t(OutstationConfig(), std::move(database));
 
     t.LowerLayerUp();
 
@@ -637,7 +646,6 @@ void TestStaticAnalogOutputStatus(StaticAnalogOutputStatusVariation variation, T
 {
     auto database = configure::by_count_of::analog_output_status(1);
     database.analog_output_status[0].svariation = variation;
-
 
     TestStaticType<AnalogOutputStatus>(OutstationConfig(), std::move(database), AnalogOutputStatus(value), response);
 }
