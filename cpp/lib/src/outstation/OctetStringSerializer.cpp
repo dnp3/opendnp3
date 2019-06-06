@@ -33,9 +33,11 @@ OctetStringSerializer::OctetStringSerializer(bool isEvent, uint8_t size)
 bool OctetStringSerializer::Write(const OctetString& value, ser4cpp::wseq_t& buffer)
 {
     if (value.Size() > buffer.length())
+    {
         return false;
-    const auto valueBuffer = value.ToBuffer();
-    const ser4cpp::rseq_t slice(valueBuffer.data, static_cast<uint32_t>(valueBuffer.length));
+	}        
+    const auto value_buffer = value.ToBuffer();
+    const ser4cpp::rseq_t slice(value_buffer.data, static_cast<uint32_t>(value_buffer.length));
     buffer.copy_from(slice);
     return true;
 }
