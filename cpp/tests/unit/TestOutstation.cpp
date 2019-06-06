@@ -545,7 +545,7 @@ TEST_CASE(SUITE("ReadGrp1Var1"))
     REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 01 01 00 00 09 00 00");
 }
 
-TEST_CASE(SUITE("Grp1Var1IsPromotedToGrp1Var2IfQualityNotOnline"))
+TEST_CASE(SUITE("Group1Var1 is promoted to Group1Var2 if quality not online"))
 {
     DatabaseConfig database = configure::by_count_of::binary_input(2);
 

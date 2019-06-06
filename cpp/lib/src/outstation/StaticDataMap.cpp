@@ -58,4 +58,14 @@ bool StaticDataMap<TimeAndIntervalSpec>::update(const TimeAndInterval& value,
     return true;
 }
 
+template<> StaticBinaryVariation check_for_promotion<BinarySpec>(const Binary& value, StaticBinaryVariation variation)
+{
+    if (variation == StaticBinaryVariation::Group1Var1)
+    {
+        return BinarySpec::IsQualityOnlineOnly(value) ? variation : StaticBinaryVariation::Group1Var2;
+    }
+
+    return variation;
+}
+
 } // namespace opendnp3

@@ -36,6 +36,15 @@ namespace opendnp3
 
 bool convert_to_event_class(PointClass pc, EventClass& ec);
 
+template<class Spec>
+typename Spec::static_variation_t check_for_promotion(const typename Spec::meas_t& value,
+                                                    typename Spec::static_variation_t variation)
+{
+    return variation;
+}
+
+template<> StaticBinaryVariation check_for_promotion<BinarySpec>(const Binary& value, StaticBinaryVariation variation);
+
 template<class Spec> class StaticDataMap : private Uncopyable
 {
     using map_t = std::map<uint16_t, StaticDataCell<Spec>>;
@@ -271,8 +280,11 @@ template<class Spec> template<class F> size_t StaticDataMap<Spec>::select_all(F 
 
         for (auto& iter : this->map)
         {
-            iter.second.selection
-                = SelectedValue<Spec>{true, iter.second.value, get_variation(iter.second.config.svariation)};
+            iter.second.selection = SelectedValue<Spec>{
+                true,
+				iter.second.value,
+                check_for_promotion<Spec>(iter.second.value, get_variation(iter.second.config.svariation))
+			};
         }
 
         return this->map.size();
@@ -309,8 +321,11 @@ template<class Spec> template<class F> size_t StaticDataMap<Spec>::select(Range 
         }
 
         stop = iter->first;
-        iter->second.selection
-            = SelectedValue<Spec>{true, iter->second.value, get_variation(iter->second.config.svariation)};
+        iter->second.selection = SelectedValue<Spec>{
+			true,
+			iter->second.value,
+            check_for_promotion<Spec>(iter->second.value, get_variation(iter->second.config.svariation))
+		};
         ++count;
     }
 
