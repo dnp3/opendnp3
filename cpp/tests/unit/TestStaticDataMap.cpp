@@ -75,7 +75,7 @@ TEST_CASE(SUITE("update returns false for values that don't exist"))
     StaticDataMap<BinarySpec> map;
 
 	EventReceiver receiver;
-    REQUIRE(map.update(Binary(true), 0, EventMode::Detect, receiver));
+    REQUIRE_FALSE(map.update(Binary(true), 0, EventMode::Detect, receiver));
     REQUIRE(receiver.count == 0);
 }
 
