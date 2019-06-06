@@ -40,10 +40,8 @@ namespace opendnp3
 template <class Spec>
 using static_write_func_t = bool (*)(StaticDataMap<Spec>& map, HeaderWriter& writer);
 
-class StaticWriters : private StaticOnly
+struct StaticWriters : private StaticOnly
 {
-
-public:
     static static_write_func_t<BinarySpec> get(StaticBinaryVariation variation);
     static static_write_func_t<DoubleBitBinarySpec> get(StaticDoubleBinaryVariation variation);
     static static_write_func_t<CounterSpec> get(StaticCounterVariation variation);
@@ -53,13 +51,6 @@ public:
     static static_write_func_t<BinaryOutputStatusSpec> get(StaticBinaryOutputStatusVariation variation);
     static static_write_func_t<OctetStringSpec> get(StaticOctetStringVariation variation);
     static static_write_func_t<TimeAndIntervalSpec> get(StaticTimeAndIntervalVariation variation);
-
-/*
-private:
-    static bool Write(ser4cpp::ArrayView<StaticDataCell<OctetStringSpec>, uint16_t>& view,
-                      HeaderWriter& writer,
-                      Range& range);
-*/
 };
 
 } // namespace opendnp3

@@ -242,13 +242,11 @@ static_write_func_t<AnalogOutputStatusSpec> StaticWriters::get(StaticAnalogOutpu
     }
 }
 
+bool write_octet_strings(StaticDataMap<OctetStringSpec>& map, HeaderWriter& writer);
+
 static_write_func_t<OctetStringSpec> StaticWriters::get(StaticOctetStringVariation /*variation*/)
 {
-    return mock_write<OctetStringSpec>;
-    /*
-    // variation is always the same
-    return &Write;
-    */
+    return write_octet_strings;
 }
 
 static_write_func_t<TimeAndIntervalSpec> StaticWriters::get(StaticTimeAndIntervalVariation /*variation*/)
@@ -256,71 +254,48 @@ static_write_func_t<TimeAndIntervalSpec> StaticWriters::get(StaticTimeAndInterva
     return &WriteWithSerializer<TimeAndIntervalSpec, Group50Var4>;
 }
 
-/*
-template<class Iterator>
-uint16_t WriteSomeOctetString(ser4cpp::ArrayView<StaticDataCell<OctetStringSpec>, uint16_t>& view,
-                              Iterator& iterator,
-                              Range& range,
-                              uint8_t size)
+
+template<class Writer>
+bool write_some_octet_strings(StaticDataMap<OctetStringSpec>& map, Writer& writer)
 {
-    const StaticDataCell<OctetStringSpec>& start = view[range.start];
-    uint16_t nextIndex = start.config.vIndex;
+    auto next_index = map.get_selected_range().start;
 
-    uint16_t num_written = 0;
-
-    while (range.IsValid() && view[range.start].selection.value.Size() == size && view[range.start].selection.selected
-           && (view[range.start].selection.variation == start.selection.variation)
-           && (view[range.start].config.vIndex == nextIndex))
-    {
-        if (iterator.Write(view[range.start].selection.value))
+    for (auto& elem : map)
+    {       
+        if (elem.first != next_index)
         {
-            // deselect the value and advance the range
-            view[range.start].selection.selected = false;
-            ++num_written;
-            ++nextIndex;
-            range.Advance();
+            // we've loaded all we can with a contiguous range
+            return true;
         }
-        else
+
+        if (!writer.Write(elem.second.value))
         {
             return false;
         }
+
+        ++next_index;
     }
 
-    return num_written;
+    return true;	
 }
 
-bool StaticWriters::Write(ser4cpp::ArrayView<StaticDataCell<OctetStringSpec>, uint16_t>& view, HeaderWriter& writer,
-Range& range)
+
+
+bool write_octet_strings(StaticDataMap<OctetStringSpec>& map, HeaderWriter& writer)
 {
-    auto start = view[range.start].config.vIndex;
-    auto stop = view[range.stop].config.vIndex;
-    auto mapped = Range::From(start, stop);
+    const auto range = map.get_selected_range();
 
-    if (mapped.IsValid())
+	const uint8_t starting_size = (*map.begin()).second.value.Size();
+    const OctetStringSerializer serializer(false, starting_size);
+
+    if (range.IsOneByte())
     {
-        const uint8_t sizeStartingSize = view[range.start].selection.value.Size();
-        const OctetStringSerializer serializer(false, sizeStartingSize);
-
-        if (mapped.IsOneByte())
-        {
-            auto iter = writer.IterateOverRange<ser4cpp::UInt8>(QualifierCode::UINT8_START_STOP, serializer,
-                                                                static_cast<uint8_t>(mapped.start));
-            const uint16_t num_written = WriteSomeOctetString(view, iter, range, sizeStartingSize);
-            if (num_written == 0)
-                return false;
-        }
-        else
-        {
-            auto iter
-                = writer.IterateOverRange<ser4cpp::UInt16>(QualifierCode::UINT16_START_STOP, serializer, mapped.start);
-            const uint16_t num_written = WriteSomeOctetString(view, iter, range, sizeStartingSize);
-            if (num_written == 0)
-                return false;
-        }
+        auto iter = writer.IterateOverRange<ser4cpp::UInt8>(QualifierCode::UINT8_START_STOP, serializer, static_cast<uint8_t>(range.start));
+        return write_some_octet_strings(map, iter);
     }
 
-    return true;
+    auto iter = writer.IterateOverRange<ser4cpp::UInt16>(QualifierCode::UINT16_START_STOP, serializer, range.start);
+    return write_some_octet_strings(map, iter);
 }
-*/
 
 } // namespace opendnp3
