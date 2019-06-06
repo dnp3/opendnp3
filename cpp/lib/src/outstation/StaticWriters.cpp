@@ -37,35 +37,31 @@ template<class Spec> bool mock_write(StaticDataMap<Spec>& map, HeaderWriter& wri
     return false;
 }
 
-/*
+
 template<class Spec, class IndexType>
-bool LoadWithRangeIterator(ser4cpp::ArrayView<StaticDataCell<Spec>, uint16_t>& view,
-                       RangeWriteIterator<IndexType, typename Spec::meas_t>& iterator,
-                       Range& range)
+bool LoadWithRangeIterator(StaticDataMap<Spec>& map, RangeWriteIterator<IndexType, typename Spec::meas_t>& writer)                       
 {
-const StaticDataCell<Spec>& start = view[range.start];
-uint16_t nextIndex = start.config.vIndex;
+    auto next = map.get_selected_range().start;
 
-while (range.IsValid() && view[range.start].selection.selected
-       && (view[range.start].selection.variation == start.selection.variation)
-       && (view[range.start].config.vIndex == nextIndex))
-{
-    if (iterator.Write(view[range.start].selection.value))
+    for (auto& elem : map)
     {
-        // deselect the value and advance the range
-        view[range.start].selection.selected = false;
-        range.Advance();
-        ++nextIndex;
+        if (elem.first != next)
+        {
+            // we've loaded all we can with a contiguous range
+            return true;
+        }
+
+        if (!writer.Write(elem.second.value))
+        {
+            return false;
+        }
+
+        ++next;
     }
-    else
-    {
-        return false;
-    }
+
+    return true;
 }
 
-return true;
-}
-*/
 
 template<class Spec, class IndexType>
 bool LoadWithBitfieldIterator(StaticDataMap<Spec>& map, BitfieldRangeWriteIterator<IndexType>& iter)
@@ -76,6 +72,7 @@ bool LoadWithBitfieldIterator(StaticDataMap<Spec>& map, BitfieldRangeWriteIterat
     {
         if (elem.first != next)
         {
+			// we've loaded all we can with a contiguous range
             return true;
         }
 
@@ -106,47 +103,35 @@ template<class Spec, class GV> bool WriteSingleBitfield(StaticDataMap<Spec>& map
     return LoadWithBitfieldIterator<Spec, ser4cpp::UInt16>(map, write_iter);
 }
 
-/*
-template<class Spec, class Serializer>
-bool WriteWithSerializer(ser4cpp::ArrayView<StaticDataCell<Spec>, uint16_t>& view, HeaderWriter& writer, Range& range)
+
+template<class Spec, class Serializer> bool WriteWithSerializer(StaticDataMap<Spec>& map, HeaderWriter& writer)
 {
+    const auto range = map.get_selected_range();
 
-    auto start = view[range.start].config.vIndex;
-    auto stop = view[range.stop].config.vIndex;
-    auto mapped = Range::From(start, stop);
-
-    if (mapped.IsOneByte())
+    if (range.IsOneByte())
     {
-        auto iter = writer.IterateOverRange<ser4cpp::UInt8, typename Serializer::Target>(
-            QualifierCode::UINT8_START_STOP, Serializer::Inst(), static_cast<uint8_t>(mapped.start));
-        return LoadWithRangeIterator<Spec, ser4cpp::UInt8>(view, iter, range);
+        auto iter = writer.IterateOverRange<ser4cpp::UInt8, typename Serializer::Target>(QualifierCode::UINT8_START_STOP, Serializer::Inst(), static_cast<uint8_t>(range.start));
+        return LoadWithRangeIterator<Spec, ser4cpp::UInt8>(map, iter);
     }
 
-    auto iter = writer.IterateOverRange<ser4cpp::UInt16, typename Serializer::Target>(QualifierCode::UINT16_START_STOP,
-                                                                                      Serializer::Inst(), mapped.start);
-    return LoadWithRangeIterator<Spec, ser4cpp::UInt16>(view, iter, range);
-
+    auto iter = writer.IterateOverRange<ser4cpp::UInt16, typename Serializer::Target>(QualifierCode::UINT16_START_STOP, Serializer::Inst(), range.start);
+    return LoadWithRangeIterator<Spec, ser4cpp::UInt16>(map, iter);
 }
-*/
+
 
 static_write_func_t<BinarySpec> StaticWriters::get(StaticBinaryVariation variation)
 {
-    return &WriteSingleBitfield<BinarySpec, Group1Var1>;
-    /* TODO
     switch (variation)
     {
     case (StaticBinaryVariation::Group1Var1):
         return &WriteSingleBitfield<BinarySpec, Group1Var1>;
     default:
         return &WriteWithSerializer<BinarySpec, Group1Var2>;
-    }
-    */
+    }    
 }
 
 static_write_func_t<DoubleBitBinarySpec> StaticWriters::get(StaticDoubleBinaryVariation variation)
-{
-    return mock_write<DoubleBitBinarySpec>;
-    /*
+{    
     switch (variation)
     {
     case (StaticDoubleBinaryVariation::Group3Var2):
@@ -154,13 +139,10 @@ static_write_func_t<DoubleBitBinarySpec> StaticWriters::get(StaticDoubleBinaryVa
     default:
         return &WriteWithSerializer<DoubleBitBinarySpec, Group3Var2>;
     }
-	*/
 }
 
 static_write_func_t<AnalogSpec> StaticWriters::get(StaticAnalogVariation variation)
 {
-    return mock_write<AnalogSpec>;
-    /*
     switch (variation)
     {
     case (StaticAnalogVariation::Group30Var1):
@@ -177,14 +159,11 @@ static_write_func_t<AnalogSpec> StaticWriters::get(StaticAnalogVariation variati
         return &WriteWithSerializer<AnalogSpec, Group30Var6>;
     default:
         return &WriteWithSerializer<AnalogSpec, Group30Var1>;
-    }
-	*/
+    }	
 }
 
 static_write_func_t<CounterSpec> StaticWriters::get(StaticCounterVariation variation)
 {
-    return mock_write<CounterSpec>;
-    /*
     switch (variation)
     {
     case (StaticCounterVariation::Group20Var1):
@@ -198,13 +177,10 @@ static_write_func_t<CounterSpec> StaticWriters::get(StaticCounterVariation varia
     default:
         return &WriteWithSerializer<CounterSpec, Group20Var1>;
     }
-	*/
 }
 
 static_write_func_t<FrozenCounterSpec> StaticWriters::get(StaticFrozenCounterVariation variation)
 {
-    return mock_write<FrozenCounterSpec>;
-    /*
     switch (variation)
     {
     case (StaticFrozenCounterVariation::Group21Var1):
@@ -222,14 +198,10 @@ static_write_func_t<FrozenCounterSpec> StaticWriters::get(StaticFrozenCounterVar
     default:
         return &WriteWithSerializer<FrozenCounterSpec, Group21Var1>;
     }
-	*/
 }
 
 static_write_func_t<BinaryOutputStatusSpec> StaticWriters::get(StaticBinaryOutputStatusVariation variation)
 {
-    return mock_write<BinaryOutputStatusSpec>;
-
-	/*
     switch (variation)
     {
     case (StaticBinaryOutputStatusVariation::Group10Var2):
@@ -237,14 +209,10 @@ static_write_func_t<BinaryOutputStatusSpec> StaticWriters::get(StaticBinaryOutpu
     default:
         return &WriteWithSerializer<BinaryOutputStatusSpec, Group10Var2>;
     }
-	*/
 }
 
 static_write_func_t<AnalogOutputStatusSpec> StaticWriters::get(StaticAnalogOutputStatusVariation variation)
 {
-    return mock_write<AnalogOutputStatusSpec>;
-
-	/*
     switch (variation)
     {
     case (StaticAnalogOutputStatusVariation::Group40Var1):
@@ -258,7 +226,6 @@ static_write_func_t<AnalogOutputStatusSpec> StaticWriters::get(StaticAnalogOutpu
     default:
         return &WriteWithSerializer<AnalogOutputStatusSpec, Group40Var1>;
     }
-	*/
 }
 
 static_write_func_t<OctetStringSpec> StaticWriters::get(StaticOctetStringVariation /*variation*/)
@@ -272,10 +239,7 @@ static_write_func_t<OctetStringSpec> StaticWriters::get(StaticOctetStringVariati
 
 static_write_func_t<TimeAndIntervalSpec> StaticWriters::get(StaticTimeAndIntervalVariation /*variation*/)
 {
-    return mock_write<TimeAndIntervalSpec>;
-    /*
     return &WriteWithSerializer<TimeAndIntervalSpec, Group50Var4>;
-	*/
 }
 
 /*

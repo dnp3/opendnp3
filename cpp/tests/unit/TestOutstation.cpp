@@ -523,7 +523,7 @@ template<class T> void TestStaticCounter(StaticCounterVariation variation, T val
 {   
     auto database = configure::by_count_of::counter(1);
     database.counter[0].svariation = variation;
-    TestStaticType<Counter>(OutstationConfig(), std::move(database), value, response);
+    TestStaticType<Counter>(OutstationConfig(), std::move(database), Counter(value), response);
 }
 
 TEST_CASE(SUITE("ReadGrp1Var1"))
@@ -587,7 +587,7 @@ template<class T> void TestStaticAnalog(StaticAnalogVariation variation, T value
 {
     auto database = configure::by_count_of::analog_input(1);
     database.analog_input[0].svariation = variation;
-    TestStaticType<Analog>(OutstationConfig(), std::move(database), value, response);
+    TestStaticType<Analog>(OutstationConfig(), std::move(database), Analog(value), response);
 }
 
 TEST_CASE(SUITE("ReadGrp30Var2"))
@@ -639,7 +639,7 @@ void TestStaticAnalogOutputStatus(StaticAnalogOutputStatusVariation variation, T
     database.analog_output_status[0].svariation = variation;
 
 
-    TestStaticType<AnalogOutputStatus>(OutstationConfig(), std::move(database), value, response);
+    TestStaticType<AnalogOutputStatus>(OutstationConfig(), std::move(database), AnalogOutputStatus(value), response);
 }
 
 TEST_CASE(SUITE("ReadGrp40Var1"))
