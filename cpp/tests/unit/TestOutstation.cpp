@@ -490,7 +490,7 @@ TEST_CASE(SUITE("ReadGrp40Var0ViaIntegrity"))
 TEST_CASE(SUITE("ReadByRangeHeader"))
 {
     OutstationConfig config;
-    OutstationTestObject t(config, configure::by_count_of::analog_input(1));
+    OutstationTestObject t(config, configure::by_count_of::analog_input(10));
     t.LowerLayerUp();
 
     t.Transaction([](IUpdateHandler& db) {

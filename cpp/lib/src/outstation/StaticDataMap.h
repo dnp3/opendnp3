@@ -135,7 +135,7 @@ public:
 
     size_t select(Range range, typename Spec::static_variation_t variation)
     {
-        return this->select_all([variation](auto var) { return variation; }); // override default
+        return this->select(range, [variation](auto var) { return variation; }); // override default
     }	
 
     iterator begin();
