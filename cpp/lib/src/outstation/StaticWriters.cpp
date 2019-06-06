@@ -76,10 +76,10 @@ bool LoadWithBitfieldIterator(StaticDataMap<Spec>& map, BitfieldRangeWriteIterat
     {
         if (elem.first != next)
         {
-            return false;
+            return true;
         }
 
-        if (iter.Write(elem.second.value.value))
+        if (!iter.Write(elem.second.value.value))
         {
             return false;
         }
