@@ -32,90 +32,85 @@
 namespace opendnp3
 {
 
-template<class Spec, class IndexType>
-bool LoadWithRangeIterator(ser4cpp::ArrayView<StaticDataCell<Spec>, uint16_t>& view,
-                           RangeWriteIterator<IndexType, typename Spec::meas_t>& iterator,
-                           Range& range)
+template<class Spec> bool mock_write(StaticDataMap<Spec>& map, HeaderWriter& writer)
 {
-    const StaticDataCell<Spec>& start = view[range.start];
-    uint16_t nextIndex = start.config.vIndex;
-
-    while (range.IsValid() && view[range.start].selection.selected
-           && (view[range.start].selection.variation == start.selection.variation)
-           && (view[range.start].config.vIndex == nextIndex))
-    {
-        if (iterator.Write(view[range.start].selection.value))
-        {
-            // deselect the value and advance the range
-            view[range.start].selection.selected = false;
-            range.Advance();
-            ++nextIndex;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-template<class Spec, class IndexType>
-bool LoadWithBitfieldIterator(ser4cpp::ArrayView<StaticDataCell<Spec>, uint16_t>& view,
-                              BitfieldRangeWriteIterator<IndexType>& iterator,
-                              Range& range)
-{
-    const StaticDataCell<Spec>& start = view[range.start];
-
-    uint16_t nextIndex = start.config.vIndex;
-
-    while (range.IsValid() && view[range.start].selection.selected
-           && (view[range.start].selection.variation == start.selection.variation)
-           && (view[range.start].config.vIndex == nextIndex))
-    {
-        if (iterator.Write(view[range.start].selection.value.value))
-        {
-            // deselect the value and advance the range
-            view[range.start].selection.selected = false;
-            range.Advance();
-            ++nextIndex;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-template<class Spec, class GV>
-bool WriteSingleBitfield(ser4cpp::ArrayView<StaticDataCell<Spec>, uint16_t>& view, HeaderWriter& writer, Range& range)
-{
-    /* TODO
-    auto start = view[range.start].config.vIndex;
-    auto stop = view[range.stop].config.vIndex;
-    auto mapped = Range::From(start, stop);
-
-    if (mapped.IsOneByte())
-    {
-        auto iter = writer.IterateOverSingleBitfield<ser4cpp::UInt8>(GV::ID(), QualifierCode::UINT8_START_STOP,
-                                                                     static_cast<uint8_t>(mapped.start));
-        return LoadWithBitfieldIterator<Spec, ser4cpp::UInt8>(view, iter, range);
-    }
-
-    auto iter
-        = writer.IterateOverSingleBitfield<ser4cpp::UInt16>(GV::ID(), QualifierCode::UINT16_START_STOP, mapped.start);
-    return LoadWithBitfieldIterator<Spec, ser4cpp::UInt16>(view, iter, range);
-	*/
     return false;
 }
 
+/*
+template<class Spec, class IndexType>
+bool LoadWithRangeIterator(ser4cpp::ArrayView<StaticDataCell<Spec>, uint16_t>& view,
+                       RangeWriteIterator<IndexType, typename Spec::meas_t>& iterator,
+                       Range& range)
+{
+const StaticDataCell<Spec>& start = view[range.start];
+uint16_t nextIndex = start.config.vIndex;
+
+while (range.IsValid() && view[range.start].selection.selected
+       && (view[range.start].selection.variation == start.selection.variation)
+       && (view[range.start].config.vIndex == nextIndex))
+{
+    if (iterator.Write(view[range.start].selection.value))
+    {
+        // deselect the value and advance the range
+        view[range.start].selection.selected = false;
+        range.Advance();
+        ++nextIndex;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+return true;
+}
+*/
+
+template<class Spec, class IndexType>
+bool LoadWithBitfieldIterator(StaticDataMap<Spec>& map, BitfieldRangeWriteIterator<IndexType>& iter)
+{
+    auto next = map.get_selected_range().start;
+
+    for (auto& elem : map)
+    {
+        if (elem.first != next)
+        {
+            return false;
+        }
+
+        if (iter.Write(elem.second.value.value))
+        {
+            return false;
+        }
+
+        ++next;
+    }
+
+    return true;
+}
+
+template<class Spec, class GV> bool WriteSingleBitfield(StaticDataMap<Spec>& map, HeaderWriter& writer)
+{
+    const auto range = map.get_selected_range();
+
+    if (range.IsOneByte())
+    {
+        auto write_iter = writer.IterateOverSingleBitfield<ser4cpp::UInt8>(GV::ID(), QualifierCode::UINT8_START_STOP,
+                                                                            static_cast<uint8_t>(range.start));
+        return LoadWithBitfieldIterator<Spec, ser4cpp::UInt8>(map, write_iter);
+    }
+
+    auto write_iter
+        = writer.IterateOverSingleBitfield<ser4cpp::UInt16>(GV::ID(), QualifierCode::UINT16_START_STOP, range.start);
+    return LoadWithBitfieldIterator<Spec, ser4cpp::UInt16>(map, write_iter);
+}
+
+/*
 template<class Spec, class Serializer>
 bool WriteWithSerializer(ser4cpp::ArrayView<StaticDataCell<Spec>, uint16_t>& view, HeaderWriter& writer, Range& range)
 {
-    return false;
-    /* TODO
+
     auto start = view[range.start].config.vIndex;
     auto stop = view[range.stop].config.vIndex;
     auto mapped = Range::From(start, stop);
@@ -130,11 +125,14 @@ bool WriteWithSerializer(ser4cpp::ArrayView<StaticDataCell<Spec>, uint16_t>& vie
     auto iter = writer.IterateOverRange<ser4cpp::UInt16, typename Serializer::Target>(QualifierCode::UINT16_START_STOP,
                                                                                       Serializer::Inst(), mapped.start);
     return LoadWithRangeIterator<Spec, ser4cpp::UInt16>(view, iter, range);
-	*/
-}
 
-StaticWrite<BinarySpec>::func_t StaticWriters::Get(StaticBinaryVariation variation)
+}
+*/
+
+static_write_func_t<BinarySpec> StaticWriters::get(StaticBinaryVariation variation)
 {
+    return &WriteSingleBitfield<BinarySpec, Group1Var1>;
+    /* TODO
     switch (variation)
     {
     case (StaticBinaryVariation::Group1Var1):
@@ -142,10 +140,13 @@ StaticWrite<BinarySpec>::func_t StaticWriters::Get(StaticBinaryVariation variati
     default:
         return &WriteWithSerializer<BinarySpec, Group1Var2>;
     }
+    */
 }
 
-StaticWrite<DoubleBitBinarySpec>::func_t StaticWriters::Get(StaticDoubleBinaryVariation variation)
+static_write_func_t<DoubleBitBinarySpec> StaticWriters::get(StaticDoubleBinaryVariation variation)
 {
+    return mock_write<DoubleBitBinarySpec>;
+    /*
     switch (variation)
     {
     case (StaticDoubleBinaryVariation::Group3Var2):
@@ -153,10 +154,13 @@ StaticWrite<DoubleBitBinarySpec>::func_t StaticWriters::Get(StaticDoubleBinaryVa
     default:
         return &WriteWithSerializer<DoubleBitBinarySpec, Group3Var2>;
     }
+	*/
 }
 
-StaticWrite<AnalogSpec>::func_t StaticWriters::Get(StaticAnalogVariation variation)
+static_write_func_t<AnalogSpec> StaticWriters::get(StaticAnalogVariation variation)
 {
+    return mock_write<AnalogSpec>;
+    /*
     switch (variation)
     {
     case (StaticAnalogVariation::Group30Var1):
@@ -174,10 +178,13 @@ StaticWrite<AnalogSpec>::func_t StaticWriters::Get(StaticAnalogVariation variati
     default:
         return &WriteWithSerializer<AnalogSpec, Group30Var1>;
     }
+	*/
 }
 
-StaticWrite<CounterSpec>::func_t StaticWriters::Get(StaticCounterVariation variation)
+static_write_func_t<CounterSpec> StaticWriters::get(StaticCounterVariation variation)
 {
+    return mock_write<CounterSpec>;
+    /*
     switch (variation)
     {
     case (StaticCounterVariation::Group20Var1):
@@ -191,10 +198,13 @@ StaticWrite<CounterSpec>::func_t StaticWriters::Get(StaticCounterVariation varia
     default:
         return &WriteWithSerializer<CounterSpec, Group20Var1>;
     }
+	*/
 }
 
-StaticWrite<FrozenCounterSpec>::func_t StaticWriters::Get(StaticFrozenCounterVariation variation)
+static_write_func_t<FrozenCounterSpec> StaticWriters::get(StaticFrozenCounterVariation variation)
 {
+    return mock_write<FrozenCounterSpec>;
+    /*
     switch (variation)
     {
     case (StaticFrozenCounterVariation::Group21Var1):
@@ -212,10 +222,14 @@ StaticWrite<FrozenCounterSpec>::func_t StaticWriters::Get(StaticFrozenCounterVar
     default:
         return &WriteWithSerializer<FrozenCounterSpec, Group21Var1>;
     }
+	*/
 }
 
-StaticWrite<BinaryOutputStatusSpec>::func_t StaticWriters::Get(StaticBinaryOutputStatusVariation variation)
+static_write_func_t<BinaryOutputStatusSpec> StaticWriters::get(StaticBinaryOutputStatusVariation variation)
 {
+    return mock_write<BinaryOutputStatusSpec>;
+
+	/*
     switch (variation)
     {
     case (StaticBinaryOutputStatusVariation::Group10Var2):
@@ -223,10 +237,14 @@ StaticWrite<BinaryOutputStatusSpec>::func_t StaticWriters::Get(StaticBinaryOutpu
     default:
         return &WriteWithSerializer<BinaryOutputStatusSpec, Group10Var2>;
     }
+	*/
 }
 
-StaticWrite<AnalogOutputStatusSpec>::func_t StaticWriters::Get(StaticAnalogOutputStatusVariation variation)
+static_write_func_t<AnalogOutputStatusSpec> StaticWriters::get(StaticAnalogOutputStatusVariation variation)
 {
+    return mock_write<AnalogOutputStatusSpec>;
+
+	/*
     switch (variation)
     {
     case (StaticAnalogOutputStatusVariation::Group40Var1):
@@ -240,19 +258,27 @@ StaticWrite<AnalogOutputStatusSpec>::func_t StaticWriters::Get(StaticAnalogOutpu
     default:
         return &WriteWithSerializer<AnalogOutputStatusSpec, Group40Var1>;
     }
+	*/
 }
 
-StaticWrite<OctetStringSpec>::func_t StaticWriters::Get(StaticOctetStringVariation /*variation*/)
+static_write_func_t<OctetStringSpec> StaticWriters::get(StaticOctetStringVariation /*variation*/)
 {
+    return mock_write<OctetStringSpec>;
+    /*
     // variation is always the same
     return &Write;
+	*/
 }
 
-StaticWrite<TimeAndIntervalSpec>::func_t StaticWriters::Get(StaticTimeAndIntervalVariation /*variation*/)
+static_write_func_t<TimeAndIntervalSpec> StaticWriters::get(StaticTimeAndIntervalVariation /*variation*/)
 {
+    return mock_write<TimeAndIntervalSpec>;
+    /*
     return &WriteWithSerializer<TimeAndIntervalSpec, Group50Var4>;
+	*/
 }
 
+/*
 template<class Iterator>
 uint16_t WriteSomeOctetString(ser4cpp::ArrayView<StaticDataCell<OctetStringSpec>, uint16_t>& view,
                               Iterator& iterator,
@@ -285,10 +311,9 @@ uint16_t WriteSomeOctetString(ser4cpp::ArrayView<StaticDataCell<OctetStringSpec>
     return num_written;
 }
 
-bool StaticWriters::Write(ser4cpp::ArrayView<StaticDataCell<OctetStringSpec>, uint16_t>& view, HeaderWriter& writer, Range& range)
+bool StaticWriters::Write(ser4cpp::ArrayView<StaticDataCell<OctetStringSpec>, uint16_t>& view, HeaderWriter& writer,
+Range& range)
 {
-    return false;
-    /* TODO
     auto start = view[range.start].config.vIndex;
     auto stop = view[range.stop].config.vIndex;
     auto mapped = Range::From(start, stop);
@@ -317,7 +342,7 @@ bool StaticWriters::Write(ser4cpp::ArrayView<StaticDataCell<OctetStringSpec>, ui
     }
 
     return true;
-	*/
 }
+*/
 
 } // namespace opendnp3

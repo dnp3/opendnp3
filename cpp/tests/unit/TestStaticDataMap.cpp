@@ -250,12 +250,13 @@ TEST_CASE(SUITE("iterating over the entire selection clears it"))
     {
     }
 
-    // the second iteration there's only 7 remaining
+    // the second iteration there's no entries
     std::vector<StaticDataMap<BinarySpec>::iterator::value_type> items;
     for (const auto& item : map)
     {
         items.push_back(item);
     }
+    REQUIRE(items.empty());
 }
 
 TEST_CASE(SUITE("selecting a range that doesn't match anything return Range::Invalid"))

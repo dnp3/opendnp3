@@ -58,7 +58,7 @@ public:
         using difference_type = typename map_iter_t::difference_type;
         using pointer = typename map_iter_t::pointer;
         using reference = std::pair<uint16_t, SelectedValue<Spec>&>;
-        using iterator_category = std::input_iterator_tag;
+        using iterator_category = std::input_iterator_tag;        
 
         bool operator==(const iterator& rhs)
         {
@@ -97,7 +97,7 @@ public:
         reference operator*()
         {
             return reference(iter->first, iter->second.selection);
-        }
+        }		
     };
 
     bool add(const typename Spec::meas_t& value, uint16_t index, typename Spec::config_t config);
@@ -136,7 +136,7 @@ public:
     size_t select(Range range, typename Spec::static_variation_t variation)
     {
         return this->select_all([variation](auto var) { return variation; }); // override default
-    }
+    }	
 
     iterator begin();
 
@@ -209,7 +209,7 @@ bool StaticDataMap<Spec>::update(const map_iter_t& iter,
                                  const typename Spec::meas_t& new_value,
                                  EventMode mode,
                                  IEventReceiver& receiver)
-{    
+{
     if (iter == this->map.end())
     {
         return false;

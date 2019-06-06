@@ -20,8 +20,30 @@
 
 #include "Database.h"
 
+#include "outstation/StaticWriters.h"
+
 namespace opendnp3
 {
+
+template<class Spec> bool load_type(StaticDataMap<Spec>& map, HeaderWriter& writer)
+{
+    while (true)
+    {
+        auto iter = map.begin();
+
+        if (iter == map.end())
+        {
+			// there is no data left to write
+            return true;
+        }
+
+        if (!StaticWriters::get((*iter).second.variation)(map, writer))
+        {
+			// the APDU is full
+            return false;
+        }
+    }    
+}
 
 Database::Database(const DatabaseConfig& config,
                    IEventReceiver& event_receiver,
@@ -303,8 +325,16 @@ bool Database::HasAnySelection() const
 
 bool Database::Load(HeaderWriter& writer)
 {
-    // TODO
-    return false;
+    return 
+		load_type(this->binary_input, writer) &&
+		load_type(this->double_binary, writer) &&
+		load_type(this->analog_input, writer) &&
+		load_type(this->counter, writer) &&
+		load_type(this->frozen_counter, writer) &&
+		load_type(this->binary_output_status, writer) &&
+		load_type(this->analog_output_status, writer) &&
+		load_type(this->time_and_interval, writer) &&
+		load_type(this->octet_string, writer);
 }
 
 bool Database::Update(const Binary& meas, uint16_t index, EventMode mode)
