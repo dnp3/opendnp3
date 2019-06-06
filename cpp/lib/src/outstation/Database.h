@@ -101,13 +101,7 @@ private:
 	template<class Spec>
     static IINField select_range(StaticDataMap<Spec>& map,
                                 const Range& range,
-                                typename Spec::static_variation_t variation);
-
-	template<class Spec>
-	static Range assign_class_to_all(StaticDataMap<Spec>& map, PointClass clazz);
-
-	template<class Spec>
-    static Range assign_class_to_range(StaticDataMap<Spec>& map, PointClass clazz, const Range& range);	
+                                typename Spec::static_variation_t variation);	
 };
     
 

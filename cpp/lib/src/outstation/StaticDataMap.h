@@ -38,7 +38,7 @@ bool convert_to_event_class(PointClass pc, EventClass& ec);
 
 template<class Spec>
 typename Spec::static_variation_t check_for_promotion(const typename Spec::meas_t& value,
-                                                    typename Spec::static_variation_t variation)
+                                                      typename Spec::static_variation_t variation)
 {
     return variation;
 }
@@ -67,7 +67,7 @@ public:
         using difference_type = typename map_iter_t::difference_type;
         using pointer = typename map_iter_t::pointer;
         using reference = std::pair<uint16_t, SelectedValue<Spec>&>;
-        using iterator_category = std::input_iterator_tag;        
+        using iterator_category = std::input_iterator_tag;
 
         bool operator==(const iterator& rhs)
         {
@@ -106,7 +106,7 @@ public:
         reference operator*()
         {
             return reference(iter->first, iter->second.selection);
-        }		
+        }
     };
 
     bool add(const typename Spec::meas_t& value, uint16_t index, typename Spec::config_t config);
@@ -145,7 +145,11 @@ public:
     size_t select(Range range, typename Spec::static_variation_t variation)
     {
         return this->select(range, [variation](auto var) { return variation; }); // override default
-    }	
+    }
+
+    Range assign_class(PointClass clazz);
+
+    Range assign_class(PointClass clazz, const Range& range);
 
     iterator begin();
 
@@ -154,6 +158,8 @@ public:
 private:
     map_t map;
     Range selected;
+
+    Range get_full_range() const;
 
     bool update(const map_iter_t& iter,
                 const typename Spec::meas_t& new_value,
@@ -211,6 +217,11 @@ template<class Spec> void StaticDataMap<Spec>::clear_selection()
     for (auto value : *this)
     {
     }
+}
+
+template<class Spec> Range StaticDataMap<Spec>::get_full_range() const
+{
+    return this->map.empty() ? Range::Invalid() : Range::From(this->map.begin()->first, this->map.rbegin()->first);
 }
 
 template<class Spec>
@@ -281,10 +292,8 @@ template<class Spec> template<class F> size_t StaticDataMap<Spec>::select_all(F 
         for (auto& iter : this->map)
         {
             iter.second.selection = SelectedValue<Spec>{
-                true,
-				iter.second.value,
-                check_for_promotion<Spec>(iter.second.value, get_variation(iter.second.config.svariation))
-			};
+                true, iter.second.value,
+                check_for_promotion<Spec>(iter.second.value, get_variation(iter.second.config.svariation))};
         }
 
         return this->map.size();
@@ -322,16 +331,34 @@ template<class Spec> template<class F> size_t StaticDataMap<Spec>::select(Range 
 
         stop = iter->first;
         iter->second.selection = SelectedValue<Spec>{
-			true,
-			iter->second.value,
-            check_for_promotion<Spec>(iter->second.value, get_variation(iter->second.config.svariation))
-		};
+            true, iter->second.value,
+            check_for_promotion<Spec>(iter->second.value, get_variation(iter->second.config.svariation))};
         ++count;
     }
 
     this->selected = this->selected.Union(Range::From(start->first, stop));
 
     return count;
+}
+
+template<class Spec> Range StaticDataMap<Spec>::assign_class(PointClass clazz)
+{
+    for (auto& elem : this->map)
+    {
+        elem.second.config.clazz = clazz;
+    }
+
+    return this->get_full_range();
+}
+
+template<class Spec> Range StaticDataMap<Spec>::assign_class(PointClass clazz, const Range& range)
+{        
+    for (auto iter = this->map.lower_bound(range.start); iter != this->map.end() && range.Contains(iter->first); iter++)
+    {
+        iter->second.config.clazz = clazz;	
+    }
+
+	return range.Intersection(this->get_full_range());
 }
 
 template<class Spec> typename StaticDataMap<Spec>::iterator StaticDataMap<Spec>::begin()

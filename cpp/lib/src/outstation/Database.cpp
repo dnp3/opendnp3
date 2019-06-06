@@ -274,19 +274,19 @@ Range Database::AssignClassToAll(AssignClassType type, PointClass clazz)
     switch (type)
     {
     case (AssignClassType::BinaryInput):
-        return assign_class_to_all(this->binary_input, clazz);
+        return this->binary_input.assign_class(clazz);
     case (AssignClassType::DoubleBinaryInput):
-        return assign_class_to_all(this->double_binary, clazz);
+        return this->double_binary.assign_class(clazz);
     case (AssignClassType::Counter):
-        return assign_class_to_all(this->counter, clazz);
+        return this->counter.assign_class(clazz);
     case (AssignClassType::FrozenCounter):
-        return assign_class_to_all(this->frozen_counter, clazz);
+        return this->frozen_counter.assign_class(clazz);
     case (AssignClassType::AnalogInput):
-        return assign_class_to_all(this->analog_input, clazz);
+        return this->analog_input.assign_class(clazz);
     case (AssignClassType::BinaryOutputStatus):
-        return assign_class_to_all(this->binary_output_status, clazz);
+        return this->binary_output_status.assign_class(clazz);
     case (AssignClassType::AnalogOutputStatus):
-        return assign_class_to_all(this->analog_output_status, clazz);
+        return this->analog_output_status.assign_class(clazz);
     default:
         return Range::Invalid();
     }
@@ -297,19 +297,19 @@ Range Database::AssignClassToRange(AssignClassType type, PointClass clazz, const
     switch (type)
     {
     case (AssignClassType::BinaryInput):
-        return assign_class_to_range(this->binary_input, clazz, range);
+        return this->binary_input.assign_class(clazz, range);
     case (AssignClassType::DoubleBinaryInput):
-        return assign_class_to_range(this->double_binary, clazz, range);
+        return this->double_binary.assign_class(clazz, range);
     case (AssignClassType::Counter):
-        return assign_class_to_range(this->counter, clazz, range);
+        return this->counter.assign_class(clazz, range);
     case (AssignClassType::FrozenCounter):
-        return assign_class_to_range(this->frozen_counter, clazz, range);
+        return this->frozen_counter.assign_class(clazz, range);
     case (AssignClassType::AnalogInput):
-        return assign_class_to_range(this->analog_input, clazz, range);
+        return this->analog_input.assign_class(clazz, range);
     case (AssignClassType::BinaryOutputStatus):
-        return assign_class_to_range(this->binary_output_status, clazz, range);
+        return this->binary_output_status.assign_class(clazz, range);
     case (AssignClassType::AnalogOutputStatus):
-        return assign_class_to_range(this->analog_output_status, clazz, range);
+        return this->analog_output_status.assign_class(clazz, range);
     default:
         return Range::Invalid();
     }
@@ -439,19 +439,6 @@ IINField Database::select_range(StaticDataMap<Spec>& map,
 {
     const auto count = map.select(range, variation);
     return (count != range.Count()) ? IINField(IINBit::PARAM_ERROR) : IINField::Empty();
-}
-
-template<class Spec> Range Database::assign_class_to_all(StaticDataMap<Spec>& map, PointClass clazz)
-{
-    // TODO
-    return Range::Invalid();
-}
-
-template<class Spec>
-Range Database::assign_class_to_range(StaticDataMap<Spec>& map, PointClass clazz, const Range& range)
-{
-    // TODO
-    return Range::Invalid();
 }
 
 } // namespace opendnp3

@@ -28,7 +28,7 @@ using namespace opendnp3;
 
 #define SUITE(name) "OutstationAssignClassTestSuite - " name
 
-TEST_CASE(SUITE("RejectsWithFuncNotSupportedIfAppDoesNotSupport"))
+TEST_CASE(SUITE("rejects with FuncNotSupported if assign class not supported"))
 {
     OutstationConfig config;
     OutstationTestObject t(config);
@@ -41,7 +41,7 @@ TEST_CASE(SUITE("RejectsWithFuncNotSupportedIfAppDoesNotSupport"))
     REQUIRE(t.application->classAssignments.empty());
 }
 
-TEST_CASE(SUITE("RejectsWithParamErrorIfNoType"))
+TEST_CASE(SUITE("rejects with ParamError if type doesn't exist"))
 {
     OutstationConfig config;
     OutstationTestObject t(config);
@@ -54,7 +54,7 @@ TEST_CASE(SUITE("RejectsWithParamErrorIfNoType"))
     REQUIRE(t.application->classAssignments.empty());
 }
 
-TEST_CASE(SUITE("AcceptsAssignClassViaAllObjects"))
+TEST_CASE(SUITE("accepts assign class via all objects header"))
 {   
     OutstationTestObject t(OutstationConfig(), configure::by_count_of::binary_input(5));
     t.application->supportsAssignClass = true;
