@@ -20,6 +20,8 @@
 #include "utils/OutstationTestObject.h"
 #include "utils/APDUHexBuilders.h"
 
+#include <dnp3mocks/DatabaseHelpers.h>
+
 #include <catch.hpp>
 
 #include <functional>
@@ -38,25 +40,11 @@ TEST_CASE(SUITE("empty response when to class 1 when no events available"))
     REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00");
 }
 
-TEST_CASE(SUITE("ReadDiscontiguousEvent"))
-{
-    OutstationConfig config;
-    config.eventBufferConfig = EventBufferConfig(5);
-    config.params.indexMode = IndexMode::Discontiguous;
-    OutstationTestObject t(config, DatabaseSizes::BinaryOnly(1));
-    t.LowerLayerUp();
-
-    t.Transaction([](IUpdateHandler& db) { db.Update(Binary(true), 0); });
-
-    t.SendToOutstation("C0 01 3C 02 06"); // Read class 1
-    REQUIRE(t.lower->PopWriteAsHex() == "E0 81 80 00 02 01 28 01 00 00 00 81");
-}
-
 TEST_CASE(SUITE("ReceiveNewRequestSolConfirmWait"))
 {
     OutstationConfig config;
     config.eventBufferConfig = EventBufferConfig::AllTypes(10);
-    OutstationTestObject t(config, DatabaseSizes::BinaryOnly(1));
+    OutstationTestObject t(config, configure::by_count_of::binary_input(1));
     t.LowerLayerUp();
 
     t.Transaction([](IUpdateHandler& db) { db.Update(Binary(true, Flags(0x01)), 0); });
@@ -73,7 +61,7 @@ TEST_CASE(SUITE("ReadClass1WithSOE"))
 {
     OutstationConfig config;
     config.eventBufferConfig = EventBufferConfig::AllTypes(10);
-    OutstationTestObject t(config, DatabaseSizes::AllTypes(100));
+    OutstationTestObject t(config, configure::by_count_of::all_types(100));
 
     t.LowerLayerUp();
 
@@ -98,7 +86,7 @@ TEST_CASE(SUITE("EventBufferOverflowAndClear"))
 {
     OutstationConfig config;
     config.eventBufferConfig = EventBufferConfig::AllTypes(2);
-    OutstationTestObject t(config, DatabaseSizes::AllTypes(100));
+    OutstationTestObject t(config, configure::by_count_of::all_types(100));
 
     t.LowerLayerUp();
 
@@ -125,14 +113,14 @@ TEST_CASE(SUITE("MultipleClasses"))
 {
     OutstationConfig config;
     config.eventBufferConfig = EventBufferConfig::AllTypes(10);
-    OutstationTestObject t(config, DatabaseSizes::AllTypes(1));
+
+	auto database = configure::by_count_of::all_types(100);
+    database.binary_input[0].clazz = PointClass::Class1;
+    database.analog_input[0].clazz = PointClass::Class2;
+    database.counter[0].clazz = PointClass::Class3;
+
+    OutstationTestObject t(config, std::move(database));
     t.LowerLayerUp();
-
-    auto view = t.context.GetConfigView();
-
-    view.binaries[0].config.clazz = PointClass::Class1;
-    view.analogs[0].config.clazz = PointClass::Class2;
-    view.counters[0].config.clazz = PointClass::Class3;
 
     t.Transaction([](IUpdateHandler& db) {
         db.Update(Binary(true), 0);
@@ -168,15 +156,16 @@ TEST_CASE(SUITE("MultipleClasses"))
 void TestEventRead(const std::string& request,
                    const std::string& response,
                    const std::function<void(IUpdateHandler& db)>& loadFun,
-                   const std::function<void(DatabaseConfigView& db)>& configure = [](DatabaseConfigView& view) {})
+                   const std::function<void(DatabaseConfig& db)>& configure = [](DatabaseConfig& view) {})
 {
 
     OutstationConfig config;
     config.eventBufferConfig = EventBufferConfig::AllTypes(10);
-    OutstationTestObject t(config, DatabaseSizes::AllTypes(5));
 
-    auto view = t.context.GetConfigView();
-    configure(view);
+	DatabaseConfig database = configure::by_count_of::all_types(5);
+    configure(database);
+
+    OutstationTestObject t(config, std::move(database));    
 
     t.LowerLayerUp();
 
@@ -218,10 +207,10 @@ TEST_CASE(SUITE("Class1TwoByteLimitedCount"))
 
 TEST_CASE(SUITE("MixedClassLimitedCount"))
 {
-    auto configure = [](DatabaseConfigView& view) {
-        view.binaries[0].config.clazz = PointClass::Class1;
-        view.binaries[1].config.clazz = PointClass::Class2;
-        view.binaries[2].config.clazz = PointClass::Class3;
+    auto configure = [](DatabaseConfig& db) {
+        db.binary_input[0].clazz = PointClass::Class1;
+        db.binary_input[1].clazz = PointClass::Class2;
+        db.binary_input[2].clazz = PointClass::Class3;
     };
 
     auto update = [](IUpdateHandler& db) {
@@ -244,7 +233,7 @@ TEST_CASE(SUITE("reports g22v5 correctly"))
     auto update = [](IUpdateHandler& db) { db.Update(Counter(23, 0x01, DNPTime(1512595515000)), 0); };
 
     auto configure
-        = [](DatabaseConfigView& db) { db.counters[0].config.evariation = EventCounterVariation::Group22Var5; };
+        = [](DatabaseConfig& db) { db.counter[0].evariation = EventCounterVariation::Group22Var5; };
 
     TestEventRead("C0 01 3C 02 06", "E0 81 80 00 16 05 28 01 00 00 00 01 17 00 00 00 78 E6 B7 2D 60 01", update,
                   configure);
@@ -255,7 +244,7 @@ TEST_CASE(SUITE("reports g22v6 correctly"))
     auto update = [](IUpdateHandler& db) { db.Update(Counter(23, 0x01, DNPTime(1512595515000)), 0); };
 
     auto configure
-        = [](DatabaseConfigView& db) { db.counters[0].config.evariation = EventCounterVariation::Group22Var6; };
+        = [](DatabaseConfig& db) { db.counter[0].evariation = EventCounterVariation::Group22Var6; };
 
     TestEventRead("C0 01 3C 02 06", "E0 81 80 00 16 06 28 01 00 00 00 01 17 00 78 E6 B7 2D 60 01", update, configure);
 }
@@ -289,11 +278,11 @@ TEST_CASE(SUITE("ReadGrp32Var7"))
 
     // specifically read this variation, but let the default be something else
     TestEventRead("C0 01 20 07 06", response, update,
-                  [](DatabaseConfigView& db) { db.analogs[0].config.evariation = EventAnalogVariation::Group32Var1; });
+                  [](DatabaseConfig& db) { db.analog_input[0].evariation = EventAnalogVariation::Group32Var1; });
 
     // configure this as the default variation and ask for variation 0
     TestEventRead("C0 01 20 00 06", response, update,
-                  [](DatabaseConfigView& db) { db.analogs[0].config.evariation = EventAnalogVariation::Group32Var7; });
+                  [](DatabaseConfig& db) { db.analog_input[0].evariation = EventAnalogVariation::Group32Var7; });
 }
 
 TEST_CASE(SUITE("ReadGrp32Var5"))
@@ -304,11 +293,11 @@ TEST_CASE(SUITE("ReadGrp32Var5"))
 
     // specifically read this variation, but let the default be something else
     TestEventRead("C0 01 20 05 06", response, update,
-                  [](DatabaseConfigView& db) { db.analogs[0].config.evariation = EventAnalogVariation::Group32Var1; });
+                  [](DatabaseConfig& db) { db.analog_input[0].evariation = EventAnalogVariation::Group32Var1; });
 
     // configure this as the default variation and ask for variation 0
     TestEventRead("C0 01 20 00 06", response, update,
-                  [](DatabaseConfigView& db) { db.analogs[0].config.evariation = EventAnalogVariation::Group32Var5; });
+                  [](DatabaseConfig& db) { db.analog_input[0].evariation = EventAnalogVariation::Group32Var5; });
 }
 
 TEST_CASE(SUITE("ReadGrp2Var1"))
@@ -394,7 +383,7 @@ TEST_CASE(SUITE("reports octet string events w/ same size in same header"))
 {
     OutstationConfig config;
     config.eventBufferConfig = EventBufferConfig::AllTypes(5);
-    OutstationTestObject t(config, DatabaseSizes::OctetStringOnly(5));
+    OutstationTestObject t(config, configure::by_count_of::octet_string(5));
     t.LowerLayerUp();
 
     auto update = [](IUpdateHandler& db) {
@@ -415,7 +404,7 @@ TEST_CASE(SUITE("reports octet string events w/ different sizes in separate head
 {
     OutstationConfig config;
     config.eventBufferConfig = EventBufferConfig::AllTypes(5);
-    OutstationTestObject t(config, DatabaseSizes::OctetStringOnly(5));
+    OutstationTestObject t(config, configure::by_count_of::octet_string(5));
     t.LowerLayerUp();
 
     auto update = [](IUpdateHandler& db) {

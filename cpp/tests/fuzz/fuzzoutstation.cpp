@@ -35,13 +35,13 @@ class OutstationTestObject
 {
 public:
     OutstationTestObject(const opendnp3::OutstationConfig& config,
-                         const opendnp3::DatabaseSizes& dbSizes = opendnp3::DatabaseSizes::Empty())
+                         const opendnp3::DatabaseConfig& database = opendnp3::DatabaseConfig(10))
         : log("test"),
           exe(std::make_shared<exe4cpp::MockExecutor>()),
           lower(std::make_shared<MockLowerLayer>()),
           cmdHandler(std::make_shared<MockCommandHandler>(opendnp3::CommandStatus::SUCCESS)),
           application(std::make_shared<MockOutstationApplication>()),
-          context(opendnp3::Addresses(), config, dbSizes, log.logger, exe, lower, cmdHandler, application)
+          context(opendnp3::Addresses(), config, database, log.logger, exe, lower, cmdHandler, application)
     {
         lower->SetUpperLayer(context);
     }

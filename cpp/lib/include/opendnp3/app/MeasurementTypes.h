@@ -37,9 +37,9 @@ class Binary : public TypedMeasurement<bool>
 public:
     Binary();
 
-    Binary(bool value);
+    explicit Binary(bool value);
 
-    Binary(Flags flags);
+    explicit Binary(Flags flags);
 
     Binary(Flags flags, DNPTime time);
 
@@ -57,9 +57,9 @@ class DoubleBitBinary : public TypedMeasurement<DoubleBit>
 public:
     DoubleBitBinary();
 
-    DoubleBitBinary(DoubleBit value);
+    explicit DoubleBitBinary(DoubleBit value);
 
-    DoubleBitBinary(Flags flags);
+    explicit DoubleBitBinary(Flags flags);
 
     DoubleBitBinary(Flags flags, DNPTime time);
 
@@ -86,9 +86,9 @@ class BinaryOutputStatus : public TypedMeasurement<bool>
 public:
     BinaryOutputStatus();
 
-    BinaryOutputStatus(bool value);
+    explicit BinaryOutputStatus(bool value);
 
-    BinaryOutputStatus(Flags flags);
+    explicit BinaryOutputStatus(Flags flags);
 
     BinaryOutputStatus(Flags flags, DNPTime time);
 
@@ -107,7 +107,7 @@ class Analog : public TypedMeasurement<double>
 public:
     Analog();
 
-    Analog(double value);
+    explicit Analog(double value);
 
     Analog(double value, Flags flags);
 
@@ -123,7 +123,7 @@ class Counter : public TypedMeasurement<uint32_t>
 public:
     Counter();
 
-    Counter(uint32_t value);
+    explicit Counter(uint32_t value);
 
     Counter(uint32_t value, Flags flags);
 
@@ -138,7 +138,7 @@ class FrozenCounter : public TypedMeasurement<uint32_t>
 public:
     FrozenCounter();
 
-    FrozenCounter(uint32_t value);
+    explicit FrozenCounter(uint32_t value);
 
     FrozenCounter(uint32_t value, Flags flags);
 
@@ -154,7 +154,7 @@ class AnalogOutputStatus : public TypedMeasurement<double>
 public:
     AnalogOutputStatus();
 
-    AnalogOutputStatus(double value);
+    explicit AnalogOutputStatus(double value);
 
     AnalogOutputStatus(double value, Flags flags);
 

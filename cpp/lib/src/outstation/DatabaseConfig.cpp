@@ -17,33 +17,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_IDATABASE_H
-#define OPENDNP3_IDATABASE_H
 
-#include "outstation/IClassAssigner.h"
-#include "outstation/IResponseLoader.h"
-#include "outstation/IStaticSelector.h"
-
-#include "opendnp3/outstation/IUpdateHandler.h"
+#include "opendnp3/outstation/DatabaseConfig.h"
 
 namespace opendnp3
 {
-/**
- * Extends IUpdateHandler with accessors for other required sub-interfaces related to
- * handling various request types
- */
-class IDatabase : public IUpdateHandler
+
+template<class T> void initialize(std::map<uint16_t, T>& map, uint16_t count)
 {
-public:
-    virtual ~IDatabase() {}
+    for (uint16_t i = 0; i < count; ++i)
+    {
+        map[i] = {};
+    }
+}
 
-    virtual IResponseLoader& GetResponseLoader() = 0;
-
-    virtual IStaticSelector& GetStaticSelector() = 0;
-
-    virtual IClassAssigner& GetClassAssigner() = 0;
+DatabaseConfig::DatabaseConfig(uint16_t all_types)
+{   
+    initialize(this->binary_input, all_types);
+    initialize(this->double_binary, all_types);
+    initialize(this->analog_input, all_types);
+    initialize(this->counter, all_types);
+    initialize(this->frozen_counter, all_types);
+    initialize(this->binary_output_status, all_types);
+    initialize(this->analog_output_status, all_types);
+    initialize(this->time_and_interval, all_types);
+    initialize(this->octet_string, all_types);
 };
 
 } // namespace opendnp3
-
-#endif

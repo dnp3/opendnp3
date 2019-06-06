@@ -22,14 +22,6 @@
 namespace opendnp3
 {
 
-template<class T, class U> void assign(const T& config, U& view)
-{
-    for (auto i = 0; i < view.length(); ++i)
-    {
-        view[i].config = config[i];
-    }
-}
-
 OutstationStack::OutstationStack(const log4cpp::Logger& logger,
                                  const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                  const std::shared_ptr<ICommandHandler>& commandHandler,
@@ -46,29 +38,16 @@ OutstationStack::OutstationStack(const log4cpp::Logger& logger,
                 manager,
                 config.outstation.params.maxRxFragSize,
                 LinkLayerConfig(config.link, config.outstation.params.respondToAnyMaster)),
-      ocontext(Addresses(config.link.LocalAddr, config.link.RemoteAddr),
+               ocontext(Addresses(config.link.LocalAddr, config.link.RemoteAddr),
                config.outstation,
-               config.dbConfig.sizes,
+               config.database,
                logger,
                executor,
                tstack.transport,
                commandHandler,
                application)
 {
-    this->tstack.transport->SetAppLayer(ocontext);
-
-    // apply the database configuration
-    auto view = ocontext.GetConfigView();
-
-    assign(config.dbConfig.binary, view.binaries);
-    assign(config.dbConfig.doubleBinary, view.doubleBinaries);
-    assign(config.dbConfig.analog, view.analogs);
-    assign(config.dbConfig.counter, view.counters);
-    assign(config.dbConfig.frozenCounter, view.frozenCounters);
-    assign(config.dbConfig.boStatus, view.binaryOutputStatii);
-    assign(config.dbConfig.aoStatus, view.analogOutputStatii);
-    assign(config.dbConfig.timeAndInterval, view.timeAndIntervals);
-    assign(config.dbConfig.octetString, view.octetStrings);
+    this->tstack.transport->SetAppLayer(ocontext);    
 }
 
 bool OutstationStack::Enable()

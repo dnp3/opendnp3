@@ -17,8 +17,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "utils/OutstationTestObject.h"
 #include "utils/APDUHexBuilders.h"
+#include "utils/OutstationTestObject.h"
+
+#include <dnp3mocks/DatabaseHelpers.h>
 
 #include <catch.hpp>
 
@@ -26,7 +28,7 @@ using namespace opendnp3;
 
 #define SUITE(name) "OutstationAssignClassTestSuite - " name
 
-TEST_CASE(SUITE("RejectsWithFuncNotSupportedIfAppDoesNotSupport"))
+TEST_CASE(SUITE("rejects with FuncNotSupported if assign class not supported"))
 {
     OutstationConfig config;
     OutstationTestObject t(config);
@@ -39,7 +41,7 @@ TEST_CASE(SUITE("RejectsWithFuncNotSupportedIfAppDoesNotSupport"))
     REQUIRE(t.application->classAssignments.empty());
 }
 
-TEST_CASE(SUITE("RejectsWithParamErrorIfNoType"))
+TEST_CASE(SUITE("rejects with ParamError if type doesn't exist"))
 {
     OutstationConfig config;
     OutstationTestObject t(config);
@@ -52,24 +54,15 @@ TEST_CASE(SUITE("RejectsWithParamErrorIfNoType"))
     REQUIRE(t.application->classAssignments.empty());
 }
 
-TEST_CASE(SUITE("AcceptsAssignClassViaAllObjects"))
-{
-    const uint16_t NUM_BINARY = 5;
-
-    OutstationConfig config;
-    OutstationTestObject t(config, DatabaseSizes::BinaryOnly(NUM_BINARY));
+TEST_CASE(SUITE("accepts assign class via all objects header"))
+{   
+    OutstationTestObject t(OutstationConfig(), configure::by_count_of::binary_input(5));
     t.application->supportsAssignClass = true;
     t.LowerLayerUp();
 
     // assign binaries to class 2
     t.SendToOutstation("C0 16 3C 03 06 01 00 06");
-    REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00");
-
-    auto view = t.context.GetConfigView();
-    for (uint16_t i = 0; i < NUM_BINARY; ++i)
-    {
-        REQUIRE(view.binaries[0].config.clazz == PointClass::Class2);
-    }
+    REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00");    
 
     REQUIRE(t.application->classAssignments.size() == 1);
     auto assignment = t.application->classAssignments.front();
@@ -77,49 +70,30 @@ TEST_CASE(SUITE("AcceptsAssignClassViaAllObjects"))
 }
 
 TEST_CASE(SUITE("RejectsAssignClassWithParamErrorIfRangeIsInvalid"))
-{
-    const uint16_t NUM_BINARY = 5;
-
+{  
     OutstationConfig config;
-    OutstationTestObject t(config, DatabaseSizes::BinaryOnly(NUM_BINARY));
+    OutstationTestObject t(config, configure::by_count_of::binary_input(5));
     t.application->supportsAssignClass = true;
     t.LowerLayerUp();
 
     // assign binaries 0 -> 5 (invalid range) to class 2
     t.SendToOutstation("C0 16 3C 03 06 01 00 01 00 00 05 00");
     REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 04");
-
-    // despite the invalid range, the outstation should assign the values that it does have
-    auto view = t.context.GetConfigView();
-    for (uint16_t i = 0; i < NUM_BINARY; ++i)
-    {
-        REQUIRE(view.binaries[0].config.clazz == PointClass::Class2);
-    }
+   
 
     REQUIRE(t.application->classAssignments.size() == 1);
 }
 
 TEST_CASE(SUITE("AcceptsAssignClassViaStartStop"))
-{
-    const uint16_t NUM_BINARY = 5;
-
+{    
     OutstationConfig config;
-    OutstationTestObject t(config, DatabaseSizes::BinaryOnly(NUM_BINARY));
+    OutstationTestObject t(config, configure::by_count_of::binary_input(5));
     t.application->supportsAssignClass = true;
     t.LowerLayerUp();
 
     // assign binaries 2 - 3 to class 2
     t.SendToOutstation("C0 16 3C 03 06 01 00 01 02 00 03 00");
-    REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00");
-
-    auto view = t.context.GetConfigView();
-
-    REQUIRE(view.binaries[0].config.clazz == PointClass::Class1);
-    for (uint16_t i = 2; i < 3; ++i)
-    {
-        REQUIRE(view.binaries[i].config.clazz == PointClass::Class2);
-    }
-    REQUIRE(view.binaries[4].config.clazz == PointClass::Class1);
+    REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00");   
 
     REQUIRE(t.application->classAssignments.size() == 1);
     auto assignment = t.application->classAssignments.front();
@@ -132,7 +106,7 @@ TEST_CASE(SUITE("AcceptsMultipleAssignsmentPerMessage"))
     const uint16_t NUM_ANALOG = 10;
 
     OutstationConfig config;
-    OutstationTestObject t(config, DatabaseSizes(NUM_BINARY, 0, NUM_ANALOG, 0, 0, 0, 0, 0, 0));
+    OutstationTestObject t(config, configure::database_by_sizes(NUM_BINARY, 0, NUM_ANALOG, 0, 0, 0, 0, 0, 0));
     t.application->supportsAssignClass = true;
     t.LowerLayerUp();
 

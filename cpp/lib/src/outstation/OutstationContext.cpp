@@ -44,7 +44,7 @@ namespace opendnp3
 
 OContext::OContext(const Addresses& addresses,
                    const OutstationConfig& config,
-                   const DatabaseSizes& dbSizes,
+                   const DatabaseConfig& db_config,
                    const log4cpp::Logger& logger,
                    const std::shared_ptr<exe4cpp::IExecutor>& executor,
                    std::shared_ptr<ILowerLayer> lower,
@@ -59,8 +59,8 @@ OContext::OContext(const Addresses& addresses,
       commandHandler(std::move(commandHandler)),
       application(std::move(application)),
       eventBuffer(config.eventBufferConfig),
-      database(dbSizes, eventBuffer, config.params.indexMode, config.params.typesAllowedInClass0),
-      rspContext(database.GetResponseLoader(), eventBuffer),
+      database(db_config, eventBuffer,  config.params.typesAllowedInClass0),
+      rspContext(database, eventBuffer),
       params(config.params),
       isOnline(false),
       isTransmitting(false),
@@ -459,11 +459,6 @@ IUpdateHandler& OContext::GetUpdateHandler()
     return this->database;
 }
 
-DatabaseConfigView OContext::GetConfigView()
-{
-    return this->database.GetConfigView();
-}
-
 //// ----------------------------- function handlers -----------------------------
 
 bool OContext::ProcessRequestNoAck(const ParsedRequest& request)
@@ -518,9 +513,9 @@ ser4cpp::Pair<IINField, AppControlField> OContext::HandleRead(const ser4cpp::rse
 {
     this->rspContext.Reset();
     this->eventBuffer.Unselect(); // always un-select any previously selected points when we start a new read request
-    this->database.GetStaticSelector().Unselect();
+    this->database.Unselect();
 
-    ReadHandler handler(this->database.GetStaticSelector(), this->eventBuffer);
+    ReadHandler handler(this->database, this->eventBuffer);
     auto result = APDUParser::Parse(objects, handler, &this->logger,
                                     ParserSettings::NoContents()); // don't expect range/count context on a READ
     if (result == ParseResult::OK)
@@ -669,7 +664,7 @@ IINField OContext::HandleAssignClass(const ser4cpp::rseq_t& objects)
 {
     if (this->application->SupportsAssignClass())
     {
-        AssignClassHandler handler(*this->executor, *this->application, this->database.GetClassAssigner());
+        AssignClassHandler handler(*this->executor, *this->application, this->database);
         auto result = APDUParser::Parse(objects, handler, &this->logger, ParserSettings::NoContents());
         return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
     }

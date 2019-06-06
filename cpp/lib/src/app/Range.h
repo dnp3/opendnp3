@@ -70,6 +70,11 @@ public:
         }
     }
 
+    bool Contains(uint16_t index) const
+    {
+        return (index >= start) && (index <= stop);
+    }
+
     /// @return A new range with only values found in both ranges
     Range Intersection(const Range& other) const
     {
@@ -79,6 +84,11 @@ public:
     /// @return A new range with min start and the max stop of both ranges
     Range Union(const Range& other) const
     {
+        if (!this->IsValid())
+        {
+            return other;
+        }
+
         return Range(ser4cpp::min<uint16_t>(start, other.start), ser4cpp::max<uint16_t>(stop, other.stop));
     }
 

@@ -25,16 +25,17 @@ import com.automatak.render.dnp3.objects.FixedSize
 
 object ConversionHeaders {
 
-  val measurementTypeSpecs = quoted("opendnp3/app/MeasurementTypeSpecs.h")
-  val timeAndInterval = quoted("opendnp3/app/TimeAndInterval.h")
-  val securityStat = quoted("opendnp3/app/SecurityStat.h")
-  val crob = quoted("opendnp3/app/ControlRelayOutputBlock.h")
-  val ao = quoted("opendnp3/app/AnalogOutput.h")
-  val binaryCommandEvent = quoted("opendnp3/app/BinaryCommandEvent.h")
-  val analogCommandEvent = quoted("opendnp3/app/AnalogCommandEvent.h")
-  val factory = quoted("app/MeasurementFactory.h")
-  val serializer = quoted("app/DNP3Serializer.h")
-  val conversions = quoted("app/WriteConversions.h")
+  val timeAndInterval: String = quoted("opendnp3/app/TimeAndInterval.h")
+  val securityStat: String = quoted("opendnp3/app/SecurityStat.h")
+  val crob: String = quoted("opendnp3/app/ControlRelayOutputBlock.h")
+  val ao: String = quoted("opendnp3/app/AnalogOutput.h")
+  val binaryCommandEvent: String = quoted("opendnp3/app/BinaryCommandEvent.h")
+  val analogCommandEvent: String = quoted("opendnp3/app/AnalogCommandEvent.h")
+
+  val measurementTypeSpecs: String = quoted("app/MeasurementTypeSpecs.h")
+  val factory: String = quoted("app/MeasurementFactory.h")
+  val serializer: String = quoted("app/DNP3Serializer.h")
+  val conversions: String = quoted("app/WriteConversions.h")
 
   val cppIncludes = List(factory, conversions)
 }

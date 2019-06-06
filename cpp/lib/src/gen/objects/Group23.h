@@ -36,7 +36,7 @@
 #include <ser4cpp/container/SequenceTypes.h>
 #include "opendnp3/app/DNPTime.h"
 #include "app/DNP3Serializer.h"
-#include "opendnp3/app/MeasurementTypeSpecs.h"
+#include "app/MeasurementTypeSpecs.h"
 
 namespace opendnp3 {
 

@@ -33,101 +33,102 @@ namespace opendnp3
 {
 
 template<class Spec, class IndexType>
-bool LoadWithRangeIterator(ser4cpp::ArrayView<Cell<Spec>, uint16_t>& view,
-                           RangeWriteIterator<IndexType, typename Spec::meas_t>& iterator,
-                           Range& range)
+bool LoadWithRangeIterator(StaticDataMap<Spec>& map,
+                           RangeWriteIterator<IndexType, typename Spec::meas_t>& writer,
+                           typename Spec::static_variation_t variation)
 {
-    const Cell<Spec>& start = view[range.start];
-    uint16_t nextIndex = start.config.vIndex;
+    auto next_index = map.get_selected_range().start;
 
-    while (range.IsValid() && view[range.start].selection.selected
-           && (view[range.start].selection.variation == start.selection.variation)
-           && (view[range.start].config.vIndex == nextIndex))
+    for (const auto& elem : map)
     {
-        if (iterator.Write(view[range.start].selection.value))
+        if (elem.second.variation != variation)
         {
-            // deselect the value and advance the range
-            view[range.start].selection.selected = false;
-            range.Advance();
-            ++nextIndex;
+            // the variation has changed
+            return true;
         }
-        else
+
+        if (elem.first != next_index)
+        {
+            // we've loaded all we can with a contiguous range
+            return true;
+        }
+
+        if (!writer.Write(elem.second.value))
         {
             return false;
         }
+
+        ++next_index;
     }
 
     return true;
 }
 
 template<class Spec, class IndexType>
-bool LoadWithBitfieldIterator(ser4cpp::ArrayView<Cell<Spec>, uint16_t>& view,
-                              BitfieldRangeWriteIterator<IndexType>& iterator,
-                              Range& range)
+bool LoadWithBitfieldIterator(StaticDataMap<Spec>& map,
+                              BitfieldRangeWriteIterator<IndexType>& iter,
+                              typename Spec::static_variation_t variation)
 {
-    const Cell<Spec>& start = view[range.start];
+    auto next_index = map.get_selected_range().start;
 
-    uint16_t nextIndex = start.config.vIndex;
-
-    while (range.IsValid() && view[range.start].selection.selected
-           && (view[range.start].selection.variation == start.selection.variation)
-           && (view[range.start].config.vIndex == nextIndex))
+    for (const auto& elem : map)
     {
-        if (iterator.Write(view[range.start].selection.value.value))
+        if (elem.second.variation != variation)
         {
-            // deselect the value and advance the range
-            view[range.start].selection.selected = false;
-            range.Advance();
-            ++nextIndex;
+			// the variation has changed
+            return true;
         }
-        else
+
+        if (elem.first != next_index)
+        {
+            // we've loaded all we can with a contiguous range
+            return true;
+        }
+
+        if (!iter.Write(elem.second.value.value))
         {
             return false;
         }
+
+        ++next_index;
     }
 
     return true;
 }
 
-template<class Spec, class GV>
-bool WriteSingleBitfield(ser4cpp::ArrayView<Cell<Spec>, uint16_t>& view, HeaderWriter& writer, Range& range)
+template<class Spec, class GV> bool WriteSingleBitfield(StaticDataMap<Spec>& map, HeaderWriter& writer)
 {
-    auto start = view[range.start].config.vIndex;
-    auto stop = view[range.stop].config.vIndex;
-    auto mapped = Range::From(start, stop);
+    const auto range = map.get_selected_range();
 
-    if (mapped.IsOneByte())
+    if (range.IsOneByte())
     {
-        auto iter = writer.IterateOverSingleBitfield<ser4cpp::UInt8>(GV::ID(), QualifierCode::UINT8_START_STOP,
-                                                                     static_cast<uint8_t>(mapped.start));
-        return LoadWithBitfieldIterator<Spec, ser4cpp::UInt8>(view, iter, range);
+        auto write_iter = writer.IterateOverSingleBitfield<ser4cpp::UInt8>(GV::ID(), QualifierCode::UINT8_START_STOP,
+                                                                           static_cast<uint8_t>(range.start));
+        return LoadWithBitfieldIterator<Spec, ser4cpp::UInt8>(map, write_iter, GV::svariation);
     }
 
-    auto iter
-        = writer.IterateOverSingleBitfield<ser4cpp::UInt16>(GV::ID(), QualifierCode::UINT16_START_STOP, mapped.start);
-    return LoadWithBitfieldIterator<Spec, ser4cpp::UInt16>(view, iter, range);
+    auto write_iter
+        = writer.IterateOverSingleBitfield<ser4cpp::UInt16>(GV::ID(), QualifierCode::UINT16_START_STOP, range.start);
+    return LoadWithBitfieldIterator<Spec, ser4cpp::UInt16>(map, write_iter, GV::svariation);
 }
 
-template<class Spec, class Serializer>
-bool WriteWithSerializer(ser4cpp::ArrayView<Cell<Spec>, uint16_t>& view, HeaderWriter& writer, Range& range)
+template<class Spec, class Serializer> bool WriteWithSerializer(StaticDataMap<Spec>& map, HeaderWriter& writer)
 {
-    auto start = view[range.start].config.vIndex;
-    auto stop = view[range.stop].config.vIndex;
-    auto mapped = Range::From(start, stop);
+    const auto range = map.get_selected_range();
 
-    if (mapped.IsOneByte())
+    if (range.IsOneByte())
     {
         auto iter = writer.IterateOverRange<ser4cpp::UInt8, typename Serializer::Target>(
-            QualifierCode::UINT8_START_STOP, Serializer::Inst(), static_cast<uint8_t>(mapped.start));
-        return LoadWithRangeIterator<Spec, ser4cpp::UInt8>(view, iter, range);
+            QualifierCode::UINT8_START_STOP, Serializer::Inst(), static_cast<uint8_t>(range.start));
+        return LoadWithRangeIterator<Spec, ser4cpp::UInt8>(map, iter, Serializer::svariation);
     }
 
     auto iter = writer.IterateOverRange<ser4cpp::UInt16, typename Serializer::Target>(QualifierCode::UINT16_START_STOP,
-                                                                                      Serializer::Inst(), mapped.start);
-    return LoadWithRangeIterator<Spec, ser4cpp::UInt16>(view, iter, range);
+                                                                                      Serializer::Inst(), range.start);
+    return LoadWithRangeIterator<Spec, ser4cpp::UInt16>(map, iter, Serializer::svariation);
 }
 
-StaticWrite<BinarySpec>::func_t StaticWriters::Get(StaticBinaryVariation variation)
+static_write_func_t<BinarySpec> StaticWriters::get(StaticBinaryVariation variation)
 {
     switch (variation)
     {
@@ -138,7 +139,7 @@ StaticWrite<BinarySpec>::func_t StaticWriters::Get(StaticBinaryVariation variati
     }
 }
 
-StaticWrite<DoubleBitBinarySpec>::func_t StaticWriters::Get(StaticDoubleBinaryVariation variation)
+static_write_func_t<DoubleBitBinarySpec> StaticWriters::get(StaticDoubleBinaryVariation variation)
 {
     switch (variation)
     {
@@ -149,7 +150,7 @@ StaticWrite<DoubleBitBinarySpec>::func_t StaticWriters::Get(StaticDoubleBinaryVa
     }
 }
 
-StaticWrite<AnalogSpec>::func_t StaticWriters::Get(StaticAnalogVariation variation)
+static_write_func_t<AnalogSpec> StaticWriters::get(StaticAnalogVariation variation)
 {
     switch (variation)
     {
@@ -170,7 +171,7 @@ StaticWrite<AnalogSpec>::func_t StaticWriters::Get(StaticAnalogVariation variati
     }
 }
 
-StaticWrite<CounterSpec>::func_t StaticWriters::Get(StaticCounterVariation variation)
+static_write_func_t<CounterSpec> StaticWriters::get(StaticCounterVariation variation)
 {
     switch (variation)
     {
@@ -187,7 +188,7 @@ StaticWrite<CounterSpec>::func_t StaticWriters::Get(StaticCounterVariation varia
     }
 }
 
-StaticWrite<FrozenCounterSpec>::func_t StaticWriters::Get(StaticFrozenCounterVariation variation)
+static_write_func_t<FrozenCounterSpec> StaticWriters::get(StaticFrozenCounterVariation variation)
 {
     switch (variation)
     {
@@ -208,7 +209,7 @@ StaticWrite<FrozenCounterSpec>::func_t StaticWriters::Get(StaticFrozenCounterVar
     }
 }
 
-StaticWrite<BinaryOutputStatusSpec>::func_t StaticWriters::Get(StaticBinaryOutputStatusVariation variation)
+static_write_func_t<BinaryOutputStatusSpec> StaticWriters::get(StaticBinaryOutputStatusVariation variation)
 {
     switch (variation)
     {
@@ -219,7 +220,7 @@ StaticWrite<BinaryOutputStatusSpec>::func_t StaticWriters::Get(StaticBinaryOutpu
     }
 }
 
-StaticWrite<AnalogOutputStatusSpec>::func_t StaticWriters::Get(StaticAnalogOutputStatusVariation variation)
+static_write_func_t<AnalogOutputStatusSpec> StaticWriters::get(StaticAnalogOutputStatusVariation variation)
 {
     switch (variation)
     {
@@ -236,79 +237,60 @@ StaticWrite<AnalogOutputStatusSpec>::func_t StaticWriters::Get(StaticAnalogOutpu
     }
 }
 
-StaticWrite<OctetStringSpec>::func_t StaticWriters::Get(StaticOctetStringVariation /*variation*/)
+bool write_octet_strings(StaticDataMap<OctetStringSpec>& map, HeaderWriter& writer);
+
+static_write_func_t<OctetStringSpec> StaticWriters::get(StaticOctetStringVariation /*variation*/)
 {
-    // variation is always the same
-    return &Write;
+    return write_octet_strings;
 }
 
-StaticWrite<TimeAndIntervalSpec>::func_t StaticWriters::Get(StaticTimeAndIntervalVariation /*variation*/)
+static_write_func_t<TimeAndIntervalSpec> StaticWriters::get(StaticTimeAndIntervalVariation /*variation*/)
 {
     return &WriteWithSerializer<TimeAndIntervalSpec, Group50Var4>;
 }
 
-template<class Iterator>
-uint16_t WriteSomeOctetString(ser4cpp::ArrayView<Cell<OctetStringSpec>, uint16_t>& view,
-                              Iterator& iterator,
-                              Range& range,
-                              uint8_t size)
+
+template<class Writer>
+bool write_some_octet_strings(StaticDataMap<OctetStringSpec>& map, Writer& writer)
 {
-    const Cell<OctetStringSpec>& start = view[range.start];
-    uint16_t nextIndex = start.config.vIndex;
+    auto next_index = map.get_selected_range().start;
 
-    uint16_t num_written = 0;
-
-    while (range.IsValid() && view[range.start].selection.value.Size() == size && view[range.start].selection.selected
-           && (view[range.start].selection.variation == start.selection.variation)
-           && (view[range.start].config.vIndex == nextIndex))
-    {
-        if (iterator.Write(view[range.start].selection.value))
+    for (const auto& elem : map)
+    {       
+        if (elem.first != next_index)
         {
-            // deselect the value and advance the range
-            view[range.start].selection.selected = false;
-            ++num_written;
-            ++nextIndex;
-            range.Advance();
+            // we've loaded all we can with a contiguous range
+            return true;
         }
-        else
+
+        if (!writer.Write(elem.second.value))
         {
             return false;
         }
+
+        ++next_index;
     }
 
-    return num_written;
+    return true;	
 }
 
-bool StaticWriters::Write(ser4cpp::ArrayView<Cell<OctetStringSpec>, uint16_t>& view, HeaderWriter& writer, Range& range)
+
+
+bool write_octet_strings(StaticDataMap<OctetStringSpec>& map, HeaderWriter& writer)
 {
-    auto start = view[range.start].config.vIndex;
-    auto stop = view[range.stop].config.vIndex;
-    auto mapped = Range::From(start, stop);
+    const auto range = map.get_selected_range();
 
-    if (mapped.IsValid())
+	const uint8_t starting_size = (*map.begin()).second.value.Size();
+    const OctetStringSerializer serializer(false, starting_size);
+
+    if (range.IsOneByte())
     {
-        const uint8_t sizeStartingSize = view[range.start].selection.value.Size();
-        const OctetStringSerializer serializer(false, sizeStartingSize);
-
-        if (mapped.IsOneByte())
-        {
-            auto iter = writer.IterateOverRange<ser4cpp::UInt8>(QualifierCode::UINT8_START_STOP, serializer,
-                                                                static_cast<uint8_t>(mapped.start));
-            const uint16_t num_written = WriteSomeOctetString(view, iter, range, sizeStartingSize);
-            if (num_written == 0)
-                return false;
-        }
-        else
-        {
-            auto iter
-                = writer.IterateOverRange<ser4cpp::UInt16>(QualifierCode::UINT16_START_STOP, serializer, mapped.start);
-            const uint16_t num_written = WriteSomeOctetString(view, iter, range, sizeStartingSize);
-            if (num_written == 0)
-                return false;
-        }
+        auto iter = writer.IterateOverRange<ser4cpp::UInt8>(QualifierCode::UINT8_START_STOP, serializer, static_cast<uint8_t>(range.start));
+        return write_some_octet_strings(map, iter);
     }
 
-    return true;
+    auto iter = writer.IterateOverRange<ser4cpp::UInt16>(QualifierCode::UINT16_START_STOP, serializer, range.start);
+    return write_some_octet_strings(map, iter);
 }
 
 } // namespace opendnp3

@@ -1,10 +1,11 @@
-set(unittests_headers
+set(unittests_headers    
+
     ./utils/APDUHelpers.h
     ./utils/APDUHexBuilders.h
     ./utils/BufferHelpers.h
     ./utils/CallbackQueue.h
     ./utils/CommandCallbackQueue.h
-    ./utils/CopyableBuffer.h
+    ./utils/CopyableBuffer.h	
     ./utils/DNPHelpers.h
     ./utils/LinkHex.h
     ./utils/LinkLayerTest.h
@@ -25,12 +26,10 @@ set(unittests_src
     ./TestAuthRequestParser.cpp
     ./TestCollectionTransform.cpp
     ./TestCRC.cpp
-#    ./TestDatabase.cpp
     ./TestEventStorage.cpp
     ./TestGroup120Var1.cpp
     ./TestGroup120Var2.cpp
-    ./TestGroup120Var5.cpp
-    ./TestIndexSearch.cpp
+    ./TestGroup120Var5.cpp    
     ./TestIPEndpointsList.cpp
     ./TestLinkAddresses.cpp
     ./TestLinkFrame.cpp
@@ -54,15 +53,16 @@ set(unittests_src
     ./TestOutstationStateMachine.cpp
     ./TestOutstationUnsolicitedResponses.cpp
     ./TestShiftableBuffer.cpp
+	./TestStaticDataMap.cpp
     ./TestTransportLayer.cpp
     ./TestTypedCommandHeader.cpp
     ./TestUpdateBuilder.cpp
-    ./TestWriteConversions.cpp
+    ./TestWriteConversions.cpp   	
 
     ./utils/APDUHelpers.cpp
     ./utils/APDUHexBuilders.cpp
     ./utils/BufferHelpers.cpp
-    ./utils/CopyableBuffer.cpp
+    ./utils/CopyableBuffer.cpp	
     ./utils/DNPHelpers.cpp
     ./utils/LinkHex.cpp
     ./utils/LinkLayerTest.cpp

@@ -20,60 +20,28 @@
 #ifndef OPENDNP3_DATABASECONFIG_H
 #define OPENDNP3_DATABASECONFIG_H
 
-#include "opendnp3/outstation/DatabaseSizes.h"
 #include "opendnp3/outstation/MeasurementConfig.h"
 
-#include <ser4cpp/container/Array.h>
+#include <map>
 
 namespace opendnp3
 {
 
-class DatabaseConfig
-{
-public:
-    DatabaseConfig(const DatabaseSizes& sizes)
-        : sizes(sizes),
-          binary(sizes.numBinary),
-          doubleBinary(sizes.numDoubleBinary),
-          analog(sizes.numAnalog),
-          counter(sizes.numCounter),
-          frozenCounter(sizes.numFrozenCounter),
-          boStatus(sizes.numBinaryOutputStatus),
-          aoStatus(sizes.numAnalogOutputStatus),
-          timeAndInterval(sizes.numTimeAndInterval),
-          octetString(sizes.numOctetString)
-    {
-        InitIndices(binary);
-        InitIndices(doubleBinary);
-        InitIndices(analog);
-        InitIndices(counter);
-        InitIndices(frozenCounter);
-        InitIndices(boStatus);
-        InitIndices(aoStatus);
-        InitIndices(timeAndInterval);
-        InitIndices(octetString);
-    }
+struct DatabaseConfig
+{   
+	DatabaseConfig() = default;
 
-    const DatabaseSizes sizes;
+	DatabaseConfig(uint16_t all_types);
 
-    ser4cpp::Array<BinaryConfig, uint16_t> binary;
-    ser4cpp::Array<DoubleBitBinaryConfig, uint16_t> doubleBinary;
-    ser4cpp::Array<AnalogConfig, uint16_t> analog;
-    ser4cpp::Array<CounterConfig, uint16_t> counter;
-    ser4cpp::Array<FrozenCounterConfig, uint16_t> frozenCounter;
-    ser4cpp::Array<BOStatusConfig, uint16_t> boStatus;
-    ser4cpp::Array<AOStatusConfig, uint16_t> aoStatus;
-    ser4cpp::Array<TimeAndIntervalConfig, uint16_t> timeAndInterval;
-    ser4cpp::Array<OctetStringConfig, uint16_t> octetString;
-
-private:
-    template<class T> void InitIndices(T& values)
-    {
-        for (auto i = 0; i < values.length(); ++i)
-        {
-            values[i].vIndex = i;
-        }
-    }
+    std::map<uint16_t, BinaryConfig> binary_input;
+    std::map<uint16_t, DoubleBitBinaryConfig> double_binary;
+    std::map<uint16_t, AnalogConfig> analog_input;
+    std::map<uint16_t, CounterConfig> counter;
+    std::map<uint16_t, FrozenCounterConfig> frozen_counter;
+    std::map<uint16_t, BOStatusConfig> binary_output_status;
+    std::map<uint16_t, AOStatusConfig> analog_output_status;
+    std::map<uint16_t, TimeAndIntervalConfig> time_and_interval;
+    std::map<uint16_t, OctetStringConfig> octet_string;
 };
 
 } // namespace opendnp3

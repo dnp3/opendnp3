@@ -33,10 +33,7 @@ namespace opendnp3
  *	Static configuration parameters for an outstation session
  */
 struct OutstationParams
-{
-    /// Controls the index mode (defaults to contiguous)
-    IndexMode indexMode = IndexMode::Contiguous;
-
+{    
     /// The maximum number of controls the outstation will attempt to process from a single APDU
     uint8_t maxControlsPerRequest = 16;
 

@@ -17,9 +17,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "utils/OutstationTestObject.h"
 
+#include "utils/OutstationTestObject.h"
 #include "utils/APDUHexBuilders.h"
+
+#include <dnp3mocks/DatabaseHelpers.h>
 
 #include <catch.hpp>
 
@@ -80,12 +82,13 @@ TEST_CASE(SUITE("UnsolData"))
     cfg.params.allowUnsolicited = true;
     cfg.params.unsolClassMask = ClassField::AllEventClasses(); // allows us to skip the "enable unsol" step
     cfg.eventBufferConfig = EventBufferConfig::AllTypes(5);
-    OutstationTestObject t(cfg, DatabaseSizes::BinaryOnly(3));
 
-    auto view = t.context.GetConfigView();
-    view.binaries[0].config.clazz = PointClass::Class1;
-    view.binaries[1].config.clazz = PointClass::Class2;
-    view.binaries[2].config.clazz = PointClass::Class3;
+	auto database = configure::by_count_of::binary_input(3);
+    database.binary_input[0].clazz = PointClass::Class1;
+    database.binary_input[1].clazz = PointClass::Class2;
+    database.binary_input[2].clazz = PointClass::Class3;
+
+    OutstationTestObject t(cfg, std::move(database));
 
     t.LowerLayerUp();
 
@@ -111,7 +114,7 @@ TEST_CASE(SUITE("UnsolEventBufferOverflow"))
     cfg.params.allowUnsolicited = true;
     cfg.params.unsolClassMask = ClassField(PointClass::Class1);
     cfg.eventBufferConfig = EventBufferConfig(2);
-    OutstationTestObject t(cfg, DatabaseSizes::BinaryOnly(1));
+    OutstationTestObject t(cfg, configure::by_count_of::binary_input(1));
 
     t.LowerLayerUp();
     REQUIRE(t.lower->PopWriteAsHex() == hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
@@ -142,7 +145,7 @@ TEST_CASE(SUITE("UnsolMultiFragments"))
     cfg.params.maxTxFragSize = 20;                             // this will cause the unsol response to get fragmented
     cfg.params.unsolClassMask = ClassField::AllEventClasses(); // this allows the EnableUnsol sequence to be skipped
     cfg.eventBufferConfig = EventBufferConfig(0, 0, 5);
-    OutstationTestObject t(cfg, DatabaseSizes::AnalogOnly(5));
+    OutstationTestObject t(cfg, configure::by_count_of::analog_input(5));
 
     t.LowerLayerUp();
 
@@ -175,7 +178,7 @@ void WriteDuringUnsol(bool beforeTx)
     cfg.params.allowUnsolicited = true;
     cfg.params.unsolClassMask = ClassField::AllEventClasses();
     cfg.eventBufferConfig = EventBufferConfig(5);
-    OutstationTestObject t(cfg, DatabaseSizes::BinaryOnly(5));
+    OutstationTestObject t(cfg, configure::by_count_of::binary_input(5));
 
     t.LowerLayerUp();
 
@@ -224,7 +227,7 @@ TEST_CASE(SUITE("ReadDuringUnsol"))
     cfg.params.allowUnsolicited = true;
     cfg.params.unsolClassMask = ClassField::AllEventClasses();
     cfg.eventBufferConfig = EventBufferConfig(5);
-    OutstationTestObject t(cfg, DatabaseSizes::BinaryOnly(5));
+    OutstationTestObject t(cfg, configure::by_count_of::binary_input(5));
 
     t.LowerLayerUp();
 
@@ -254,7 +257,7 @@ TEST_CASE(SUITE("ReadWriteDuringUnsol"))
     cfg.params.allowUnsolicited = true;
     cfg.params.unsolClassMask = ClassField::AllEventClasses();
     cfg.eventBufferConfig = EventBufferConfig(5);
-    OutstationTestObject t(cfg, DatabaseSizes::BinaryOnly(5));
+    OutstationTestObject t(cfg, configure::by_count_of::binary_input(5));
 
     t.LowerLayerUp();
 
@@ -282,7 +285,7 @@ TEST_CASE(SUITE("RepeatRequestDuringUnsol"))
     cfg.params.allowUnsolicited = true;
     cfg.params.unsolClassMask = ClassField::AllEventClasses();
     cfg.eventBufferConfig = EventBufferConfig(5);
-    OutstationTestObject t(cfg, DatabaseSizes::BinaryOnly(5));
+    OutstationTestObject t(cfg, configure::by_count_of::binary_input(5));
 
     t.LowerLayerUp();
 
@@ -309,7 +312,7 @@ TEST_CASE(SUITE("UnsolEnable"))
     OutstationConfig cfg;
     cfg.params.allowUnsolicited = true;
     cfg.eventBufferConfig = EventBufferConfig(5);
-    OutstationTestObject t(cfg, DatabaseSizes::BinaryOnly(5));
+    OutstationTestObject t(cfg, configure::by_count_of::binary_input(5));
 
     t.LowerLayerUp();
 
@@ -335,7 +338,7 @@ TEST_CASE(SUITE("UnsolEnableDisableFailure"))
 {
     OutstationConfig cfg;
     cfg.eventBufferConfig = EventBufferConfig(5);
-    OutstationTestObject t(cfg, DatabaseSizes::BinaryOnly(5));
+    OutstationTestObject t(cfg, configure::by_count_of::binary_input(5));
 
     t.LowerLayerUp();
     t.SendToOutstation("C0 14 3C 02 06");

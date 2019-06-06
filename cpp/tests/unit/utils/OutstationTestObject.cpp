@@ -23,12 +23,13 @@
 
 using namespace opendnp3;
 
-OutstationTestObject::OutstationTestObject(const OutstationConfig& config, const DatabaseSizes& dbSizes)
+OutstationTestObject::OutstationTestObject(const OutstationConfig& config,
+                                           const opendnp3::DatabaseConfig& db_config)
     : exe(std::make_shared<exe4cpp::MockExecutor>()),
       lower(std::make_shared<MockLowerLayer>()),
       cmdHandler(std::make_shared<MockCommandHandler>(CommandStatus::SUCCESS)),
       application(std::make_shared<MockOutstationApplication>()),
-      context(Addresses(), config, dbSizes, log.logger, exe, lower, cmdHandler, application)
+      context(Addresses(), config, db_config, log.logger, exe, lower, cmdHandler, application)
 {
     lower->SetUpperLayer(context);
 }

@@ -27,11 +27,11 @@ namespace opendnp3
 
 struct Evented
 {
-    Evented(uint16_t index_, EventClass clazz_) : index(index_), clazz(clazz_) {}
+    Evented(uint16_t index, EventClass clazz) : index(index), clazz(clazz) {}
 
     Evented() : clazz(EventClass::EC1) {}
 
-    uint16_t index;
+    uint16_t index = 0;
     EventClass clazz; // class of the event (CLASS<1-3>)
 };
 

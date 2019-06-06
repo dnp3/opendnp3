@@ -17,8 +17,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_CELL_H
-#define OPENDNP3_CELL_H
+#ifndef OPENDNP3_STATICDATACELL_H
+#define OPENDNP3_STATICDATACELL_H
 
 namespace opendnp3
 {
@@ -28,22 +28,33 @@ namespace opendnp3
  */
 template<class Spec> struct SelectedValue
 {
-    SelectedValue() : selected(false), value(), variation(Spec::DefaultStaticVariation) {}
+    SelectedValue() = default;
 
-    bool selected;
+    SelectedValue(bool selected, const typename Spec::meas_t& value, typename Spec::static_variation_t variation)
+        : selected(selected), value(value), variation(variation)
+    {
+    }
+
+    bool selected = false;
+
     typename Spec::meas_t value;
-    typename Spec::static_variation_t variation;
+    typename Spec::static_variation_t variation = Spec::DefaultStaticVariation;
 };
 
 /**
  * Holds particular measurement type in the database.
  */
-template<class Spec> struct Cell
+template<class Spec> struct StaticDataCell
 {
     typename Spec::meas_t value;       // current value
     typename Spec::config_t config;    // configuration
     typename Spec::event_cell_t event; // event cell
     SelectedValue<Spec> selection;     // selected value
+
+	StaticDataCell() = default;
+    StaticDataCell(const typename Spec::meas_t& value, const typename Spec::config_t& config)
+        : value(value), config(config) {}
+    StaticDataCell(const typename Spec::config_t& config) : config(config) {}
 };
 
 } // namespace opendnp3

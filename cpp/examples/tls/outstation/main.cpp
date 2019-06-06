@@ -31,12 +31,15 @@
 using namespace std;
 using namespace opendnp3;
 
-void ConfigureDatabase(DatabaseConfig& config)
+DatabaseConfig ConfigureDatabase()
 {
-    // example of configuring analog index 0 for Class2 with floating point variations by default
-    config.analog[0].clazz = PointClass::Class2;
-    config.analog[0].svariation = StaticAnalogVariation::Group30Var5;
-    config.analog[0].evariation = EventAnalogVariation::Group32Var7;
+    DatabaseConfig config(10); // 10 of each type
+
+    config.analog_input[0].clazz = PointClass::Class2;
+    config.analog_input[0].svariation = StaticAnalogVariation::Group30Var5;
+    config.analog_input[0].evariation = EventAnalogVariation::Group32Var7;
+
+    return config;
 }
 
 struct State
@@ -88,7 +91,7 @@ int main(int argc, char* argv[])
 
     // The main object for a outstation. The defaults are useable,
     // but understanding the options are important.
-    OutstationStackConfig stackConfig(DatabaseSizes::AllTypes(10));
+    OutstationStackConfig stackConfig(ConfigureDatabase());
 
     // specify the maximum size of the event buffers
     stackConfig.outstation.eventBufferConfig = EventBufferConfig::AllTypes(10);
@@ -101,10 +104,7 @@ int main(int argc, char* argv[])
     // You can override the default link layer settings here
     // in this example we've changed the default link layer addressing
     stackConfig.link.LocalAddr = 10;
-    stackConfig.link.RemoteAddr = 1;
-
-    // You can optionally change the default reporting variations or class assignment prior to enabling the outstation
-    ConfigureDatabase(stackConfig.dbConfig);
+    stackConfig.link.RemoteAddr = 1;    
 
     // Create a new outstation with a log level, command handler, and
     // config info this	returns a thread-safe interface used for

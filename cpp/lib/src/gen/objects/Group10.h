@@ -36,7 +36,7 @@
 #include <ser4cpp/container/SequenceTypes.h>
 #include "opendnp3/app/DNPTime.h"
 #include "app/DNP3Serializer.h"
-#include "opendnp3/app/MeasurementTypeSpecs.h"
+#include "app/MeasurementTypeSpecs.h"
 
 namespace opendnp3 {
 
@@ -70,6 +70,7 @@ struct Group10Var2
   static bool ReadTarget(ser4cpp::rseq_t&, BinaryOutputStatus&);
   static bool WriteTarget(const BinaryOutputStatus&, ser4cpp::wseq_t&);
   static DNP3Serializer<BinaryOutputStatus> Inst() { return DNP3Serializer<BinaryOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  static const StaticBinaryOutputStatusVariation svariation = StaticBinaryOutputStatusVariation::Group10Var2;
 };
 
 

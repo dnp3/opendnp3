@@ -36,12 +36,12 @@ namespace opendnp3
 struct OutstationStackConfig
 {
 
-    OutstationStackConfig(const DatabaseSizes& dbSizes) : dbConfig(dbSizes), link(false, false) {}
+    OutstationStackConfig(const DatabaseConfig& database) : database(database), link(false, false) {}
 
     OutstationStackConfig() = delete;
 
     // Configuration of the database
-    DatabaseConfig dbConfig;
+    DatabaseConfig database;
 
     /// Outstation config
     OutstationConfig outstation;

@@ -20,82 +20,90 @@
 #ifndef OPENDNP3_DATABASE_H
 #define OPENDNP3_DATABASE_H
 
-#include "outstation/DatabaseBuffers.h"
-#include "outstation/IDatabase.h"
+#include <opendnp3/outstation/DatabaseConfig.h>
+#include <opendnp3/outstation/StaticTypeBitfield.h>
+#include <opendnp3/outstation/IUpdateHandler.h>
+#include <opendnp3/gen/FlagsType.h>
+
+#include "app/MeasurementTypeSpecs.h"
+#include "outstation/StaticDataMap.h"
+#include "outstation/IStaticSelector.h"
+#include "outstation/IClassAssigner.h"
+#include "outstation/IResponseLoader.h"
 #include "outstation/IEventReceiver.h"
 
-#include "opendnp3/gen/AssignClassType.h"
-#include "opendnp3/gen/IndexMode.h"
 
 namespace opendnp3
 {
 
-/**
-The database coordinates all updates of measurement data
-*/
-class Database final : public IDatabase, private Uncopyable
+class Database final : public IStaticSelector, public IClassAssigner, public IResponseLoader, public IUpdateHandler
 {
 public:
-    Database(const DatabaseSizes&,
-             IEventReceiver& eventReceiver,
-             IndexMode indexMode,
-             StaticTypeBitField allowedClass0Types);
 
-    // ------- IDatabase --------------
+	Database(const DatabaseConfig& config,
+                   IEventReceiver& event_receiver,
+		           StaticTypeBitField allowed_class_zero_types);
 
-    virtual bool Update(const Binary&, uint16_t, EventMode = EventMode::Detect) override;
-    virtual bool Update(const DoubleBitBinary&, uint16_t, EventMode = EventMode::Detect) override;
-    virtual bool Update(const Analog&, uint16_t, EventMode = EventMode::Detect) override;
-    virtual bool Update(const Counter&, uint16_t, EventMode = EventMode::Detect) override;
-    virtual bool Update(const FrozenCounter&, uint16_t, EventMode = EventMode::Detect) override;
-    virtual bool Update(const BinaryOutputStatus&, uint16_t, EventMode = EventMode::Detect) override;
-    virtual bool Update(const AnalogOutputStatus&, uint16_t, EventMode = EventMode::Detect) override;
-    virtual bool Update(const OctetString& value, uint16_t index, EventMode mode = EventMode::Detect) override;
-    virtual bool Update(const TimeAndInterval&, uint16_t) override;
-    virtual bool Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t flags) override;
+    // ------- IStaticSelector -------------
+    IINField SelectAll(GroupVariation gv) override;
+    IINField SelectRange(GroupVariation gv, const Range& range) override;
+    void Unselect() override;
 
-    // ------- Misc ---------------
+	// ------- IClassAssigner -------------
+    Range AssignClassToAll(AssignClassType type, PointClass clazz) override;
+    Range AssignClassToRange(AssignClassType type, PointClass clazz, const Range& range) override;
 
-    IResponseLoader& GetResponseLoader() override final
-    {
-        return buffers;
-    }
-    IStaticSelector& GetStaticSelector() override final
-    {
-        return buffers;
-    }
-    IClassAssigner& GetClassAssigner() override final
-    {
-        return buffers;
-    }
+	// ------- IResponseLoader -------------
+    bool HasAnySelection() const override;
+    bool Load(HeaderWriter& writer) override;
 
-    /**
-     * @return A view of all the static data for configuration purposes
-     */
-    DatabaseConfigView GetConfigView()
-    {
-        return buffers.buffers.GetView();
-    }
+	// ------- IUpdateHandler ---------------
+    bool Update(const Binary& meas, uint16_t index, EventMode mode) override;
+    bool Update(const DoubleBitBinary& meas, uint16_t index, EventMode mode) override;
+    bool Update(const Analog& meas, uint16_t index, EventMode mode) override;
+    bool Update(const Counter& meas, uint16_t index, EventMode mode) override;
+    bool Update(const FrozenCounter& meas, uint16_t index, EventMode mode) override;
+    bool Update(const BinaryOutputStatus& meas, uint16_t index, EventMode mode) override;
+    bool Update(const AnalogOutputStatus& meas, uint16_t index, EventMode mode) override;
+    bool Update(const OctetString& meas, uint16_t index, EventMode mode) override;
+    bool Update(const TimeAndInterval& meas, uint16_t index) override;
+    bool Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t flags) override;
 
 private:
-    template<class Spec> uint16_t GetRawIndex(uint16_t index);
 
-    IEventReceiver* eventReceiver;
-    IndexMode indexMode;
+	IEventReceiver& event_receiver;
+	StaticTypeBitField allowed_class_zero_types;
+    
+	StaticDataMap<BinarySpec> binary_input;
+    StaticDataMap<DoubleBitBinarySpec> double_binary;
+    StaticDataMap<AnalogSpec> analog_input;
+    StaticDataMap<CounterSpec> counter;
+    StaticDataMap<FrozenCounterSpec> frozen_counter;
+    StaticDataMap<BinaryOutputStatusSpec> binary_output_status;
+    StaticDataMap<AnalogOutputStatusSpec> analog_output_status;
+    StaticDataMap<TimeAndIntervalSpec> time_and_interval;
+    StaticDataMap<OctetStringSpec> octet_string;
 
-    static bool ConvertToEventClass(PointClass pc, EventClass& ec);
+	// ----- helper methods ------ 	
 
-    template<class Spec> bool UpdateEvent(const typename Spec::meas_t& value, uint16_t index, EventMode mode);
+	template<class Spec>
+	void select_all_class_zero(StaticDataMap<Spec>& map);
 
-    template<class Spec> bool UpdateAny(Cell<Spec>& cell, const typename Spec::meas_t& value, EventMode mode);
+	template<class Spec> 
+	static IINField select_all(StaticDataMap<Spec>& map);
 
-    template<class Spec> void TryCreateEvent(Cell<Spec>& cell, const typename Spec::meas_t& value);
+	template<class Spec> IINField 
+	static select_all(StaticDataMap<Spec>& map, typename Spec::static_variation_t variation);
 
-    template<class Spec> bool Modify(uint16_t start, uint16_t stop, uint8_t flags);
+	template<class Spec>
+    static IINField select_range(StaticDataMap<Spec>& map, const Range& range);
 
-    // stores the most recent values, selected values, and metadata
-    DatabaseBuffers buffers;
+	template<class Spec>
+    static IINField select_range(StaticDataMap<Spec>& map,
+                                const Range& range,
+                                typename Spec::static_variation_t variation);	
 };
+    
 
 } // namespace opendnp3
 

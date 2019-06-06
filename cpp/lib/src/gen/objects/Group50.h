@@ -36,7 +36,7 @@
 #include <ser4cpp/container/SequenceTypes.h>
 #include "opendnp3/app/DNPTime.h"
 #include "app/DNP3Serializer.h"
-#include "opendnp3/app/MeasurementTypeSpecs.h"
+#include "app/MeasurementTypeSpecs.h"
 
 namespace opendnp3 {
 
@@ -88,6 +88,7 @@ struct Group50Var4
   static bool ReadTarget(ser4cpp::rseq_t&, TimeAndInterval&);
   static bool WriteTarget(const TimeAndInterval&, ser4cpp::wseq_t&);
   static DNP3Serializer<TimeAndInterval> Inst() { return DNP3Serializer<TimeAndInterval>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  static const StaticTimeAndIntervalVariation svariation = StaticTimeAndIntervalVariation::Group50Var4;
 };
 
 

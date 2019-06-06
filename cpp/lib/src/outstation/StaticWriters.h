@@ -21,10 +21,10 @@
 #define OPENDNP3_STATICWRITERS_H
 
 #include "app/HeaderWriter.h"
-#include "app/Range.h"
+#include "app/MeasurementTypeSpecs.h"
+#include "outstation/StaticDataMap.h"
 
-#include "opendnp3/Uncopyable.h"
-#include "opendnp3/app/MeasurementTypeSpecs.h"
+#include "opendnp3/StaticOnly.h"
 #include "opendnp3/gen/StaticAnalogOutputStatusVariation.h"
 #include "opendnp3/gen/StaticAnalogVariation.h"
 #include "opendnp3/gen/StaticBinaryOutputStatusVariation.h"
@@ -32,34 +32,25 @@
 #include "opendnp3/gen/StaticCounterVariation.h"
 #include "opendnp3/gen/StaticDoubleBinaryVariation.h"
 #include "opendnp3/gen/StaticFrozenCounterVariation.h"
-#include "opendnp3/outstation/Cell.h"
 
-#include <ser4cpp/container/ArrayView.h>
 
 namespace opendnp3
 {
 
-template<class Spec> struct StaticWrite : private StaticOnly
+template <class Spec>
+using static_write_func_t = bool (*)(StaticDataMap<Spec>& map, HeaderWriter& writer);
+
+struct StaticWriters : private StaticOnly
 {
-    typedef bool (*func_t)(ser4cpp::ArrayView<Cell<Spec>, uint16_t>& view, HeaderWriter& writer, Range& range);
-};
-
-class StaticWriters : private StaticOnly
-{
-
-public:
-    static StaticWrite<BinarySpec>::func_t Get(StaticBinaryVariation variation);
-    static StaticWrite<DoubleBitBinarySpec>::func_t Get(StaticDoubleBinaryVariation variation);
-    static StaticWrite<CounterSpec>::func_t Get(StaticCounterVariation variation);
-    static StaticWrite<FrozenCounterSpec>::func_t Get(StaticFrozenCounterVariation variation);
-    static StaticWrite<AnalogSpec>::func_t Get(StaticAnalogVariation variation);
-    static StaticWrite<AnalogOutputStatusSpec>::func_t Get(StaticAnalogOutputStatusVariation variation);
-    static StaticWrite<BinaryOutputStatusSpec>::func_t Get(StaticBinaryOutputStatusVariation variation);
-    static StaticWrite<OctetStringSpec>::func_t Get(StaticOctetStringVariation variation);
-    static StaticWrite<TimeAndIntervalSpec>::func_t Get(StaticTimeAndIntervalVariation variation);
-
-private:
-    static bool Write(ser4cpp::ArrayView<Cell<OctetStringSpec>, uint16_t>& view, HeaderWriter& writer, Range& range);
+    static static_write_func_t<BinarySpec> get(StaticBinaryVariation variation);
+    static static_write_func_t<DoubleBitBinarySpec> get(StaticDoubleBinaryVariation variation);
+    static static_write_func_t<CounterSpec> get(StaticCounterVariation variation);
+    static static_write_func_t<FrozenCounterSpec> get(StaticFrozenCounterVariation variation);
+    static static_write_func_t<AnalogSpec> get(StaticAnalogVariation variation);
+    static static_write_func_t<AnalogOutputStatusSpec> get(StaticAnalogOutputStatusVariation variation);
+    static static_write_func_t<BinaryOutputStatusSpec> get(StaticBinaryOutputStatusVariation variation);
+    static static_write_func_t<OctetStringSpec> get(StaticOctetStringVariation variation);
+    static static_write_func_t<TimeAndIntervalSpec> get(StaticTimeAndIntervalVariation variation);
 };
 
 } // namespace opendnp3

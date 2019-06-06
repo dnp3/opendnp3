@@ -18,8 +18,9 @@
  * limitations under the License.
  */
 #include "utils/OutstationTestObject.h"
-
 #include "utils/APDUHexBuilders.h"
+
+#include <dnp3mocks/DatabaseHelpers.h>
 
 #include <ser4cpp/util/HexConversions.h>
 
@@ -32,7 +33,7 @@ using namespace opendnp3;
 TEST_CASE(SUITE("Responds to repeat READ request with same octets as last repsond"))
 {
     OutstationConfig config;
-    OutstationTestObject t(config, DatabaseSizes::AnalogOnly(1));
+    OutstationTestObject t(config, configure::by_count_of::analog_input(1));
     t.LowerLayerUp();
 
     t.SendToOutstation("C0 01 1E 00 06");
@@ -51,7 +52,7 @@ TEST_CASE(SUITE("Responds to non-READ request while waiting for unsolicited conf
 {
     OutstationConfig config;
     config.params.allowUnsolicited = true;
-    OutstationTestObject t(config, DatabaseSizes::AnalogOnly(1));
+    OutstationTestObject t(config, configure::by_count_of::analog_input(1));
     t.LowerLayerUp();
 
     REQUIRE(t.lower->PopWriteAsHex() == "F0 82 80 00");
