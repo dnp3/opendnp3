@@ -17,17 +17,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <asiopal/UTCTimeSource.h>
-
+#include <opendnp3/ConsoleLogger.h>
+#include <opendnp3/DNP3Manager.h>
 #include <opendnp3/LogLevels.h>
-#include <opendnp3/outstation/Database.h>
+#include <opendnp3/channel/PrintingChannelListener.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
-
-#include <asiodnp3/ConsoleLogger.h>
-#include <asiodnp3/DNP3Manager.h>
-#include <asiodnp3/PrintingChannelListener.h>
-#include <asiodnp3/PrintingSOEHandler.h>
-#include <asiodnp3/UpdateBuilder.h>
+#include <opendnp3/outstation/UpdateBuilder.h>
 
 #include <iostream>
 #include <string>
@@ -35,16 +30,16 @@
 
 using namespace std;
 using namespace opendnp3;
-using namespace openpal;
-using namespace asiopal;
-using namespace asiodnp3;
 
-void ConfigureDatabase(DatabaseConfig& config)
+DatabaseConfig ConfigureDatabase()
 {
-    // example of configuring analog index 0 for Class2 with floating point variations by default
-    config.analog[0].clazz = PointClass::Class2;
-    config.analog[0].svariation = StaticAnalogVariation::Group30Var5;
-    config.analog[0].evariation = EventAnalogVariation::Group32Var7;
+    DatabaseConfig config(10); // 10 of each type
+
+    config.analog_input[0].clazz = PointClass::Class2;
+    config.analog_input[0].svariation = StaticAnalogVariation::Group30Var5;
+    config.analog_input[0].evariation = EventAnalogVariation::Group32Var7;
+
+    return config;
 }
 
 struct State
@@ -75,7 +70,7 @@ int main(int argc, char* argv[])
 
     // Specify what log levels to use. NORMAL is warning and above
     // You can add all the comms logging by uncommenting below.
-    const uint32_t FILTERS = levels::NORMAL; // | levels::ALL_COMMS;
+    const auto logLevels = levels::NORMAL | levels::ALL_COMMS;
 
     // This is the main point of interaction with the stack
     // Allocate a single thread to the pool since this is a single outstation
@@ -84,7 +79,7 @@ int main(int argc, char* argv[])
     std::error_code ec;
 
     // Create a TCP server (listener)
-    auto channel = manager.AddTLSServer("server", FILTERS, ServerAcceptMode::CloseExisting, "0.0.0.0", 20001,
+    auto channel = manager.AddTLSServer("server", logLevels, ServerAcceptMode::CloseExisting, "0.0.0.0", 20001,
                                         TLSConfig(caCertificate, certificateChain, privateKey, 2),
                                         PrintingChannelListener::Create(), ec);
 
@@ -96,7 +91,7 @@ int main(int argc, char* argv[])
 
     // The main object for a outstation. The defaults are useable,
     // but understanding the options are important.
-    OutstationStackConfig stackConfig(DatabaseSizes::AllTypes(10));
+    OutstationStackConfig stackConfig(ConfigureDatabase());
 
     // specify the maximum size of the event buffers
     stackConfig.outstation.eventBufferConfig = EventBufferConfig::AllTypes(10);
@@ -109,10 +104,7 @@ int main(int argc, char* argv[])
     // You can override the default link layer settings here
     // in this example we've changed the default link layer addressing
     stackConfig.link.LocalAddr = 10;
-    stackConfig.link.RemoteAddr = 1;
-
-    // You can optionally change the default reporting variations or class assignment prior to enabling the outstation
-    ConfigureDatabase(stackConfig.dbConfig);
+    stackConfig.link.RemoteAddr = 1;    
 
     // Create a new outstation with a log level, command handler, and
     // config info this	returns a thread-safe interface used for

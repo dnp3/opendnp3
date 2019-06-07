@@ -29,8 +29,8 @@ namespace Automatak
 		namespace Adapter
 		{
 
-			OutstationAdapter::OutstationAdapter(const std::shared_ptr<asiodnp3::IOutstation>& outstation) : 
-				outstation(new std::shared_ptr<asiodnp3::IOutstation>(outstation))
+			OutstationAdapter::OutstationAdapter(const std::shared_ptr<opendnp3::IOutstation>& outstation) : 
+				outstation(new std::shared_ptr<opendnp3::IOutstation>(outstation))
 			{}
 
 			OutstationAdapter::!OutstationAdapter()
@@ -40,7 +40,7 @@ namespace Automatak
 
 			void OutstationAdapter::SetLogFilters(LogFilter filters)
 			{
-				(*outstation)->SetLogFilters(filters.Flags);
+				(*outstation)->SetLogFilters(log4cpp::LogLevel(filters.Flags));
 			}
 
 			void OutstationAdapter::Load(IChangeSet^ changes)

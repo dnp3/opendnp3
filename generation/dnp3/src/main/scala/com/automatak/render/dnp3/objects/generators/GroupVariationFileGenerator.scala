@@ -80,7 +80,7 @@ object GroupVariationFileGenerator {
         commented(LicenseHeader()) ++ space ++
           includeHeader(group) ++ space ++
           implIncludes(group) ++ space ++
-          Iterator("using namespace openpal;") ++ space ++
+          Iterator("using namespace ser4cpp;") ++ space ++
           namespace("opendnp3") {
             defs
           }

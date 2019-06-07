@@ -17,21 +17,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <asiopal/UTCTimeSource.h>
-
 #include <opendnp3/LogLevels.h>
 
-#include <asiodnp3/ConsoleLogger.h>
-#include <asiodnp3/DNP3Manager.h>
-#include <asiodnp3/DefaultMasterApplication.h>
-#include <asiodnp3/PrintingChannelListener.h>
-#include <asiodnp3/PrintingCommandCallback.h>
-#include <asiodnp3/PrintingSOEHandler.h>
+#include <opendnp3/ConsoleLogger.h>
+#include <opendnp3/DNP3Manager.h>
+#include <opendnp3/channel/PrintingChannelListener.h>
+#include <opendnp3/master/DefaultMasterApplication.h>
+#include <opendnp3/master/PrintingCommandResultCallback.h>
+#include <opendnp3/master/PrintingSOEHandler.h>
 
 using namespace std;
-using namespace openpal;
-using namespace asiopal;
-using namespace asiodnp3;
 using namespace opendnp3;
 
 int main(int argc, char* argv[])
@@ -50,7 +45,7 @@ int main(int argc, char* argv[])
 
     // Specify what log levels to use. NORMAL is warning and above
     // You can add all the comms logging by uncommenting below
-    const uint32_t FILTERS = levels::NORMAL | levels::ALL_APP_COMMS;
+    const auto logLevels = levels::NORMAL | levels::ALL_APP_COMMS;
 
     // This is the main point of interaction with the stack
     // send log messages to the console
@@ -60,7 +55,7 @@ int main(int argc, char* argv[])
 
     // Connect via a TCPClient socket to a outstation
     auto channel = manager.AddTLSClient(
-        "tls-client", FILTERS, ChannelRetry::Default(), {IPEndpoint("127.0.0.1", 20001)}, "0.0.0.0",
+        "tls-client", logLevels, ChannelRetry::Default(), {IPEndpoint("127.0.0.1", 20001)}, "0.0.0.0",
         TLSConfig(peerCertificate, privateKey, privateKey), PrintingChannelListener::Create(), ec);
 
     if (ec)
@@ -88,7 +83,7 @@ int main(int argc, char* argv[])
     // returns a thread-safe interface used for sending commands.
     auto master = channel->AddMaster("master",                                     // id for logging
                                      PrintingSOEHandler::Create(),                 // callback for data processing
-                                     asiodnp3::DefaultMasterApplication::Create(), // master application instance
+                                     DefaultMasterApplication::Create(), // master application instance
                                      stackConfig                                   // stack configuration
     );
 
@@ -128,7 +123,7 @@ int main(int argc, char* argv[])
             auto print = [](const RestartOperationResult& result) {
                 if (result.summary == TaskCompletion::SUCCESS)
                 {
-                    std::cout << "Success, Time: " << result.restartTime.GetMilliseconds() << std::endl;
+                    std::cout << "Success, Time: " << result.restartTime.ToString() << std::endl;
                 }
                 else
                 {
@@ -150,7 +145,7 @@ int main(int argc, char* argv[])
         case ('c'):
         {
             ControlRelayOutputBlock crob(ControlCode::LATCH_ON);
-            master->SelectAndOperate(crob, 0, PrintingCommandCallback::Get());
+            master->SelectAndOperate(crob, 0, PrintingCommandResultCallback::Get());
             break;
         }
         default:

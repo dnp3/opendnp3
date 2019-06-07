@@ -33,9 +33,9 @@ object Group30 extends ObjectGroup {
 }
 
 object Group30Var0 extends AnyVariation(Group30, 0)
-object Group30Var1 extends FixedSize(Group30, 1, bit32WithFlag)(flags, value32) with ConversionToAnalog
-object Group30Var2 extends FixedSize(Group30, 2, bit16WithFlag)(flags, value16) with ConversionToAnalog
-object Group30Var3 extends FixedSize(Group30, 3, bit32WithoutFlag)(value32) with ConversionToAnalog
-object Group30Var4 extends FixedSize(Group30, 4, bit16WithoutFlag)(value16) with ConversionToAnalog
-object Group30Var5 extends FixedSize(Group30, 5, singlePrecisionWithFlag)(flags, float32) with ConversionToAnalog
-object Group30Var6 extends FixedSize(Group30, 6, doublePrecisionWithFlag)(flags, float64) with ConversionToAnalog
+object Group30Var1 extends FixedSize(Group30, 1, bit32WithFlag)(flags, value32) with ConversionToAnalog with StaticVariation.Analog
+object Group30Var2 extends FixedSize(Group30, 2, bit16WithFlag)(flags, value16) with ConversionToAnalog with StaticVariation.Analog
+object Group30Var3 extends FixedSize(Group30, 3, bit32WithoutFlag)(value32) with ConversionToAnalog with StaticVariation.Analog
+object Group30Var4 extends FixedSize(Group30, 4, bit16WithoutFlag)(value16) with ConversionToAnalog with StaticVariation.Analog
+object Group30Var5 extends FixedSize(Group30, 5, singlePrecisionWithFlag)(flags, float32) with ConversionToAnalog with StaticVariation.Analog
+object Group30Var6 extends FixedSize(Group30, 6, doublePrecisionWithFlag)(flags, float64) with ConversionToAnalog with StaticVariation.Analog

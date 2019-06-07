@@ -3,6 +3,12 @@ find_program(CLANG_FORMAT_EXE
 )
 set_property(GLOBAL PROPERTY CLANG_FORMAT_FILES)
 
+if(CLANG_FORMAT_EXE)
+    message(STATUS "Found clang-format: ${CLANG_FORMAT_EXE}")
+else()
+    message(STATUS "clang-format not found")
+endif()
+
 function(clang_format target)
 
     set(options)
@@ -42,7 +48,6 @@ endfunction()
 
 function(define_clang_format)
     if(CLANG_FORMAT_EXE)
-        message(STATUS "Using clang-format: ${CLANG_FORMAT_EXE}")
         get_property(all_files GLOBAL PROPERTY CLANG_FORMAT_FILES)
 
         set(commands)
@@ -55,7 +60,5 @@ function(define_clang_format)
             ${commands}
             COMMENT "Format ${num_files} source files"
         )
-    else()
-        message(STATUS "clang-format not found")
     endif()
 endfunction()

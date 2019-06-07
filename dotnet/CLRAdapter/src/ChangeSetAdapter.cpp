@@ -28,7 +28,7 @@ namespace Automatak
 		namespace Adapter
 		{
 
-			ChangeSetAdapter::ChangeSetAdapter() : builder(new asiodnp3::UpdateBuilder())
+			ChangeSetAdapter::ChangeSetAdapter() : builder(new opendnp3::UpdateBuilder())
 			{}
 
 			ChangeSetAdapter::~ChangeSetAdapter()
@@ -41,7 +41,7 @@ namespace Automatak
 				delete builder;
 			}
 		
-			void ChangeSetAdapter::Apply(asiodnp3::IOutstation& proxy)
+			void ChangeSetAdapter::Apply(opendnp3::IOutstation& proxy)
 			{
 				proxy.Apply(builder->Build());				
 			}

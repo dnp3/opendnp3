@@ -20,7 +20,7 @@
 #ifndef OPENDNP3CLR_CHANNEL_LISTENER_ADAPTER_H
 #define OPENDNP3CLR_CHANNEL_LISTENER_ADAPTER_H
 
-#include <asiodnp3/IChannelListener.h>
+#include <opendnp3/channel/IChannelListener.h>
 
 #include <vcclr.h>
 
@@ -33,7 +33,7 @@ namespace Automatak
 		namespace Adapter
 		{
 
-			private class ChannelListenerAdapter final : public asiodnp3::IChannelListener
+			private class ChannelListenerAdapter final : public opendnp3::IChannelListener
 			{
 			public:
 

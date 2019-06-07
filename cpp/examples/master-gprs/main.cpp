@@ -19,10 +19,9 @@
  */
 #include "ExampleListenCallbacks.h"
 
+#include <opendnp3/ConsoleLogger.h>
+#include <opendnp3/DNP3Manager.h>
 #include <opendnp3/LogLevels.h>
-
-#include <asiodnp3/ConsoleLogger.h>
-#include <asiodnp3/DNP3Manager.h>
 
 #include <functional>
 #include <iostream>
@@ -31,9 +30,6 @@
 #include <thread>
 
 using namespace std;
-using namespace openpal;
-using namespace asiopal;
-using namespace asiodnp3;
 using namespace opendnp3;
 
 using command_handler_t = std::function<void(ExampleListenCallbacks&, const vector<string>& commands)>;
@@ -50,17 +46,17 @@ int main(int argc, char* argv[])
     init_handlers(handler_map);
 
     // silence the chatty INFO logging as it doesn't work so well in a command line app
-    const uint32_t FILTERS = flags::WARN | flags::ERR | flags::EVENT;
+    const auto logFilters = levels::NOTHING | flags::WARN | flags::ERR | flags::EVENT;
 
-    const auto NUM_THREAD = std::thread::hardware_concurrency();
+    const auto numThreads = std::thread::hardware_concurrency();
 
     const auto callbacks = std::make_shared<ExampleListenCallbacks>();
 
     // This is the main point of interaction with the stack
-    DNP3Manager manager(NUM_THREAD, ConsoleLogger::Create());
+    DNP3Manager manager(numThreads, ConsoleLogger::Create());
 
     std::error_code ec;
-    const auto server1 = manager.CreateListener("server-20000", FILTERS, IPEndpoint::AllAdapters(20000), callbacks, ec);
+    const auto server1 = manager.CreateListener("server-20000", logFilters, IPEndpoint::AllAdapters(20000), callbacks, ec);
 
     if (ec)
     {

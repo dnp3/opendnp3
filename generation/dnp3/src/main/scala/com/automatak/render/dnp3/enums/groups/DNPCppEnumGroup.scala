@@ -59,7 +59,6 @@ object DNPCppEnumGroup {
     RestartMode(),
     TimestampMode(),
     EventMode(),
-    IndexMode(),
     ConfigAuthMode(),
     SecurityStatIndex(),
     RestartType(),
