@@ -41,8 +41,8 @@ namespace Automatak
 
 				SOEHandlerAdapter(Automatak::DNP3::Interface::ISOEHandler^ proxy);
 
-				virtual void Start() override final;
-				virtual void End() override final;
+				virtual void begin_fragment(const opendnp3::ResponseInfo& info) override final;
+                virtual void end_fragment(const opendnp3::ResponseInfo& info) override final;
 
 				virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Binary>>& values) override final;
 				virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::DoubleBitBinary>>& values) override final;
@@ -58,9 +58,7 @@ namespace Automatak
 				virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::SecurityStat>>& values) override final;
 				virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::DNPTime>& values) override final {} // not implemented in bindings
 
-			private:
-
-				static HeaderInfo^ GetInfo(const opendnp3::HeaderInfo& info);
+			private:				
 
 				gcroot < Automatak::DNP3::Interface::ISOEHandler^ > proxy;
 			};

@@ -162,62 +162,65 @@ namespace Automatak
 
 			Binary^ Conversions::ConvertMeas(opendnp3::Binary meas)
 			{
-				return gcnew Binary(meas.value, meas.flags.value, TimeStamp::Convert(meas.time));
+				return gcnew Binary(meas.value, meas.flags.value, TimeStamp::Convert(meas.time.value));
 			}
 
 			DoubleBitBinary^ Conversions::ConvertMeas(opendnp3::DoubleBitBinary meas)
 			{
-				return gcnew DoubleBitBinary(static_cast<DoubleBit>(meas.value), meas.flags.value, TimeStamp::Convert(meas.time));
+				return gcnew DoubleBitBinary(static_cast<DoubleBit>(meas.value), meas.flags.value, TimeStamp::Convert(meas.time.value));
 			}
 
 			Analog^ Conversions::ConvertMeas(opendnp3::Analog meas)
 			{
-				return gcnew Analog(meas.value, meas.flags.value, TimeStamp::Convert(meas.time));
+				return gcnew Analog(meas.value, meas.flags.value, TimeStamp::Convert(meas.time.value));
 			}
 
 			Counter^ Conversions::ConvertMeas(opendnp3::Counter meas)
 			{
-				return gcnew Counter(meas.value, meas.flags.value, TimeStamp::Convert(meas.time));
+                return gcnew Counter(meas.value, meas.flags.value, TimeStamp::Convert(meas.time.value));
 			}
 
 			FrozenCounter^ Conversions::ConvertMeas(opendnp3::FrozenCounter meas)
 			{
-				return gcnew FrozenCounter(meas.value, meas.flags.value, TimeStamp::Convert(meas.time));
+                return gcnew FrozenCounter(meas.value, meas.flags.value, TimeStamp::Convert(meas.time.value));
 			}
 
 			AnalogOutputStatus^ Conversions::ConvertMeas(opendnp3::AnalogOutputStatus meas)
 			{
-				return gcnew AnalogOutputStatus(meas.value, meas.flags.value, TimeStamp::Convert(meas.time));
+                return gcnew AnalogOutputStatus(meas.value, meas.flags.value, TimeStamp::Convert(meas.time.value));
 			}
 
 			BinaryOutputStatus^ Conversions::ConvertMeas(opendnp3::BinaryOutputStatus meas)
 			{
-				return gcnew BinaryOutputStatus(meas.value, meas.flags.value, TimeStamp::Convert(meas.time));
+                return gcnew BinaryOutputStatus(meas.value, meas.flags.value, TimeStamp::Convert(meas.time.value));
 			}
 
 			OctetString^ Conversions::ConvertMeas(const opendnp3::OctetString& meas)
 			{
-				return gcnew OctetString(Conversions::Convert(meas.ToRSlice()));
+				return gcnew OctetString(Conversions::Convert(meas.ToBuffer()));
 			}
 
 			TimeAndInterval^ Conversions::ConvertMeas(const opendnp3::TimeAndInterval& meas)
 			{
-				return gcnew TimeAndInterval(meas.time, meas.interval, meas.units);
+				return gcnew TimeAndInterval(meas.time.value, meas.interval, meas.units);
 			}
 
 			BinaryCommandEvent^ Conversions::ConvertMeas(const opendnp3::BinaryCommandEvent& meas)
 			{
-				return gcnew BinaryCommandEvent(meas.value, ConvertCommandStatus(meas.status), TimeStamp::Convert(meas.time));
+                return gcnew BinaryCommandEvent(meas.value, ConvertCommandStatus(meas.status),
+                                                TimeStamp::Convert(meas.time.value));
 			}
 
 			AnalogCommandEvent^ Conversions::ConvertMeas(const opendnp3::AnalogCommandEvent& meas)
 			{
-				return gcnew AnalogCommandEvent(meas.value, ConvertCommandStatus(meas.status), TimeStamp::Convert(meas.time));
+                return gcnew AnalogCommandEvent(meas.value, ConvertCommandStatus(meas.status),
+                                                TimeStamp::Convert(meas.time.value));
 			}
 
 			SecurityStat^ Conversions::ConvertMeas(const opendnp3::SecurityStat& meas)
 			{
-				return gcnew SecurityStat(meas.value.count, meas.value.assocId, meas.quality, TimeStamp::Convert(meas.time));
+                return gcnew SecurityStat(meas.value.count, meas.value.assocId, meas.quality,
+                                          TimeStamp::Convert(meas.time.value));
 			}
 
 			opendnp3::Binary Conversions::ConvertMeas(Binary^ meas)
@@ -259,7 +262,7 @@ namespace Automatak
 					bytes[i] = meas->Bytes[i];
 				}
 				
-				opendnp3::OctetString converted(openpal::RSlice(bytes, length));				
+				opendnp3::OctetString converted(opendnp3::Buffer(bytes, length));				
 
 				return converted;
 			}
@@ -289,12 +292,12 @@ namespace Automatak
 				return gcnew LinkHeader((LinkFunction)fields.func, fields.isFromMaster, fields.fcb, fields.fcvdfc, fields.dest, fields.src);
 			}
 
-			asiopal::IPEndpoint Conversions::Convert(IPEndpoint^ endpoint)
+			opendnp3::IPEndpoint Conversions::Convert(IPEndpoint^ endpoint)
 			{
-				return asiopal::IPEndpoint(ConvertString(endpoint->address), endpoint->port);
+                return opendnp3::IPEndpoint(ConvertString(endpoint->address), endpoint->port);
 			}
 
-			X509Info^ Conversions::Convert(const asiodnp3::X509Info& info)
+			X509Info^ Conversions::Convert(const opendnp3::X509Info& info)
 			{				
 				return gcnew X509Info(
 					info.depth,
@@ -303,9 +306,9 @@ namespace Automatak
 				);
 			}
 
-			asiopal::SerialSettings Conversions::ConvertSerialSettings(SerialSettings^ settings)
+			opendnp3::SerialSettings Conversions::ConvertSerialSettings(SerialSettings ^ settings)
 			{
-				asiopal::SerialSettings s;
+                opendnp3::SerialSettings s;
 				s.deviceName = ConvertString(settings->port);
 				s.baud = settings->baud;
 				s.dataBits = settings->dataBits;
@@ -315,19 +318,19 @@ namespace Automatak
 				return s;
 			}
 
-			openpal::TimeDuration Conversions::ConvertMilliseconds(System::Int64 ms)
+			opendnp3::TimeDuration Conversions::ConvertMilliseconds(System::Int64 ms)
 			{
-				return openpal::TimeDuration::Milliseconds(ms);
+                return opendnp3::TimeDuration::Milliseconds(ms);
 			}
 
-			openpal::TimeDuration Conversions::ConvertTimespan(System::TimeSpan ts)
+			opendnp3::TimeDuration Conversions::ConvertTimespan(System::TimeSpan ts)
 			{
 				return ConvertMilliseconds(ts.Ticks / System::TimeSpan::TicksPerMillisecond);
 			}
 
-			System::TimeSpan Conversions::ConvertTimeDuration(const openpal::TimeDuration& duration)
+			System::TimeSpan Conversions::ConvertTimeDuration(const opendnp3::TimeDuration& duration)
 			{
-				return System::TimeSpan::FromMilliseconds((double) duration.GetMilliseconds());
+				return System::TimeSpan::FromMilliseconds((double) std::chrono::duration_cast<std::chrono::milliseconds>(duration.value).count());
 			}
 
 			opendnp3::ClassField Conversions::ConvertClassField(ClassField classField)
@@ -335,9 +338,9 @@ namespace Automatak
 				return opendnp3::ClassField(classField.ClassMask);
 			}
 			
-			asiopal::TLSConfig Conversions::Convert(TLSConfig^ config)
+			opendnp3::TLSConfig Conversions::Convert(TLSConfig^ config)
 			{
-				return asiopal::TLSConfig(
+                return opendnp3::TLSConfig(
 					Conversions::ConvertString(config->peerCertFilePath),
 					Conversions::ConvertString(config->localCertFilePath),
 					Conversions::ConvertString(config->privateKeyFilePath),
@@ -375,21 +378,20 @@ namespace Automatak
 				return config;
 			}
 
-			opendnp3::OutstationConfig Conversions::ConvertConfig(OutstationConfig^ config, opendnp3::IndexMode indexMode)
+			opendnp3::OutstationConfig Conversions::ConvertConfig(OutstationConfig^ config)
 			{
 				opendnp3::OutstationConfig oc;				
 
-				oc.params = ConvertConfig(config->config, indexMode);
+				oc.params = ConvertConfig(config->config);
 				oc.eventBufferConfig = ConvertConfig(config->buffer);
 
 				return oc;
 			}
 
-			opendnp3::OutstationParams Conversions::ConvertConfig(OutstationParams^ config, opendnp3::IndexMode indexMode)
+			opendnp3::OutstationParams Conversions::ConvertConfig(OutstationParams^ config)
 			{
 				opendnp3::OutstationParams params;
-
-				params.indexMode = indexMode;
+				
 				params.allowUnsolicited = config->allowUnsolicited;
 				params.typesAllowedInClass0 = opendnp3::StaticTypeBitField(config->typesAllowedInClass0.mask);
 				params.maxControlsPerRequest = config->maxControlsPerRequest;
@@ -423,51 +425,39 @@ namespace Automatak
 				return mp;
 			}
 
-			asiodnp3::MasterStackConfig Conversions::ConvertConfig(MasterStackConfig^ config)
+			opendnp3::MasterStackConfig Conversions::ConvertConfig(MasterStackConfig^ config)
 			{
-				asiodnp3::MasterStackConfig cfg;
+				opendnp3::MasterStackConfig cfg;
 				cfg.master = ConvertConfig(config->master);
 				cfg.link = ConvertConfig(config->link);
 				return cfg;
 			}
 
-			asiodnp3::OutstationStackConfig Conversions::ConvertConfig(OutstationStackConfig^ config)
-			{
-				opendnp3::DatabaseSizes sizes(
-					config->databaseTemplate->binaries->Count,
-					config->databaseTemplate->doubleBinaries->Count,
-					config->databaseTemplate->analogs->Count,
-					config->databaseTemplate->counters->Count,
-					config->databaseTemplate->frozenCounters->Count,
-					config->databaseTemplate->binaryOutputStatii->Count,
-					config->databaseTemplate->analogOutputStatii->Count,
-					config->databaseTemplate->timeAndIntervals->Count,
-					config->databaseTemplate->octetStrings->Count
-				);
+			opendnp3::OutstationStackConfig Conversions::ConvertConfig(OutstationStackConfig^ config)
+			{				
+				opendnp3::OutstationStackConfig cfg;
 
-
-				asiodnp3::OutstationStackConfig cfg(sizes);
-
-				ApplyConfig(config->databaseTemplate, cfg.dbConfig);
-
-				IndexMode indexMode = config->databaseTemplate->GetIndexMode();
-				cfg.outstation = ConvertConfig(config->outstation, (opendnp3::IndexMode) indexMode);
+				cfg.database = Convert(config->databaseTemplate);								
 				cfg.link = ConvertConfig(config->link);
 
 				return cfg;
 			}
 
-			void Conversions::ApplyConfig(DatabaseTemplate^ lhs, asiodnp3::DatabaseConfig& rhs)
+			opendnp3::DatabaseConfig Conversions::Convert(DatabaseTemplate ^ lhs)
 			{
-				ConvertEventConfig<opendnp3::BinaryInfo>(lhs->binaries, rhs.binary);
-				ConvertEventConfig<opendnp3::DoubleBitBinaryInfo>(lhs->doubleBinaries, rhs.doubleBinary);
-				ConvertDeadbandConfig<opendnp3::AnalogInfo>(lhs->analogs, rhs.analog);
-				ConvertDeadbandConfig<opendnp3::CounterInfo>(lhs->counters, rhs.counter);
-				ConvertDeadbandConfig<opendnp3::FrozenCounterInfo>(lhs->frozenCounters, rhs.frozenCounter);
-				ConvertEventConfig<opendnp3::BinaryOutputStatusInfo>(lhs->binaryOutputStatii, rhs.boStatus);
-				ConvertDeadbandConfig<opendnp3::AnalogOutputStatusInfo>(lhs->analogOutputStatii, rhs.aoStatus);
-				ConvertStaticConfig<opendnp3::TimeAndIntervalInfo>(lhs->timeAndIntervals, rhs.timeAndInterval);
-				ConvertIndexConfig<opendnp3::OctetStringInfo>(lhs->octetStrings, rhs.octetString);
+                opendnp3::DatabaseConfig config;
+				
+				ConvertEventConfig<opendnp3::BinaryInfo>(lhs->binaries, config.binary_input);                				
+                ConvertEventConfig<opendnp3::DoubleBitBinaryInfo>(lhs->doubleBinaries, config.double_binary);
+                ConvertDeadbandConfig<opendnp3::AnalogInfo>(lhs->analogs, config.analog_input);
+                ConvertDeadbandConfig<opendnp3::CounterInfo>(lhs->counters, config.counter);
+                ConvertDeadbandConfig<opendnp3::FrozenCounterInfo>(lhs->frozenCounters, config.frozen_counter);
+                ConvertEventConfig<opendnp3::BinaryOutputStatusInfo>(lhs->binaryOutputStatii,config.binary_output_status);
+                ConvertDeadbandConfig<opendnp3::AnalogOutputStatusInfo>(lhs->analogOutputStatii,config.analog_output_status);
+                ConvertStaticConfig<opendnp3::TimeAndIntervalInfo>(lhs->timeAndIntervals, config.time_and_interval);
+                ConvertEventConfig<opendnp3::OctetStringInfo>(lhs->octetStrings, config.octet_string);				
+
+				return config;
 			}
 
 			opendnp3::GroupVariationID Conversions::Convert(PointClass clazz)
@@ -483,32 +473,15 @@ namespace Automatak
 				default:
 					return opendnp3::GroupVariationID(60, 4);
 				}
-			}
+			}			
 
-			openpal::Buffer Conversions::Convert(array<System::Byte>^ bytes)
+			array<System::Byte>^ Conversions::Convert(const opendnp3::Buffer& bytes)
 			{
-				if (bytes == nullptr)
-				{
-					return openpal::Buffer(0);
-				}
-
-				openpal::Buffer buffer(bytes->Length);
-
-				for (int i = 0; i < bytes->Length; ++i)
-				{
-					buffer[i] = bytes[i];
-				}
-
-				return buffer;
-			}
-
-			array<System::Byte>^ Conversions::Convert(const openpal::RSlice& bytes)
-			{
-				array<System::Byte>^ ret = gcnew array<System::Byte>(bytes.Size());
+				array<System::Byte>^ ret = gcnew array<System::Byte>(bytes.length);
 
 				for (int i = 0; i < ret->Length; ++i)
 				{
-					ret[i] = bytes[i];
+					ret[i] = bytes.data[i];
 				}
 
 				return ret;

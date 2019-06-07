@@ -28,12 +28,12 @@ namespace Automatak
 		namespace Adapter
 		{
 
-			MasterOperationsAdapter::MasterOperationsAdapter(asiodnp3::IMasterOperations* operations) : operations(operations)
+			MasterOperationsAdapter::MasterOperationsAdapter(opendnp3::IMasterOperations* operations) : operations(operations)
 			{}
 			
 			void MasterOperationsAdapter::SetLogFilters(LogFilter flags)
 			{
-				operations->SetLogFilters(flags.Flags);
+				operations->SetLogFilters(log4cpp::LogLevel(flags.Flags));
 			}
 			
 			Task<TaskCompletion>^ MasterOperationsAdapter::Scan(IEnumerable<Header^>^ headers, TaskConfig^ config)

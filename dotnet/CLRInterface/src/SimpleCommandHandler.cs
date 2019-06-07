@@ -109,7 +109,7 @@ namespace Automatak.DNP3.Interface
             return status();
         }
 
-        void ICommandHandler.Start()
+        void ICommandHandler.Begin()
         {
            
         }

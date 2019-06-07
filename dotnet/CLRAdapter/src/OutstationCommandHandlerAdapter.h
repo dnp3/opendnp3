@@ -37,15 +37,13 @@ namespace Automatak
 
 			//this object goes into the stack
 			private class OutstationCommandHandlerAdapter : public opendnp3::ICommandHandler
-			{
-			protected:
-
-				void Start() override final;
-				void End() override final;
-
+			{					
 			public:
 
 				OutstationCommandHandlerAdapter(Automatak::DNP3::Interface::ICommandHandler^ proxy);
+
+				void begin() override final;
+                void end() override final;
 				
 				opendnp3::CommandStatus Select(const opendnp3::ControlRelayOutputBlock& command, uint16_t index) override final;
 				opendnp3::CommandStatus Select(const opendnp3::AnalogOutputInt32& command, uint16_t index) override final;

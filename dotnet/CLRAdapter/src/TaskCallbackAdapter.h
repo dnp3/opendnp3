@@ -22,7 +22,7 @@
 
 #include "Conversions.h"
 
-#include <openpal/util/Uncopyable.h>
+#include <opendnp3/util/Uncopyable.h>
 #include <opendnp3/master/ITaskCallback.h>
 
 #include <vcclr.h>
@@ -38,7 +38,7 @@ namespace Automatak
 		namespace Adapter
 		{
 
-			class TaskCallbackAdapter : public opendnp3::ITaskCallback, openpal::Uncopyable
+			class TaskCallbackAdapter : public opendnp3::ITaskCallback, opendnp3::Uncopyable
 			{
 			public:
 

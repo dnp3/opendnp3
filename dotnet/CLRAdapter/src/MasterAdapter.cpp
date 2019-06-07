@@ -28,9 +28,10 @@ namespace Automatak
 		namespace Adapter
 		{
 
-			MasterAdapter::MasterAdapter(const std::shared_ptr<asiodnp3::IMaster>& master) : 
+			MasterAdapter::MasterAdapter(const std::shared_ptr<opendnp3::IMaster>& master)
+                : 
 				MasterOperationsAdapter(master.get()), 
-				master(new std::shared_ptr<asiodnp3::IMaster>(master))
+				master(new std::shared_ptr<opendnp3::IMaster>(master))
 			{}
 
 			MasterAdapter::!MasterAdapter()
