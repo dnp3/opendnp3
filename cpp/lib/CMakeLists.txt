@@ -145,10 +145,10 @@ set(opendnp3_public_headers
     ./include/opendnp3/master/TaskConfig.h
     ./include/opendnp3/master/TaskId.h
     ./include/opendnp3/master/TaskInfo.h
+	./include/opendnp3/master/X509Info.h
 
     ./include/opendnp3/outstation/ApplicationIIN.h
-    ./include/opendnp3/outstation/DatabaseConfig.h
-    ./include/opendnp3/outstation/DatabaseSizes.h
+    ./include/opendnp3/outstation/DatabaseConfig.h    
     ./include/opendnp3/outstation/EventBufferConfig.h
     ./include/opendnp3/outstation/ICommandHandler.h
     ./include/opendnp3/outstation/IOutstation.h

@@ -20,7 +20,7 @@
 #ifndef OPENDNP3CLR_OUTSTATION_ADAPTER_H
 #define OPENDNP3CLR_OUTSTATION_ADAPTER_H
 
-#include <asiodnp3/IOutstation.h>
+#include <opendnp3/outstation/IOutstation.h>
 
 using namespace Automatak::DNP3::Interface;
 
@@ -37,7 +37,7 @@ namespace Automatak
 			{
 			public:
 
-				OutstationAdapter(const std::shared_ptr<asiodnp3::IOutstation>& outstation);
+				OutstationAdapter(const std::shared_ptr<opendnp3::IOutstation>& outstation);
 
 				~OutstationAdapter() { this ->!OutstationAdapter(); }
 				!OutstationAdapter();
@@ -58,7 +58,7 @@ namespace Automatak
 
 			private:
 
-				std::shared_ptr<asiodnp3::IOutstation>* outstation;
+				std::shared_ptr<opendnp3::IOutstation>* outstation;
 			};
 
 		}

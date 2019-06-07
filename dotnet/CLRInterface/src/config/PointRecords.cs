@@ -176,7 +176,11 @@ namespace Automatak.DNP3.Interface
     {
         public OctetStringRecord(System.UInt16 index) : base(index)
         {
-            
-        }        
+            this.eventVariation = EventOctetStringVariation.Group111Var0;
+            this.staticVariation = StaticOctetStringVariation.Group110Var0;
+        }
+
+        public EventOctetStringVariation eventVariation;
+        public StaticOctetStringVariation staticVariation;
     };
 }

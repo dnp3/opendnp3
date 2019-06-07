@@ -52,7 +52,7 @@ namespace Automatak
 
 				virtual void OnKeepAliveSuccess() override final;				
 
-				virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) override final;
+				virtual bool WriteAbsoluteTime(const opendnp3::UTCTimestamp& timestamp) override final;
 
 				virtual bool SupportsWriteAbsoluteTime() override final;
 				

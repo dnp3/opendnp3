@@ -28,7 +28,6 @@
 #include "MasterAdapter.h"
 #include "MasterApplicationAdapter.h"
 
-#include <asiopal/UTCTimeSource.h>
 #include <functional>
 
 using namespace System::Collections::Generic;
@@ -40,7 +39,8 @@ namespace Automatak
 		namespace Adapter
 		{
 
-			ChannelAdapter::ChannelAdapter(const std::shared_ptr<asiodnp3::IChannel>& channel) : channel(new std::shared_ptr<asiodnp3::IChannel>(channel))
+			ChannelAdapter::ChannelAdapter(const std::shared_ptr<opendnp3::IChannel>& channel)
+                : channel(new std::shared_ptr<opendnp3::IChannel>(channel))
 			{}
 
 			ChannelAdapter::~ChannelAdapter()
@@ -55,7 +55,7 @@ namespace Automatak
 
 			LogFilter ChannelAdapter::GetLogFilters()
 			{
-				return LogFilter((*channel)->GetLogFilters().GetBitfield());
+				return LogFilter((*channel)->GetLogFilters().get_value());
 			}
 
 			IChannelStatistics^ ChannelAdapter::GetChannelStatistics()
@@ -65,9 +65,8 @@ namespace Automatak
 			}
 
 			void ChannelAdapter::SetLogFilters(LogFilter filters)
-			{
-				openpal::LogFilters flags(filters.Flags);
-				(*channel)->SetLogFilters(flags);
+			{				
+                (*channel)->SetLogFilters(log4cpp::LogLevel(filters.Flags));
 			}
 
 			void CallbackListener(gcroot < System::Action<ChannelState> ^ >* listener, opendnp3::ChannelState aState)

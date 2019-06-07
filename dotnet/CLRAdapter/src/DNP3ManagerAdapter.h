@@ -20,14 +20,14 @@
 #ifndef OPENDNP3CLR_DNP3_MANAGER_ADAPTER_H
 #define OPENDNP3CLR_DNP3_MANAGER_ADAPTER_H
 
-#include <asiopal/ChannelRetry.h>
-#include <asiopal/TLSConfig.h>
+#include <opendnp3/channel/ChannelRetry.h>
+#include <opendnp3/channel/TLSConfig.h>
 
 using namespace Automatak::DNP3::Interface;
 
 using namespace System;
 
-namespace asiodnp3
+namespace opendnp3
 {
 	class DNP3Manager;
 }
@@ -90,9 +90,9 @@ namespace Automatak
 
 			private:
 
-				asiodnp3::DNP3Manager* manager;
+				opendnp3::DNP3Manager* manager;
 
-				static asiopal::ChannelRetry Convert(Interface::ChannelRetry^ retry);
+				static opendnp3::ChannelRetry Convert(Interface::ChannelRetry^ retry);
 			};
 
 		}

@@ -20,7 +20,7 @@
 #ifndef OPENDNP3CLR_MASTERSCANADAPTER_H
 #define OPENDNP3CLR_MASTERSCANADAPTER_H
 
-#include <asiodnp3/IMasterScan.h>
+#include <opendnp3/master/IMasterScan.h>
 
 #include <vcclr.h>
 
@@ -40,8 +40,9 @@ namespace Automatak
 			{
 			public:
 
-				MasterScanAdapter(const std::shared_ptr<asiodnp3::IMasterScan>& scan) : 
-						scan(new std::shared_ptr <asiodnp3::IMasterScan>(scan))
+				MasterScanAdapter(const std::shared_ptr<opendnp3::IMasterScan>& scan)
+                    : 
+						scan(new std::shared_ptr<opendnp3::IMasterScan>(scan))
 				{}
 
 				~MasterScanAdapter()
@@ -61,7 +62,7 @@ namespace Automatak
 
 			private:
 
-				std::shared_ptr <asiodnp3::IMasterScan>* scan;
+				std::shared_ptr<opendnp3::IMasterScan>* scan;
 			};
 
 		}

@@ -43,10 +43,10 @@ namespace Automatak.DNP3.Interface
         public PrintingSOEHandler()
         {}
 
-        void ISOEHandler.Start()
+        void ISOEHandler.BeginFragment(ResponseInfo info)
         {}
 
-        void ISOEHandler.End()
+        void ISOEHandler.EndFragment(ResponseInfo info)
         {}
 
         private static void PrintHeaderInfo(HeaderInfo info)

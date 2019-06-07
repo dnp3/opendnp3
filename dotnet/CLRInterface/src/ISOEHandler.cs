@@ -100,13 +100,30 @@ namespace Automatak.DNP3.Interface
         public readonly UInt32 headerIndex;
     }
 
+    public class ResponseInfo
+    {
+        public ResponseInfo(bool unsolicited, bool fir, bool fin)
+        {
+            this.unsolicited = unsolicited;
+            this.fir = fir;
+            this.fin = fin;
+        }
+
+        // true if the response is unsolicited
+        readonly bool unsolicited;
+        // true if this is the first fragment in a multi-fragment response
+        readonly bool fir;
+        // true if this is the final fragment in a multi-fragment response
+        readonly bool fin;
+    };
+
     /// <summary>
     /// Interface called to receive measurement callbacks from the master
     /// </summary>
     public interface ISOEHandler
 	{
-            void Start();
-            void End();
+            void BeginFragment(ResponseInfo info);
+            void EndFragment(ResponseInfo info);
 
             void Process(HeaderInfo info, IEnumerable<IndexedValue<Binary>> values);
             void Process(HeaderInfo info, IEnumerable<IndexedValue<DoubleBitBinary>> values);

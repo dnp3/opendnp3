@@ -75,10 +75,10 @@ namespace Automatak
 					proxy->OnKeepAliveSuccess();
 				}
 
-				virtual openpal::UTCTimestamp Now() override final
+				virtual opendnp3::UTCTimestamp Now() override final
 				{
 					auto milliseconds = proxy->GetMillisecondsSinceEpoch();
-					return openpal::UTCTimestamp(milliseconds);
+                    return opendnp3::UTCTimestamp(milliseconds);
 				}
 
 				virtual void OnReceiveIIN(const opendnp3::IINField& iin) override final

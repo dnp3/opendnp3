@@ -24,7 +24,7 @@
 #include "MasterConversions.h"
 #include "MasterScanAdapter.h"
 
-#include <asiodnp3/IMasterOperations.h>
+#include <opendnp3/master/IMasterOperations.h>
 
 using namespace Automatak::DNP3::Interface;
 
@@ -42,7 +42,7 @@ namespace Automatak
 			{
 			public:
 
-				MasterOperationsAdapter(asiodnp3::IMasterOperations* operations);
+				MasterOperationsAdapter(opendnp3::IMasterOperations* operations);
 
 				virtual void SetLogFilters(LogFilter flags);
 			
@@ -88,7 +88,7 @@ namespace Automatak
 
 			private:
 				
-				asiodnp3::IMasterOperations* operations;
+				opendnp3::IMasterOperations* operations;
 			};
 
 		}
