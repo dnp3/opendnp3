@@ -27,11 +27,11 @@ import com.automatak.render.dnp3.objects.generators.{AttributeGenerator, GroupVa
 
 object Generate {
 
-  val dnp3GenHeaderPath = FileSystems.getDefault.getPath("../cpp/libs/include/opendnp3/gen")
-  val dnp3GenImplPath = FileSystems.getDefault.getPath("../cpp/libs/src/opendnp3/gen")
-  val csharpGenPath = FileSystems.getDefault.getPath("../dotnet/CLRInterface/src/gen")
-  val dnp3ObjectPath = FileSystems.getDefault.getPath("../cpp/libs/src/opendnp3/objects")
-  val javaGenPath = FileSystems.getDefault.getPath("../java/bindings/src/main/java/com/automatak/dnp3/enums")
+  private val dnp3GenHeaderPath = FileSystems.getDefault.getPath("../cpp/lib/include/opendnp3/gen")
+  private val dnp3GenImplPath = FileSystems.getDefault.getPath("../cpp/lib/src/gen")
+  private val csharpGenPath = FileSystems.getDefault.getPath("../dotnet/CLRInterface/src/gen")
+  private val dnp3ObjectPath = FileSystems.getDefault.getPath("../cpp/lib/src/gen/objects")
+  private val javaGenPath = FileSystems.getDefault.getPath("../java/bindings/src/main/java/com/automatak/dnp3/enums")
 
   def main(args: Array[String]): Unit = {
 
@@ -42,10 +42,10 @@ object Generate {
     AttributeGenerator.writeAttributes("opendnp3", dnp3GenHeaderPath, dnp3GenImplPath)
 
     // generate the C# enums
-    CSharpEnumGenerator(CSharpEnumGroup.enums, "Automatak.DNP3.Interface", csharpGenPath)
+    //CSharpEnumGenerator(CSharpEnumGroup.enums, "Automatak.DNP3.Interface", csharpGenPath)
 
     // generate the Java enums
-    JavaEnumGenerator(CSharpEnumGroup.enums, "package com.automatak.dnp3.enums;", javaGenPath)
+    //JavaEnumGenerator(CSharpEnumGroup.enums, "package com.automatak.dnp3.enums;", javaGenPath)
 
     // generate all the group/variation parsers
     GroupVariationFileGenerator(dnp3ObjectPath)

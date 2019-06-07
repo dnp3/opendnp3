@@ -26,9 +26,7 @@
 #include "ListenerAdapter.h"
 #include "LogAdapter.h"
 
-#include <asiodnp3/DNP3Manager.h>
-
-using namespace asiopal;
+#include <opendnp3/DNP3Manager.h>
 
 namespace Automatak
 {
@@ -49,7 +47,7 @@ namespace Automatak
 
 
 			DNP3ManagerAdapter::DNP3ManagerAdapter(System::Int32 concurrency, ILogHandler^ logHandler) :
-				manager(new asiodnp3::DNP3Manager(concurrency, LogAdapter::Create(logHandler)))				
+				manager(new opendnp3::DNP3Manager(concurrency, LogAdapter::Create(logHandler)))				
 			{
 
 			}
@@ -80,17 +78,17 @@ namespace Automatak
             {
                 std::string stdName = Conversions::ConvertString(id);
 
-                std::vector<asiopal::IPEndpoint> endpoints;
+                std::vector<opendnp3::IPEndpoint> endpoints;
                 for each(auto remote in remotes)
                 {
                     endpoints.push_back(Conversions::Convert(remote));
                 }
 
                 auto listenAdapter = listener
-                    ? std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener))
+                    ? std::shared_ptr<opendnp3::IChannelListener>(new ChannelListenerAdapter(listener))
                     : nullptr;
 
-                auto channel = this->manager->AddTCPClient(stdName.c_str(), filters, Convert(retry), endpoints, "", listenAdapter);
+                auto channel = this->manager->AddTCPClient(stdName.c_str(), log4cpp::LogLevel(filters), Convert(retry), endpoints, "", listenAdapter);
 
                 return channel ? gcnew ChannelAdapter(channel) : nullptr;
             }
@@ -101,10 +99,10 @@ namespace Automatak
 				std::string stdEndpoint = Conversions::ConvertString(endpoint);
 
 				auto listenAdapter = listener
-                    ? std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener))
+                    ? std::shared_ptr<opendnp3::IChannelListener>(new ChannelListenerAdapter(listener))
                     : nullptr;
 
-				auto channel = this->manager->AddTCPServer(stdName.c_str(), filters, (opendnp3::ServerAcceptMode) mode, stdEndpoint, port, listenAdapter);
+				auto channel = this->manager->AddTCPServer(stdName.c_str(), log4cpp::LogLevel(filters), (opendnp3::ServerAcceptMode) mode, stdEndpoint, port, listenAdapter);
 
 				return channel ? gcnew ChannelAdapter(channel) : nullptr;
 			}
@@ -120,18 +118,18 @@ namespace Automatak
             {
                 std::string stdName = Conversions::ConvertString(id);
 
-                std::vector<asiopal::IPEndpoint> endpoints;
+                std::vector<opendnp3::IPEndpoint> endpoints;
                 for each(auto remote in remotes)
                 {
                     endpoints.push_back(Conversions::Convert(remote));
                 }
 
                 auto listenAdapter = listener
-                    ? std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener))
+                    ? std::shared_ptr<opendnp3::IChannelListener>(new ChannelListenerAdapter(listener))
                     : nullptr;
 
                 std::error_code ec;
-                auto channel = this->manager->AddTLSClient(stdName.c_str(), filters, Convert(retry), endpoints, "", Conversions::Convert(config), listenAdapter, ec);
+                auto channel = this->manager->AddTLSClient(stdName.c_str(), log4cpp::LogLevel(filters), Convert(retry), endpoints, "", Conversions::Convert(config), listenAdapter, ec);
                 if (ec)
                 {
                     throw gcnew System::Exception(Conversions::ConvertString(ec.message()));
@@ -148,11 +146,11 @@ namespace Automatak
 				std::string stdEndpoint = Conversions::ConvertString(endpoint);
 
 				auto listenAdapter = listener
-                    ? std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener))
+                    ? std::shared_ptr<opendnp3::IChannelListener>(new ChannelListenerAdapter(listener))
                     : nullptr;
 				
 				std::error_code ec;
-				auto channel = this->manager->AddTLSServer(stdName.c_str(), filters, (opendnp3::ServerAcceptMode) mode, stdEndpoint, port, Conversions::Convert(config), listenAdapter, ec);
+                auto channel = this->manager->AddTLSServer(stdName.c_str(), log4cpp::LogLevel(filters), (opendnp3::ServerAcceptMode) mode, stdEndpoint, port, Conversions::Convert(config), listenAdapter, ec);
 				if (ec)
 				{
 					throw gcnew System::Exception(Conversions::ConvertString(ec.message()));
@@ -169,10 +167,10 @@ namespace Automatak
 				auto s = Conversions::ConvertSerialSettings(settings);				
 
 				auto listenAdapter = listener
-                    ? std::shared_ptr<asiodnp3::IChannelListener>(new ChannelListenerAdapter(listener))
+                    ? std::shared_ptr<opendnp3::IChannelListener>(new ChannelListenerAdapter(listener))
                     : nullptr;
 				
-				auto channel = this->manager->AddSerial(stdName.c_str(), filters, Convert(retry), s, listenAdapter);
+				auto channel = this->manager->AddSerial(stdName.c_str(), log4cpp::LogLevel(filters), Convert(retry), s, listenAdapter);
 				
 				return channel ? gcnew ChannelAdapter(channel) : nullptr;				
 			}
@@ -180,9 +178,9 @@ namespace Automatak
 			Interface::IListener^ DNP3ManagerAdapter::CreateListener(System::String^ loggerid, System::UInt32 filters, Interface::IPEndpoint^ endpoint, IListenCallbacks^ callbacks)
 			{
 				auto id = Conversions::ConvertString(loggerid);
-				auto levels = openpal::LogFilters(filters);
+                auto levels = log4cpp::LogLevel(filters);
 				auto ep = Conversions::Convert(endpoint);
-				auto cb = std::shared_ptr<asiodnp3::IListenCallbacks>(new ListenCallbacksAdapter(callbacks));
+				auto cb = std::shared_ptr<opendnp3::IListenCallbacks>(new ListenCallbacksAdapter(callbacks));
 
 				std::error_code ec;
 				auto listener = manager->CreateListener(id, levels, ep, cb, ec);
@@ -198,10 +196,10 @@ namespace Automatak
 			Interface::IListener^ DNP3ManagerAdapter::CreateListener(System::String^ loggerid, System::UInt32 filters, Interface::IPEndpoint^ endpoint, Interface::TLSConfig^ config, IListenCallbacks^ callbacks)
 			{
 				auto id = Conversions::ConvertString(loggerid);
-				auto levels = openpal::LogFilters(filters);
+                auto levels = log4cpp::LogLevel(filters);
 				auto ep = Conversions::Convert(endpoint);
 				auto tlsConfig = Conversions::Convert(config);
-				auto cb = std::shared_ptr<asiodnp3::IListenCallbacks>(new ListenCallbacksAdapter(callbacks));
+				auto cb = std::shared_ptr<opendnp3::IListenCallbacks>(new ListenCallbacksAdapter(callbacks));
 
 				std::error_code ec;
 				auto listener = manager->CreateListener(id, levels, ep, tlsConfig, cb, ec);
@@ -214,9 +212,10 @@ namespace Automatak
 				return gcnew ListenerAdapter(listener);
 			}
 
-			asiopal::ChannelRetry DNP3ManagerAdapter::Convert(Interface::ChannelRetry^ retry)
+			opendnp3::ChannelRetry DNP3ManagerAdapter::Convert(Interface::ChannelRetry ^ retry)
 			{
-				return asiopal::ChannelRetry(Conversions::ConvertTimespan(retry->minRetryDelay), Conversions::ConvertTimespan(retry->maxRetryDelay));
+                return opendnp3::ChannelRetry(Conversions::ConvertTimespan(retry->minRetryDelay),
+                                              Conversions::ConvertTimespan(retry->maxRetryDelay));
 			}
 		}
 	}

@@ -20,16 +20,14 @@
 #ifndef OPENDNP3CLR_CONVERSIONS_H
 #define OPENDNP3CLR_CONVERSIONS_H
 
-#include <string>
-
-#include <openpal/executor/TimeDuration.h>
-#include <openpal/container/Buffer.h>
-
 #include <opendnp3/StackStatistics.h>
 #include <opendnp3/LogLevels.h>
 
 #include <opendnp3/gen/ChannelState.h>
 #include <opendnp3/gen/LinkStatus.h>
+
+#include <opendnp3/link/LinkStatistics.h>
+#include <opendnp3/link/LinkHeaderFields.h>
 
 #include <opendnp3/app/MeasurementTypes.h>
 #include <opendnp3/app/ControlRelayOutputBlock.h>
@@ -43,20 +41,16 @@
 #include <opendnp3/app/GroupVariationID.h>
 
 #include <opendnp3/master/ICommandTaskResult.h>
+#include <opendnp3/master/MasterStackConfig.h>
+#include <opendnp3/master/X509Info.h>
+#include <opendnp3/outstation/OutstationStackConfig.h>
 
-#include <opendnp3/link/LinkStatistics.h>
-#include <opendnp3/link/LinkHeaderFields.h>
-
-#include <asiodnp3/OutstationStackConfig.h>
-#include <asiodnp3/MasterStackConfig.h>
+#include <opendnp3/channel/ChannelRetry.h>
+#include <opendnp3/channel/IPEndpoint.h>
+#include <opendnp3/channel/TLSConfig.h>
+#include <opendnp3/channel/SerialSettings.h>
 
 #include "CollectionAdapter.h"
-
-#include <asiopal/ChannelRetry.h>
-#include <asiopal/SerialTypes.h>
-#include <asiopal/IPEndpoint.h>
-#include <asiopal/TLSConfig.h>
-#include <asiodnp3/X509Info.h>
 
 using namespace Automatak::DNP3::Interface;
 
@@ -73,15 +67,15 @@ namespace Automatak
 			{
 			public:
 
-				static openpal::TimeDuration ConvertMilliseconds(System::Int64 ms);
+				static opendnp3::TimeDuration ConvertMilliseconds(System::Int64 ms);
 
-				static openpal::TimeDuration ConvertTimespan(System::TimeSpan ts);
+				static opendnp3::TimeDuration ConvertTimespan(System::TimeSpan ts);
 
-				static System::TimeSpan ConvertTimeDuration(const openpal::TimeDuration& duration);				
+				static System::TimeSpan ConvertTimeDuration(const opendnp3::TimeDuration& duration);				
 
 				static opendnp3::ClassField ConvertClassField(ClassField classField);
 
-				static asiopal::TLSConfig Convert(Automatak::DNP3::Interface::TLSConfig^ config);
+				static opendnp3::TLSConfig Convert(Automatak::DNP3::Interface::TLSConfig^ config);
 
 				// Convert a .NET string to a C++ string
 				static std::string ConvertString(System::String^ s);
@@ -153,26 +147,23 @@ namespace Automatak
 				static opendnp3::AnalogCommandEvent ConvertMeas(AnalogCommandEvent^ meas);
 
 				static LinkHeader^ Conversions::Convert(const opendnp3::LinkHeaderFields& fields);
-				static asiopal::IPEndpoint Convert(IPEndpoint^ endpoint);				
+				static opendnp3::IPEndpoint Convert(IPEndpoint^ endpoint);				
 
-				static X509Info^ Convert(const asiodnp3::X509Info& info);
+				static X509Info^ Convert(const opendnp3::X509Info& info);
 
 				//Convert the configuration types
-				static asiopal::SerialSettings ConvertSerialSettings(SerialSettings^ settings);
+				static opendnp3::SerialSettings ConvertSerialSettings(SerialSettings^ settings);
 				static opendnp3::EventBufferConfig ConvertConfig(EventBufferConfig^ cm);				
 
 				static opendnp3::LinkConfig ConvertConfig(LinkConfig^ config);
 				static opendnp3::MasterParams ConvertConfig(MasterConfig^ config);
-				static opendnp3::OutstationConfig ConvertConfig(OutstationConfig^ config, opendnp3::IndexMode indexMode);
-				static opendnp3::OutstationParams ConvertConfig(OutstationParams^ config, opendnp3::IndexMode indexMode);
-				static asiodnp3::MasterStackConfig ConvertConfig(MasterStackConfig^ config);
-				static asiodnp3::OutstationStackConfig ConvertConfig(OutstationStackConfig^ config);				
+				static opendnp3::OutstationConfig ConvertConfig(OutstationConfig^ config);
+				static opendnp3::OutstationParams ConvertConfig(OutstationParams^ config);
+				static opendnp3::MasterStackConfig ConvertConfig(MasterStackConfig^ config);
+				static opendnp3::OutstationStackConfig ConvertConfig(OutstationStackConfig^ config);				
 
-				static opendnp3::GroupVariationID Convert(PointClass clazz);
-
-				static openpal::Buffer Convert(array<System::Byte>^ bytes);
-				static array<System::Byte>^ Convert(const openpal::RSlice& bytes);				
-
+				static opendnp3::GroupVariationID Convert(PointClass clazz);				
+				static array<System::Byte>^ Convert(const opendnp3::Buffer& bytes);				
 
 				template <class Target, class Source>
 				static IndexedValue<Target>^ ConvertIndexValue(const opendnp3::Indexed<Source>& pair)
@@ -195,21 +186,21 @@ namespace Automatak
 
 				private:
 
-					static void ApplyConfig(DatabaseTemplate^ lhs, asiodnp3::DatabaseConfig& rhs);
+					static opendnp3::DatabaseConfig Convert(DatabaseTemplate^ lhs);
 
 					template <class Info, class Source, class Target>
-					static void ConvertIndexConfig(Source^ source, Target& target)
+					static void InitializeDefaults(Source^ source, Target& target)
 					{
 						for (int i = 0; i < source->Count; ++i)
 						{
-							target[i].vIndex = source[i]->index;
+                            target[i] = {};
 						}
 					}
 
 					template <class Info, class Source, class Target>
 					static void ConvertStaticConfig(Source^ source, Target& target)
 					{
-						ConvertIndexConfig<Info>(source, target);
+                        InitializeDefaults<Info>(source, target);
 
 						for (int i = 0; i < source->Count; ++i)
 						{

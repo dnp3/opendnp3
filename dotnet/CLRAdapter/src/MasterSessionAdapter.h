@@ -20,7 +20,7 @@
 #ifndef OPENDNP3CLR_MASTER_SESSION_ADAPTER_H
 #define	OPENDNP3CLR_MASTER_SESSION_ADAPTER_H
 
-#include <asiodnp3/IMasterSession.h>
+#include <opendnp3/master/IMasterSession.h>
 
 #include "MasterOperationsAdapter.h"
 
@@ -43,7 +43,7 @@ namespace Automatak
 			{
 			public:
 
-				MasterSessionAdapter(std::shared_ptr<asiodnp3::IMasterSession> proxy);
+				MasterSessionAdapter(std::shared_ptr<opendnp3::IMasterSession> proxy);
 				
 				MasterSessionAdapter::~MasterSessionAdapter()
 				{
@@ -62,7 +62,7 @@ namespace Automatak
 
 			private:
 
-				std::shared_ptr<asiodnp3::IMasterSession>* proxy;
+				std::shared_ptr<opendnp3::IMasterSession>* proxy;
 			};
 
 		}

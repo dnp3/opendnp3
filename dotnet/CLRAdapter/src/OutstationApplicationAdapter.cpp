@@ -64,7 +64,7 @@ namespace Automatak
 				proxy->OnKeepAliveSuccess();
 			}
 
-			bool OutstationApplicationAdapter::WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp)
+			bool OutstationApplicationAdapter::WriteAbsoluteTime(const opendnp3::UTCTimestamp& timestamp)
 			{
 				return proxy->WriteAbsoluteTime(timestamp.msSinceEpoch);
 			}

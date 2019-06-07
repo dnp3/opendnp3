@@ -123,4 +123,6 @@ package object cpp {
 
   def string : Iterator[String] = Iterator.apply(include("<string>"))
 
+  def littleEndian : Iterator[String] = Iterator.apply(include("<ser4cpp/serialization/LittleEndian.h>"))
+
 }

@@ -2,16 +2,16 @@ version: 2
 aliases:
   - run: &install_deps_gcc
       name: Install dependencies
-      command: apt-get update && apt-get install -y git cmake g++ libssl-dev default-jdk maven
+      command: apt-get update && apt-get install -y git cmake g++ libssl-dev lcov curl #default-jdk maven
   - run: &install_deps_clang
       name: Install dependencies
-      command: apt-get update && apt-get install -y git cmake clang libc++-dev libc++abi-dev libssl-dev default-jdk maven
+      command: apt-get update && apt-get install -y git cmake clang libc++-dev libc++abi-dev libssl-dev lcov curl #default-jdk maven
   - run: &print_versions_gcc
       name: Print versions
-      command: g++ -v && cmake -version && openssl version && java --version
+      command: g++ -v && cmake -version && openssl version #&& java --version
   - run: &print_versions_clang
       name: Print versions
-      command: clang --version && cmake -version && openssl version && java --version
+      command: clang --version && cmake -version && openssl version #&& java --version
   - run: &init_submodules
       name: Initialize submodules
       command: git submodule update --init
@@ -22,6 +22,10 @@ aliases:
   - run: &test
       name: Test
       command: ctest -VV .
+      working_directory: build
+  - run: &coverage
+      name: Code coverage
+      command: cmake --build . --target coverage && bash <(curl -s https://codecov.io/bash) -f coverage.info.cleaned
       working_directory: build
   - run: &build_java
       # I was not able to set java.library.path to the build directory, so we just
@@ -44,76 +48,77 @@ aliases:
 jobs:
   build-gcc-debug:
     docker:
-      - image: ubuntu:18.04
+      - image: ubuntu:19.04
     steps:
       - checkout
       - run: *install_deps_gcc
       - run: *print_versions_gcc
-      - run: *init_submodules
+      #- run: *init_submodules
       - run:
           name: Configure
-          command: cmake -DCMAKE_BUILD_TYPE=Debug -DDNP3_ALL=ON -DDNP3_TLS=ON ..
+          command: cmake -DCMAKE_BUILD_TYPE=Debug -DDNP3_EVERYTHING=ON -DDNP3_COVERAGE=ON ..
           working_directory: build
       - run: *build
       - run: *test
-      - run: *build_java
-      - run: *test_java
-      - run: *package
-      - store_artifacts: *store_artifacts
+      - run: *coverage
+      #- run: *build_java
+      #- run: *test_java
+      #- run: *package
+      #- store_artifacts: *store_artifacts
   build-gcc-release:
     docker:
-      - image: ubuntu:18.04
+      - image: ubuntu:19.04
     steps:
       - checkout
       - run: *install_deps_gcc
       - run: *print_versions_gcc
-      - run: *init_submodules
+      #- run: *init_submodules
       - run:
           name: Configure
-          command: cmake -DCMAKE_BUILD_TYPE=Release -DDNP3_ALL=ON -DDNP3_TLS=ON ..
+          command: cmake -DCMAKE_BUILD_TYPE=Release -DDNP3_EVERYTHING=ON ..
           working_directory: build
       - run: *build
       - run: *test
-      - run: *build_java
-      - run: *test_java
-      - run: *package
-      - store_artifacts: *store_artifacts
+      #- run: *build_java
+      #- run: *test_java
+      #- run: *package
+      #- store_artifacts: *store_artifacts
   build-clang-debug:
     docker:
-      - image: ubuntu:18.04
+      - image: ubuntu:19.04
     steps:
       - checkout
       - run: *install_deps_clang
       - run: *print_versions_clang
-      - run: *init_submodules
+      #- run: *init_submodules
       - run:
           name: Configure
-          command: cmake -DCMAKE_BUILD_TYPE=Debug -DDNP3_ALL=ON -DDNP3_TLS=ON ..
+          command: cmake -DCMAKE_BUILD_TYPE=Debug -DDNP3_EVERYTHING=ON ..
           working_directory: build
       - run: *build
       - run: *test
-      - run: *build_java
-      - run: *test_java
-      - run: *package
-      - store_artifacts: *store_artifacts
+      #- run: *build_java
+      #- run: *test_java
+      #- run: *package
+      #- store_artifacts: *store_artifacts
   build-clang-release:
     docker:
-      - image: ubuntu:18.04
+      - image: ubuntu:19.04
     steps:
       - checkout
       - run: *install_deps_clang
       - run: *print_versions_clang
-      - run: *init_submodules
+      #- run: *init_submodules
       - run:
           name: Configure
-          command: cmake -DCMAKE_BUILD_TYPE=Release -DDNP3_ALL=ON -DDNP3_TLS=ON ..
+          command: cmake -DCMAKE_BUILD_TYPE=Release -DDNP3_EVERYTHING=ON ..
           working_directory: build
       - run: *build
       - run: *test
-      - run: *build_java
-      - run: *test_java
-      - run: *package
-      - store_artifacts: *store_artifacts
+      #- run: *build_java
+      #- run: *test_java
+      #- run: *package
+      #- store_artifacts: *store_artifacts
 workflows:
   version: 2
   build_and_test:

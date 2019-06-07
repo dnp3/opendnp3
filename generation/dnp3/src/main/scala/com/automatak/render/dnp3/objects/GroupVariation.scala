@@ -51,7 +51,7 @@ trait GroupVariation {
   /// --- Includes for h/cpp files ----
 
   def headerIncludes : List[String] = List(""""opendnp3/app/GroupVariationID.h"""") // always included in headers
-  def implIncludes : List[String] = Nil
+  def implIncludes : List[String] = List(""""app/parsing/DNPTimeParsing.h"""")
 
   /// --- actual source lines for the h/cpp ---
 
@@ -81,8 +81,8 @@ class AuthVariableSize( g: ObjectGroup,
                         val lengthFields: List[VariableField],
                         val remainder: Option[VariableField]) extends BasicGroupVariation(g,v,description)  {
 
-  override def headerIncludes = super.headerIncludes ++ GroupVariationIncludes.headerReadWrite ++ GroupVariationIncludes.headerVariableLength ++ FixedSizeHelpers.fieldHeaders(fixedFields)
-  override def implIncludes = super.implIncludes ++ GroupVariationIncludes.implVariableLength ++ GroupVariationIncludes.implReadWrite
+  override def headerIncludes: List[String] = super.headerIncludes ++ GroupVariationIncludes.headerReadWrite ++ GroupVariationIncludes.headerVariableLength ++ FixedSizeHelpers.fieldHeaders(fixedFields)
+  override def implIncludes: List[String] = super.implIncludes ++ GroupVariationIncludes.implVariableLength ++ GroupVariationIncludes.implReadWrite
 
   override def declaration(implicit i : Indentation) : Iterator[String] = struct(name, Some("IVariableLength"))(headerLines)
 
@@ -106,8 +106,8 @@ class RemainderOnly( g: ObjectGroup,  v: Byte, description: String, remainder: V
 
 class FixedSize(g: ObjectGroup, v: Byte, description: String)(fs: FixedSizeField*) extends BasicGroupVariation(g,v, description) {
 
-  override def headerIncludes = super.headerIncludes ++ GroupVariationIncludes.headerReadWrite
-  override def implIncludes = super.implIncludes ++ GroupVariationIncludes.implReadWrite
+  override def headerIncludes: List[String] = super.headerIncludes ++ GroupVariationIncludes.headerReadWrite
+  override def implIncludes: List[String] = super.implIncludes ++ GroupVariationIncludes.implReadWrite
 
   override def headerLines(implicit i : Indentation) : Iterator[String] = super.headerLines ++ FixedSizeGenerator.header(this)
   override def implLines(implicit i : Indentation) : Iterator[String] = super.implLines ++ GroupVariationLines.implComments(this) ++ FixedSizeGenerator.implementation(this)
@@ -115,6 +115,5 @@ class FixedSize(g: ObjectGroup, v: Byte, description: String)(fs: FixedSizeField
   def fields : List[FixedSizeField] = fs.toList
   def size: Int = fs.map(x => x.typ.numBytes).sum
 
-  override def attributes : Set[FieldAttribute.Value] = fs.map(_.attributes).flatten.toSet
-
+  override def attributes : Set[FieldAttribute.Value] = fs.flatMap(_.attributes).toSet
 }

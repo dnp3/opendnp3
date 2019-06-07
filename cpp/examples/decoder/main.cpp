@@ -18,19 +18,15 @@
  * limitations under the License.
  */
 
-#include <openpal/container/Buffer.h>
-#include <openpal/logging/Logger.h>
+#include <log4cpp/Logger.h>
 
+#include <opendnp3/ConsoleLogger.h>
 #include <opendnp3/LogLevels.h>
+#include <opendnp3/decoder/Decoder.h>
 
-#include <asiodnp3/ConsoleLogger.h>
+#include <array>
 
-#include <dnp3decode/Decoder.h>
-
-using namespace std;
-using namespace openpal;
 using namespace opendnp3;
-using namespace asiodnp3;
 
 enum class Mode
 {
@@ -57,19 +53,19 @@ Mode GetMode(const std::string& mode)
 
 int main(int argc, char* argv[])
 {
-    openpal::Logger logger(ConsoleLogger::Create(), "decoder", LogFilters(~0));
+    log4cpp::Logger logger(ConsoleLogger::Create(), log4cpp::ModuleId(), "decoder", log4cpp::LogLevels::everything());
     IDecoderCallbacks callback;
     Decoder decoder(callback, logger);
 
-    Buffer buffer(4096);
+    std::array<uint8_t, 4096> rawBuffer;
 
     const Mode MODE = (argc > 1) ? GetMode(argv[1]) : Mode::Link;
 
     while (true)
     {
-        const size_t NUM_READ = fread(buffer(), 1, buffer.Size(), stdin);
+        const size_t numRead = fread(rawBuffer.data(), 1, rawBuffer.size(), stdin);
 
-        if (NUM_READ == 0)
+        if (numRead == 0)
         {
             return 0;
         }
@@ -77,13 +73,13 @@ int main(int argc, char* argv[])
         switch (MODE)
         {
         case (Mode::Link):
-            decoder.DecodeLPDU(buffer.ToRSlice().Take(NUM_READ));
+            decoder.DecodeLPDU(Buffer(rawBuffer.data(), numRead));
             break;
         case (Mode::Transport):
-            decoder.DecodeTPDU(buffer.ToRSlice().Take(NUM_READ));
+            decoder.DecodeTPDU(Buffer(rawBuffer.data(), numRead));
             break;
         default:
-            decoder.DecodeAPDU(buffer.ToRSlice().Take(NUM_READ));
+            decoder.DecodeAPDU(Buffer(rawBuffer.data(), numRead));
             break;
         }
     }

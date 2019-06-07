@@ -19,6 +19,7 @@
  */
 package com.automatak.render.dnp3.objects.generators
 
+import com.automatak.render._
 import com.automatak.render.EnumModel
 import com.automatak.render.cpp._
 import com.automatak.render.dnp3.objects._
@@ -40,10 +41,95 @@ object FixedSizeHelpers {
   // Any special headers required for fixed-size fields
   def fieldHeaders(fields: List[FixedSizeField]): List[String] = fields.map { f =>
      f.typ match {
-       case ef : EnumFieldType => List(quoted("opendnp3/gen/%s.h".format(ef.model.name)))
+       case ef : EnumFieldType => List(quoted("gen/%sSerialization.h".format(ef.model.name)))
        case _ => Nil
      }
   }.flatten
 
+  def fixedReadsOLD(fixedFields: List[FixedSizeField], returnBool: Boolean, bufferName: String, outputLocation: String) : Iterator[String] = {
 
+    val returnStatement = returnBool match {
+      case true => "result &= "
+      case false => ""
+    }
+
+    def toNumericReadOp(fs: FixedSizeField) : Iterator[String] = {
+      val tempVarName = "%sTemp".format(fs.name)
+
+      if(fs.typ == UInt48Field) {
+        Iterator(
+          "UInt48Type %s;".format(tempVarName),
+          returnStatement + "%s::read_from(%s, %s);".format(FixedSizeHelpers.getCppFieldTypeParser(fs.typ), bufferName, tempVarName),
+          "%s%s = DNPTime(%s.Get());".format(outputLocation, fs.name, tempVarName)
+        )
+      }
+      else {
+        Iterator(returnStatement + "%s::read_from(%s, %s%s);".format(FixedSizeHelpers.getCppFieldTypeParser(fs.typ), bufferName, outputLocation, fs.name))
+      }
+    }
+
+    def toEnumReadOp(fs: FixedSizeField, e: EnumFieldType) : Iterator[String] = {
+      val rawValueName = fs.name ++ "RawValue"
+      Iterator(
+        "uint8_t %s;".format(rawValueName),
+        returnStatement + "UInt8::read_from(%s, %s);".format(bufferName, rawValueName),
+        "%s%s = %sFromType(%s);".format(outputLocation, fs.name, e.model.name, rawValueName)
+      )
+    }
+
+
+    def toReadOp(fs: FixedSizeField) : Iterator[String] = fs.typ match {
+      case x : EnumFieldType => toEnumReadOp(fs, x)
+      case _ => toNumericReadOp(fs)
+    }
+
+    var lines = List[String]()
+    if(returnBool) {
+      lines ++= Iterator("bool result = true;") ++ space
+    }
+    if(fixedFields.nonEmpty) {
+      lines ++= fixedFields.flatMap(toReadOp).iterator ++ space
+    }
+    if(returnBool) {
+      lines ++= Iterator("return result;")
+    }
+
+    lines.iterator
+  }
+
+  def fixedReads(fixedFields: List[FixedSizeField], returnBool: Boolean, bufferName: String, inputLocation: String) : Iterator[String] = {
+
+    def fieldParams() : String = {
+      fixedFields.map(fs => "%s%s".format(inputLocation, fs.name)).mkString(", ")
+    }
+
+    if(fixedFields.isEmpty) {
+      Iterator.empty
+    }
+    else {
+      val returnStatement = returnBool match {
+        case true => "return "
+        case false => ""
+      }
+      Iterator(returnStatement + "LittleEndian::read(%s, %s);".format(bufferName, fieldParams))
+    }
+  }
+
+  def fixedWrites(fixedFields: List[FixedSizeField], returnBool: Boolean, bufferName: String, inputLocation: String) : Iterator[String] = {
+
+    def fieldParams() : String = {
+      fixedFields.map(fs => "%s%s".format(inputLocation, fs.name)).mkString(", ")
+    }
+
+    if(fixedFields.isEmpty) {
+      Iterator.empty
+    }
+    else {
+      val returnStatement = returnBool match {
+        case true => "return "
+        case false => ""
+      }
+      Iterator(returnStatement + "LittleEndian::write(%s, %s);".format(bufferName, fieldParams))
+    }
+  }
 }

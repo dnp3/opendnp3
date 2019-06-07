@@ -19,17 +19,14 @@
  */
 #include <opendnp3/LogLevels.h>
 
-#include <asiodnp3/ConsoleLogger.h>
-#include <asiodnp3/DNP3Manager.h>
-#include <asiodnp3/DefaultListenCallbacks.h>
+#include <opendnp3/ConsoleLogger.h>
+#include <opendnp3/DNP3Manager.h>
+#include <opendnp3/master/DefaultListenCallbacks.h>
 
 #include <iostream>
 #include <thread>
 
 using namespace std;
-using namespace openpal;
-using namespace asiopal;
-using namespace asiodnp3;
 using namespace opendnp3;
 
 int main(int argc, char* argv[])
@@ -50,17 +47,17 @@ int main(int argc, char* argv[])
 
     // Specify what log levels to use. NORMAL is warning and above
     // You can add all the comms logging by uncommenting below
-    const uint32_t FILTERS = levels::NORMAL | levels::ALL_COMMS;
+    const auto logLevels = levels::NORMAL | levels::ALL_COMMS;
 
-    const auto NUM_THREAD = std::thread::hardware_concurrency();
+    const auto numThread = std::thread::hardware_concurrency();
 
     auto callbacks = std::make_shared<DefaultListenCallbacks>();
 
     // This is the main point of interaction with the stack
-    DNP3Manager manager(NUM_THREAD, ConsoleLogger::Create());
+    DNP3Manager manager(numThread, ConsoleLogger::Create());
 
     std::error_code ec;
-    auto server1 = manager.CreateListener("server-20001", FILTERS, IPEndpoint::AllAdapters(20001),
+    auto server1 = manager.CreateListener("server-20001", logLevels, IPEndpoint::AllAdapters(20001),
                                           TLSConfig(caCertificate, certificateChain, privateKey, 2), callbacks, ec);
 
     if (ec)

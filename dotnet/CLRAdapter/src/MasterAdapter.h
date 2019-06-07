@@ -22,7 +22,7 @@
 
 #include "MasterOperationsAdapter.h"
 
-#include <asiodnp3/IMaster.h>
+#include <opendnp3/master/IMaster.h>
 
 using namespace Automatak::DNP3::Interface;
 
@@ -37,7 +37,7 @@ namespace Automatak
 			{
 			public:
 
-				MasterAdapter(const std::shared_ptr<asiodnp3::IMaster>& master);
+				MasterAdapter(const std::shared_ptr<opendnp3::IMaster>& master);
 
 				~MasterAdapter() { this ->!MasterAdapter(); }
 				!MasterAdapter();
@@ -52,7 +52,7 @@ namespace Automatak
 
 			private:
 
-				std::shared_ptr<asiodnp3::IMaster>* master;
+				std::shared_ptr<opendnp3::IMaster>* master;
 			};
 
 		}

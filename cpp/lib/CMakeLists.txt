@@ -1,0 +1,668 @@
+set(opendnp3_public_headers
+    
+    ./include/opendnp3/ConsoleLogger.h
+    ./include/opendnp3/DNP3Manager.h
+    ./include/opendnp3/ErrorCodes.h
+    ./include/opendnp3/IResource.h
+    ./include/opendnp3/IStack.h
+    ./include/opendnp3/LogLevels.h
+    ./include/opendnp3/StackStatistics.h    
+
+    ./include/opendnp3/app/AnalogCommandEvent.h
+    ./include/opendnp3/app/AnalogOutput.h
+    ./include/opendnp3/app/AppConstants.h
+    ./include/opendnp3/app/BaseMeasurementTypes.h
+    ./include/opendnp3/app/BinaryCommandEvent.h
+    ./include/opendnp3/app/ClassField.h
+    ./include/opendnp3/app/ControlRelayOutputBlock.h
+    ./include/opendnp3/app/DNPTime.h
+    ./include/opendnp3/app/EventCells.h
+    ./include/opendnp3/app/EventTriggers.h
+    ./include/opendnp3/app/EventType.h
+    ./include/opendnp3/app/Flags.h
+    ./include/opendnp3/app/GroupVariationID.h
+    ./include/opendnp3/app/IINField.h
+    ./include/opendnp3/app/Indexed.h    
+    ./include/opendnp3/app/MeasurementInfo.h
+    ./include/opendnp3/app/MeasurementTypes.h
+    ./include/opendnp3/app/OctetData.h
+    ./include/opendnp3/app/OctetString.h
+    ./include/opendnp3/app/QualityMasks.h
+    ./include/opendnp3/app/SecurityStat.h
+
+    ./include/opendnp3/app/parsing/ICollection.h
+
+    ./include/opendnp3/channel/ChannelRetry.h
+    ./include/opendnp3/channel/IChannel.h
+    ./include/opendnp3/channel/IChannelListener.h
+    ./include/opendnp3/channel/IListener.h
+    ./include/opendnp3/channel/IOpenDelayStrategy.h
+    ./include/opendnp3/channel/IPEndpoint.h
+    ./include/opendnp3/channel/PrintingChannelListener.h
+    ./include/opendnp3/channel/SerialSettings.h
+    ./include/opendnp3/channel/TLSConfig.h
+
+    ./include/opendnp3/decoder/Decoder.h
+    ./include/opendnp3/decoder/IDecoderCallbacks.h
+
+    ./include/opendnp3/gen/AnalogOutputStatusQuality.h
+    ./include/opendnp3/gen/AnalogQuality.h
+    ./include/opendnp3/gen/AssignClassType.h
+    ./include/opendnp3/gen/Attributes.h
+    ./include/opendnp3/gen/AuthErrorCode.h
+    ./include/opendnp3/gen/BinaryOutputStatusQuality.h
+    ./include/opendnp3/gen/BinaryQuality.h
+    ./include/opendnp3/gen/CertificateType.h
+    ./include/opendnp3/gen/ChallengeReason.h
+    ./include/opendnp3/gen/ChannelState.h
+    ./include/opendnp3/gen/CommandPointState.h
+    ./include/opendnp3/gen/CommandStatus.h
+    ./include/opendnp3/gen/ConfigAuthMode.h
+    ./include/opendnp3/gen/ControlCode.h
+    ./include/opendnp3/gen/CounterQuality.h
+    ./include/opendnp3/gen/DoubleBit.h
+    ./include/opendnp3/gen/DoubleBitBinaryQuality.h
+    ./include/opendnp3/gen/EventAnalogOutputStatusVariation.h
+    ./include/opendnp3/gen/EventAnalogVariation.h
+    ./include/opendnp3/gen/EventBinaryOutputStatusVariation.h
+    ./include/opendnp3/gen/EventBinaryVariation.h
+    ./include/opendnp3/gen/EventCounterVariation.h
+    ./include/opendnp3/gen/EventDoubleBinaryVariation.h
+    ./include/opendnp3/gen/EventFrozenCounterVariation.h
+    ./include/opendnp3/gen/EventMode.h
+    ./include/opendnp3/gen/EventOctetStringVariation.h
+    ./include/opendnp3/gen/EventSecurityStatVariation.h
+    ./include/opendnp3/gen/FlagsType.h
+    ./include/opendnp3/gen/FlowControl.h
+    ./include/opendnp3/gen/FrozenCounterQuality.h
+    ./include/opendnp3/gen/FunctionCode.h
+    ./include/opendnp3/gen/GroupVariation.h
+    ./include/opendnp3/gen/HMACType.h
+    ./include/opendnp3/gen/IndexQualifierMode.h
+    ./include/opendnp3/gen/IntervalUnits.h
+    ./include/opendnp3/gen/KeyChangeMethod.h
+    ./include/opendnp3/gen/KeyStatus.h
+    ./include/opendnp3/gen/KeyWrapAlgorithm.h
+    ./include/opendnp3/gen/LinkFunction.h
+    ./include/opendnp3/gen/LinkStatus.h
+    ./include/opendnp3/gen/MasterTaskType.h
+    ./include/opendnp3/gen/OperateType.h
+    ./include/opendnp3/gen/Parity.h
+    ./include/opendnp3/gen/PointClass.h
+    ./include/opendnp3/gen/QualifierCode.h
+    ./include/opendnp3/gen/RestartMode.h
+    ./include/opendnp3/gen/RestartType.h
+    ./include/opendnp3/gen/SecurityStatIndex.h
+    ./include/opendnp3/gen/ServerAcceptMode.h
+    ./include/opendnp3/gen/StaticAnalogOutputStatusVariation.h
+    ./include/opendnp3/gen/StaticAnalogVariation.h
+    ./include/opendnp3/gen/StaticBinaryOutputStatusVariation.h
+    ./include/opendnp3/gen/StaticBinaryVariation.h
+    ./include/opendnp3/gen/StaticCounterVariation.h
+    ./include/opendnp3/gen/StaticDoubleBinaryVariation.h
+    ./include/opendnp3/gen/StaticFrozenCounterVariation.h
+    ./include/opendnp3/gen/StaticOctetStringVariation.h
+    ./include/opendnp3/gen/StaticSecurityStatVariation.h
+    ./include/opendnp3/gen/StaticTimeAndIntervalVariation.h
+    ./include/opendnp3/gen/StaticTypeBitmask.h
+    ./include/opendnp3/gen/StopBits.h
+    ./include/opendnp3/gen/TaskCompletion.h
+    ./include/opendnp3/gen/TimestampMode.h
+    ./include/opendnp3/gen/TimeSyncMode.h
+    ./include/opendnp3/gen/UserOperation.h
+    ./include/opendnp3/gen/UserRole.h
+
+    ./include/opendnp3/link/Addresses.h
+    ./include/opendnp3/link/ILinkListener.h
+    ./include/opendnp3/link/LinkConfig.h
+    ./include/opendnp3/link/LinkHeaderFields.h
+    ./include/opendnp3/link/LinkStatistics.h
+
+    ./include/opendnp3/master/CommandPointResult.h
+    ./include/opendnp3/master/CommandResultCallbackT.h
+    ./include/opendnp3/master/CommandSet.h
+    ./include/opendnp3/master/DefaultListenCallbacks.h
+    ./include/opendnp3/master/DefaultMasterApplication.h
+    ./include/opendnp3/master/HeaderInfo.h
+    ./include/opendnp3/master/HeaderTypes.h
+    ./include/opendnp3/master/ICommandCollection.h
+    ./include/opendnp3/master/ICommandProcessor.h
+    ./include/opendnp3/master/ICommandTaskResult.h
+    ./include/opendnp3/master/IListenCallbacks.h
+    ./include/opendnp3/master/IMaster.h
+    ./include/opendnp3/master/IMasterApplication.h
+    ./include/opendnp3/master/IMasterOperations.h
+    ./include/opendnp3/master/IMasterScan.h
+    ./include/opendnp3/master/IMasterSession.h
+    ./include/opendnp3/master/ISessionAcceptor.h
+    ./include/opendnp3/master/ISOEHandler.h
+    ./include/opendnp3/master/ITaskCallback.h
+    ./include/opendnp3/master/IUTCTimeSource.h
+    ./include/opendnp3/master/MasterParams.h
+    ./include/opendnp3/master/PrintingSOEHandler.h
+	./include/opendnp3/master/ResponseInfo.h
+    ./include/opendnp3/master/RestartOperationResult.h
+    ./include/opendnp3/master/TaskConfig.h
+    ./include/opendnp3/master/TaskId.h
+    ./include/opendnp3/master/TaskInfo.h
+	./include/opendnp3/master/X509Info.h
+
+    ./include/opendnp3/outstation/ApplicationIIN.h
+    ./include/opendnp3/outstation/DatabaseConfig.h    
+    ./include/opendnp3/outstation/EventBufferConfig.h
+    ./include/opendnp3/outstation/ICommandHandler.h
+    ./include/opendnp3/outstation/IOutstation.h
+    ./include/opendnp3/outstation/IOutstationApplication.h
+    ./include/opendnp3/outstation/IUpdateHandler.h
+    ./include/opendnp3/outstation/MeasurementConfig.h
+    ./include/opendnp3/outstation/OutstationConfig.h
+    ./include/opendnp3/outstation/OutstationParams.h
+    ./include/opendnp3/outstation/OutstationStackConfig.h
+    ./include/opendnp3/outstation/SimpleCommandHandler.h
+    ./include/opendnp3/outstation/StaticTypeBitfield.h
+    ./include/opendnp3/outstation/UpdateBuilder.h
+    ./include/opendnp3/outstation/Updates.h
+
+	./include/opendnp3/util/Buffer.h
+	./include/opendnp3/util/StaticOnly.h
+	./include/opendnp3/util/TimeDuration.h
+    ./include/opendnp3/util/Timestamp.h
+	./include/opendnp3/util/Uncopyable.h	
+    ./include/opendnp3/util/UTCTimestamp.h
+)
+
+set(opendnp3_private_headers
+    ./src/DNP3ManagerImpl.h
+    ./src/IResourceManager.h
+    ./src/LayerInterfaces.h
+    ./src/ResourceManager.h
+    ./src/SequenceNum.h
+    ./src/StackBase.h
+
+    ./src/app/APDUBuilders.h
+    ./src/app/APDUHeader.h
+    ./src/app/APDULogging.h
+    ./src/app/APDURequest.h
+    ./src/app/APDUResponse.h
+    ./src/app/APDUWrapper.h
+    ./src/app/AppControlField.h
+    ./src/app/AppSeqNum.h
+    ./src/app/BitfieldRangeWriteIterator.h
+    ./src/app/CountWriteIterator.h
+    ./src/app/DNP3Serializer.h
+    ./src/app/DownSampling.h
+    ./src/app/Functions.h
+    ./src/app/GroupVariationRecord.h
+    ./src/app/HeaderWriter.h
+    ./src/app/IINValue.h
+    ./src/app/IVariableLength.h
+    ./src/app/MeasurementFactory.h
+	./src/app/MeasurementTypeSpecs.h
+    ./src/app/Message.h
+    ./src/app/PrefixedWriteIterator.h
+    ./src/app/QualityFlags.h
+    ./src/app/Range.h
+    ./src/app/RangeWriteIterator.h
+    ./src/app/SequenceInfo.h
+    ./src/app/TxBuffer.h
+    ./src/app/WriteConversions.h
+    ./src/app/WriteConversionTemplates.h
+
+    ./src/app/parsing/APDUHeaderParser.h
+    ./src/app/parsing/APDUParser.h
+    ./src/app/parsing/BitReader.h
+    ./src/app/parsing/BufferedCollection.h
+    ./src/app/parsing/Collections.h
+    ./src/app/parsing/CountIndexParser.h
+    ./src/app/parsing/CountParser.h
+    ./src/app/parsing/DNPTimeParsing.h
+    ./src/app/parsing/FreeFormatParser.h
+    ./src/app/parsing/Functions.h
+    ./src/app/parsing/IAPDUHandler.h
+    ./src/app/parsing/IWhiteList.h
+    ./src/app/parsing/NumParser.h
+    ./src/app/parsing/ObjectHeaderParser.h
+    ./src/app/parsing/ParseResult.h
+    ./src/app/parsing/ParserSettings.h
+    ./src/app/parsing/PrefixFields.h
+    ./src/app/parsing/RangeParser.h
+
+    ./src/channel/ASIOSerialHelpers.h
+    ./src/channel/DNP3Channel.h
+    ./src/channel/IAsyncChannel.h
+    ./src/channel/IChannelCallbacks.h
+    ./src/channel/IOHandler.h
+    ./src/channel/IPEndpointsList.h
+    ./src/channel/LoggingConnectionCondition.h
+    ./src/channel/SerialChannel.h
+    ./src/channel/SerialIOHandler.h
+    ./src/channel/SocketChannel.h
+    ./src/channel/SocketHelpers.h
+    ./src/channel/TCPClient.h
+    ./src/channel/TCPClientIOHandler.h
+    ./src/channel/TCPServer.h
+    ./src/channel/TCPServerIOHandler.h
+
+    ./src/decoder/DecoderImpl.h
+    ./src/decoder/Indent.h
+    ./src/decoder/LoggingHandler.h
+
+    ./src/gen/AuthErrorCodeSerialization.h
+    ./src/gen/CertificateTypeSerialization.h
+    ./src/gen/ChallengeReasonSerialization.h
+    ./src/gen/CommandStatusSerialization.h
+    ./src/gen/ControlCodeSerialization.h
+    ./src/gen/DoubleBitSerialization.h
+    ./src/gen/FlagsTypeSerialization.h
+    ./src/gen/FlowControlSerialization.h
+    ./src/gen/FunctionCodeSerialization.h
+    ./src/gen/GroupVariationSerialization.h
+    ./src/gen/HMACTypeSerialization.h
+    ./src/gen/IntervalUnitsSerialization.h
+    ./src/gen/KeyChangeMethodSerialization.h
+    ./src/gen/KeyStatusSerialization.h
+    ./src/gen/KeyWrapAlgorithmSerialization.h
+    ./src/gen/LinkFunctionSerialization.h
+    ./src/gen/ParitySerialization.h
+    ./src/gen/QualifierCodeSerialization.h
+    ./src/gen/StopBitsSerialization.h
+    ./src/gen/UserOperationSerialization.h
+    ./src/gen/UserRoleSerialization.h
+
+    ./src/gen/objects/Group1.h
+    ./src/gen/objects/Group2.h
+    ./src/gen/objects/Group3.h
+    ./src/gen/objects/Group4.h
+    ./src/gen/objects/Group10.h
+    ./src/gen/objects/Group11.h
+    ./src/gen/objects/Group12.h
+    ./src/gen/objects/Group13.h
+    ./src/gen/objects/Group20.h
+    ./src/gen/objects/Group21.h
+    ./src/gen/objects/Group22.h
+    ./src/gen/objects/Group23.h
+    ./src/gen/objects/Group30.h
+    ./src/gen/objects/Group32.h
+    ./src/gen/objects/Group40.h
+    ./src/gen/objects/Group41.h
+    ./src/gen/objects/Group42.h
+    ./src/gen/objects/Group43.h
+    ./src/gen/objects/Group50.h
+    ./src/gen/objects/Group51.h
+    ./src/gen/objects/Group52.h
+    ./src/gen/objects/Group60.h
+    ./src/gen/objects/Group70.h
+    ./src/gen/objects/Group80.h
+    ./src/gen/objects/Group110.h
+    ./src/gen/objects/Group111.h
+    ./src/gen/objects/Group112.h
+    ./src/gen/objects/Group113.h
+    ./src/gen/objects/Group120.h
+    ./src/gen/objects/Group121.h
+    ./src/gen/objects/Group122.h
+
+    ./src/link/CRC.h
+    ./src/link/IFrameSink.h
+    ./src/link/ILinkLayer.h
+    ./src/link/ILinkSession.h
+    ./src/link/ILinkTx.h
+    ./src/link/ITransportSegment.h
+    ./src/link/LinkContext.h
+    ./src/link/LinkFrame.h
+    ./src/link/LinkHeader.h
+    ./src/link/LinkLayer.h
+    ./src/link/LinkLayerConfig.h
+    ./src/link/LinkLayerConstants.h
+    ./src/link/LinkLayerParser.h
+    ./src/link/LinkSession.h
+    ./src/link/PriLinkLayerStates.h
+    ./src/link/SecLinkLayerStates.h
+    ./src/link/ShiftableBuffer.h
+    ./src/link/Singleton.h
+
+    ./src/master/AssignClassTask.h
+    ./src/master/ClearRestartTask.h
+    ./src/master/CommandSetOps.h
+    ./src/master/CommandTask.h
+    ./src/master/CommandTaskResult.h
+    ./src/master/DisableUnsolicitedTask.h
+    ./src/master/EmptyResponseTask.h
+    ./src/master/EnableUnsolicitedTask.h
+    ./src/master/EventScanTask.h
+    ./src/master/HeaderBuilder.h
+    ./src/master/HeaderConversions.h
+    ./src/master/ICommandHeader.h
+    ./src/master/IMasterScheduler.h
+    ./src/master/IMasterTask.h
+    ./src/master/IMasterTaskRunner.h
+    ./src/master/IScheduleCallback.h
+    ./src/master/LANTimeSyncTask.h
+    ./src/master/MasterContext.h
+    ./src/master/MasterSchedulerBackend.h
+    ./src/master/MasterSessionStack.h
+    ./src/master/MasterStack.h
+    ./src/master/MasterTasks.h
+    ./src/master/MasterTCPServer.h
+    ./src/master/MeasurementHandler.h
+    ./src/master/PollTaskBase.h
+    ./src/master/RestartOperationTask.h
+    ./src/master/ScanResult.h
+    ./src/master/SerialTimeSyncTask.h
+    ./src/master/StartupIntegrityPoll.h
+    ./src/master/TaskBehavior.h
+    ./src/master/TaskContext.h
+    ./src/master/TaskPriority.h
+    ./src/master/TimeSyncHandler.h
+    ./src/master/TypedCommandHeader.h
+    ./src/master/UserPollTask.h
+
+    ./src/outstation/AssignClassHandler.h
+	./src/outstation/StaticDataCell.h
+    ./src/outstation/ClassBasedRequestHandler.h
+    ./src/outstation/CommandActionAdapter.h
+    ./src/outstation/CommandResponseHandler.h
+    ./src/outstation/ConstantCommandAction.h
+    ./src/outstation/ControlState.h
+    ./src/outstation/Database.h
+    ./src/outstation/DeferredRequest.h
+    ./src/outstation/Event.h
+    ./src/outstation/IClassAssigner.h
+    ./src/outstation/ICommandAction.h
+    ./src/outstation/IEventReceiver.h
+    ./src/outstation/IEventRecorder.h
+    ./src/outstation/IEventSelector.h
+    ./src/outstation/IINHelpers.h    
+    ./src/outstation/IResponseLoader.h
+    ./src/outstation/IStaticSelector.h
+    ./src/outstation/OctetStringSerializer.h
+    ./src/outstation/OutstationChannelStates.h
+    ./src/outstation/OutstationContext.h
+    ./src/outstation/OutstationSeqNum.h
+    ./src/outstation/OutstationStack.h
+    ./src/outstation/OutstationStates.h
+    ./src/outstation/ParsedRequest.h
+    ./src/outstation/ReadHandler.h
+    ./src/outstation/RequestHistory.h
+    ./src/outstation/ResponseContext.h
+	./src/outstation/StaticDataMap.h	
+    ./src/outstation/StaticWriters.h
+    ./src/outstation/TimeSyncState.h
+    ./src/outstation/WriteHandler.h
+
+    ./src/outstation/event/ASDUEventWriteHandler.h
+    ./src/outstation/event/ClazzCount.h
+    ./src/outstation/event/EventBuffer.h
+    ./src/outstation/event/EventCollection.h
+    ./src/outstation/event/EventLists.h
+    ./src/outstation/event/EventRecord.h
+    ./src/outstation/event/EventSelection.h
+    ./src/outstation/event/EventState.h
+    ./src/outstation/event/EventStorage.h
+    ./src/outstation/event/EventTypeImpl.h
+    ./src/outstation/event/EventUpdate.h
+    ./src/outstation/event/EventWriters.h
+    ./src/outstation/event/EventWriting.h
+    ./src/outstation/event/IEventType.h
+    ./src/outstation/event/IEventWriteHandler.h
+    ./src/outstation/event/List.h
+    ./src/outstation/event/TypedEventRecord.h
+    ./src/outstation/event/TypedStorage.h
+
+    ./src/transport/TransportConstants.h
+    ./src/transport/TransportHeader.h
+    ./src/transport/TransportLayer.h
+    ./src/transport/TransportRx.h
+    ./src/transport/TransportSeqNum.h
+    ./src/transport/TransportStack.h
+    ./src/transport/TransportTx.h
+)
+
+set(opendnp3_src
+    ./src/ConsoleLogger.cpp
+    ./src/DNP3Manager.cpp
+    ./src/DNP3ManagerImpl.cpp
+    ./src/ErrorCodes.cpp
+    ./src/LogLevels.cpp
+    ./src/ResourceManager.cpp    
+
+    ./src/app/AnalogCommandEvent.cpp
+    ./src/app/AnalogOutput.cpp
+    ./src/app/APDUBuilders.cpp
+    ./src/app/APDUHeader.cpp
+    ./src/app/APDULogging.cpp
+    ./src/app/APDURequest.cpp
+    ./src/app/APDUResponse.cpp
+    ./src/app/APDUWrapper.cpp
+    ./src/app/AppControlField.cpp
+    ./src/app/BinaryCommandEvent.cpp
+    ./src/app/ClassField.cpp
+    ./src/app/ControlRelayOutputBlock.cpp
+    ./src/app/EventTriggers.cpp
+    ./src/app/Functions.cpp
+    ./src/app/GroupVariationRecord.cpp
+    ./src/app/HeaderWriter.cpp
+    ./src/app/IINField.cpp
+	./src/app/MeasurementInfo.cpp
+	./src/app/MeasurementTypes.cpp
+    ./src/app/OctetData.cpp
+    ./src/app/QualityFlags.cpp
+    ./src/app/SecurityStat.cpp
+
+    ./src/app/parsing/APDUHeaderParser.cpp
+    ./src/app/parsing/APDUParser.cpp
+    ./src/app/parsing/BitReader.cpp
+    ./src/app/parsing/CountIndexParser.cpp
+    ./src/app/parsing/CountParser.cpp
+    ./src/app/parsing/FreeFormatParser.cpp
+    ./src/app/parsing/IAPDUHandler.cpp
+    ./src/app/parsing/NumParser.cpp
+    ./src/app/parsing/ObjectHeaderParser.cpp
+    ./src/app/parsing/RangeParser.cpp
+
+    ./src/channel/ASIOSerialHelpers.cpp
+    ./src/channel/ChannelRetry.cpp
+    ./src/channel/DNP3Channel.cpp
+    ./src/channel/IOHandler.cpp
+    ./src/channel/IOpenDelayStrategy.cpp
+    ./src/channel/IPEndpointsList.cpp
+    ./src/channel/SerialChannel.cpp
+    ./src/channel/SerialIOHandler.cpp
+    ./src/channel/SocketChannel.cpp
+    ./src/channel/TCPClient.cpp
+    ./src/channel/TCPClientIOHandler.cpp
+    ./src/channel/TCPServer.cpp
+    ./src/channel/TCPServerIOHandler.cpp
+
+    ./src/decoder/Decoder.cpp
+    ./src/decoder/DecoderImpl.cpp
+    ./src/decoder/LoggingHandler.cpp
+
+    ./src/gen/Attributes.cpp
+    ./src/gen/AuthErrorCode.cpp
+    ./src/gen/CertificateType.cpp
+    ./src/gen/ChallengeReason.cpp
+    ./src/gen/ChannelState.cpp
+    ./src/gen/CommandPointState.cpp
+    ./src/gen/CommandStatus.cpp
+    ./src/gen/ControlCode.cpp
+    ./src/gen/DoubleBit.cpp
+    ./src/gen/FlagsType.cpp
+    ./src/gen/FlowControl.cpp
+    ./src/gen/FunctionCode.cpp
+    ./src/gen/GroupVariation.cpp
+    ./src/gen/HMACType.cpp
+    ./src/gen/IntervalUnits.cpp
+    ./src/gen/KeyChangeMethod.cpp
+    ./src/gen/KeyStatus.cpp
+    ./src/gen/KeyWrapAlgorithm.cpp
+    ./src/gen/LinkFunction.cpp
+    ./src/gen/LinkStatus.cpp
+    ./src/gen/MasterTaskType.cpp
+    ./src/gen/Parity.cpp
+    ./src/gen/QualifierCode.cpp
+    ./src/gen/ServerAcceptMode.cpp
+    ./src/gen/StopBits.cpp
+    ./src/gen/TaskCompletion.cpp
+    ./src/gen/UserOperation.cpp
+    ./src/gen/UserRole.cpp
+
+    ./src/gen/objects/Group1.cpp
+    ./src/gen/objects/Group2.cpp
+    ./src/gen/objects/Group3.cpp
+    ./src/gen/objects/Group4.cpp
+    ./src/gen/objects/Group10.cpp
+    ./src/gen/objects/Group11.cpp
+    ./src/gen/objects/Group12.cpp
+    ./src/gen/objects/Group13.cpp
+    ./src/gen/objects/Group20.cpp
+    ./src/gen/objects/Group21.cpp
+    ./src/gen/objects/Group22.cpp
+    ./src/gen/objects/Group23.cpp
+    ./src/gen/objects/Group30.cpp
+    ./src/gen/objects/Group32.cpp
+    ./src/gen/objects/Group40.cpp
+    ./src/gen/objects/Group41.cpp
+    ./src/gen/objects/Group42.cpp
+    ./src/gen/objects/Group43.cpp
+    ./src/gen/objects/Group50.cpp
+    ./src/gen/objects/Group51.cpp
+    ./src/gen/objects/Group52.cpp
+    ./src/gen/objects/Group120.cpp
+    ./src/gen/objects/Group121.cpp
+    ./src/gen/objects/Group122.cpp
+
+    ./src/link/CRC.cpp
+    ./src/link/LinkContext.cpp
+    ./src/link/LinkFrame.cpp
+    ./src/link/LinkHeader.cpp
+    ./src/link/LinkHeaderFields.cpp
+    ./src/link/LinkLayer.cpp
+    ./src/link/LinkLayerParser.cpp
+    ./src/link/LinkSession.cpp
+    ./src/link/PriLinkLayerStates.cpp
+    ./src/link/SecLinkLayerStates.cpp
+    ./src/link/ShiftableBuffer.cpp
+
+    ./src/master/AssignClassTask.cpp
+    ./src/master/ClearRestartTask.cpp
+    ./src/master/CommandSet.cpp
+    ./src/master/CommandSetOps.cpp
+    ./src/master/CommandTask.cpp
+    ./src/master/CommandTaskResult.cpp
+    ./src/master/DefaultListenCallbacks.cpp
+    ./src/master/DefaultMasterApplication.cpp
+    ./src/master/DisableUnsolicitedTask.cpp
+    ./src/master/EmptyResponseTask.cpp
+    ./src/master/EnableUnsolicitedTask.cpp
+    ./src/master/EventScanTask.cpp
+    ./src/master/HeaderConversions.cpp
+    ./src/master/HeaderTypes.cpp
+    ./src/master/IMasterTask.cpp
+    ./src/master/LANTimeSyncTask.cpp
+    ./src/master/MasterContext.cpp
+    ./src/master/MasterScan.cpp
+    ./src/master/MasterSchedulerBackend.cpp
+    ./src/master/MasterSessionStack.cpp
+    ./src/master/MasterStack.cpp
+    ./src/master/MasterTasks.cpp
+    ./src/master/MasterTCPServer.cpp
+    ./src/master/MeasurementHandler.cpp
+    ./src/master/PollTaskBase.cpp
+    ./src/master/PrintingCommandResultCallback.cpp
+    ./src/master/PrintingSOEHandler.cpp
+    ./src/master/RestartOperationTask.cpp
+    ./src/master/SerialTimeSyncTask.cpp
+    ./src/master/StartupIntegrityPoll.cpp
+    ./src/master/TaskBehavior.cpp
+    ./src/master/TaskContext.cpp
+    ./src/master/UserPollTask.cpp
+
+    ./src/outstation/ApplicationIIN.cpp
+    ./src/outstation/AssignClassHandler.cpp
+    ./src/outstation/ClassBasedRequestHandler.cpp
+    ./src/outstation/CommandActionAdapter.cpp
+    ./src/outstation/CommandResponseHandler.cpp
+    ./src/outstation/Database.cpp
+    ./src/outstation/DatabaseConfig.cpp
+    ./src/outstation/DeferredRequest.cpp
+    ./src/outstation/EventBufferConfig.cpp
+    ./src/outstation/IINHelpers.cpp
+    ./src/outstation/IOutstationApplication.cpp
+    ./src/outstation/OctetStringSerializer.cpp
+    ./src/outstation/OutstationContext.cpp
+    ./src/outstation/OutstationStack.cpp
+    ./src/outstation/OutstationStates.cpp
+    ./src/outstation/ReadHandler.cpp
+    ./src/outstation/RequestHistory.cpp
+    ./src/outstation/ResponseContext.cpp    
+    ./src/outstation/SimpleCommandHandler.cpp
+    ./src/outstation/StaticDataMap.cpp    
+    ./src/outstation/StaticWriters.cpp
+    ./src/outstation/UpdateBuilder.cpp
+    ./src/outstation/WriteHandler.cpp
+
+    ./src/outstation/event/ASDUEventWriteHandler.cpp
+    ./src/outstation/event/EventBuffer.cpp
+    ./src/outstation/event/EventLists.cpp
+    ./src/outstation/event/EventRecord.cpp
+    ./src/outstation/event/EventSelection.cpp
+    ./src/outstation/event/EventStorage.cpp
+    ./src/outstation/event/EventWriters.cpp
+    ./src/outstation/event/EventWriting.cpp
+
+    ./src/transport/TransportHeader.cpp
+    ./src/transport/TransportLayer.cpp
+    ./src/transport/TransportRx.cpp
+    ./src/transport/TransportStack.cpp
+    ./src/transport/TransportTx.cpp
+
+	./src/util/TimeDuration.cpp
+    ./src/util/Timestamp.cpp
+)
+
+set(opendnp3_tls_private_headers
+    ./src/channel/tls/MasterTLSServer.h
+    ./src/channel/tls/SSLContext.h
+    ./src/channel/tls/TLSClient.h
+    ./src/channel/tls/TLSClientIOHandler.h
+    ./src/channel/tls/TLSServer.h
+    ./src/channel/tls/TLSServerIOHandler.h
+    ./src/channel/tls/TLSStreamChannel.h
+)
+
+set(opendnp3_tls_src
+    ./src/channel/tls/MasterTLSServer.cpp
+    ./src/channel/tls/SSLContext.cpp
+    ./src/channel/tls/TLSClient.cpp
+    ./src/channel/tls/TLSClientIOHandler.cpp
+    ./src/channel/tls/TLSServer.cpp
+    ./src/channel/tls/TLSServerIOHandler.cpp
+    ./src/channel/tls/TLSStreamChannel.cpp
+)
+
+set(all_sources ${opendnp3_public_headers} ${opendnp3_private_headers} ${opendnp3_src})
+if(DNP3_TLS)
+    list(APPEND all_sources ${opendnp3_tls_private_headers} ${opendnp3_tls_src})
+endif()
+
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${all_sources})
+
+add_library(opendnp3 ${all_sources})
+target_compile_features(opendnp3 PUBLIC cxx_std_14)
+target_link_libraries(opendnp3
+    PUBLIC log4cpp
+    PRIVATE ser4cpp exe4cpp asio
+)
+target_include_directories(opendnp3
+    PUBLIC ./include
+    PRIVATE ./src
+)
+set_target_properties(opendnp3 PROPERTIES FOLDER cpp/lib)
+
+if(DNP3_TLS)
+    target_link_libraries(opendnp3 PRIVATE OpenSSL::SSL)
+    target_compile_definitions(opendnp3 PRIVATE OPENDNP3_USE_TLS)
+endif()
+
+clang_format(opendnp3 EXCLUDES .*/gen/.*)
+clang_tidy(opendnp3)

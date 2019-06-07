@@ -34,4 +34,4 @@ object Group3 extends ObjectGroup {
 
 object Group3Var0 extends AnyVariation(Group3, 0)
 object Group3Var1 extends DoubleBitfield(Group3, 1, packedFormat)
-object Group3Var2 extends FixedSize(Group3, 2, withFlags)(flags) with ConversionToDoubleBitBinary
+object Group3Var2 extends FixedSize(Group3, 2, withFlags)(flags) with ConversionToDoubleBitBinary with StaticVariation.DoubleBinary

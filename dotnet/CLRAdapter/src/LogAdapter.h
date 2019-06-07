@@ -20,7 +20,7 @@
 #ifndef OPENDNP3CLR_LOG_ADAPTER_H
 #define OPENDNP3CLR_LOG_ADAPTER_H
 
-#include <openpal/logging/ILogHandler.h>
+#include <log4cpp/ILogHandler.h>
 
 #include <memory>
 
@@ -37,16 +37,20 @@ namespace Automatak
 		namespace Adapter
 		{
 
-			private class LogAdapter final : public openpal::ILogHandler
+			private class LogAdapter final : public log4cpp::ILogHandler
 			{
 			public:
 
 				LogAdapter(Automatak::DNP3::Interface::ILogHandler^ proxy);
 
-				static std::shared_ptr<openpal::ILogHandler> Create(Automatak::DNP3::Interface::ILogHandler^ proxy);
+				static std::shared_ptr<log4cpp::ILogHandler> Create(Automatak::DNP3::Interface::ILogHandler ^ proxy);
 
 				// logging error messages, etc
-				virtual void Log(const openpal::LogEntry& Entry) override;
+                virtual void log(log4cpp::ModuleId module,
+                                 const char* id,
+                                 log4cpp::LogLevel level,
+                                 char const* location,
+                                 char const* message) override;
 
 			private:
 				gcroot < Automatak::DNP3::Interface::ILogHandler^ > proxy;
