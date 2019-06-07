@@ -23,7 +23,7 @@
 
 #include "LocalRef.h"
 
-#include <openpal/util/Uncopyable.h>
+#include <opendnp3/util/StaticOnly.h>
 
 #include <jni.h>
 
@@ -32,7 +32,7 @@
 
 #define OPENDNP3_JNI_VERSION JNI_VERSION_1_8
 
-class JNI : private openpal::StaticOnly
+class JNI : private opendnp3::StaticOnly
 {
 
 public:

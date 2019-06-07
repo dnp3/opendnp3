@@ -23,12 +23,12 @@
 
 #include "JNI.h"
 
-#include <openpal/util/Uncopyable.h>
+#include <opendnp3/util/Uncopyable.h>
 
 #include <jni.h>
 
 // RAII class for JNI global refs
-class GlobalRef : private openpal::Uncopyable
+class GlobalRef : private opendnp3::Uncopyable
 {
     jobject reference;
 
@@ -44,12 +44,7 @@ public:
     {
         return reference;
     }
-    /*
-        operator jobject& ()
-        {
-            return reference;
-        }
-    */
+   
 };
 
 #endif

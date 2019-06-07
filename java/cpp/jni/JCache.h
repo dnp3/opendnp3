@@ -32,7 +32,7 @@
 #ifndef OPENDNP3JAVA_OPENDNP3_JNITYPES_H
 #define OPENDNP3JAVA_OPENDNP3_JNITYPES_H
 
-#include "openpal/util/Uncopyable.h"
+#include "opendnp3/util/StaticOnly.h"
 
 #include "JNIAnalogConfig.h"
 #include "JNIAnalogInput.h"
@@ -132,7 +132,7 @@
 
 namespace jni
 {
-    struct JCache: private openpal::StaticOnly
+    struct JCache: private opendnp3::StaticOnly
     {
         static bool init(JNIEnv* env);
         static void cleanup(JNIEnv* env);

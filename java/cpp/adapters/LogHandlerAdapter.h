@@ -22,14 +22,18 @@
 
 #include "GlobalRef.h"
 
-#include <openpal/logging/ILogHandler.h>
+#include <log4cpp/ILogHandler.h>
 
-class LogHandlerAdapter : public openpal::ILogHandler
+class LogHandlerAdapter final : public log4cpp::ILogHandler
 {
 public:
     LogHandlerAdapter(jobject proxy);
 
-    virtual void Log(const openpal::LogEntry& entry);
+    void log(log4cpp::ModuleId module,
+             const char* id,
+             log4cpp::LogLevel level,
+             char const* location,
+             char const* message) override;
 
 private:
     GlobalRef proxy;

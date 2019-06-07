@@ -25,13 +25,13 @@
 
 #include <opendnp3/master/ISOEHandler.h>
 
-class SOEHandlerAdapter : public opendnp3::ISOEHandler
+class SOEHandlerAdapter final : public opendnp3::ISOEHandler
 {
 public:
     SOEHandlerAdapter(jobject proxy) : proxy(proxy) {}
 
-    virtual void Start() override;
-    virtual void End() override;
+    virtual void begin_fragment(const opendnp3::ResponseInfo& info) override;
+    virtual void end_fragment(const opendnp3::ResponseInfo& info) override;
 
     virtual void Process(const opendnp3::HeaderInfo& info,
                          const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Binary>>& values) override;

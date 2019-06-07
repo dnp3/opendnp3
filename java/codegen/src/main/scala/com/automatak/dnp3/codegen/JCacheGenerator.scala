@@ -33,10 +33,10 @@ case class JCacheGenerator(classes: List[ClassConfig]) {
 
     commented(LicenseHeader()) ++ space ++
       includeGuards("OPENDNP3_JNITYPES") {
-        "#include \"openpal/util/Uncopyable.h\"".iter ++ space ++
+        "#include \"opendnp3/util/StaticOnly.h\"".iter ++ space ++
         classIncludes ++ space ++
           namespace("jni") {
-            structDef("JCache: private openpal::StaticOnly") {
+            structDef("JCache: private opendnp3::StaticOnly") {
               "static bool init(JNIEnv* env);".iter ++
                 "static void cleanup(JNIEnv* env);".iter ++
                 space ++

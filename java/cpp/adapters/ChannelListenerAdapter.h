@@ -23,9 +23,9 @@
 #include "../jni/JCache.h"
 #include "GlobalRef.h"
 
-#include "asiodnp3/IChannelListener.h"
+#include "opendnp3/channel/IChannelListener.h"
 
-class ChannelListenerAdapter : public asiodnp3::IChannelListener
+class ChannelListenerAdapter : public opendnp3::IChannelListener
 {
 public:
     ChannelListenerAdapter(jobject proxy) : proxy(proxy) {}
