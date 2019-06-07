@@ -19,8 +19,6 @@
  */
 #include "CommandActionAdapter.h"
 
-#include "opendnp3/app/ITransactable.h"
-
 namespace opendnp3
 {
 
