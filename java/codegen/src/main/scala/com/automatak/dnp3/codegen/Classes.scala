@@ -102,6 +102,7 @@ object Classes {
     ClassConfig(classOf[LogEntry], Set(Features.Constructors)),
     ClassConfig(classOf[ClassField], Set(Features.Fields)),
     ClassConfig(classOf[HeaderInfo], Set(Features.Constructors)),
+    ClassConfig(classOf[ResponseInfo], Set(Features.Constructors)),
     ClassConfig(classOf[IndexedValue[_]], Set(Features.Constructors, Features.Fields)),
     ClassConfig(classOf[BinaryInput], Set(Features.Constructors)),
     ClassConfig(classOf[DoubleBitBinaryInput], Set(Features.Constructors)),

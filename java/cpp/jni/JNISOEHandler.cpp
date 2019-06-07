@@ -41,8 +41,11 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->endMethod = env->GetMethodID(this->clazz, "end", "()V");
-            if(!this->endMethod) return false;
+            this->beginFragmentMethod = env->GetMethodID(this->clazz, "beginFragment", "(Lcom/automatak/dnp3/ResponseInfo;)V");
+            if(!this->beginFragmentMethod) return false;
+
+            this->endFragmentMethod = env->GetMethodID(this->clazz, "endFragment", "(Lcom/automatak/dnp3/ResponseInfo;)V");
+            if(!this->endFragmentMethod) return false;
 
             this->processAIMethod = env->GetMethodID(this->clazz, "processAI", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V");
             if(!this->processAIMethod) return false;
@@ -68,9 +71,6 @@ namespace jni
             this->processFCMethod = env->GetMethodID(this->clazz, "processFC", "(Lcom/automatak/dnp3/HeaderInfo;Ljava/lang/Iterable;)V");
             if(!this->processFCMethod) return false;
 
-            this->startMethod = env->GetMethodID(this->clazz, "start", "()V");
-            if(!this->startMethod) return false;
-
             return true;
         }
 
@@ -79,9 +79,14 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        void SOEHandler::end(JNIEnv* env, jobject instance)
+        void SOEHandler::beginFragment(JNIEnv* env, jobject instance, jobject arg0)
         {
-            env->CallVoidMethod(instance, this->endMethod);
+            env->CallVoidMethod(instance, this->beginFragmentMethod, arg0);
+        }
+
+        void SOEHandler::endFragment(JNIEnv* env, jobject instance, jobject arg0)
+        {
+            env->CallVoidMethod(instance, this->endFragmentMethod, arg0);
         }
 
         void SOEHandler::processAI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1)
@@ -122,11 +127,6 @@ namespace jni
         void SOEHandler::processFC(JNIEnv* env, jobject instance, jobject arg0, jobject arg1)
         {
             env->CallVoidMethod(instance, this->processFCMethod, arg0, arg1);
-        }
-
-        void SOEHandler::start(JNIEnv* env, jobject instance)
-        {
-            env->CallVoidMethod(instance, this->startMethod);
         }
     }
 }

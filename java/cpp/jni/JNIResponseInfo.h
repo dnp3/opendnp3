@@ -29,8 +29,8 @@
 // limitations under the License.
 //
 
-#ifndef OPENDNP3JAVA_JNISOEHANDLER_H
-#define OPENDNP3JAVA_JNISOEHANDLER_H
+#ifndef OPENDNP3JAVA_JNIRESPONSEINFO_H
+#define OPENDNP3JAVA_JNIRESPONSEINFO_H
 
 #include <jni.h>
 
@@ -42,7 +42,7 @@ namespace jni
 
     namespace cache
     {
-        class SOEHandler
+        class ResponseInfo
         {
             friend struct jni::JCache;
 
@@ -51,33 +51,15 @@ namespace jni
 
             public:
 
-            // methods
-            void beginFragment(JNIEnv* env, jobject instance, jobject arg0);
-            void endFragment(JNIEnv* env, jobject instance, jobject arg0);
-            void processAI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-            void processAOS(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-            void processBI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-            void processBOS(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-            void processC(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-            void processDBI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-            void processDNPTime(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-            void processFC(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
+            // constructor methods
+            LocalRef<jobject> init3(JNIEnv* env, jboolean arg0, jboolean arg1, jboolean arg2);
 
             private:
 
             jclass clazz = nullptr;
 
-            // method ids
-            jmethodID beginFragmentMethod = nullptr;
-            jmethodID endFragmentMethod = nullptr;
-            jmethodID processAIMethod = nullptr;
-            jmethodID processAOSMethod = nullptr;
-            jmethodID processBIMethod = nullptr;
-            jmethodID processBOSMethod = nullptr;
-            jmethodID processCMethod = nullptr;
-            jmethodID processDBIMethod = nullptr;
-            jmethodID processDNPTimeMethod = nullptr;
-            jmethodID processFCMethod = nullptr;
+            // constructor method ids
+            jmethodID init3Constructor = nullptr;
         };
     }
 }

@@ -109,6 +109,7 @@ namespace jni
     cache::PointClass JCache::PointClass;
     cache::QualifierCode JCache::QualifierCode;
     cache::Range JCache::Range;
+    cache::ResponseInfo JCache::ResponseInfo;
     cache::RestartMode JCache::RestartMode;
     cache::SOEHandler JCache::SOEHandler;
     cache::Stack JCache::Stack;
@@ -206,6 +207,7 @@ namespace jni
         && PointClass.init(env)
         && QualifierCode.init(env)
         && Range.init(env)
+        && ResponseInfo.init(env)
         && RestartMode.init(env)
         && SOEHandler.init(env)
         && Stack.init(env)
@@ -305,6 +307,7 @@ namespace jni
         PointClass.cleanup(env);
         QualifierCode.cleanup(env);
         Range.cleanup(env);
+        ResponseInfo.cleanup(env);
         RestartMode.cleanup(env);
         SOEHandler.cleanup(env);
         Stack.cleanup(env);

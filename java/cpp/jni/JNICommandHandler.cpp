@@ -41,6 +41,9 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
+            this->beginMethod = env->GetMethodID(this->clazz, "begin", "()V");
+            if(!this->beginMethod) return false;
+
             this->endMethod = env->GetMethodID(this->clazz, "end", "()V");
             if(!this->endMethod) return false;
 
@@ -74,15 +77,17 @@ namespace jni
             this->selectCROBMethod = env->GetMethodID(this->clazz, "selectCROB", "(Lcom/automatak/dnp3/ControlRelayOutputBlock;I)Lcom/automatak/dnp3/enums/CommandStatus;");
             if(!this->selectCROBMethod) return false;
 
-            this->startMethod = env->GetMethodID(this->clazz, "start", "()V");
-            if(!this->startMethod) return false;
-
             return true;
         }
 
         void CommandHandler::cleanup(JNIEnv* env)
         {
             env->DeleteGlobalRef(this->clazz);
+        }
+
+        void CommandHandler::begin(JNIEnv* env, jobject instance)
+        {
+            env->CallVoidMethod(instance, this->beginMethod);
         }
 
         void CommandHandler::end(JNIEnv* env, jobject instance)
@@ -138,11 +143,6 @@ namespace jni
         LocalRef<jobject> CommandHandler::selectCROB(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
         {
             return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->selectCROBMethod, arg0, arg1));
-        }
-
-        void CommandHandler::start(JNIEnv* env, jobject instance)
-        {
-            env->CallVoidMethod(instance, this->startMethod);
         }
     }
 }
