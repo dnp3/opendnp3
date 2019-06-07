@@ -30,37 +30,38 @@ namespace opendnp3
 /**
  * Interface used to dispatch an abstract action using a command
  */
-class CommandActionAdapter : public ICommandAction
+class CommandActionAdapter final : public ICommandAction
 {
 
 public:
-    CommandActionAdapter(ICommandHandler* handler, bool isSelect, OperateType opType);
+    CommandActionAdapter(ICommandHandler& handler, bool is_select, OperateType op_type);
 
     ~CommandActionAdapter();
 
-    virtual CommandStatus Action(const ControlRelayOutputBlock& command, uint16_t index) final;
+    virtual CommandStatus Action(const ControlRelayOutputBlock& command, uint16_t index) override;
 
-    virtual CommandStatus Action(const AnalogOutputInt16& command, uint16_t index) final;
+    virtual CommandStatus Action(const AnalogOutputInt16& command, uint16_t index) override;
 
-    virtual CommandStatus Action(const AnalogOutputInt32& command, uint16_t index) final;
+    virtual CommandStatus Action(const AnalogOutputInt32& command, uint16_t index) override;
 
-    virtual CommandStatus Action(const AnalogOutputFloat32& command, uint16_t index) final;
+    virtual CommandStatus Action(const AnalogOutputFloat32& command, uint16_t index) override;
 
-    virtual CommandStatus Action(const AnalogOutputDouble64& command, uint16_t index) final;
+    virtual CommandStatus Action(const AnalogOutputDouble64& command, uint16_t index) override;
 
 private:
     template<class T> CommandStatus ActionT(const T& command, uint16_t index)
     {
         this->CheckStart();
-        return m_isSelect ? m_handler->Select(command, index) : m_handler->Operate(command, index, m_opType);
+        return is_select ? this->handler.Select(command, index) : this->handler.Operate(command, index, this->op_type);
     }
 
     void CheckStart();
 
-    ICommandHandler* m_handler;
-    bool m_isSelect;
-    OperateType m_opType;
-    bool m_isStarted;
+	bool is_started = false;
+
+    ICommandHandler& handler;
+    bool is_select;
+    OperateType op_type;
 };
 
 } // namespace opendnp3
