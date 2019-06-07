@@ -93,7 +93,7 @@ jobs:
       #- run: *init_submodules
       - run:
           name: Configure
-          command: cmake -DCMAKE_BUILD_TYPE=Debug -DDNP3_EVERYTHING=ON -DDNP3_COVERAGE=ON ..
+          command: cmake -DCMAKE_BUILD_TYPE=Debug -DDNP3_EVERYTHING=ON ..
           working_directory: build
       - run: *build
       - run: *test
