@@ -45,7 +45,7 @@ public:
     /**
      * Static helper function for interpreting a response as a measurement response
      */
-    static ParseResult ProcessMeasurements(const ser4cpp::rseq_t& objects,
+    static ParseResult ProcessMeasurements(ResponseInfo info, const ser4cpp::rseq_t& objects,
                                            log4cpp::Logger& logger,
                                            ISOEHandler* pHandler);
 
@@ -60,11 +60,12 @@ public:
      *
      * @param logger	the Logger that the loader should use for message reporting
      */
-    MeasurementHandler(const log4cpp::Logger& logger, ISOEHandler* pSOEHandler);
+    MeasurementHandler(ResponseInfo info, const log4cpp::Logger& logger, ISOEHandler* pSOEHandler);
 
     ~MeasurementHandler();
 
 private:
+    ResponseInfo info;
     log4cpp::Logger logger;
 
     static TimestampMode ModeFromType(GroupVariation gv);

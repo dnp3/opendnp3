@@ -45,6 +45,10 @@ public:
     };
 
     MockSOEHandler() : soeCount(0) {}
+	
+    void begin_fragment(const opendnp3::ResponseInfo& info) override {}
+
+    void end_fragment(const opendnp3::ResponseInfo& info) override {}
 
     uint32_t TotalReceived() const
     {
@@ -151,10 +155,6 @@ public:
     std::map<uint16_t, Record<opendnp3::AnalogCommandEvent>> analogCommandEventSOE;
     std::map<uint16_t, Record<opendnp3::SecurityStat>> securityStatSOE;
     std::vector<opendnp3::DNPTime> timeSOE;
-
-protected:
-    void Start() {}
-    void End() {}
 
 private:
     uint32_t soeCount;

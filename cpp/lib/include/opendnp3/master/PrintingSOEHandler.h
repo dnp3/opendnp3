@@ -58,8 +58,8 @@ public:
     virtual void Process(const HeaderInfo& info, const ICollection<DNPTime>& values) override;
 
 protected:
-    void Start() final {}
-    void End() final {}
+    void begin_fragment(const ResponseInfo& info) override {}
+    void end_fragment(const ResponseInfo& info) override {}
 
 private:
     template<class T> static void PrintAll(const HeaderInfo& info, const ICollection<Indexed<T>>& values)

@@ -242,7 +242,7 @@ void MContext::ProcessUnsolicitedResponse(const APDUResponseHeader& header, cons
         return;
     }
 
-    auto result = MeasurementHandler::ProcessMeasurements(objects, logger, SOEHandler.get());
+    auto result = MeasurementHandler::ProcessMeasurements(header.as_response_info(), objects, logger, SOEHandler.get());
 
     if ((result == ParseResult::OK) && header.control.CON)
     {

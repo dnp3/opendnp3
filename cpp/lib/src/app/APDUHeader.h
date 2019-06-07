@@ -24,6 +24,7 @@
 
 #include "opendnp3/app/IINField.h"
 #include "opendnp3/gen/FunctionCode.h"
+#include "opendnp3/master/ResponseInfo.h"
 
 namespace opendnp3
 {
@@ -58,6 +59,11 @@ struct APDUResponseHeader : public APDUHeader
         : APDUHeader(control, function), IIN(IIN)
     {
     }
+
+    ResponseInfo as_response_info() const
+	{
+        return ResponseInfo(this->function == FunctionCode::UNSOLICITED_RESPONSE, control.FIR, control.FIN);
+	}
 
     IINField IIN;
 };

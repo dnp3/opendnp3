@@ -141,6 +141,7 @@ set(opendnp3_public_headers
     ./include/opendnp3/master/IUTCTimeSource.h
     ./include/opendnp3/master/MasterParams.h
     ./include/opendnp3/master/PrintingSOEHandler.h
+	./include/opendnp3/master/ResponseInfo.h
     ./include/opendnp3/master/RestartOperationResult.h
     ./include/opendnp3/master/TaskConfig.h
     ./include/opendnp3/master/TaskId.h

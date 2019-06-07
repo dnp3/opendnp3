@@ -29,9 +29,11 @@
 #include "opendnp3/app/SecurityStat.h"
 #include "opendnp3/app/parsing/ICollection.h"
 #include "opendnp3/master/HeaderInfo.h"
+#include "opendnp3/master/ResponseInfo.h"
 
 namespace opendnp3
 {
+
 
 /**
  * An interface for Sequence-Of-Events (SOE) callbacks from a master stack to
@@ -41,9 +43,15 @@ namespace opendnp3
  * The HeaderInfo class provides information about the object header associated with the value.
  *
  */
-class ISOEHandler : public ITransactable
-{
+class ISOEHandler
+{    
+   
 public:
+    virtual ~ISOEHandler() = default;
+
+	virtual void begin_fragment(const ResponseInfo& info) = 0;
+    virtual void end_fragment(const ResponseInfo& info) = 0;
+
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) = 0;
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values) = 0;
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Analog>>& values) = 0;
@@ -56,9 +64,7 @@ public:
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values) = 0;
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) = 0;
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values) = 0;
-    virtual void Process(const HeaderInfo& info, const ICollection<DNPTime>& values) = 0;
-
-    virtual ~ISOEHandler() {}
+    virtual void Process(const HeaderInfo& info, const ICollection<DNPTime>& values) = 0;    
 };
 
 } // namespace opendnp3
