@@ -73,7 +73,7 @@ IMasterTask::ResponseResult PollTaskBase::ProcessMeasurements(const APDUResponse
 {
     ++rxCount;
 
-    if (MeasurementHandler::ProcessMeasurements(objects, logger, handler) == ParseResult::OK)
+    if (MeasurementHandler::ProcessMeasurements(header.as_response_info(), objects, logger, handler) == ParseResult::OK)
     {
         return header.control.FIN ? ResponseResult::OK_FINAL : ResponseResult::OK_CONTINUE;
     }

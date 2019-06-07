@@ -26,18 +26,19 @@
 namespace opendnp3
 {
 
-ParseResult MeasurementHandler::ProcessMeasurements(const ser4cpp::rseq_t& objects,
+ParseResult MeasurementHandler::ProcessMeasurements(ResponseInfo info, const ser4cpp::rseq_t& objects,
                                                     log4cpp::Logger& logger,
                                                     ISOEHandler* pHandler)
 {
-    MeasurementHandler handler(logger, pHandler);
+    MeasurementHandler handler(info, logger, pHandler);
     return APDUParser::Parse(objects, handler, &logger);
 }
 
-MeasurementHandler::MeasurementHandler(const log4cpp::Logger& logger_, ISOEHandler* pSOEHandler_)
-    : logger(logger_),
+MeasurementHandler::MeasurementHandler(ResponseInfo info, const log4cpp::Logger& logger, ISOEHandler* pSOEHandler)
+    : info(info),
+	  logger(logger),
       txInitiated(false),
-      pSOEHandler(pSOEHandler_),
+      pSOEHandler(pSOEHandler),
       ctoMode(TimestampMode::INVALID),
       commonTimeOccurence(0)
 {
@@ -45,9 +46,9 @@ MeasurementHandler::MeasurementHandler(const log4cpp::Logger& logger_, ISOEHandl
 
 MeasurementHandler::~MeasurementHandler()
 {
-    if (txInitiated)
+    if (txInitiated && pSOEHandler)
     {
-        Transaction::End(pSOEHandler);
+        this->pSOEHandler->end_fragment(this->info);        
     }
 }
 
@@ -58,10 +59,10 @@ TimestampMode MeasurementHandler::ModeFromType(GroupVariation gv)
 
 void MeasurementHandler::CheckForTxStart()
 {
-    if (!txInitiated)
+    if (!txInitiated && pSOEHandler)
     {
         txInitiated = true;
-        Transaction::Start(pSOEHandler);
+        this->pSOEHandler->begin_fragment(this->info);        
     }
 }
 

@@ -19,30 +19,28 @@
  */
 #include "CommandActionAdapter.h"
 
-#include "opendnp3/app/ITransactable.h"
-
 namespace opendnp3
 {
 
-CommandActionAdapter::CommandActionAdapter(ICommandHandler* handler, bool isSelect, OperateType opType)
-    : m_handler(handler), m_isSelect(isSelect), m_opType(opType), m_isStarted(false)
+CommandActionAdapter::CommandActionAdapter(ICommandHandler& handler, bool is_select, OperateType op_type)
+    : handler(handler), is_select(is_select), op_type(op_type)
 {
 }
 
 CommandActionAdapter::~CommandActionAdapter()
 {
-    if (m_isStarted)
+    if (this->is_started)
     {
-        Transaction::End(m_handler);
+        handler.end();        
     }
 }
 
 void CommandActionAdapter::CheckStart()
 {
-    if (!m_isStarted)
+    if (!this->is_started)
     {
-        m_isStarted = true;
-        Transaction::Start(m_handler);
+        this->is_started = true;
+        handler.begin();
     }
 }
 

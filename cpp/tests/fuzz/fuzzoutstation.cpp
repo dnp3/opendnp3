@@ -18,7 +18,6 @@
  * limitations under the License.
  */
 #include <opendnp3/LogLevels.h>
-#include <opendnp3/app/ITransactable.h>
 #include <outstation/Database.h>
 #include <outstation/OutstationContext.h>
 

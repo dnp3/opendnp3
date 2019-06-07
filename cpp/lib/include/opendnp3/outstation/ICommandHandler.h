@@ -22,7 +22,6 @@
 
 #include "opendnp3/app/AnalogOutput.h"
 #include "opendnp3/app/ControlRelayOutputBlock.h"
-#include "opendnp3/app/ITransactable.h"
 #include "opendnp3/gen/OperateType.h"
 
 namespace opendnp3
@@ -34,10 +33,20 @@ namespace opendnp3
  *
  * The ITransactable sub-interface is used to determine the start and end of an ASDU containing commands.
  */
-class ICommandHandler : public ITransactable
+class ICommandHandler
 {
 public:
-    virtual ~ICommandHandler() {}
+    virtual ~ICommandHandler() = default;
+
+	/**
+	* called when a command APDU begins processing
+	*/
+	virtual void begin() = 0;
+
+	/**
+     * called when a command APDU ends processing
+     */
+	virtual void end() = 0;
 
     /**
      * Ask if the application supports a ControlRelayOutputBlock - group 12 variation 1

@@ -40,6 +40,16 @@ class ExampleSOEHandler : public ISOEHandler
 public:
     explicit ExampleSOEHandler(const uint16_t address) : address(address) {}
 
+	void begin_fragment(const ResponseInfo& info) override
+    {
+        std::cout << "Begin receiving measurement data for outstation: " << address << std::endl;
+    }
+
+    void end_fragment(const ResponseInfo& info) override
+    {
+        std::cout << "End receiving measurement data for outstation: " << address << std::endl;
+    }
+
     void Process(const HeaderInfo& info,
                  const ICollection<Indexed<Binary>>& values) override
     {
@@ -103,17 +113,7 @@ public:
     void Process(const HeaderInfo& info, const ICollection<DNPTime>& values) override {}
 
 protected:
-    const uint16_t address;
-
-    void Start() override
-    {
-        std::cout << "Begin receiving measurement data for outstation: " << address << std::endl;
-    }
-
-    void End() override
-    {
-        std::cout << "End receiving measurement data for outstation: " << address << std::endl;
-    }
+    const uint16_t address;    
 };
 
 std::shared_ptr<IMasterSession> ExampleListenCallbacks::get_outstation_session(uint16_t address)

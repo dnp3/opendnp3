@@ -22,9 +22,19 @@
 namespace opendnp3
 {
 
-SimpleCommandHandler::SimpleCommandHandler(CommandStatus status_)
-    : status(status_), numOperate(0), numSelect(0), numStart(0), numEnd(0)
+SimpleCommandHandler::SimpleCommandHandler(CommandStatus status)
+    : status(status), numOperate(0), numSelect(0), numStart(0), numEnd(0)
 {
+}
+
+void SimpleCommandHandler::begin()
+{
+    ++numStart;
+}
+
+void SimpleCommandHandler::end()
+{
+    ++numEnd;
 }
 
 CommandStatus SimpleCommandHandler::Select(const ControlRelayOutputBlock& command, uint16_t index)
@@ -90,16 +100,6 @@ CommandStatus SimpleCommandHandler::Operate(const AnalogOutputDouble64& command,
     this->DoOperate(command, index, opType);
     ++numOperate;
     return status;
-}
-
-void SimpleCommandHandler::Start()
-{
-    ++numStart;
-}
-
-void SimpleCommandHandler::End()
-{
-    ++numEnd;
 }
 
 } // namespace opendnp3

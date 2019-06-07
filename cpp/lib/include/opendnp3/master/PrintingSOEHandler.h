@@ -43,6 +43,9 @@ public:
         return std::make_shared<PrintingSOEHandler>();
     }
 
+	void begin_fragment(const ResponseInfo& info) override;
+    void end_fragment(const ResponseInfo& info) override;
+
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) override;
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values) override;
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Analog>>& values) override;
@@ -56,10 +59,6 @@ public:
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) override;
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values) override;
     virtual void Process(const HeaderInfo& info, const ICollection<DNPTime>& values) override;
-
-protected:
-    void Start() final {}
-    void End() final {}
 
 private:
     template<class T> static void PrintAll(const HeaderInfo& info, const ICollection<Indexed<T>>& values)

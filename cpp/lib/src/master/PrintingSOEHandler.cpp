@@ -22,6 +22,22 @@
 namespace opendnp3
 {
 
+std::ostream& operator<<(std::ostream& os, const ResponseInfo& info)
+{
+    os << "unsolicited: " << info.unsolicited << " fir: " << info.fir << " fin: " << info.fin;    
+    return os;
+}
+
+void PrintingSOEHandler::begin_fragment(const ResponseInfo& info)
+{
+    std::cout << "begin response: " << info << std::endl;
+}
+
+void PrintingSOEHandler::end_fragment(const ResponseInfo& info)
+{
+    std::cout << "end response: " << info << std::endl;
+}
+
 void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values)
 {
     return PrintAll(info, values);
