@@ -20,7 +20,7 @@
 #ifndef OPENDNP3CLR_CHANNEL_ADAPTER_H
 #define OPENDNP3CLR_CHANNEL_ADAPTER_H
 
-#include <asiodnp3/IChannel.h>
+#include <opendnp3/channel/IChannel.h>
 
 #include <vcclr.h>
 
@@ -40,7 +40,7 @@ namespace Automatak
 			{
 			public:
 
-				ChannelAdapter(const std::shared_ptr<asiodnp3::IChannel>& channel);
+				ChannelAdapter(const std::shared_ptr<opendnp3::IChannel>& channel);
 
 				~ChannelAdapter();
 				!ChannelAdapter();
@@ -59,7 +59,7 @@ namespace Automatak
 
 			private:
 
-				std::shared_ptr<asiodnp3::IChannel>* channel;
+				std::shared_ptr<opendnp3::IChannel>* channel;
 			};
 
 		}

@@ -31,7 +31,7 @@ namespace Automatak.DNP3.Interface
         /// <summary>
         /// Called before any other method calls
         /// </summary>
-        void Start();
+        void Begin();
 
         /// <summary>
         /// Called after all other method calls

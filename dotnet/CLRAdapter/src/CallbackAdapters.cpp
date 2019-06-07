@@ -30,7 +30,7 @@ namespace Automatak
 		namespace Adapter
 		{
 
-			opendnp3::CommandCallbackT CallbackAdapters::Get(TaskCompletionSource<CommandTaskResult^>^ tcs)
+			opendnp3::CommandResultCallbackT CallbackAdapters::Get(TaskCompletionSource<CommandTaskResult^>^ tcs)
 			{
 				gcroot<TaskCompletionSource<CommandTaskResult^>^> handle(tcs);
 

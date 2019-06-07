@@ -31,7 +31,7 @@ namespace Automatak
 		namespace Adapter
 		{
 
-			SessionAcceptorAdapter::SessionAcceptorAdapter(asiodnp3::ISessionAcceptor& proxy) :
+			SessionAcceptorAdapter::SessionAcceptorAdapter(opendnp3::ISessionAcceptor& proxy) :
 				proxy(&proxy)
 			{}
 

@@ -20,7 +20,7 @@
 #ifndef OPENDNP3CLR_SESSION_ACCEPTOR_ADAPTER_H
 #define	OPENDNP3CLR_SESSION_ACCEPTOR_ADAPTER_H
 
-#include <asiodnp3/ISessionAcceptor.h>
+#include <opendnp3/master/ISessionAcceptor.h>
 
 #include <vcclr.h>
 
@@ -38,7 +38,7 @@ namespace Automatak
 			{
 			public:
 
-				SessionAcceptorAdapter(asiodnp3::ISessionAcceptor& proxy);
+				SessionAcceptorAdapter(opendnp3::ISessionAcceptor& proxy);
 				
 				virtual IMasterSession^ AcceptSession(
 					System::String^ loggerid,
@@ -49,7 +49,7 @@ namespace Automatak
 				
 			private:
 
-				asiodnp3::ISessionAcceptor* proxy;
+				opendnp3::ISessionAcceptor* proxy;
 			};
 
 		}

@@ -20,8 +20,8 @@
 #ifndef OPENDNP3CLR_CHANGESET_ADAPTER_H
 #define OPENDNP3CLR_CHANGESET_ADAPTER_H
 
-#include <asiodnp3/IOutstation.h>
-#include <asiodnp3/UpdateBuilder.h>
+#include <opendnp3/outstation/IOutstation.h>
+#include <opendnp3/outstation/UpdateBuilder.h>
 
 #include <vcclr.h>
 
@@ -53,11 +53,11 @@ namespace Automatak
 				virtual void Update(OctetString^ update, System::UInt16 index, EventMode mode);
 				virtual void Update(TimeAndInterval^ update, System::UInt16 index);				
 
-				void Apply(asiodnp3::IOutstation& proxy);
+				void Apply(opendnp3::IOutstation& proxy);
 				
 			private:
 				
-				asiodnp3::UpdateBuilder* builder;
+				opendnp3::UpdateBuilder* builder;
 			};
 
 		}

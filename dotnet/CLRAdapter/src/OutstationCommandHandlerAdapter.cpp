@@ -28,12 +28,12 @@ namespace Automatak
 		namespace Adapter
 		{
 
-			void OutstationCommandHandlerAdapter::Start()
+			void OutstationCommandHandlerAdapter::begin()
 			{
-				proxy->Start();
+				proxy->Begin();
 			}
 			
-			void OutstationCommandHandlerAdapter::End()
+			void OutstationCommandHandlerAdapter::end()
 			{
 				proxy->End();
 			}

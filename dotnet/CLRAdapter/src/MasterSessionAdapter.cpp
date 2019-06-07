@@ -26,9 +26,9 @@ namespace Automatak
 		namespace Adapter
 		{
 
-			MasterSessionAdapter::MasterSessionAdapter(std::shared_ptr<asiodnp3::IMasterSession> proxy) :
+			MasterSessionAdapter::MasterSessionAdapter(std::shared_ptr<opendnp3::IMasterSession> proxy) :
 				MasterOperationsAdapter(proxy.get()),
-				proxy(new std::shared_ptr<asiodnp3::IMasterSession>(proxy))
+				proxy(new std::shared_ptr<opendnp3::IMasterSession>(proxy))
 			{
 
 			}

@@ -12,6 +12,8 @@ if(MSVC_VERSION LESS 1900)
     message(FATAL_ERROR "Visual Studio earlier than 2015 does not implement std::chrono::steady_clock properly. Use a modern compiler.")
 endif()
 
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
 # Clang utilities
 include(./cmake/ClangFormat.cmake)
 include(./cmake/ClangTidy.cmake)
@@ -21,6 +23,10 @@ option(DNP3_TLS "Build TLS client/server support (requires OpenSSL)" OFF)
 option(DNP3_TESTS "Build unit and integration tests" OFF)
 option(DNP3_EXAMPLES "Build example applications" OFF)
 option(DNP3_FUZZING "Build Google OSS-Fuzz targets" OFF)
+if(WIN32)
+    option(DNP3_DOTNET "Build the .NET bindings" OFF)
+	set(DNP3_DOTNET_FRAMEWORK_VERSION "v4.5" CACHE STRING "The target .NET framework version for the .NET components")
+endif()
 option(DNP3_EVERYTHING "Build all optional targets" OFF)
 
 if(DNP3_EVERYTHING)    
@@ -28,6 +34,9 @@ if(DNP3_EVERYTHING)
 	set(DNP3_TESTS ON)
 	set(DNP3_EXAMPLES ON)
 	set(DNP3_FUZZING ON)
+	if(WIN32)
+        set(DNP3_DOTNET ON)
+    endif()
 endif()
 
 # External dependencies
@@ -78,6 +87,22 @@ if(DNP3_FUZZING)
         add_subdirectory(./cpp/tests/dnp3mocks)
     endif()
     add_subdirectory(./cpp/tests/fuzz)
+endif()
+
+if(WIN32 AND DNP3_DOTNET)
+
+  message("The .NET framework version is: ${DNP3_DOTNET_FRAMEWORK_VERSION}")
+
+  add_subdirectory(./dotnet/CLRInterface)
+  add_subdirectory(./dotnet/CLRAdapter)
+
+  if(DNP3_EXAMPLES)
+    add_subdirectory(./dotnet/examples/master)
+    add_subdirectory(./dotnet/examples/master-gprs)
+    add_subdirectory(./dotnet/examples/master-gprs-tls)
+    add_subdirectory(./dotnet/examples/outstation)
+  endif()
+
 endif()
 
 # Define utility targets

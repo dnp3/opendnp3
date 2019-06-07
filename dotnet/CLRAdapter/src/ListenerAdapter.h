@@ -20,7 +20,7 @@
 #ifndef OPENDNP3CLR_LISTENER_ADAPTER_H
 #define	OPENDNP3CLR_LISTENER_ADAPTER_H
 
-#include <asiopal/IListener.h>
+#include <opendnp3/channel/IListener.h>
 
 using namespace Automatak::DNP3::Interface;
 
@@ -39,7 +39,8 @@ namespace Automatak
 			{
 			public:
 
-				ListenerAdapter(const std::shared_ptr<asiopal::IListener>& proxy) : proxy(new std::shared_ptr<asiopal::IListener>(proxy))
+				ListenerAdapter(const std::shared_ptr<opendnp3::IListener>& proxy)
+                    : proxy(new std::shared_ptr<opendnp3::IListener>(proxy))
 				{}
 
 				ListenerAdapter::~ListenerAdapter()
@@ -59,7 +60,7 @@ namespace Automatak
 
 			private:
 				
-				const std::shared_ptr<asiopal::IListener>* proxy;
+				const std::shared_ptr<opendnp3::IListener>* proxy;
 			};
 
 		}
