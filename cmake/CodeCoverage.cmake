@@ -1,4 +1,5 @@
 # Copyright (c) 2012 - 2017, Lars Bilke
+# Copyright (c) 2019, Automatak, LLC
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification,
@@ -25,50 +26,17 @@
 # ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-# CHANGES:
-#
-# 2012-01-31, Lars Bilke
-# - Enable Code Coverage
-#
-# 2013-09-17, Joakim Söderberg
-# - Added support for Clang.
-# - Some additional usage instructions.
-#
-# 2016-02-03, Lars Bilke
-# - Refactored functions to use named parameters
-#
-# 2017-06-02, Lars Bilke
-# - Merged with modified version from github.com/ufz/ogs
-#
-#
-# USAGE:
-#
-# 1. Copy this file into your cmake modules path.
-#
-# 2. Add the following line to your CMakeLists.txt:
-#      include(CodeCoverage)
-#
-# 3. Append necessary compiler flags:
-#      APPEND_COVERAGE_COMPILER_FLAGS()
-#
-# 3.a (OPTIONAL) Set appropriate optimization flags, e.g. -O0, -O1 or -Og
-#
-# 4. If you need to exclude additional directories from the report, specify them
-#    using the COVERAGE_LCOV_EXCLUDES variable before calling SETUP_TARGET_FOR_COVERAGE_LCOV.
-#    Example:
-#      set(COVERAGE_LCOV_EXCLUDES 'dir1/*' 'dir2/*')
-#
-# 5. Use the functions described below to create a custom make target which
-#    runs your test executable and produces a code coverage report.
-#
-# 6. Build a Debug build:
-#      cmake -DCMAKE_BUILD_TYPE=Debug ..
-#      make
-#      make my_coverage_target
-#
 
 include(CMakeParseArguments)
+
+# Check compiler support
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3)
+        message(FATAL_ERROR "For coverage support, clang version must be 3.0.0 or greater.")
+    endif()
+elseif(NOT CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+    message(FATAL_ERROR "Compiler does not support gcov. Disable code coverage support.")
+endif()
 
 # Find dependencies
 find_program(GCOV_PATH gcov)
@@ -83,15 +51,6 @@ if(NOT LCOV_PATH)
 endif()
 if(NOT GENHTML_PATH)
     message(FATAL_ERROR "genhtml not found")
-endif()
-
-# Check compiler support
-if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3)
-        message(FATAL_ERROR "For coverage support, clang version must be 3.0.0 or greater.")
-    endif()
-elseif(NOT CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    message(FATAL_ERROR "Compiler does not support gcov.")
 endif()
 
 # Set cache variables for coverage
