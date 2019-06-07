@@ -10,7 +10,7 @@ install:
 build_script:
 - cmd: MKDIR build
 - cmd: CD build
-- cmd: cmake .. -DCMAKE_BUILD_TYPE=Release -DDNP3_TLS=ON -DDNP3_TESTS=ON -DDNP3_EXAMPLES=ON -DDNP3_FUZZING=ON -DDNP3_DOTNET=ON
+- cmd: cmake .. -DCMAKE_BUILD_TYPE=Release -DNP3_EVERYTHING=ON -DDNP3_DOTNET=ON
 - cmd: cmake --build . --config Release
 after_build:
 - ps: >-

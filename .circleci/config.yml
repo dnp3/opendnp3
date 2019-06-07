@@ -2,10 +2,10 @@ version: 2
 aliases:
   - run: &install_deps_gcc
       name: Install dependencies
-      command: apt-get update && apt-get install -y git cmake g++ libssl-dev #default-jdk maven
+      command: apt-get update && apt-get install -y git cmake g++ libssl-dev lcov #default-jdk maven
   - run: &install_deps_clang
       name: Install dependencies
-      command: apt-get update && apt-get install -y git cmake clang libc++-dev libc++abi-dev libssl-dev #default-jdk maven
+      command: apt-get update && apt-get install -y git cmake clang libc++-dev libc++abi-dev libssl-dev lcov #default-jdk maven
   - run: &print_versions_gcc
       name: Print versions
       command: g++ -v && cmake -version && openssl version #&& java --version
@@ -22,6 +22,10 @@ aliases:
   - run: &test
       name: Test
       command: ctest -VV .
+      working_directory: build
+  - run: &coverage
+      name: Code coverage
+      command: cmake --build . --target coverage
       working_directory: build
   - run: &build_java
       # I was not able to set java.library.path to the build directory, so we just
@@ -52,10 +56,11 @@ jobs:
       #- run: *init_submodules
       - run:
           name: Configure
-          command: cmake -DCMAKE_BUILD_TYPE=Debug -DDNP3_EXAMPLES=ON -DDNP3_TESTS=ON -DDNP3_FUZZING=ON -DDNP3_TLS=ON ..
+          command: cmake -DCMAKE_BUILD_TYPE=Debug -DDNP3_EVERYTHING=ON -DDNP3_COVERAGE=ON ..
           working_directory: build
       - run: *build
       - run: *test
+      - run: *coverage
       #- run: *build_java
       #- run: *test_java
       #- run: *package
@@ -70,7 +75,7 @@ jobs:
       #- run: *init_submodules
       - run:
           name: Configure
-          command: cmake -DCMAKE_BUILD_TYPE=Release -DDNP3_EXAMPLES=ON -DDNP3_TESTS=ON -DDNP3_FUZZING=ON -DDNP3_TLS=ON ..
+          command: cmake -DCMAKE_BUILD_TYPE=Release -DDNP3_EVERYTHING=ON ..
           working_directory: build
       - run: *build
       - run: *test
@@ -88,10 +93,11 @@ jobs:
       #- run: *init_submodules
       - run:
           name: Configure
-          command: cmake -DCMAKE_BUILD_TYPE=Debug -DDNP3_EXAMPLES=ON -DDNP3_TESTS=ON -DDNP3_FUZZING=ON -DDNP3_TLS=ON ..
+          command: cmake -DCMAKE_BUILD_TYPE=Debug -DDNP3_EVERYTHING=ON -DDNP3_COVERAGE=ON ..
           working_directory: build
       - run: *build
       - run: *test
+      - run: *coverage
       #- run: *build_java
       #- run: *test_java
       #- run: *package
@@ -106,7 +112,7 @@ jobs:
       #- run: *init_submodules
       - run:
           name: Configure
-          command: cmake -DCMAKE_BUILD_TYPE=Release -DDNP3_EXAMPLES=ON -DDNP3_TESTS=ON -DDNP3_FUZZING=ON -DDNP3_TLS=ON ..
+          command: cmake -DCMAKE_BUILD_TYPE=Release -DDNP3_EVERYTHING=ON ..
           working_directory: build
       - run: *build
       - run: *test

@@ -21,6 +21,7 @@ option(DNP3_TLS "Build TLS client/server support (requires OpenSSL)" OFF)
 option(DNP3_TESTS "Build unit and integration tests" OFF)
 option(DNP3_EXAMPLES "Build example applications" OFF)
 option(DNP3_FUZZING "Build Google OSS-Fuzz targets" OFF)
+option(DNP3_COVERAGE "Enable code coverage target" OFF)
 option(DNP3_EVERYTHING "Build all optional targets" OFF)
 
 if(DNP3_EVERYTHING)    
@@ -44,6 +45,12 @@ if(DNP3_TESTS)
     include(./deps/catch.cmake)
 endif()
 
+# Set coverage flags if necessary
+if(DNP3_COVERAGE)
+    include(./cmake/CodeCoverage.cmake)
+    add_coverage_flags()
+endif()
+
 # Library
 add_subdirectory(./cpp/lib)
 
@@ -55,6 +62,14 @@ if(DNP3_TESTS)
     add_subdirectory(./cpp/tests/unit)
     add_subdirectory(./cpp/tests/asiotests)
     add_subdirectory(./cpp/tests/integration)
+
+    if(DNP3_COVERAGE)
+        define_coverage_target(
+            NAME coverage
+            DIRECTORY cpp/lib
+            TARGETS unittests asiotests integrationtests
+        )
+    endif()
 endif()
 
 # Examples
