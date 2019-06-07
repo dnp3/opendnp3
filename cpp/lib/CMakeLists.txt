@@ -648,10 +648,10 @@ endif()
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${all_sources})
 
 add_library(opendnp3 ${all_sources})
-target_compile_features(opendnp3 PRIVATE cxx_std_14)
+target_compile_features(opendnp3 PUBLIC cxx_std_14)
 target_link_libraries(opendnp3
-    PUBLIC log4cpp ser4cpp # This will be private once the master database refactoring is done
-    PRIVATE exe4cpp asio
+    PUBLIC log4cpp
+    PRIVATE ser4cpp exe4cpp asio
 )
 target_include_directories(opendnp3
     PUBLIC ./include

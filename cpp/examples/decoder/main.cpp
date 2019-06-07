@@ -18,7 +18,6 @@
  * limitations under the License.
  */
 
-#include <ser4cpp/container/Buffer.h>
 #include <log4cpp/Logger.h>
 
 #include <opendnp3/ConsoleLogger.h>
