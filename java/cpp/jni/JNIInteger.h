@@ -29,43 +29,39 @@
 // limitations under the License.
 //
 
-#include "JNIDoubleBinaryConfig.h"
+#ifndef OPENDNP3JAVA_JNIINTEGER_H
+#define OPENDNP3JAVA_JNIINTEGER_H
+
+#include <jni.h>
+
+#include "../adapters/LocalRef.h"
 
 namespace jni
 {
+    struct JCache;
+
     namespace cache
     {
-        bool DoubleBinaryConfig::init(JNIEnv* env)
+        class Integer
         {
-            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/DoubleBinaryConfig;");
-            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-            env->DeleteLocalRef(clazzTemp);
+            friend struct jni::JCache;
 
-            this->eventVariationField = env->GetFieldID(this->clazz, "eventVariation", "Lcom/automatak/dnp3/enums/EventDoubleBinaryVariation;");
-            if(!this->eventVariationField) return false;
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-            this->staticVariationField = env->GetFieldID(this->clazz, "staticVariation", "Lcom/automatak/dnp3/enums/StaticDoubleBinaryVariation;");
-            if(!this->staticVariationField) return false;
+            public:
 
-            this->clazzField = env->GetFieldID(this->clazz, "clazz", "Lcom/automatak/dnp3/enums/PointClass;");
-            if(!this->clazzField) return false;
+            // methods
+            jint intValue(JNIEnv* env, jobject instance);
 
-            return true;
-        }
+            private:
 
-        void DoubleBinaryConfig::cleanup(JNIEnv* env)
-        {
-            env->DeleteGlobalRef(this->clazz);
-        }
+            jclass clazz = nullptr;
 
-        LocalRef<jobject> DoubleBinaryConfig::geteventVariation(JNIEnv* env, jobject instance)
-        {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->eventVariationField));
-        }
-
-        LocalRef<jobject> DoubleBinaryConfig::getstaticVariation(JNIEnv* env, jobject instance)
-        {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->staticVariationField));
-        }
+            // method ids
+            jmethodID intValueMethod = nullptr;
+        };
     }
 }
+
+#endif

@@ -62,7 +62,6 @@ namespace jni
             // field ids
             jfieldID eventVariationField = nullptr;
             jfieldID staticVariationField = nullptr;
-            jfieldID vIndexField = nullptr;
             jfieldID clazzField = nullptr;
         };
     }

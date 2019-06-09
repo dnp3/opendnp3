@@ -24,8 +24,8 @@ import com.automatak.dnp3.enums.StaticAnalogVariation;
 
 public class AnalogConfig extends EventConfig {
 
-    public AnalogConfig(int index) {
-        super(index);
+    public AnalogConfig() {
+        super();
     }
 
     public double deadband = 0;

@@ -53,14 +53,12 @@ namespace jni
 
             // field getter methods
             LocalRef<jobject> getclazz(JNIEnv* env, jobject instance);
-            jint getvIndex(JNIEnv* env, jobject instance);
 
             private:
 
             jclass clazz = nullptr;
 
             // field ids
-            jfieldID vIndexField = nullptr;
             jfieldID clazzField = nullptr;
         };
     }

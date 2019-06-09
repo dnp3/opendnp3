@@ -71,6 +71,7 @@
 #include "JNIDoubleBit.h"
 #include "JNIDoubleBitBinaryInput.h"
 #include "JNIDuration.h"
+#include "JNIEntry.h"
 #include "JNIEventAnalogOutputStatusVariation.h"
 #include "JNIEventAnalogVariation.h"
 #include "JNIEventBinaryOutputStatusVariation.h"
@@ -90,6 +91,7 @@
 #include "JNIIndexMode.h"
 #include "JNIIndexQualifierMode.h"
 #include "JNIIndexedValue.h"
+#include "JNIInteger.h"
 #include "JNIIterable.h"
 #include "JNIIterator.h"
 #include "JNILinkLayerConfig.h"
@@ -98,6 +100,7 @@
 #include "JNIList.h"
 #include "JNILogEntry.h"
 #include "JNILogHandler.h"
+#include "JNIMap.h"
 #include "JNIMasterApplication.h"
 #include "JNIMasterConfig.h"
 #include "JNIMasterStackConfig.h"
@@ -174,6 +177,7 @@ namespace jni
         static cache::DoubleBit DoubleBit;
         static cache::DoubleBitBinaryInput DoubleBitBinaryInput;
         static cache::Duration Duration;
+        static cache::Entry Entry;
         static cache::EventAnalogOutputStatusVariation EventAnalogOutputStatusVariation;
         static cache::EventAnalogVariation EventAnalogVariation;
         static cache::EventBinaryOutputStatusVariation EventBinaryOutputStatusVariation;
@@ -193,6 +197,7 @@ namespace jni
         static cache::IndexMode IndexMode;
         static cache::IndexQualifierMode IndexQualifierMode;
         static cache::IndexedValue IndexedValue;
+        static cache::Integer Integer;
         static cache::Iterable Iterable;
         static cache::Iterator Iterator;
         static cache::LinkLayerConfig LinkLayerConfig;
@@ -201,6 +206,7 @@ namespace jni
         static cache::List List;
         static cache::LogEntry LogEntry;
         static cache::LogHandler LogHandler;
+        static cache::Map Map;
         static cache::MasterApplication MasterApplication;
         static cache::MasterConfig MasterConfig;
         static cache::MasterStackConfig MasterStackConfig;

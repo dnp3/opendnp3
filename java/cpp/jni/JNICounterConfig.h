@@ -64,7 +64,6 @@ namespace jni
             jfieldID deadbandField = nullptr;
             jfieldID eventVariationField = nullptr;
             jfieldID staticVariationField = nullptr;
-            jfieldID vIndexField = nullptr;
             jfieldID clazzField = nullptr;
         };
     }

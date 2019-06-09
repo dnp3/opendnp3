@@ -40,8 +40,9 @@ private:
     static opendnp3::ClassField ConvertClassField(JNIEnv* env, jobject jclassmask);
     static opendnp3::EventBufferConfig ConvertEventBufferConfig(JNIEnv* env, jobject jeventconfig);
     static opendnp3::OutstationParams ConvertOutstationConfig(JNIEnv* env, jobject jconfig);
+    static opendnp3::DatabaseConfig ConvertDatavaseConfig(JNIEnv* env, jobject jdb);
     static opendnp3::TimeDuration ConvertDuration(JNIEnv* env, jobject jduration);
-    static void ConvertDatabase(JNIEnv* env, jobject jdb, opendnp3::DatabaseConfig& cfg);
+    
 
     static opendnp3::BinaryConfig ConvertBinaryConfig(JNIEnv* env, jobject jconfig);
     static opendnp3::DoubleBitBinaryConfig ConvertDoubleBinaryConfig(JNIEnv* env, jobject jconfig);

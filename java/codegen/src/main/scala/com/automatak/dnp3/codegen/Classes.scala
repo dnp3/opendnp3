@@ -89,7 +89,10 @@ object Classes {
     ClassConfig(classOf[java.util.List[_]], Set(Features.Methods), MethodFilter.nameEquals("size")),
     ClassConfig(classOf[java.util.ArrayList[_]], Set(Features.Constructors, Features.Methods), listMethods, listConstructors),
     ClassConfig(classOf[java.lang.Iterable[_]], Set(Features.Methods), MethodFilter.nameEquals("iterator")),
-    ClassConfig(classOf[java.util.Iterator[_]], Set(Features.Methods), MethodFilter.equalsAny("hasNext", "next"))
+    ClassConfig(classOf[java.util.Iterator[_]], Set(Features.Methods), MethodFilter.equalsAny("hasNext", "next")),
+    ClassConfig(classOf[java.util.Map[_, _]], Set(Features.Methods), MethodFilter.equalsAny("entrySet")),
+    ClassConfig(classOf[java.util.Map.Entry[_, _]], Set(Features.Methods), MethodFilter.equalsAny("getKey", "getValue")),
+    ClassConfig(classOf[Integer], Set(Features.Methods), MethodFilter.equalsAny("intValue"))
   )
 
   // all the classes to generate C++ info on

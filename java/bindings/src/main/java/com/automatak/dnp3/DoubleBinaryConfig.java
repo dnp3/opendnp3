@@ -23,8 +23,7 @@ import com.automatak.dnp3.enums.EventDoubleBinaryVariation;
 import com.automatak.dnp3.enums.StaticDoubleBinaryVariation;
 
 public class DoubleBinaryConfig extends EventConfig {
-    public DoubleBinaryConfig(int index) {
-        super(index);
+    public DoubleBinaryConfig() {
         this.eventVariation = EventDoubleBinaryVariation.Group4Var1;
         this.staticVariation = StaticDoubleBinaryVariation.Group3Var2;
     }

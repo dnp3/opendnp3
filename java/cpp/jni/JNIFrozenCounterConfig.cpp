@@ -50,9 +50,6 @@ namespace jni
             this->staticVariationField = env->GetFieldID(this->clazz, "staticVariation", "Lcom/automatak/dnp3/enums/StaticFrozenCounterVariation;");
             if(!this->staticVariationField) return false;
 
-            this->vIndexField = env->GetFieldID(this->clazz, "vIndex", "I");
-            if(!this->vIndexField) return false;
-
             this->clazzField = env->GetFieldID(this->clazz, "clazz", "Lcom/automatak/dnp3/enums/PointClass;");
             if(!this->clazzField) return false;
 

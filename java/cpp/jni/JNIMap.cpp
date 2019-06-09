@@ -29,51 +29,32 @@
 // limitations under the License.
 //
 
-#include "JNIAnalogOutputStatusConfig.h"
+#include "JNIMap.h"
 
 namespace jni
 {
     namespace cache
     {
-        bool AnalogOutputStatusConfig::init(JNIEnv* env)
+        bool Map::init(JNIEnv* env)
         {
-            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/AnalogOutputStatusConfig;");
+            auto clazzTemp = env->FindClass("Ljava/util/Map;");
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->deadbandField = env->GetFieldID(this->clazz, "deadband", "D");
-            if(!this->deadbandField) return false;
-
-            this->eventVariationField = env->GetFieldID(this->clazz, "eventVariation", "Lcom/automatak/dnp3/enums/EventAnalogOutputStatusVariation;");
-            if(!this->eventVariationField) return false;
-
-            this->staticVariationField = env->GetFieldID(this->clazz, "staticVariation", "Lcom/automatak/dnp3/enums/StaticAnalogOutputStatusVariation;");
-            if(!this->staticVariationField) return false;
-
-            this->clazzField = env->GetFieldID(this->clazz, "clazz", "Lcom/automatak/dnp3/enums/PointClass;");
-            if(!this->clazzField) return false;
+            this->entrySetMethod = env->GetMethodID(this->clazz, "entrySet", "()Ljava/util/Set;");
+            if(!this->entrySetMethod) return false;
 
             return true;
         }
 
-        void AnalogOutputStatusConfig::cleanup(JNIEnv* env)
+        void Map::cleanup(JNIEnv* env)
         {
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jdouble AnalogOutputStatusConfig::getdeadband(JNIEnv* env, jobject instance)
+        LocalRef<jobject> Map::entrySet(JNIEnv* env, jobject instance)
         {
-            return env->GetDoubleField(instance, this->deadbandField);
-        }
-
-        LocalRef<jobject> AnalogOutputStatusConfig::geteventVariation(JNIEnv* env, jobject instance)
-        {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->eventVariationField));
-        }
-
-        LocalRef<jobject> AnalogOutputStatusConfig::getstaticVariation(JNIEnv* env, jobject instance)
-        {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->staticVariationField));
+            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->entrySetMethod));
         }
     }
 }

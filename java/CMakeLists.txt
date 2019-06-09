@@ -114,6 +114,8 @@ set(all_sources
 	./cpp/jni/JNIDoubleBitBinaryInput.h
 	./cpp/jni/JNIDuration.cpp
 	./cpp/jni/JNIDuration.h
+    ./cpp/jni/JNIEntry.cpp
+    ./cpp/jni/JNIEntry.h
 	./cpp/jni/JNIEventAnalogOutputStatusVariation.cpp
 	./cpp/jni/JNIEventAnalogOutputStatusVariation.h
 	./cpp/jni/JNIEventAnalogVariation.cpp
@@ -150,6 +152,8 @@ set(all_sources
 	./cpp/jni/JNIIndexMode.h
 	./cpp/jni/JNIIndexQualifierMode.cpp
 	./cpp/jni/JNIIndexQualifierMode.h
+    ./cpp/jni/JNIInteger.cpp
+    ./cpp/jni/JNIInteger.h    
 	./cpp/jni/JNIIPEndpoint.cpp
 	./cpp/jni/JNIIPEndpoint.h
 	./cpp/jni/JNIIterable.cpp
@@ -168,6 +172,8 @@ set(all_sources
 	./cpp/jni/JNILogEntry.h
 	./cpp/jni/JNILogHandler.cpp
 	./cpp/jni/JNILogHandler.h
+    ./cpp/jni/JNIMap.cpp
+	./cpp/jni/JNIMap.h
 	./cpp/jni/JNIMasterApplication.cpp
 	./cpp/jni/JNIMasterApplication.h
 	./cpp/jni/JNIMasterConfig.cpp
