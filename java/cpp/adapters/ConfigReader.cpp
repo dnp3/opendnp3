@@ -117,27 +117,27 @@ opendnp3::DatabaseConfig ConfigReader::ConvertDatavaseConfig(JNIEnv* env, jobjec
 		config.binary_input[get_index(entry)] = ConvertBinaryConfig(env, get_value(entry));
     });
 
-    JNI::Iterate(env, db.getdoubleBinary(env, jdb), [&](LocalRef<jobject> entry) {
+    JNI::Iterate(env, map.entrySet(env, db.getdoubleBinary(env, jdb)), [&](LocalRef<jobject> entry) {
         config.double_binary[get_index(entry)] = ConvertDoubleBinaryConfig(env, get_value(entry));
     });
 
-    JNI::Iterate(env, db.getanalog(env, jdb), [&](LocalRef<jobject> entry) {
+    JNI::Iterate(env, map.entrySet(env, db.getanalog(env, jdb)), [&](LocalRef<jobject> entry) {
         config.analog_input[get_index(entry)] = ConvertAnalogConfig(env, get_value(entry));
     });
     
-	JNI::Iterate(env, db.getcounter(env, jdb), [&](LocalRef<jobject> entry) {
+	JNI::Iterate(env, map.entrySet(env, db.getcounter(env, jdb)), [&](LocalRef<jobject> entry) {
         config.counter[get_index(entry)] = ConvertCounterConfig(env, get_value(entry));
     });
     
-	JNI::Iterate(env, db.getfrozenCounter(env, jdb), [&](LocalRef<jobject> entry) {
+	JNI::Iterate(env, map.entrySet(env, db.getfrozenCounter(env, jdb)), [&](LocalRef<jobject> entry) {
         config.frozen_counter[get_index(entry)] = ConvertFrozenCounterConfig(env, get_value(entry));
     });
     
-	JNI::Iterate(env, db.getboStatus(env, jdb), [&](LocalRef<jobject> entry) {
+	JNI::Iterate(env, map.entrySet(env, db.getboStatus(env, jdb)), [&](LocalRef<jobject> entry) {
         config.binary_output_status[get_index(entry)] = ConvertBOStatusConfig(env, get_value(entry));
     });
 
-    JNI::Iterate(env, db.getaoStatus(env, jdb), [&](LocalRef<jobject> entry) {
+    JNI::Iterate(env, map.entrySet(env, db.getaoStatus(env, jdb)), [&](LocalRef<jobject> entry) {
         config.analog_output_status[get_index(entry)] = ConvertAOStatusConfig(env, get_value(entry));
     });
 
