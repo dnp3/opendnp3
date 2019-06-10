@@ -242,7 +242,7 @@ set(all_sources
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${all_sources})
 
-add_library(opendnp3java ${all_sources})
+add_library(opendnp3java SHARED ${all_sources})
 target_compile_features(opendnp3java PUBLIC cxx_std_14)
 target_link_libraries(opendnp3java PUBLIC opendnp3)
 target_include_directories(opendnp3java PRIVATE ${JNI_INCLUDE_DIRS})

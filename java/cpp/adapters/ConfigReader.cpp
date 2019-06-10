@@ -186,82 +186,75 @@ opendnp3::TimeDuration ConfigReader::ConvertDuration(JNIEnv* env, jobject jdurat
     return opendnp3::TimeDuration::Milliseconds(jni::JCache::Duration.toMillis(env, jduration));
 }
 
-template<class Spec, class ConfigCache, class StaticVariation, class EventVariation>
-typename Spec::config_t ConvertEventType(
+template<class Info, class ConfigType, class ConfigCache, class StaticVariation, class EventVariation>
+typename ConfigType ConvertEventType(
     JNIEnv* env, jobject jconfig, ConfigCache& cache, StaticVariation& svariation, EventVariation& evariation)
 {
-    typename Spec::config_t cfg;
-    cfg.vIndex = static_cast<uint16_t>(jni::JCache::EventConfig.getvIndex(env, jconfig));
-    cfg.clazz
-        = static_cast<PointClass>(jni::JCache::PointClass.toType(env, jni::JCache::EventConfig.getclazz(env, jconfig)));
-    cfg.svariation = static_cast<typename Spec::static_variation_t>(
-        svariation.toType(env, cache.getstaticVariation(env, jconfig)));
-    cfg.evariation
-        = static_cast<typename Spec::event_variation_t>(evariation.toType(env, cache.geteventVariation(env, jconfig)));
+	ConfigType cfg;
+    cfg.clazz = static_cast<PointClass>(jni::JCache::PointClass.toType(env, jni::JCache::EventConfig.getclazz(env, jconfig)));
+    cfg.svariation = static_cast<typename Info::static_variation_t>(svariation.toType(env, cache.getstaticVariation(env, jconfig)));
+    cfg.evariation = static_cast<typename Info::event_variation_t>(evariation.toType(env, cache.geteventVariation(env, jconfig)));
     return cfg;
 }
 
-template<class Spec, class ConfigCache, class StaticVariation, class EventVariation>
-typename Spec::config_t ConvertDeadbandType(
+template<class Info, class ConfigType, class ConfigCache, class StaticVariation, class EventVariation>
+typename ConfigType ConvertDeadbandType(
     JNIEnv* env, jobject jconfig, ConfigCache& cache, StaticVariation& svariation, EventVariation& evariation)
 {
-    typename Spec::config_t cfg;
-    cfg.vIndex = static_cast<uint16_t>(jni::JCache::EventConfig.getvIndex(env, jconfig));
-    cfg.clazz
-        = static_cast<PointClass>(jni::JCache::PointClass.toType(env, jni::JCache::EventConfig.getclazz(env, jconfig)));
-    cfg.svariation = static_cast<typename Spec::static_variation_t>(
-        svariation.toType(env, cache.getstaticVariation(env, jconfig)));
-    cfg.evariation
-        = static_cast<typename Spec::event_variation_t>(evariation.toType(env, cache.geteventVariation(env, jconfig)));
+    ConfigType cfg;    
+    cfg.clazz = static_cast<PointClass>(jni::JCache::PointClass.toType(env, jni::JCache::EventConfig.getclazz(env, jconfig)));
+    cfg.svariation = static_cast<typename Info::static_variation_t>(svariation.toType(env, cache.getstaticVariation(env, jconfig)));
+    cfg.evariation = static_cast<typename Info::event_variation_t>(evariation.toType(env, cache.geteventVariation(env, jconfig)));
     cfg.deadband = cache.getdeadband(env, jconfig);
     return cfg;
 }
 
-/* TODO
+
 
 opendnp3::BinaryConfig ConfigReader::ConvertBinaryConfig(JNIEnv* env, jobject jconfig)
 {
-    return ConvertEventType<BinaryInfo>(env, jconfig, jni::JCache::BinaryConfig, jni::JCache::StaticBinaryVariation,
+    return ConvertEventType<BinaryInfo, BinaryConfig>(env, jconfig, jni::JCache::BinaryConfig, jni::JCache::StaticBinaryVariation,
                                         jni::JCache::EventBinaryVariation);
 }
 
+
 opendnp3::DoubleBitBinaryConfig ConfigReader::ConvertDoubleBinaryConfig(JNIEnv* env, jobject jconfig)
 {
-    return ConvertEventType<DoubleBitBinarySpec>(env, jconfig, jni::JCache::DoubleBinaryConfig,
+    return ConvertEventType<DoubleBitBinaryInfo, DoubleBitBinaryConfig>(env, jconfig, jni::JCache::DoubleBinaryConfig,
                                                  jni::JCache::StaticDoubleBinaryVariation,
                                                  jni::JCache::EventDoubleBinaryVariation);
 }
 
 opendnp3::AnalogConfig ConfigReader::ConvertAnalogConfig(JNIEnv* env, jobject jconfig)
 {
-    return ConvertDeadbandType<AnalogSpec>(env, jconfig, jni::JCache::AnalogConfig, jni::JCache::StaticAnalogVariation,
+    return ConvertDeadbandType<AnalogInfo, AnalogConfig>(env, jconfig, jni::JCache::AnalogConfig, jni::JCache::StaticAnalogVariation,
                                            jni::JCache::EventAnalogVariation);
 }
 
 opendnp3::CounterConfig ConfigReader::ConvertCounterConfig(JNIEnv* env, jobject jconfig)
 {
-    return ConvertDeadbandType<CounterSpec>(env, jconfig, jni::JCache::CounterConfig,
+    return ConvertDeadbandType<CounterInfo, CounterConfig>(env, jconfig, jni::JCache::CounterConfig,
                                             jni::JCache::StaticCounterVariation, jni::JCache::EventCounterVariation);
 }
 
 opendnp3::FrozenCounterConfig ConfigReader::ConvertFrozenCounterConfig(JNIEnv* env, jobject jconfig)
 {
-    return ConvertDeadbandType<FrozenCounterSpec>(env, jconfig, jni::JCache::FrozenCounterConfig,
+    return ConvertDeadbandType<FrozenCounterInfo, FrozenCounterConfig>(env, jconfig, jni::JCache::FrozenCounterConfig,
                                                   jni::JCache::StaticFrozenCounterVariation,
                                                   jni::JCache::EventFrozenCounterVariation);
 }
 
 opendnp3::BOStatusConfig ConfigReader::ConvertBOStatusConfig(JNIEnv* env, jobject jconfig)
 {
-    return ConvertEventType<BinaryOutputStatusSpec>(env, jconfig, jni::JCache::BinaryOutputStatusConfig,
+    return ConvertEventType<BinaryOutputStatusInfo, BOStatusConfig>(env, jconfig, jni::JCache::BinaryOutputStatusConfig,
                                                     jni::JCache::StaticBinaryOutputStatusVariation,
                                                     jni::JCache::EventBinaryOutputStatusVariation);
 }
 
 opendnp3::AOStatusConfig ConfigReader::ConvertAOStatusConfig(JNIEnv* env, jobject jconfig)
 {
-    return ConvertEventType<AnalogOutputStatusSpec>(env, jconfig, jni::JCache::AnalogOutputStatusConfig,
+    return ConvertEventType<AnalogOutputStatusInfo, AOStatusConfig>(env, jconfig, jni::JCache::AnalogOutputStatusConfig,
                                                     jni::JCache::StaticAnalogOutputStatusVariation,
                                                     jni::JCache::EventAnalogOutputStatusVariation);
 }
-*/
+
