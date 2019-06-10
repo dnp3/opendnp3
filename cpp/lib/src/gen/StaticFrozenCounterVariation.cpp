@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/StaticFrozenCounterVariation.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -53,6 +55,8 @@ StaticFrozenCounterVariation StaticFrozenCounterVariationFromType(uint8_t arg)
       return StaticFrozenCounterVariation::Group21Var9;
     case(5):
       return StaticFrozenCounterVariation::Group21Var10;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* StaticFrozenCounterVariationToString(StaticFrozenCounterVariation arg)
@@ -74,6 +78,16 @@ char const* StaticFrozenCounterVariationToString(StaticFrozenCounterVariation ar
     default:
       return "UNDEFINED";
   }
+}
+StaticFrozenCounterVariation StaticFrozenCounterVariationFromString(char const* arg)
+{
+  if(std::strncmp(arg, "Group21Var1", 11)) return StaticFrozenCounterVariation::Group21Var1;
+  if(std::strncmp(arg, "Group21Var2", 11)) return StaticFrozenCounterVariation::Group21Var2;
+  if(std::strncmp(arg, "Group21Var5", 11)) return StaticFrozenCounterVariation::Group21Var5;
+  if(std::strncmp(arg, "Group21Var6", 11)) return StaticFrozenCounterVariation::Group21Var6;
+  if(std::strncmp(arg, "Group21Var9", 11)) return StaticFrozenCounterVariation::Group21Var9;
+  if(std::strncmp(arg, "Group21Var10", 12)) return StaticFrozenCounterVariation::Group21Var10;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

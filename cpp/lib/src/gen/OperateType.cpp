@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/OperateType.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -47,6 +49,8 @@ OperateType OperateTypeFromType(uint8_t arg)
       return OperateType::DirectOperate;
     case(0x2):
       return OperateType::DirectOperateNoAck;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* OperateTypeToString(OperateType arg)
@@ -62,6 +66,13 @@ char const* OperateTypeToString(OperateType arg)
     default:
       return "UNDEFINED";
   }
+}
+OperateType OperateTypeFromString(char const* arg)
+{
+  if(std::strncmp(arg, "SelectBeforeOperate", 19)) return OperateType::SelectBeforeOperate;
+  if(std::strncmp(arg, "DirectOperate", 13)) return OperateType::DirectOperate;
+  if(std::strncmp(arg, "DirectOperateNoAck", 18)) return OperateType::DirectOperateNoAck;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

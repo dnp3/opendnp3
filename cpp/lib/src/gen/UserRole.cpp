@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/UserRole.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -84,6 +86,18 @@ char const* UserRoleToString(UserRole arg)
     default:
       return "UNDEFINED";
   }
+}
+UserRole UserRoleFromString(char const* arg)
+{
+  if(std::strncmp(arg, "VIEWER", 6)) return UserRole::VIEWER;
+  if(std::strncmp(arg, "OPERATOR", 8)) return UserRole::OPERATOR;
+  if(std::strncmp(arg, "ENGINEER", 8)) return UserRole::ENGINEER;
+  if(std::strncmp(arg, "INSTALLER", 9)) return UserRole::INSTALLER;
+  if(std::strncmp(arg, "SECADM", 6)) return UserRole::SECADM;
+  if(std::strncmp(arg, "SECAUD", 6)) return UserRole::SECAUD;
+  if(std::strncmp(arg, "RBACMNT", 7)) return UserRole::RBACMNT;
+  if(std::strncmp(arg, "SINGLE_USER", 11)) return UserRole::SINGLE_USER;
+  else return UserRole::UNDEFINED;
 }
 
 }

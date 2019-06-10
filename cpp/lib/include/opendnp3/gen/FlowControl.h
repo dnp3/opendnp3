@@ -49,6 +49,7 @@ enum class FlowControl : uint8_t
 uint8_t FlowControlToType(FlowControl arg);
 FlowControl FlowControlFromType(uint8_t arg);
 char const* FlowControlToString(FlowControl arg);
+FlowControl FlowControlFromString(char const* arg);
 
 }
 

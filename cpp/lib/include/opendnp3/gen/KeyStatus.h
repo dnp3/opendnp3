@@ -55,6 +55,7 @@ enum class KeyStatus : uint8_t
 uint8_t KeyStatusToType(KeyStatus arg);
 KeyStatus KeyStatusFromType(uint8_t arg);
 char const* KeyStatusToString(KeyStatus arg);
+KeyStatus KeyStatusFromString(char const* arg);
 
 }
 

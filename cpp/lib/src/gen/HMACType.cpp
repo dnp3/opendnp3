@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/HMACType.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -76,6 +78,16 @@ char const* HMACTypeToString(HMACType arg)
     default:
       return "UNKNOWN";
   }
+}
+HMACType HMACTypeFromString(char const* arg)
+{
+  if(std::strncmp(arg, "NO_MAC_VALUE", 12)) return HMACType::NO_MAC_VALUE;
+  if(std::strncmp(arg, "HMAC_SHA1_TRUNC_10", 18)) return HMACType::HMAC_SHA1_TRUNC_10;
+  if(std::strncmp(arg, "HMAC_SHA256_TRUNC_8", 19)) return HMACType::HMAC_SHA256_TRUNC_8;
+  if(std::strncmp(arg, "HMAC_SHA256_TRUNC_16", 20)) return HMACType::HMAC_SHA256_TRUNC_16;
+  if(std::strncmp(arg, "HMAC_SHA1_TRUNC_8", 17)) return HMACType::HMAC_SHA1_TRUNC_8;
+  if(std::strncmp(arg, "AES_GMAC", 8)) return HMACType::AES_GMAC;
+  else return HMACType::UNKNOWN;
 }
 
 }

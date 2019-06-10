@@ -50,6 +50,7 @@ enum class RestartType : uint8_t
 uint8_t RestartTypeToType(RestartType arg);
 RestartType RestartTypeFromType(uint8_t arg);
 char const* RestartTypeToString(RestartType arg);
+RestartType RestartTypeFromString(char const* arg);
 
 }
 

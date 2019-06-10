@@ -50,6 +50,7 @@ enum class IndexQualifierMode : uint8_t
 uint8_t IndexQualifierModeToType(IndexQualifierMode arg);
 IndexQualifierMode IndexQualifierModeFromType(uint8_t arg);
 char const* IndexQualifierModeToString(IndexQualifierMode arg);
+IndexQualifierMode IndexQualifierModeFromString(char const* arg);
 
 }
 

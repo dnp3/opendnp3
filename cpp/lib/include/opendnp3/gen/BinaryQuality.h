@@ -62,6 +62,7 @@ enum class BinaryQuality : uint8_t
 uint8_t BinaryQualityToType(BinaryQuality arg);
 BinaryQuality BinaryQualityFromType(uint8_t arg);
 char const* BinaryQualityToString(BinaryQuality arg);
+BinaryQuality BinaryQualityFromString(char const* arg);
 
 }
 

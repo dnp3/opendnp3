@@ -51,6 +51,7 @@ enum class KeyWrapAlgorithm : uint8_t
 uint8_t KeyWrapAlgorithmToType(KeyWrapAlgorithm arg);
 KeyWrapAlgorithm KeyWrapAlgorithmFromType(uint8_t arg);
 char const* KeyWrapAlgorithmToString(KeyWrapAlgorithm arg);
+KeyWrapAlgorithm KeyWrapAlgorithmFromString(char const* arg);
 
 }
 

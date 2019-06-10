@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/StaticOctetStringVariation.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -43,6 +45,8 @@ StaticOctetStringVariation StaticOctetStringVariationFromType(uint8_t arg)
   {
     case(0):
       return StaticOctetStringVariation::Group110Var0;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* StaticOctetStringVariationToString(StaticOctetStringVariation arg)
@@ -54,6 +58,11 @@ char const* StaticOctetStringVariationToString(StaticOctetStringVariation arg)
     default:
       return "UNDEFINED";
   }
+}
+StaticOctetStringVariation StaticOctetStringVariationFromString(char const* arg)
+{
+  if(std::strncmp(arg, "Group110Var0", 12)) return StaticOctetStringVariation::Group110Var0;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

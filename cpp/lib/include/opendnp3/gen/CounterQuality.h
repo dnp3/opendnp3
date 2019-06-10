@@ -62,6 +62,7 @@ enum class CounterQuality : uint8_t
 uint8_t CounterQualityToType(CounterQuality arg);
 CounterQuality CounterQualityFromType(uint8_t arg);
 char const* CounterQualityToString(CounterQuality arg);
+CounterQuality CounterQualityFromString(char const* arg);
 
 }
 

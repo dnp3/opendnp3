@@ -40,10 +40,11 @@ object CppEnumGenerator {
 
     def writeEnumToFiles(cfg: EnumConfig): Unit = {
 
-      val conversions = if(cfg.conversions) List(EnumToType, EnumFromType) else Nil
-      val stringify = if(cfg.stringConv) List(EnumToString) else Nil
+      val intConversions = if(cfg.intConv) List(EnumToType, EnumFromType) else Nil
+      val stringConversions = if(cfg.stringConv) List(EnumToString, EnumFromString) else Nil
+      val serialization = if(cfg.serialization) List(EnumSerialization) else Nil
 
-      val renders = conversions ::: stringify
+      val renders = intConversions ::: stringConversions
 
       def writeHeader() {
         def license = commented(LicenseHeader())
@@ -58,10 +59,10 @@ object CppEnumGenerator {
       def writeImpl() {
         def license = commented(LicenseHeader())
         def funcs = renders.flatMap(r => r.impl.render(cfg.model)).toIterator
-        def inc = quoted(String.format(incFormatString, headerName(cfg.model)))
-        def lines = license ++ space ++ Iterator(include(inc)) ++ space ++ namespace(cppNamespace)(funcs)
+        def inc = List(quoted(String.format(incFormatString, headerName(cfg.model))), bracketed("cstring"), bracketed("stdexcept")).map(i => include(i))
+        def lines = license ++ space ++ inc ++ space ++ namespace(cppNamespace)(funcs)
 
-        if(cfg.conversions || cfg.stringConv)
+        if(cfg.intConv || cfg.stringConv)
         {
           writeTo(implPath(cfg.model))(lines)
           println("Wrote: " + implPath(cfg.model))
@@ -74,7 +75,7 @@ object CppEnumGenerator {
         def funcs = EnumSerialization.render(cfg.model)
         def lines = license ++ space ++ includes ++ space ++ funcs
 
-        if(cfg.conversions)
+        if(cfg.serialization)
         {
           val path = privateHeaderPath(cfg.model)
           writeTo(path)(lines)

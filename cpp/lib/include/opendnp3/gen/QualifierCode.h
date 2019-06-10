@@ -55,6 +55,7 @@ enum class QualifierCode : uint8_t
 uint8_t QualifierCodeToType(QualifierCode arg);
 QualifierCode QualifierCodeFromType(uint8_t arg);
 char const* QualifierCodeToString(QualifierCode arg);
+QualifierCode QualifierCodeFromString(char const* arg);
 
 }
 

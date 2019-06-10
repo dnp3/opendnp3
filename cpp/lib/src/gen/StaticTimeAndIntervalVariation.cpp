@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/StaticTimeAndIntervalVariation.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -43,6 +45,8 @@ StaticTimeAndIntervalVariation StaticTimeAndIntervalVariationFromType(uint8_t ar
   {
     case(0):
       return StaticTimeAndIntervalVariation::Group50Var4;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* StaticTimeAndIntervalVariationToString(StaticTimeAndIntervalVariation arg)
@@ -54,6 +58,11 @@ char const* StaticTimeAndIntervalVariationToString(StaticTimeAndIntervalVariatio
     default:
       return "UNDEFINED";
   }
+}
+StaticTimeAndIntervalVariation StaticTimeAndIntervalVariationFromString(char const* arg)
+{
+  if(std::strncmp(arg, "Group50Var4", 11)) return StaticTimeAndIntervalVariation::Group50Var4;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

@@ -51,6 +51,7 @@ enum class EventAnalogVariation : uint8_t
 uint8_t EventAnalogVariationToType(EventAnalogVariation arg);
 EventAnalogVariation EventAnalogVariationFromType(uint8_t arg);
 char const* EventAnalogVariationToString(EventAnalogVariation arg);
+EventAnalogVariation EventAnalogVariationFromString(char const* arg);
 
 }
 

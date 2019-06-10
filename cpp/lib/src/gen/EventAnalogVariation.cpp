@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/EventAnalogVariation.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -57,6 +59,8 @@ EventAnalogVariation EventAnalogVariationFromType(uint8_t arg)
       return EventAnalogVariation::Group32Var7;
     case(7):
       return EventAnalogVariation::Group32Var8;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* EventAnalogVariationToString(EventAnalogVariation arg)
@@ -82,6 +86,18 @@ char const* EventAnalogVariationToString(EventAnalogVariation arg)
     default:
       return "UNDEFINED";
   }
+}
+EventAnalogVariation EventAnalogVariationFromString(char const* arg)
+{
+  if(std::strncmp(arg, "Group32Var1", 11)) return EventAnalogVariation::Group32Var1;
+  if(std::strncmp(arg, "Group32Var2", 11)) return EventAnalogVariation::Group32Var2;
+  if(std::strncmp(arg, "Group32Var3", 11)) return EventAnalogVariation::Group32Var3;
+  if(std::strncmp(arg, "Group32Var4", 11)) return EventAnalogVariation::Group32Var4;
+  if(std::strncmp(arg, "Group32Var5", 11)) return EventAnalogVariation::Group32Var5;
+  if(std::strncmp(arg, "Group32Var6", 11)) return EventAnalogVariation::Group32Var6;
+  if(std::strncmp(arg, "Group32Var7", 11)) return EventAnalogVariation::Group32Var7;
+  if(std::strncmp(arg, "Group32Var8", 11)) return EventAnalogVariation::Group32Var8;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

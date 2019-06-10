@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/CounterQuality.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -57,6 +59,8 @@ CounterQuality CounterQualityFromType(uint8_t arg)
       return CounterQuality::DISCONTINUITY;
     case(0x80):
       return CounterQuality::RESERVED;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* CounterQualityToString(CounterQuality arg)
@@ -82,6 +86,18 @@ char const* CounterQualityToString(CounterQuality arg)
     default:
       return "UNDEFINED";
   }
+}
+CounterQuality CounterQualityFromString(char const* arg)
+{
+  if(std::strncmp(arg, "ONLINE", 6)) return CounterQuality::ONLINE;
+  if(std::strncmp(arg, "RESTART", 7)) return CounterQuality::RESTART;
+  if(std::strncmp(arg, "COMM_LOST", 9)) return CounterQuality::COMM_LOST;
+  if(std::strncmp(arg, "REMOTE_FORCED", 13)) return CounterQuality::REMOTE_FORCED;
+  if(std::strncmp(arg, "LOCAL_FORCED", 12)) return CounterQuality::LOCAL_FORCED;
+  if(std::strncmp(arg, "ROLLOVER", 8)) return CounterQuality::ROLLOVER;
+  if(std::strncmp(arg, "DISCONTINUITY", 13)) return CounterQuality::DISCONTINUITY;
+  if(std::strncmp(arg, "RESERVED", 8)) return CounterQuality::RESERVED;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

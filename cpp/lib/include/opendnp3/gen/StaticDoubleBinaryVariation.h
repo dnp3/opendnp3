@@ -44,6 +44,7 @@ enum class StaticDoubleBinaryVariation : uint8_t
 uint8_t StaticDoubleBinaryVariationToType(StaticDoubleBinaryVariation arg);
 StaticDoubleBinaryVariation StaticDoubleBinaryVariationFromType(uint8_t arg);
 char const* StaticDoubleBinaryVariationToString(StaticDoubleBinaryVariation arg);
+StaticDoubleBinaryVariation StaticDoubleBinaryVariationFromString(char const* arg);
 
 }
 

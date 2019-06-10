@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/SecurityStatIndex.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -77,6 +79,8 @@ SecurityStatIndex SecurityStatIndexFromType(uint8_t arg)
       return SecurityStatIndex::FAILED_UPDATE_KEY_CHANGES;
     case(17):
       return SecurityStatIndex::REKEYS_DUE_TO_RESTART;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* SecurityStatIndexToString(SecurityStatIndex arg)
@@ -122,6 +126,28 @@ char const* SecurityStatIndexToString(SecurityStatIndex arg)
     default:
       return "UNDEFINED";
   }
+}
+SecurityStatIndex SecurityStatIndexFromString(char const* arg)
+{
+  if(std::strncmp(arg, "UNEXPECTED_MESSAGES", 19)) return SecurityStatIndex::UNEXPECTED_MESSAGES;
+  if(std::strncmp(arg, "AUTHORIZATION_FAILURES", 22)) return SecurityStatIndex::AUTHORIZATION_FAILURES;
+  if(std::strncmp(arg, "AUTHENTICATION_FAILURES", 23)) return SecurityStatIndex::AUTHENTICATION_FAILURES;
+  if(std::strncmp(arg, "REPLY_TIMEOUTS", 14)) return SecurityStatIndex::REPLY_TIMEOUTS;
+  if(std::strncmp(arg, "REKEYS_DUE_TO_AUTH_FAILUE", 25)) return SecurityStatIndex::REKEYS_DUE_TO_AUTH_FAILUE;
+  if(std::strncmp(arg, "TOTAL_MESSAGES_TX", 17)) return SecurityStatIndex::TOTAL_MESSAGES_TX;
+  if(std::strncmp(arg, "TOTAL_MESSAGES_RX", 17)) return SecurityStatIndex::TOTAL_MESSAGES_RX;
+  if(std::strncmp(arg, "CRITICAL_MESSAGES_TX", 20)) return SecurityStatIndex::CRITICAL_MESSAGES_TX;
+  if(std::strncmp(arg, "CRITICAL_MESSAGES_RX", 20)) return SecurityStatIndex::CRITICAL_MESSAGES_RX;
+  if(std::strncmp(arg, "DISCARED_MESSAGES", 17)) return SecurityStatIndex::DISCARED_MESSAGES;
+  if(std::strncmp(arg, "ERROR_MESSAGES_TX", 17)) return SecurityStatIndex::ERROR_MESSAGES_TX;
+  if(std::strncmp(arg, "ERROR_MESSAGES_RX", 17)) return SecurityStatIndex::ERROR_MESSAGES_RX;
+  if(std::strncmp(arg, "SUCCESSFUL_AUTHS", 16)) return SecurityStatIndex::SUCCESSFUL_AUTHS;
+  if(std::strncmp(arg, "SESSION_KEY_CHANGES", 19)) return SecurityStatIndex::SESSION_KEY_CHANGES;
+  if(std::strncmp(arg, "FAILED_SESSION_KEY_CHANGES", 26)) return SecurityStatIndex::FAILED_SESSION_KEY_CHANGES;
+  if(std::strncmp(arg, "UPDATE_KEY_CHANGES", 18)) return SecurityStatIndex::UPDATE_KEY_CHANGES;
+  if(std::strncmp(arg, "FAILED_UPDATE_KEY_CHANGES", 25)) return SecurityStatIndex::FAILED_UPDATE_KEY_CHANGES;
+  if(std::strncmp(arg, "REKEYS_DUE_TO_RESTART", 21)) return SecurityStatIndex::REKEYS_DUE_TO_RESTART;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

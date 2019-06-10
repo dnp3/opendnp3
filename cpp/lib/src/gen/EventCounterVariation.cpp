@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/EventCounterVariation.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -49,6 +51,8 @@ EventCounterVariation EventCounterVariationFromType(uint8_t arg)
       return EventCounterVariation::Group22Var5;
     case(3):
       return EventCounterVariation::Group22Var6;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* EventCounterVariationToString(EventCounterVariation arg)
@@ -66,6 +70,14 @@ char const* EventCounterVariationToString(EventCounterVariation arg)
     default:
       return "UNDEFINED";
   }
+}
+EventCounterVariation EventCounterVariationFromString(char const* arg)
+{
+  if(std::strncmp(arg, "Group22Var1", 11)) return EventCounterVariation::Group22Var1;
+  if(std::strncmp(arg, "Group22Var2", 11)) return EventCounterVariation::Group22Var2;
+  if(std::strncmp(arg, "Group22Var5", 11)) return EventCounterVariation::Group22Var5;
+  if(std::strncmp(arg, "Group22Var6", 11)) return EventCounterVariation::Group22Var6;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

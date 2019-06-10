@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/AnalogOutputStatusQuality.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -57,6 +59,8 @@ AnalogOutputStatusQuality AnalogOutputStatusQualityFromType(uint8_t arg)
       return AnalogOutputStatusQuality::REFERENCE_ERR;
     case(0x80):
       return AnalogOutputStatusQuality::RESERVED;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* AnalogOutputStatusQualityToString(AnalogOutputStatusQuality arg)
@@ -82,6 +86,18 @@ char const* AnalogOutputStatusQualityToString(AnalogOutputStatusQuality arg)
     default:
       return "UNDEFINED";
   }
+}
+AnalogOutputStatusQuality AnalogOutputStatusQualityFromString(char const* arg)
+{
+  if(std::strncmp(arg, "ONLINE", 6)) return AnalogOutputStatusQuality::ONLINE;
+  if(std::strncmp(arg, "RESTART", 7)) return AnalogOutputStatusQuality::RESTART;
+  if(std::strncmp(arg, "COMM_LOST", 9)) return AnalogOutputStatusQuality::COMM_LOST;
+  if(std::strncmp(arg, "REMOTE_FORCED", 13)) return AnalogOutputStatusQuality::REMOTE_FORCED;
+  if(std::strncmp(arg, "LOCAL_FORCED", 12)) return AnalogOutputStatusQuality::LOCAL_FORCED;
+  if(std::strncmp(arg, "OVERRANGE", 9)) return AnalogOutputStatusQuality::OVERRANGE;
+  if(std::strncmp(arg, "REFERENCE_ERR", 13)) return AnalogOutputStatusQuality::REFERENCE_ERR;
+  if(std::strncmp(arg, "RESERVED", 8)) return AnalogOutputStatusQuality::RESERVED;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

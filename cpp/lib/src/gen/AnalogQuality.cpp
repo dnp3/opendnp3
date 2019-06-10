@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/AnalogQuality.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -57,6 +59,8 @@ AnalogQuality AnalogQualityFromType(uint8_t arg)
       return AnalogQuality::REFERENCE_ERR;
     case(0x80):
       return AnalogQuality::RESERVED;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* AnalogQualityToString(AnalogQuality arg)
@@ -82,6 +86,18 @@ char const* AnalogQualityToString(AnalogQuality arg)
     default:
       return "UNDEFINED";
   }
+}
+AnalogQuality AnalogQualityFromString(char const* arg)
+{
+  if(std::strncmp(arg, "ONLINE", 6)) return AnalogQuality::ONLINE;
+  if(std::strncmp(arg, "RESTART", 7)) return AnalogQuality::RESTART;
+  if(std::strncmp(arg, "COMM_LOST", 9)) return AnalogQuality::COMM_LOST;
+  if(std::strncmp(arg, "REMOTE_FORCED", 13)) return AnalogQuality::REMOTE_FORCED;
+  if(std::strncmp(arg, "LOCAL_FORCED", 12)) return AnalogQuality::LOCAL_FORCED;
+  if(std::strncmp(arg, "OVERRANGE", 9)) return AnalogQuality::OVERRANGE;
+  if(std::strncmp(arg, "REFERENCE_ERR", 13)) return AnalogQuality::REFERENCE_ERR;
+  if(std::strncmp(arg, "RESERVED", 8)) return AnalogQuality::RESERVED;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

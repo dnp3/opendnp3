@@ -180,6 +180,7 @@ enum class GroupVariation : uint16_t
 uint16_t GroupVariationToType(GroupVariation arg);
 GroupVariation GroupVariationFromType(uint16_t arg);
 char const* GroupVariationToString(GroupVariation arg);
+GroupVariation GroupVariationFromString(char const* arg);
 
 }
 

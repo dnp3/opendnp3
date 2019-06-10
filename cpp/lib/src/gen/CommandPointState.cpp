@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/CommandPointState.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -53,6 +55,8 @@ CommandPointState CommandPointStateFromType(uint8_t arg)
       return CommandPointState::OPERATE_FAIL;
     case(5):
       return CommandPointState::SUCCESS;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* CommandPointStateToString(CommandPointState arg)
@@ -74,6 +78,16 @@ char const* CommandPointStateToString(CommandPointState arg)
     default:
       return "UNDEFINED";
   }
+}
+CommandPointState CommandPointStateFromString(char const* arg)
+{
+  if(std::strncmp(arg, "INIT", 4)) return CommandPointState::INIT;
+  if(std::strncmp(arg, "SELECT_SUCCESS", 14)) return CommandPointState::SELECT_SUCCESS;
+  if(std::strncmp(arg, "SELECT_MISMATCH", 15)) return CommandPointState::SELECT_MISMATCH;
+  if(std::strncmp(arg, "SELECT_FAIL", 11)) return CommandPointState::SELECT_FAIL;
+  if(std::strncmp(arg, "OPERATE_FAIL", 12)) return CommandPointState::OPERATE_FAIL;
+  if(std::strncmp(arg, "SUCCESS", 7)) return CommandPointState::SUCCESS;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

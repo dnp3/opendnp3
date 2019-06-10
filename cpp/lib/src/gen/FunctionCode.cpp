@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/FunctionCode.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -196,6 +198,46 @@ char const* FunctionCodeToString(FunctionCode arg)
     default:
       return "UNKNOWN";
   }
+}
+FunctionCode FunctionCodeFromString(char const* arg)
+{
+  if(std::strncmp(arg, "CONFIRM", 7)) return FunctionCode::CONFIRM;
+  if(std::strncmp(arg, "READ", 4)) return FunctionCode::READ;
+  if(std::strncmp(arg, "WRITE", 5)) return FunctionCode::WRITE;
+  if(std::strncmp(arg, "SELECT", 6)) return FunctionCode::SELECT;
+  if(std::strncmp(arg, "OPERATE", 7)) return FunctionCode::OPERATE;
+  if(std::strncmp(arg, "DIRECT_OPERATE", 14)) return FunctionCode::DIRECT_OPERATE;
+  if(std::strncmp(arg, "DIRECT_OPERATE_NR", 17)) return FunctionCode::DIRECT_OPERATE_NR;
+  if(std::strncmp(arg, "IMMED_FREEZE", 12)) return FunctionCode::IMMED_FREEZE;
+  if(std::strncmp(arg, "IMMED_FREEZE_NR", 15)) return FunctionCode::IMMED_FREEZE_NR;
+  if(std::strncmp(arg, "FREEZE_CLEAR", 12)) return FunctionCode::FREEZE_CLEAR;
+  if(std::strncmp(arg, "FREEZE_CLEAR_NR", 15)) return FunctionCode::FREEZE_CLEAR_NR;
+  if(std::strncmp(arg, "FREEZE_AT_TIME", 14)) return FunctionCode::FREEZE_AT_TIME;
+  if(std::strncmp(arg, "FREEZE_AT_TIME_NR", 17)) return FunctionCode::FREEZE_AT_TIME_NR;
+  if(std::strncmp(arg, "COLD_RESTART", 12)) return FunctionCode::COLD_RESTART;
+  if(std::strncmp(arg, "WARM_RESTART", 12)) return FunctionCode::WARM_RESTART;
+  if(std::strncmp(arg, "INITIALIZE_DATA", 15)) return FunctionCode::INITIALIZE_DATA;
+  if(std::strncmp(arg, "INITIALIZE_APPLICATION", 22)) return FunctionCode::INITIALIZE_APPLICATION;
+  if(std::strncmp(arg, "START_APPLICATION", 17)) return FunctionCode::START_APPLICATION;
+  if(std::strncmp(arg, "STOP_APPLICATION", 16)) return FunctionCode::STOP_APPLICATION;
+  if(std::strncmp(arg, "SAVE_CONFIGURATION", 18)) return FunctionCode::SAVE_CONFIGURATION;
+  if(std::strncmp(arg, "ENABLE_UNSOLICITED", 18)) return FunctionCode::ENABLE_UNSOLICITED;
+  if(std::strncmp(arg, "DISABLE_UNSOLICITED", 19)) return FunctionCode::DISABLE_UNSOLICITED;
+  if(std::strncmp(arg, "ASSIGN_CLASS", 12)) return FunctionCode::ASSIGN_CLASS;
+  if(std::strncmp(arg, "DELAY_MEASURE", 13)) return FunctionCode::DELAY_MEASURE;
+  if(std::strncmp(arg, "RECORD_CURRENT_TIME", 19)) return FunctionCode::RECORD_CURRENT_TIME;
+  if(std::strncmp(arg, "OPEN_FILE", 9)) return FunctionCode::OPEN_FILE;
+  if(std::strncmp(arg, "CLOSE_FILE", 10)) return FunctionCode::CLOSE_FILE;
+  if(std::strncmp(arg, "DELETE_FILE", 11)) return FunctionCode::DELETE_FILE;
+  if(std::strncmp(arg, "GET_FILE_INFO", 13)) return FunctionCode::GET_FILE_INFO;
+  if(std::strncmp(arg, "AUTHENTICATE_FILE", 17)) return FunctionCode::AUTHENTICATE_FILE;
+  if(std::strncmp(arg, "ABORT_FILE", 10)) return FunctionCode::ABORT_FILE;
+  if(std::strncmp(arg, "AUTH_REQUEST", 12)) return FunctionCode::AUTH_REQUEST;
+  if(std::strncmp(arg, "AUTH_REQUEST_NO_ACK", 19)) return FunctionCode::AUTH_REQUEST_NO_ACK;
+  if(std::strncmp(arg, "RESPONSE", 8)) return FunctionCode::RESPONSE;
+  if(std::strncmp(arg, "UNSOLICITED_RESPONSE", 20)) return FunctionCode::UNSOLICITED_RESPONSE;
+  if(std::strncmp(arg, "AUTH_RESPONSE", 13)) return FunctionCode::AUTH_RESPONSE;
+  else return FunctionCode::UNKNOWN;
 }
 
 }

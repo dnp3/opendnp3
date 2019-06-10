@@ -55,6 +55,7 @@ enum class UserRole : uint16_t
 uint16_t UserRoleToType(UserRole arg);
 UserRole UserRoleFromType(uint16_t arg);
 char const* UserRoleToString(UserRole arg);
+UserRole UserRoleFromString(char const* arg);
 
 }
 

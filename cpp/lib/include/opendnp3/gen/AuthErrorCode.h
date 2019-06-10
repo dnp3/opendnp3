@@ -68,6 +68,7 @@ enum class AuthErrorCode : uint8_t
 uint8_t AuthErrorCodeToType(AuthErrorCode arg);
 AuthErrorCode AuthErrorCodeFromType(uint8_t arg);
 char const* AuthErrorCodeToString(AuthErrorCode arg);
+AuthErrorCode AuthErrorCodeFromString(char const* arg);
 
 }
 

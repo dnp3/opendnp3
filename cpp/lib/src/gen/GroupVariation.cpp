@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/GroupVariation.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -584,6 +586,143 @@ char const* GroupVariationToString(GroupVariation arg)
     default:
       return "UNKNOWN";
   }
+}
+GroupVariation GroupVariationFromString(char const* arg)
+{
+  if(std::strncmp(arg, "Binary Input - Any Variation", 28)) return GroupVariation::Group1Var0;
+  if(std::strncmp(arg, "Binary Input - Packed Format", 28)) return GroupVariation::Group1Var1;
+  if(std::strncmp(arg, "Binary Input - With Flags", 25)) return GroupVariation::Group1Var2;
+  if(std::strncmp(arg, "Binary Input Event - Any Variation", 34)) return GroupVariation::Group2Var0;
+  if(std::strncmp(arg, "Binary Input Event - Without Time", 33)) return GroupVariation::Group2Var1;
+  if(std::strncmp(arg, "Binary Input Event - With Absolute Time", 39)) return GroupVariation::Group2Var2;
+  if(std::strncmp(arg, "Binary Input Event - With Relative Time", 39)) return GroupVariation::Group2Var3;
+  if(std::strncmp(arg, "Double-bit Binary Input - Any Variation", 39)) return GroupVariation::Group3Var0;
+  if(std::strncmp(arg, "Double-bit Binary Input - Packed Format", 39)) return GroupVariation::Group3Var1;
+  if(std::strncmp(arg, "Double-bit Binary Input - With Flags", 36)) return GroupVariation::Group3Var2;
+  if(std::strncmp(arg, "Double-bit Binary Input Event - Any Variation", 45)) return GroupVariation::Group4Var0;
+  if(std::strncmp(arg, "Double-bit Binary Input Event - Without Time", 44)) return GroupVariation::Group4Var1;
+  if(std::strncmp(arg, "Double-bit Binary Input Event - With Absolute Time", 50)) return GroupVariation::Group4Var2;
+  if(std::strncmp(arg, "Double-bit Binary Input Event - With Relative Time", 50)) return GroupVariation::Group4Var3;
+  if(std::strncmp(arg, "Binary Output - Any Variation", 29)) return GroupVariation::Group10Var0;
+  if(std::strncmp(arg, "Binary Output - Packed Format", 29)) return GroupVariation::Group10Var1;
+  if(std::strncmp(arg, "Binary Output - Output Status With Flags", 40)) return GroupVariation::Group10Var2;
+  if(std::strncmp(arg, "Binary Output Event - Any Variation", 35)) return GroupVariation::Group11Var0;
+  if(std::strncmp(arg, "Binary Output Event - Output Status Without Time", 48)) return GroupVariation::Group11Var1;
+  if(std::strncmp(arg, "Binary Output Event - Output Status With Time", 45)) return GroupVariation::Group11Var2;
+  if(std::strncmp(arg, "Binary Command - Any Variation", 30)) return GroupVariation::Group12Var0;
+  if(std::strncmp(arg, "Binary Command - CROB", 21)) return GroupVariation::Group12Var1;
+  if(std::strncmp(arg, "Binary Command Event - Without Time", 35)) return GroupVariation::Group13Var1;
+  if(std::strncmp(arg, "Binary Command Event - With Time", 32)) return GroupVariation::Group13Var2;
+  if(std::strncmp(arg, "Counter - Any Variation", 23)) return GroupVariation::Group20Var0;
+  if(std::strncmp(arg, "Counter - 32-bit With Flag", 26)) return GroupVariation::Group20Var1;
+  if(std::strncmp(arg, "Counter - 16-bit With Flag", 26)) return GroupVariation::Group20Var2;
+  if(std::strncmp(arg, "Counter - 32-bit Without Flag", 29)) return GroupVariation::Group20Var5;
+  if(std::strncmp(arg, "Counter - 16-bit Without Flag", 29)) return GroupVariation::Group20Var6;
+  if(std::strncmp(arg, "Frozen Counter - Any Variation", 30)) return GroupVariation::Group21Var0;
+  if(std::strncmp(arg, "Frozen Counter - 32-bit With Flag", 33)) return GroupVariation::Group21Var1;
+  if(std::strncmp(arg, "Frozen Counter - 16-bit With Flag", 33)) return GroupVariation::Group21Var2;
+  if(std::strncmp(arg, "Frozen Counter - 32-bit With Flag and Time", 42)) return GroupVariation::Group21Var5;
+  if(std::strncmp(arg, "Frozen Counter - 16-bit With Flag and Time", 42)) return GroupVariation::Group21Var6;
+  if(std::strncmp(arg, "Frozen Counter - 32-bit Without Flag", 36)) return GroupVariation::Group21Var9;
+  if(std::strncmp(arg, "Frozen Counter - 16-bit Without Flag", 36)) return GroupVariation::Group21Var10;
+  if(std::strncmp(arg, "Counter Event - Any Variation", 29)) return GroupVariation::Group22Var0;
+  if(std::strncmp(arg, "Counter Event - 32-bit With Flag", 32)) return GroupVariation::Group22Var1;
+  if(std::strncmp(arg, "Counter Event - 16-bit With Flag", 32)) return GroupVariation::Group22Var2;
+  if(std::strncmp(arg, "Counter Event - 32-bit With Flag and Time", 41)) return GroupVariation::Group22Var5;
+  if(std::strncmp(arg, "Counter Event - 16-bit With Flag and Time", 41)) return GroupVariation::Group22Var6;
+  if(std::strncmp(arg, "Frozen Counter Event - Any Variation", 36)) return GroupVariation::Group23Var0;
+  if(std::strncmp(arg, "Frozen Counter Event - 32-bit With Flag", 39)) return GroupVariation::Group23Var1;
+  if(std::strncmp(arg, "Frozen Counter Event - 16-bit With Flag", 39)) return GroupVariation::Group23Var2;
+  if(std::strncmp(arg, "Frozen Counter Event - 32-bit With Flag and Time", 48)) return GroupVariation::Group23Var5;
+  if(std::strncmp(arg, "Frozen Counter Event - 16-bit With Flag and Time", 48)) return GroupVariation::Group23Var6;
+  if(std::strncmp(arg, "Analog Input - Any Variation", 28)) return GroupVariation::Group30Var0;
+  if(std::strncmp(arg, "Analog Input - 32-bit With Flag", 31)) return GroupVariation::Group30Var1;
+  if(std::strncmp(arg, "Analog Input - 16-bit With Flag", 31)) return GroupVariation::Group30Var2;
+  if(std::strncmp(arg, "Analog Input - 32-bit Without Flag", 34)) return GroupVariation::Group30Var3;
+  if(std::strncmp(arg, "Analog Input - 16-bit Without Flag", 34)) return GroupVariation::Group30Var4;
+  if(std::strncmp(arg, "Analog Input - Single-precision With Flag", 41)) return GroupVariation::Group30Var5;
+  if(std::strncmp(arg, "Analog Input - Double-precision With Flag", 41)) return GroupVariation::Group30Var6;
+  if(std::strncmp(arg, "Analog Input Event - Any Variation", 34)) return GroupVariation::Group32Var0;
+  if(std::strncmp(arg, "Analog Input Event - 32-bit With Flag", 37)) return GroupVariation::Group32Var1;
+  if(std::strncmp(arg, "Analog Input Event - 16-bit With Flag", 37)) return GroupVariation::Group32Var2;
+  if(std::strncmp(arg, "Analog Input Event - 32-bit With Flag and Time", 46)) return GroupVariation::Group32Var3;
+  if(std::strncmp(arg, "Analog Input Event - 16-bit With Flag and Time", 46)) return GroupVariation::Group32Var4;
+  if(std::strncmp(arg, "Analog Input Event - Single-precision With Flag", 47)) return GroupVariation::Group32Var5;
+  if(std::strncmp(arg, "Analog Input Event - Double-precision With Flag", 47)) return GroupVariation::Group32Var6;
+  if(std::strncmp(arg, "Analog Input Event - Single-precision With Flag and Time", 56)) return GroupVariation::Group32Var7;
+  if(std::strncmp(arg, "Analog Input Event - Double-precision With Flag and Time", 56)) return GroupVariation::Group32Var8;
+  if(std::strncmp(arg, "Analog Output Status - Any Variation", 36)) return GroupVariation::Group40Var0;
+  if(std::strncmp(arg, "Analog Output Status - 32-bit With Flag", 39)) return GroupVariation::Group40Var1;
+  if(std::strncmp(arg, "Analog Output Status - 16-bit With Flag", 39)) return GroupVariation::Group40Var2;
+  if(std::strncmp(arg, "Analog Output Status - Single-precision With Flag", 49)) return GroupVariation::Group40Var3;
+  if(std::strncmp(arg, "Analog Output Status - Double-precision With Flag", 49)) return GroupVariation::Group40Var4;
+  if(std::strncmp(arg, "Analog Output - Any Variation", 29)) return GroupVariation::Group41Var0;
+  if(std::strncmp(arg, "Analog Output - 32-bit With Flag", 32)) return GroupVariation::Group41Var1;
+  if(std::strncmp(arg, "Analog Output - 16-bit With Flag", 32)) return GroupVariation::Group41Var2;
+  if(std::strncmp(arg, "Analog Output - Single-precision", 32)) return GroupVariation::Group41Var3;
+  if(std::strncmp(arg, "Analog Output - Double-precision", 32)) return GroupVariation::Group41Var4;
+  if(std::strncmp(arg, "Analog Output Event - Any Variation", 35)) return GroupVariation::Group42Var0;
+  if(std::strncmp(arg, "Analog Output Event - 32-bit With Flag", 38)) return GroupVariation::Group42Var1;
+  if(std::strncmp(arg, "Analog Output Event - 16-bit With Flag", 38)) return GroupVariation::Group42Var2;
+  if(std::strncmp(arg, "Analog Output Event - 32-bit With Flag and Time", 47)) return GroupVariation::Group42Var3;
+  if(std::strncmp(arg, "Analog Output Event - 16-bit With Flag and Time", 47)) return GroupVariation::Group42Var4;
+  if(std::strncmp(arg, "Analog Output Event - Single-precision With Flag", 48)) return GroupVariation::Group42Var5;
+  if(std::strncmp(arg, "Analog Output Event - Double-precision With Flag", 48)) return GroupVariation::Group42Var6;
+  if(std::strncmp(arg, "Analog Output Event - Single-precision With Flag and Time", 57)) return GroupVariation::Group42Var7;
+  if(std::strncmp(arg, "Analog Output Event - Double-precision With Flag and Time", 57)) return GroupVariation::Group42Var8;
+  if(std::strncmp(arg, "Analog Command Event - 32-bit", 29)) return GroupVariation::Group43Var1;
+  if(std::strncmp(arg, "Analog Command Event - 16-bit", 29)) return GroupVariation::Group43Var2;
+  if(std::strncmp(arg, "Analog Command Event - 32-bit With Time", 39)) return GroupVariation::Group43Var3;
+  if(std::strncmp(arg, "Analog Command Event - 16-bit With Time", 39)) return GroupVariation::Group43Var4;
+  if(std::strncmp(arg, "Analog Command Event - Single-precision", 39)) return GroupVariation::Group43Var5;
+  if(std::strncmp(arg, "Analog Command Event - Double-precision", 39)) return GroupVariation::Group43Var6;
+  if(std::strncmp(arg, "Analog Command Event - Single-precision With Time", 49)) return GroupVariation::Group43Var7;
+  if(std::strncmp(arg, "Analog Command Event - Double-precision With Time", 49)) return GroupVariation::Group43Var8;
+  if(std::strncmp(arg, "Time and Date - Absolute Time", 29)) return GroupVariation::Group50Var1;
+  if(std::strncmp(arg, "Time and Date - Absolute Time at last recorded time", 51)) return GroupVariation::Group50Var3;
+  if(std::strncmp(arg, "Time and Date - Indexed absolute time and long interval", 55)) return GroupVariation::Group50Var4;
+  if(std::strncmp(arg, "Time and Date CTO - Absolute time, synchronized", 47)) return GroupVariation::Group51Var1;
+  if(std::strncmp(arg, "Time and Date CTO - Absolute time, unsynchronized", 49)) return GroupVariation::Group51Var2;
+  if(std::strncmp(arg, "Time Delay - Coarse", 19)) return GroupVariation::Group52Var1;
+  if(std::strncmp(arg, "Time Delay - Fine", 17)) return GroupVariation::Group52Var2;
+  if(std::strncmp(arg, "Class Data - Class 0", 20)) return GroupVariation::Group60Var1;
+  if(std::strncmp(arg, "Class Data - Class 1", 20)) return GroupVariation::Group60Var2;
+  if(std::strncmp(arg, "Class Data - Class 2", 20)) return GroupVariation::Group60Var3;
+  if(std::strncmp(arg, "Class Data - Class 3", 20)) return GroupVariation::Group60Var4;
+  if(std::strncmp(arg, "File-control - File identifier", 30)) return GroupVariation::Group70Var1;
+  if(std::strncmp(arg, "File-control - Authentication", 29)) return GroupVariation::Group70Var2;
+  if(std::strncmp(arg, "File-control - File command", 27)) return GroupVariation::Group70Var3;
+  if(std::strncmp(arg, "File-control - File command status", 34)) return GroupVariation::Group70Var4;
+  if(std::strncmp(arg, "File-control - File transport", 29)) return GroupVariation::Group70Var5;
+  if(std::strncmp(arg, "File-control - File transport status", 36)) return GroupVariation::Group70Var6;
+  if(std::strncmp(arg, "File-control - File descriptor", 30)) return GroupVariation::Group70Var7;
+  if(std::strncmp(arg, "File-control - File specification string", 40)) return GroupVariation::Group70Var8;
+  if(std::strncmp(arg, "Internal Indications - Packed Format", 36)) return GroupVariation::Group80Var1;
+  if(std::strncmp(arg, "Octet String - Sized by variation", 33)) return GroupVariation::Group110Var0;
+  if(std::strncmp(arg, "Octet String Event - Sized by variation", 39)) return GroupVariation::Group111Var0;
+  if(std::strncmp(arg, "Virtual Terminal Output Block - Sized by variation", 50)) return GroupVariation::Group112Var0;
+  if(std::strncmp(arg, "Virtual Terminal Event Data - Sized by variation", 48)) return GroupVariation::Group113Var0;
+  if(std::strncmp(arg, "Authentication - Challenge", 26)) return GroupVariation::Group120Var1;
+  if(std::strncmp(arg, "Authentication - Reply", 22)) return GroupVariation::Group120Var2;
+  if(std::strncmp(arg, "Authentication - Aggressive Mode Request", 40)) return GroupVariation::Group120Var3;
+  if(std::strncmp(arg, "Authentication - Session Key Status Request", 43)) return GroupVariation::Group120Var4;
+  if(std::strncmp(arg, "Authentication - Session Key Status", 35)) return GroupVariation::Group120Var5;
+  if(std::strncmp(arg, "Authentication - Session Key Change", 35)) return GroupVariation::Group120Var6;
+  if(std::strncmp(arg, "Authentication - Error", 22)) return GroupVariation::Group120Var7;
+  if(std::strncmp(arg, "Authentication - User Certificate", 33)) return GroupVariation::Group120Var8;
+  if(std::strncmp(arg, "Authentication - HMAC", 21)) return GroupVariation::Group120Var9;
+  if(std::strncmp(arg, "Authentication - User Status Change", 35)) return GroupVariation::Group120Var10;
+  if(std::strncmp(arg, "Authentication - Update Key Change Request", 42)) return GroupVariation::Group120Var11;
+  if(std::strncmp(arg, "Authentication - Update Key Change Reply", 40)) return GroupVariation::Group120Var12;
+  if(std::strncmp(arg, "Authentication - Update Key Change", 34)) return GroupVariation::Group120Var13;
+  if(std::strncmp(arg, "Authentication - Update Key Change Signature", 44)) return GroupVariation::Group120Var14;
+  if(std::strncmp(arg, "Authentication - Update Key Change Confirmation", 47)) return GroupVariation::Group120Var15;
+  if(std::strncmp(arg, "Security statistic - Any Variation", 34)) return GroupVariation::Group121Var0;
+  if(std::strncmp(arg, "Security statistic - 32-bit With Flag", 37)) return GroupVariation::Group121Var1;
+  if(std::strncmp(arg, "Security Statistic event - Any Variation", 40)) return GroupVariation::Group122Var0;
+  if(std::strncmp(arg, "Security Statistic event - 32-bit With Flag", 43)) return GroupVariation::Group122Var1;
+  if(std::strncmp(arg, "Security Statistic event - 32-bit With Flag and Time", 52)) return GroupVariation::Group122Var2;
+  else return GroupVariation::UNKNOWN;
 }
 
 }

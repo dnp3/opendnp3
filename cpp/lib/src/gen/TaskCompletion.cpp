@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/TaskCompletion.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -72,6 +74,15 @@ char const* TaskCompletionToString(TaskCompletion arg)
     default:
       return "FAILURE_NO_COMMS";
   }
+}
+TaskCompletion TaskCompletionFromString(char const* arg)
+{
+  if(std::strncmp(arg, "SUCCESS", 7)) return TaskCompletion::SUCCESS;
+  if(std::strncmp(arg, "FAILURE_BAD_RESPONSE", 20)) return TaskCompletion::FAILURE_BAD_RESPONSE;
+  if(std::strncmp(arg, "FAILURE_RESPONSE_TIMEOUT", 24)) return TaskCompletion::FAILURE_RESPONSE_TIMEOUT;
+  if(std::strncmp(arg, "FAILURE_START_TIMEOUT", 21)) return TaskCompletion::FAILURE_START_TIMEOUT;
+  if(std::strncmp(arg, "FAILURE_MESSAGE_FORMAT_ERROR", 28)) return TaskCompletion::FAILURE_MESSAGE_FORMAT_ERROR;
+  else return TaskCompletion::FAILURE_NO_COMMS;
 }
 
 }

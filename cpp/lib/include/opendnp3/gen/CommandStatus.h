@@ -89,6 +89,7 @@ enum class CommandStatus : uint8_t
 uint8_t CommandStatusToType(CommandStatus arg);
 CommandStatus CommandStatusFromType(uint8_t arg);
 char const* CommandStatusToString(CommandStatus arg);
+CommandStatus CommandStatusFromString(char const* arg);
 
 }
 

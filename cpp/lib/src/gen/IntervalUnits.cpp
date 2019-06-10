@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/IntervalUnits.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -96,6 +98,21 @@ char const* IntervalUnitsToString(IntervalUnits arg)
     default:
       return "Undefined";
   }
+}
+IntervalUnits IntervalUnitsFromString(char const* arg)
+{
+  if(std::strncmp(arg, "NoRepeat", 8)) return IntervalUnits::NoRepeat;
+  if(std::strncmp(arg, "Milliseconds", 12)) return IntervalUnits::Milliseconds;
+  if(std::strncmp(arg, "Seconds", 7)) return IntervalUnits::Seconds;
+  if(std::strncmp(arg, "Minutes", 7)) return IntervalUnits::Minutes;
+  if(std::strncmp(arg, "Hours", 5)) return IntervalUnits::Hours;
+  if(std::strncmp(arg, "Days", 4)) return IntervalUnits::Days;
+  if(std::strncmp(arg, "Weeks", 5)) return IntervalUnits::Weeks;
+  if(std::strncmp(arg, "Months7", 7)) return IntervalUnits::Months7;
+  if(std::strncmp(arg, "Months8", 7)) return IntervalUnits::Months8;
+  if(std::strncmp(arg, "Months9", 7)) return IntervalUnits::Months9;
+  if(std::strncmp(arg, "Seasons", 7)) return IntervalUnits::Seasons;
+  else return IntervalUnits::Undefined;
 }
 
 }

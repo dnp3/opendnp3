@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/CertificateType.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -60,6 +62,12 @@ char const* CertificateTypeToString(CertificateType arg)
     default:
       return "UNKNOWN";
   }
+}
+CertificateType CertificateTypeFromString(char const* arg)
+{
+  if(std::strncmp(arg, "ID_CERTIFICATE", 14)) return CertificateType::ID_CERTIFICATE;
+  if(std::strncmp(arg, "ATTRIBUTE_CERTIFICATE", 21)) return CertificateType::ATTRIBUTE_CERTIFICATE;
+  else return CertificateType::UNKNOWN;
 }
 
 }

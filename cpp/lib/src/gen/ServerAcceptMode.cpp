@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/ServerAcceptMode.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -45,6 +47,8 @@ ServerAcceptMode ServerAcceptModeFromType(uint8_t arg)
       return ServerAcceptMode::CloseNew;
     case(1):
       return ServerAcceptMode::CloseExisting;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* ServerAcceptModeToString(ServerAcceptMode arg)
@@ -58,6 +62,12 @@ char const* ServerAcceptModeToString(ServerAcceptMode arg)
     default:
       return "UNDEFINED";
   }
+}
+ServerAcceptMode ServerAcceptModeFromString(char const* arg)
+{
+  if(std::strncmp(arg, "CloseNew", 8)) return ServerAcceptMode::CloseNew;
+  if(std::strncmp(arg, "CloseExisting", 13)) return ServerAcceptMode::CloseExisting;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

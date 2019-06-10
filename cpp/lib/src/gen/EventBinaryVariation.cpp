@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/EventBinaryVariation.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -47,6 +49,8 @@ EventBinaryVariation EventBinaryVariationFromType(uint8_t arg)
       return EventBinaryVariation::Group2Var2;
     case(2):
       return EventBinaryVariation::Group2Var3;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* EventBinaryVariationToString(EventBinaryVariation arg)
@@ -62,6 +66,13 @@ char const* EventBinaryVariationToString(EventBinaryVariation arg)
     default:
       return "UNDEFINED";
   }
+}
+EventBinaryVariation EventBinaryVariationFromString(char const* arg)
+{
+  if(std::strncmp(arg, "Group2Var1", 10)) return EventBinaryVariation::Group2Var1;
+  if(std::strncmp(arg, "Group2Var2", 10)) return EventBinaryVariation::Group2Var2;
+  if(std::strncmp(arg, "Group2Var3", 10)) return EventBinaryVariation::Group2Var3;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

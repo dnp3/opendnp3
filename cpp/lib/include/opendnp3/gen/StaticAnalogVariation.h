@@ -49,6 +49,7 @@ enum class StaticAnalogVariation : uint8_t
 uint8_t StaticAnalogVariationToType(StaticAnalogVariation arg);
 StaticAnalogVariation StaticAnalogVariationFromType(uint8_t arg);
 char const* StaticAnalogVariationToString(StaticAnalogVariation arg);
+StaticAnalogVariation StaticAnalogVariationFromString(char const* arg);
 
 }
 

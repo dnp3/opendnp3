@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/AssignClassType.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -55,6 +57,8 @@ AssignClassType AssignClassTypeFromType(uint8_t arg)
       return AssignClassType::BinaryOutputStatus;
     case(0x6):
       return AssignClassType::AnalogOutputStatus;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* AssignClassTypeToString(AssignClassType arg)
@@ -78,6 +82,17 @@ char const* AssignClassTypeToString(AssignClassType arg)
     default:
       return "UNDEFINED";
   }
+}
+AssignClassType AssignClassTypeFromString(char const* arg)
+{
+  if(std::strncmp(arg, "BinaryInput", 11)) return AssignClassType::BinaryInput;
+  if(std::strncmp(arg, "DoubleBinaryInput", 17)) return AssignClassType::DoubleBinaryInput;
+  if(std::strncmp(arg, "Counter", 7)) return AssignClassType::Counter;
+  if(std::strncmp(arg, "FrozenCounter", 13)) return AssignClassType::FrozenCounter;
+  if(std::strncmp(arg, "AnalogInput", 11)) return AssignClassType::AnalogInput;
+  if(std::strncmp(arg, "BinaryOutputStatus", 18)) return AssignClassType::BinaryOutputStatus;
+  if(std::strncmp(arg, "AnalogOutputStatus", 18)) return AssignClassType::AnalogOutputStatus;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

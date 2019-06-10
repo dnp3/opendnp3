@@ -44,6 +44,7 @@ enum class StaticSecurityStatVariation : uint8_t
 uint8_t StaticSecurityStatVariationToType(StaticSecurityStatVariation arg);
 StaticSecurityStatVariation StaticSecurityStatVariationFromType(uint8_t arg);
 char const* StaticSecurityStatVariationToString(StaticSecurityStatVariation arg);
+StaticSecurityStatVariation StaticSecurityStatVariationFromString(char const* arg);
 
 }
 

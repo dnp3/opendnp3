@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/ChallengeReason.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -56,6 +58,11 @@ char const* ChallengeReasonToString(ChallengeReason arg)
     default:
       return "UNKNOWN";
   }
+}
+ChallengeReason ChallengeReasonFromString(char const* arg)
+{
+  if(std::strncmp(arg, "CRITICAL", 8)) return ChallengeReason::CRITICAL;
+  else return ChallengeReason::UNKNOWN;
 }
 
 }

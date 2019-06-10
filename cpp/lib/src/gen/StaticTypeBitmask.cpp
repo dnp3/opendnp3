@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/StaticTypeBitmask.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -59,6 +61,8 @@ StaticTypeBitmask StaticTypeBitmaskFromType(uint16_t arg)
       return StaticTypeBitmask::TimeAndInterval;
     case(0x100):
       return StaticTypeBitmask::OctetString;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* StaticTypeBitmaskToString(StaticTypeBitmask arg)
@@ -86,6 +90,19 @@ char const* StaticTypeBitmaskToString(StaticTypeBitmask arg)
     default:
       return "UNDEFINED";
   }
+}
+StaticTypeBitmask StaticTypeBitmaskFromString(char const* arg)
+{
+  if(std::strncmp(arg, "BinaryInput", 11)) return StaticTypeBitmask::BinaryInput;
+  if(std::strncmp(arg, "DoubleBinaryInput", 17)) return StaticTypeBitmask::DoubleBinaryInput;
+  if(std::strncmp(arg, "Counter", 7)) return StaticTypeBitmask::Counter;
+  if(std::strncmp(arg, "FrozenCounter", 13)) return StaticTypeBitmask::FrozenCounter;
+  if(std::strncmp(arg, "AnalogInput", 11)) return StaticTypeBitmask::AnalogInput;
+  if(std::strncmp(arg, "BinaryOutputStatus", 18)) return StaticTypeBitmask::BinaryOutputStatus;
+  if(std::strncmp(arg, "AnalogOutputStatus", 18)) return StaticTypeBitmask::AnalogOutputStatus;
+  if(std::strncmp(arg, "TimeAndInterval", 15)) return StaticTypeBitmask::TimeAndInterval;
+  if(std::strncmp(arg, "OctetString", 11)) return StaticTypeBitmask::OctetString;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

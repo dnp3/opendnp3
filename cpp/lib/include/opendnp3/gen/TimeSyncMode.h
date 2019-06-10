@@ -52,6 +52,7 @@ enum class TimeSyncMode : uint8_t
 uint8_t TimeSyncModeToType(TimeSyncMode arg);
 TimeSyncMode TimeSyncModeFromType(uint8_t arg);
 char const* TimeSyncModeToString(TimeSyncMode arg);
+TimeSyncMode TimeSyncModeFromString(char const* arg);
 
 }
 

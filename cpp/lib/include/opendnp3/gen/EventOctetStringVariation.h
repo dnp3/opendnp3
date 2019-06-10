@@ -44,6 +44,7 @@ enum class EventOctetStringVariation : uint8_t
 uint8_t EventOctetStringVariationToType(EventOctetStringVariation arg);
 EventOctetStringVariation EventOctetStringVariationFromType(uint8_t arg);
 char const* EventOctetStringVariationToString(EventOctetStringVariation arg);
+EventOctetStringVariation EventOctetStringVariationFromString(char const* arg);
 
 }
 

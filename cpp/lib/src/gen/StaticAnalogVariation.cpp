@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/StaticAnalogVariation.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -53,6 +55,8 @@ StaticAnalogVariation StaticAnalogVariationFromType(uint8_t arg)
       return StaticAnalogVariation::Group30Var5;
     case(5):
       return StaticAnalogVariation::Group30Var6;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* StaticAnalogVariationToString(StaticAnalogVariation arg)
@@ -74,6 +78,16 @@ char const* StaticAnalogVariationToString(StaticAnalogVariation arg)
     default:
       return "UNDEFINED";
   }
+}
+StaticAnalogVariation StaticAnalogVariationFromString(char const* arg)
+{
+  if(std::strncmp(arg, "Group30Var1", 11)) return StaticAnalogVariation::Group30Var1;
+  if(std::strncmp(arg, "Group30Var2", 11)) return StaticAnalogVariation::Group30Var2;
+  if(std::strncmp(arg, "Group30Var3", 11)) return StaticAnalogVariation::Group30Var3;
+  if(std::strncmp(arg, "Group30Var4", 11)) return StaticAnalogVariation::Group30Var4;
+  if(std::strncmp(arg, "Group30Var5", 11)) return StaticAnalogVariation::Group30Var5;
+  if(std::strncmp(arg, "Group30Var6", 11)) return StaticAnalogVariation::Group30Var6;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

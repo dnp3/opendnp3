@@ -247,69 +247,25 @@ set(opendnp3_private_headers
     ./src/decoder/Indent.h
     ./src/decoder/LoggingHandler.h
 
-    ./src/gen/AnalogOutputStatusQualitySerialization.h
-    ./src/gen/AnalogQualitySerialization.h
-    ./src/gen/AssignClassTypeSerialization.h
     ./src/gen/AuthErrorCodeSerialization.h
-    ./src/gen/BinaryOutputStatusQualitySerialization.h
-    ./src/gen/BinaryQualitySerialization.h
     ./src/gen/CertificateTypeSerialization.h
     ./src/gen/ChallengeReasonSerialization.h
-    ./src/gen/ChannelStateSerialization.h
-    ./src/gen/CommandPointStateSerialization.h
     ./src/gen/CommandStatusSerialization.h
-    ./src/gen/ConfigAuthModeSerialization.h
     ./src/gen/ControlCodeSerialization.h
-    ./src/gen/CounterQualitySerialization.h
-    ./src/gen/DoubleBitBinaryQualitySerialization.h
     ./src/gen/DoubleBitSerialization.h
-    ./src/gen/EventAnalogOutputStatusVariationSerialization.h
-    ./src/gen/EventAnalogVariationSerialization.h
-    ./src/gen/EventBinaryOutputStatusVariationSerialization.h
-    ./src/gen/EventBinaryVariationSerialization.h
-    ./src/gen/EventCounterVariationSerialization.h
-    ./src/gen/EventDoubleBinaryVariationSerialization.h
-    ./src/gen/EventFrozenCounterVariationSerialization.h
-    ./src/gen/EventModeSerialization.h
-    ./src/gen/EventOctetStringVariationSerialization.h
-    ./src/gen/EventSecurityStatVariationSerialization.h
     ./src/gen/FlagsTypeSerialization.h
     ./src/gen/FlowControlSerialization.h
-    ./src/gen/FrozenCounterQualitySerialization.h
     ./src/gen/FunctionCodeSerialization.h
     ./src/gen/GroupVariationSerialization.h
     ./src/gen/HMACTypeSerialization.h
-    ./src/gen/IndexQualifierModeSerialization.h
     ./src/gen/IntervalUnitsSerialization.h
     ./src/gen/KeyChangeMethodSerialization.h
     ./src/gen/KeyStatusSerialization.h
     ./src/gen/KeyWrapAlgorithmSerialization.h
     ./src/gen/LinkFunctionSerialization.h
-    ./src/gen/LinkStatusSerialization.h
-    ./src/gen/MasterTaskTypeSerialization.h
-    ./src/gen/OperateTypeSerialization.h
     ./src/gen/ParitySerialization.h
-    ./src/gen/PointClassSerialization.h
     ./src/gen/QualifierCodeSerialization.h
-    ./src/gen/RestartModeSerialization.h
-    ./src/gen/RestartTypeSerialization.h
-    ./src/gen/SecurityStatIndexSerialization.h
-    ./src/gen/ServerAcceptModeSerialization.h
-    ./src/gen/StaticAnalogOutputStatusVariationSerialization.h
-    ./src/gen/StaticAnalogVariationSerialization.h
-    ./src/gen/StaticBinaryOutputStatusVariationSerialization.h
-    ./src/gen/StaticBinaryVariationSerialization.h
-    ./src/gen/StaticCounterVariationSerialization.h
-    ./src/gen/StaticDoubleBinaryVariationSerialization.h
-    ./src/gen/StaticFrozenCounterVariationSerialization.h
-    ./src/gen/StaticOctetStringVariationSerialization.h
-    ./src/gen/StaticSecurityStatVariationSerialization.h
-    ./src/gen/StaticTimeAndIntervalVariationSerialization.h
-    ./src/gen/StaticTypeBitmaskSerialization.h
     ./src/gen/StopBitsSerialization.h
-    ./src/gen/TaskCompletionSerialization.h
-    ./src/gen/TimestampModeSerialization.h
-    ./src/gen/TimeSyncModeSerialization.h
     ./src/gen/UserOperationSerialization.h
     ./src/gen/UserRoleSerialization.h
 

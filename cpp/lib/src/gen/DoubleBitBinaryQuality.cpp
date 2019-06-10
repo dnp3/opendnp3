@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/DoubleBitBinaryQuality.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -57,6 +59,8 @@ DoubleBitBinaryQuality DoubleBitBinaryQualityFromType(uint8_t arg)
       return DoubleBitBinaryQuality::STATE1;
     case(0x80):
       return DoubleBitBinaryQuality::STATE2;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* DoubleBitBinaryQualityToString(DoubleBitBinaryQuality arg)
@@ -82,6 +86,18 @@ char const* DoubleBitBinaryQualityToString(DoubleBitBinaryQuality arg)
     default:
       return "UNDEFINED";
   }
+}
+DoubleBitBinaryQuality DoubleBitBinaryQualityFromString(char const* arg)
+{
+  if(std::strncmp(arg, "ONLINE", 6)) return DoubleBitBinaryQuality::ONLINE;
+  if(std::strncmp(arg, "RESTART", 7)) return DoubleBitBinaryQuality::RESTART;
+  if(std::strncmp(arg, "COMM_LOST", 9)) return DoubleBitBinaryQuality::COMM_LOST;
+  if(std::strncmp(arg, "REMOTE_FORCED", 13)) return DoubleBitBinaryQuality::REMOTE_FORCED;
+  if(std::strncmp(arg, "LOCAL_FORCED", 12)) return DoubleBitBinaryQuality::LOCAL_FORCED;
+  if(std::strncmp(arg, "CHATTER_FILTER", 14)) return DoubleBitBinaryQuality::CHATTER_FILTER;
+  if(std::strncmp(arg, "STATE1", 6)) return DoubleBitBinaryQuality::STATE1;
+  if(std::strncmp(arg, "STATE2", 6)) return DoubleBitBinaryQuality::STATE2;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

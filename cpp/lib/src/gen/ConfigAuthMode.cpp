@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/ConfigAuthMode.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -45,6 +47,8 @@ ConfigAuthMode ConfigAuthModeFromType(uint8_t arg)
       return ConfigAuthMode::NONE;
     case(0x1):
       return ConfigAuthMode::SAV5;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* ConfigAuthModeToString(ConfigAuthMode arg)
@@ -58,6 +62,12 @@ char const* ConfigAuthModeToString(ConfigAuthMode arg)
     default:
       return "UNDEFINED";
   }
+}
+ConfigAuthMode ConfigAuthModeFromString(char const* arg)
+{
+  if(std::strncmp(arg, "NONE", 4)) return ConfigAuthMode::NONE;
+  if(std::strncmp(arg, "SAV5", 4)) return ConfigAuthMode::SAV5;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

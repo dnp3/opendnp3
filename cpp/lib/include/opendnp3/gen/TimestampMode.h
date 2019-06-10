@@ -52,6 +52,7 @@ enum class TimestampMode : uint8_t
 uint8_t TimestampModeToType(TimestampMode arg);
 TimestampMode TimestampModeFromType(uint8_t arg);
 char const* TimestampModeToString(TimestampMode arg);
+TimestampMode TimestampModeFromString(char const* arg);
 
 }
 

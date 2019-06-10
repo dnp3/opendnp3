@@ -62,6 +62,7 @@ enum class DoubleBitBinaryQuality : uint8_t
 uint8_t DoubleBitBinaryQualityToType(DoubleBitBinaryQuality arg);
 DoubleBitBinaryQuality DoubleBitBinaryQualityFromType(uint8_t arg);
 char const* DoubleBitBinaryQualityToString(DoubleBitBinaryQuality arg);
+DoubleBitBinaryQuality DoubleBitBinaryQualityFromString(char const* arg);
 
 }
 

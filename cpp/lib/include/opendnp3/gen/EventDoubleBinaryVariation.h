@@ -46,6 +46,7 @@ enum class EventDoubleBinaryVariation : uint8_t
 uint8_t EventDoubleBinaryVariationToType(EventDoubleBinaryVariation arg);
 EventDoubleBinaryVariation EventDoubleBinaryVariationFromType(uint8_t arg);
 char const* EventDoubleBinaryVariationToString(EventDoubleBinaryVariation arg);
+EventDoubleBinaryVariation EventDoubleBinaryVariationFromString(char const* arg);
 
 }
 

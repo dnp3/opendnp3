@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/StaticBinaryVariation.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -45,6 +47,8 @@ StaticBinaryVariation StaticBinaryVariationFromType(uint8_t arg)
       return StaticBinaryVariation::Group1Var1;
     case(1):
       return StaticBinaryVariation::Group1Var2;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* StaticBinaryVariationToString(StaticBinaryVariation arg)
@@ -58,6 +62,12 @@ char const* StaticBinaryVariationToString(StaticBinaryVariation arg)
     default:
       return "UNDEFINED";
   }
+}
+StaticBinaryVariation StaticBinaryVariationFromString(char const* arg)
+{
+  if(std::strncmp(arg, "Group1Var1", 10)) return StaticBinaryVariation::Group1Var1;
+  if(std::strncmp(arg, "Group1Var2", 10)) return StaticBinaryVariation::Group1Var2;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

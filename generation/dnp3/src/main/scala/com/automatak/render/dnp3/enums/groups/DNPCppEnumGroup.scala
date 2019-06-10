@@ -25,46 +25,51 @@ import com.automatak.render.dnp3.enums._
 
 object DNPCppEnumGroup {
 
-  def enums : List[EnumConfig] = (List(
-    AssignClassType(),
+  def enums : List[EnumConfig] = List(fullEnums, simpleEnums).flatten
+
+  private def fullEnums = List(
+    FunctionCode(),
+    QualifierCode(),
+    LinkFunction(),
+    IntervalUnit(),
+    ControlCode(),
+    GroupVariationEnum(),
+    DoubleBit(),
+    CommandStatus(),
+    HMACType(),
+    ChallengeReason(),
+    KeyWrapAlgorithm(),
+    KeyStatus(),
     AuthErrorCode(),
     CertificateType(),
-    ChallengeReason(),
-    ChannelState(),
-    CommandPointState(),
-    CommandStatus(),
-    ConfigAuthMode(),
-    ControlCode(),
-    DoubleBit(),
-    EventMode(),
-    FlagsType(),
-    FlowControl(),
-    FunctionCode(),
-    GroupVariationEnum(),
-    HMACType(),
-    IndexQualifierMode(),
-    IntervalUnit(),
     KeyChangeMethod(),
-    KeyStatus(),
-    KeyWrapAlgorithm(),
-    LinkFunction(),
-    LinkStatus(),
-    MasterTaskType(),
-    OperateType(),
-    Parity(),
-    PointClass(),
-    QualifierCode(),
-    RestartMode(),
-    RestartType(),
-    SecurityStatIndex(),
-    ServerAcceptMode(),
-    StaticTypeBitmask(),
-    StopBits(),
-    TaskCompletion(),
-    TimestampMode(),
-    TimeSyncMode(),
     UserOperation(),
-    UserRole()
-  ) ::: DefaultVariations.enums ::: QualityMasks.enums).map(x => EnumConfig(x, true, true))
+    UserRole(),
+    Parity(),
+    StopBits(),
+    FlowControl(),
+    FlagsType()
+  ).map(x => EnumConfig(x, true, true, true))
+
+  private def simpleEnums = (List(
+    AssignClassType(),
+    StaticTypeBitmask(),
+    PointClass(),
+    TimeSyncMode(),
+    RestartMode(),
+    TimestampMode(),
+    EventMode(),
+    ConfigAuthMode(),
+    SecurityStatIndex(),
+    RestartType(),
+    OperateType(),
+    ServerAcceptMode(),
+    IndexQualifierMode(),
+    MasterTaskType(),
+    TaskCompletion(),
+    ChannelState(),
+    LinkStatus(),
+    CommandPointState()
+  ) ::: DefaultVariations.enums ::: QualityMasks.enums).map(x => EnumConfig(x, true, true, false))
 
 }

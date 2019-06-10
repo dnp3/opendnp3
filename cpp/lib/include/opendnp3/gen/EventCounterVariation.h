@@ -47,6 +47,7 @@ enum class EventCounterVariation : uint8_t
 uint8_t EventCounterVariationToType(EventCounterVariation arg);
 EventCounterVariation EventCounterVariationFromType(uint8_t arg);
 char const* EventCounterVariationToString(EventCounterVariation arg);
+EventCounterVariation EventCounterVariationFromString(char const* arg);
 
 }
 

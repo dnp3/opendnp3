@@ -47,6 +47,7 @@ enum class StaticAnalogOutputStatusVariation : uint8_t
 uint8_t StaticAnalogOutputStatusVariationToType(StaticAnalogOutputStatusVariation arg);
 StaticAnalogOutputStatusVariation StaticAnalogOutputStatusVariationFromType(uint8_t arg);
 char const* StaticAnalogOutputStatusVariationToString(StaticAnalogOutputStatusVariation arg);
+StaticAnalogOutputStatusVariation StaticAnalogOutputStatusVariationFromString(char const* arg);
 
 }
 

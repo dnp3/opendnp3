@@ -44,15 +44,13 @@ class SwitchModelRenderer[A](fCase: A => String)(fAction: A => String) {
         }
     }
 
-    def defaultCase(defaultValue : A): Iterator[String] = {
-      Iterator("default:") ++ indent { Iterator("return " + fAction(defaultValue) + ";") }
+    def defaultCase: Iterator[String] = default match {
+      case Some(value) => Iterator("default:") ++ indent { Iterator("return " + fAction(value) + ";") }
+      case None => Iterator("default:") ++ indent { Iterator(s"""throw new std::invalid_argument("Unknown value");""") }
     }
 
     switch ++ bracket {
-      nonDefaultCases ++ (default match {
-        case Some(value) => defaultCase(value)
-        case None => List()
-      })
+      nonDefaultCases ++ defaultCase
     }
   }
 }

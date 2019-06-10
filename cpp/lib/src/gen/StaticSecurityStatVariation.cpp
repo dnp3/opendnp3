@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/StaticSecurityStatVariation.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -43,6 +45,8 @@ StaticSecurityStatVariation StaticSecurityStatVariationFromType(uint8_t arg)
   {
     case(0):
       return StaticSecurityStatVariation::Group121Var1;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* StaticSecurityStatVariationToString(StaticSecurityStatVariation arg)
@@ -54,6 +58,11 @@ char const* StaticSecurityStatVariationToString(StaticSecurityStatVariation arg)
     default:
       return "UNDEFINED";
   }
+}
+StaticSecurityStatVariation StaticSecurityStatVariationFromString(char const* arg)
+{
+  if(std::strncmp(arg, "Group121Var1", 12)) return StaticSecurityStatVariation::Group121Var1;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

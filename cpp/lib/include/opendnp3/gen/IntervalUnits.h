@@ -70,6 +70,7 @@ enum class IntervalUnits : uint8_t
 uint8_t IntervalUnitsToType(IntervalUnits arg);
 IntervalUnits IntervalUnitsFromType(uint8_t arg);
 char const* IntervalUnitsToString(IntervalUnits arg);
+IntervalUnits IntervalUnitsFromString(char const* arg);
 
 }
 

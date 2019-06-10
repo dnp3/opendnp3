@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/TimestampMode.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -60,6 +62,12 @@ char const* TimestampModeToString(TimestampMode arg)
     default:
       return "INVALID";
   }
+}
+TimestampMode TimestampModeFromString(char const* arg)
+{
+  if(std::strncmp(arg, "SYNCHRONIZED", 12)) return TimestampMode::SYNCHRONIZED;
+  if(std::strncmp(arg, "UNSYNCHRONIZED", 14)) return TimestampMode::UNSYNCHRONIZED;
+  else return TimestampMode::INVALID;
 }
 
 }

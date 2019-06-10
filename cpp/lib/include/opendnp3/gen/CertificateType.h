@@ -52,6 +52,7 @@ enum class CertificateType : uint8_t
 uint8_t CertificateTypeToType(CertificateType arg);
 CertificateType CertificateTypeFromType(uint8_t arg);
 char const* CertificateTypeToString(CertificateType arg);
+CertificateType CertificateTypeFromString(char const* arg);
 
 }
 

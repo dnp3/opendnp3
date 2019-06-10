@@ -44,6 +44,7 @@ enum class StaticBinaryOutputStatusVariation : uint8_t
 uint8_t StaticBinaryOutputStatusVariationToType(StaticBinaryOutputStatusVariation arg);
 StaticBinaryOutputStatusVariation StaticBinaryOutputStatusVariationFromType(uint8_t arg);
 char const* StaticBinaryOutputStatusVariationToString(StaticBinaryOutputStatusVariation arg);
+StaticBinaryOutputStatusVariation StaticBinaryOutputStatusVariationFromString(char const* arg);
 
 }
 

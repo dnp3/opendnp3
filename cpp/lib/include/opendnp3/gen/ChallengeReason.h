@@ -50,6 +50,7 @@ enum class ChallengeReason : uint8_t
 uint8_t ChallengeReasonToType(ChallengeReason arg);
 ChallengeReason ChallengeReasonFromType(uint8_t arg);
 char const* ChallengeReasonToString(ChallengeReason arg);
+ChallengeReason ChallengeReasonFromString(char const* arg);
 
 }
 

@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/EventFrozenCounterVariation.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -49,6 +51,8 @@ EventFrozenCounterVariation EventFrozenCounterVariationFromType(uint8_t arg)
       return EventFrozenCounterVariation::Group23Var5;
     case(3):
       return EventFrozenCounterVariation::Group23Var6;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* EventFrozenCounterVariationToString(EventFrozenCounterVariation arg)
@@ -66,6 +70,14 @@ char const* EventFrozenCounterVariationToString(EventFrozenCounterVariation arg)
     default:
       return "UNDEFINED";
   }
+}
+EventFrozenCounterVariation EventFrozenCounterVariationFromString(char const* arg)
+{
+  if(std::strncmp(arg, "Group23Var1", 11)) return EventFrozenCounterVariation::Group23Var1;
+  if(std::strncmp(arg, "Group23Var2", 11)) return EventFrozenCounterVariation::Group23Var2;
+  if(std::strncmp(arg, "Group23Var5", 11)) return EventFrozenCounterVariation::Group23Var5;
+  if(std::strncmp(arg, "Group23Var6", 11)) return EventFrozenCounterVariation::Group23Var6;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

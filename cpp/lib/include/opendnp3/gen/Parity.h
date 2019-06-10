@@ -49,6 +49,7 @@ enum class Parity : uint8_t
 uint8_t ParityToType(Parity arg);
 Parity ParityFromType(uint8_t arg);
 char const* ParityToString(Parity arg);
+Parity ParityFromString(char const* arg);
 
 }
 

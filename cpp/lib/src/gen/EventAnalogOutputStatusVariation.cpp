@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/EventAnalogOutputStatusVariation.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -57,6 +59,8 @@ EventAnalogOutputStatusVariation EventAnalogOutputStatusVariationFromType(uint8_
       return EventAnalogOutputStatusVariation::Group42Var7;
     case(7):
       return EventAnalogOutputStatusVariation::Group42Var8;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* EventAnalogOutputStatusVariationToString(EventAnalogOutputStatusVariation arg)
@@ -82,6 +86,18 @@ char const* EventAnalogOutputStatusVariationToString(EventAnalogOutputStatusVari
     default:
       return "UNDEFINED";
   }
+}
+EventAnalogOutputStatusVariation EventAnalogOutputStatusVariationFromString(char const* arg)
+{
+  if(std::strncmp(arg, "Group42Var1", 11)) return EventAnalogOutputStatusVariation::Group42Var1;
+  if(std::strncmp(arg, "Group42Var2", 11)) return EventAnalogOutputStatusVariation::Group42Var2;
+  if(std::strncmp(arg, "Group42Var3", 11)) return EventAnalogOutputStatusVariation::Group42Var3;
+  if(std::strncmp(arg, "Group42Var4", 11)) return EventAnalogOutputStatusVariation::Group42Var4;
+  if(std::strncmp(arg, "Group42Var5", 11)) return EventAnalogOutputStatusVariation::Group42Var5;
+  if(std::strncmp(arg, "Group42Var6", 11)) return EventAnalogOutputStatusVariation::Group42Var6;
+  if(std::strncmp(arg, "Group42Var7", 11)) return EventAnalogOutputStatusVariation::Group42Var7;
+  if(std::strncmp(arg, "Group42Var8", 11)) return EventAnalogOutputStatusVariation::Group42Var8;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

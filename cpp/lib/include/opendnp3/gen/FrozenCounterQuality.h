@@ -62,6 +62,7 @@ enum class FrozenCounterQuality : uint8_t
 uint8_t FrozenCounterQualityToType(FrozenCounterQuality arg);
 FrozenCounterQuality FrozenCounterQualityFromType(uint8_t arg);
 char const* FrozenCounterQualityToString(FrozenCounterQuality arg);
+FrozenCounterQuality FrozenCounterQualityFromString(char const* arg);
 
 }
 

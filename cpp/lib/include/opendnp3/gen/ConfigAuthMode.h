@@ -50,6 +50,7 @@ enum class ConfigAuthMode : uint8_t
 uint8_t ConfigAuthModeToType(ConfigAuthMode arg);
 ConfigAuthMode ConfigAuthModeFromType(uint8_t arg);
 char const* ConfigAuthModeToString(ConfigAuthMode arg);
+ConfigAuthMode ConfigAuthModeFromString(char const* arg);
 
 }
 

@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/ControlCode.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -108,6 +110,24 @@ char const* ControlCodeToString(ControlCode arg)
     default:
       return "UNDEFINED";
   }
+}
+ControlCode ControlCodeFromString(char const* arg)
+{
+  if(std::strncmp(arg, "NUL", 3)) return ControlCode::NUL;
+  if(std::strncmp(arg, "NUL_CANCEL", 10)) return ControlCode::NUL_CANCEL;
+  if(std::strncmp(arg, "PULSE_ON", 8)) return ControlCode::PULSE_ON;
+  if(std::strncmp(arg, "PULSE_ON_CANCEL", 15)) return ControlCode::PULSE_ON_CANCEL;
+  if(std::strncmp(arg, "PULSE_OFF", 9)) return ControlCode::PULSE_OFF;
+  if(std::strncmp(arg, "PULSE_OFF_CANCEL", 16)) return ControlCode::PULSE_OFF_CANCEL;
+  if(std::strncmp(arg, "LATCH_ON", 8)) return ControlCode::LATCH_ON;
+  if(std::strncmp(arg, "LATCH_ON_CANCEL", 15)) return ControlCode::LATCH_ON_CANCEL;
+  if(std::strncmp(arg, "LATCH_OFF", 9)) return ControlCode::LATCH_OFF;
+  if(std::strncmp(arg, "LATCH_OFF_CANCEL", 16)) return ControlCode::LATCH_OFF_CANCEL;
+  if(std::strncmp(arg, "CLOSE_PULSE_ON", 14)) return ControlCode::CLOSE_PULSE_ON;
+  if(std::strncmp(arg, "CLOSE_PULSE_ON_CANCEL", 21)) return ControlCode::CLOSE_PULSE_ON_CANCEL;
+  if(std::strncmp(arg, "TRIP_PULSE_ON", 13)) return ControlCode::TRIP_PULSE_ON;
+  if(std::strncmp(arg, "TRIP_PULSE_ON_CANCEL", 20)) return ControlCode::TRIP_PULSE_ON_CANCEL;
+  else return ControlCode::UNDEFINED;
 }
 
 }

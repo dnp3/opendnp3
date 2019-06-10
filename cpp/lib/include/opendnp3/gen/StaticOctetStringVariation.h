@@ -44,6 +44,7 @@ enum class StaticOctetStringVariation : uint8_t
 uint8_t StaticOctetStringVariationToType(StaticOctetStringVariation arg);
 StaticOctetStringVariation StaticOctetStringVariationFromType(uint8_t arg);
 char const* StaticOctetStringVariationToString(StaticOctetStringVariation arg);
+StaticOctetStringVariation StaticOctetStringVariationFromString(char const* arg);
 
 }
 

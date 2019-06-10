@@ -62,6 +62,7 @@ enum class AnalogQuality : uint8_t
 uint8_t AnalogQualityToType(AnalogQuality arg);
 AnalogQuality AnalogQualityFromType(uint8_t arg);
 char const* AnalogQualityToString(AnalogQuality arg);
+AnalogQuality AnalogQualityFromString(char const* arg);
 
 }
 

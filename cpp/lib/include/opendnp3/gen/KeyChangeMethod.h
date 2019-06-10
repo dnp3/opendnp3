@@ -55,6 +55,7 @@ enum class KeyChangeMethod : uint8_t
 uint8_t KeyChangeMethodToType(KeyChangeMethod arg);
 KeyChangeMethod KeyChangeMethodFromType(uint8_t arg);
 char const* KeyChangeMethodToString(KeyChangeMethod arg);
+KeyChangeMethod KeyChangeMethodFromString(char const* arg);
 
 }
 

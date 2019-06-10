@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/LinkFunction.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -88,6 +90,19 @@ char const* LinkFunctionToString(LinkFunction arg)
     default:
       return "INVALID";
   }
+}
+LinkFunction LinkFunctionFromString(char const* arg)
+{
+  if(std::strncmp(arg, "PRI_RESET_LINK_STATES", 21)) return LinkFunction::PRI_RESET_LINK_STATES;
+  if(std::strncmp(arg, "PRI_TEST_LINK_STATES", 20)) return LinkFunction::PRI_TEST_LINK_STATES;
+  if(std::strncmp(arg, "PRI_CONFIRMED_USER_DATA", 23)) return LinkFunction::PRI_CONFIRMED_USER_DATA;
+  if(std::strncmp(arg, "PRI_UNCONFIRMED_USER_DATA", 25)) return LinkFunction::PRI_UNCONFIRMED_USER_DATA;
+  if(std::strncmp(arg, "PRI_REQUEST_LINK_STATUS", 23)) return LinkFunction::PRI_REQUEST_LINK_STATUS;
+  if(std::strncmp(arg, "SEC_ACK", 7)) return LinkFunction::SEC_ACK;
+  if(std::strncmp(arg, "SEC_NACK", 8)) return LinkFunction::SEC_NACK;
+  if(std::strncmp(arg, "SEC_LINK_STATUS", 15)) return LinkFunction::SEC_LINK_STATUS;
+  if(std::strncmp(arg, "SEC_NOT_SUPPORTED", 17)) return LinkFunction::SEC_NOT_SUPPORTED;
+  else return LinkFunction::INVALID;
 }
 
 }

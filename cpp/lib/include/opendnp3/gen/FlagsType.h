@@ -53,6 +53,7 @@ enum class FlagsType : uint8_t
 uint8_t FlagsTypeToType(FlagsType arg);
 FlagsType FlagsTypeFromType(uint8_t arg);
 char const* FlagsTypeToString(FlagsType arg);
+FlagsType FlagsTypeFromString(char const* arg);
 
 }
 

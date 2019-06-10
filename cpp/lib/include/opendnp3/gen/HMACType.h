@@ -60,6 +60,7 @@ enum class HMACType : uint8_t
 uint8_t HMACTypeToType(HMACType arg);
 HMACType HMACTypeFromType(uint8_t arg);
 char const* HMACTypeToString(HMACType arg);
+HMACType HMACTypeFromString(char const* arg);
 
 }
 

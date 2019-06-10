@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/TimeSyncMode.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -60,6 +62,12 @@ char const* TimeSyncModeToString(TimeSyncMode arg)
     default:
       return "None";
   }
+}
+TimeSyncMode TimeSyncModeFromString(char const* arg)
+{
+  if(std::strncmp(arg, "NonLAN", 6)) return TimeSyncMode::NonLAN;
+  if(std::strncmp(arg, "LAN", 3)) return TimeSyncMode::LAN;
+  else return TimeSyncMode::None;
 }
 
 }

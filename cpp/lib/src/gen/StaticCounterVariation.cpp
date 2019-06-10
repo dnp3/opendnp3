@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/StaticCounterVariation.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -49,6 +51,8 @@ StaticCounterVariation StaticCounterVariationFromType(uint8_t arg)
       return StaticCounterVariation::Group20Var5;
     case(3):
       return StaticCounterVariation::Group20Var6;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* StaticCounterVariationToString(StaticCounterVariation arg)
@@ -66,6 +70,14 @@ char const* StaticCounterVariationToString(StaticCounterVariation arg)
     default:
       return "UNDEFINED";
   }
+}
+StaticCounterVariation StaticCounterVariationFromString(char const* arg)
+{
+  if(std::strncmp(arg, "Group20Var1", 11)) return StaticCounterVariation::Group20Var1;
+  if(std::strncmp(arg, "Group20Var2", 11)) return StaticCounterVariation::Group20Var2;
+  if(std::strncmp(arg, "Group20Var5", 11)) return StaticCounterVariation::Group20Var5;
+  if(std::strncmp(arg, "Group20Var6", 11)) return StaticCounterVariation::Group20Var6;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

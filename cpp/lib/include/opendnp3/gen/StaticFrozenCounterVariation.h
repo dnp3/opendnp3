@@ -49,6 +49,7 @@ enum class StaticFrozenCounterVariation : uint8_t
 uint8_t StaticFrozenCounterVariationToType(StaticFrozenCounterVariation arg);
 StaticFrozenCounterVariation StaticFrozenCounterVariationFromType(uint8_t arg);
 char const* StaticFrozenCounterVariationToString(StaticFrozenCounterVariation arg);
+StaticFrozenCounterVariation StaticFrozenCounterVariationFromString(char const* arg);
 
 }
 

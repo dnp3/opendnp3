@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/StaticAnalogOutputStatusVariation.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -49,6 +51,8 @@ StaticAnalogOutputStatusVariation StaticAnalogOutputStatusVariationFromType(uint
       return StaticAnalogOutputStatusVariation::Group40Var3;
     case(3):
       return StaticAnalogOutputStatusVariation::Group40Var4;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* StaticAnalogOutputStatusVariationToString(StaticAnalogOutputStatusVariation arg)
@@ -66,6 +70,14 @@ char const* StaticAnalogOutputStatusVariationToString(StaticAnalogOutputStatusVa
     default:
       return "UNDEFINED";
   }
+}
+StaticAnalogOutputStatusVariation StaticAnalogOutputStatusVariationFromString(char const* arg)
+{
+  if(std::strncmp(arg, "Group40Var1", 11)) return StaticAnalogOutputStatusVariation::Group40Var1;
+  if(std::strncmp(arg, "Group40Var2", 11)) return StaticAnalogOutputStatusVariation::Group40Var2;
+  if(std::strncmp(arg, "Group40Var3", 11)) return StaticAnalogOutputStatusVariation::Group40Var3;
+  if(std::strncmp(arg, "Group40Var4", 11)) return StaticAnalogOutputStatusVariation::Group40Var4;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

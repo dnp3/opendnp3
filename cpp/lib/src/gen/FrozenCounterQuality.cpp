@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/FrozenCounterQuality.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -57,6 +59,8 @@ FrozenCounterQuality FrozenCounterQualityFromType(uint8_t arg)
       return FrozenCounterQuality::DISCONTINUITY;
     case(0x80):
       return FrozenCounterQuality::RESERVED;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* FrozenCounterQualityToString(FrozenCounterQuality arg)
@@ -82,6 +86,18 @@ char const* FrozenCounterQualityToString(FrozenCounterQuality arg)
     default:
       return "UNDEFINED";
   }
+}
+FrozenCounterQuality FrozenCounterQualityFromString(char const* arg)
+{
+  if(std::strncmp(arg, "ONLINE", 6)) return FrozenCounterQuality::ONLINE;
+  if(std::strncmp(arg, "RESTART", 7)) return FrozenCounterQuality::RESTART;
+  if(std::strncmp(arg, "COMM_LOST", 9)) return FrozenCounterQuality::COMM_LOST;
+  if(std::strncmp(arg, "REMOTE_FORCED", 13)) return FrozenCounterQuality::REMOTE_FORCED;
+  if(std::strncmp(arg, "LOCAL_FORCED", 12)) return FrozenCounterQuality::LOCAL_FORCED;
+  if(std::strncmp(arg, "ROLLOVER", 8)) return FrozenCounterQuality::ROLLOVER;
+  if(std::strncmp(arg, "DISCONTINUITY", 13)) return FrozenCounterQuality::DISCONTINUITY;
+  if(std::strncmp(arg, "RESERVED", 8)) return FrozenCounterQuality::RESERVED;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

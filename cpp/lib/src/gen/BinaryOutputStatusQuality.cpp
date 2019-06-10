@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/BinaryOutputStatusQuality.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -57,6 +59,8 @@ BinaryOutputStatusQuality BinaryOutputStatusQualityFromType(uint8_t arg)
       return BinaryOutputStatusQuality::RESERVED2;
     case(0x80):
       return BinaryOutputStatusQuality::STATE;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* BinaryOutputStatusQualityToString(BinaryOutputStatusQuality arg)
@@ -82,6 +86,18 @@ char const* BinaryOutputStatusQualityToString(BinaryOutputStatusQuality arg)
     default:
       return "UNDEFINED";
   }
+}
+BinaryOutputStatusQuality BinaryOutputStatusQualityFromString(char const* arg)
+{
+  if(std::strncmp(arg, "ONLINE", 6)) return BinaryOutputStatusQuality::ONLINE;
+  if(std::strncmp(arg, "RESTART", 7)) return BinaryOutputStatusQuality::RESTART;
+  if(std::strncmp(arg, "COMM_LOST", 9)) return BinaryOutputStatusQuality::COMM_LOST;
+  if(std::strncmp(arg, "REMOTE_FORCED", 13)) return BinaryOutputStatusQuality::REMOTE_FORCED;
+  if(std::strncmp(arg, "LOCAL_FORCED", 12)) return BinaryOutputStatusQuality::LOCAL_FORCED;
+  if(std::strncmp(arg, "RESERVED1", 9)) return BinaryOutputStatusQuality::RESERVED1;
+  if(std::strncmp(arg, "RESERVED2", 9)) return BinaryOutputStatusQuality::RESERVED2;
+  if(std::strncmp(arg, "STATE", 5)) return BinaryOutputStatusQuality::STATE;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

@@ -45,6 +45,7 @@ enum class EventSecurityStatVariation : uint8_t
 uint8_t EventSecurityStatVariationToType(EventSecurityStatVariation arg);
 EventSecurityStatVariation EventSecurityStatVariationFromType(uint8_t arg);
 char const* EventSecurityStatVariationToString(EventSecurityStatVariation arg);
+EventSecurityStatVariation EventSecurityStatVariationFromString(char const* arg);
 
 }
 

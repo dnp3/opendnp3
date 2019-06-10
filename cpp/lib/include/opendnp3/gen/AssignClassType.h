@@ -53,6 +53,7 @@ enum class AssignClassType : uint8_t
 uint8_t AssignClassTypeToType(AssignClassType arg);
 AssignClassType AssignClassTypeFromType(uint8_t arg);
 char const* AssignClassTypeToString(AssignClassType arg);
+AssignClassType AssignClassTypeFromString(char const* arg);
 
 }
 

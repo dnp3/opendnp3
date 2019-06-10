@@ -45,6 +45,7 @@ enum class EventBinaryOutputStatusVariation : uint8_t
 uint8_t EventBinaryOutputStatusVariationToType(EventBinaryOutputStatusVariation arg);
 EventBinaryOutputStatusVariation EventBinaryOutputStatusVariationFromType(uint8_t arg);
 char const* EventBinaryOutputStatusVariationToString(EventBinaryOutputStatusVariation arg);
+EventBinaryOutputStatusVariation EventBinaryOutputStatusVariationFromString(char const* arg);
 
 }
 

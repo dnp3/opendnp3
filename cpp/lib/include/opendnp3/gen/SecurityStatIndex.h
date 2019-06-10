@@ -82,6 +82,7 @@ enum class SecurityStatIndex : uint8_t
 uint8_t SecurityStatIndexToType(SecurityStatIndex arg);
 SecurityStatIndex SecurityStatIndexFromType(uint8_t arg);
 char const* SecurityStatIndexToString(SecurityStatIndex arg);
+SecurityStatIndex SecurityStatIndexFromString(char const* arg);
 
 }
 

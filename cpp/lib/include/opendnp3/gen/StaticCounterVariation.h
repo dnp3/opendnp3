@@ -47,6 +47,7 @@ enum class StaticCounterVariation : uint8_t
 uint8_t StaticCounterVariationToType(StaticCounterVariation arg);
 StaticCounterVariation StaticCounterVariationFromType(uint8_t arg);
 char const* StaticCounterVariationToString(StaticCounterVariation arg);
+StaticCounterVariation StaticCounterVariationFromString(char const* arg);
 
 }
 

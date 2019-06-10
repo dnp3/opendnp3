@@ -58,6 +58,7 @@ enum class TaskCompletion : uint8_t
 uint8_t TaskCompletionToType(TaskCompletion arg);
 TaskCompletion TaskCompletionFromType(uint8_t arg);
 char const* TaskCompletionToString(TaskCompletion arg);
+TaskCompletion TaskCompletionFromString(char const* arg);
 
 }
 

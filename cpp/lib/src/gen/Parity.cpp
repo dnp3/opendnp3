@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/Parity.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -60,6 +62,12 @@ char const* ParityToString(Parity arg)
     default:
       return "None";
   }
+}
+Parity ParityFromString(char const* arg)
+{
+  if(std::strncmp(arg, "Even", 4)) return Parity::Even;
+  if(std::strncmp(arg, "Odd", 3)) return Parity::Odd;
+  else return Parity::None;
 }
 
 }

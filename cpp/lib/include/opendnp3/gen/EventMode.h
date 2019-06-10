@@ -54,6 +54,7 @@ enum class EventMode : uint8_t
 uint8_t EventModeToType(EventMode arg);
 EventMode EventModeFromType(uint8_t arg);
 char const* EventModeToString(EventMode arg);
+EventMode EventModeFromString(char const* arg);
 
 }
 

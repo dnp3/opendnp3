@@ -30,6 +30,8 @@
 //
 
 #include "opendnp3/gen/EventSecurityStatVariation.h"
+#include <cstring>
+#include <stdexcept>
 
 namespace opendnp3 {
 
@@ -45,6 +47,8 @@ EventSecurityStatVariation EventSecurityStatVariationFromType(uint8_t arg)
       return EventSecurityStatVariation::Group122Var1;
     case(1):
       return EventSecurityStatVariation::Group122Var2;
+    default:
+      throw new std::invalid_argument("Unknown value");
   }
 }
 char const* EventSecurityStatVariationToString(EventSecurityStatVariation arg)
@@ -58,6 +62,12 @@ char const* EventSecurityStatVariationToString(EventSecurityStatVariation arg)
     default:
       return "UNDEFINED";
   }
+}
+EventSecurityStatVariation EventSecurityStatVariationFromString(char const* arg)
+{
+  if(std::strncmp(arg, "Group122Var1", 12)) return EventSecurityStatVariation::Group122Var1;
+  if(std::strncmp(arg, "Group122Var2", 12)) return EventSecurityStatVariation::Group122Var2;
+  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

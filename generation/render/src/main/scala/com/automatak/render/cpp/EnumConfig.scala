@@ -21,5 +21,5 @@ package com.automatak.render.cpp
 
 import com.automatak.render.EnumModel
 
-case class EnumConfig(model: EnumModel, conversions: Boolean, stringConv: Boolean)
+case class EnumConfig(model: EnumModel, intConv: Boolean, stringConv: Boolean, serialization: Boolean)
 

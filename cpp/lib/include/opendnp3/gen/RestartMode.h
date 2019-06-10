@@ -52,6 +52,7 @@ enum class RestartMode : uint8_t
 uint8_t RestartModeToType(RestartMode arg);
 RestartMode RestartModeFromType(uint8_t arg);
 char const* RestartModeToString(RestartMode arg);
+RestartMode RestartModeFromString(char const* arg);
 
 }
 

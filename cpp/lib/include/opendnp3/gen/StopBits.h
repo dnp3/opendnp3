@@ -50,6 +50,7 @@ enum class StopBits : uint8_t
 uint8_t StopBitsToType(StopBits arg);
 StopBits StopBitsFromType(uint8_t arg);
 char const* StopBitsToString(StopBits arg);
+StopBits StopBitsFromString(char const* arg);
 
 }
 

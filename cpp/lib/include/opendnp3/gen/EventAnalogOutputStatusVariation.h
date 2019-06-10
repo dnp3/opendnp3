@@ -51,6 +51,7 @@ enum class EventAnalogOutputStatusVariation : uint8_t
 uint8_t EventAnalogOutputStatusVariationToType(EventAnalogOutputStatusVariation arg);
 EventAnalogOutputStatusVariation EventAnalogOutputStatusVariationFromType(uint8_t arg);
 char const* EventAnalogOutputStatusVariationToString(EventAnalogOutputStatusVariation arg);
+EventAnalogOutputStatusVariation EventAnalogOutputStatusVariationFromString(char const* arg);
 
 }
 

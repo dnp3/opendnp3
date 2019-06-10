@@ -54,6 +54,7 @@ enum class ChannelState : uint8_t
 uint8_t ChannelStateToType(ChannelState arg);
 ChannelState ChannelStateFromType(uint8_t arg);
 char const* ChannelStateToString(ChannelState arg);
+ChannelState ChannelStateFromString(char const* arg);
 
 }
 

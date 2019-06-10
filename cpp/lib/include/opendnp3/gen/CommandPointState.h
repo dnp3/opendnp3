@@ -58,6 +58,7 @@ enum class CommandPointState : uint8_t
 uint8_t CommandPointStateToType(CommandPointState arg);
 CommandPointState CommandPointStateFromType(uint8_t arg);
 char const* CommandPointStateToString(CommandPointState arg);
+CommandPointState CommandPointStateFromString(char const* arg);
 
 }
 
