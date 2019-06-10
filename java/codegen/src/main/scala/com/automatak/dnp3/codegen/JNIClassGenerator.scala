@@ -132,7 +132,7 @@ case class JNIClassGenerator(cfg: ClassConfig) {
 
       "bool %s::init(JNIEnv* env)".format(cfg.clazz.getSimpleName).iter ++ bracket {
 
-        "auto clazzTemp = env->FindClass(\"%s\");".format(cfg.clazz.fqcn).iter ++
+        "auto clazzTemp = env->FindClass(\"%s\");".format(cfg.jniClassName).iter ++
         "if(!clazzTemp) return false;".iter ++
         "this->clazz = (jclass) env->NewGlobalRef(clazzTemp);".iter ++
         "env->DeleteLocalRef(clazzTemp);".iter ++
