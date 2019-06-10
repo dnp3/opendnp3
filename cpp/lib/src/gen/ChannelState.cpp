@@ -33,6 +33,24 @@
 
 namespace opendnp3 {
 
+uint8_t ChannelStateToType(ChannelState arg)
+{
+  return static_cast<uint8_t>(arg);
+}
+ChannelState ChannelStateFromType(uint8_t arg)
+{
+  switch(arg)
+  {
+    case(0):
+      return ChannelState::CLOSED;
+    case(1):
+      return ChannelState::OPENING;
+    case(2):
+      return ChannelState::OPEN;
+    default:
+      return ChannelState::SHUTDOWN;
+  }
+}
 char const* ChannelStateToString(ChannelState arg)
 {
   switch(arg)

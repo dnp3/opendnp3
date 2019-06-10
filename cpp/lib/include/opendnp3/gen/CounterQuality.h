@@ -59,6 +59,9 @@ enum class CounterQuality : uint8_t
   RESERVED = 0x80
 };
 
+uint8_t CounterQualityToType(CounterQuality arg);
+CounterQuality CounterQualityFromType(uint8_t arg);
+char const* CounterQualityToString(CounterQuality arg);
 
 }
 

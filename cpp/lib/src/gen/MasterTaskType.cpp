@@ -33,6 +33,34 @@
 
 namespace opendnp3 {
 
+uint8_t MasterTaskTypeToType(MasterTaskType arg)
+{
+  return static_cast<uint8_t>(arg);
+}
+MasterTaskType MasterTaskTypeFromType(uint8_t arg)
+{
+  switch(arg)
+  {
+    case(0):
+      return MasterTaskType::CLEAR_RESTART;
+    case(1):
+      return MasterTaskType::DISABLE_UNSOLICITED;
+    case(2):
+      return MasterTaskType::ASSIGN_CLASS;
+    case(3):
+      return MasterTaskType::STARTUP_INTEGRITY_POLL;
+    case(4):
+      return MasterTaskType::NON_LAN_TIME_SYNC;
+    case(5):
+      return MasterTaskType::LAN_TIME_SYNC;
+    case(6):
+      return MasterTaskType::ENABLE_UNSOLICITED;
+    case(7):
+      return MasterTaskType::AUTO_EVENT_SCAN;
+    case(8):
+      return MasterTaskType::USER_TASK;
+  }
+}
 char const* MasterTaskTypeToString(MasterTaskType arg)
 {
   switch(arg)

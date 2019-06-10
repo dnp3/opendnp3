@@ -59,6 +59,9 @@ enum class AnalogQuality : uint8_t
   RESERVED = 0x80
 };
 
+uint8_t AnalogQualityToType(AnalogQuality arg);
+AnalogQuality AnalogQualityFromType(uint8_t arg);
+char const* AnalogQualityToString(AnalogQuality arg);
 
 }
 

@@ -41,6 +41,9 @@ enum class EventOctetStringVariation : uint8_t
   Group111Var0 = 0
 };
 
+uint8_t EventOctetStringVariationToType(EventOctetStringVariation arg);
+EventOctetStringVariation EventOctetStringVariationFromType(uint8_t arg);
+char const* EventOctetStringVariationToString(EventOctetStringVariation arg);
 
 }
 

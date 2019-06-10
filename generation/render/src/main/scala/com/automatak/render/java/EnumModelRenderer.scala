@@ -62,7 +62,7 @@ object EnumModelRenderer extends ModelRenderer[EnumModel] {
       inner
     }
 
-    def switch = new SwitchModelRenderer[EnumValue](v => enum.render(v.value))(v => v.name).render(enum.nonDefaultValues, enum.defaultOrHead)
+    def switch = new SwitchModelRenderer[EnumValue](v => enum.render(v.value))(v => v.name).render(enum.nonDefaultValues, Some(enum.defaultOrHead))
 
     def fromTypeLines : Iterator[String] = {
       space ++ fromType {

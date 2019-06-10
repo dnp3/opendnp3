@@ -51,6 +51,8 @@ enum class ChannelState : uint8_t
   SHUTDOWN = 3
 };
 
+uint8_t ChannelStateToType(ChannelState arg);
+ChannelState ChannelStateFromType(uint8_t arg);
 char const* ChannelStateToString(ChannelState arg);
 
 }

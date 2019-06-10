@@ -42,6 +42,9 @@ enum class EventSecurityStatVariation : uint8_t
   Group122Var2 = 1
 };
 
+uint8_t EventSecurityStatVariationToType(EventSecurityStatVariation arg);
+EventSecurityStatVariation EventSecurityStatVariationFromType(uint8_t arg);
+char const* EventSecurityStatVariationToString(EventSecurityStatVariation arg);
 
 }
 

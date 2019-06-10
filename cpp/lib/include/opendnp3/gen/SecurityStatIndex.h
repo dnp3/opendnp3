@@ -79,6 +79,9 @@ enum class SecurityStatIndex : uint8_t
   REKEYS_DUE_TO_RESTART = 17
 };
 
+uint8_t SecurityStatIndexToType(SecurityStatIndex arg);
+SecurityStatIndex SecurityStatIndexFromType(uint8_t arg);
+char const* SecurityStatIndexToString(SecurityStatIndex arg);
 
 }
 

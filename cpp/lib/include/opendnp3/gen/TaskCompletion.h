@@ -55,6 +55,8 @@ enum class TaskCompletion : uint8_t
   FAILURE_NO_COMMS = 255
 };
 
+uint8_t TaskCompletionToType(TaskCompletion arg);
+TaskCompletion TaskCompletionFromType(uint8_t arg);
 char const* TaskCompletionToString(TaskCompletion arg);
 
 }

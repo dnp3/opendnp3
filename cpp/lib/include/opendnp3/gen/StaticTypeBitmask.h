@@ -52,6 +52,9 @@ enum class StaticTypeBitmask : uint16_t
   OctetString = 0x100
 };
 
+uint16_t StaticTypeBitmaskToType(StaticTypeBitmask arg);
+StaticTypeBitmask StaticTypeBitmaskFromType(uint16_t arg);
+char const* StaticTypeBitmaskToString(StaticTypeBitmask arg);
 
 }
 

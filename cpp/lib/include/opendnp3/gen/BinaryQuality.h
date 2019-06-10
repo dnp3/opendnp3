@@ -59,6 +59,9 @@ enum class BinaryQuality : uint8_t
   STATE = 0x80
 };
 
+uint8_t BinaryQualityToType(BinaryQuality arg);
+BinaryQuality BinaryQualityFromType(uint8_t arg);
+char const* BinaryQualityToString(BinaryQuality arg);
 
 }
 

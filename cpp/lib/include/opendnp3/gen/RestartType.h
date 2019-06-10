@@ -47,6 +47,9 @@ enum class RestartType : uint8_t
   WARM = 1
 };
 
+uint8_t RestartTypeToType(RestartType arg);
+RestartType RestartTypeFromType(uint8_t arg);
+char const* RestartTypeToString(RestartType arg);
 
 }
 

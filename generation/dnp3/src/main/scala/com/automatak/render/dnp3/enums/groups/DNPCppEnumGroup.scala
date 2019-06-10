@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -25,53 +25,46 @@ import com.automatak.render.dnp3.enums._
 
 object DNPCppEnumGroup {
 
-  def enums : List[EnumConfig] = List(fullEnums, simpleEnums, stringOnlyEnums).flatten
-
-  private def fullEnums = List(
-    FunctionCode(),
-    QualifierCode(),
-    LinkFunction(),
-    IntervalUnit(),
-    ControlCode(),
-    GroupVariationEnum(),
-    DoubleBit(),
-    CommandStatus(),
-    HMACType(),
-    ChallengeReason(),
-    KeyWrapAlgorithm(),
-    KeyStatus(),
+  def enums : List[EnumConfig] = (List(
+    AssignClassType(),
     AuthErrorCode(),
     CertificateType(),
-    KeyChangeMethod(),
-    UserOperation(),
-    UserRole(),
-    Parity(),
-    StopBits(),
-    FlowControl(),
-    FlagsType()
-  ).map(x => EnumConfig(x, true, true))
-
-  private def simpleEnums = (List(
-    AssignClassType(),
-    StaticTypeBitmask(),
-    PointClass(),
-    TimeSyncMode(),
-    RestartMode(),
-    TimestampMode(),
-    EventMode(),
-    ConfigAuthMode(),
-    SecurityStatIndex(),
-    RestartType(),
-    OperateType(),
-    ServerAcceptMode(),
-    IndexQualifierMode()
-  ) ::: DefaultVariations.enums ::: QualityMasks.enums).map(x => EnumConfig(x, false, false))
-
-  private def stringOnlyEnums = List(
-    MasterTaskType(),
-    TaskCompletion(),
+    ChallengeReason(),
     ChannelState(),
+    CommandPointState(),
+    CommandStatus(),
+    ConfigAuthMode(),
+    ControlCode(),
+    DoubleBit(),
+    EventMode(),
+    FlagsType(),
+    FlowControl(),
+    FunctionCode(),
+    GroupVariationEnum(),
+    HMACType(),
+    IndexQualifierMode(),
+    IntervalUnit(),
+    KeyChangeMethod(),
+    KeyStatus(),
+    KeyWrapAlgorithm(),
+    LinkFunction(),
     LinkStatus(),
-    CommandPointState()).map(x => EnumConfig(x, false, true))
+    MasterTaskType(),
+    OperateType(),
+    Parity(),
+    PointClass(),
+    QualifierCode(),
+    RestartMode(),
+    RestartType(),
+    SecurityStatIndex(),
+    ServerAcceptMode(),
+    StaticTypeBitmask(),
+    StopBits(),
+    TaskCompletion(),
+    TimestampMode(),
+    TimeSyncMode(),
+    UserOperation(),
+    UserRole()
+  ) ::: DefaultVariations.enums ::: QualityMasks.enums).map(x => EnumConfig(x, true, true))
 
 }

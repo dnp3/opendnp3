@@ -42,6 +42,9 @@ enum class StaticBinaryVariation : uint8_t
   Group1Var2 = 1
 };
 
+uint8_t StaticBinaryVariationToType(StaticBinaryVariation arg);
+StaticBinaryVariation StaticBinaryVariationFromType(uint8_t arg);
+char const* StaticBinaryVariationToString(StaticBinaryVariation arg);
 
 }
 

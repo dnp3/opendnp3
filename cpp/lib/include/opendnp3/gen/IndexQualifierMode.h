@@ -47,6 +47,9 @@ enum class IndexQualifierMode : uint8_t
   always_two_bytes = 0x1
 };
 
+uint8_t IndexQualifierModeToType(IndexQualifierMode arg);
+IndexQualifierMode IndexQualifierModeFromType(uint8_t arg);
+char const* IndexQualifierModeToString(IndexQualifierMode arg);
 
 }
 

@@ -66,10 +66,7 @@ case class EnumModel(name: String, comments: List[String], enumType: EnumModel.T
     case None => nonDefaultValues
   }
 
-  def default : EnumValue = defaultValue match {
-    case Some(x) => x
-    case None => throw new Exception(name + " does not have a default value")
-  }
+  def default : Option[EnumValue] = defaultValue
 
   def defaultOrHead : EnumValue = defaultValue match {
     case Some(x) => x

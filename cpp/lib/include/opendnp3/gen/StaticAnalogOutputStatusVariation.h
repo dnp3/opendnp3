@@ -44,6 +44,9 @@ enum class StaticAnalogOutputStatusVariation : uint8_t
   Group40Var4 = 3
 };
 
+uint8_t StaticAnalogOutputStatusVariationToType(StaticAnalogOutputStatusVariation arg);
+StaticAnalogOutputStatusVariation StaticAnalogOutputStatusVariationFromType(uint8_t arg);
+char const* StaticAnalogOutputStatusVariationToString(StaticAnalogOutputStatusVariation arg);
 
 }
 

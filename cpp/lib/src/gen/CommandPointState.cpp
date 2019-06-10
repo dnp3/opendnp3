@@ -33,6 +33,28 @@
 
 namespace opendnp3 {
 
+uint8_t CommandPointStateToType(CommandPointState arg)
+{
+  return static_cast<uint8_t>(arg);
+}
+CommandPointState CommandPointStateFromType(uint8_t arg)
+{
+  switch(arg)
+  {
+    case(0):
+      return CommandPointState::INIT;
+    case(1):
+      return CommandPointState::SELECT_SUCCESS;
+    case(2):
+      return CommandPointState::SELECT_MISMATCH;
+    case(3):
+      return CommandPointState::SELECT_FAIL;
+    case(4):
+      return CommandPointState::OPERATE_FAIL;
+    case(5):
+      return CommandPointState::SUCCESS;
+  }
+}
 char const* CommandPointStateToString(CommandPointState arg)
 {
   switch(arg)

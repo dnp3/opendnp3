@@ -44,6 +44,9 @@ enum class EventCounterVariation : uint8_t
   Group22Var6 = 3
 };
 
+uint8_t EventCounterVariationToType(EventCounterVariation arg);
+EventCounterVariation EventCounterVariationFromType(uint8_t arg);
+char const* EventCounterVariationToString(EventCounterVariation arg);
 
 }
 

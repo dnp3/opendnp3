@@ -50,6 +50,9 @@ enum class AssignClassType : uint8_t
   AnalogOutputStatus = 0x6
 };
 
+uint8_t AssignClassTypeToType(AssignClassType arg);
+AssignClassType AssignClassTypeFromType(uint8_t arg);
+char const* AssignClassTypeToString(AssignClassType arg);
 
 }
 

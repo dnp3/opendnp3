@@ -41,6 +41,9 @@ enum class StaticOctetStringVariation : uint8_t
   Group110Var0 = 0
 };
 
+uint8_t StaticOctetStringVariationToType(StaticOctetStringVariation arg);
+StaticOctetStringVariation StaticOctetStringVariationFromType(uint8_t arg);
+char const* StaticOctetStringVariationToString(StaticOctetStringVariation arg);
 
 }
 

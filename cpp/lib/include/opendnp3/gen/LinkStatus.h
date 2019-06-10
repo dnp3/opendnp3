@@ -47,6 +47,8 @@ enum class LinkStatus : uint8_t
   RESET = 1
 };
 
+uint8_t LinkStatusToType(LinkStatus arg);
+LinkStatus LinkStatusFromType(uint8_t arg);
 char const* LinkStatusToString(LinkStatus arg);
 
 }

@@ -49,6 +49,9 @@ enum class OperateType : uint8_t
   DirectOperateNoAck = 0x2
 };
 
+uint8_t OperateTypeToType(OperateType arg);
+OperateType OperateTypeFromType(uint8_t arg);
+char const* OperateTypeToString(OperateType arg);
 
 }
 

@@ -33,6 +33,20 @@
 
 namespace opendnp3 {
 
+uint8_t LinkStatusToType(LinkStatus arg)
+{
+  return static_cast<uint8_t>(arg);
+}
+LinkStatus LinkStatusFromType(uint8_t arg)
+{
+  switch(arg)
+  {
+    case(0):
+      return LinkStatus::UNRESET;
+    case(1):
+      return LinkStatus::RESET;
+  }
+}
 char const* LinkStatusToString(LinkStatus arg)
 {
   switch(arg)

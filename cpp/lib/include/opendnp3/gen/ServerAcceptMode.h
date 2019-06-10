@@ -45,6 +45,9 @@ enum class ServerAcceptMode : uint8_t
   CloseExisting = 1
 };
 
+uint8_t ServerAcceptModeToType(ServerAcceptMode arg);
+ServerAcceptMode ServerAcceptModeFromType(uint8_t arg);
+char const* ServerAcceptModeToString(ServerAcceptMode arg);
 
 }
 

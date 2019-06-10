@@ -33,6 +33,28 @@
 
 namespace opendnp3 {
 
+uint8_t TaskCompletionToType(TaskCompletion arg)
+{
+  return static_cast<uint8_t>(arg);
+}
+TaskCompletion TaskCompletionFromType(uint8_t arg)
+{
+  switch(arg)
+  {
+    case(0):
+      return TaskCompletion::SUCCESS;
+    case(1):
+      return TaskCompletion::FAILURE_BAD_RESPONSE;
+    case(2):
+      return TaskCompletion::FAILURE_RESPONSE_TIMEOUT;
+    case(3):
+      return TaskCompletion::FAILURE_START_TIMEOUT;
+    case(4):
+      return TaskCompletion::FAILURE_MESSAGE_FORMAT_ERROR;
+    default:
+      return TaskCompletion::FAILURE_NO_COMMS;
+  }
+}
 char const* TaskCompletionToString(TaskCompletion arg)
 {
   switch(arg)

@@ -44,6 +44,9 @@ enum class StaticCounterVariation : uint8_t
   Group20Var6 = 3
 };
 
+uint8_t StaticCounterVariationToType(StaticCounterVariation arg);
+StaticCounterVariation StaticCounterVariationFromType(uint8_t arg);
+char const* StaticCounterVariationToString(StaticCounterVariation arg);
 
 }
 

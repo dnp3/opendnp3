@@ -247,25 +247,69 @@ set(opendnp3_private_headers
     ./src/decoder/Indent.h
     ./src/decoder/LoggingHandler.h
 
+    ./src/gen/AnalogOutputStatusQualitySerialization.h
+    ./src/gen/AnalogQualitySerialization.h
+    ./src/gen/AssignClassTypeSerialization.h
     ./src/gen/AuthErrorCodeSerialization.h
+    ./src/gen/BinaryOutputStatusQualitySerialization.h
+    ./src/gen/BinaryQualitySerialization.h
     ./src/gen/CertificateTypeSerialization.h
     ./src/gen/ChallengeReasonSerialization.h
+    ./src/gen/ChannelStateSerialization.h
+    ./src/gen/CommandPointStateSerialization.h
     ./src/gen/CommandStatusSerialization.h
+    ./src/gen/ConfigAuthModeSerialization.h
     ./src/gen/ControlCodeSerialization.h
+    ./src/gen/CounterQualitySerialization.h
+    ./src/gen/DoubleBitBinaryQualitySerialization.h
     ./src/gen/DoubleBitSerialization.h
+    ./src/gen/EventAnalogOutputStatusVariationSerialization.h
+    ./src/gen/EventAnalogVariationSerialization.h
+    ./src/gen/EventBinaryOutputStatusVariationSerialization.h
+    ./src/gen/EventBinaryVariationSerialization.h
+    ./src/gen/EventCounterVariationSerialization.h
+    ./src/gen/EventDoubleBinaryVariationSerialization.h
+    ./src/gen/EventFrozenCounterVariationSerialization.h
+    ./src/gen/EventModeSerialization.h
+    ./src/gen/EventOctetStringVariationSerialization.h
+    ./src/gen/EventSecurityStatVariationSerialization.h
     ./src/gen/FlagsTypeSerialization.h
     ./src/gen/FlowControlSerialization.h
+    ./src/gen/FrozenCounterQualitySerialization.h
     ./src/gen/FunctionCodeSerialization.h
     ./src/gen/GroupVariationSerialization.h
     ./src/gen/HMACTypeSerialization.h
+    ./src/gen/IndexQualifierModeSerialization.h
     ./src/gen/IntervalUnitsSerialization.h
     ./src/gen/KeyChangeMethodSerialization.h
     ./src/gen/KeyStatusSerialization.h
     ./src/gen/KeyWrapAlgorithmSerialization.h
     ./src/gen/LinkFunctionSerialization.h
+    ./src/gen/LinkStatusSerialization.h
+    ./src/gen/MasterTaskTypeSerialization.h
+    ./src/gen/OperateTypeSerialization.h
     ./src/gen/ParitySerialization.h
+    ./src/gen/PointClassSerialization.h
     ./src/gen/QualifierCodeSerialization.h
+    ./src/gen/RestartModeSerialization.h
+    ./src/gen/RestartTypeSerialization.h
+    ./src/gen/SecurityStatIndexSerialization.h
+    ./src/gen/ServerAcceptModeSerialization.h
+    ./src/gen/StaticAnalogOutputStatusVariationSerialization.h
+    ./src/gen/StaticAnalogVariationSerialization.h
+    ./src/gen/StaticBinaryOutputStatusVariationSerialization.h
+    ./src/gen/StaticBinaryVariationSerialization.h
+    ./src/gen/StaticCounterVariationSerialization.h
+    ./src/gen/StaticDoubleBinaryVariationSerialization.h
+    ./src/gen/StaticFrozenCounterVariationSerialization.h
+    ./src/gen/StaticOctetStringVariationSerialization.h
+    ./src/gen/StaticSecurityStatVariationSerialization.h
+    ./src/gen/StaticTimeAndIntervalVariationSerialization.h
+    ./src/gen/StaticTypeBitmaskSerialization.h
     ./src/gen/StopBitsSerialization.h
+    ./src/gen/TaskCompletionSerialization.h
+    ./src/gen/TimestampModeSerialization.h
+    ./src/gen/TimeSyncModeSerialization.h
     ./src/gen/UserOperationSerialization.h
     ./src/gen/UserRoleSerialization.h
 
@@ -477,20 +521,40 @@ set(opendnp3_src
     ./src/decoder/DecoderImpl.cpp
     ./src/decoder/LoggingHandler.cpp
 
+    ./src/gen/AnalogOutputStatusQuality.cpp
+    ./src/gen/AnalogQuality.cpp
+    ./src/gen/AssignClassType.cpp
     ./src/gen/Attributes.cpp
     ./src/gen/AuthErrorCode.cpp
+    ./src/gen/BinaryOutputStatusQuality.cpp
+    ./src/gen/BinaryQuality.cpp
     ./src/gen/CertificateType.cpp
     ./src/gen/ChallengeReason.cpp
     ./src/gen/ChannelState.cpp
     ./src/gen/CommandPointState.cpp
     ./src/gen/CommandStatus.cpp
+    ./src/gen/ConfigAuthMode.cpp
     ./src/gen/ControlCode.cpp
+    ./src/gen/CounterQuality.cpp
     ./src/gen/DoubleBit.cpp
+    ./src/gen/DoubleBitBinaryQuality.cpp
+    ./src/gen/EventAnalogOutputStatusVariation.cpp
+    ./src/gen/EventAnalogVariation.cpp
+    ./src/gen/EventBinaryOutputStatusVariation.cpp
+    ./src/gen/EventBinaryVariation.cpp
+    ./src/gen/EventCounterVariation.cpp
+    ./src/gen/EventDoubleBinaryVariation.cpp
+    ./src/gen/EventFrozenCounterVariation.cpp
+    ./src/gen/EventMode.cpp
+    ./src/gen/EventOctetStringVariation.cpp
+    ./src/gen/EventSecurityStatVariation.cpp
     ./src/gen/FlagsType.cpp
     ./src/gen/FlowControl.cpp
+    ./src/gen/FrozenCounterQuality.cpp
     ./src/gen/FunctionCode.cpp
     ./src/gen/GroupVariation.cpp
     ./src/gen/HMACType.cpp
+    ./src/gen/IndexQualifierMode.cpp
     ./src/gen/IntervalUnits.cpp
     ./src/gen/KeyChangeMethod.cpp
     ./src/gen/KeyStatus.cpp
@@ -498,11 +562,29 @@ set(opendnp3_src
     ./src/gen/LinkFunction.cpp
     ./src/gen/LinkStatus.cpp
     ./src/gen/MasterTaskType.cpp
+    ./src/gen/OperateType.cpp
     ./src/gen/Parity.cpp
+    ./src/gen/PointClass.cpp
     ./src/gen/QualifierCode.cpp
+    ./src/gen/RestartMode.cpp
+    ./src/gen/RestartType.cpp
+    ./src/gen/SecurityStatIndex.cpp
     ./src/gen/ServerAcceptMode.cpp
+    ./src/gen/StaticAnalogOutputStatusVariation.cpp
+    ./src/gen/StaticAnalogVariation.cpp
+    ./src/gen/StaticBinaryOutputStatusVariation.cpp
+    ./src/gen/StaticBinaryVariation.cpp
+    ./src/gen/StaticCounterVariation.cpp
+    ./src/gen/StaticDoubleBinaryVariation.cpp
+    ./src/gen/StaticFrozenCounterVariation.cpp
+    ./src/gen/StaticOctetStringVariation.cpp
+    ./src/gen/StaticSecurityStatVariation.cpp
+    ./src/gen/StaticTimeAndIntervalVariation.cpp
+    ./src/gen/StaticTypeBitmask.cpp
     ./src/gen/StopBits.cpp
     ./src/gen/TaskCompletion.cpp
+    ./src/gen/TimestampMode.cpp
+    ./src/gen/TimeSyncMode.cpp
     ./src/gen/UserOperation.cpp
     ./src/gen/UserRole.cpp
 

@@ -39,7 +39,7 @@ object EnumToString extends HeaderImplModelRender[EnumModel] {
       def header = Iterator(signature(em.name))
       def smr = new SwitchModelRenderer[EnumValue](ev => em.qualified(ev))(ev => quoted(ev.displayName))
       def getDefault : EnumValue = em.defaultValue.getOrElse(EnumValue("UNDEFINED",0))
-      def switch = smr.render(em.nonDefaultValues, getDefault)
+      def switch = smr.render(em.nonDefaultValues, Some(getDefault))
 
       header ++ bracket {
         switch

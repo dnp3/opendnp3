@@ -59,6 +59,9 @@ enum class DoubleBitBinaryQuality : uint8_t
   STATE2 = 0x80
 };
 
+uint8_t DoubleBitBinaryQualityToType(DoubleBitBinaryQuality arg);
+DoubleBitBinaryQuality DoubleBitBinaryQualityFromType(uint8_t arg);
+char const* DoubleBitBinaryQualityToString(DoubleBitBinaryQuality arg);
 
 }
 

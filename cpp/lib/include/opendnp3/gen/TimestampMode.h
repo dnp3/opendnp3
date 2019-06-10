@@ -49,6 +49,9 @@ enum class TimestampMode : uint8_t
   INVALID = 0
 };
 
+uint8_t TimestampModeToType(TimestampMode arg);
+TimestampMode TimestampModeFromType(uint8_t arg);
+char const* TimestampModeToString(TimestampMode arg);
 
 }
 

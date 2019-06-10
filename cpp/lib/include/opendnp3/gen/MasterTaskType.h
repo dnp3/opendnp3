@@ -52,6 +52,8 @@ enum class MasterTaskType : uint8_t
   USER_TASK = 8
 };
 
+uint8_t MasterTaskTypeToType(MasterTaskType arg);
+MasterTaskType MasterTaskTypeFromType(uint8_t arg);
 char const* MasterTaskTypeToString(MasterTaskType arg);
 
 }

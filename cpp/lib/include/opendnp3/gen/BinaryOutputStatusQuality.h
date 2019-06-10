@@ -59,6 +59,9 @@ enum class BinaryOutputStatusQuality : uint8_t
   STATE = 0x80
 };
 
+uint8_t BinaryOutputStatusQualityToType(BinaryOutputStatusQuality arg);
+BinaryOutputStatusQuality BinaryOutputStatusQualityFromType(uint8_t arg);
+char const* BinaryOutputStatusQualityToString(BinaryOutputStatusQuality arg);
 
 }
 

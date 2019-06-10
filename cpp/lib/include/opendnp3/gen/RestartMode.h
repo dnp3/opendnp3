@@ -49,6 +49,9 @@ enum class RestartMode : uint8_t
   SUPPORTED_DELAY_COARSE = 2
 };
 
+uint8_t RestartModeToType(RestartMode arg);
+RestartMode RestartModeFromType(uint8_t arg);
+char const* RestartModeToString(RestartMode arg);
 
 }
 

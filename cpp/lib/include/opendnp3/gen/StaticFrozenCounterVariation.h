@@ -46,6 +46,9 @@ enum class StaticFrozenCounterVariation : uint8_t
   Group21Var10 = 5
 };
 
+uint8_t StaticFrozenCounterVariationToType(StaticFrozenCounterVariation arg);
+StaticFrozenCounterVariation StaticFrozenCounterVariationFromType(uint8_t arg);
+char const* StaticFrozenCounterVariationToString(StaticFrozenCounterVariation arg);
 
 }
 

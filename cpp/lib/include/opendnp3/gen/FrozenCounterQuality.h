@@ -59,6 +59,9 @@ enum class FrozenCounterQuality : uint8_t
   RESERVED = 0x80
 };
 
+uint8_t FrozenCounterQualityToType(FrozenCounterQuality arg);
+FrozenCounterQuality FrozenCounterQualityFromType(uint8_t arg);
+char const* FrozenCounterQualityToString(FrozenCounterQuality arg);
 
 }
 
