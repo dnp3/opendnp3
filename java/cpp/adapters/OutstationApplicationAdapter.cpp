@@ -31,7 +31,7 @@ bool OutstationApplicationAdapter::SupportsWriteAbsoluteTime()
     return !(JCache::OutstationApplication.supportsWriteAbsoluteTime(env, proxy) == 0u);
 }
 
-bool OutstationApplicationAdapter::WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp)
+bool OutstationApplicationAdapter::WriteAbsoluteTime(const opendnp3::UTCTimestamp& timestamp)
 {
     const auto env = JNI::GetEnv();
     return !(JCache::OutstationApplication.writeAbsoluteTime(env, proxy, timestamp.msSinceEpoch) == 0u);

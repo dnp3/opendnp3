@@ -72,6 +72,10 @@ case class ClassConfig(clazz: Class[_], features : Set[Features.Value], mfilter:
     }
   }
 
+  def jniClassName : String = {
+    "L" + clazz.getName.replace(".","/") + ";"
+  }
+
   def methods : Array[Method] = clazz.getDeclaredMethods.filter(mfilter.matches).sortWith(_.getName < _.getName)
 
   def constructors : Array[Constructor[_]] = clazz.getConstructors.filter(cfilter.matches).sortWith(_.getName < _.getName)

@@ -38,6 +38,7 @@ namespace jni
         bool DoubleBinaryConfig::init(JNIEnv* env)
         {
             auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/DoubleBinaryConfig;");
+            if(!clazzTemp) return false;
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
@@ -46,9 +47,6 @@ namespace jni
 
             this->staticVariationField = env->GetFieldID(this->clazz, "staticVariation", "Lcom/automatak/dnp3/enums/StaticDoubleBinaryVariation;");
             if(!this->staticVariationField) return false;
-
-            this->vIndexField = env->GetFieldID(this->clazz, "vIndex", "I");
-            if(!this->vIndexField) return false;
 
             this->clazzField = env->GetFieldID(this->clazz, "clazz", "Lcom/automatak/dnp3/enums/PointClass;");
             if(!this->clazzField) return false;

@@ -24,9 +24,7 @@ import com.automatak.dnp3.enums.StaticAnalogOutputStatusVariation;
 
 public class AnalogOutputStatusConfig extends EventConfig {
 
-    public AnalogOutputStatusConfig(int index) {
-        super(index);
-    }
+    public AnalogOutputStatusConfig() {}
 
     public double deadband = 0;
     public EventAnalogOutputStatusVariation eventVariation = EventAnalogOutputStatusVariation.Group42Var1;

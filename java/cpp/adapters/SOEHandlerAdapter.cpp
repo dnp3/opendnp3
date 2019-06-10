@@ -24,15 +24,16 @@
 
 using namespace opendnp3;
 
-void SOEHandlerAdapter::Start()
+void SOEHandlerAdapter::begin_fragment(const ResponseInfo& info)
 {
-
-    jni::JCache::SOEHandler.start(JNI::GetEnv(), proxy);
+    const auto env = JNI::GetEnv();	
+    jni::JCache::SOEHandler.beginFragment(env, proxy,jni::JCache::ResponseInfo.init3(env, info.unsolicited, info.fir, info.fin));
 }
 
-void SOEHandlerAdapter::End()
+void SOEHandlerAdapter::end_fragment(const ResponseInfo& info)
 {
-    jni::JCache::SOEHandler.end(JNI::GetEnv(), proxy);
+    const auto env = JNI::GetEnv();
+    jni::JCache::SOEHandler.endFragment(env, proxy, jni::JCache::ResponseInfo.init3(env, info.unsolicited, info.fir, info.fin));
 }
 
 template<class T, class CreateMeas, class CallProxy>
@@ -61,7 +62,7 @@ void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info,
 void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values)
 {
     auto create = [](JNIEnv* env, const Binary& value) -> LocalRef<jobject> {
-        return jni::JCache::BinaryInput.init3(env, static_cast<jboolean>(value.value), value.flags.value, value.time);
+        return jni::JCache::BinaryInput.init3(env, static_cast<jboolean>(value.value), value.flags.value, value.time.value);
     };
 
     auto call = [](JNIEnv* env, jobject proxy, jobject hinfo, jobject list) {
@@ -75,7 +76,7 @@ void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexe
 {
     auto create = [](JNIEnv* env, const DoubleBitBinary& value) -> LocalRef<jobject> {
         auto evalue = jni::JCache::DoubleBit.fromType(env, DoubleBitToType(value.value));
-        return jni::JCache::DoubleBitBinaryInput.init3(env, evalue, value.flags.value, value.time);
+        return jni::JCache::DoubleBitBinaryInput.init3(env, evalue, value.flags.value, value.time.value);
     };
     auto call = [](JNIEnv* env, jobject proxy, jobject hinfo, jobject list) {
         jni::JCache::SOEHandler.processDBI(env, proxy, hinfo, list);
@@ -87,7 +88,7 @@ void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexe
 void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<Analog>>& values)
 {
     auto create = [](JNIEnv* env, const Analog& value) -> LocalRef<jobject> {
-        return jni::JCache::AnalogInput.init3(env, value.value, value.flags.value, value.time);
+        return jni::JCache::AnalogInput.init3(env, value.value, value.flags.value, value.time.value);
     };
     auto call = [](JNIEnv* env, jobject proxy, jobject hinfo, jobject list) {
         jni::JCache::SOEHandler.processAI(env, proxy, hinfo, list);
@@ -99,7 +100,7 @@ void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexe
 void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<Counter>>& values)
 {
     auto create = [](JNIEnv* env, const Counter& value) -> LocalRef<jobject> {
-        return jni::JCache::Counter.init3(env, value.value, value.flags.value, value.time);
+        return jni::JCache::Counter.init3(env, value.value, value.flags.value, value.time.value);
     };
     auto call = [](JNIEnv* env, jobject proxy, jobject hinfo, jobject list) {
         jni::JCache::SOEHandler.processC(env, proxy, hinfo, list);
@@ -111,7 +112,7 @@ void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexe
 void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<FrozenCounter>>& values)
 {
     auto create = [](JNIEnv* env, const FrozenCounter& value) -> LocalRef<jobject> {
-        return jni::JCache::FrozenCounter.init3(env, value.value, value.flags.value, value.time);
+        return jni::JCache::FrozenCounter.init3(env, value.value, value.flags.value, value.time.value);
     };
     auto call = [](JNIEnv* env, jobject proxy, jobject hinfo, jobject list) {
         jni::JCache::SOEHandler.processFC(env, proxy, hinfo, list);
@@ -124,7 +125,7 @@ void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexe
 {
     auto create = [](JNIEnv* env, const BinaryOutputStatus& value) -> LocalRef<jobject> {
         return jni::JCache::BinaryOutputStatus.init3(env, static_cast<jboolean>(value.value), value.flags.value,
-                                                     value.time);
+                                                     value.time.value);
     };
     auto call = [](JNIEnv* env, jobject proxy, jobject hinfo, jobject list) {
         jni::JCache::SOEHandler.processBOS(env, proxy, hinfo, list);
@@ -136,7 +137,7 @@ void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexe
 void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputStatus>>& values)
 {
     auto create = [](JNIEnv* env, const AnalogOutputStatus& value) -> LocalRef<jobject> {
-        return jni::JCache::AnalogOutputStatus.init3(env, value.value, value.flags.value, value.time);
+        return jni::JCache::AnalogOutputStatus.init3(env, value.value, value.flags.value, value.time.value);
     };
     auto call = [](JNIEnv* env, jobject proxy, jobject hinfo, jobject list) {
         jni::JCache::SOEHandler.processAOS(env, proxy, hinfo, list);

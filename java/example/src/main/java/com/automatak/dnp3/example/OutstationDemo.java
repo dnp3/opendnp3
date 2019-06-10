@@ -54,7 +54,7 @@ public class OutstationDemo {
         }
     }
 
-    public static void run(DNP3Manager manager) throws Exception {
+    private static void run(DNP3Manager manager) throws Exception {
 
         // Create a tcp channel class that will connect to the loopback
         Channel channel = manager.addTCPServer(

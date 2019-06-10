@@ -26,17 +26,19 @@ using namespace jni;
 
 LogHandlerAdapter::LogHandlerAdapter(jobject proxy) : proxy(proxy) {}
 
-void LogHandlerAdapter::Log(const openpal::LogEntry& entry)
+void LogHandlerAdapter::log(log4cpp::ModuleId module,
+                                     const char* id,
+                                     log4cpp::LogLevel level,
+                                     char const* location,
+                                     char const* message)
 {
-    const auto env = JNI::GetEnv();
+    const auto env = JNI::GetEnv();    
 
-    const jint level = entry.filters.GetBitfield();
+    LocalJString jid(env, id);
+    LocalJString jlocation(env, location);
+    LocalJString jmessage(env, message);
 
-    LocalJString id(env, entry.loggerid);
-    LocalJString location(env, entry.location);
-    LocalJString msg(env, entry.message);
-
-    auto jentry = JCache::LogEntry.init4(env, level, id, location, msg);
+    auto jentry = JCache::LogEntry.init4(env, level.value, jid, jlocation, jmessage);
 
     JCache::LogHandler.log(env, proxy, jentry);
 }

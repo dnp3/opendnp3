@@ -22,11 +22,9 @@
 #include "../jni/JCache.h"
 #include "JNI.h"
 
-#include "opendnp3/app/MeasurementTypeSpecs.h"
+#include <opendnp3/app/MeasurementInfo.h>
 
-using namespace openpal;
 using namespace opendnp3;
-using namespace asiodnp3;
 
 MasterStackConfig ConfigReader::ConvertMasterStackConfig(JNIEnv* env, jobject jcfg)
 {
@@ -86,25 +84,64 @@ OutstationStackConfig ConfigReader::ConvertOutstationStackConfig(JNIEnv* env, jo
 {
     auto& cfg = jni::JCache::OutstationStackConfig;
     auto& list = jni::JCache::List;
-    auto& db = jni::JCache::DatabaseConfig;
+    auto& db = jni::JCache::DatabaseConfig;    
 
-    const auto jdb = cfg.getdatabaseConfig(env, jconfig);
-
-    OutstationStackConfig config(DatabaseSizes(static_cast<uint16_t>(list.size(env, db.getbinary(env, jdb))),
-                                               static_cast<uint16_t>(list.size(env, db.getdoubleBinary(env, jdb))),
-                                               static_cast<uint16_t>(list.size(env, db.getanalog(env, jdb))),
-                                               static_cast<uint16_t>(list.size(env, db.getcounter(env, jdb))),
-                                               static_cast<uint16_t>(list.size(env, db.getfrozenCounter(env, jdb))),
-                                               static_cast<uint16_t>(list.size(env, db.getboStatus(env, jdb))),
-                                               static_cast<uint16_t>(list.size(env, db.getaoStatus(env, jdb))), 0, 0));
+    OutstationStackConfig config;
 
     config.link = ConvertLinkConfig(env, cfg.getlinkConfig(env, jconfig));
+    config.database = ConvertDatavaseConfig(env, cfg.getdatabaseConfig(env, jconfig));
     config.outstation.eventBufferConfig = ConvertEventBufferConfig(env, cfg.geteventBufferConfig(env, jconfig));
     config.outstation.params = ConvertOutstationConfig(env, cfg.getoutstationConfig(env, jconfig));
-
-    ConvertDatabase(env, cfg.getdatabaseConfig(env, jconfig), config.dbConfig);
-
+            
     return config;
+}
+
+opendnp3::DatabaseConfig ConfigReader::ConvertDatavaseConfig(JNIEnv* env, jobject jdb)
+{
+    auto& db = jni::JCache::DatabaseConfig;  
+	auto& map = jni::JCache::Map;
+
+	auto get_index = [env](const LocalRef<jobject>& entry) -> uint16_t
+    { 
+		const auto index = jni::JCache::Integer.intValue(env, jni::JCache::Entry.getKey(env, entry));
+        return static_cast<uint16_t>(index);
+	};
+
+	auto get_value = [env](const LocalRef<jobject>& entry) -> LocalRef<jobject> {
+        return jni::JCache::Entry.getValue(env, entry);        
+    };
+	
+	opendnp3::DatabaseConfig config;
+    
+    JNI::Iterate(env, map.entrySet(env, db.getbinary(env, jdb)), [&](LocalRef<jobject> entry) { 
+		config.binary_input[get_index(entry)] = ConvertBinaryConfig(env, get_value(entry));
+    });
+
+    JNI::Iterate(env, map.entrySet(env, db.getdoubleBinary(env, jdb)), [&](LocalRef<jobject> entry) {
+        config.double_binary[get_index(entry)] = ConvertDoubleBinaryConfig(env, get_value(entry));
+    });
+
+    JNI::Iterate(env, map.entrySet(env, db.getanalog(env, jdb)), [&](LocalRef<jobject> entry) {
+        config.analog_input[get_index(entry)] = ConvertAnalogConfig(env, get_value(entry));
+    });
+    
+	JNI::Iterate(env, map.entrySet(env, db.getcounter(env, jdb)), [&](LocalRef<jobject> entry) {
+        config.counter[get_index(entry)] = ConvertCounterConfig(env, get_value(entry));
+    });
+    
+	JNI::Iterate(env, map.entrySet(env, db.getfrozenCounter(env, jdb)), [&](LocalRef<jobject> entry) {
+        config.frozen_counter[get_index(entry)] = ConvertFrozenCounterConfig(env, get_value(entry));
+    });
+    
+	JNI::Iterate(env, map.entrySet(env, db.getboStatus(env, jdb)), [&](LocalRef<jobject> entry) {
+        config.binary_output_status[get_index(entry)] = ConvertBOStatusConfig(env, get_value(entry));
+    });
+
+    JNI::Iterate(env, map.entrySet(env, db.getaoStatus(env, jdb)), [&](LocalRef<jobject> entry) {
+        config.analog_output_status[get_index(entry)] = ConvertAOStatusConfig(env, get_value(entry));
+    });
+
+	return config;
 }
 
 opendnp3::ClassField ConfigReader::ConvertClassField(JNIEnv* env, jobject jclassmask)
@@ -131,7 +168,6 @@ opendnp3::OutstationParams ConfigReader::ConvertOutstationConfig(JNIEnv* env, jo
 
     auto& cfg = jni::JCache::OutstationConfig;
 
-    config.indexMode = static_cast<IndexMode>(jni::JCache::IndexMode.toType(env, cfg.getindexMode(env, jconfig)));
     config.maxControlsPerRequest = static_cast<uint8_t>(cfg.getmaxControlsPerRequest(env, jconfig));
     config.selectTimeout = ConvertDuration(env, cfg.getselectTimeout(env, jconfig));
     config.solConfirmTimeout = ConvertDuration(env, cfg.getsolConfirmTimeout(env, jconfig));
@@ -143,111 +179,82 @@ opendnp3::OutstationParams ConfigReader::ConvertOutstationConfig(JNIEnv* env, jo
     return config;
 }
 
-openpal::TimeDuration ConfigReader::ConvertDuration(JNIEnv* env, jobject jduration)
+
+
+opendnp3::TimeDuration ConfigReader::ConvertDuration(JNIEnv* env, jobject jduration)
 {
-    return openpal::TimeDuration::Milliseconds(jni::JCache::Duration.toMillis(env, jduration));
+    return opendnp3::TimeDuration::Milliseconds(jni::JCache::Duration.toMillis(env, jduration));
 }
 
-void ConfigReader::ConvertDatabase(JNIEnv* env, jobject jdb, asiodnp3::DatabaseConfig& cfg)
-{
-    auto& db = jni::JCache::DatabaseConfig;
-
-    JNI::IterateWithIndex(env, db.getbinary(env, jdb), [&](LocalRef<jobject> meas, int index) {
-        cfg.binary[index] = ConvertBinaryConfig(env, meas);
-    });
-    JNI::IterateWithIndex(env, db.getdoubleBinary(env, jdb), [&](LocalRef<jobject> meas, int index) {
-        cfg.doubleBinary[index] = ConvertDoubleBinaryConfig(env, meas);
-    });
-    JNI::IterateWithIndex(env, db.getanalog(env, jdb), [&](LocalRef<jobject> meas, int index) {
-        cfg.analog[index] = ConvertAnalogConfig(env, meas);
-    });
-    JNI::IterateWithIndex(env, db.getcounter(env, jdb), [&](LocalRef<jobject> meas, int index) {
-        cfg.counter[index] = ConvertCounterConfig(env, meas);
-    });
-    JNI::IterateWithIndex(env, db.getfrozenCounter(env, jdb), [&](LocalRef<jobject> meas, int index) {
-        cfg.frozenCounter[index] = ConvertFrozenCounterConfig(env, meas);
-    });
-    JNI::IterateWithIndex(env, db.getboStatus(env, jdb), [&](LocalRef<jobject> meas, int index) {
-        cfg.boStatus[index] = ConvertBOStatusConfig(env, meas);
-    });
-    JNI::IterateWithIndex(env, db.getaoStatus(env, jdb), [&](LocalRef<jobject> meas, int index) {
-        cfg.aoStatus[index] = ConvertAOStatusConfig(env, meas);
-    });
-}
-
-template<class Spec, class ConfigCache, class StaticVariation, class EventVariation>
-typename Spec::config_t ConvertEventType(
+template<class Info, class ConfigType, class ConfigCache, class StaticVariation, class EventVariation>
+typename ConfigType ConvertEventType(
     JNIEnv* env, jobject jconfig, ConfigCache& cache, StaticVariation& svariation, EventVariation& evariation)
 {
-    typename Spec::config_t cfg;
-    cfg.vIndex = static_cast<uint16_t>(jni::JCache::EventConfig.getvIndex(env, jconfig));
-    cfg.clazz
-        = static_cast<PointClass>(jni::JCache::PointClass.toType(env, jni::JCache::EventConfig.getclazz(env, jconfig)));
-    cfg.svariation = static_cast<typename Spec::static_variation_t>(
-        svariation.toType(env, cache.getstaticVariation(env, jconfig)));
-    cfg.evariation
-        = static_cast<typename Spec::event_variation_t>(evariation.toType(env, cache.geteventVariation(env, jconfig)));
+	ConfigType cfg;
+    cfg.clazz = static_cast<PointClass>(jni::JCache::PointClass.toType(env, jni::JCache::EventConfig.getclazz(env, jconfig)));
+    cfg.svariation = static_cast<typename Info::static_variation_t>(svariation.toType(env, cache.getstaticVariation(env, jconfig)));
+    cfg.evariation = static_cast<typename Info::event_variation_t>(evariation.toType(env, cache.geteventVariation(env, jconfig)));
     return cfg;
 }
 
-template<class Spec, class ConfigCache, class StaticVariation, class EventVariation>
-typename Spec::config_t ConvertDeadbandType(
+template<class Info, class ConfigType, class ConfigCache, class StaticVariation, class EventVariation>
+typename ConfigType ConvertDeadbandType(
     JNIEnv* env, jobject jconfig, ConfigCache& cache, StaticVariation& svariation, EventVariation& evariation)
 {
-    typename Spec::config_t cfg;
-    cfg.vIndex = static_cast<uint16_t>(jni::JCache::EventConfig.getvIndex(env, jconfig));
-    cfg.clazz
-        = static_cast<PointClass>(jni::JCache::PointClass.toType(env, jni::JCache::EventConfig.getclazz(env, jconfig)));
-    cfg.svariation = static_cast<typename Spec::static_variation_t>(
-        svariation.toType(env, cache.getstaticVariation(env, jconfig)));
-    cfg.evariation
-        = static_cast<typename Spec::event_variation_t>(evariation.toType(env, cache.geteventVariation(env, jconfig)));
+    ConfigType cfg;    
+    cfg.clazz = static_cast<PointClass>(jni::JCache::PointClass.toType(env, jni::JCache::EventConfig.getclazz(env, jconfig)));
+    cfg.svariation = static_cast<typename Info::static_variation_t>(svariation.toType(env, cache.getstaticVariation(env, jconfig)));
+    cfg.evariation = static_cast<typename Info::event_variation_t>(evariation.toType(env, cache.geteventVariation(env, jconfig)));
     cfg.deadband = cache.getdeadband(env, jconfig);
     return cfg;
 }
 
+
+
 opendnp3::BinaryConfig ConfigReader::ConvertBinaryConfig(JNIEnv* env, jobject jconfig)
 {
-    return ConvertEventType<BinarySpec>(env, jconfig, jni::JCache::BinaryConfig, jni::JCache::StaticBinaryVariation,
+    return ConvertEventType<BinaryInfo, BinaryConfig>(env, jconfig, jni::JCache::BinaryConfig, jni::JCache::StaticBinaryVariation,
                                         jni::JCache::EventBinaryVariation);
 }
 
+
 opendnp3::DoubleBitBinaryConfig ConfigReader::ConvertDoubleBinaryConfig(JNIEnv* env, jobject jconfig)
 {
-    return ConvertEventType<DoubleBitBinarySpec>(env, jconfig, jni::JCache::DoubleBinaryConfig,
+    return ConvertEventType<DoubleBitBinaryInfo, DoubleBitBinaryConfig>(env, jconfig, jni::JCache::DoubleBinaryConfig,
                                                  jni::JCache::StaticDoubleBinaryVariation,
                                                  jni::JCache::EventDoubleBinaryVariation);
 }
 
 opendnp3::AnalogConfig ConfigReader::ConvertAnalogConfig(JNIEnv* env, jobject jconfig)
 {
-    return ConvertDeadbandType<AnalogSpec>(env, jconfig, jni::JCache::AnalogConfig, jni::JCache::StaticAnalogVariation,
+    return ConvertDeadbandType<AnalogInfo, AnalogConfig>(env, jconfig, jni::JCache::AnalogConfig, jni::JCache::StaticAnalogVariation,
                                            jni::JCache::EventAnalogVariation);
 }
 
 opendnp3::CounterConfig ConfigReader::ConvertCounterConfig(JNIEnv* env, jobject jconfig)
 {
-    return ConvertDeadbandType<CounterSpec>(env, jconfig, jni::JCache::CounterConfig,
+    return ConvertDeadbandType<CounterInfo, CounterConfig>(env, jconfig, jni::JCache::CounterConfig,
                                             jni::JCache::StaticCounterVariation, jni::JCache::EventCounterVariation);
 }
 
 opendnp3::FrozenCounterConfig ConfigReader::ConvertFrozenCounterConfig(JNIEnv* env, jobject jconfig)
 {
-    return ConvertDeadbandType<FrozenCounterSpec>(env, jconfig, jni::JCache::FrozenCounterConfig,
+    return ConvertDeadbandType<FrozenCounterInfo, FrozenCounterConfig>(env, jconfig, jni::JCache::FrozenCounterConfig,
                                                   jni::JCache::StaticFrozenCounterVariation,
                                                   jni::JCache::EventFrozenCounterVariation);
 }
 
 opendnp3::BOStatusConfig ConfigReader::ConvertBOStatusConfig(JNIEnv* env, jobject jconfig)
 {
-    return ConvertEventType<BinaryOutputStatusSpec>(env, jconfig, jni::JCache::BinaryOutputStatusConfig,
+    return ConvertEventType<BinaryOutputStatusInfo, BOStatusConfig>(env, jconfig, jni::JCache::BinaryOutputStatusConfig,
                                                     jni::JCache::StaticBinaryOutputStatusVariation,
                                                     jni::JCache::EventBinaryOutputStatusVariation);
 }
 
 opendnp3::AOStatusConfig ConfigReader::ConvertAOStatusConfig(JNIEnv* env, jobject jconfig)
 {
-    return ConvertEventType<AnalogOutputStatusSpec>(env, jconfig, jni::JCache::AnalogOutputStatusConfig,
+    return ConvertEventType<AnalogOutputStatusInfo, AOStatusConfig>(env, jconfig, jni::JCache::AnalogOutputStatusConfig,
                                                     jni::JCache::StaticAnalogOutputStatusVariation,
                                                     jni::JCache::EventAnalogOutputStatusVariation);
 }
+

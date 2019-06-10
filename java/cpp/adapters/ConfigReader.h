@@ -20,8 +20,8 @@
 #ifndef OPENDNP3_CONFIG_READER_H
 #define OPENDNP3_CONFIG_READER_H
 
-#include "asiodnp3/MasterStackConfig.h"
-#include "asiodnp3/OutstationStackConfig.h"
+#include <opendnp3/master/MasterStackConfig.h>
+#include <opendnp3/outstation/OutstationStackConfig.h>
 
 #include <jni.h>
 
@@ -30,8 +30,8 @@
 class ConfigReader
 {
 public:
-    static asiodnp3::MasterStackConfig ConvertMasterStackConfig(JNIEnv* env, jobject jcfg);
-    static asiodnp3::OutstationStackConfig ConvertOutstationStackConfig(JNIEnv* env, jobject jconfig);
+    static opendnp3::MasterStackConfig ConvertMasterStackConfig(JNIEnv* env, jobject jcfg);
+    static opendnp3::OutstationStackConfig ConvertOutstationStackConfig(JNIEnv* env, jobject jconfig);
 
 private:
     static opendnp3::LinkConfig ConvertLinkConfig(JNIEnv* env, jobject jlinkcfg);
@@ -40,8 +40,9 @@ private:
     static opendnp3::ClassField ConvertClassField(JNIEnv* env, jobject jclassmask);
     static opendnp3::EventBufferConfig ConvertEventBufferConfig(JNIEnv* env, jobject jeventconfig);
     static opendnp3::OutstationParams ConvertOutstationConfig(JNIEnv* env, jobject jconfig);
-    static openpal::TimeDuration ConvertDuration(JNIEnv* env, jobject jduration);
-    static void ConvertDatabase(JNIEnv* env, jobject jdb, asiodnp3::DatabaseConfig& cfg);
+    static opendnp3::DatabaseConfig ConvertDatavaseConfig(JNIEnv* env, jobject jdb);
+    static opendnp3::TimeDuration ConvertDuration(JNIEnv* env, jobject jduration);
+    
 
     static opendnp3::BinaryConfig ConvertBinaryConfig(JNIEnv* env, jobject jconfig);
     static opendnp3::DoubleBitBinaryConfig ConvertDoubleBinaryConfig(JNIEnv* env, jobject jconfig);

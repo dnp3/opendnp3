@@ -70,6 +70,7 @@ namespace jni
     cache::DoubleBit JCache::DoubleBit;
     cache::DoubleBitBinaryInput JCache::DoubleBitBinaryInput;
     cache::Duration JCache::Duration;
+    cache::Entry JCache::Entry;
     cache::EventAnalogOutputStatusVariation JCache::EventAnalogOutputStatusVariation;
     cache::EventAnalogVariation JCache::EventAnalogVariation;
     cache::EventBinaryOutputStatusVariation JCache::EventBinaryOutputStatusVariation;
@@ -89,6 +90,7 @@ namespace jni
     cache::IndexMode JCache::IndexMode;
     cache::IndexQualifierMode JCache::IndexQualifierMode;
     cache::IndexedValue JCache::IndexedValue;
+    cache::Integer JCache::Integer;
     cache::Iterable JCache::Iterable;
     cache::Iterator JCache::Iterator;
     cache::LinkLayerConfig JCache::LinkLayerConfig;
@@ -97,6 +99,7 @@ namespace jni
     cache::List JCache::List;
     cache::LogEntry JCache::LogEntry;
     cache::LogHandler JCache::LogHandler;
+    cache::Map JCache::Map;
     cache::MasterApplication JCache::MasterApplication;
     cache::MasterConfig JCache::MasterConfig;
     cache::MasterStackConfig JCache::MasterStackConfig;
@@ -109,6 +112,7 @@ namespace jni
     cache::PointClass JCache::PointClass;
     cache::QualifierCode JCache::QualifierCode;
     cache::Range JCache::Range;
+    cache::ResponseInfo JCache::ResponseInfo;
     cache::RestartMode JCache::RestartMode;
     cache::SOEHandler JCache::SOEHandler;
     cache::Stack JCache::Stack;
@@ -167,6 +171,7 @@ namespace jni
         && DoubleBit.init(env)
         && DoubleBitBinaryInput.init(env)
         && Duration.init(env)
+        && Entry.init(env)
         && EventAnalogOutputStatusVariation.init(env)
         && EventAnalogVariation.init(env)
         && EventBinaryOutputStatusVariation.init(env)
@@ -186,6 +191,7 @@ namespace jni
         && IndexMode.init(env)
         && IndexQualifierMode.init(env)
         && IndexedValue.init(env)
+        && Integer.init(env)
         && Iterable.init(env)
         && Iterator.init(env)
         && LinkLayerConfig.init(env)
@@ -194,6 +200,7 @@ namespace jni
         && List.init(env)
         && LogEntry.init(env)
         && LogHandler.init(env)
+        && Map.init(env)
         && MasterApplication.init(env)
         && MasterConfig.init(env)
         && MasterStackConfig.init(env)
@@ -206,6 +213,7 @@ namespace jni
         && PointClass.init(env)
         && QualifierCode.init(env)
         && Range.init(env)
+        && ResponseInfo.init(env)
         && RestartMode.init(env)
         && SOEHandler.init(env)
         && Stack.init(env)
@@ -266,6 +274,7 @@ namespace jni
         DoubleBit.cleanup(env);
         DoubleBitBinaryInput.cleanup(env);
         Duration.cleanup(env);
+        Entry.cleanup(env);
         EventAnalogOutputStatusVariation.cleanup(env);
         EventAnalogVariation.cleanup(env);
         EventBinaryOutputStatusVariation.cleanup(env);
@@ -285,6 +294,7 @@ namespace jni
         IndexMode.cleanup(env);
         IndexQualifierMode.cleanup(env);
         IndexedValue.cleanup(env);
+        Integer.cleanup(env);
         Iterable.cleanup(env);
         Iterator.cleanup(env);
         LinkLayerConfig.cleanup(env);
@@ -293,6 +303,7 @@ namespace jni
         List.cleanup(env);
         LogEntry.cleanup(env);
         LogHandler.cleanup(env);
+        Map.cleanup(env);
         MasterApplication.cleanup(env);
         MasterConfig.cleanup(env);
         MasterStackConfig.cleanup(env);
@@ -305,6 +316,7 @@ namespace jni
         PointClass.cleanup(env);
         QualifierCode.cleanup(env);
         Range.cleanup(env);
+        ResponseInfo.cleanup(env);
         RestartMode.cleanup(env);
         SOEHandler.cleanup(env);
         Stack.cleanup(env);

@@ -19,10 +19,9 @@
  */
 #include "com_automatak_dnp3_impl_ChangeSetImpl.h"
 
-#include "asiodnp3/UpdateBuilder.h"
+#include "opendnp3/outstation/UpdateBuilder.h"
 
 using namespace opendnp3;
-using namespace asiodnp3;
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChangeSetImpl_create_1instance_1native(JNIEnv* /*env*/,
                                                                                             jobject /*unused*/)

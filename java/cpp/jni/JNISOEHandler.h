@@ -52,7 +52,8 @@ namespace jni
             public:
 
             // methods
-            void end(JNIEnv* env, jobject instance);
+            void beginFragment(JNIEnv* env, jobject instance, jobject arg0);
+            void endFragment(JNIEnv* env, jobject instance, jobject arg0);
             void processAI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
             void processAOS(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
             void processBI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
@@ -61,14 +62,14 @@ namespace jni
             void processDBI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
             void processDNPTime(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
             void processFC(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-            void start(JNIEnv* env, jobject instance);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID endMethod = nullptr;
+            jmethodID beginFragmentMethod = nullptr;
+            jmethodID endFragmentMethod = nullptr;
             jmethodID processAIMethod = nullptr;
             jmethodID processAOSMethod = nullptr;
             jmethodID processBIMethod = nullptr;
@@ -77,7 +78,6 @@ namespace jni
             jmethodID processDBIMethod = nullptr;
             jmethodID processDNPTimeMethod = nullptr;
             jmethodID processFCMethod = nullptr;
-            jmethodID startMethod = nullptr;
         };
     }
 }

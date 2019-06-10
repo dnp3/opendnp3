@@ -52,6 +52,7 @@ namespace jni
             public:
 
             // methods
+            void begin(JNIEnv* env, jobject instance);
             void end(JNIEnv* env, jobject instance);
             LocalRef<jobject> operateAOD64(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
             LocalRef<jobject> operateAOF32(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
@@ -63,13 +64,13 @@ namespace jni
             LocalRef<jobject> selectAOI16(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
             LocalRef<jobject> selectAOI32(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
             LocalRef<jobject> selectCROB(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
-            void start(JNIEnv* env, jobject instance);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
+            jmethodID beginMethod = nullptr;
             jmethodID endMethod = nullptr;
             jmethodID operateAOD64Method = nullptr;
             jmethodID operateAOF32Method = nullptr;
@@ -81,7 +82,6 @@ namespace jni
             jmethodID selectAOI16Method = nullptr;
             jmethodID selectAOI32Method = nullptr;
             jmethodID selectCROBMethod = nullptr;
-            jmethodID startMethod = nullptr;
         };
     }
 }

@@ -38,11 +38,9 @@ namespace jni
         bool EventConfig::init(JNIEnv* env)
         {
             auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/EventConfig;");
+            if(!clazzTemp) return false;
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
-
-            this->vIndexField = env->GetFieldID(this->clazz, "vIndex", "I");
-            if(!this->vIndexField) return false;
 
             this->clazzField = env->GetFieldID(this->clazz, "clazz", "Lcom/automatak/dnp3/enums/PointClass;");
             if(!this->clazzField) return false;
@@ -58,11 +56,6 @@ namespace jni
         LocalRef<jobject> EventConfig::getclazz(JNIEnv* env, jobject instance)
         {
             return LocalRef<jobject>(env, env->GetObjectField(instance, this->clazzField));
-        }
-
-        jint EventConfig::getvIndex(JNIEnv* env, jobject instance)
-        {
-            return env->GetIntField(instance, this->vIndexField);
         }
     }
 }

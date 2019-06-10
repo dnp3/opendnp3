@@ -24,9 +24,7 @@ import com.automatak.dnp3.enums.StaticCounterVariation;
 
 public class CounterConfig extends EventConfig {
 
-    public CounterConfig(int index) {
-        super(index);
-    }
+    public CounterConfig() {}
 
     public int deadband = 0;
     public EventCounterVariation eventVariation = EventCounterVariation.Group22Var1;

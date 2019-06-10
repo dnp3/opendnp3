@@ -31,7 +31,7 @@ public:
 
     bool SupportsWriteAbsoluteTime() override;
 
-    bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) override;
+    bool WriteAbsoluteTime(const opendnp3::UTCTimestamp& timestamp) override;
 
     bool SupportsAssignClass() override;
 

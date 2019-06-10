@@ -34,7 +34,7 @@ public class ConstantCommandHandler implements CommandHandler {
     }
 
     @Override
-    public void start() {}
+    public void begin() {}
 
     @Override
     public void end() {}
