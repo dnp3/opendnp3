@@ -38,6 +38,7 @@ namespace jni
         bool OutstationStackConfig::init(JNIEnv* env)
         {
             auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/OutstationStackConfig;");
+            if(!clazzTemp) return false;
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 

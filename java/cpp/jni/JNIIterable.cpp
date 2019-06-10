@@ -38,6 +38,7 @@ namespace jni
         bool Iterable::init(JNIEnv* env)
         {
             auto clazzTemp = env->FindClass("Ljava/lang/Iterable;");
+            if(!clazzTemp) return false;
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 

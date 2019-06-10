@@ -38,6 +38,7 @@ namespace jni
         bool Map::init(JNIEnv* env)
         {
             auto clazzTemp = env->FindClass("Ljava/util/Map;");
+            if(!clazzTemp) return false;
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 

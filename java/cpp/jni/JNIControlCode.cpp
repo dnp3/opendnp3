@@ -38,6 +38,7 @@ namespace jni
         bool ControlCode::init(JNIEnv* env)
         {
             auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/enums/ControlCode;");
+            if(!clazzTemp) return false;
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 

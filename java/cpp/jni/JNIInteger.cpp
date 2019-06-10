@@ -38,6 +38,7 @@ namespace jni
         bool Integer::init(JNIEnv* env)
         {
             auto clazzTemp = env->FindClass("Ljava/lang/Integer;");
+            if(!clazzTemp) return false;
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 

@@ -38,6 +38,7 @@ namespace jni
         bool SOEHandler::init(JNIEnv* env)
         {
             auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/SOEHandler;");
+            if(!clazzTemp) return false;
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 

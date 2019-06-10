@@ -38,6 +38,7 @@ namespace jni
         bool AnalogOutputStatusConfig::init(JNIEnv* env)
         {
             auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/AnalogOutputStatusConfig;");
+            if(!clazzTemp) return false;
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 

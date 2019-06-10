@@ -38,6 +38,7 @@ namespace jni
         bool List::init(JNIEnv* env)
         {
             auto clazzTemp = env->FindClass("Ljava/util/List;");
+            if(!clazzTemp) return false;
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 

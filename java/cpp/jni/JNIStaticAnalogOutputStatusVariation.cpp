@@ -38,6 +38,7 @@ namespace jni
         bool StaticAnalogOutputStatusVariation::init(JNIEnv* env)
         {
             auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/enums/StaticAnalogOutputStatusVariation;");
+            if(!clazzTemp) return false;
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
