@@ -23,6 +23,7 @@
 #include <ser4cpp/util/Comparisons.h>
 
 #include <cstdint>
+#include <cstddef>
 
 namespace opendnp3
 {
