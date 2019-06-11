@@ -46,7 +46,7 @@ ser4cpp::wseq_t LinkLayerParser::WriteBuff() const
     return ser4cpp::wseq_t(buffer.WriteBuff(), buffer.NumWriteBytes());
 }
 
-void LinkLayerParser::OnRead(uint32_t numBytes, IFrameSink& sink)
+void LinkLayerParser::OnRead(size_t numBytes, IFrameSink& sink)
 {
     buffer.AdvanceWrite(numBytes);
 
@@ -90,11 +90,11 @@ LinkLayerParser::State LinkLayerParser::ParseSync()
 {
     if (this->buffer.NumBytesRead() >= 10) // && buffer.Sync())
     {
-        uint32_t skipCount = 0;
+        size_t skipCount = 0;
         const auto synced = buffer.Sync(skipCount);
         if (skipCount > 0)
         {
-            FORMAT_LOG_BLOCK(logger, flags::WARN, "Skipped %u bytes seaching for start bytes", skipCount);
+            FORMAT_LOG_BLOCK(logger, flags::WARN, "Skipped %zu bytes seaching for start bytes", skipCount);
         }
 
         return synced ? State::ReadHeader : State::FindSync;

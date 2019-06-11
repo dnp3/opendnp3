@@ -68,7 +68,7 @@ private:
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t* Data, size_t Size)
 {
-    ser4cpp::rseq_t buffer(Data, static_cast<uint32_t>(Size));
+    ser4cpp::rseq_t buffer(Data, Size);
 
     opendnp3::OutstationConfig config;
     OutstationTestObject t(config);

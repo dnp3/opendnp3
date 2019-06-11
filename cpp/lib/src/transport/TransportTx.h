@@ -70,7 +70,7 @@ private:
     ser4cpp::Settable<ser4cpp::rseq_t> txSegment;
 
     // Static buffer where we store tpdus that are being transmitted
-    ser4cpp::StaticBuffer<uint32_t, MAX_TPDU_LENGTH> tpduBuffer;
+    ser4cpp::StaticBuffer<MAX_TPDU_LENGTH> tpduBuffer;
 
     log4cpp::Logger logger;
     StackStatistics::Transport::Tx statistics;

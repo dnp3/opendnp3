@@ -321,7 +321,7 @@ TEST_CASE(SUITE("ParsesOctetStringResponseWithFiveCharacters"))
     t.SendToMaster("D0 82 00 00 6F 05 17 01 04 68 65 6C 6C 6F");
 
     auto buffer = t.meas->octetStringSOE[4].meas.ToBuffer();
-    REQUIRE("68 65 6C 6C 6F" == HexConversions::to_hex(rseq_t(buffer.data, static_cast<uint32_t>(buffer.length))));
+    REQUIRE("68 65 6C 6C 6F" == HexConversions::to_hex(rseq_t(buffer.data, buffer.length)));
 }
 
 TEST_CASE(SUITE("ParsesOctetStringResponseSizeOfOne"))
@@ -340,7 +340,7 @@ TEST_CASE(SUITE("ParsesOctetStringResponseSizeOfOne"))
     t.SendToMaster("C0 81 00 00 6E 01 00 03 03 AA");
 
     auto buffer = t.meas->octetStringSOE[3].meas.ToBuffer();
-    REQUIRE("AA" == HexConversions::to_hex(rseq_t(buffer.data, static_cast<uint32_t>(buffer.length))));
+    REQUIRE("AA" == HexConversions::to_hex(rseq_t(buffer.data, buffer.length)));
 }
 
 TEST_CASE(SUITE("ParsesGroup2Var3Correctly"))

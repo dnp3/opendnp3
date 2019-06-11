@@ -17,56 +17,56 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_TRANSPORTRX_H
-#define OPENDNP3_TRANSPORTRX_H
+#ifndef OPENDNP3_SERIALIZER_H
+#define OPENDNP3_SERIALIZER_H
 
-#include "app/Message.h"
-#include "transport/TransportConstants.h"
-#include "transport/TransportSeqNum.h"
-
-#include "opendnp3/StackStatistics.h"
-
-#include <ser4cpp/container/Buffer.h>
 #include <ser4cpp/container/SequenceTypes.h>
-
-#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {
 
-/**
-State/validation for the DNP3 transport layer's receive channel.
-*/
-class TransportRx
+template<class T> class Serializer
 {
-
 public:
-    TransportRx(const log4cpp::Logger&, uint32_t maxRxFragSize);
+    using read_func_t =  bool (*)(ser4cpp::rseq_t& buffer, T& output);
+    using write_func_t =  bool (*)(const T& value, ser4cpp::wseq_t& buffer);
 
-    Message ProcessReceive(const Message& segment);
+    Serializer() = default;
 
-    void Reset();
-
-    const StackStatistics::Transport::Rx& Statistics() const
+    Serializer(size_t size, read_func_t read_func, write_func_t write_func)
+        : size(size), read_func(read_func), write_func(write_func)
     {
-        return statistics;
+    }
+
+    /**
+     * @return The size (in bytes) required for every call to read/write
+     */
+    size_t get_size() const
+    {
+        return size;
+    }
+
+    /**
+     * reads the value and advances the read buffer
+     */
+    bool read(ser4cpp::rseq_t& buffer, T& output) const
+    {
+        return (*read_func)(buffer, output);
+    }
+
+    /**
+     * writes the value and advances the write buffer
+     */
+    bool write(const T& value, ser4cpp::wseq_t& buffer) const
+    {
+        return (*write_func)(value, buffer);
     }
 
 private:
-    ser4cpp::wseq_t GetAvailable();
-
-    void ClearRxBuffer();
-
-    log4cpp::Logger logger;
-    StackStatistics::Transport::Rx statistics;
-
-    ser4cpp::Buffer rxBuffer;
-    size_t numBytesRead;
-    Addresses lastAddresses;
-
-    TransportSeqNum expectedSeq;
+    size_t size = 0;
+    read_func_t read_func = nullptr;
+    write_func_t write_func = nullptr;
 };
-
 } // namespace opendnp3
 
 #endif

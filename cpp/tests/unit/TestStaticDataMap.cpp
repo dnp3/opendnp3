@@ -246,7 +246,7 @@ TEST_CASE(SUITE("iterating over the entire selection clears it"))
     REQUIRE(map.select_all() == 3);
 
     // iterate through the entire selection
-    for (const auto& item : map)
+    for (auto iter = map.begin(); iter != map.end(); ++iter)
     {
     }
 

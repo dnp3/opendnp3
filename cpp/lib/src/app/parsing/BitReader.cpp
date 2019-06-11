@@ -24,32 +24,32 @@
 namespace opendnp3
 {
 
-uint32_t NumBytesInBits(uint32_t numBits)
+size_t NumBytesInBits(size_t numBits)
 {
-    uint32_t numBytes = numBits / 8;
+    size_t numBytes = numBits / 8;
     return ((numBits % 8) == 0) ? numBytes : numBytes + 1;
 }
 
-bool GetBit(const ser4cpp::rseq_t& buffer, uint32_t position)
+bool GetBit(const ser4cpp::rseq_t& buffer, size_t position)
 {
-    uint32_t byte = position / 8;
-    uint32_t bit = position % 8;
+    size_t byte = position / 8;
+    size_t bit = position % 8;
     assert(byte < buffer.length());
     return (buffer[byte] & (1 << bit)) != 0;
 }
 
-uint32_t NumBytesInDoubleBits(uint32_t numBits)
+size_t NumBytesInDoubleBits(size_t numBits)
 {
-    uint32_t numBytes = numBits / 4;
+    size_t numBytes = numBits / 4;
     return ((numBits % 4) == 0) ? numBytes : numBytes + 1;
 }
 
-DoubleBit GetDoubleBit(const ser4cpp::rseq_t& buffer, uint32_t index)
+DoubleBit GetDoubleBit(const ser4cpp::rseq_t& buffer, size_t index)
 {
-    uint32_t byteNumber = index / 4;
+    size_t byteNumber = index / 4;
     assert(byteNumber < buffer.length());
     uint8_t byte = buffer[byteNumber];
-    uint32_t bitshift = 2 * (index % 4);
+    size_t bitshift = 2 * (index % 4);
     return DoubleBitFromType((byte >> bitshift) & 0x03);
 }
 

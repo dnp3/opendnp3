@@ -542,7 +542,7 @@ IINField OContext::HandleDirectOperate(const ser4cpp::rseq_t& objects, OperateTy
     // since we're echoing, make sure there's enough size before beginning
     if ((pWriter != nullptr) && (objects.length() > pWriter->Remaining()))
     {
-        FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Igonring command request due to oversized payload size of %u",
+        FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Igonring command request due to oversized payload size of %zu",
                          objects.length());
         return IINField(IINBit::PARAM_ERROR);
     }
@@ -558,7 +558,7 @@ IINField OContext::HandleSelect(const ser4cpp::rseq_t& objects, HeaderWriter& wr
     // since we're echoing, make sure there's enough size before beginning
     if (objects.length() > writer.Remaining())
     {
-        FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Igonring command request due to oversized payload size of %i",
+        FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Igonring command request due to oversized payload size of %zu",
                          objects.length());
         return IINField(IINBit::PARAM_ERROR);
     }
@@ -585,7 +585,7 @@ IINField OContext::HandleOperate(const ser4cpp::rseq_t& objects, HeaderWriter& w
     // since we're echoing, make sure there's enough size before beginning
     if (objects.length() > writer.Remaining())
     {
-        FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Igonring command request due to oversized payload size of %i",
+        FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Igonring command request due to oversized payload size of %zu",
                          objects.length());
         return IINField(IINBit::PARAM_ERROR);
     }

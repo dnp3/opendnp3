@@ -45,7 +45,7 @@ struct Group51Var1
 
   Group51Var1();
 
-  static uint32_t Size() { return 6; }
+  static size_t Size() { return 6; }
   static bool Read(ser4cpp::rseq_t&, Group51Var1&);
   static bool Write(const Group51Var1&, ser4cpp::wseq_t&);
 
@@ -59,7 +59,7 @@ struct Group51Var2
 
   Group51Var2();
 
-  static uint32_t Size() { return 6; }
+  static size_t Size() { return 6; }
   static bool Read(ser4cpp::rseq_t&, Group51Var2&);
   static bool Write(const Group51Var2&, ser4cpp::wseq_t&);
 

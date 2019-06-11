@@ -214,7 +214,7 @@ bool StaticDataMap<Spec>::update(const typename Spec::meas_t& value,
 template<class Spec> void StaticDataMap<Spec>::clear_selection()
 {
     // the act of iterating clears the selection
-    for (auto value : *this)
+    for (auto iter = this->begin(); iter != this->end(); ++iter)
     {
     }
 }

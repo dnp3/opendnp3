@@ -77,7 +77,7 @@ TEST_CASE(SUITE("Formatter correctly writes when sufficient space"))
     HexSequence challengeData("DE AD BE EF AB BA"); // 6 bytes
 
     Group120Var1 challenge(9, 3, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, challengeData.ToRSeq());
-    const uint32_t SIZE = challenge.Size();
+    const size_t SIZE = challenge.Size();
 
     Buffer output(64);
     auto dest = output.as_wslice();
@@ -93,7 +93,7 @@ TEST_CASE(SUITE("Formatter return false when insufficient space"))
     HexSequence challengeData("DE AD BE EF AB BA"); // 6 bytes
 
     Group120Var1 challenge(9, 3, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, challengeData.ToRSeq());
-    const uint32_t SIZE = challenge.Size();
+    const size_t SIZE = challenge.Size();
 
     Buffer output(SIZE - 1);
     auto dest = output.as_wslice();

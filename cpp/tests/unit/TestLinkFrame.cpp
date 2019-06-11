@@ -44,10 +44,10 @@ std::string FormatUserData(
 
     if (aIsConfirmed)
     {
-        return HexConversions::to_hex(LinkFrame::FormatConfirmedUserData(wrapper, aIsMaster, aFcb, aDest, aSrc, hs, hs.Size(), nullptr));
+        return HexConversions::to_hex(LinkFrame::FormatConfirmedUserData(wrapper, aIsMaster, aFcb, aDest, aSrc, hs, nullptr));
     }
 
-    return HexConversions::to_hex(LinkFrame::FormatUnconfirmedUserData(wrapper, aIsMaster, aDest, aSrc, hs, hs.Size(), nullptr));
+    return HexConversions::to_hex(LinkFrame::FormatUnconfirmedUserData(wrapper, aIsMaster, aDest, aSrc, hs, nullptr));
 }
 
 #define SUITE(name) "DNPLinkFrame - " name

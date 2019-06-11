@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_PREFIXEDWRITEITERATOR_H
 #define OPENDNP3_PREFIXEDWRITEITERATOR_H
 
-#include <ser4cpp/serialization/Serializer.h>
+#include "app/Serializer.h"
 
 namespace opendnp3
 {
@@ -36,9 +36,9 @@ public:
 
     PrefixedWriteIterator() : sizeOfTypePlusIndex(0), count(0), isValid(false), pPosition(nullptr) {}
 
-    PrefixedWriteIterator(const ser4cpp::Serializer<WriteType>& serializer_, ser4cpp::wseq_t& position)
-        : serializer(serializer_),
-          sizeOfTypePlusIndex(serializer.size() + PrefixType::size),
+    PrefixedWriteIterator(const Serializer<WriteType>& serializer, ser4cpp::wseq_t& position)
+        : serializer(serializer),
+          sizeOfTypePlusIndex(serializer.get_size() + PrefixType::size),
           count(0),
           isValid(position.length() >= PrefixType::size),
           countPosition(position),
@@ -79,8 +79,8 @@ public:
     }
 
 private:
-    ser4cpp::Serializer<WriteType> serializer;
-    uint32_t sizeOfTypePlusIndex;
+    Serializer<WriteType> serializer;
+    size_t sizeOfTypePlusIndex;
 
     typename PrefixType::type_t count;
 

@@ -27,14 +27,14 @@ namespace Automatak.DNP3.Interface
     /// </summary>
     public class StackStatistics : IStackStatistics
     {
-        public System.UInt32 numTransportRx = 0;
-        public System.UInt32 numTransportTx = 0;
-        public System.UInt32 numTransportErrorRx = 0;
+        public System.UInt64 numTransportRx = 0;
+        public System.UInt64 numTransportTx = 0;
+        public System.UInt64 numTransportErrorRx = 0;
 
         /// <summary>
         /// The number of transport frames received
         /// </summary>
-        System.UInt32 IStackStatistics.NumTransportRx
+        System.UInt64 IStackStatistics.NumTransportRx
         {
             get { return numTransportRx; }
         }
@@ -42,7 +42,7 @@ namespace Automatak.DNP3.Interface
         /// <summary>
         /// The number of transport frames transmitted
         /// </summary>
-        System.UInt32 IStackStatistics.NumTransportTx
+        System.UInt64 IStackStatistics.NumTransportTx
         {
             get { return numTransportTx; }
         }
@@ -50,7 +50,7 @@ namespace Automatak.DNP3.Interface
         /// <summary>
         /// The number of transport frames that caused an error
         /// </summary>
-        System.UInt32 IStackStatistics.NumTransportErrorRx
+        System.UInt64 IStackStatistics.NumTransportErrorRx
         {
             get { return numTransportErrorRx; }
         }

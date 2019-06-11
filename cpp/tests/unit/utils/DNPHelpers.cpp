@@ -40,8 +40,8 @@ std::string RepairCRC(const std::string& arData)
     REQUIRE(hs.Size() <= 292);
 
     // first determine how much user data is present
-    uint32_t full_blocks = (hs.Size() - 10) / 18;
-    uint32_t partial_size = (hs.Size() - 10) % 18;
+    size_t full_blocks = (hs.Size() - 10) / 18;
+    size_t partial_size = (hs.Size() - 10) % 18;
 
     // can't have a partial size < 3 since even 1 byte requires 2 CRC bytes
     if (partial_size > 0)

@@ -54,7 +54,7 @@ ser4cpp::rseq_t TransportTx::GetSegment()
         return txSegment.get();
     }
 
-    const uint32_t numToSend
+    const size_t numToSend
         = (this->message.payload.length() < MAX_TPDU_PAYLOAD) ? this->message.payload.length() : MAX_TPDU_PAYLOAD;
 
     auto dest = tpduBuffer.as_wseq().skip(1);
@@ -65,7 +65,7 @@ ser4cpp::rseq_t TransportTx::GetSegment()
     auto destHeader = tpduBuffer.as_wseq();
     ser4cpp::UInt8::write_to(destHeader, TransportHeader::ToByte(fir, fin, sequence));
 
-    FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_TX, "FIR: %d FIN: %d SEQ: %u LEN: %u", fir, fin, sequence.Get(),
+    FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_TX, "FIR: %d FIN: %d SEQ: %u LEN: %zu", fir, fin, sequence.Get(),
                      numToSend);
 
     ++statistics.numTransportTx;
@@ -78,8 +78,7 @@ ser4cpp::rseq_t TransportTx::GetSegment()
 bool TransportTx::Advance()
 {
     txSegment.clear();
-    uint32_t numToSend
-        = this->message.payload.length() < MAX_TPDU_PAYLOAD ? this->message.payload.length() : MAX_TPDU_PAYLOAD;
+    size_t numToSend = this->message.payload.length() < MAX_TPDU_PAYLOAD ? this->message.payload.length() : MAX_TPDU_PAYLOAD;
     this->message.payload.advance(numToSend);
     ++tpduCount;
     sequence.Increment();

@@ -28,10 +28,11 @@ namespace opendnp3
 
 struct Buffer
 {
+    Buffer() = default;
     Buffer(const uint8_t* data, std::size_t length) : data(data), length(length) {}
 
-    const uint8_t* data;
-    std::size_t length;
+    const uint8_t* data = nullptr;
+    std::size_t length = 0;
 };
 
 } // namespace opendnp3

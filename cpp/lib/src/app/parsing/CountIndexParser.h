@@ -90,10 +90,10 @@ private:
                                   const ser4cpp::rseq_t& buffer,
                                   IAPDUHandler& handler);
 
-    CountIndexParser(uint16_t count, uint32_t requiredSize, const NumParser& numparser, HandleFun handler);
+    CountIndexParser(uint16_t count, size_t requiredSize, const NumParser& numparser, HandleFun handler);
 
     uint16_t count;
-    uint32_t requiredSize;
+    size_t requiredSize;
     NumParser numparser;
     HandleFun handler;
 
@@ -102,13 +102,13 @@ private:
 
 template<class Descriptor> CountIndexParser CountIndexParser::From(uint16_t count, const NumParser& numparser)
 {
-    const uint32_t SIZE = static_cast<uint32_t>(count) * (Descriptor::Size() + numparser.NumBytes());
+    const size_t SIZE = static_cast<size_t>(count) * (Descriptor::Size() + numparser.NumBytes());
     return CountIndexParser(count, SIZE, numparser, &InvokeCountOf<Descriptor>);
 }
 
 template<class Type> CountIndexParser CountIndexParser::FromType(uint16_t count, const NumParser& numparser)
 {
-    const uint32_t SIZE = static_cast<uint32_t>(count) * (Type::Size() + numparser.NumBytes());
+    const size_t SIZE = static_cast<size_t>(count) * (Type::Size() + numparser.NumBytes());
     return CountIndexParser(count, SIZE, numparser, &InvokeCountOfType<Type>);
 }
 

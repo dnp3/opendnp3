@@ -53,7 +53,7 @@ public:
     /// Called when valid data has been written to the current buffer write position
     /// Parses the new data and calls the specified frame sink
     /// @param numBytes Number of bytes written
-    void OnRead(uint32_t numBytes, IFrameSink& sink);
+    void OnRead(size_t numBytes, IFrameSink& sink);
 
     /// @return Buffer that can currently be used for writing
     ser4cpp::wseq_t WriteBuff() const;
@@ -89,7 +89,7 @@ private:
     LinkHeader header;
 
     State state;
-    uint32_t frameSize;
+    size_t frameSize;
     ser4cpp::rseq_t userData;
 
     // buffer where received data is written

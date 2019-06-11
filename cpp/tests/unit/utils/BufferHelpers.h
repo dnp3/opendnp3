@@ -28,8 +28,8 @@ class ByteStr : public CopyableBuffer
 {
 
 public:
-    ByteStr(uint32_t length, uint8_t seed = 0);
-    ByteStr(const uint8_t* data, uint32_t length);
+    ByteStr(size_t length, uint8_t seed = 0);
+    ByteStr(const uint8_t* data, size_t length);
     bool operator==(const ByteStr& other) const;
     std::string ToHex() const;
 };
@@ -50,7 +50,7 @@ public:
 private:
     std::string RemoveSpaces(const std::string& hex);
     void RemoveSpacesInPlace(std::string& s);
-    static uint32_t Validate(const std::string& s);
+    static size_t Validate(const std::string& s);
 };
 
 #endif

@@ -64,11 +64,11 @@ struct Group120Var1 : public IVariableLength
     const ser4cpp::rseq_t& challengeData
   );
 
-  virtual uint32_t Size() const override final;
+  virtual size_t Size() const override final;
   virtual bool Read(const ser4cpp::rseq_t&) override final;
   virtual bool Write(ser4cpp::wseq_t&) const override final;
 
-  static const uint32_t MIN_SIZE = 8;
+  static const size_t MIN_SIZE = 8;
 
   // member variables
   uint32_t challengeSeqNum;
@@ -93,11 +93,11 @@ struct Group120Var2 : public IVariableLength
     const ser4cpp::rseq_t& hmacValue
   );
 
-  virtual uint32_t Size() const override final;
+  virtual size_t Size() const override final;
   virtual bool Read(const ser4cpp::rseq_t&) override final;
   virtual bool Write(ser4cpp::wseq_t&) const override final;
 
-  static const uint32_t MIN_SIZE = 6;
+  static const size_t MIN_SIZE = 6;
 
   // member variables
   uint32_t challengeSeqNum;
@@ -112,7 +112,7 @@ struct Group120Var3
 
   Group120Var3();
 
-  static uint32_t Size() { return 6; }
+  static size_t Size() { return 6; }
   static bool Read(ser4cpp::rseq_t&, Group120Var3&);
   static bool Write(const Group120Var3&, ser4cpp::wseq_t&);
 
@@ -127,7 +127,7 @@ struct Group120Var4
 
   Group120Var4();
 
-  static uint32_t Size() { return 2; }
+  static size_t Size() { return 2; }
   static bool Read(ser4cpp::rseq_t&, Group120Var4&);
   static bool Write(const Group120Var4&, ser4cpp::wseq_t&);
 
@@ -153,11 +153,11 @@ struct Group120Var5 : public IVariableLength
     const ser4cpp::rseq_t& hmacValue
   );
 
-  virtual uint32_t Size() const override final;
+  virtual size_t Size() const override final;
   virtual bool Read(const ser4cpp::rseq_t&) override final;
   virtual bool Write(ser4cpp::wseq_t&) const override final;
 
-  static const uint32_t MIN_SIZE = 11;
+  static const size_t MIN_SIZE = 11;
 
   // member variables
   uint32_t keyChangeSeqNum;
@@ -184,11 +184,11 @@ struct Group120Var6 : public IVariableLength
     const ser4cpp::rseq_t& keyWrapData
   );
 
-  virtual uint32_t Size() const override final;
+  virtual size_t Size() const override final;
   virtual bool Read(const ser4cpp::rseq_t&) override final;
   virtual bool Write(ser4cpp::wseq_t&) const override final;
 
-  static const uint32_t MIN_SIZE = 6;
+  static const size_t MIN_SIZE = 6;
 
   // member variables
   uint32_t keyChangeSeqNum;
@@ -214,11 +214,11 @@ struct Group120Var7 : public IVariableLength
     const ser4cpp::rseq_t& errorText
   );
 
-  virtual uint32_t Size() const override final;
+  virtual size_t Size() const override final;
   virtual bool Read(const ser4cpp::rseq_t&) override final;
   virtual bool Write(ser4cpp::wseq_t&) const override final;
 
-  static const uint32_t MIN_SIZE = 15;
+  static const size_t MIN_SIZE = 15;
 
   // member variables
   uint32_t challengeSeqNum;
@@ -244,11 +244,11 @@ struct Group120Var8 : public IVariableLength
     const ser4cpp::rseq_t& certificate
   );
 
-  virtual uint32_t Size() const override final;
+  virtual size_t Size() const override final;
   virtual bool Read(const ser4cpp::rseq_t&) override final;
   virtual bool Write(ser4cpp::wseq_t&) const override final;
 
-  static const uint32_t MIN_SIZE = 2;
+  static const size_t MIN_SIZE = 2;
 
   // member variables
   KeyChangeMethod keyChangeMethod;
@@ -269,11 +269,11 @@ struct Group120Var9 : public IVariableLength
     const ser4cpp::rseq_t& hmacValue
   );
 
-  virtual uint32_t Size() const override final;
+  virtual size_t Size() const override final;
   virtual bool Read(const ser4cpp::rseq_t&) override final;
   virtual bool Write(ser4cpp::wseq_t&) const override final;
 
-  static const uint32_t MIN_SIZE = 0;
+  static const size_t MIN_SIZE = 0;
 
   // member variables
   ser4cpp::rseq_t hmacValue;
@@ -299,11 +299,11 @@ struct Group120Var10 : public IVariableLength
     const ser4cpp::rseq_t& certificationData
   );
 
-  virtual uint32_t Size() const override final;
+  virtual size_t Size() const override final;
   virtual bool Read(const ser4cpp::rseq_t&) override final;
   virtual bool Write(ser4cpp::wseq_t&) const override final;
 
-  static const uint32_t MIN_SIZE = 16;
+  static const size_t MIN_SIZE = 16;
 
   // member variables
   KeyChangeMethod keyChangeMethod;
@@ -331,11 +331,11 @@ struct Group120Var11 : public IVariableLength
     const ser4cpp::rseq_t& challengeData
   );
 
-  virtual uint32_t Size() const override final;
+  virtual size_t Size() const override final;
   virtual bool Read(const ser4cpp::rseq_t&) override final;
   virtual bool Write(ser4cpp::wseq_t&) const override final;
 
-  static const uint32_t MIN_SIZE = 5;
+  static const size_t MIN_SIZE = 5;
 
   // member variables
   KeyChangeMethod keyChangeMethod;
@@ -358,11 +358,11 @@ struct Group120Var12 : public IVariableLength
     const ser4cpp::rseq_t& challengeData
   );
 
-  virtual uint32_t Size() const override final;
+  virtual size_t Size() const override final;
   virtual bool Read(const ser4cpp::rseq_t&) override final;
   virtual bool Write(ser4cpp::wseq_t&) const override final;
 
-  static const uint32_t MIN_SIZE = 8;
+  static const size_t MIN_SIZE = 8;
 
   // member variables
   uint32_t keyChangeSeqNum;
@@ -385,11 +385,11 @@ struct Group120Var13 : public IVariableLength
     const ser4cpp::rseq_t& encryptedUpdateKey
   );
 
-  virtual uint32_t Size() const override final;
+  virtual size_t Size() const override final;
   virtual bool Read(const ser4cpp::rseq_t&) override final;
   virtual bool Write(ser4cpp::wseq_t&) const override final;
 
-  static const uint32_t MIN_SIZE = 8;
+  static const size_t MIN_SIZE = 8;
 
   // member variables
   uint32_t keyChangeSeqNum;
@@ -410,11 +410,11 @@ struct Group120Var14 : public IVariableLength
     const ser4cpp::rseq_t& digitalSignature
   );
 
-  virtual uint32_t Size() const override final;
+  virtual size_t Size() const override final;
   virtual bool Read(const ser4cpp::rseq_t&) override final;
   virtual bool Write(ser4cpp::wseq_t&) const override final;
 
-  static const uint32_t MIN_SIZE = 0;
+  static const size_t MIN_SIZE = 0;
 
   // member variables
   ser4cpp::rseq_t digitalSignature;
@@ -433,11 +433,11 @@ struct Group120Var15 : public IVariableLength
     const ser4cpp::rseq_t& hmacValue
   );
 
-  virtual uint32_t Size() const override final;
+  virtual size_t Size() const override final;
   virtual bool Read(const ser4cpp::rseq_t&) override final;
   virtual bool Write(ser4cpp::wseq_t&) const override final;
 
-  static const uint32_t MIN_SIZE = 0;
+  static const size_t MIN_SIZE = 0;
 
   // member variables
   ser4cpp::rseq_t hmacValue;

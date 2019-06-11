@@ -92,7 +92,7 @@ TEST_CASE(SUITE("Formatter correctly writes when sufficient space"))
     HexSequence hmac("BE EF");
 
     Group120Var5 status(8, 3, KeyWrapAlgorithm::AES_256, KeyStatus::OK, HMACType::HMAC_SHA1_TRUNC_8, challenge, hmac);
-    const uint32_t SIZE = status.Size();
+    const auto SIZE = status.Size();
 
     REQUIRE(SIZE == 15);
 
@@ -100,7 +100,7 @@ TEST_CASE(SUITE("Formatter correctly writes when sufficient space"))
 
     auto dest = output.as_wslice();
     REQUIRE(status.Write(dest));
-    uint32_t numWritten = output.length() - dest.length();
+    auto numWritten = output.length() - dest.length();
 
     REQUIRE(numWritten == SIZE);
     REQUIRE(HexConversions::to_hex(output.as_rslice().take(SIZE)) == "08 00 00 00 03 00 02 01 05 02 00 DE AD BE EF");
@@ -112,7 +112,7 @@ TEST_CASE(SUITE("Formatter rejects when one less than required space"))
     HexSequence hmac("AB BA");
 
     Group120Var5 status(8, 3, KeyWrapAlgorithm::AES_256, KeyStatus::OK, HMACType::HMAC_SHA1_TRUNC_8, challenge, hmac);
-    const uint32_t SIZE = status.Size();
+    const auto SIZE = status.Size();
 
     REQUIRE(SIZE == 17);
 

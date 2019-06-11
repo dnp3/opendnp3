@@ -31,14 +31,14 @@ std::ostream& operator<<(std::ostream& output, const CopyableBuffer& arBuff)
 
 CopyableBuffer::CopyableBuffer() : buffer(nullptr), size(0) {}
 
-CopyableBuffer::CopyableBuffer(uint32_t size) : buffer(new uint8_t[size]), size(size)
+CopyableBuffer::CopyableBuffer(size_t size) : buffer(new uint8_t[size]), size(size)
 {
     this->Zero();
 }
 
 CopyableBuffer::CopyableBuffer(const ser4cpp::rseq_t& data) : CopyableBuffer(data, data.length()) {}
 
-CopyableBuffer::CopyableBuffer(const uint8_t* data, uint32_t size) : buffer(new uint8_t[size]), size(size)
+CopyableBuffer::CopyableBuffer(const uint8_t* data, size_t size) : buffer(new uint8_t[size]), size(size)
 {
     memcpy(buffer, data, size);
 }

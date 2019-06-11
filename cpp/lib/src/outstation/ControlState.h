@@ -36,7 +36,7 @@ class ControlState
 {
 
 public:
-    ControlState() : digest(0), length(0) {}
+    ControlState() = default;
 
     CommandStatus ValidateSelection(const AppSeqNum& seq,
                                     const Timestamp& now,
@@ -86,8 +86,8 @@ public:
 private:
     AppSeqNum expectedSeq;
     Timestamp selectTime;
-    uint16_t digest;
-    uint32_t length;
+    uint16_t digest = 0;
+    size_t length = 0;
 };
 
 } // namespace opendnp3

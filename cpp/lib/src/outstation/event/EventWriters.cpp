@@ -40,7 +40,7 @@ public:
 
     bool Write(const OctetString& meas, uint16_t index) override
     {
-        if (meas.Size() != this->serializer.size())
+        if (meas.Size() != this->serializer.get_size())
             return false;
 
         return iterator.Write(meas, index);

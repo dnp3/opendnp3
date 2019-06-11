@@ -83,8 +83,6 @@ LinkConfig ConfigReader::ConvertLinkConfig(JNIEnv* env, jobject jlinkcfg)
 OutstationStackConfig ConfigReader::ConvertOutstationStackConfig(JNIEnv* env, jobject jconfig)
 {
     auto& cfg = jni::JCache::OutstationStackConfig;
-    auto& list = jni::JCache::List;
-    auto& db = jni::JCache::DatabaseConfig;    
 
     OutstationStackConfig config;
 
@@ -187,7 +185,7 @@ opendnp3::TimeDuration ConfigReader::ConvertDuration(JNIEnv* env, jobject jdurat
 }
 
 template<class Info, class ConfigType, class ConfigCache, class StaticVariation, class EventVariation>
-typename ConfigType ConvertEventType(
+ConfigType ConvertEventType(
     JNIEnv* env, jobject jconfig, ConfigCache& cache, StaticVariation& svariation, EventVariation& evariation)
 {
 	ConfigType cfg;
@@ -198,7 +196,7 @@ typename ConfigType ConvertEventType(
 }
 
 template<class Info, class ConfigType, class ConfigCache, class StaticVariation, class EventVariation>
-typename ConfigType ConvertDeadbandType(
+ConfigType ConvertDeadbandType(
     JNIEnv* env, jobject jconfig, ConfigCache& cache, StaticVariation& svariation, EventVariation& evariation)
 {
     ConfigType cfg;    

@@ -33,11 +33,11 @@ public:
     /**
      * Construct the facade over the specified underlying buffer
      */
-    ShiftableBuffer(uint8_t* pBuffer_, uint32_t size);
+    ShiftableBuffer(uint8_t* pBuffer_, size_t size);
 
     // ------- Functions related to reading -----------
 
-    uint32_t NumBytesRead() const
+    size_t NumBytesRead() const
     {
         return writePos - readPos;
     }
@@ -49,7 +49,7 @@ public:
     }
 
     /// Signal that some bytes don't have to be stored any longer. They'll be recovered during the next shift operation.
-    void AdvanceRead(uint32_t aNumBytes);
+    void AdvanceRead(size_t aNumBytes);
 
     // ------- Functions related to writing -----------
 
@@ -61,7 +61,7 @@ public:
     void Reset();
 
     /// @return Bytes of available for writing
-    uint32_t NumWriteBytes() const
+    size_t NumWriteBytes() const
     {
         return M_SIZE - writePos;
     }
@@ -73,7 +73,7 @@ public:
     }
 
     /// Signal to the buffer bytes were written to the current write position
-    void AdvanceWrite(uint32_t numBytes);
+    void AdvanceWrite(size_t numBytes);
 
     ////////////////////////////////////////////
     // Other functions
@@ -81,13 +81,13 @@ public:
 
     /// Searches the read subsequence for 0x0564 sync bytes
     /// @return true if both sync bytes were found in the buffer.
-    bool Sync(uint32_t& skipCount);
+    bool Sync(size_t& skipCount);
 
 private:
     uint8_t* pBuffer;
-    const uint32_t M_SIZE;
-    uint32_t writePos;
-    uint32_t readPos;
+    const size_t M_SIZE;
+    size_t writePos;
+    size_t readPos;
 };
 
 } // namespace opendnp3

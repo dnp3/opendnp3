@@ -53,7 +53,7 @@ struct Group22Var1
 
   Group22Var1();
 
-  static uint32_t Size() { return 5; }
+  static size_t Size() { return 5; }
   static bool Read(ser4cpp::rseq_t&, Group22Var1&);
   static bool Write(const Group22Var1&, ser4cpp::wseq_t&);
 
@@ -75,7 +75,7 @@ struct Group22Var2
 
   Group22Var2();
 
-  static uint32_t Size() { return 3; }
+  static size_t Size() { return 3; }
   static bool Read(ser4cpp::rseq_t&, Group22Var2&);
   static bool Write(const Group22Var2&, ser4cpp::wseq_t&);
 
@@ -97,7 +97,7 @@ struct Group22Var5
 
   Group22Var5();
 
-  static uint32_t Size() { return 11; }
+  static size_t Size() { return 11; }
   static bool Read(ser4cpp::rseq_t&, Group22Var5&);
   static bool Write(const Group22Var5&, ser4cpp::wseq_t&);
 
@@ -120,7 +120,7 @@ struct Group22Var6
 
   Group22Var6();
 
-  static uint32_t Size() { return 9; }
+  static size_t Size() { return 9; }
   static bool Read(ser4cpp::rseq_t&, Group22Var6&);
   static bool Write(const Group22Var6&, ser4cpp::wseq_t&);
 

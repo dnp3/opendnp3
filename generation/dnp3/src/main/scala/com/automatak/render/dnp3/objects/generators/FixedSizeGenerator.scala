@@ -37,7 +37,7 @@ object FixedSizeGenerator {
 
     def members: Iterator[String] =  x.fields.map(f => typedefs(f)).iterator.flatten ++ x.fields.map(f => getFieldString(f)).iterator
 
-    def sizeSignature: Iterator[String] = Iterator("static uint32_t Size() { return %d; }".format(x.size))
+    def sizeSignature: Iterator[String] = Iterator("static size_t Size() { return %d; }".format(x.size))
 
     def readSignature: Iterator[String] = Iterator("static bool Read(ser4cpp::rseq_t&, %s&);".format(x.name))
 

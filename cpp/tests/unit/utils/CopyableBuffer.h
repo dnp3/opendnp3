@@ -39,9 +39,9 @@ public:
     // Construct null buffer
     CopyableBuffer();
     // Construct based on starting size of buffer
-    CopyableBuffer(uint32_t size);
+    CopyableBuffer(size_t size);
     CopyableBuffer(const ser4cpp::rseq_t&);
-    CopyableBuffer(const uint8_t* data, uint32_t size);
+    CopyableBuffer(const uint8_t* data, size_t size);
     CopyableBuffer(const CopyableBuffer&);
     CopyableBuffer& operator=(const CopyableBuffer&);
     ~CopyableBuffer();
@@ -67,7 +67,7 @@ public:
         return buffer;
     }
 
-    uint32_t Size() const
+    size_t Size() const
     {
         return size;
     }
@@ -78,7 +78,7 @@ protected:
     uint8_t* buffer;
 
 private:
-    uint32_t size;
+    size_t size;
 };
 
 #endif

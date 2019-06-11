@@ -13,6 +13,7 @@ if(MSVC_VERSION LESS 1900)
 endif()
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+set(BUILD_SHARED_LIBS ON)
 
 # Clang utilities
 include(./cmake/ClangFormat.cmake)

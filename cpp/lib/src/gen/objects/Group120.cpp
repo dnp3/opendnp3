@@ -60,7 +60,7 @@ Group120Var1::Group120Var1(
   challengeData(challengeData_)
 {}
 
-uint32_t Group120Var1::Size() const
+size_t Group120Var1::Size() const
 {
   return MIN_SIZE + challengeData.length();
 }
@@ -107,7 +107,7 @@ Group120Var2::Group120Var2(
   hmacValue(hmacValue_)
 {}
 
-uint32_t Group120Var2::Size() const
+size_t Group120Var2::Size() const
 {
   return MIN_SIZE + hmacValue.length();
 }
@@ -192,7 +192,7 @@ Group120Var5::Group120Var5(
   hmacValue(hmacValue_)
 {}
 
-uint32_t Group120Var5::Size() const
+size_t Group120Var5::Size() const
 {
   return MIN_SIZE + challengeData.length() + hmacValue.length();
 }
@@ -255,7 +255,7 @@ Group120Var6::Group120Var6(
   keyWrapData(keyWrapData_)
 {}
 
-uint32_t Group120Var6::Size() const
+size_t Group120Var6::Size() const
 {
   return MIN_SIZE + keyWrapData.length();
 }
@@ -308,7 +308,7 @@ Group120Var7::Group120Var7(
   errorText(errorText_)
 {}
 
-uint32_t Group120Var7::Size() const
+size_t Group120Var7::Size() const
 {
   return MIN_SIZE + errorText.length();
 }
@@ -355,7 +355,7 @@ Group120Var8::Group120Var8(
   certificate(certificate_)
 {}
 
-uint32_t Group120Var8::Size() const
+size_t Group120Var8::Size() const
 {
   return MIN_SIZE + certificate.length();
 }
@@ -397,7 +397,7 @@ Group120Var9::Group120Var9(
   hmacValue(hmacValue_)
 {}
 
-uint32_t Group120Var9::Size() const
+size_t Group120Var9::Size() const
 {
   return MIN_SIZE + hmacValue.length();
 }
@@ -445,7 +445,7 @@ Group120Var10::Group120Var10(
   certificationData(certificationData_)
 {}
 
-uint32_t Group120Var10::Size() const
+size_t Group120Var10::Size() const
 {
   return MIN_SIZE + userName.length() + userPublicKey.length() + certificationData.length();
 }
@@ -513,7 +513,7 @@ Group120Var11::Group120Var11(
   challengeData(challengeData_)
 {}
 
-uint32_t Group120Var11::Size() const
+size_t Group120Var11::Size() const
 {
   return MIN_SIZE + userName.length() + challengeData.length();
 }
@@ -581,7 +581,7 @@ Group120Var12::Group120Var12(
   challengeData(challengeData_)
 {}
 
-uint32_t Group120Var12::Size() const
+size_t Group120Var12::Size() const
 {
   return MIN_SIZE + challengeData.length();
 }
@@ -649,7 +649,7 @@ Group120Var13::Group120Var13(
   encryptedUpdateKey(encryptedUpdateKey_)
 {}
 
-uint32_t Group120Var13::Size() const
+size_t Group120Var13::Size() const
 {
   return MIN_SIZE + encryptedUpdateKey.length();
 }
@@ -712,7 +712,7 @@ Group120Var14::Group120Var14(
   digitalSignature(digitalSignature_)
 {}
 
-uint32_t Group120Var14::Size() const
+size_t Group120Var14::Size() const
 {
   return MIN_SIZE + digitalSignature.length();
 }
@@ -745,7 +745,7 @@ Group120Var15::Group120Var15(
   hmacValue(hmacValue_)
 {}
 
-uint32_t Group120Var15::Size() const
+size_t Group120Var15::Size() const
 {
   return MIN_SIZE + hmacValue.length();
 }

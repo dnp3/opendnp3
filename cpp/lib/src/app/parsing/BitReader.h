@@ -27,11 +27,11 @@
 namespace opendnp3
 {
 
-uint32_t NumBytesInBits(uint32_t numBits);
-bool GetBit(const ser4cpp::rseq_t& buffer, uint32_t position);
+size_t NumBytesInBits(size_t numBits);
+bool GetBit(const ser4cpp::rseq_t& buffer, size_t position);
 
-uint32_t NumBytesInDoubleBits(uint32_t numBits);
-DoubleBit GetDoubleBit(const ser4cpp::rseq_t& buffer, uint32_t index);
+size_t NumBytesInDoubleBits(size_t numBits);
+DoubleBit GetDoubleBit(const ser4cpp::rseq_t& buffer, size_t index);
 
 } // namespace opendnp3
 

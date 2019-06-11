@@ -57,6 +57,6 @@ bool DataSink::Equals(const rseq_t& data) const
 
 std::string DataSink::AsHex(bool spaced) const
 {
-    const ser4cpp::rseq_t temp(this->buffer.data(), static_cast<uint32_t>(this->buffer.size()));
+    const ser4cpp::rseq_t temp(this->buffer.data(), this->buffer.size());
     return HexConversions::to_hex(temp, spaced);
 }

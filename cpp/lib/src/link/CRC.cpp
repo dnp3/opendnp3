@@ -45,7 +45,7 @@ uint16_t CRC::crcTable[256]
        0x9600, 0xA05E, 0x6E26, 0x5878, 0x029A, 0x34C4, 0xB75E, 0x8100, 0xDBE2, 0xEDBC, 0x91AF, 0xA7F1, 0xFD13, 0xCB4D,
        0x48D7, 0x7E89, 0x246B, 0x1235};
 
-uint16_t CRC::CalcCrc(const uint8_t* input, uint32_t length)
+uint16_t CRC::CalcCrc(const uint8_t* input, size_t length)
 {
     uint16_t CRC = 0;
 
@@ -63,7 +63,7 @@ uint16_t CRC::CalcCrc(const ser4cpp::rseq_t& view)
     return CalcCrc(view, view.length());
 }
 
-void CRC::AddCrc(uint8_t* input, uint32_t length)
+void CRC::AddCrc(uint8_t* input, size_t length)
 {
     uint16_t crc = CRC::CalcCrc(input, length);
 
@@ -71,7 +71,7 @@ void CRC::AddCrc(uint8_t* input, uint32_t length)
     ser4cpp::UInt16::write_to(buffer, crc);
 }
 
-bool CRC::IsCorrectCRC(const uint8_t* input, uint32_t length)
+bool CRC::IsCorrectCRC(const uint8_t* input, size_t length)
 {
 #ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
     return true;

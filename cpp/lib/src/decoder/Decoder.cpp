@@ -30,19 +30,19 @@ Decoder::Decoder(IDecoderCallbacks& callbacks, const log4cpp::Logger& logger) : 
 
 void Decoder::DecodeLPDU(const Buffer& data)
 {
-    ser4cpp::rseq_t rseqData(data.data, static_cast<uint32_t>(data.length));
+    ser4cpp::rseq_t rseqData(data.data, data.length);
     impl->DecodeLPDU(rseqData);
 }
 
 void Decoder::DecodeTPDU(const Buffer& data)
 {
-    ser4cpp::rseq_t rseqData(data.data, static_cast<uint32_t>(data.length));
+    ser4cpp::rseq_t rseqData(data.data, data.length);
     impl->DecodeTPDU(rseqData);
 }
 
 void Decoder::DecodeAPDU(const Buffer& data)
 {
-    ser4cpp::rseq_t rseqData(data.data, static_cast<uint32_t>(data.length));
+    ser4cpp::rseq_t rseqData(data.data, data.length);
     impl->DecodeAPDU(rseqData);
 }
 

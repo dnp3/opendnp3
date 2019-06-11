@@ -204,6 +204,7 @@ set(opendnp3_private_headers
     ./src/app/Range.h
     ./src/app/RangeWriteIterator.h
     ./src/app/SequenceInfo.h
+	./src/app/Serializer.h
     ./src/app/TxBuffer.h
     ./src/app/WriteConversions.h
     ./src/app/WriteConversionTemplates.h
