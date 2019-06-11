@@ -165,7 +165,7 @@ ParseResult RangeParser::ParseRangeOfOctetData(ser4cpp::rseq_t& buffer,
     if (record.variation > 0)
     {
         const auto COUNT = range.Count();
-        uint32_t size = record.variation * COUNT;
+        auto size = record.variation * COUNT;
         if (buffer.length() < size)
         {
             SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for specified octet objects");
@@ -176,7 +176,7 @@ ParseResult RangeParser::ParseRangeOfOctetData(ser4cpp::rseq_t& buffer,
         {
             auto read = [range, record](ser4cpp::rseq_t& buffer, uint32_t pos) -> Indexed<OctetString> {
                 const auto octetData = buffer.take(record.variation);
-                OctetString octets(Buffer(static_cast<uint8_t const*>(octetData), octetData.length()));
+                OctetString octets(Buffer(octetData, octetData.length()));
                 buffer.advance(record.variation);
                 return WithIndex(octets, range.start + pos);
             };

@@ -77,9 +77,9 @@ IINField LoggingHandler::PrintCrob(const ICollection<Indexed<ControlRelayOutputB
         std::ostringstream oss;
         oss << "[" << item.index << "] - code: 0x" << ToHex(item.value.rawCode) << " ("
             << ControlCodeToString(item.value.functionCode) << ")";
-        oss << " count: " << static_cast<uint32_t>(item.value.count);
-        oss << " on-time: " << static_cast<uint32_t>(item.value.onTimeMS);
-        oss << " off-time: " << static_cast<uint32_t>(item.value.offTimeMS);
+        oss << " count: " << static_cast<size_t>(item.value.count);
+        oss << " on-time: " << static_cast<size_t>(item.value.onTimeMS);
+        oss << " off-time: " << static_cast<size_t>(item.value.offTimeMS);
         oss << " status: " << CommandStatusToString(item.value.status);
         SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
     };
@@ -94,7 +94,7 @@ IINField LoggingHandler::PrintOctets(const ICollection<Indexed<OctetString>>& it
     Indent i(*callbacks);
     auto logItem = [this](const Indexed<OctetString>& item) {
         const auto buffer = item.value.ToBuffer();
-        const auto slice = ser4cpp::rseq_t(buffer.data, static_cast<uint32_t>(buffer.length));
+        const auto slice = ser4cpp::rseq_t(buffer.data, buffer.length);
         FORMAT_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "[%u] value: (length = %zu)", item.index, slice.length());
         FORMAT_HEX_BLOCK(logger, flags::APP_OBJECT_RX, slice, 18, 18);
     };

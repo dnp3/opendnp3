@@ -102,7 +102,7 @@ private:
 
 template<class Descriptor> CountIndexParser CountIndexParser::From(uint16_t count, const NumParser& numparser)
 {
-    const size_t SIZE = static_cast<uint32_t>(count) * (Descriptor::Size() + numparser.NumBytes());
+    const size_t SIZE = static_cast<size_t>(count) * (Descriptor::Size() + numparser.NumBytes());
     return CountIndexParser(count, SIZE, numparser, &InvokeCountOf<Descriptor>);
 }
 

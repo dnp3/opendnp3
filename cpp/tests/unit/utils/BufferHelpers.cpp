@@ -28,13 +28,13 @@
 #include <sstream>
 #include <stdexcept>
 
-ByteStr::ByteStr(uint32_t length, uint8_t seed) : CopyableBuffer(length)
+ByteStr::ByteStr(size_t length, uint8_t seed) : CopyableBuffer(length)
 {
     for (size_t i = 0; i < length; ++i)
         this->buffer[i] = static_cast<uint8_t>((i + seed) % 256);
 }
 
-ByteStr::ByteStr(const uint8_t* data, uint32_t length) : CopyableBuffer(data, length) {}
+ByteStr::ByteStr(const uint8_t* data, size_t length) : CopyableBuffer(data, length) {}
 
 bool ByteStr::operator==(const ByteStr& other) const
 {
@@ -88,7 +88,7 @@ void HexSequence::RemoveSpacesInPlace(std::string& s)
     }
 }
 
-uint32_t HexSequence::Validate(const std::string& s)
+size_t HexSequence::Validate(const std::string& s)
 {
     // annoying when you accidentally put an 'O' instead of zero '0'
     if (s.find_first_of("oO") != std::string::npos)
@@ -101,5 +101,5 @@ uint32_t HexSequence::Validate(const std::string& s)
         throw std::invalid_argument(s);
     }
 
-    return static_cast<uint32_t>(s.size() / 2);
+    return s.size() / 2;
 }

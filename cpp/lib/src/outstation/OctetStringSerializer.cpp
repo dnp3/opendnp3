@@ -37,7 +37,7 @@ bool OctetStringSerializer::Write(const OctetString& value, ser4cpp::wseq_t& buf
         return false;
 	}        
     const auto value_buffer = value.ToBuffer();
-    const ser4cpp::rseq_t slice(value_buffer.data, static_cast<uint32_t>(value_buffer.length));
+    const ser4cpp::rseq_t slice(value_buffer.data, value_buffer.length);
     buffer.copy_from(slice);
     return true;
 }

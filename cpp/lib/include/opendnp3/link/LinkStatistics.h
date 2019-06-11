@@ -33,46 +33,46 @@ struct LinkStatistics
     struct Parser
     {
         /// Number of frames discarded due to header CRC errors
-        uint32_t numHeaderCrcError = 0;
+        size_t numHeaderCrcError = 0;
 
         /// Number of frames discarded due to body CRC errors
-        uint32_t numBodyCrcError = 0;
+        size_t numBodyCrcError = 0;
 
         /// Number of frames received
-        uint32_t numLinkFrameRx = 0;
+        size_t numLinkFrameRx = 0;
 
         /// number of bad LEN fields received (malformed frame)
-        uint32_t numBadLength = 0;
+        size_t numBadLength = 0;
 
         /// number of bad function codes (malformed frame)
-        uint32_t numBadFunctionCode = 0;
+        size_t numBadFunctionCode = 0;
 
         /// number of FCV / function code mismatches (malformed frame)
-        uint32_t numBadFCV = 0;
+        size_t numBadFCV = 0;
 
         /// number of frames w/ unexpected FCB bit set (malformed frame)
-        uint32_t numBadFCB = 0;
+        size_t numBadFCB = 0;
     };
 
     struct Channel
     {
         /// The number of times the channel has successfully opened
-        uint32_t numOpen = 0;
+        size_t numOpen = 0;
 
         /// The number of times the channel has failed to open
-        uint32_t numOpenFail = 0;
+        size_t numOpenFail = 0;
 
         /// The number of times the channel has closed either due to user intervention or an error
-        uint32_t numClose = 0;
+        size_t numClose = 0;
 
         /// The number of bytes received
-        uint32_t numBytesRx = 0;
+        size_t numBytesRx = 0;
 
         /// The number of bytes transmitted
-        uint32_t numBytesTx = 0;
+        size_t numBytesTx = 0;
 
         /// Number of frames transmitted
-        uint32_t numLinkFrameTx = 0;
+        size_t numLinkFrameTx = 0;
     };
 
     LinkStatistics() = default;

@@ -56,7 +56,7 @@ ParseResult NumParser::ParseCount(ser4cpp::rseq_t& buffer, uint16_t& count, log4
 
 ParseResult NumParser::ParseRange(ser4cpp::rseq_t& buffer, Range& range, log4cpp::Logger* pLogger) const
 {
-    if (buffer.length() < (2 * static_cast<uint32_t>(size)))
+    if (buffer.length() < (2 * static_cast<size_t>(size)))
     {
         SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for start / stop");
         return ParseResult::NOT_ENOUGH_DATA_FOR_RANGE;
@@ -94,7 +94,7 @@ uint16_t NumParser::ReadOneByte(ser4cpp::rseq_t& buffer)
 {
     uint8_t result;
     ser4cpp::UInt8::read_from(buffer, result);
-    return static_cast<uint16_t>(result);
+    return result;
 }
 
 uint16_t NumParser::ReadTwoBytes(ser4cpp::rseq_t& buffer)

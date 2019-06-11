@@ -30,68 +30,68 @@ namespace Automatak.DNP3.Interface
        /// <summary>
        /// The number of times the channel has sucessfully opened
        /// </summary>
-       public System.UInt32 numOpen = 0;
+       public System.UInt64 numOpen = 0;
 
        /// <summary>
        /// The number of times the channel has failed to open
        /// </summary>
-       public System.UInt32 numOpenFail = 0;
+       public System.UInt64 numOpenFail = 0;
 
        /// <summary>
        /// The number of times the channel has closed either due to user intervention or an error
        /// </summary>
-       public System.UInt32 numClose = 0;
+       public System.UInt64 numClose = 0;
 
        /// <summary>
        /// The number of bytes received
        /// </summary>
-       public System.UInt32 numBytesRx = 0;
+       public System.UInt64 numBytesRx = 0;
 
        /// <summary>
        /// The number of bytes transmitted
        /// </summary>
-       public System.UInt32 numBytesTx = 0;
+       public System.UInt64 numBytesTx = 0;
 
        /// <summary>
        /// Number of LPDUs discared due to CRC errors
        /// </summary>
-       public System.UInt32 numCrcError = 0;
+       public System.UInt64 numCrcError = 0;
 
        /// <summary>
        /// Number of valid LPDUs received
        /// </summary>
-       public System.UInt32 numLinkFrameRx = 0;
+       public System.UInt64 numLinkFrameRx = 0;
 
        /// <summary>
        /// Number of LPDUs transmitted
        /// </summary>
-       public System.UInt32 numLinkFrameTx = 0;
+       public System.UInt64 numLinkFrameTx = 0;
 
        /// <summary>
        /// Number of LPDUs detected with bad / malformed contents
        /// </summary>
-       public System.UInt32 numBadLinkFrameRx = 0;
+       public System.UInt64 numBadLinkFrameRx = 0;
 
        /// <summary>
        /// The number of times the channel has sucessfully opened
        /// </summary>
-       uint IChannelStatistics.NumOpen
+       UInt64 IChannelStatistics.NumOpen
        {
            get { return numOpen; }
        }
 
-       /// <summary>
-       /// The number of times the channel has failed to open
-       /// </summary>
-       uint IChannelStatistics.NumOpenFail
+        /// <summary>
+        /// The number of times the channel has failed to open
+        /// </summary>
+       UInt64 IChannelStatistics.NumOpenFail
        {
            get { return numOpenFail; }
        }
 
-       /// <summary>
-       /// The number of times the channel has closed either due to user intervention or an error
-       /// </summary>
-       uint IChannelStatistics.NumClose
+        /// <summary>
+        /// The number of times the channel has closed either due to user intervention or an error
+        /// </summary>
+       UInt64 IChannelStatistics.NumClose
        {
            get { return numClose; }
        }
@@ -99,7 +99,7 @@ namespace Automatak.DNP3.Interface
        /// <summary>
        /// The number of bytes received
        /// </summary>
-       uint IChannelStatistics.NumBytesRx
+       UInt64 IChannelStatistics.NumBytesRx
        {
            get { return numBytesRx; }
        }
@@ -107,15 +107,15 @@ namespace Automatak.DNP3.Interface
        /// <summary>
        /// The number of bytes transmitted
        /// </summary>
-       uint IChannelStatistics.NumBytesTx
+       UInt64 IChannelStatistics.NumBytesTx
        {
            get { return numBytesTx; }
        }
 
-       // <summary>
+       /// <summary>
        /// Number of frames discared due to CRC errors
        /// </summary>
-       uint IChannelStatistics.NumCrcError
+       UInt64 IChannelStatistics.NumCrcError
        {
            get { return numCrcError; }
        }
@@ -123,7 +123,7 @@ namespace Automatak.DNP3.Interface
        /// <summary>
        /// Number of valid LPDUs received
        /// </summary>
-       uint IChannelStatistics.NumLinkFrameRx
+       UInt64 IChannelStatistics.NumLinkFrameRx
        {
            get { return numLinkFrameRx; }
        }
@@ -131,7 +131,7 @@ namespace Automatak.DNP3.Interface
        /// <summary>
        /// Number of valid LPDUs transmitted
        /// </summary>
-       uint IChannelStatistics.NumLinkFrameTx
+       UInt64 IChannelStatistics.NumLinkFrameTx
        {
            get { return numLinkFrameTx; }
        }
@@ -139,7 +139,7 @@ namespace Automatak.DNP3.Interface
        /// <summary>
        /// Number of LPDUs detected with bad / malformed contents
        /// </summary>
-       uint IChannelStatistics.NumBadLinkFrameRx
+       UInt64 IChannelStatistics.NumBadLinkFrameRx
        {
            get { return numBadLinkFrameRx; }
        }      

@@ -238,12 +238,12 @@ ParseResult CountIndexParser::ParseIndexPrefixedOctetData(ser4cpp::rseq_t& buffe
         return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
     }
 
-    if (pHandler != nullptr)
+    if (pHandler)
     {
         auto read = [&numparser, record](ser4cpp::rseq_t& buffer, uint32_t pos) -> Indexed<OctetString> {
             auto index = numparser.ReadNum(buffer);
             const auto octetStringSlice = buffer.take(record.variation);
-            OctetString octets(Buffer(static_cast<uint8_t const*>(octetStringSlice), octetStringSlice.length()));
+            OctetString octets(Buffer(octetStringSlice, octetStringSlice.length()));
             buffer.advance(record.variation);
             return WithIndex(octets, index);
         };

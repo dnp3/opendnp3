@@ -164,7 +164,7 @@ void RangeParser::InvokeRangeOfType(const HeaderRecord& record,
 
 template<class Type> RangeParser RangeParser::FromBitfieldType(const Range& range)
 {
-    const uint32_t SIZE = NumBytesInBits(range.Count());
+    const auto SIZE = NumBytesInBits(range.Count());
     return RangeParser(range, SIZE, &InvokeRangeBitfieldType<Type>);
 }
 
@@ -174,7 +174,7 @@ void RangeParser::InvokeRangeBitfieldType(const HeaderRecord& record,
                                           const ser4cpp::rseq_t& buffer,
                                           IAPDUHandler& handler)
 {
-    const uint32_t COUNT = range.Count();
+    const auto COUNT = range.Count();
 
     auto read = [range](ser4cpp::rseq_t& buffer, uint32_t pos) -> Indexed<Type> {
         Type value(GetBit(buffer, pos));
@@ -188,7 +188,7 @@ void RangeParser::InvokeRangeBitfieldType(const HeaderRecord& record,
 
 template<class Type> RangeParser RangeParser::FromDoubleBitfieldType(const Range& range)
 {
-    uint32_t size = NumBytesInDoubleBits(range.Count());
+    const auto size = NumBytesInDoubleBits(range.Count());
     return RangeParser(range, size, &InvokeRangeDoubleBitfieldType<Type>);
 }
 
@@ -198,11 +198,11 @@ void RangeParser::InvokeRangeDoubleBitfieldType(const HeaderRecord& record,
                                                 const ser4cpp::rseq_t& buffer,
                                                 IAPDUHandler& handler)
 {
-    const uint32_t COUNT = range.Count();
+    const auto COUNT = range.Count();
 
-    auto read = [range](ser4cpp::rseq_t& buffer, uint32_t pos) -> Indexed<Type> {
+    auto read = [range](ser4cpp::rseq_t& buffer, size_t pos) -> Indexed<Type> {
         Type value(GetDoubleBit(buffer, pos));
-        return WithIndex(value, range.start + pos);
+        return WithIndex(value, static_cast<uint16_t>(range.start + pos));
     };
 
     auto collection = CreateBufferedCollection<Indexed<Type>>(buffer, COUNT, read);
