@@ -86,7 +86,7 @@ std::string LinkHex::ConfirmedUserData(
 
     StaticBuffer<292> buffer;
     auto output = buffer.as_wseq();
-    return HexConversions::to_hex(LinkFrame::FormatConfirmedUserData(output, master, fcb, dest, src, data, data.length(), nullptr));
+    return HexConversions::to_hex(LinkFrame::FormatConfirmedUserData(output, master, fcb, dest, src, data, nullptr));
 }
 
 std::string LinkHex::UnconfirmedUserData(bool master, uint16_t dest, uint16_t src, const std::string& userDataHex)
@@ -96,5 +96,5 @@ std::string LinkHex::UnconfirmedUserData(bool master, uint16_t dest, uint16_t sr
 
     StaticBuffer<292> buffer;
     auto output = buffer.as_wseq();
-    return HexConversions::to_hex(LinkFrame::FormatUnconfirmedUserData(output, master, dest, src, data, data.length(), nullptr));
+    return HexConversions::to_hex(LinkFrame::FormatUnconfirmedUserData(output, master, dest, src, data, nullptr));
 }
