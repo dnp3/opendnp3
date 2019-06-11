@@ -95,12 +95,12 @@ public:
     // roll back to the last mark
     bool Rollback();
 
-    uint32_t Remaining() const;
+    size_t Remaining() const;
 
 private:
     explicit HeaderWriter(ser4cpp::wseq_t* position_);
 
-    bool WriteHeaderWithReserve(GroupVariationID id, QualifierCode qc, uint32_t reserve);
+    bool WriteHeaderWithReserve(GroupVariationID id, QualifierCode qc, size_t reserve);
 
     ser4cpp::wseq_t* position;
 
@@ -144,8 +144,8 @@ bool HeaderWriter::WriteSingleValue(QualifierCode qc,
                                     const DNP3Serializer<ValueType>& serializer,
                                     const ValueType& value)
 {
-    auto reserveSize = CountType::size + serializer.Size();
-    if (this->WriteHeaderWithReserve(ValueType::ID, qc, reserveSize))
+    const auto reserve_size = CountType::size + serializer.Size();
+    if (this->WriteHeaderWithReserve(ValueType::ID, qc, reserve_size))
     {
         CountType::WSlice(*position, 1); // write the count
         serializer.Write(value, *position);
@@ -157,8 +157,8 @@ bool HeaderWriter::WriteSingleValue(QualifierCode qc,
 
 template<class CountType, class WriteType> bool HeaderWriter::WriteSingleValue(QualifierCode qc, const WriteType& value)
 {
-    uint32_t reserveSize = CountType::size + WriteType::Size();
-    if (this->WriteHeaderWithReserve(WriteType::ID(), qc, reserveSize))
+    const auto reserve_size = CountType::size + WriteType::Size();
+    if (this->WriteHeaderWithReserve(WriteType::ID(), qc, reserve_size))
     {
         CountType::write_to(*position, 1); // write the count
         WriteType::Write(value, *position);
@@ -176,8 +176,8 @@ bool HeaderWriter::WriteSingleIndexedValue(QualifierCode qc,
                                            const ValueType& value,
                                            typename CountType::type_t index)
 {
-    uint32_t reserveSize = 2 * CountType::size + serializer.size();
-    if (this->WriteHeaderWithReserve(serializer.ID(), qc, reserveSize))
+    const auto reserve_size = 2 * CountType::size + serializer.get_size();
+    if (this->WriteHeaderWithReserve(serializer.ID(), qc, reserve_size))
     {
         CountType::write_to(*position, 1);     // write the count
         CountType::write_to(*position, index); // write the index
@@ -193,8 +193,8 @@ RangeWriteIterator<IndexType, WriteType> HeaderWriter::IterateOverRange(Qualifie
                                                                         const DNP3Serializer<WriteType>& serializer,
                                                                         typename IndexType::type_t start)
 {
-    uint32_t reserveSize = 2 * IndexType::size + serializer.size();
-    if (this->WriteHeaderWithReserve(serializer.ID(), qc, reserveSize))
+    const auto reserve_size = 2 * IndexType::size + serializer.get_size();
+    if (this->WriteHeaderWithReserve(serializer.ID(), qc, reserve_size))
     {
         return RangeWriteIterator<IndexType, WriteType>(start, serializer, *position);
     }
@@ -206,8 +206,8 @@ template<class CountType, class WriteType>
 CountWriteIterator<CountType, WriteType> HeaderWriter::IterateOverCount(QualifierCode qc,
                                                                         const DNP3Serializer<WriteType>& serializer)
 {
-    uint32_t reserveSize = CountType::size + serializer.size();
-    if (this->WriteHeaderWithReserve(serializer.ID(), qc, reserveSize))
+    const auto reserve_size = CountType::size + serializer.get_size();
+    if (this->WriteHeaderWithReserve(serializer.ID(), qc, reserve_size))
     {
         return CountWriteIterator<CountType, WriteType>(serializer, *position);
     }
@@ -220,8 +220,8 @@ BitfieldRangeWriteIterator<IndexType> HeaderWriter::IterateOverSingleBitfield(Gr
                                                                               QualifierCode qc,
                                                                               typename IndexType::type_t start)
 {
-    uint32_t reserveSize = 2 * IndexType::size + 1; // need at least 1 byte
-    if (this->WriteHeaderWithReserve(id, qc, reserveSize))
+    const auto reserve_size = 2 * IndexType::size + 1; // need at least 1 byte
+    if (this->WriteHeaderWithReserve(id, qc, reserve_size))
     {
         return BitfieldRangeWriteIterator<IndexType>(start, *position);
     }
@@ -233,8 +233,8 @@ template<class PrefixType, class WriteType>
 PrefixedWriteIterator<PrefixType, WriteType> HeaderWriter::IterateOverCountWithPrefix(
     QualifierCode qc, const DNP3Serializer<WriteType>& serializer)
 {
-    uint32_t reserveSize = 2 * PrefixType::size + serializer.size(); // enough space for the count, 1 prefix + object
-    if (this->WriteHeaderWithReserve(serializer.ID(), qc, reserveSize))
+    const auto reserve_size = 2 * PrefixType::size + serializer.get_size(); // enough space for the count, 1 prefix + object
+    if (this->WriteHeaderWithReserve(serializer.ID(), qc, reserve_size))
     {
         return PrefixedWriteIterator<PrefixType, WriteType>(serializer, *position);
     }

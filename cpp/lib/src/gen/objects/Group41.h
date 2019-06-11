@@ -53,7 +53,7 @@ struct Group41Var1
 
   Group41Var1();
 
-  static uint32_t Size() { return 5; }
+  static size_t Size() { return 5; }
   static bool Read(ser4cpp::rseq_t&, Group41Var1&);
   static bool Write(const Group41Var1&, ser4cpp::wseq_t&);
 
@@ -74,7 +74,7 @@ struct Group41Var2
 
   Group41Var2();
 
-  static uint32_t Size() { return 3; }
+  static size_t Size() { return 3; }
   static bool Read(ser4cpp::rseq_t&, Group41Var2&);
   static bool Write(const Group41Var2&, ser4cpp::wseq_t&);
 
@@ -95,7 +95,7 @@ struct Group41Var3
 
   Group41Var3();
 
-  static uint32_t Size() { return 5; }
+  static size_t Size() { return 5; }
   static bool Read(ser4cpp::rseq_t&, Group41Var3&);
   static bool Write(const Group41Var3&, ser4cpp::wseq_t&);
 
@@ -116,7 +116,7 @@ struct Group41Var4
 
   Group41Var4();
 
-  static uint32_t Size() { return 9; }
+  static size_t Size() { return 9; }
   static bool Read(ser4cpp::rseq_t&, Group41Var4&);
   static bool Write(const Group41Var4&, ser4cpp::wseq_t&);
 

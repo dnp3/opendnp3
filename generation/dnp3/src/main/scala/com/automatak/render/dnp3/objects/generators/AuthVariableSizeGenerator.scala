@@ -64,7 +64,7 @@ object AuthVariableSizeGenerator {
       } ++ Iterator(");")
     }
 
-    def sizeSignature: Iterator[String] = Iterator("virtual uint32_t Size() const override final;")
+    def sizeSignature: Iterator[String] = Iterator("virtual size_t Size() const override final;")
 
     def readSignature: Iterator[String] = Iterator("virtual bool Read(const ser4cpp::rseq_t&) override final;")
 
@@ -81,7 +81,7 @@ object AuthVariableSizeGenerator {
     readSignature ++
     writeSignature ++
     space ++
-    Iterator("static const uint32_t MIN_SIZE = %s;".format(x.minimumSize)) ++
+    Iterator("static const size_t MIN_SIZE = %s;".format(x.minimumSize)) ++
     space ++
     comment("member variables") ++
     members
@@ -131,7 +131,7 @@ object AuthVariableSizeGenerator {
 
     def variableFieldSizeSumation: String = variableFields.map(f => "%s.length()".format(f.name)).mkString(" + ")
 
-    def sizeFunction: Iterator[String] = Iterator("uint32_t %s::Size() const".format(x.name)) ++ bracket {
+    def sizeFunction: Iterator[String] = Iterator("size_t %s::Size() const".format(x.name)) ++ bracket {
       Iterator("return MIN_SIZE + %s;".format(variableFieldSizeSumation))
     }
 

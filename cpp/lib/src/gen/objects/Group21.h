@@ -53,7 +53,7 @@ struct Group21Var1
 
   Group21Var1();
 
-  static uint32_t Size() { return 5; }
+  static size_t Size() { return 5; }
   static bool Read(ser4cpp::rseq_t&, Group21Var1&);
   static bool Write(const Group21Var1&, ser4cpp::wseq_t&);
 
@@ -76,7 +76,7 @@ struct Group21Var2
 
   Group21Var2();
 
-  static uint32_t Size() { return 3; }
+  static size_t Size() { return 3; }
   static bool Read(ser4cpp::rseq_t&, Group21Var2&);
   static bool Write(const Group21Var2&, ser4cpp::wseq_t&);
 
@@ -99,7 +99,7 @@ struct Group21Var5
 
   Group21Var5();
 
-  static uint32_t Size() { return 11; }
+  static size_t Size() { return 11; }
   static bool Read(ser4cpp::rseq_t&, Group21Var5&);
   static bool Write(const Group21Var5&, ser4cpp::wseq_t&);
 
@@ -123,7 +123,7 @@ struct Group21Var6
 
   Group21Var6();
 
-  static uint32_t Size() { return 9; }
+  static size_t Size() { return 9; }
   static bool Read(ser4cpp::rseq_t&, Group21Var6&);
   static bool Write(const Group21Var6&, ser4cpp::wseq_t&);
 
@@ -147,7 +147,7 @@ struct Group21Var9
 
   Group21Var9();
 
-  static uint32_t Size() { return 4; }
+  static size_t Size() { return 4; }
   static bool Read(ser4cpp::rseq_t&, Group21Var9&);
   static bool Write(const Group21Var9&, ser4cpp::wseq_t&);
 
@@ -169,7 +169,7 @@ struct Group21Var10
 
   Group21Var10();
 
-  static uint32_t Size() { return 2; }
+  static size_t Size() { return 2; }
   static bool Read(ser4cpp::rseq_t&, Group21Var10&);
   static bool Write(const Group21Var10&, ser4cpp::wseq_t&);
 

@@ -22,19 +22,19 @@
 
 #include "opendnp3/app/GroupVariationID.h"
 
-#include <ser4cpp/serialization/Serializer.h>
+#include "Serializer.h"
 
 namespace opendnp3
 {
 
-template<class T> class DNP3Serializer : public ser4cpp::Serializer<T>
+template<class T> class DNP3Serializer : public Serializer<T>
 {
 public:
-    DNP3Serializer(GroupVariationID id_,
-                   uint32_t size_,
-                   typename ser4cpp::Serializer<T>::ReadFunc pReadFunc_,
-                   typename ser4cpp::Serializer<T>::WriteFunc pWriteFunc_)
-        : ser4cpp::Serializer<T>(size_, pReadFunc_, pWriteFunc_), id(id_)
+    DNP3Serializer(GroupVariationID id,
+                   size_t size,
+                   typename Serializer<T>::read_func_t read_func,
+                   typename Serializer<T>::write_func_t write_func)
+        : Serializer<T>(size, read_func, write_func), id(id)
     {
     }
 

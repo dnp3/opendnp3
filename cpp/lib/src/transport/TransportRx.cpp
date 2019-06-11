@@ -68,7 +68,7 @@ Message TransportRx::ProcessReceive(const Message& segment)
 
     const auto payload = segment.payload.skip(1);
 
-    FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_RX, "FIR: %d FIN: %d SEQ: %u LEN: %u", header.fir, header.fin, header.seq,
+    FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_RX, "FIR: %d FIN: %d SEQ: %u LEN: %zu", header.fir, header.fin, header.seq,
                      payload.length());
 
     if (header.fir && this->numBytesRead > 0)

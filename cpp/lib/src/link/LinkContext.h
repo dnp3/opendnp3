@@ -118,8 +118,8 @@ public:
     bool TryPendingTx(ser4cpp::Settable<ser4cpp::rseq_t>& pending, bool primary);
 
     // buffers used for primary and secondary requests
-    ser4cpp::StaticBuffer<uint32_t, LPDU_MAX_FRAME_SIZE> priTxBuffer;
-    ser4cpp::StaticBuffer<uint32_t, LPDU_HEADER_SIZE> secTxBuffer;
+    ser4cpp::StaticBuffer<LPDU_MAX_FRAME_SIZE> priTxBuffer;
+    ser4cpp::StaticBuffer<LPDU_HEADER_SIZE> secTxBuffer;
 
     ser4cpp::Settable<ser4cpp::rseq_t> pendingPriTx;
     ser4cpp::Settable<ser4cpp::rseq_t> pendingSecTx;

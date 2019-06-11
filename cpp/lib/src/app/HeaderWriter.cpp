@@ -28,7 +28,7 @@ namespace opendnp3
 
 HeaderWriter::HeaderWriter(ser4cpp::wseq_t* position_) : position(position_) {}
 
-uint32_t HeaderWriter::Remaining() const
+size_t HeaderWriter::Remaining() const
 {
     return position->length();
 }
@@ -63,18 +63,23 @@ bool HeaderWriter::WriteHeader(GroupVariationID id, QualifierCode qc)
     return true;
 }
 
-bool HeaderWriter::WriteHeaderWithReserve(GroupVariationID id, QualifierCode qc, uint32_t reserve)
+bool HeaderWriter::WriteHeaderWithReserve(GroupVariationID id, QualifierCode qc, size_t reserve)
 {
     return (position->length() < (3 + reserve)) ? false : WriteHeader(id, qc);
 }
 
 bool HeaderWriter::WriteFreeFormat(const IVariableLength& value)
 {
-    uint32_t reserveSize = 1 + ser4cpp::UInt16::size + value.Size();
-    if (this->WriteHeaderWithReserve(value.InstanceID(), QualifierCode::UINT16_FREE_FORMAT, reserveSize))
+    if (value.Size() > std::numeric_limits<uint16_t>::max())
+    {
+        return false;
+    }
+
+    const auto reserve_size = 1 + ser4cpp::UInt16::size + value.Size();
+    if (this->WriteHeaderWithReserve(value.InstanceID(), QualifierCode::UINT16_FREE_FORMAT, reserve_size))
     {
         ser4cpp::UInt8::write_to(*position, 1);
-        ser4cpp::UInt16::write_to(*position, value.Size());
+        ser4cpp::UInt16::write_to(*position, static_cast<uint16_t>(value.Size()));
         return value.Write(*position);
     }
 

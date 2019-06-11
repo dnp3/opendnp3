@@ -104,7 +104,7 @@ private:
     typename IndexType::type_t start;
     typename IndexType::type_t count;
 
-    uint32_t maxCount;
+    size_t maxCount;
 
     bool isValid;
 

@@ -53,7 +53,7 @@ struct Group121Var1
 
   Group121Var1();
 
-  static uint32_t Size() { return 7; }
+  static size_t Size() { return 7; }
   static bool Read(ser4cpp::rseq_t&, Group121Var1&);
   static bool Write(const Group121Var1&, ser4cpp::wseq_t&);
 

@@ -28,22 +28,20 @@
 
 #include <log4cpp/LogMacros.h>
 
-#include <cassert>
-
 namespace opendnp3
 {
 
-void LinkFrame::ReadUserData(const uint8_t* pSrc, uint8_t* pDest, uint32_t length_)
+void LinkFrame::ReadUserData(const uint8_t* pSrc, uint8_t* pDest, size_t len)
 {
-    uint32_t length = length_;
+    size_t length = len;
     uint8_t const* pRead = pSrc;
     uint8_t* pWrite = pDest;
 
     while (length > 0)
     {
-        uint32_t max = LPDU_DATA_BLOCK_SIZE;
-        uint32_t num = (length <= max) ? length : max;
-        uint32_t num_with_crc = num + 2;
+        size_t max = LPDU_DATA_BLOCK_SIZE;
+        size_t num = (length <= max) ? length : max;
+        size_t num_with_crc = num + 2;
         memmove(pWrite, pRead, num);
         pRead += num_with_crc;
         pWrite += num;
@@ -51,12 +49,12 @@ void LinkFrame::ReadUserData(const uint8_t* pSrc, uint8_t* pDest, uint32_t lengt
     }
 }
 
-bool LinkFrame::ValidateBodyCRC(const uint8_t* pBody, uint32_t length)
+bool LinkFrame::ValidateBodyCRC(const uint8_t* pBody, size_t length)
 {
     while (length > 0)
     {
-        uint32_t max = LPDU_DATA_BLOCK_SIZE;
-        uint32_t num = (length <= max) ? length : max;
+        size_t max = LPDU_DATA_BLOCK_SIZE;
+        size_t num = (length <= max) ? length : max;
 
         if (CRC::IsCorrectCRC(pBody, num))
         {
@@ -71,18 +69,18 @@ bool LinkFrame::ValidateBodyCRC(const uint8_t* pBody, uint32_t length)
     return true;
 }
 
-uint32_t LinkFrame::CalcFrameSize(uint8_t dataLength)
+size_t LinkFrame::CalcFrameSize(size_t dataLength)
 {
     return LPDU_HEADER_SIZE + CalcUserDataSize(dataLength);
 }
 
-uint32_t LinkFrame::CalcUserDataSize(uint8_t dataLength)
+size_t LinkFrame::CalcUserDataSize(size_t dataLength)
 {
     if (dataLength > 0)
     {
-        uint32_t mod16 = dataLength % LPDU_DATA_BLOCK_SIZE;
-        uint32_t size = (dataLength / LPDU_DATA_BLOCK_SIZE) * LPDU_DATA_PLUS_CRC_SIZE; // complete blocks
-        return (mod16 > 0) ? (size + mod16 + LPDU_CRC_SIZE) : size;                    // possible partial block
+        size_t mod16 = dataLength % LPDU_DATA_BLOCK_SIZE;
+        size_t size = (dataLength / LPDU_DATA_BLOCK_SIZE) * LPDU_DATA_PLUS_CRC_SIZE; // complete blocks
+        return (mod16 > 0) ? (size + mod16 + LPDU_CRC_SIZE) : size;                  // possible partial block
     }
 
     return 0;
@@ -166,17 +164,18 @@ ser4cpp::rseq_t LinkFrame::FormatConfirmedUserData(ser4cpp::wseq_t& buffer,
                                                    bool aFcb,
                                                    uint16_t aDest,
                                                    uint16_t aSrc,
-                                                   const uint8_t* apData,
-                                                   uint8_t dataLength,
+                                                   ser4cpp::rseq_t user_data,
                                                    log4cpp::Logger* pLogger)
 {
-    assert(dataLength > 0);
-    assert(dataLength <= LPDU_MAX_USER_DATA_SIZE);
-    auto userDataSize = CalcUserDataSize(dataLength);
+    if (user_data.length() > LPDU_MAX_USER_DATA_SIZE)
+    {
+        ser4cpp::rseq_t::empty();
+    }
+
+    auto userDataSize = CalcUserDataSize(user_data.length());
     auto ret = buffer.readonly().take(userDataSize + LPDU_HEADER_SIZE);
-    FormatHeader(buffer, dataLength, aIsMaster, aFcb, true, LinkFunction::PRI_CONFIRMED_USER_DATA, aDest, aSrc,
-                 pLogger);
-    WriteUserData(apData, buffer, dataLength);
+    FormatHeader(buffer, static_cast<uint8_t>(user_data.length()), aIsMaster, aFcb, true, LinkFunction::PRI_CONFIRMED_USER_DATA, aDest, aSrc, pLogger);
+    WriteUserData(user_data, buffer, user_data.length());
     buffer.advance(userDataSize);
     return ret;
 }
@@ -185,17 +184,18 @@ ser4cpp::rseq_t LinkFrame::FormatUnconfirmedUserData(ser4cpp::wseq_t& buffer,
                                                      bool aIsMaster,
                                                      uint16_t aDest,
                                                      uint16_t aSrc,
-                                                     const uint8_t* apData,
-                                                     uint8_t dataLength,
+                                                     ser4cpp::rseq_t user_data,
                                                      log4cpp::Logger* pLogger)
 {
-    assert(dataLength > 0);
-    assert(dataLength <= LPDU_MAX_USER_DATA_SIZE);
-    auto userDataSize = CalcUserDataSize(dataLength);
+    if (user_data.length() > LPDU_MAX_USER_DATA_SIZE)
+    {
+        ser4cpp::rseq_t::empty();
+    }
+
+    auto userDataSize = CalcUserDataSize(user_data.length());
     auto ret = buffer.readonly().take(userDataSize + LPDU_HEADER_SIZE);
-    FormatHeader(buffer, dataLength, aIsMaster, false, false, LinkFunction::PRI_UNCONFIRMED_USER_DATA, aDest, aSrc,
-                 pLogger);
-    WriteUserData(apData, buffer, dataLength);
+    FormatHeader(buffer, static_cast<uint8_t>(user_data.length()), aIsMaster, false, false, LinkFunction::PRI_UNCONFIRMED_USER_DATA, aDest, aSrc, pLogger);
+    WriteUserData(user_data, buffer, user_data.length());
     buffer.advance(userDataSize);
     return ret;
 }
@@ -209,8 +209,12 @@ ser4cpp::rseq_t LinkFrame::FormatHeader(ser4cpp::wseq_t& buffer,
                                         uint16_t aDest,
                                         uint16_t aSrc,
                                         log4cpp::Logger* pLogger)
-{
-    assert(buffer.length() >= LPDU_HEADER_SIZE);
+{    
+    if (buffer.length() < LPDU_HEADER_SIZE)
+    {
+        return ser4cpp::rseq_t::empty();
+    }
+
     LinkHeader header(aDataLength + LPDU_MIN_LENGTH, aSrc, aDest, aIsMaster, aFcvDfc, aFcb, aFuncCode);
 
     FORMAT_LOGGER_BLOCK(pLogger, flags::LINK_TX, "Function: %s Dest: %u Source: %u Length: %u",
@@ -222,12 +226,12 @@ ser4cpp::rseq_t LinkFrame::FormatHeader(ser4cpp::wseq_t& buffer,
     return ret;
 }
 
-void LinkFrame::WriteUserData(const uint8_t* pSrc, uint8_t* pDest, uint8_t length)
+void LinkFrame::WriteUserData(const uint8_t* pSrc, uint8_t* pDest, size_t length)
 {
     while (length > 0)
     {
         uint8_t max = LPDU_DATA_BLOCK_SIZE;
-        uint8_t num = length > max ? max : length;
+        size_t num = length > max ? max : length;
         memcpy(pDest, pSrc, num);
         CRC::AddCrc(pDest, num);
         pSrc += num;

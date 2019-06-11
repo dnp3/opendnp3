@@ -31,7 +31,7 @@ using namespace std;
 using namespace opendnp3;
 using namespace ser4cpp;
 
-MockTransportSegment::MockTransportSegment(uint32_t segmentSize, const std::string& hex, const Addresses& addresses)
+MockTransportSegment::MockTransportSegment(size_t segmentSize, const std::string& hex, const Addresses& addresses)
     : addresses(addresses), segmentSize(segmentSize), hs(hex), remainder(hs.ToRSeq())
 {
     assert(segmentSize > 0);

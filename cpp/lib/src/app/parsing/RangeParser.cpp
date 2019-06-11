@@ -34,8 +34,8 @@
 namespace opendnp3
 {
 
-RangeParser::RangeParser(const Range& range_, uint32_t requiredSize_, HandleFun handler_)
-    : range(range_), requiredSize(requiredSize_), handler(handler_)
+RangeParser::RangeParser(const Range& range, size_t requiredSize, HandleFun handler)
+    : range(range), requiredSize(requiredSize), handler(handler)
 {
 }
 

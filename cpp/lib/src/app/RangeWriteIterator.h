@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_RANGEWRITEITERATOR_H
 #define OPENDNP3_RANGEWRITEITERATOR_H
 
-#include <ser4cpp/serialization/Serializer.h>
+#include "app/Serializer.h"
 
 namespace opendnp3
 {
@@ -37,10 +37,10 @@ public:
     RangeWriteIterator() : start(0), count(0), isValid(false), pPosition(nullptr) {}
 
     RangeWriteIterator(typename IndexType::type_t start_,
-                       const ser4cpp::Serializer<WriteType>& serializer_,
+                       const Serializer<WriteType>& serializer,
                        ser4cpp::wseq_t& position)
         : start(start_),
-          serializer(serializer_),
+          serializer(serializer),
           count(0),
           isValid(position.length() >= 2 * IndexType::size),
           range(position),
@@ -64,7 +64,7 @@ public:
 
     bool Write(const WriteType& value)
     {
-        if (isValid && (pPosition->length() >= serializer.size()) && (count <= IndexType::max_value))
+        if (isValid && (pPosition->length() >= serializer.get_size()) && (count <= IndexType::max_value))
         {
             serializer.write(value, *pPosition);
             ++count;
@@ -83,7 +83,7 @@ public:
 
 private:
     typename IndexType::type_t start;
-    ser4cpp::Serializer<WriteType> serializer;
+    Serializer<WriteType> serializer;
     uint32_t count;
 
     bool isValid;

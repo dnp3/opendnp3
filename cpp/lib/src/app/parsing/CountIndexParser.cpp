@@ -37,11 +37,11 @@
 namespace opendnp3
 {
 
-CountIndexParser::CountIndexParser(uint16_t count_,
-                                   uint32_t requiredSize_,
-                                   const NumParser& numparser_,
-                                   HandleFun handler_)
-    : count(count_), requiredSize(requiredSize_), numparser(numparser_), handler(handler_)
+CountIndexParser::CountIndexParser(uint16_t count,
+                                   size_t requiredSize,
+                                   const NumParser& numparser,
+                                   HandleFun handler)
+    : count(count), requiredSize(requiredSize), numparser(numparser), handler(handler)
 {
 }
 

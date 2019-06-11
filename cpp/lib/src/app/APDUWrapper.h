@@ -43,7 +43,7 @@ class APDUWrapper
 public:
     APDUWrapper();
 
-    explicit APDUWrapper(const ser4cpp::wseq_t& buffer_);
+    explicit APDUWrapper(const ser4cpp::wseq_t& buffer);
 
     bool IsValid() const;
 
@@ -53,13 +53,13 @@ public:
     AppControlField GetControl() const;
     void SetControl(AppControlField control);
 
-    uint32_t Size() const;
+    size_t Size() const;
 
     ser4cpp::rseq_t ToRSeq() const;
 
     HeaderWriter GetWriter();
 
-    uint32_t Remaining() const;
+    size_t Remaining() const;
 
 protected:
     bool valid;

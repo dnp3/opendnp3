@@ -103,10 +103,10 @@ private:
                                               const ser4cpp::rseq_t& buffer,
                                               IAPDUHandler& handler);
 
-    RangeParser(const Range& range, uint32_t requiredSize, HandleFun handler);
+    RangeParser(const Range& range, size_t requiredSize, HandleFun handler);
 
     Range range;
-    uint32_t requiredSize;
+    size_t requiredSize;
     HandleFun handler;
 
     RangeParser() = delete;
@@ -114,13 +114,13 @@ private:
 
 template<class Descriptor> RangeParser RangeParser::FromFixedSize(const Range& range)
 {
-    uint32_t size = range.Count() * Descriptor::Size();
+    const auto size = range.Count() * Descriptor::Size();
     return RangeParser(range, size, &InvokeRangeOf<Descriptor>);
 }
 
 template<class Type> RangeParser RangeParser::FromFixedSizeType(const Range& range)
 {
-    uint32_t size = range.Count() * Type::Size();
+    const auto size = range.Count() * Type::Size();
     return RangeParser(range, size, &InvokeRangeOfType<Type>);
 }
 
