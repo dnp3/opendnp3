@@ -72,8 +72,8 @@ private:
     SSLContext ctx;
     asio::ip::tcp::endpoint endpoint;
     asio::ip::tcp::acceptor acceptor;
-
-    uint64_t session_id;
+    bool isShutdown = false;
+    uint64_t session_id = 0;
 };
 
 } // namespace asiopal

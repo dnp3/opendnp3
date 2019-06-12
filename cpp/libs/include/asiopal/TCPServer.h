@@ -70,6 +70,7 @@ private:
     asio::ip::tcp::acceptor acceptor;
     asio::ip::tcp::socket socket;
     asio::ip::tcp::endpoint remote_endpoint;
+    bool isShutdown = false;
     uint64_t session_id = 0;
 };
 
