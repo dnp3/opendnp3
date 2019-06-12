@@ -92,14 +92,14 @@ bool NumParser::Read(uint16_t& num, ser4cpp::rseq_t& buffer) const
 
 uint16_t NumParser::ReadOneByte(ser4cpp::rseq_t& buffer)
 {
-    uint8_t result;
+    uint8_t result = 0;
     ser4cpp::UInt8::read_from(buffer, result);
     return result;
 }
 
 uint16_t NumParser::ReadTwoBytes(ser4cpp::rseq_t& buffer)
 {
-    uint16_t result;
+    uint16_t result = 0;
     ser4cpp::UInt16::read_from(buffer, result);
     return result;
 }
