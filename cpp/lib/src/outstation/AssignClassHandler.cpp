@@ -28,10 +28,9 @@
 namespace opendnp3
 {
 
-AssignClassHandler::AssignClassHandler(exe4cpp::IExecutor& executor,
-                                       IOutstationApplication& application,
+AssignClassHandler::AssignClassHandler(IOutstationApplication& application,
                                        IClassAssigner& assigner)
-    : classHeader(-1), clazz(PointClass::Class0), pExecutor(&executor), pApplication(&application), pAssigner(&assigner)
+    : classHeader(-1), clazz(PointClass::Class0), pApplication(&application), pAssigner(&assigner)
 {
 }
 

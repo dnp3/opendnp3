@@ -664,7 +664,7 @@ IINField OContext::HandleAssignClass(const ser4cpp::rseq_t& objects)
 {
     if (this->application->SupportsAssignClass())
     {
-        AssignClassHandler handler(*this->executor, *this->application, this->database);
+        AssignClassHandler handler(*this->application, this->database);
         auto result = APDUParser::Parse(objects, handler, &this->logger, ParserSettings::NoContents());
         return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
     }
