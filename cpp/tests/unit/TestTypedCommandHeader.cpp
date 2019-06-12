@@ -46,7 +46,7 @@ TEST_CASE(SUITE("Formats two-byte qualifier properly if enough space is availabl
     header.Add(AnalogOutputInt16(7), 10);
     header.Add(AnalogOutputInt16(8), 11);
 
-    StaticBuffer<uint32_t, 100> buffer;
+    StaticBuffer<100> buffer;
     auto dest = buffer.as_wseq();
     APDURequest request(dest);
     auto writer = request.GetWriter();
@@ -64,7 +64,7 @@ TEST_CASE(SUITE("Formats one-byte qualifier properly if enough space is availabl
     header.Add(AnalogOutputInt16(7), 10);
     header.Add(AnalogOutputInt16(8), 11);
 
-    StaticBuffer<uint32_t, 100> buffer;
+    StaticBuffer<100> buffer;
     auto dest = buffer.as_wseq();
     APDURequest request(dest);
     auto writer = request.GetWriter();
@@ -82,7 +82,7 @@ TEST_CASE(SUITE("Does not format if insufficient space"))
     header.Add(AnalogOutputInt16(7), 10);
     header.Add(AnalogOutputInt16(8), 11);
 
-    StaticBuffer<uint32_t, 14> buffer;
+    StaticBuffer<14> buffer;
     auto dest = buffer.as_wseq();
     APDURequest request(dest);
     auto writer = request.GetWriter();
@@ -106,7 +106,7 @@ TEST_CASE(SUITE("Command set can be moved and written"))
 
 std::string WriteToHex(const CommandSet& commands, IndexQualifierMode mode)
 {
-    StaticBuffer<uint32_t, 100> buffer;
+    StaticBuffer<100> buffer;
     auto dest = buffer.as_wseq();
     APDURequest request(dest);
     auto writer = request.GetWriter();

@@ -25,13 +25,13 @@
 using namespace opendnp3;
 using namespace jni;
 
-void CommandHandlerAdapter::Start()
+void CommandHandlerAdapter::begin()
 {
     const auto env = JNI::GetEnv();
-    JCache::CommandHandler.start(env, proxy);
+    JCache::CommandHandler.begin(env, proxy);
 }
 
-void CommandHandlerAdapter::End()
+void CommandHandlerAdapter::end()
 {
     const auto env = JNI::GetEnv();
     JCache::CommandHandler.end(env, proxy);

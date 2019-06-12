@@ -38,6 +38,7 @@ namespace jni
         bool StaticBinaryOutputStatusVariation::init(JNIEnv* env)
         {
             auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/enums/StaticBinaryOutputStatusVariation;");
+            if(!clazzTemp) return false;
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 

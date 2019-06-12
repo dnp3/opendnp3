@@ -58,7 +58,7 @@ private:
 
 template<class T, class ReadFunc>
 BufferedCollection<T, ReadFunc> CreateBufferedCollection(const ser4cpp::rseq_t& buffer,
-                                                         uint32_t count,
+                                                         size_t count,
                                                          const ReadFunc& readFunc)
 {
     return BufferedCollection<T, ReadFunc>(buffer, count, readFunc);

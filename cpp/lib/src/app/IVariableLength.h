@@ -36,7 +36,7 @@ public:
     virtual GroupVariationID InstanceID() const = 0;
 
     // The size of the object in its current configuration
-    virtual uint32_t Size() const = 0;
+    virtual size_t Size() const = 0;
 
     // attempt to write the object to the destination buffer
     virtual bool Write(ser4cpp::wseq_t& dest) const = 0;

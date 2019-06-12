@@ -38,28 +38,29 @@ namespace jni
         bool DatabaseConfig::init(JNIEnv* env)
         {
             auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/DatabaseConfig;");
+            if(!clazzTemp) return false;
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->binaryField = env->GetFieldID(this->clazz, "binary", "Ljava/util/List;");
+            this->binaryField = env->GetFieldID(this->clazz, "binary", "Ljava/util/Map;");
             if(!this->binaryField) return false;
 
-            this->doubleBinaryField = env->GetFieldID(this->clazz, "doubleBinary", "Ljava/util/List;");
+            this->doubleBinaryField = env->GetFieldID(this->clazz, "doubleBinary", "Ljava/util/Map;");
             if(!this->doubleBinaryField) return false;
 
-            this->analogField = env->GetFieldID(this->clazz, "analog", "Ljava/util/List;");
+            this->analogField = env->GetFieldID(this->clazz, "analog", "Ljava/util/Map;");
             if(!this->analogField) return false;
 
-            this->counterField = env->GetFieldID(this->clazz, "counter", "Ljava/util/List;");
+            this->counterField = env->GetFieldID(this->clazz, "counter", "Ljava/util/Map;");
             if(!this->counterField) return false;
 
-            this->frozenCounterField = env->GetFieldID(this->clazz, "frozenCounter", "Ljava/util/List;");
+            this->frozenCounterField = env->GetFieldID(this->clazz, "frozenCounter", "Ljava/util/Map;");
             if(!this->frozenCounterField) return false;
 
-            this->boStatusField = env->GetFieldID(this->clazz, "boStatus", "Ljava/util/List;");
+            this->boStatusField = env->GetFieldID(this->clazz, "boStatus", "Ljava/util/Map;");
             if(!this->boStatusField) return false;
 
-            this->aoStatusField = env->GetFieldID(this->clazz, "aoStatus", "Ljava/util/List;");
+            this->aoStatusField = env->GetFieldID(this->clazz, "aoStatus", "Ljava/util/Map;");
             if(!this->aoStatusField) return false;
 
             return true;

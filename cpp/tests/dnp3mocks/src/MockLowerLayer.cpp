@@ -56,7 +56,7 @@ bool MockLowerLayer::BeginTransmit(const Message& message)
 
 void MockLowerLayer::SendUp(const rseq_t& data, const Addresses& addresses)
 {
-    if (pUpperLayer != nullptr)
+    if (pUpperLayer)
     {
         pUpperLayer->OnReceive(Message(addresses, data));
     }
@@ -70,7 +70,7 @@ void MockLowerLayer::SendUp(const std::string& arHexData, const Addresses& addre
 
 void MockLowerLayer::SendComplete()
 {
-    if (pUpperLayer != nullptr)
+    if (pUpperLayer)
     {
         pUpperLayer->OnTxReady();
     }
@@ -78,14 +78,14 @@ void MockLowerLayer::SendComplete()
 
 void MockLowerLayer::ThisLayerUp()
 {
-    if (pUpperLayer != nullptr)
+    if (pUpperLayer)
     {
         pUpperLayer->OnLowerLayerUp();
     }
 }
 void MockLowerLayer::ThisLayerDown()
 {
-    if (pUpperLayer != nullptr)
+    if (pUpperLayer)
     {
         pUpperLayer->OnLowerLayerDown();
     }

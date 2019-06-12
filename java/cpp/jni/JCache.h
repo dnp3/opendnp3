@@ -32,7 +32,7 @@
 #ifndef OPENDNP3JAVA_OPENDNP3_JNITYPES_H
 #define OPENDNP3JAVA_OPENDNP3_JNITYPES_H
 
-#include "openpal/util/Uncopyable.h"
+#include "opendnp3/util/StaticOnly.h"
 
 #include "JNIAnalogConfig.h"
 #include "JNIAnalogInput.h"
@@ -71,6 +71,7 @@
 #include "JNIDoubleBit.h"
 #include "JNIDoubleBitBinaryInput.h"
 #include "JNIDuration.h"
+#include "JNIEntry.h"
 #include "JNIEventAnalogOutputStatusVariation.h"
 #include "JNIEventAnalogVariation.h"
 #include "JNIEventBinaryOutputStatusVariation.h"
@@ -90,6 +91,7 @@
 #include "JNIIndexMode.h"
 #include "JNIIndexQualifierMode.h"
 #include "JNIIndexedValue.h"
+#include "JNIInteger.h"
 #include "JNIIterable.h"
 #include "JNIIterator.h"
 #include "JNILinkLayerConfig.h"
@@ -98,6 +100,7 @@
 #include "JNIList.h"
 #include "JNILogEntry.h"
 #include "JNILogHandler.h"
+#include "JNIMap.h"
 #include "JNIMasterApplication.h"
 #include "JNIMasterConfig.h"
 #include "JNIMasterStackConfig.h"
@@ -110,6 +113,7 @@
 #include "JNIPointClass.h"
 #include "JNIQualifierCode.h"
 #include "JNIRange.h"
+#include "JNIResponseInfo.h"
 #include "JNIRestartMode.h"
 #include "JNISOEHandler.h"
 #include "JNIStack.h"
@@ -131,7 +135,7 @@
 
 namespace jni
 {
-    struct JCache: private openpal::StaticOnly
+    struct JCache: private opendnp3::StaticOnly
     {
         static bool init(JNIEnv* env);
         static void cleanup(JNIEnv* env);
@@ -173,6 +177,7 @@ namespace jni
         static cache::DoubleBit DoubleBit;
         static cache::DoubleBitBinaryInput DoubleBitBinaryInput;
         static cache::Duration Duration;
+        static cache::Entry Entry;
         static cache::EventAnalogOutputStatusVariation EventAnalogOutputStatusVariation;
         static cache::EventAnalogVariation EventAnalogVariation;
         static cache::EventBinaryOutputStatusVariation EventBinaryOutputStatusVariation;
@@ -192,6 +197,7 @@ namespace jni
         static cache::IndexMode IndexMode;
         static cache::IndexQualifierMode IndexQualifierMode;
         static cache::IndexedValue IndexedValue;
+        static cache::Integer Integer;
         static cache::Iterable Iterable;
         static cache::Iterator Iterator;
         static cache::LinkLayerConfig LinkLayerConfig;
@@ -200,6 +206,7 @@ namespace jni
         static cache::List List;
         static cache::LogEntry LogEntry;
         static cache::LogHandler LogHandler;
+        static cache::Map Map;
         static cache::MasterApplication MasterApplication;
         static cache::MasterConfig MasterConfig;
         static cache::MasterStackConfig MasterStackConfig;
@@ -212,6 +219,7 @@ namespace jni
         static cache::PointClass PointClass;
         static cache::QualifierCode QualifierCode;
         static cache::Range Range;
+        static cache::ResponseInfo ResponseInfo;
         static cache::RestartMode RestartMode;
         static cache::SOEHandler SOEHandler;
         static cache::Stack Stack;

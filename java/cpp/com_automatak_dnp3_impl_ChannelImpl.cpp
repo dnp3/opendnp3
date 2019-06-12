@@ -27,11 +27,10 @@
 #include "adapters/SOEHandlerAdapter.h"
 #include "jni/JCache.h"
 
-#include <asiodnp3/IChannel.h>
+#include <opendnp3/channel/IChannel.h>
 
 #include <memory>
 
-using namespace asiodnp3;
 using namespace opendnp3;
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_set_1log_1level_1native(JNIEnv* /*env*/,
@@ -40,7 +39,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_set_1log_1level_
                                                                                         jint levels)
 {
     const auto channel = (std::shared_ptr<IChannel>*)native;
-    (*channel)->SetLogFilters(levels);
+    (*channel)->SetLogFilters(log4cpp::LogLevel(levels));
 }
 
 JNIEXPORT jobject JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1statistics_1native(JNIEnv* env,

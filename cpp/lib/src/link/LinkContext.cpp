@@ -111,7 +111,7 @@ bool LinkContext::SetTxSegment(ITransportSegment& segments)
         return false;
     }
 
-    if (this->pSegments != nullptr)
+    if (this->pSegments)
     {
         SIMPLE_LOG_BLOCK(this->logger, flags::ERR, "Already transmitting a segment");
         return false;
@@ -154,8 +154,7 @@ ser4cpp::rseq_t LinkContext::FormatPrimaryBufferWithConfirmed(const Addresses& a
                                                               bool FCB)
 {
     auto dest = this->priTxBuffer.as_wseq();
-    auto output = LinkFrame::FormatConfirmedUserData(dest, config.IsMaster, FCB, addr.destination, addr.source, tpdu,
-                                                     tpdu.length(), &logger);
+    auto output = LinkFrame::FormatConfirmedUserData(dest, config.IsMaster, FCB, addr.destination, addr.source, tpdu, &logger);
     FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, output, 10, 18);
     return output;
 }
@@ -163,8 +162,7 @@ ser4cpp::rseq_t LinkContext::FormatPrimaryBufferWithConfirmed(const Addresses& a
 ser4cpp::rseq_t LinkContext::FormatPrimaryBufferWithUnconfirmed(const Addresses& addr, const ser4cpp::rseq_t& tpdu)
 {
     auto buffer = this->priTxBuffer.as_wseq();
-    auto output = LinkFrame::FormatUnconfirmedUserData(buffer, config.IsMaster, addr.destination, addr.source, tpdu,
-                                                       tpdu.length(), &logger);
+    auto output = LinkFrame::FormatUnconfirmedUserData(buffer, config.IsMaster, addr.destination, addr.source, tpdu, &logger);
     FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, output, 10, 18);
     return output;
 }
@@ -260,7 +258,7 @@ void LinkContext::TryStartTransmission()
         this->pPriState = &pPriState->TrySendRequestLinkStatus(*this);
     }
 
-    if (this->pSegments != nullptr)
+    if (this->pSegments)
     {
         this->pPriState = (this->config.UseConfirms) ? &pPriState->TrySendConfirmed(*this, *pSegments)
                                                      : &pPriState->TrySendUnconfirmed(*this, *pSegments);

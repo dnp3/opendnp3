@@ -230,7 +230,7 @@ TEST_CASE(SUITE("UnconfirmedUserData"))
 
     Buffer buffer(292);
     auto writeTo = buffer.as_wslice();
-    auto frame = LinkFrame::FormatUnconfirmedUserData(writeTo, true, 1, 2, data, data.Size(), nullptr);
+    auto frame = LinkFrame::FormatUnconfirmedUserData(writeTo, true, 1, 2, data.ToRSeq(), nullptr);
 
     LinkParserTest t;
     t.WriteData(frame);
@@ -245,7 +245,7 @@ TEST_CASE(SUITE("ConfirmedUserData"))
 
     Buffer buffer(292);
     auto writeTo = buffer.as_wslice();
-    auto frame = LinkFrame::FormatConfirmedUserData(writeTo, true, true, 1, 2, data, data.Size(), nullptr);
+    auto frame = LinkFrame::FormatConfirmedUserData(writeTo, true, true, 1, 2, data.ToRSeq(), nullptr);
 
     LinkParserTest t;
     t.WriteData(frame);

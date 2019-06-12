@@ -23,8 +23,7 @@ import com.automatak.dnp3.enums.EventBinaryOutputStatusVariation;
 import com.automatak.dnp3.enums.StaticBinaryOutputStatusVariation;
 
 public class BinaryOutputStatusConfig extends EventConfig {
-    public BinaryOutputStatusConfig(int index) {
-        super(index);
+    public BinaryOutputStatusConfig() {
         this.eventVariation = EventBinaryOutputStatusVariation.Group11Var1;
         this.staticVariation = StaticBinaryOutputStatusVariation.Group10Var2;
     }

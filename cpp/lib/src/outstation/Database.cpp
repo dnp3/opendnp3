@@ -48,8 +48,8 @@ template<class Spec> bool load_type(StaticDataMap<Spec>& map, HeaderWriter& writ
 Database::Database(const DatabaseConfig& config,
                    IEventReceiver& event_receiver,
                    StaticTypeBitField allowed_class_zero_types)
-    : allowed_class_zero_types(allowed_class_zero_types),
-      event_receiver(event_receiver),
+    : event_receiver(event_receiver),
+      allowed_class_zero_types(allowed_class_zero_types),
       binary_input(config.binary_input),
       double_binary(config.double_binary),
       analog_input(config.analog_input),

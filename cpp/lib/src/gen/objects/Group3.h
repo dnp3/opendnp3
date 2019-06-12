@@ -59,7 +59,7 @@ struct Group3Var2
 
   Group3Var2();
 
-  static uint32_t Size() { return 1; }
+  static size_t Size() { return 1; }
   static bool Read(ser4cpp::rseq_t&, Group3Var2&);
   static bool Write(const Group3Var2&, ser4cpp::wseq_t&);
 

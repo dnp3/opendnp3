@@ -23,9 +23,8 @@
 #include "adapters/GlobalRef.h"
 #include "jni/JCache.h"
 
-#include "opendnp3/master/CommandSet.h"
-
-#include "asiodnp3/IMaster.h"
+#include <opendnp3/master/CommandSet.h>
+#include <opendnp3/master/IMaster.h>
 
 #include <memory>
 
@@ -34,15 +33,15 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_set_1log_1level_1
                                                                                        jlong native,
                                                                                        jint levels)
 {
-    const auto master = (std::shared_ptr<asiodnp3::IMaster>*)native;
-    (*master)->SetLogFilters(levels);
+    const auto master = (std::shared_ptr<opendnp3::IMaster>*)native;
+    (*master)->SetLogFilters(log4cpp::LogLevel(levels));
 }
 
 JNIEXPORT jobject JNICALL Java_com_automatak_dnp3_impl_MasterImpl_get_1statistics_1native(JNIEnv* env,
                                                                                           jobject /*unused*/,
                                                                                           jlong native)
 {
-    const auto master = (std::shared_ptr<asiodnp3::IMaster>*)native;
+    const auto master = (std::shared_ptr<opendnp3::IMaster>*)native;
     auto stats = (*master)->GetStackStatistics();
     return env->NewGlobalRef(Conversions::ConvertStackStatistics(env, stats));
 }
@@ -51,7 +50,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_enable_1native(JN
                                                                               jobject /*unused*/,
                                                                               jlong native)
 {
-    const auto master = (std::shared_ptr<asiodnp3::IMaster>*)native;
+    const auto master = (std::shared_ptr<opendnp3::IMaster>*)native;
     (*master)->Enable();
 }
 
@@ -59,7 +58,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_disable_1native(J
                                                                                jobject /*unused*/,
                                                                                jlong native)
 {
-    const auto master = (std::shared_ptr<asiodnp3::IMaster>*)native;
+    const auto master = (std::shared_ptr<opendnp3::IMaster>*)native;
     (*master)->Disable();
 }
 
@@ -67,7 +66,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_shutdown_1native(
                                                                                 jobject /*unused*/,
                                                                                 jlong native)
 {
-    const auto master = (std::shared_ptr<asiodnp3::IMaster>*)native;
+    const auto master = (std::shared_ptr<opendnp3::IMaster>*)native;
     (*master)->Shutdown();
 }
 
@@ -75,7 +74,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_destroy_1native(J
                                                                                jobject /*unused*/,
                                                                                jlong native)
 {
-    const auto master = (std::shared_ptr<asiodnp3::IMaster>*)native;
+    const auto master = (std::shared_ptr<opendnp3::IMaster>*)native;
     delete master;
 }
 
@@ -104,15 +103,15 @@ void operate(JNIEnv* /*env*/, jlong native, jlong nativeCommandSet, jobject futu
         jni::JCache::CompletableFuture.complete(env, *sharedf, jtaskresult); // invoke the future
     };
 
-    const auto master = (std::shared_ptr<asiodnp3::IMaster>*)native;
+    const auto master = (std::shared_ptr<opendnp3::IMaster>*)native;
     operate(**master, set, callback);
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_select_1and_1operate_1native(
     JNIEnv* env, jobject /*unused*/, jlong native, jlong nativeCommandSet, jobject future)
 {
-    auto sbo = [](asiodnp3::IMaster& master, opendnp3::CommandSet& commandset,
-                  const opendnp3::CommandCallbackT& callback) -> void {
+    auto sbo = [](opendnp3::IMaster& master, opendnp3::CommandSet& commandset,
+                  const opendnp3::CommandResultCallbackT& callback) -> void {
         master.SelectAndOperate(std::move(commandset), callback);
     };
 
@@ -122,8 +121,8 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_select_1and_1oper
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_direct_1operate_1native(
     JNIEnv* env, jobject /*unused*/, jlong native, jlong nativeCommandSet, jobject future)
 {
-    auto directOp = [](asiodnp3::IMaster& master, opendnp3::CommandSet& commandset,
-                       const opendnp3::CommandCallbackT& callback) -> void {
+    auto directOp = [](opendnp3::IMaster& master, opendnp3::CommandSet& commandset,
+                       const opendnp3::CommandResultCallbackT& callback) -> void {
         master.DirectOperate(std::move(commandset), callback);
     };
 
@@ -167,7 +166,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_scan_1native(JNIE
                                                                             jlong native,
                                                                             jobject jheaders)
 {
-    const auto master = (std::shared_ptr<asiodnp3::IMaster>*)native;
+    const auto master = (std::shared_ptr<opendnp3::IMaster>*)native;
 
     std::vector<opendnp3::Header> headers;
 
@@ -187,7 +186,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_scan_1native(JNIE
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_add_1periodic_1scan_1native(
     JNIEnv* env, jobject /*unused*/, jlong native, jobject jduration, jobject jheaders)
 {
-    const auto master = (std::shared_ptr<asiodnp3::IMaster>*)native;
+    const auto master = (std::shared_ptr<opendnp3::IMaster>*)native;
 
     std::vector<opendnp3::Header> headers;
 
@@ -201,7 +200,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_add_1periodic_1sc
 
     JNI::Iterate(env, jheaders, process);
 
-    auto period = openpal::TimeDuration::Milliseconds(jni::JCache::Duration.toMillis(env, jduration));
+    auto period = opendnp3::TimeDuration::Milliseconds(jni::JCache::Duration.toMillis(env, jduration));
 
     (*master)->AddScan(period, headers);
 }

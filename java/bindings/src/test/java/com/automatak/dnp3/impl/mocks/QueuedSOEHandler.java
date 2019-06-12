@@ -53,13 +53,13 @@ public class QueuedSOEHandler implements SOEHandler {
     }
 
     @Override
-    public void start()
+    public void beginFragment(ResponseInfo info)
     {
         this.temp = new ArrayList<>();
     }
 
     @Override
-    public void end()
+    public void endFragment(ResponseInfo info)
     {
         this.items.add(this.temp);
         this.temp = null;

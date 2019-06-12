@@ -30,7 +30,7 @@ public interface CommandHandler {
     /**
      * Called when an ASDU containing commands begins
      */
-    void start();
+    void begin();
 
     /**
      * Called when an ASDU containing commands begins

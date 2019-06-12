@@ -38,6 +38,7 @@ namespace jni
         bool CompletableFuture::init(JNIEnv* env)
         {
             auto clazzTemp = env->FindClass("Ljava/util/concurrent/CompletableFuture;");
+            if(!clazzTemp) return false;
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 

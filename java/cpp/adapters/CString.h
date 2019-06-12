@@ -21,14 +21,14 @@
 #ifndef OPENDNP3_CSTRING_H
 #define OPENDNP3_CSTRING_H
 
-#include <openpal/util/Uncopyable.h>
+#include <opendnp3/util/Uncopyable.h>
 
 #include <jni.h>
 
 #include <string>
 
 // RAII class for java <=> cstring
-class CString : private openpal::Uncopyable
+class CString : private opendnp3::Uncopyable
 {
     JNIEnv* env;
     jstring jstr;

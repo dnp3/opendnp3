@@ -26,7 +26,7 @@
 namespace opendnp3
 {
 
-ShiftableBuffer::ShiftableBuffer(uint8_t* pBuffer_, uint32_t size)
+ShiftableBuffer::ShiftableBuffer(uint8_t* pBuffer_, size_t size)
     : pBuffer(pBuffer_), M_SIZE(size), writePos(0), readPos(0)
 {
 }
@@ -48,19 +48,19 @@ void ShiftableBuffer::Reset()
     readPos = 0;
 }
 
-void ShiftableBuffer::AdvanceRead(uint32_t numBytes)
+void ShiftableBuffer::AdvanceRead(size_t numBytes)
 {
     assert(numBytes <= this->NumBytesRead());
     readPos += numBytes;
 }
 
-void ShiftableBuffer::AdvanceWrite(uint32_t aNumBytes)
+void ShiftableBuffer::AdvanceWrite(size_t aNumBytes)
 {
     assert(aNumBytes <= this->NumWriteBytes());
     writePos += aNumBytes;
 }
 
-bool ShiftableBuffer::Sync(uint32_t& skipCount)
+bool ShiftableBuffer::Sync(size_t& skipCount)
 {
     while (this->NumBytesRead() > 1) // at least 2 bytes
     {

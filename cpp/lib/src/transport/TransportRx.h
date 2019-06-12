@@ -61,7 +61,7 @@ private:
     StackStatistics::Transport::Rx statistics;
 
     ser4cpp::Buffer rxBuffer;
-    uint32_t numBytesRead;
+    size_t numBytesRead;
     Addresses lastAddresses;
 
     TransportSeqNum expectedSeq;

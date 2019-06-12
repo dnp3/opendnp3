@@ -59,7 +59,7 @@ bool TransportLayer::BeginTransmit(const Message& message)
         return false;
     }
 
-    if (lower == nullptr)
+    if (!lower)
     {
         SIMPLE_LOG_BLOCK(logger, flags::ERR, "Can't send without an attached link layer");
         return false;
@@ -81,7 +81,7 @@ bool TransportLayer::OnReceive(const Message& message)
     if (isOnline)
     {
         const auto asdu = receiver.ProcessReceive(message);
-        if (asdu.payload.is_not_empty() && (upper != nullptr))
+        if (upper && asdu.payload.is_not_empty())
         {
             upper->OnReceive(asdu);
         }
@@ -108,7 +108,7 @@ bool TransportLayer::OnTxReady()
 
     isSending = false;
 
-    if (upper != nullptr)
+    if (upper)
     {
         upper->OnTxReady();
     }
@@ -142,7 +142,7 @@ bool TransportLayer::OnLowerLayerUp()
     }
 
     isOnline = true;
-    if (upper != nullptr)
+    if (upper)
     {
         upper->OnLowerLayerUp();
     }
@@ -161,7 +161,7 @@ bool TransportLayer::OnLowerLayerDown()
     isSending = false;
     receiver.Reset();
 
-    if (upper != nullptr)
+    if (upper)
     {
         upper->OnLowerLayerDown();
     }

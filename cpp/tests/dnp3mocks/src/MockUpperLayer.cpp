@@ -56,7 +56,7 @@ bool MockUpperLayer::OnLowerLayerDown()
 
 bool MockUpperLayer::SendDown(const rseq_t& data, const Addresses& addresses)
 {
-    return this->pLowerLayer != nullptr ? pLowerLayer->BeginTransmit(Message(addresses, data)) : false;
+    return this->pLowerLayer ? pLowerLayer->BeginTransmit(Message(addresses, data)) : false;
 }
 
 bool MockUpperLayer::SendDown(const std::string& hex, const Addresses& addresses)

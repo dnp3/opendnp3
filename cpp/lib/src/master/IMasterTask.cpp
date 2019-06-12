@@ -41,7 +41,7 @@ IMasterTask::~IMasterTask()
 {
     context->RemoveBlock(*this);
 
-    if (config.pCallback != nullptr)
+    if (config.pCallback)
     {
         config.pCallback->OnDestroyed();
     }
@@ -115,7 +115,7 @@ void IMasterTask::CompleteTask(TaskCompletion result, Timestamp now)
     }
     }
 
-    if (config.pCallback != nullptr)
+    if (config.pCallback)
     {
         config.pCallback->OnComplete(result);
     }
@@ -149,7 +149,7 @@ void IMasterTask::OnMessageFormatError(Timestamp now)
 
 void IMasterTask::OnStart()
 {
-    if (config.pCallback != nullptr)
+    if (config.pCallback)
     {
         config.pCallback->OnStart();
     }

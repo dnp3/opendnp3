@@ -30,13 +30,13 @@ namespace opendnp3
 class CRC
 {
 public:
-    static uint16_t CalcCrc(const uint8_t* input, uint32_t length);
+    static uint16_t CalcCrc(const uint8_t* input, size_t length);
 
     static uint16_t CalcCrc(const ser4cpp::rseq_t& view);
 
-    static void AddCrc(uint8_t* input, uint32_t length);
+    static void AddCrc(uint8_t* input, size_t length);
 
-    static bool IsCorrectCRC(const uint8_t* input, uint32_t length);
+    static bool IsCorrectCRC(const uint8_t* input, size_t length);
 
 private:
     static uint16_t crcTable[256]; // Precomputed CRC lookup table

@@ -31,49 +31,49 @@ using namespace ser4cpp;
 
 std::string LinkHex::Ack(bool master, bool isRxBuffFull, uint16_t dest, uint16_t src)
 {
-    StaticBuffer<uint32_t, 292> buffer;
+    StaticBuffer<292> buffer;
     auto output = buffer.as_wseq();
     return HexConversions::to_hex(LinkFrame::FormatAck(output, master, isRxBuffFull, dest, src, nullptr));
 }
 
 std::string LinkHex::Nack(bool master, bool isRxBuffFull, uint16_t dest, uint16_t src)
 {
-    StaticBuffer<uint32_t, 292> buffer;
+    StaticBuffer<292> buffer;
     auto output = buffer.as_wseq();
     return HexConversions::to_hex(LinkFrame::FormatNack(output, master, isRxBuffFull, dest, src, nullptr));
 }
 
 std::string LinkHex::LinkStatus(bool master, bool isRxBuffFull, uint16_t dest, uint16_t src)
 {
-    StaticBuffer<uint32_t, 292> buffer;
+    StaticBuffer<292> buffer;
     auto output = buffer.as_wseq();
     return HexConversions::to_hex(LinkFrame::FormatLinkStatus(output, master, isRxBuffFull, dest, src, nullptr));
 }
 
 std::string LinkHex::NotSupported(bool master, bool isRxBuffFull, uint16_t dest, uint16_t src)
 {
-    StaticBuffer<uint32_t, 292> buffer;
+    StaticBuffer<292> buffer;
     auto output = buffer.as_wseq();
     return HexConversions::to_hex(LinkFrame::FormatNotSupported(output, master, isRxBuffFull, dest, src, nullptr));
 }
 
 std::string LinkHex::TestLinkStatus(bool master, bool fcb, uint16_t dest, uint16_t src)
 {
-    StaticBuffer<uint32_t, 292> buffer;
+    StaticBuffer<292> buffer;
     auto output = buffer.as_wseq();
     return HexConversions::to_hex(LinkFrame::FormatTestLinkStatus(output, master, fcb, dest, src, nullptr));
 }
 
 std::string LinkHex::ResetLinkStates(bool master, uint16_t dest, uint16_t src)
 {
-    StaticBuffer<uint32_t, 292> buffer;
+    StaticBuffer<292> buffer;
     auto output = buffer.as_wseq();
     return HexConversions::to_hex(LinkFrame::FormatResetLinkStates(output, master, dest, src, nullptr));
 }
 
 std::string LinkHex::RequestLinkStatus(bool master, uint16_t dest, uint16_t src)
 {
-    StaticBuffer<uint32_t, 292> buffer;
+    StaticBuffer<292> buffer;
     auto output = buffer.as_wseq();
     return HexConversions::to_hex(LinkFrame::FormatRequestLinkStatus(output, master, dest, src, nullptr));
 }
@@ -84,9 +84,9 @@ std::string LinkHex::ConfirmedUserData(
     HexSequence hs(userDataHex);
     auto data = hs.ToRSeq();
 
-    StaticBuffer<uint32_t, 292> buffer;
+    StaticBuffer<292> buffer;
     auto output = buffer.as_wseq();
-    return HexConversions::to_hex(LinkFrame::FormatConfirmedUserData(output, master, fcb, dest, src, data, data.length(), nullptr));
+    return HexConversions::to_hex(LinkFrame::FormatConfirmedUserData(output, master, fcb, dest, src, data, nullptr));
 }
 
 std::string LinkHex::UnconfirmedUserData(bool master, uint16_t dest, uint16_t src, const std::string& userDataHex)
@@ -94,7 +94,7 @@ std::string LinkHex::UnconfirmedUserData(bool master, uint16_t dest, uint16_t sr
     HexSequence hs(userDataHex);
     auto data = hs.ToRSeq();
 
-    StaticBuffer<uint32_t, 292> buffer;
+    StaticBuffer<292> buffer;
     auto output = buffer.as_wseq();
-    return HexConversions::to_hex(LinkFrame::FormatUnconfirmedUserData(output, master, dest, src, data, data.length(), nullptr));
+    return HexConversions::to_hex(LinkFrame::FormatUnconfirmedUserData(output, master, dest, src, data, nullptr));
 }

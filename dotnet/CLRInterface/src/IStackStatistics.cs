@@ -30,16 +30,16 @@ namespace Automatak.DNP3.Interface
         /// <summary>
         /// The number of transport frames received
         /// </summary>
-        System.UInt32 NumTransportRx { get; }
+        System.UInt64 NumTransportRx { get; }
 
         /// <summary>
         /// The number of transport frames transmitted
         /// </summary>
-        System.UInt32 NumTransportTx { get; }
+        System.UInt64 NumTransportTx { get; }
 
         /// <summary>
         /// The number of transport frames that caused an error
         /// </summary>
-        System.UInt32 NumTransportErrorRx { get; }
+        System.UInt64 NumTransportErrorRx { get; }
     }
 }

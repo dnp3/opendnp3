@@ -28,7 +28,7 @@ namespace opendnp3
 
 APDUWrapper::APDUWrapper() : valid(false) {}
 
-APDUWrapper::APDUWrapper(const ser4cpp::wseq_t& buffer_) : valid(true), buffer(buffer_), remaining(buffer_)
+APDUWrapper::APDUWrapper(const ser4cpp::wseq_t& buffer) : valid(true), buffer(buffer), remaining(buffer)
 {
     assert(buffer.length() >= 2); // need a control & function at a minimum
     remaining.advance(2);
@@ -44,7 +44,7 @@ HeaderWriter APDUWrapper::GetWriter()
     return HeaderWriter(&remaining);
 }
 
-uint32_t APDUWrapper::Remaining() const
+size_t APDUWrapper::Remaining() const
 {
     return remaining.length();
 }
@@ -72,7 +72,7 @@ void APDUWrapper::SetControl(AppControlField control)
     buffer[0] = control.ToByte();
 }
 
-uint32_t APDUWrapper::Size() const
+size_t APDUWrapper::Size() const
 {
     return buffer.length() - remaining.length();
 }

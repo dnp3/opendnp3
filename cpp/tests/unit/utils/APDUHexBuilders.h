@@ -86,68 +86,6 @@ std::string UnsolConfirm(uint8_t seq);
 
 std::string Confirm(uint8_t seq, bool unsol);
 
-// ----------- sec auth -------------
-
-std::string RequestKeyStatus(uint8_t seq, uint16_t user);
-
-std::string AuthErrorResponse(opendnp3::IINField iin,
-                              uint8_t appSeq,
-                              uint32_t challengeSeqNum,
-                              uint16_t user,
-                              uint16_t assocId,
-                              opendnp3::AuthErrorCode code,
-                              opendnp3::DNPTime timestamp,
-                              const std::string& hexErrorText);
-
-std::string ChallengeResponse(opendnp3::IINField iin,
-                              uint8_t seq,
-                              uint32_t csq,
-                              uint16_t user,
-                              opendnp3::HMACType hmacType,
-                              opendnp3::ChallengeReason reason,
-                              const std::string& challengeDataHex);
-
-std::string ChallengeReply(uint8_t appSeq, uint32_t challengeSeqNum, uint16_t userNum, const std::string& hmacHex);
-
-std::string KeyStatusResponse(opendnp3::IINField iin,
-                              uint8_t seq,
-                              uint32_t ksq,
-                              uint16_t user,
-                              opendnp3::KeyWrapAlgorithm keyWrap,
-                              opendnp3::KeyStatus status,
-                              opendnp3::HMACType,
-                              const std::string& challenge,
-                              const std::string& hmac);
-
-std::string KeyChangeRequest(uint8_t seq, uint32_t ksq, uint16_t user, const std::string& keyWrapData);
-
-std::string UserStatusChangeRequest(uint8_t seq,
-                                    opendnp3::KeyChangeMethod keyChangeMethod,
-                                    opendnp3::UserOperation userOperation,
-                                    uint32_t statusChangeSeqNum,
-                                    uint16_t userRole,
-                                    uint16_t userRoleExpDays,
-                                    const std::string& userName,
-                                    const std::string& userPublicKeyHex,
-                                    const std::string& certificationDataHex);
-
-std::string BeginUpdateKeyChangeRequest(uint8_t seq,
-                                        opendnp3::KeyChangeMethod keyChangeMethod,
-                                        const std::string& username,
-                                        const std::string& masterChallenge);
-
-std::string BeginUpdateKeyChangeResponse(uint8_t seq,
-                                         uint32_t ksq,
-                                         uint16_t user,
-                                         const std::string& outstationChallenge);
-
-std::string FinishUpdateKeyChangeRequest(
-    uint8_t seq, uint32_t ksq, uint16_t user, const std::string& encryptedData, const std::string& hmac);
-
-std::string FinishUpdateKeyChangeResponse(uint8_t seq, const std::string& hmac);
-
-std::string KeyWrapData(uint16_t keyLengthBytes, uint8_t keyRepeatValue, const std::string& keyStatusMsg);
-
 } // namespace hex
 
 #endif

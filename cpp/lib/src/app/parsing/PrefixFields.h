@@ -46,7 +46,7 @@ public:
             ser4cpp::UInt16::read_from(input, lengths[i]);
         }
 
-        uint32_t sum = 0;
+        size_t sum = 0;
 
         for (size_t i = 0; i < sizeof...(Args); ++i)
         {
@@ -66,7 +66,7 @@ public:
 
     template<typename... Args> static bool Write(ser4cpp::wseq_t& dest, const Args&... fields)
     {
-        const uint32_t total_size = (sizeof...(Args) * ser4cpp::UInt16::size) + SumSizes(fields...);
+        const auto total_size = (sizeof...(Args) * ser4cpp::UInt16::size) + SumSizes(fields...);
 
         if (dest.length() < total_size)
         {
@@ -85,7 +85,7 @@ public:
     }
 
 private:
-    template<typename... Args> static uint32_t SumSizes(const ser4cpp::rseq_t& arg1, Args&... fields)
+    template<typename... Args> static size_t SumSizes(const ser4cpp::rseq_t& arg1, Args&... fields)
     {
         return arg1.length() + SumSizes(fields...);
     }
@@ -95,7 +95,7 @@ private:
         return true;
     }
 
-    static uint32_t SumSizes()
+    static size_t SumSizes()
     {
         return 0;
     }

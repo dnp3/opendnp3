@@ -540,9 +540,9 @@ IINField OContext::HandleWrite(const ser4cpp::rseq_t& objects)
 IINField OContext::HandleDirectOperate(const ser4cpp::rseq_t& objects, OperateType opType, HeaderWriter* pWriter)
 {
     // since we're echoing, make sure there's enough size before beginning
-    if ((pWriter != nullptr) && (objects.length() > pWriter->Remaining()))
+    if (pWriter && (objects.length() > pWriter->Remaining()))
     {
-        FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Igonring command request due to oversized payload size of %u",
+        FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Igonring command request due to oversized payload size of %zu",
                          objects.length());
         return IINField(IINBit::PARAM_ERROR);
     }
@@ -558,7 +558,7 @@ IINField OContext::HandleSelect(const ser4cpp::rseq_t& objects, HeaderWriter& wr
     // since we're echoing, make sure there's enough size before beginning
     if (objects.length() > writer.Remaining())
     {
-        FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Igonring command request due to oversized payload size of %i",
+        FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Igonring command request due to oversized payload size of %zu",
                          objects.length());
         return IINField(IINBit::PARAM_ERROR);
     }
@@ -585,7 +585,7 @@ IINField OContext::HandleOperate(const ser4cpp::rseq_t& objects, HeaderWriter& w
     // since we're echoing, make sure there's enough size before beginning
     if (objects.length() > writer.Remaining())
     {
-        FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Igonring command request due to oversized payload size of %i",
+        FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Igonring command request due to oversized payload size of %zu",
                          objects.length());
         return IINField(IINBit::PARAM_ERROR);
     }
@@ -638,7 +638,7 @@ IINField OContext::HandleRestart(const ser4cpp::rseq_t& objects, bool isWarmRest
     case (RestartMode::SUPPORTED_DELAY_COARSE):
     {
         auto delay = isWarmRestart ? this->application->WarmRestart() : this->application->ColdRestart();
-        if (pWriter != nullptr)
+        if (pWriter)
         {
             Group52Var1 coarse;
             coarse.time = delay;
@@ -649,7 +649,7 @@ IINField OContext::HandleRestart(const ser4cpp::rseq_t& objects, bool isWarmRest
     default:
     {
         auto delay = isWarmRestart ? this->application->WarmRestart() : this->application->ColdRestart();
-        if (pWriter != nullptr)
+        if (pWriter)
         {
             Group52Var2 fine;
             fine.time = delay;
@@ -664,7 +664,7 @@ IINField OContext::HandleAssignClass(const ser4cpp::rseq_t& objects)
 {
     if (this->application->SupportsAssignClass())
     {
-        AssignClassHandler handler(*this->executor, *this->application, this->database);
+        AssignClassHandler handler(*this->application, this->database);
         auto result = APDUParser::Parse(objects, handler, &this->logger, ParserSettings::NoContents());
         return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
     }

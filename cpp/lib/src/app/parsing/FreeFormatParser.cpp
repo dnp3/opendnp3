@@ -61,7 +61,7 @@ ParseResult FreeFormatParser::ParseHeader(ser4cpp::rseq_t& buffer,
 
     if (buffer.length() < freeFormatSize)
     {
-        FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Insufficient data (%u) for free format object of size (%u)",
+        FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Insufficient data (%zu) for free format object of size (%u)",
                             buffer.length(), freeFormatSize);
         return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
     }

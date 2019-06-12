@@ -51,7 +51,7 @@ private:
     bool hasLast;
     APDUHeader lastHeader;
     uint16_t lastDigest;
-    uint32_t lastObjectsLength;
+    size_t lastObjectsLength;
 };
 
 } // namespace opendnp3

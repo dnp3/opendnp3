@@ -102,8 +102,7 @@ ParseResult APDUParser::ParseHeader(ser4cpp::rseq_t& buffer,
     }
 
     // if a white-list is defined and it doesn't validate, exit early
-    if ((pWhiteList != nullptr)
-        && !pWhiteList->IsAllowed(count, GV.enumeration, QualifierCodeFromType(header.qualifier)))
+    if (pWhiteList && !pWhiteList->IsAllowed(count, GV.enumeration, QualifierCodeFromType(header.qualifier)))
     {
         FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Header (%i) w/ Object (%i,%i) and qualifier (%i) failed whitelist",
                             count, header.group, header.variation, header.qualifier);
@@ -160,7 +159,7 @@ ParseResult APDUParser::HandleAllObjectsHeader(log4cpp::Logger* pLogger,
     FORMAT_LOGGER_BLOCK(pLogger, settings.LogLevel(), "%03u,%03u - %s - %s", record.group, record.variation,
                         GroupVariationToString(record.enumeration), QualifierCodeToString(QualifierCode::ALL_OBJECTS));
 
-    if (pHandler != nullptr)
+    if (pHandler)
     {
         pHandler->OnHeader(AllObjectsHeader(record));
     }

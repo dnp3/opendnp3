@@ -36,7 +36,7 @@ namespace opendnp3
 class AssignClassHandler : public IAPDUHandler
 {
 public:
-    AssignClassHandler(exe4cpp::IExecutor& executor, IOutstationApplication& application, IClassAssigner& assigner);
+    AssignClassHandler(IOutstationApplication& application, IClassAssigner& assigner);
 
     virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final
     {
@@ -61,7 +61,6 @@ private:
     int32_t classHeader;
     PointClass clazz;
 
-    exe4cpp::IExecutor* pExecutor;
     IOutstationApplication* pApplication;
     IClassAssigner* pAssigner;
 };

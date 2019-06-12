@@ -42,7 +42,7 @@ AppControlField ResponseContext::LoadResponse(HeaderWriter& writer)
     bool fir = fragmentCount == 0;
     ++fragmentCount;
 
-    uint32_t startingSize = writer.Remaining();
+    auto startingSize = writer.Remaining();
     bool notFull = pEventLoader->Load(writer);
     bool someEventsWritten = writer.Remaining() < startingSize;
 

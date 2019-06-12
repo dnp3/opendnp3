@@ -42,10 +42,10 @@ object Generate {
     AttributeGenerator.writeAttributes("opendnp3", dnp3GenHeaderPath, dnp3GenImplPath)
 
     // generate the C# enums
-    //CSharpEnumGenerator(CSharpEnumGroup.enums, "Automatak.DNP3.Interface", csharpGenPath)
+    CSharpEnumGenerator(CSharpEnumGroup.enums, "Automatak.DNP3.Interface", csharpGenPath)
 
     // generate the Java enums
-    //JavaEnumGenerator(CSharpEnumGroup.enums, "package com.automatak.dnp3.enums;", javaGenPath)
+    JavaEnumGenerator(CSharpEnumGroup.enums, "package com.automatak.dnp3.enums;", javaGenPath)
 
     // generate all the group/variation parsers
     GroupVariationFileGenerator(dnp3ObjectPath)

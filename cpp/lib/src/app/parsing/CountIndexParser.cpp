@@ -37,11 +37,11 @@
 namespace opendnp3
 {
 
-CountIndexParser::CountIndexParser(uint16_t count_,
-                                   uint32_t requiredSize_,
-                                   const NumParser& numparser_,
-                                   HandleFun handler_)
-    : count(count_), requiredSize(requiredSize_), numparser(numparser_), handler(handler_)
+CountIndexParser::CountIndexParser(uint16_t count,
+                                   size_t requiredSize,
+                                   const NumParser& numparser,
+                                   HandleFun handler)
+    : count(count), requiredSize(requiredSize), numparser(numparser), handler(handler)
 {
 }
 
@@ -77,7 +77,7 @@ ParseResult CountIndexParser::Process(const HeaderRecord& record,
         return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
     }
 
-    if (pHandler != nullptr)
+    if (pHandler)
     {
         handler(record, count, numparser, buffer, *pHandler);
     }
@@ -238,12 +238,12 @@ ParseResult CountIndexParser::ParseIndexPrefixedOctetData(ser4cpp::rseq_t& buffe
         return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
     }
 
-    if (pHandler != nullptr)
+    if (pHandler)
     {
         auto read = [&numparser, record](ser4cpp::rseq_t& buffer, uint32_t pos) -> Indexed<OctetString> {
             auto index = numparser.ReadNum(buffer);
             const auto octetStringSlice = buffer.take(record.variation);
-            OctetString octets(Buffer(static_cast<uint8_t const*>(octetStringSlice), octetStringSlice.length()));
+            OctetString octets(Buffer(octetStringSlice, octetStringSlice.length()));
             buffer.advance(record.variation);
             return WithIndex(octets, index);
         };

@@ -29,12 +29,12 @@ public interface SOEHandler {
     /**
      * Start a processing an ASDU
      */
-    void start();
+    void beginFragment(ResponseInfo info);
 
     /**
      * End a processing an ASDU
      */
-    void end();
+    void endFragment(ResponseInfo info);
 
     /**
      * Process a collection of values

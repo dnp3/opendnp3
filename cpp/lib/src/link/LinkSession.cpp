@@ -90,7 +90,7 @@ void LinkSession::OnReadComplete(const std::error_code& ec, size_t num)
     }
     else
     {
-        this->parser.OnRead(static_cast<uint32_t>(num), *this);
+        this->parser.OnRead(num, *this);
         this->BeginReceive();
     }
 }

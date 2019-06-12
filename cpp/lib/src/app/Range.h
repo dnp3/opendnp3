@@ -23,6 +23,7 @@
 #include <ser4cpp/util/Comparisons.h>
 
 #include <cstdint>
+#include <cstddef>
 
 namespace opendnp3
 {
@@ -42,9 +43,9 @@ public:
 
     Range() : start(1), stop(0) {}
 
-    uint32_t Count() const
+    size_t Count() const
     {
-        return IsValid() ? (static_cast<uint32_t>(stop) - static_cast<uint32_t>(start) + 1) : 0;
+        return IsValid() ? (static_cast<size_t>(stop) - static_cast<size_t>(start) + 1) : 0;
     }
 
     bool Advance()

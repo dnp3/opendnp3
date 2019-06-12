@@ -29,7 +29,7 @@
 class MockTransportSegment final : public opendnp3::ITransportSegment
 {
 public:
-    MockTransportSegment(uint32_t segmentSize, const std::string& hex, const opendnp3::Addresses& addresses);
+    MockTransportSegment(size_t segmentSize, const std::string& hex, const opendnp3::Addresses& addresses);
 
     const opendnp3::Addresses& GetAddresses() const override
     {
@@ -46,7 +46,7 @@ public:
 
 private:
     const opendnp3::Addresses addresses;
-    uint32_t segmentSize;
+    size_t segmentSize;
     HexSequence hs;
     ser4cpp::rseq_t remainder;
 };

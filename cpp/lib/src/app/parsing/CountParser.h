@@ -71,10 +71,10 @@ private:
                               const ser4cpp::rseq_t& buffer,
                               IAPDUHandler& handler);
 
-    CountParser(uint16_t count, uint32_t requiredSize, HandleFun handler);
+    CountParser(uint16_t count, size_t required_size, HandleFun handler);
 
     uint16_t count;
-    uint32_t requiredSize;
+    size_t required_size;
     HandleFun handler;
 
     CountParser() = delete;
@@ -82,7 +82,7 @@ private:
 
 template<class Descriptor> CountParser CountParser::From(uint16_t count)
 {
-    uint32_t size = static_cast<uint32_t>(count) * Descriptor::Size();
+    const auto size = static_cast<size_t>(count) * Descriptor::Size();
     return CountParser(count, size, &InvokeCountOf<Descriptor>);
 }
 

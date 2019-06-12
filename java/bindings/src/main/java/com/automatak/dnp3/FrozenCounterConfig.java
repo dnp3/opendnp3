@@ -24,9 +24,7 @@ import com.automatak.dnp3.enums.StaticFrozenCounterVariation;
 
 public class FrozenCounterConfig extends EventConfig {
 
-    public FrozenCounterConfig(int index) {
-        super(index);
-    }
+    public FrozenCounterConfig() {}
 
     public int deadband = 0;
     public EventFrozenCounterVariation eventVariation = EventFrozenCounterVariation.Group23Var1;

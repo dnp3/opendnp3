@@ -26,8 +26,8 @@
 namespace opendnp3
 {
 
-CountParser::CountParser(uint16_t count, uint32_t requiredSize, HandleFun handler)
-    : count(count), requiredSize(requiredSize), handler(handler)
+CountParser::CountParser(uint16_t count, size_t required_size, HandleFun handler)
+    : count(count), required_size(required_size), handler(handler)
 {
 }
 
@@ -36,17 +36,17 @@ ParseResult CountParser::Process(const HeaderRecord& record,
                                  IAPDUHandler* pHandler,
                                  log4cpp::Logger* pLogger) const
 {
-    if (buffer.length() < requiredSize)
+    if (buffer.length() < required_size)
     {
         SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for specified objects");
         return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
     }
 
-    if (pHandler != nullptr)
+    if (pHandler)
     {
         handler(record, count, buffer, *pHandler);
     }
-    buffer.advance(requiredSize);
+    buffer.advance(required_size);
     return ParseResult::OK;
 }
 
@@ -70,7 +70,7 @@ ParseResult CountParser::ParseHeader(ser4cpp::rseq_t& buffer,
             return ParseCountOfObjects(buffer, record, count, pLogger, pHandler);
         }
 
-        if (pHandler != nullptr)
+        if (pHandler)
         {
             pHandler->OnHeader(CountHeader(record, count));
         }

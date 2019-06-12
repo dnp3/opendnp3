@@ -140,9 +140,9 @@ struct OctetStringSpec : public OctetStringInfo
     inline static bool IsEvent(const OctetString& old_value, const OctetString& new_value, const config_t& config)
     {
         const auto old_value_buffer = old_value.ToBuffer();
-        const ser4cpp::rseq_t old_value_seq(old_value_buffer.data, static_cast<uint32_t>(old_value_buffer.length));
+        const ser4cpp::rseq_t old_value_seq(old_value_buffer.data, old_value_buffer.length);
         const auto new_value_buffer = new_value.ToBuffer();
-        const ser4cpp::rseq_t new_value_seq(new_value_buffer.data, static_cast<uint32_t>(new_value_buffer.length));
+        const ser4cpp::rseq_t new_value_seq(new_value_buffer.data, new_value_buffer.length);
         return !old_value_seq.equals(new_value_seq);
     }
 };
