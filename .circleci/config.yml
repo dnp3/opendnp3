@@ -56,7 +56,7 @@ jobs:
       #- run: *init_submodules
       - run:
           name: Configure
-          command: cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="-Wall -Werror" -DDNP3_TLS=ON -DDNP3_TESTS=ON -DDNP3_EXAMPLES=ON -DDNP3_COVERAGE=ON ..
+          command: cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="-Wall -Werror -Wno-format-truncation" -DDNP3_TLS=ON -DDNP3_TESTS=ON -DDNP3_EXAMPLES=ON -DDNP3_COVERAGE=ON ..
           working_directory: build
       - run: *build
       - run: *test
@@ -75,7 +75,7 @@ jobs:
       #- run: *init_submodules
       - run:
           name: Configure
-          command: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-Wall -Werror" -DDNP3_TLS=ON -DDNP3_TESTS=ON -DDNP3_EXAMPLES=ON ..
+          command: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-Wall -Werror -Wno-format-truncation" -DDNP3_TLS=ON -DDNP3_TESTS=ON -DDNP3_EXAMPLES=ON ..
           working_directory: build
       - run: *build
       - run: *test
