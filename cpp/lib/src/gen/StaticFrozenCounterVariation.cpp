@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/StaticFrozenCounterVariation.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -79,15 +78,15 @@ char const* StaticFrozenCounterVariationToString(StaticFrozenCounterVariation ar
       return "UNDEFINED";
   }
 }
-StaticFrozenCounterVariation StaticFrozenCounterVariationFromString(char const* arg)
+StaticFrozenCounterVariation StaticFrozenCounterVariationFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "Group21Var1", 11)) return StaticFrozenCounterVariation::Group21Var1;
-  if(std::strncmp(arg, "Group21Var2", 11)) return StaticFrozenCounterVariation::Group21Var2;
-  if(std::strncmp(arg, "Group21Var5", 11)) return StaticFrozenCounterVariation::Group21Var5;
-  if(std::strncmp(arg, "Group21Var6", 11)) return StaticFrozenCounterVariation::Group21Var6;
-  if(std::strncmp(arg, "Group21Var9", 11)) return StaticFrozenCounterVariation::Group21Var9;
-  if(std::strncmp(arg, "Group21Var10", 12)) return StaticFrozenCounterVariation::Group21Var10;
-  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
+  if(arg == "Group21Var1") return StaticFrozenCounterVariation::Group21Var1;
+  if(arg == "Group21Var2") return StaticFrozenCounterVariation::Group21Var2;
+  if(arg == "Group21Var5") return StaticFrozenCounterVariation::Group21Var5;
+  if(arg == "Group21Var6") return StaticFrozenCounterVariation::Group21Var6;
+  if(arg == "Group21Var9") return StaticFrozenCounterVariation::Group21Var9;
+  if(arg == "Group21Var10") return StaticFrozenCounterVariation::Group21Var10;
+  else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

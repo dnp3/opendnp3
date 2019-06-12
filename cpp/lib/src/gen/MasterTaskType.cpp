@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/MasterTaskType.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -91,18 +90,18 @@ char const* MasterTaskTypeToString(MasterTaskType arg)
       return "UNDEFINED";
   }
 }
-MasterTaskType MasterTaskTypeFromString(char const* arg)
+MasterTaskType MasterTaskTypeFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "CLEAR_RESTART", 13)) return MasterTaskType::CLEAR_RESTART;
-  if(std::strncmp(arg, "DISABLE_UNSOLICITED", 19)) return MasterTaskType::DISABLE_UNSOLICITED;
-  if(std::strncmp(arg, "ASSIGN_CLASS", 12)) return MasterTaskType::ASSIGN_CLASS;
-  if(std::strncmp(arg, "STARTUP_INTEGRITY_POLL", 22)) return MasterTaskType::STARTUP_INTEGRITY_POLL;
-  if(std::strncmp(arg, "NON_LAN_TIME_SYNC", 17)) return MasterTaskType::NON_LAN_TIME_SYNC;
-  if(std::strncmp(arg, "LAN_TIME_SYNC", 13)) return MasterTaskType::LAN_TIME_SYNC;
-  if(std::strncmp(arg, "ENABLE_UNSOLICITED", 18)) return MasterTaskType::ENABLE_UNSOLICITED;
-  if(std::strncmp(arg, "AUTO_EVENT_SCAN", 15)) return MasterTaskType::AUTO_EVENT_SCAN;
-  if(std::strncmp(arg, "USER_TASK", 9)) return MasterTaskType::USER_TASK;
-  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
+  if(arg == "CLEAR_RESTART") return MasterTaskType::CLEAR_RESTART;
+  if(arg == "DISABLE_UNSOLICITED") return MasterTaskType::DISABLE_UNSOLICITED;
+  if(arg == "ASSIGN_CLASS") return MasterTaskType::ASSIGN_CLASS;
+  if(arg == "STARTUP_INTEGRITY_POLL") return MasterTaskType::STARTUP_INTEGRITY_POLL;
+  if(arg == "NON_LAN_TIME_SYNC") return MasterTaskType::NON_LAN_TIME_SYNC;
+  if(arg == "LAN_TIME_SYNC") return MasterTaskType::LAN_TIME_SYNC;
+  if(arg == "ENABLE_UNSOLICITED") return MasterTaskType::ENABLE_UNSOLICITED;
+  if(arg == "AUTO_EVENT_SCAN") return MasterTaskType::AUTO_EVENT_SCAN;
+  if(arg == "USER_TASK") return MasterTaskType::USER_TASK;
+  else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

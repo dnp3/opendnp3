@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/CommandPointState.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -79,15 +78,15 @@ char const* CommandPointStateToString(CommandPointState arg)
       return "UNDEFINED";
   }
 }
-CommandPointState CommandPointStateFromString(char const* arg)
+CommandPointState CommandPointStateFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "INIT", 4)) return CommandPointState::INIT;
-  if(std::strncmp(arg, "SELECT_SUCCESS", 14)) return CommandPointState::SELECT_SUCCESS;
-  if(std::strncmp(arg, "SELECT_MISMATCH", 15)) return CommandPointState::SELECT_MISMATCH;
-  if(std::strncmp(arg, "SELECT_FAIL", 11)) return CommandPointState::SELECT_FAIL;
-  if(std::strncmp(arg, "OPERATE_FAIL", 12)) return CommandPointState::OPERATE_FAIL;
-  if(std::strncmp(arg, "SUCCESS", 7)) return CommandPointState::SUCCESS;
-  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
+  if(arg == "INIT") return CommandPointState::INIT;
+  if(arg == "SELECT_SUCCESS") return CommandPointState::SELECT_SUCCESS;
+  if(arg == "SELECT_MISMATCH") return CommandPointState::SELECT_MISMATCH;
+  if(arg == "SELECT_FAIL") return CommandPointState::SELECT_FAIL;
+  if(arg == "OPERATE_FAIL") return CommandPointState::OPERATE_FAIL;
+  if(arg == "SUCCESS") return CommandPointState::SUCCESS;
+  else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

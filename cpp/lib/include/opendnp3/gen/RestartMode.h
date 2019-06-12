@@ -33,6 +33,7 @@
 #define OPENDNP3_RESTARTMODE_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -52,7 +53,7 @@ enum class RestartMode : uint8_t
 uint8_t RestartModeToType(RestartMode arg);
 RestartMode RestartModeFromType(uint8_t arg);
 char const* RestartModeToString(RestartMode arg);
-RestartMode RestartModeFromString(char const* arg);
+RestartMode RestartModeFromString(const std::string& arg);
 
 }
 

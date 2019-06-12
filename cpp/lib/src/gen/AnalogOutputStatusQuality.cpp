@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/AnalogOutputStatusQuality.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -87,17 +86,17 @@ char const* AnalogOutputStatusQualityToString(AnalogOutputStatusQuality arg)
       return "UNDEFINED";
   }
 }
-AnalogOutputStatusQuality AnalogOutputStatusQualityFromString(char const* arg)
+AnalogOutputStatusQuality AnalogOutputStatusQualityFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "ONLINE", 6)) return AnalogOutputStatusQuality::ONLINE;
-  if(std::strncmp(arg, "RESTART", 7)) return AnalogOutputStatusQuality::RESTART;
-  if(std::strncmp(arg, "COMM_LOST", 9)) return AnalogOutputStatusQuality::COMM_LOST;
-  if(std::strncmp(arg, "REMOTE_FORCED", 13)) return AnalogOutputStatusQuality::REMOTE_FORCED;
-  if(std::strncmp(arg, "LOCAL_FORCED", 12)) return AnalogOutputStatusQuality::LOCAL_FORCED;
-  if(std::strncmp(arg, "OVERRANGE", 9)) return AnalogOutputStatusQuality::OVERRANGE;
-  if(std::strncmp(arg, "REFERENCE_ERR", 13)) return AnalogOutputStatusQuality::REFERENCE_ERR;
-  if(std::strncmp(arg, "RESERVED", 8)) return AnalogOutputStatusQuality::RESERVED;
-  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
+  if(arg == "ONLINE") return AnalogOutputStatusQuality::ONLINE;
+  if(arg == "RESTART") return AnalogOutputStatusQuality::RESTART;
+  if(arg == "COMM_LOST") return AnalogOutputStatusQuality::COMM_LOST;
+  if(arg == "REMOTE_FORCED") return AnalogOutputStatusQuality::REMOTE_FORCED;
+  if(arg == "LOCAL_FORCED") return AnalogOutputStatusQuality::LOCAL_FORCED;
+  if(arg == "OVERRANGE") return AnalogOutputStatusQuality::OVERRANGE;
+  if(arg == "REFERENCE_ERR") return AnalogOutputStatusQuality::REFERENCE_ERR;
+  if(arg == "RESERVED") return AnalogOutputStatusQuality::RESERVED;
+  else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

@@ -33,6 +33,7 @@
 #define OPENDNP3_EVENTANALOGVARIATION_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -51,7 +52,7 @@ enum class EventAnalogVariation : uint8_t
 uint8_t EventAnalogVariationToType(EventAnalogVariation arg);
 EventAnalogVariation EventAnalogVariationFromType(uint8_t arg);
 char const* EventAnalogVariationToString(EventAnalogVariation arg);
-EventAnalogVariation EventAnalogVariationFromString(char const* arg);
+EventAnalogVariation EventAnalogVariationFromString(const std::string& arg);
 
 }
 

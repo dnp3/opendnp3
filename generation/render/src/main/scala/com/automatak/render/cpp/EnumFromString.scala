@@ -26,7 +26,7 @@ object EnumFromString extends HeaderImplModelRender[EnumModel] {
   def header: ModelRenderer[EnumModel] = HeaderRender
   def impl: ModelRenderer[EnumModel]  = ImplRender
 
-  private def signature(enum: EnumModel) = List(enum.name, List(enum.name, "FromString(char const* arg)").mkString).mkString(" ")
+  private def signature(enum: EnumModel) = List(enum.name, List(enum.name, "FromString(const std::string& arg)").mkString).mkString(" ")
 
   private object HeaderRender extends ModelRenderer[EnumModel] {
     def render(em: EnumModel)(implicit i: Indentation) : Iterator[String] = {
@@ -41,14 +41,14 @@ object EnumFromString extends HeaderImplModelRender[EnumModel] {
       def header = Iterator(signature(em))
       def nonDefaults : Iterator[String] = {
         em.nonDefaultValues.map(c => {
-          s"""if(std::strncmp(arg, "${c.displayName}", ${c.displayName.length})) return ${em.name}::${c.name};"""
+          s"""if(arg == "${c.displayName}") return ${em.name}::${c.name};"""
         }).toIterator
       }
 
       def default: Iterator[String] = {
         em.defaultValue match {
           case Some(value) => Iterator(s"else return ${em.qualified(value)};")
-          case None => Iterator("""else throw new std::invalid_argument(std::string("Unknown value: ") + arg);""")
+          case None => Iterator("""else throw std::invalid_argument(std::string("Unknown value: ") + arg);""")
         }
       }
 

@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/StaticAnalogOutputStatusVariation.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -71,13 +70,13 @@ char const* StaticAnalogOutputStatusVariationToString(StaticAnalogOutputStatusVa
       return "UNDEFINED";
   }
 }
-StaticAnalogOutputStatusVariation StaticAnalogOutputStatusVariationFromString(char const* arg)
+StaticAnalogOutputStatusVariation StaticAnalogOutputStatusVariationFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "Group40Var1", 11)) return StaticAnalogOutputStatusVariation::Group40Var1;
-  if(std::strncmp(arg, "Group40Var2", 11)) return StaticAnalogOutputStatusVariation::Group40Var2;
-  if(std::strncmp(arg, "Group40Var3", 11)) return StaticAnalogOutputStatusVariation::Group40Var3;
-  if(std::strncmp(arg, "Group40Var4", 11)) return StaticAnalogOutputStatusVariation::Group40Var4;
-  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
+  if(arg == "Group40Var1") return StaticAnalogOutputStatusVariation::Group40Var1;
+  if(arg == "Group40Var2") return StaticAnalogOutputStatusVariation::Group40Var2;
+  if(arg == "Group40Var3") return StaticAnalogOutputStatusVariation::Group40Var3;
+  if(arg == "Group40Var4") return StaticAnalogOutputStatusVariation::Group40Var4;
+  else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

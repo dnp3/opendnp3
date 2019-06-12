@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/BinaryQuality.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -87,17 +86,17 @@ char const* BinaryQualityToString(BinaryQuality arg)
       return "UNDEFINED";
   }
 }
-BinaryQuality BinaryQualityFromString(char const* arg)
+BinaryQuality BinaryQualityFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "ONLINE", 6)) return BinaryQuality::ONLINE;
-  if(std::strncmp(arg, "RESTART", 7)) return BinaryQuality::RESTART;
-  if(std::strncmp(arg, "COMM_LOST", 9)) return BinaryQuality::COMM_LOST;
-  if(std::strncmp(arg, "REMOTE_FORCED", 13)) return BinaryQuality::REMOTE_FORCED;
-  if(std::strncmp(arg, "LOCAL_FORCED", 12)) return BinaryQuality::LOCAL_FORCED;
-  if(std::strncmp(arg, "CHATTER_FILTER", 14)) return BinaryQuality::CHATTER_FILTER;
-  if(std::strncmp(arg, "RESERVED", 8)) return BinaryQuality::RESERVED;
-  if(std::strncmp(arg, "STATE", 5)) return BinaryQuality::STATE;
-  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
+  if(arg == "ONLINE") return BinaryQuality::ONLINE;
+  if(arg == "RESTART") return BinaryQuality::RESTART;
+  if(arg == "COMM_LOST") return BinaryQuality::COMM_LOST;
+  if(arg == "REMOTE_FORCED") return BinaryQuality::REMOTE_FORCED;
+  if(arg == "LOCAL_FORCED") return BinaryQuality::LOCAL_FORCED;
+  if(arg == "CHATTER_FILTER") return BinaryQuality::CHATTER_FILTER;
+  if(arg == "RESERVED") return BinaryQuality::RESERVED;
+  if(arg == "STATE") return BinaryQuality::STATE;
+  else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

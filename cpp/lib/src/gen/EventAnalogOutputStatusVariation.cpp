@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/EventAnalogOutputStatusVariation.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -87,17 +86,17 @@ char const* EventAnalogOutputStatusVariationToString(EventAnalogOutputStatusVari
       return "UNDEFINED";
   }
 }
-EventAnalogOutputStatusVariation EventAnalogOutputStatusVariationFromString(char const* arg)
+EventAnalogOutputStatusVariation EventAnalogOutputStatusVariationFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "Group42Var1", 11)) return EventAnalogOutputStatusVariation::Group42Var1;
-  if(std::strncmp(arg, "Group42Var2", 11)) return EventAnalogOutputStatusVariation::Group42Var2;
-  if(std::strncmp(arg, "Group42Var3", 11)) return EventAnalogOutputStatusVariation::Group42Var3;
-  if(std::strncmp(arg, "Group42Var4", 11)) return EventAnalogOutputStatusVariation::Group42Var4;
-  if(std::strncmp(arg, "Group42Var5", 11)) return EventAnalogOutputStatusVariation::Group42Var5;
-  if(std::strncmp(arg, "Group42Var6", 11)) return EventAnalogOutputStatusVariation::Group42Var6;
-  if(std::strncmp(arg, "Group42Var7", 11)) return EventAnalogOutputStatusVariation::Group42Var7;
-  if(std::strncmp(arg, "Group42Var8", 11)) return EventAnalogOutputStatusVariation::Group42Var8;
-  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
+  if(arg == "Group42Var1") return EventAnalogOutputStatusVariation::Group42Var1;
+  if(arg == "Group42Var2") return EventAnalogOutputStatusVariation::Group42Var2;
+  if(arg == "Group42Var3") return EventAnalogOutputStatusVariation::Group42Var3;
+  if(arg == "Group42Var4") return EventAnalogOutputStatusVariation::Group42Var4;
+  if(arg == "Group42Var5") return EventAnalogOutputStatusVariation::Group42Var5;
+  if(arg == "Group42Var6") return EventAnalogOutputStatusVariation::Group42Var6;
+  if(arg == "Group42Var7") return EventAnalogOutputStatusVariation::Group42Var7;
+  if(arg == "Group42Var8") return EventAnalogOutputStatusVariation::Group42Var8;
+  else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

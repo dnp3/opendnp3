@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/KeyStatus.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -71,12 +70,12 @@ char const* KeyStatusToString(KeyStatus arg)
       return "UNDEFINED";
   }
 }
-KeyStatus KeyStatusFromString(char const* arg)
+KeyStatus KeyStatusFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "OK", 2)) return KeyStatus::OK;
-  if(std::strncmp(arg, "NOT_INIT", 8)) return KeyStatus::NOT_INIT;
-  if(std::strncmp(arg, "COMM_FAIL", 9)) return KeyStatus::COMM_FAIL;
-  if(std::strncmp(arg, "AUTH_FAIL", 9)) return KeyStatus::AUTH_FAIL;
+  if(arg == "OK") return KeyStatus::OK;
+  if(arg == "NOT_INIT") return KeyStatus::NOT_INIT;
+  if(arg == "COMM_FAIL") return KeyStatus::COMM_FAIL;
+  if(arg == "AUTH_FAIL") return KeyStatus::AUTH_FAIL;
   else return KeyStatus::UNDEFINED;
 }
 

@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/KeyChangeMethod.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -87,16 +86,16 @@ char const* KeyChangeMethodToString(KeyChangeMethod arg)
       return "UNDEFINED";
   }
 }
-KeyChangeMethod KeyChangeMethodFromString(char const* arg)
+KeyChangeMethod KeyChangeMethodFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "AES_128_SHA1_HMAC", 17)) return KeyChangeMethod::AES_128_SHA1_HMAC;
-  if(std::strncmp(arg, "AES_256_SHA256_HMAC", 19)) return KeyChangeMethod::AES_256_SHA256_HMAC;
-  if(std::strncmp(arg, "AES_256_AES_GMAC", 16)) return KeyChangeMethod::AES_256_AES_GMAC;
-  if(std::strncmp(arg, "RSA_1024_DSA_SHA1_HMAC_SHA1", 27)) return KeyChangeMethod::RSA_1024_DSA_SHA1_HMAC_SHA1;
-  if(std::strncmp(arg, "RSA_2048_DSA_SHA256_HMAC_SHA256", 31)) return KeyChangeMethod::RSA_2048_DSA_SHA256_HMAC_SHA256;
-  if(std::strncmp(arg, "RSA_3072_DSA_SHA256_HMAC_SHA256", 31)) return KeyChangeMethod::RSA_3072_DSA_SHA256_HMAC_SHA256;
-  if(std::strncmp(arg, "RSA_2048_DSA_SHA256_AES_GMAC", 28)) return KeyChangeMethod::RSA_2048_DSA_SHA256_AES_GMAC;
-  if(std::strncmp(arg, "RSA_3072_DSA_SHA256_AES_GMAC", 28)) return KeyChangeMethod::RSA_3072_DSA_SHA256_AES_GMAC;
+  if(arg == "AES_128_SHA1_HMAC") return KeyChangeMethod::AES_128_SHA1_HMAC;
+  if(arg == "AES_256_SHA256_HMAC") return KeyChangeMethod::AES_256_SHA256_HMAC;
+  if(arg == "AES_256_AES_GMAC") return KeyChangeMethod::AES_256_AES_GMAC;
+  if(arg == "RSA_1024_DSA_SHA1_HMAC_SHA1") return KeyChangeMethod::RSA_1024_DSA_SHA1_HMAC_SHA1;
+  if(arg == "RSA_2048_DSA_SHA256_HMAC_SHA256") return KeyChangeMethod::RSA_2048_DSA_SHA256_HMAC_SHA256;
+  if(arg == "RSA_3072_DSA_SHA256_HMAC_SHA256") return KeyChangeMethod::RSA_3072_DSA_SHA256_HMAC_SHA256;
+  if(arg == "RSA_2048_DSA_SHA256_AES_GMAC") return KeyChangeMethod::RSA_2048_DSA_SHA256_AES_GMAC;
+  if(arg == "RSA_3072_DSA_SHA256_AES_GMAC") return KeyChangeMethod::RSA_3072_DSA_SHA256_AES_GMAC;
   else return KeyChangeMethod::UNDEFINED;
 }
 

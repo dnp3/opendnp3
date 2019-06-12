@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/LinkStatus.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -63,11 +62,11 @@ char const* LinkStatusToString(LinkStatus arg)
       return "UNDEFINED";
   }
 }
-LinkStatus LinkStatusFromString(char const* arg)
+LinkStatus LinkStatusFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "UNRESET", 7)) return LinkStatus::UNRESET;
-  if(std::strncmp(arg, "RESET", 5)) return LinkStatus::RESET;
-  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
+  if(arg == "UNRESET") return LinkStatus::UNRESET;
+  if(arg == "RESET") return LinkStatus::RESET;
+  else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

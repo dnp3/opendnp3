@@ -33,6 +33,7 @@
 #define OPENDNP3_INTERVALUNITS_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -70,7 +71,7 @@ enum class IntervalUnits : uint8_t
 uint8_t IntervalUnitsToType(IntervalUnits arg);
 IntervalUnits IntervalUnitsFromType(uint8_t arg);
 char const* IntervalUnitsToString(IntervalUnits arg);
-IntervalUnits IntervalUnitsFromString(char const* arg);
+IntervalUnits IntervalUnitsFromString(const std::string& arg);
 
 }
 

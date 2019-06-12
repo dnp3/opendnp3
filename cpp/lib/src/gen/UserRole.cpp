@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/UserRole.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -87,16 +86,16 @@ char const* UserRoleToString(UserRole arg)
       return "UNDEFINED";
   }
 }
-UserRole UserRoleFromString(char const* arg)
+UserRole UserRoleFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "VIEWER", 6)) return UserRole::VIEWER;
-  if(std::strncmp(arg, "OPERATOR", 8)) return UserRole::OPERATOR;
-  if(std::strncmp(arg, "ENGINEER", 8)) return UserRole::ENGINEER;
-  if(std::strncmp(arg, "INSTALLER", 9)) return UserRole::INSTALLER;
-  if(std::strncmp(arg, "SECADM", 6)) return UserRole::SECADM;
-  if(std::strncmp(arg, "SECAUD", 6)) return UserRole::SECAUD;
-  if(std::strncmp(arg, "RBACMNT", 7)) return UserRole::RBACMNT;
-  if(std::strncmp(arg, "SINGLE_USER", 11)) return UserRole::SINGLE_USER;
+  if(arg == "VIEWER") return UserRole::VIEWER;
+  if(arg == "OPERATOR") return UserRole::OPERATOR;
+  if(arg == "ENGINEER") return UserRole::ENGINEER;
+  if(arg == "INSTALLER") return UserRole::INSTALLER;
+  if(arg == "SECADM") return UserRole::SECADM;
+  if(arg == "SECAUD") return UserRole::SECAUD;
+  if(arg == "RBACMNT") return UserRole::RBACMNT;
+  if(arg == "SINGLE_USER") return UserRole::SINGLE_USER;
   else return UserRole::UNDEFINED;
 }
 

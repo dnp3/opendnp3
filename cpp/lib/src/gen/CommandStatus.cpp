@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/CommandStatus.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -135,28 +134,28 @@ char const* CommandStatusToString(CommandStatus arg)
       return "UNDEFINED";
   }
 }
-CommandStatus CommandStatusFromString(char const* arg)
+CommandStatus CommandStatusFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "SUCCESS", 7)) return CommandStatus::SUCCESS;
-  if(std::strncmp(arg, "TIMEOUT", 7)) return CommandStatus::TIMEOUT;
-  if(std::strncmp(arg, "NO_SELECT", 9)) return CommandStatus::NO_SELECT;
-  if(std::strncmp(arg, "FORMAT_ERROR", 12)) return CommandStatus::FORMAT_ERROR;
-  if(std::strncmp(arg, "NOT_SUPPORTED", 13)) return CommandStatus::NOT_SUPPORTED;
-  if(std::strncmp(arg, "ALREADY_ACTIVE", 14)) return CommandStatus::ALREADY_ACTIVE;
-  if(std::strncmp(arg, "HARDWARE_ERROR", 14)) return CommandStatus::HARDWARE_ERROR;
-  if(std::strncmp(arg, "LOCAL", 5)) return CommandStatus::LOCAL;
-  if(std::strncmp(arg, "TOO_MANY_OPS", 12)) return CommandStatus::TOO_MANY_OPS;
-  if(std::strncmp(arg, "NOT_AUTHORIZED", 14)) return CommandStatus::NOT_AUTHORIZED;
-  if(std::strncmp(arg, "AUTOMATION_INHIBIT", 18)) return CommandStatus::AUTOMATION_INHIBIT;
-  if(std::strncmp(arg, "PROCESSING_LIMITED", 18)) return CommandStatus::PROCESSING_LIMITED;
-  if(std::strncmp(arg, "OUT_OF_RANGE", 12)) return CommandStatus::OUT_OF_RANGE;
-  if(std::strncmp(arg, "DOWNSTREAM_LOCAL", 16)) return CommandStatus::DOWNSTREAM_LOCAL;
-  if(std::strncmp(arg, "ALREADY_COMPLETE", 16)) return CommandStatus::ALREADY_COMPLETE;
-  if(std::strncmp(arg, "BLOCKED", 7)) return CommandStatus::BLOCKED;
-  if(std::strncmp(arg, "CANCELLED", 9)) return CommandStatus::CANCELLED;
-  if(std::strncmp(arg, "BLOCKED_OTHER_MASTER", 20)) return CommandStatus::BLOCKED_OTHER_MASTER;
-  if(std::strncmp(arg, "DOWNSTREAM_FAIL", 15)) return CommandStatus::DOWNSTREAM_FAIL;
-  if(std::strncmp(arg, "NON_PARTICIPATING", 17)) return CommandStatus::NON_PARTICIPATING;
+  if(arg == "SUCCESS") return CommandStatus::SUCCESS;
+  if(arg == "TIMEOUT") return CommandStatus::TIMEOUT;
+  if(arg == "NO_SELECT") return CommandStatus::NO_SELECT;
+  if(arg == "FORMAT_ERROR") return CommandStatus::FORMAT_ERROR;
+  if(arg == "NOT_SUPPORTED") return CommandStatus::NOT_SUPPORTED;
+  if(arg == "ALREADY_ACTIVE") return CommandStatus::ALREADY_ACTIVE;
+  if(arg == "HARDWARE_ERROR") return CommandStatus::HARDWARE_ERROR;
+  if(arg == "LOCAL") return CommandStatus::LOCAL;
+  if(arg == "TOO_MANY_OPS") return CommandStatus::TOO_MANY_OPS;
+  if(arg == "NOT_AUTHORIZED") return CommandStatus::NOT_AUTHORIZED;
+  if(arg == "AUTOMATION_INHIBIT") return CommandStatus::AUTOMATION_INHIBIT;
+  if(arg == "PROCESSING_LIMITED") return CommandStatus::PROCESSING_LIMITED;
+  if(arg == "OUT_OF_RANGE") return CommandStatus::OUT_OF_RANGE;
+  if(arg == "DOWNSTREAM_LOCAL") return CommandStatus::DOWNSTREAM_LOCAL;
+  if(arg == "ALREADY_COMPLETE") return CommandStatus::ALREADY_COMPLETE;
+  if(arg == "BLOCKED") return CommandStatus::BLOCKED;
+  if(arg == "CANCELLED") return CommandStatus::CANCELLED;
+  if(arg == "BLOCKED_OTHER_MASTER") return CommandStatus::BLOCKED_OTHER_MASTER;
+  if(arg == "DOWNSTREAM_FAIL") return CommandStatus::DOWNSTREAM_FAIL;
+  if(arg == "NON_PARTICIPATING") return CommandStatus::NON_PARTICIPATING;
   else return CommandStatus::UNDEFINED;
 }
 

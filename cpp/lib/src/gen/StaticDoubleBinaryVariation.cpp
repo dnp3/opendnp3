@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/StaticDoubleBinaryVariation.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -59,10 +58,10 @@ char const* StaticDoubleBinaryVariationToString(StaticDoubleBinaryVariation arg)
       return "UNDEFINED";
   }
 }
-StaticDoubleBinaryVariation StaticDoubleBinaryVariationFromString(char const* arg)
+StaticDoubleBinaryVariation StaticDoubleBinaryVariationFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "Group3Var2", 10)) return StaticDoubleBinaryVariation::Group3Var2;
-  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
+  if(arg == "Group3Var2") return StaticDoubleBinaryVariation::Group3Var2;
+  else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

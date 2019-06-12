@@ -33,6 +33,7 @@
 #define OPENDNP3_RESTARTTYPE_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -50,7 +51,7 @@ enum class RestartType : uint8_t
 uint8_t RestartTypeToType(RestartType arg);
 RestartType RestartTypeFromType(uint8_t arg);
 char const* RestartTypeToString(RestartType arg);
-RestartType RestartTypeFromString(char const* arg);
+RestartType RestartTypeFromString(const std::string& arg);
 
 }
 

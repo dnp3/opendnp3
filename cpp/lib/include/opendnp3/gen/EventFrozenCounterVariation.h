@@ -33,6 +33,7 @@
 #define OPENDNP3_EVENTFROZENCOUNTERVARIATION_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -47,7 +48,7 @@ enum class EventFrozenCounterVariation : uint8_t
 uint8_t EventFrozenCounterVariationToType(EventFrozenCounterVariation arg);
 EventFrozenCounterVariation EventFrozenCounterVariationFromType(uint8_t arg);
 char const* EventFrozenCounterVariationToString(EventFrozenCounterVariation arg);
-EventFrozenCounterVariation EventFrozenCounterVariationFromString(char const* arg);
+EventFrozenCounterVariation EventFrozenCounterVariationFromString(const std::string& arg);
 
 }
 

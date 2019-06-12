@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/EventMode.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -71,13 +70,13 @@ char const* EventModeToString(EventMode arg)
       return "UNDEFINED";
   }
 }
-EventMode EventModeFromString(char const* arg)
+EventMode EventModeFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "Detect", 6)) return EventMode::Detect;
-  if(std::strncmp(arg, "Force", 5)) return EventMode::Force;
-  if(std::strncmp(arg, "Suppress", 8)) return EventMode::Suppress;
-  if(std::strncmp(arg, "EventOnly", 9)) return EventMode::EventOnly;
-  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
+  if(arg == "Detect") return EventMode::Detect;
+  if(arg == "Force") return EventMode::Force;
+  if(arg == "Suppress") return EventMode::Suppress;
+  if(arg == "EventOnly") return EventMode::EventOnly;
+  else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

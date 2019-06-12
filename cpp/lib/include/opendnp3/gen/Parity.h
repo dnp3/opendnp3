@@ -33,6 +33,7 @@
 #define OPENDNP3_PARITY_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -49,7 +50,7 @@ enum class Parity : uint8_t
 uint8_t ParityToType(Parity arg);
 Parity ParityFromType(uint8_t arg);
 char const* ParityToString(Parity arg);
-Parity ParityFromString(char const* arg);
+Parity ParityFromString(const std::string& arg);
 
 }
 

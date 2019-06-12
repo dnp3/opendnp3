@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/StopBits.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -67,11 +66,11 @@ char const* StopBitsToString(StopBits arg)
       return "None";
   }
 }
-StopBits StopBitsFromString(char const* arg)
+StopBits StopBitsFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "One", 3)) return StopBits::One;
-  if(std::strncmp(arg, "OnePointFive", 12)) return StopBits::OnePointFive;
-  if(std::strncmp(arg, "Two", 3)) return StopBits::Two;
+  if(arg == "One") return StopBits::One;
+  if(arg == "OnePointFive") return StopBits::OnePointFive;
+  if(arg == "Two") return StopBits::Two;
   else return StopBits::None;
 }
 

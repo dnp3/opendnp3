@@ -33,6 +33,7 @@
 #define OPENDNP3_MASTERTASKTYPE_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -55,7 +56,7 @@ enum class MasterTaskType : uint8_t
 uint8_t MasterTaskTypeToType(MasterTaskType arg);
 MasterTaskType MasterTaskTypeFromType(uint8_t arg);
 char const* MasterTaskTypeToString(MasterTaskType arg);
-MasterTaskType MasterTaskTypeFromString(char const* arg);
+MasterTaskType MasterTaskTypeFromString(const std::string& arg);
 
 }
 

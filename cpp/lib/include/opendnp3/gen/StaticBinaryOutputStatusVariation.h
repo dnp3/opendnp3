@@ -33,6 +33,7 @@
 #define OPENDNP3_STATICBINARYOUTPUTSTATUSVARIATION_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -44,7 +45,7 @@ enum class StaticBinaryOutputStatusVariation : uint8_t
 uint8_t StaticBinaryOutputStatusVariationToType(StaticBinaryOutputStatusVariation arg);
 StaticBinaryOutputStatusVariation StaticBinaryOutputStatusVariationFromType(uint8_t arg);
 char const* StaticBinaryOutputStatusVariationToString(StaticBinaryOutputStatusVariation arg);
-StaticBinaryOutputStatusVariation StaticBinaryOutputStatusVariationFromString(char const* arg);
+StaticBinaryOutputStatusVariation StaticBinaryOutputStatusVariationFromString(const std::string& arg);
 
 }
 

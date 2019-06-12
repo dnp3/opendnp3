@@ -33,6 +33,7 @@
 #define OPENDNP3_TIMESTAMPMODE_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -52,7 +53,7 @@ enum class TimestampMode : uint8_t
 uint8_t TimestampModeToType(TimestampMode arg);
 TimestampMode TimestampModeFromType(uint8_t arg);
 char const* TimestampModeToString(TimestampMode arg);
-TimestampMode TimestampModeFromString(char const* arg);
+TimestampMode TimestampModeFromString(const std::string& arg);
 
 }
 

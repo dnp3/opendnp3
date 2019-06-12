@@ -33,6 +33,7 @@
 #define OPENDNP3_FROZENCOUNTERQUALITY_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -62,7 +63,7 @@ enum class FrozenCounterQuality : uint8_t
 uint8_t FrozenCounterQualityToType(FrozenCounterQuality arg);
 FrozenCounterQuality FrozenCounterQualityFromType(uint8_t arg);
 char const* FrozenCounterQualityToString(FrozenCounterQuality arg);
-FrozenCounterQuality FrozenCounterQualityFromString(char const* arg);
+FrozenCounterQuality FrozenCounterQualityFromString(const std::string& arg);
 
 }
 

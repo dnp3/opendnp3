@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/LinkFunction.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -91,17 +90,17 @@ char const* LinkFunctionToString(LinkFunction arg)
       return "INVALID";
   }
 }
-LinkFunction LinkFunctionFromString(char const* arg)
+LinkFunction LinkFunctionFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "PRI_RESET_LINK_STATES", 21)) return LinkFunction::PRI_RESET_LINK_STATES;
-  if(std::strncmp(arg, "PRI_TEST_LINK_STATES", 20)) return LinkFunction::PRI_TEST_LINK_STATES;
-  if(std::strncmp(arg, "PRI_CONFIRMED_USER_DATA", 23)) return LinkFunction::PRI_CONFIRMED_USER_DATA;
-  if(std::strncmp(arg, "PRI_UNCONFIRMED_USER_DATA", 25)) return LinkFunction::PRI_UNCONFIRMED_USER_DATA;
-  if(std::strncmp(arg, "PRI_REQUEST_LINK_STATUS", 23)) return LinkFunction::PRI_REQUEST_LINK_STATUS;
-  if(std::strncmp(arg, "SEC_ACK", 7)) return LinkFunction::SEC_ACK;
-  if(std::strncmp(arg, "SEC_NACK", 8)) return LinkFunction::SEC_NACK;
-  if(std::strncmp(arg, "SEC_LINK_STATUS", 15)) return LinkFunction::SEC_LINK_STATUS;
-  if(std::strncmp(arg, "SEC_NOT_SUPPORTED", 17)) return LinkFunction::SEC_NOT_SUPPORTED;
+  if(arg == "PRI_RESET_LINK_STATES") return LinkFunction::PRI_RESET_LINK_STATES;
+  if(arg == "PRI_TEST_LINK_STATES") return LinkFunction::PRI_TEST_LINK_STATES;
+  if(arg == "PRI_CONFIRMED_USER_DATA") return LinkFunction::PRI_CONFIRMED_USER_DATA;
+  if(arg == "PRI_UNCONFIRMED_USER_DATA") return LinkFunction::PRI_UNCONFIRMED_USER_DATA;
+  if(arg == "PRI_REQUEST_LINK_STATUS") return LinkFunction::PRI_REQUEST_LINK_STATUS;
+  if(arg == "SEC_ACK") return LinkFunction::SEC_ACK;
+  if(arg == "SEC_NACK") return LinkFunction::SEC_NACK;
+  if(arg == "SEC_LINK_STATUS") return LinkFunction::SEC_LINK_STATUS;
+  if(arg == "SEC_NOT_SUPPORTED") return LinkFunction::SEC_NOT_SUPPORTED;
   else return LinkFunction::INVALID;
 }
 

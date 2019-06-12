@@ -33,6 +33,7 @@
 #define OPENDNP3_KEYWRAPALGORITHM_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -51,7 +52,7 @@ enum class KeyWrapAlgorithm : uint8_t
 uint8_t KeyWrapAlgorithmToType(KeyWrapAlgorithm arg);
 KeyWrapAlgorithm KeyWrapAlgorithmFromType(uint8_t arg);
 char const* KeyWrapAlgorithmToString(KeyWrapAlgorithm arg);
-KeyWrapAlgorithm KeyWrapAlgorithmFromString(char const* arg);
+KeyWrapAlgorithm KeyWrapAlgorithmFromString(const std::string& arg);
 
 }
 

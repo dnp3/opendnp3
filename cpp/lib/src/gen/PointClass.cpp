@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/PointClass.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -71,13 +70,13 @@ char const* PointClassToString(PointClass arg)
       return "UNDEFINED";
   }
 }
-PointClass PointClassFromString(char const* arg)
+PointClass PointClassFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "Class0", 6)) return PointClass::Class0;
-  if(std::strncmp(arg, "Class1", 6)) return PointClass::Class1;
-  if(std::strncmp(arg, "Class2", 6)) return PointClass::Class2;
-  if(std::strncmp(arg, "Class3", 6)) return PointClass::Class3;
-  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
+  if(arg == "Class0") return PointClass::Class0;
+  if(arg == "Class1") return PointClass::Class1;
+  if(arg == "Class2") return PointClass::Class2;
+  if(arg == "Class3") return PointClass::Class3;
+  else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

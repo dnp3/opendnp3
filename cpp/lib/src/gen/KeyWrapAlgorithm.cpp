@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/KeyWrapAlgorithm.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -63,10 +62,10 @@ char const* KeyWrapAlgorithmToString(KeyWrapAlgorithm arg)
       return "UNDEFINED";
   }
 }
-KeyWrapAlgorithm KeyWrapAlgorithmFromString(char const* arg)
+KeyWrapAlgorithm KeyWrapAlgorithmFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "AES_128", 7)) return KeyWrapAlgorithm::AES_128;
-  if(std::strncmp(arg, "AES_256", 7)) return KeyWrapAlgorithm::AES_256;
+  if(arg == "AES_128") return KeyWrapAlgorithm::AES_128;
+  if(arg == "AES_256") return KeyWrapAlgorithm::AES_256;
   else return KeyWrapAlgorithm::UNDEFINED;
 }
 

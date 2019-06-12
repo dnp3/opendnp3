@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/StaticBinaryOutputStatusVariation.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -59,10 +58,10 @@ char const* StaticBinaryOutputStatusVariationToString(StaticBinaryOutputStatusVa
       return "UNDEFINED";
   }
 }
-StaticBinaryOutputStatusVariation StaticBinaryOutputStatusVariationFromString(char const* arg)
+StaticBinaryOutputStatusVariation StaticBinaryOutputStatusVariationFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "Group10Var2", 11)) return StaticBinaryOutputStatusVariation::Group10Var2;
-  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
+  if(arg == "Group10Var2") return StaticBinaryOutputStatusVariation::Group10Var2;
+  else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

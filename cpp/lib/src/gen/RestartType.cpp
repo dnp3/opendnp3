@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/RestartType.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -63,11 +62,11 @@ char const* RestartTypeToString(RestartType arg)
       return "UNDEFINED";
   }
 }
-RestartType RestartTypeFromString(char const* arg)
+RestartType RestartTypeFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "COLD", 4)) return RestartType::COLD;
-  if(std::strncmp(arg, "WARM", 4)) return RestartType::WARM;
-  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
+  if(arg == "COLD") return RestartType::COLD;
+  if(arg == "WARM") return RestartType::WARM;
+  else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

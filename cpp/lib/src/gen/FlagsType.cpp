@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/FlagsType.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -79,14 +78,14 @@ char const* FlagsTypeToString(FlagsType arg)
       return "BinaryInput";
   }
 }
-FlagsType FlagsTypeFromString(char const* arg)
+FlagsType FlagsTypeFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "DoubleBinaryInput", 17)) return FlagsType::DoubleBinaryInput;
-  if(std::strncmp(arg, "Counter", 7)) return FlagsType::Counter;
-  if(std::strncmp(arg, "FrozenCounter", 13)) return FlagsType::FrozenCounter;
-  if(std::strncmp(arg, "AnalogInput", 11)) return FlagsType::AnalogInput;
-  if(std::strncmp(arg, "BinaryOutputStatus", 18)) return FlagsType::BinaryOutputStatus;
-  if(std::strncmp(arg, "AnalogOutputStatus", 18)) return FlagsType::AnalogOutputStatus;
+  if(arg == "DoubleBinaryInput") return FlagsType::DoubleBinaryInput;
+  if(arg == "Counter") return FlagsType::Counter;
+  if(arg == "FrozenCounter") return FlagsType::FrozenCounter;
+  if(arg == "AnalogInput") return FlagsType::AnalogInput;
+  if(arg == "BinaryOutputStatus") return FlagsType::BinaryOutputStatus;
+  if(arg == "AnalogOutputStatus") return FlagsType::AnalogOutputStatus;
   else return FlagsType::BinaryInput;
 }
 

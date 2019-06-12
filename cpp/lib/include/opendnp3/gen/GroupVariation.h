@@ -33,6 +33,7 @@
 #define OPENDNP3_GROUPVARIATION_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -180,7 +181,7 @@ enum class GroupVariation : uint16_t
 uint16_t GroupVariationToType(GroupVariation arg);
 GroupVariation GroupVariationFromType(uint16_t arg);
 char const* GroupVariationToString(GroupVariation arg);
-GroupVariation GroupVariationFromString(char const* arg);
+GroupVariation GroupVariationFromString(const std::string& arg);
 
 }
 

@@ -33,6 +33,7 @@
 #define OPENDNP3_QUALIFIERCODE_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -55,7 +56,7 @@ enum class QualifierCode : uint8_t
 uint8_t QualifierCodeToType(QualifierCode arg);
 QualifierCode QualifierCodeFromType(uint8_t arg);
 char const* QualifierCodeToString(QualifierCode arg);
-QualifierCode QualifierCodeFromString(char const* arg);
+QualifierCode QualifierCodeFromString(const std::string& arg);
 
 }
 

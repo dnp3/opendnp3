@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/ChannelState.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -67,11 +66,11 @@ char const* ChannelStateToString(ChannelState arg)
       return "SHUTDOWN";
   }
 }
-ChannelState ChannelStateFromString(char const* arg)
+ChannelState ChannelStateFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "CLOSED", 6)) return ChannelState::CLOSED;
-  if(std::strncmp(arg, "OPENING", 7)) return ChannelState::OPENING;
-  if(std::strncmp(arg, "OPEN", 4)) return ChannelState::OPEN;
+  if(arg == "CLOSED") return ChannelState::CLOSED;
+  if(arg == "OPENING") return ChannelState::OPENING;
+  if(arg == "OPEN") return ChannelState::OPEN;
   else return ChannelState::SHUTDOWN;
 }
 

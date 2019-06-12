@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/FrozenCounterQuality.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -87,17 +86,17 @@ char const* FrozenCounterQualityToString(FrozenCounterQuality arg)
       return "UNDEFINED";
   }
 }
-FrozenCounterQuality FrozenCounterQualityFromString(char const* arg)
+FrozenCounterQuality FrozenCounterQualityFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "ONLINE", 6)) return FrozenCounterQuality::ONLINE;
-  if(std::strncmp(arg, "RESTART", 7)) return FrozenCounterQuality::RESTART;
-  if(std::strncmp(arg, "COMM_LOST", 9)) return FrozenCounterQuality::COMM_LOST;
-  if(std::strncmp(arg, "REMOTE_FORCED", 13)) return FrozenCounterQuality::REMOTE_FORCED;
-  if(std::strncmp(arg, "LOCAL_FORCED", 12)) return FrozenCounterQuality::LOCAL_FORCED;
-  if(std::strncmp(arg, "ROLLOVER", 8)) return FrozenCounterQuality::ROLLOVER;
-  if(std::strncmp(arg, "DISCONTINUITY", 13)) return FrozenCounterQuality::DISCONTINUITY;
-  if(std::strncmp(arg, "RESERVED", 8)) return FrozenCounterQuality::RESERVED;
-  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
+  if(arg == "ONLINE") return FrozenCounterQuality::ONLINE;
+  if(arg == "RESTART") return FrozenCounterQuality::RESTART;
+  if(arg == "COMM_LOST") return FrozenCounterQuality::COMM_LOST;
+  if(arg == "REMOTE_FORCED") return FrozenCounterQuality::REMOTE_FORCED;
+  if(arg == "LOCAL_FORCED") return FrozenCounterQuality::LOCAL_FORCED;
+  if(arg == "ROLLOVER") return FrozenCounterQuality::ROLLOVER;
+  if(arg == "DISCONTINUITY") return FrozenCounterQuality::DISCONTINUITY;
+  if(arg == "RESERVED") return FrozenCounterQuality::RESERVED;
+  else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

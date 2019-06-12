@@ -33,6 +33,7 @@
 #define OPENDNP3_STATICTYPEBITMASK_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -55,7 +56,7 @@ enum class StaticTypeBitmask : uint16_t
 uint16_t StaticTypeBitmaskToType(StaticTypeBitmask arg);
 StaticTypeBitmask StaticTypeBitmaskFromType(uint16_t arg);
 char const* StaticTypeBitmaskToString(StaticTypeBitmask arg);
-StaticTypeBitmask StaticTypeBitmaskFromString(char const* arg);
+StaticTypeBitmask StaticTypeBitmaskFromString(const std::string& arg);
 
 }
 

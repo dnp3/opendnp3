@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/IndexQualifierMode.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -63,11 +62,11 @@ char const* IndexQualifierModeToString(IndexQualifierMode arg)
       return "UNDEFINED";
   }
 }
-IndexQualifierMode IndexQualifierModeFromString(char const* arg)
+IndexQualifierMode IndexQualifierModeFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "allow_one_byte", 14)) return IndexQualifierMode::allow_one_byte;
-  if(std::strncmp(arg, "always_two_bytes", 16)) return IndexQualifierMode::always_two_bytes;
-  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
+  if(arg == "allow_one_byte") return IndexQualifierMode::allow_one_byte;
+  if(arg == "always_two_bytes") return IndexQualifierMode::always_two_bytes;
+  else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

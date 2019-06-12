@@ -33,6 +33,7 @@
 #define OPENDNP3_EVENTSECURITYSTATVARIATION_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -45,7 +46,7 @@ enum class EventSecurityStatVariation : uint8_t
 uint8_t EventSecurityStatVariationToType(EventSecurityStatVariation arg);
 EventSecurityStatVariation EventSecurityStatVariationFromType(uint8_t arg);
 char const* EventSecurityStatVariationToString(EventSecurityStatVariation arg);
-EventSecurityStatVariation EventSecurityStatVariationFromString(char const* arg);
+EventSecurityStatVariation EventSecurityStatVariationFromString(const std::string& arg);
 
 }
 

@@ -33,6 +33,7 @@
 #define OPENDNP3_EVENTBINARYVARIATION_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -46,7 +47,7 @@ enum class EventBinaryVariation : uint8_t
 uint8_t EventBinaryVariationToType(EventBinaryVariation arg);
 EventBinaryVariation EventBinaryVariationFromType(uint8_t arg);
 char const* EventBinaryVariationToString(EventBinaryVariation arg);
-EventBinaryVariation EventBinaryVariationFromString(char const* arg);
+EventBinaryVariation EventBinaryVariationFromString(const std::string& arg);
 
 }
 

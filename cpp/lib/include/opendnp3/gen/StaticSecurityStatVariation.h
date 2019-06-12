@@ -33,6 +33,7 @@
 #define OPENDNP3_STATICSECURITYSTATVARIATION_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -44,7 +45,7 @@ enum class StaticSecurityStatVariation : uint8_t
 uint8_t StaticSecurityStatVariationToType(StaticSecurityStatVariation arg);
 StaticSecurityStatVariation StaticSecurityStatVariationFromType(uint8_t arg);
 char const* StaticSecurityStatVariationToString(StaticSecurityStatVariation arg);
-StaticSecurityStatVariation StaticSecurityStatVariationFromString(char const* arg);
+StaticSecurityStatVariation StaticSecurityStatVariationFromString(const std::string& arg);
 
 }
 

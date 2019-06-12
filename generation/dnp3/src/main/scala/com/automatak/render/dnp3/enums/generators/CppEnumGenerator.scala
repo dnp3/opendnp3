@@ -48,7 +48,7 @@ object CppEnumGenerator {
 
       def writeHeader() {
         def license = commented(LicenseHeader())
-        def includes = cstdint
+        def includes = cstdint ++ string
         def enum = EnumModelRenderer.render(cfg.model)
         def signatures = renders.flatMap(c => c.header.render(cfg.model))
         def lines = license ++ space ++ includeGuards(cfg.model.name)(includes ++ space ++ namespace(cppNamespace)(enum ++ space ++ signatures))
@@ -59,7 +59,7 @@ object CppEnumGenerator {
       def writeImpl() {
         def license = commented(LicenseHeader())
         def funcs = renders.flatMap(r => r.impl.render(cfg.model)).toIterator
-        def inc = List(quoted(String.format(incFormatString, headerName(cfg.model))), bracketed("cstring"), bracketed("stdexcept")).map(i => include(i))
+        def inc = List(quoted(String.format(incFormatString, headerName(cfg.model))), bracketed("stdexcept")).map(i => include(i))
         def lines = license ++ space ++ inc ++ space ++ namespace(cppNamespace)(funcs)
 
         if(cfg.intConv || cfg.stringConv)

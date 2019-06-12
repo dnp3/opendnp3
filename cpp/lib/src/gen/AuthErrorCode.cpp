@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/AuthErrorCode.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -95,18 +94,18 @@ char const* AuthErrorCodeToString(AuthErrorCode arg)
       return "UNKNOWN";
   }
 }
-AuthErrorCode AuthErrorCodeFromString(char const* arg)
+AuthErrorCode AuthErrorCodeFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "AUTHENTICATION_FAILED", 21)) return AuthErrorCode::AUTHENTICATION_FAILED;
-  if(std::strncmp(arg, "AGGRESSIVE_MODE_UNSUPPORTED", 27)) return AuthErrorCode::AGGRESSIVE_MODE_UNSUPPORTED;
-  if(std::strncmp(arg, "MAC_NOT_SUPPORTED", 17)) return AuthErrorCode::MAC_NOT_SUPPORTED;
-  if(std::strncmp(arg, "KEY_WRAP_NOT_SUPPORTED", 22)) return AuthErrorCode::KEY_WRAP_NOT_SUPPORTED;
-  if(std::strncmp(arg, "AUTHORIZATION_FAILED", 20)) return AuthErrorCode::AUTHORIZATION_FAILED;
-  if(std::strncmp(arg, "UPDATE_KEY_METHOD_NOT_PERMITTED", 31)) return AuthErrorCode::UPDATE_KEY_METHOD_NOT_PERMITTED;
-  if(std::strncmp(arg, "INVALID_SIGNATURE", 17)) return AuthErrorCode::INVALID_SIGNATURE;
-  if(std::strncmp(arg, "INVALID_CERTIFICATION_DATA", 26)) return AuthErrorCode::INVALID_CERTIFICATION_DATA;
-  if(std::strncmp(arg, "UNKNOWN_USER", 12)) return AuthErrorCode::UNKNOWN_USER;
-  if(std::strncmp(arg, "MAX_SESSION_KEY_STATUS_REQUESTS_EXCEEDED", 40)) return AuthErrorCode::MAX_SESSION_KEY_STATUS_REQUESTS_EXCEEDED;
+  if(arg == "AUTHENTICATION_FAILED") return AuthErrorCode::AUTHENTICATION_FAILED;
+  if(arg == "AGGRESSIVE_MODE_UNSUPPORTED") return AuthErrorCode::AGGRESSIVE_MODE_UNSUPPORTED;
+  if(arg == "MAC_NOT_SUPPORTED") return AuthErrorCode::MAC_NOT_SUPPORTED;
+  if(arg == "KEY_WRAP_NOT_SUPPORTED") return AuthErrorCode::KEY_WRAP_NOT_SUPPORTED;
+  if(arg == "AUTHORIZATION_FAILED") return AuthErrorCode::AUTHORIZATION_FAILED;
+  if(arg == "UPDATE_KEY_METHOD_NOT_PERMITTED") return AuthErrorCode::UPDATE_KEY_METHOD_NOT_PERMITTED;
+  if(arg == "INVALID_SIGNATURE") return AuthErrorCode::INVALID_SIGNATURE;
+  if(arg == "INVALID_CERTIFICATION_DATA") return AuthErrorCode::INVALID_CERTIFICATION_DATA;
+  if(arg == "UNKNOWN_USER") return AuthErrorCode::UNKNOWN_USER;
+  if(arg == "MAX_SESSION_KEY_STATUS_REQUESTS_EXCEEDED") return AuthErrorCode::MAX_SESSION_KEY_STATUS_REQUESTS_EXCEEDED;
   else return AuthErrorCode::UNKNOWN;
 }
 

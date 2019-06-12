@@ -33,6 +33,7 @@
 #define OPENDNP3_ANALOGOUTPUTSTATUSQUALITY_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -62,7 +63,7 @@ enum class AnalogOutputStatusQuality : uint8_t
 uint8_t AnalogOutputStatusQualityToType(AnalogOutputStatusQuality arg);
 AnalogOutputStatusQuality AnalogOutputStatusQualityFromType(uint8_t arg);
 char const* AnalogOutputStatusQualityToString(AnalogOutputStatusQuality arg);
-AnalogOutputStatusQuality AnalogOutputStatusQualityFromString(char const* arg);
+AnalogOutputStatusQuality AnalogOutputStatusQualityFromString(const std::string& arg);
 
 }
 

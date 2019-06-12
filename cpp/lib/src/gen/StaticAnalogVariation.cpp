@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/StaticAnalogVariation.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -79,15 +78,15 @@ char const* StaticAnalogVariationToString(StaticAnalogVariation arg)
       return "UNDEFINED";
   }
 }
-StaticAnalogVariation StaticAnalogVariationFromString(char const* arg)
+StaticAnalogVariation StaticAnalogVariationFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "Group30Var1", 11)) return StaticAnalogVariation::Group30Var1;
-  if(std::strncmp(arg, "Group30Var2", 11)) return StaticAnalogVariation::Group30Var2;
-  if(std::strncmp(arg, "Group30Var3", 11)) return StaticAnalogVariation::Group30Var3;
-  if(std::strncmp(arg, "Group30Var4", 11)) return StaticAnalogVariation::Group30Var4;
-  if(std::strncmp(arg, "Group30Var5", 11)) return StaticAnalogVariation::Group30Var5;
-  if(std::strncmp(arg, "Group30Var6", 11)) return StaticAnalogVariation::Group30Var6;
-  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
+  if(arg == "Group30Var1") return StaticAnalogVariation::Group30Var1;
+  if(arg == "Group30Var2") return StaticAnalogVariation::Group30Var2;
+  if(arg == "Group30Var3") return StaticAnalogVariation::Group30Var3;
+  if(arg == "Group30Var4") return StaticAnalogVariation::Group30Var4;
+  if(arg == "Group30Var5") return StaticAnalogVariation::Group30Var5;
+  if(arg == "Group30Var6") return StaticAnalogVariation::Group30Var6;
+  else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

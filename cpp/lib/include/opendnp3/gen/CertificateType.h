@@ -33,6 +33,7 @@
 #define OPENDNP3_CERTIFICATETYPE_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -52,7 +53,7 @@ enum class CertificateType : uint8_t
 uint8_t CertificateTypeToType(CertificateType arg);
 CertificateType CertificateTypeFromType(uint8_t arg);
 char const* CertificateTypeToString(CertificateType arg);
-CertificateType CertificateTypeFromString(char const* arg);
+CertificateType CertificateTypeFromString(const std::string& arg);
 
 }
 

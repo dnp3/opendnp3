@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/StaticTypeBitmask.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -91,18 +90,18 @@ char const* StaticTypeBitmaskToString(StaticTypeBitmask arg)
       return "UNDEFINED";
   }
 }
-StaticTypeBitmask StaticTypeBitmaskFromString(char const* arg)
+StaticTypeBitmask StaticTypeBitmaskFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "BinaryInput", 11)) return StaticTypeBitmask::BinaryInput;
-  if(std::strncmp(arg, "DoubleBinaryInput", 17)) return StaticTypeBitmask::DoubleBinaryInput;
-  if(std::strncmp(arg, "Counter", 7)) return StaticTypeBitmask::Counter;
-  if(std::strncmp(arg, "FrozenCounter", 13)) return StaticTypeBitmask::FrozenCounter;
-  if(std::strncmp(arg, "AnalogInput", 11)) return StaticTypeBitmask::AnalogInput;
-  if(std::strncmp(arg, "BinaryOutputStatus", 18)) return StaticTypeBitmask::BinaryOutputStatus;
-  if(std::strncmp(arg, "AnalogOutputStatus", 18)) return StaticTypeBitmask::AnalogOutputStatus;
-  if(std::strncmp(arg, "TimeAndInterval", 15)) return StaticTypeBitmask::TimeAndInterval;
-  if(std::strncmp(arg, "OctetString", 11)) return StaticTypeBitmask::OctetString;
-  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
+  if(arg == "BinaryInput") return StaticTypeBitmask::BinaryInput;
+  if(arg == "DoubleBinaryInput") return StaticTypeBitmask::DoubleBinaryInput;
+  if(arg == "Counter") return StaticTypeBitmask::Counter;
+  if(arg == "FrozenCounter") return StaticTypeBitmask::FrozenCounter;
+  if(arg == "AnalogInput") return StaticTypeBitmask::AnalogInput;
+  if(arg == "BinaryOutputStatus") return StaticTypeBitmask::BinaryOutputStatus;
+  if(arg == "AnalogOutputStatus") return StaticTypeBitmask::AnalogOutputStatus;
+  if(arg == "TimeAndInterval") return StaticTypeBitmask::TimeAndInterval;
+  if(arg == "OctetString") return StaticTypeBitmask::OctetString;
+  else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

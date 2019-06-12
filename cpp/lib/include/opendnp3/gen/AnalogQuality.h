@@ -33,6 +33,7 @@
 #define OPENDNP3_ANALOGQUALITY_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -62,7 +63,7 @@ enum class AnalogQuality : uint8_t
 uint8_t AnalogQualityToType(AnalogQuality arg);
 AnalogQuality AnalogQualityFromType(uint8_t arg);
 char const* AnalogQualityToString(AnalogQuality arg);
-AnalogQuality AnalogQualityFromString(char const* arg);
+AnalogQuality AnalogQualityFromString(const std::string& arg);
 
 }
 

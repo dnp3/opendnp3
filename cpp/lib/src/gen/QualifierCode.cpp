@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/QualifierCode.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -87,16 +86,16 @@ char const* QualifierCodeToString(QualifierCode arg)
       return "unknown";
   }
 }
-QualifierCode QualifierCodeFromString(char const* arg)
+QualifierCode QualifierCodeFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "8-bit start stop", 16)) return QualifierCode::UINT8_START_STOP;
-  if(std::strncmp(arg, "16-bit start stop", 17)) return QualifierCode::UINT16_START_STOP;
-  if(std::strncmp(arg, "all objects", 11)) return QualifierCode::ALL_OBJECTS;
-  if(std::strncmp(arg, "8-bit count", 11)) return QualifierCode::UINT8_CNT;
-  if(std::strncmp(arg, "16-bit count", 12)) return QualifierCode::UINT16_CNT;
-  if(std::strncmp(arg, "8-bit count and prefix", 22)) return QualifierCode::UINT8_CNT_UINT8_INDEX;
-  if(std::strncmp(arg, "16-bit count and prefix", 23)) return QualifierCode::UINT16_CNT_UINT16_INDEX;
-  if(std::strncmp(arg, "16-bit free format", 18)) return QualifierCode::UINT16_FREE_FORMAT;
+  if(arg == "8-bit start stop") return QualifierCode::UINT8_START_STOP;
+  if(arg == "16-bit start stop") return QualifierCode::UINT16_START_STOP;
+  if(arg == "all objects") return QualifierCode::ALL_OBJECTS;
+  if(arg == "8-bit count") return QualifierCode::UINT8_CNT;
+  if(arg == "16-bit count") return QualifierCode::UINT16_CNT;
+  if(arg == "8-bit count and prefix") return QualifierCode::UINT8_CNT_UINT8_INDEX;
+  if(arg == "16-bit count and prefix") return QualifierCode::UINT16_CNT_UINT16_INDEX;
+  if(arg == "16-bit free format") return QualifierCode::UINT16_FREE_FORMAT;
   else return QualifierCode::UNDEFINED;
 }
 

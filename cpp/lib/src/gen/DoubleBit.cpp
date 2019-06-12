@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/DoubleBit.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -67,11 +66,11 @@ char const* DoubleBitToString(DoubleBit arg)
       return "INDETERMINATE";
   }
 }
-DoubleBit DoubleBitFromString(char const* arg)
+DoubleBit DoubleBitFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "INTERMEDIATE", 12)) return DoubleBit::INTERMEDIATE;
-  if(std::strncmp(arg, "DETERMINED_OFF", 14)) return DoubleBit::DETERMINED_OFF;
-  if(std::strncmp(arg, "DETERMINED_ON", 13)) return DoubleBit::DETERMINED_ON;
+  if(arg == "INTERMEDIATE") return DoubleBit::INTERMEDIATE;
+  if(arg == "DETERMINED_OFF") return DoubleBit::DETERMINED_OFF;
+  if(arg == "DETERMINED_ON") return DoubleBit::DETERMINED_ON;
   else return DoubleBit::INDETERMINATE;
 }
 

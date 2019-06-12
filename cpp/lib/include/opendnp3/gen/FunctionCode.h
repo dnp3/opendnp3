@@ -33,6 +33,7 @@
 #define OPENDNP3_FUNCTIONCODE_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -120,7 +121,7 @@ enum class FunctionCode : uint8_t
 uint8_t FunctionCodeToType(FunctionCode arg);
 FunctionCode FunctionCodeFromType(uint8_t arg);
 char const* FunctionCodeToString(FunctionCode arg);
-FunctionCode FunctionCodeFromString(char const* arg);
+FunctionCode FunctionCodeFromString(const std::string& arg);
 
 }
 

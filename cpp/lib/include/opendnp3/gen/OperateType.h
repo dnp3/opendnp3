@@ -33,6 +33,7 @@
 #define OPENDNP3_OPERATETYPE_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -52,7 +53,7 @@ enum class OperateType : uint8_t
 uint8_t OperateTypeToType(OperateType arg);
 OperateType OperateTypeFromType(uint8_t arg);
 char const* OperateTypeToString(OperateType arg);
-OperateType OperateTypeFromString(char const* arg);
+OperateType OperateTypeFromString(const std::string& arg);
 
 }
 

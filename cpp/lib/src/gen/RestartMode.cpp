@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/RestartMode.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -67,12 +66,12 @@ char const* RestartModeToString(RestartMode arg)
       return "UNDEFINED";
   }
 }
-RestartMode RestartModeFromString(char const* arg)
+RestartMode RestartModeFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "UNSUPPORTED", 11)) return RestartMode::UNSUPPORTED;
-  if(std::strncmp(arg, "SUPPORTED_DELAY_FINE", 20)) return RestartMode::SUPPORTED_DELAY_FINE;
-  if(std::strncmp(arg, "SUPPORTED_DELAY_COARSE", 22)) return RestartMode::SUPPORTED_DELAY_COARSE;
-  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
+  if(arg == "UNSUPPORTED") return RestartMode::UNSUPPORTED;
+  if(arg == "SUPPORTED_DELAY_FINE") return RestartMode::SUPPORTED_DELAY_FINE;
+  if(arg == "SUPPORTED_DELAY_COARSE") return RestartMode::SUPPORTED_DELAY_COARSE;
+  else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/UserOperation.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -67,11 +66,11 @@ char const* UserOperationToString(UserOperation arg)
       return "OP_UNDEFINED";
   }
 }
-UserOperation UserOperationFromString(char const* arg)
+UserOperation UserOperationFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "OP_ADD", 6)) return UserOperation::OP_ADD;
-  if(std::strncmp(arg, "OP_DELETE", 9)) return UserOperation::OP_DELETE;
-  if(std::strncmp(arg, "OP_CHANGE", 9)) return UserOperation::OP_CHANGE;
+  if(arg == "OP_ADD") return UserOperation::OP_ADD;
+  if(arg == "OP_DELETE") return UserOperation::OP_DELETE;
+  if(arg == "OP_CHANGE") return UserOperation::OP_CHANGE;
   else return UserOperation::OP_UNDEFINED;
 }
 

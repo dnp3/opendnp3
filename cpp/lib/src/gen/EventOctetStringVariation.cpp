@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/EventOctetStringVariation.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -59,10 +58,10 @@ char const* EventOctetStringVariationToString(EventOctetStringVariation arg)
       return "UNDEFINED";
   }
 }
-EventOctetStringVariation EventOctetStringVariationFromString(char const* arg)
+EventOctetStringVariation EventOctetStringVariationFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "Group111Var0", 12)) return EventOctetStringVariation::Group111Var0;
-  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
+  if(arg == "Group111Var0") return EventOctetStringVariation::Group111Var0;
+  else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }

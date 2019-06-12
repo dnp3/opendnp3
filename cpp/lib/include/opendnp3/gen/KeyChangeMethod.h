@@ -33,6 +33,7 @@
 #define OPENDNP3_KEYCHANGEMETHOD_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -55,7 +56,7 @@ enum class KeyChangeMethod : uint8_t
 uint8_t KeyChangeMethodToType(KeyChangeMethod arg);
 KeyChangeMethod KeyChangeMethodFromType(uint8_t arg);
 char const* KeyChangeMethodToString(KeyChangeMethod arg);
-KeyChangeMethod KeyChangeMethodFromString(char const* arg);
+KeyChangeMethod KeyChangeMethodFromString(const std::string& arg);
 
 }
 

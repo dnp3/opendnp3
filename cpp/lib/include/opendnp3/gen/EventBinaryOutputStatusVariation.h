@@ -33,6 +33,7 @@
 #define OPENDNP3_EVENTBINARYOUTPUTSTATUSVARIATION_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -45,7 +46,7 @@ enum class EventBinaryOutputStatusVariation : uint8_t
 uint8_t EventBinaryOutputStatusVariationToType(EventBinaryOutputStatusVariation arg);
 EventBinaryOutputStatusVariation EventBinaryOutputStatusVariationFromType(uint8_t arg);
 char const* EventBinaryOutputStatusVariationToString(EventBinaryOutputStatusVariation arg);
-EventBinaryOutputStatusVariation EventBinaryOutputStatusVariationFromString(char const* arg);
+EventBinaryOutputStatusVariation EventBinaryOutputStatusVariationFromString(const std::string& arg);
 
 }
 

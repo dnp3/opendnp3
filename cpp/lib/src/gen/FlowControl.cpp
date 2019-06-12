@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/FlowControl.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -63,10 +62,10 @@ char const* FlowControlToString(FlowControl arg)
       return "None";
   }
 }
-FlowControl FlowControlFromString(char const* arg)
+FlowControl FlowControlFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "Hardware", 8)) return FlowControl::Hardware;
-  if(std::strncmp(arg, "XONXOFF", 7)) return FlowControl::XONXOFF;
+  if(arg == "Hardware") return FlowControl::Hardware;
+  if(arg == "XONXOFF") return FlowControl::XONXOFF;
   else return FlowControl::None;
 }
 

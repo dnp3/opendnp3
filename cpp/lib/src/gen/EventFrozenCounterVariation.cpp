@@ -30,7 +30,6 @@
 //
 
 #include "opendnp3/gen/EventFrozenCounterVariation.h"
-#include <cstring>
 #include <stdexcept>
 
 namespace opendnp3 {
@@ -71,13 +70,13 @@ char const* EventFrozenCounterVariationToString(EventFrozenCounterVariation arg)
       return "UNDEFINED";
   }
 }
-EventFrozenCounterVariation EventFrozenCounterVariationFromString(char const* arg)
+EventFrozenCounterVariation EventFrozenCounterVariationFromString(const std::string& arg)
 {
-  if(std::strncmp(arg, "Group23Var1", 11)) return EventFrozenCounterVariation::Group23Var1;
-  if(std::strncmp(arg, "Group23Var2", 11)) return EventFrozenCounterVariation::Group23Var2;
-  if(std::strncmp(arg, "Group23Var5", 11)) return EventFrozenCounterVariation::Group23Var5;
-  if(std::strncmp(arg, "Group23Var6", 11)) return EventFrozenCounterVariation::Group23Var6;
-  else throw new std::invalid_argument(std::string("Unknown value: ") + arg);
+  if(arg == "Group23Var1") return EventFrozenCounterVariation::Group23Var1;
+  if(arg == "Group23Var2") return EventFrozenCounterVariation::Group23Var2;
+  if(arg == "Group23Var5") return EventFrozenCounterVariation::Group23Var5;
+  if(arg == "Group23Var6") return EventFrozenCounterVariation::Group23Var6;
+  else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
 
 }
