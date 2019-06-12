@@ -30,7 +30,7 @@ if(WIN32)
 	set(DNP3_DOTNET_FRAMEWORK_VERSION "v4.5" CACHE STRING "The target .NET framework version for the .NET components")
 endif()
 option(DNP3_EVERYTHING "Build all optional targets" OFF)
-option(DNP3_STATIC_LIBS "Build static libraries instead of shared libraries")
+option(DNP3_STATIC_LIBS "Build static libraries instead of shared libraries" OFF)
 
 if(DNP3_EVERYTHING)    
 	set(DNP3_TLS ON)
@@ -44,12 +44,14 @@ if(DNP3_EVERYTHING)
 endif()
 
 if(DNP3_STATIC_LIBS)
-    set(BUILD_SHARED_LIBS ON)
-	# the java bindings can only be built as shared library
+    set(BUILD_SHARED_LIBS OFF)
+	# the java bindings are always explicitly built as a shared library
 	# so fpic is required if building the main library statically
 	if(DNP3_JAVA)
 	    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
     endif()
+elseif()
+    set(BUILD_SHARED_LIBS ON)
 endif()
 
 # External dependencies
