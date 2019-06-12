@@ -130,14 +130,9 @@ IINField AssignClassHandler::ProcessAssignAll(AssignClassType type, PointClass c
 
 void AssignClassHandler::NotifyApplicationOfAssignment(AssignClassType type, PointClass clazz, const Range& range)
 {
-    if (range.IsValid() && (pApplication != nullptr))
+    if (pApplication && range.IsValid())
     {
-        auto pApplication = this->pApplication;
-        auto callback = [pApplication, range, clazz, type]() {
-            pApplication->RecordClassAssignment(type, clazz, range.start, range.stop);
-        };
-
-        pExecutor->post(callback);
+        pApplication->RecordClassAssignment(type, clazz, range.start, range.stop);
     }
 }
 
