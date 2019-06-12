@@ -13,7 +13,6 @@ if(MSVC_VERSION LESS 1900)
 endif()
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-set(BUILD_SHARED_LIBS ON)
 
 # Clang utilities
 include(./cmake/ClangFormat.cmake)
@@ -31,6 +30,7 @@ if(WIN32)
 	set(DNP3_DOTNET_FRAMEWORK_VERSION "v4.5" CACHE STRING "The target .NET framework version for the .NET components")
 endif()
 option(DNP3_EVERYTHING "Build all optional targets" OFF)
+option(DNP3_STATIC_LIBS "Build static libraries instead of shared libraries")
 
 if(DNP3_EVERYTHING)    
 	set(DNP3_TLS ON)
@@ -40,6 +40,15 @@ if(DNP3_EVERYTHING)
 	set(DNP3_JAVA ON)
 	if(WIN32)
         set(DNP3_DOTNET ON)
+    endif()
+endif()
+
+if(DNP3_STATIC_LIBS)
+    set(BUILD_SHARED_LIBS ON)
+	# the java bindings can only be built as shared library
+	# so fpic is required if building the main library statically
+	if(DNP3_JAVA)
+	    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
     endif()
 endif()
 
