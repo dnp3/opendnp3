@@ -39,7 +39,7 @@ public:
 
     ~LocalRef()
     {
-        if (ref != nullptr)
+        if (ref)
         {
             env->DeleteLocalRef(ref);
         }

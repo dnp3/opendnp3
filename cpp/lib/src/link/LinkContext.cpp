@@ -111,7 +111,7 @@ bool LinkContext::SetTxSegment(ITransportSegment& segments)
         return false;
     }
 
-    if (this->pSegments != nullptr)
+    if (this->pSegments)
     {
         SIMPLE_LOG_BLOCK(this->logger, flags::ERR, "Already transmitting a segment");
         return false;
@@ -258,7 +258,7 @@ void LinkContext::TryStartTransmission()
         this->pPriState = &pPriState->TrySendRequestLinkStatus(*this);
     }
 
-    if (this->pSegments != nullptr)
+    if (this->pSegments)
     {
         this->pPriState = (this->config.UseConfirms) ? &pPriState->TrySendConfirmed(*this, *pSegments)
                                                      : &pPriState->TrySendUnconfirmed(*this, *pSegments);

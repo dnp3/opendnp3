@@ -51,7 +51,7 @@ EventRecord* EventWriting::FindNextSelected(event_iter_t& iter, EventType type)
     while (true)
     {
         auto current = iter.CurrentValue();
-        if (current == nullptr)
+        if (!current)
             return nullptr;
 
         if (current->state == EventState::selected)
@@ -72,7 +72,7 @@ uint16_t EventWriting::WriteSome(event_iter_t& iterator, EventLists& lists, IEve
 
     const auto value = iterator.Find([](const EventRecord& record) { return record.state == EventState::selected; });
 
-    if (value == nullptr)
+    if (!value)
         return 0; // no match
 
     return value->type->WriteSome(iterator, lists, handler);

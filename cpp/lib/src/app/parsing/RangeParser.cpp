@@ -62,7 +62,7 @@ ParseResult RangeParser::ParseHeader(ser4cpp::rseq_t& buffer,
         return ParseRangeOfObjects(buffer, record, range, pLogger, pHandler);
     }
 
-    if (pHandler != nullptr)
+    if (pHandler)
     {
         pHandler->OnHeader(RangeHeader(record, range));
     }
@@ -80,7 +80,7 @@ ParseResult RangeParser::Process(const HeaderRecord& record,
         return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
     }
 
-    if (pHandler != nullptr)
+    if (pHandler)
     {
         handler(record, range, buffer, *pHandler);
     }
@@ -172,7 +172,7 @@ ParseResult RangeParser::ParseRangeOfOctetData(ser4cpp::rseq_t& buffer,
             return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
         }
 
-        if (pHandler != nullptr)
+        if (pHandler)
         {
             auto read = [range, record](ser4cpp::rseq_t& buffer, uint32_t pos) -> Indexed<OctetString> {
                 const auto octetData = buffer.take(record.variation);

@@ -79,7 +79,7 @@ public:
 
     void SetLowerLayer(ILowerLayer& lowerLayer)
     {
-        assert(pLowerLayer == nullptr);
+        assert(!pLowerLayer);
         pLowerLayer = &lowerLayer;
     }
 
@@ -97,7 +97,7 @@ public:
 
     void SetUpperLayer(IUpperLayer& upperLayer)
     {
-        assert(pUpperLayer == nullptr);
+        assert(!pUpperLayer);
         pUpperLayer = &upperLayer;
     }
 

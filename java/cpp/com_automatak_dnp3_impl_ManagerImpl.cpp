@@ -79,7 +79,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
     CString id(env, jid);
     CString adapter(env, jadapter);
     ChannelRetry retry(TimeDuration::Milliseconds(jminRetry), TimeDuration::Milliseconds(jmaxRetry));
-    auto listener = jlistener != nullptr ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
+    auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
 
     // Convert endpoints
     std::vector<opendnp3::IPEndpoint> endpoints;
@@ -112,7 +112,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
     CString id(env, jid);
     CString adapter(env, jadapter);
 
-    auto listener = jlistener != nullptr ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
+    auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
 
     auto channel = manager->AddTCPServer(id.str(), log4cpp::LogLevel(jlevels), static_cast<ServerAcceptMode>(jmode), adapter.str(),
                                          static_cast<uint16_t>(jport), listener);
@@ -138,7 +138,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
     CString adapter(env, jadapter);
     ChannelRetry retry(TimeDuration::Milliseconds(jminRetry), TimeDuration::Milliseconds(jmaxRetry));
     auto tlsconf = ConvertTLSConfig(env, jtlsconfig);
-    auto listener = jlistener != nullptr ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
+    auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
 
     // Convert endpoints
     std::vector<opendnp3::IPEndpoint> endpoints;
@@ -176,7 +176,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
     auto tlsconf = ConvertTLSConfig(env, jtlsconfig);
 
-    auto listener = jlistener != nullptr ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
+    auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
 
     std::error_code ec;
 
@@ -216,7 +216,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
     settings.parity = opendnp3::ParityFromType(static_cast<uint8_t>(jparity));
     settings.stopBits = opendnp3::StopBitsFromType(static_cast<uint8_t>(jstopbits));
 
-    auto listener = jlistener != nullptr ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
+    auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
 
     auto channel = manager->AddSerial(id.str(), log4cpp::LogLevel(jlevels), retry, settings, listener);
 

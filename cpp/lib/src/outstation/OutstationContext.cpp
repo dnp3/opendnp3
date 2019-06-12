@@ -540,7 +540,7 @@ IINField OContext::HandleWrite(const ser4cpp::rseq_t& objects)
 IINField OContext::HandleDirectOperate(const ser4cpp::rseq_t& objects, OperateType opType, HeaderWriter* pWriter)
 {
     // since we're echoing, make sure there's enough size before beginning
-    if ((pWriter != nullptr) && (objects.length() > pWriter->Remaining()))
+    if (pWriter && (objects.length() > pWriter->Remaining()))
     {
         FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Igonring command request due to oversized payload size of %zu",
                          objects.length());
@@ -638,7 +638,7 @@ IINField OContext::HandleRestart(const ser4cpp::rseq_t& objects, bool isWarmRest
     case (RestartMode::SUPPORTED_DELAY_COARSE):
     {
         auto delay = isWarmRestart ? this->application->WarmRestart() : this->application->ColdRestart();
-        if (pWriter != nullptr)
+        if (pWriter)
         {
             Group52Var1 coarse;
             coarse.time = delay;
@@ -649,7 +649,7 @@ IINField OContext::HandleRestart(const ser4cpp::rseq_t& objects, bool isWarmRest
     default:
     {
         auto delay = isWarmRestart ? this->application->WarmRestart() : this->application->ColdRestart();
-        if (pWriter != nullptr)
+        if (pWriter)
         {
             Group52Var2 fine;
             fine.time = delay;

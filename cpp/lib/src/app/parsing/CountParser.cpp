@@ -42,7 +42,7 @@ ParseResult CountParser::Process(const HeaderRecord& record,
         return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
     }
 
-    if (pHandler != nullptr)
+    if (pHandler)
     {
         handler(record, count, buffer, *pHandler);
     }

@@ -55,7 +55,7 @@ namespace Automatak
 				case(QualifierCode::UINT8_CNT) :
 				{
 					auto value = dynamic_cast<CountHeader^>(header);
-					if (value == nullptr)
+					if (!value)
 					{
 						return false;
 					}
@@ -68,7 +68,7 @@ namespace Automatak
 				case(QualifierCode::UINT16_CNT) :
 				{
 					auto value = dynamic_cast<CountHeader^>(header);
-					if (value == nullptr)
+					if (!value)
 					{
 						return false;
 					}
@@ -81,7 +81,7 @@ namespace Automatak
 				case(QualifierCode::UINT8_START_STOP) :
 				{
 					auto value = dynamic_cast<RangeHeader^>(header);
-					if (value == nullptr)
+					if (!value)
 					{
 						return false;
 					}
@@ -94,7 +94,7 @@ namespace Automatak
 				case(QualifierCode::UINT16_START_STOP) :
 				{
 					auto value = dynamic_cast<RangeHeader^>(header);
-					if (value == nullptr)
+					if (!value)
 					{
 						return false;
 					}
@@ -172,7 +172,7 @@ namespace Automatak
 
 			opendnp3::ITaskCallback* MasterConversions::CreateTaskCallback(ITaskCallback^ callback)
 			{
-				return (callback == nullptr) ? nullptr : TaskCallbackAdapter::Create(callback);
+                return callback ? TaskCallbackAdapter::Create(callback) : nullptr;
 			}
 
 		}

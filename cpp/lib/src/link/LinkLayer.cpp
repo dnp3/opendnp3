@@ -38,7 +38,7 @@ const StackStatistics::Link& LinkLayer::GetStatistics() const
 
 void LinkLayer::SetRouter(ILinkTx& router)
 {
-    assert(ctx.linktx == nullptr);
+    assert(!ctx.linktx);
     ctx.linktx = &router;
 }
 
