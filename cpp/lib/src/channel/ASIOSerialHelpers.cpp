@@ -110,8 +110,12 @@ bool Configure(const SerialSettings& settings, asio::serial_port& port, std::err
     if (ec)
         return false;
 
+    port.set_option(ConvertFlow(settings.flowType), ec);
+    if (ec)
+        return false;
+
     port.set_option(ConvertStopBits(settings.stopBits), ec);
-    return !static_cast<bool>(ec);
+    return !ec;
 }
 
 } // namespace opendnp3
