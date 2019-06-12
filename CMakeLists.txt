@@ -45,8 +45,8 @@ endif()
 
 if(DNP3_STATIC_LIBS)
     set(BUILD_SHARED_LIBS OFF)
-	# the java bindings are always explicitly built as a shared library
-	# so fpic is required if building the main library statically
+    # the java bindings are always explicitly built as a shared library
+    # so fpic is required if building the main library statically
     if(DNP3_JAVA)
         set(CMAKE_POSITION_INDEPENDENT_CODE ON)
     endif()
