@@ -532,6 +532,7 @@ set(opendnp3_src
     ./src/gen/objects/Group121.cpp
     ./src/gen/objects/Group122.cpp
 
+    ./src/link/Addresses.cpp
     ./src/link/CRC.cpp
     ./src/link/LinkContext.cpp
     ./src/link/LinkFrame.cpp

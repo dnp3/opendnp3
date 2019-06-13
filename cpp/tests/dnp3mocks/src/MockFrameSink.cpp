@@ -44,8 +44,8 @@ void MockFrameSink::Reset()
 
 bool MockFrameSink::CheckLast(LinkFunction func, bool isMaster, uint16_t dest, uint16_t src)
 {
-    return (m_last_header.func == func) && (isMaster == m_last_header.isFromMaster) && (m_last_header.src == src)
-        && (m_last_header.dest == dest);
+    return (m_last_header.func == func) && (isMaster == m_last_header.isFromMaster) && (m_last_header.addresses.source == src)
+        && (m_last_header.addresses.destination == dest);
 }
 
 bool MockFrameSink::CheckLastWithFCB(LinkFunction func, bool isMaster, bool aFcb, uint16_t dest, uint16_t src)

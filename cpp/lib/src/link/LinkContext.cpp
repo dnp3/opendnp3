@@ -334,17 +334,24 @@ bool LinkContext::OnFrame(const LinkHeaderFields& header, const ser4cpp::rseq_t&
         return false;
     }
 
-    if (header.dest != config.LocalAddr)
+    if (header.addresses.destination != config.LocalAddr && !header.addresses.IsBroadcast())
     {
         ++statistics.numUnknownDestination;
-        this->listener->OnUnknownDestinationAddress(header.dest);
+        this->listener->OnUnknownDestinationAddress(header.addresses.destination);
         return false;
     }
 
-    if (header.src != config.RemoteAddr && !config.respondToAnySource)
+    if (header.addresses.source != config.RemoteAddr && !config.respondToAnySource)
     {
         ++statistics.numUnknownSource;
-        this->listener->OnUnknownSourceAddress(header.src);
+        this->listener->OnUnknownSourceAddress(header.addresses.source);
+        return false;
+    }
+
+    // Broadcast addresses can only be used for PRI_UNCONFIRMED_USER_DATA
+    if(header.addresses.IsBroadcast() && header.func != LinkFunction::PRI_UNCONFIRMED_USER_DATA)
+    {
+        ++statistics.numUnexpectedFrame;
         return false;
     }
 
@@ -366,20 +373,20 @@ bool LinkContext::OnFrame(const LinkHeaderFields& header, const ser4cpp::rseq_t&
         pPriState = &pPriState->OnNotSupported(*this, header.fcvdfc);
         break;
     case (LinkFunction::PRI_TEST_LINK_STATES):
-        pSecState = &pSecState->OnTestLinkStatus(*this, header.src, header.fcb);
+        pSecState = &pSecState->OnTestLinkStatus(*this, header.addresses.source, header.fcb);
         break;
     case (LinkFunction::PRI_RESET_LINK_STATES):
-        pSecState = &pSecState->OnResetLinkStates(*this, header.src);
+        pSecState = &pSecState->OnResetLinkStates(*this, header.addresses.source);
         break;
     case (LinkFunction::PRI_REQUEST_LINK_STATUS):
-        pSecState = &pSecState->OnRequestLinkStatus(*this, header.src);
+        pSecState = &pSecState->OnRequestLinkStatus(*this, header.addresses.source);
         break;
     case (LinkFunction::PRI_CONFIRMED_USER_DATA):
         pSecState
-            = &pSecState->OnConfirmedUserData(*this, header.src, header.fcb, Message(header.ToAddresses(), userdata));
+            = &pSecState->OnConfirmedUserData(*this, header.addresses.source, header.fcb, Message(header.addresses, userdata));
         break;
     case (LinkFunction::PRI_UNCONFIRMED_USER_DATA):
-        this->PushDataUp(Message(header.ToAddresses(), userdata));
+        this->PushDataUp(Message(header.addresses, userdata));
         break;
     default:
         break;

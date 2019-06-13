@@ -73,8 +73,7 @@ TEST_CASE(SUITE("ValidatesSourceAddress"))
     REQUIRE(t.link.GetStatistics().numUnknownSource == 1);
 }
 
-// This should actually never happen when using the LinkLayerRouter
-// Only process frame addressed to you
+// Only process frame addressed to you directly, or broadcast
 TEST_CASE(SUITE("ValidatesDestinationAddress"))
 {
     LinkLayerTest t;
@@ -100,10 +99,22 @@ TEST_CASE(SUITE("UnconfirmedDataPassedUpFromIdleUnreset"))
     t.link.OnLowerLayerUp();
     ByteStr bs(250, 0);
     t.OnFrame(LinkFunction::PRI_UNCONFIRMED_USER_DATA, false, false, false, 1, 1024, bs.ToRSeq());
+    REQUIRE(t.upper->receivedQueue.size() == 1);
     REQUIRE(t.upper->receivedQueue.front() == bs.ToHex());
 }
 
-// Show that the base state of idle forwards unconfirmed user data
+// Show that the base state of idle forwards unconfirmed user data with broadcast address
+TEST_CASE(SUITE("UnconfirmedBroadcastDataPassedUpFromIdleUnreset"))
+{
+    LinkLayerTest t;
+    t.link.OnLowerLayerUp();
+    ByteStr bs(250, 0);
+    t.OnFrame(LinkFunction::PRI_UNCONFIRMED_USER_DATA, false, false, false, LL_BROADCAST_SHALL_CONFIRM, 1024, bs.ToRSeq());
+    REQUIRE(t.upper->receivedQueue.size() == 1);
+    REQUIRE(t.upper->receivedQueue.front() == bs.ToHex());
+}
+
+// Show that the base state of idle does not forward confirmed user data
 TEST_CASE(SUITE("ConfirmedDataIgnoredFromIdleUnreset"))
 {
     LinkLayerTest t;
@@ -125,6 +136,17 @@ TEST_CASE(SUITE("SecondaryResetLink"))
     REQUIRE(t.PopLastWriteAsHex() == LinkHex::Ack(true, false, 1024, 1));
 }
 
+// Secondary Reset Links with broadcast address
+TEST_CASE(SUITE("BroadcastSecondaryResetLink"))
+{
+    LinkLayerTest t(LinkLayerTest::DefaultConfig());
+    t.link.OnLowerLayerUp();
+    t.OnFrame(LinkFunction::PRI_RESET_LINK_STATES, false, false, false, LL_BROADCAST_SHALL_CONFIRM, 1024);
+
+    REQUIRE(t.NumTotalWrites() == 0);
+    REQUIRE(t.link.GetStatistics().numUnexpectedFrame == 1);
+}
+
 TEST_CASE(SUITE("SecAckWrongFCB"))
 {
     LinkConfig cfg = LinkLayerTest::DefaultConfig();
@@ -144,6 +166,25 @@ TEST_CASE(SUITE("SecAckWrongFCB"))
 
     REQUIRE(t.PopLastWriteAsHex() == LinkHex::Ack(true, false, 1024, 1));
     REQUIRE(t.upper->receivedQueue.empty()); // data should not be passed up!
+}
+
+TEST_CASE(SUITE("BroadcastConfirmedData"))
+{
+    LinkConfig cfg = LinkLayerTest::DefaultConfig();
+    cfg.UseConfirms = true;
+
+    LinkLayerTest t(cfg);
+    t.link.OnLowerLayerUp();
+
+    t.OnFrame(LinkFunction::PRI_RESET_LINK_STATES, false, false, false, 1, 1024);
+    REQUIRE(t.NumTotalWrites() == 1);
+    t.link.OnTxReady();
+
+    ByteStr b(250, 0);
+    t.OnFrame(LinkFunction::PRI_CONFIRMED_USER_DATA, false, false, false, LL_BROADCAST_SHALL_CONFIRM, 1024, b.ToRSeq());
+    t.link.OnTxReady();
+    REQUIRE(t.NumTotalWrites() == 1);
+    REQUIRE(t.link.GetStatistics().numUnexpectedFrame == 1);
 }
 
 // When we get another reset links when we're already reset,
@@ -207,6 +248,16 @@ TEST_CASE(SUITE("RequestStatusOfLink"))
     REQUIRE(t.PopLastWriteAsHex() == LinkHex::LinkStatus(true, false, 1024, 1));
 }
 
+TEST_CASE(SUITE("BroadcastRequestStatusOfLink"))
+{
+    LinkLayerTest t;
+    t.link.OnLowerLayerUp();
+    t.OnFrame(LinkFunction::PRI_REQUEST_LINK_STATUS, false, false, false, LL_BROADCAST_SHALL_CONFIRM,
+              1024);
+    REQUIRE(t.NumTotalWrites() == 0);
+    REQUIRE(t.link.GetStatistics().numUnexpectedFrame == 1);
+}
+
 TEST_CASE(SUITE("TestLinkStates"))
 {
     LinkLayerTest t;
@@ -222,6 +273,15 @@ TEST_CASE(SUITE("TestLinkStates"))
 
     REQUIRE(t.NumTotalWrites() == 2);
     REQUIRE(t.PopLastWriteAsHex() == LinkHex::Ack(true, false, 1024, 1));
+}
+
+TEST_CASE(SUITE("BroadcastTestLinkStates"))
+{
+    LinkLayerTest t;
+    t.link.OnLowerLayerUp();
+    t.OnFrame(LinkFunction::PRI_TEST_LINK_STATES, false, false, false, LL_BROADCAST_SHALL_CONFIRM, 1024);
+    REQUIRE(t.NumTotalWrites() == 0);
+    REQUIRE(t.link.GetStatistics().numUnexpectedFrame == 1);
 }
 
 TEST_CASE(SUITE("SendUnconfirmed"))

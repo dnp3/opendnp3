@@ -150,11 +150,11 @@ void ExampleListenCallbacks::OnFirstFrame(uint64_t sessionid,
 
     // do we already have a session with this outstation?
     const auto iter = std::find_if(this->sessions.begin(), this->sessions.end(),
-                                   [&](const auto& item) { return item.address == header.src; });
+                                   [&](const auto& item) { return item.address == header.addresses.source; });
     if (iter != this->sessions.end())
     {
 
-        std::cout << "Already connected to outstation w/ address " << header.src << ". Closing first connection."
+        std::cout << "Already connected to outstation w/ address " << header.addresses.source << ". Closing first connection."
                   << std::endl;
 
         // if so, shutdown the existing session
@@ -165,8 +165,8 @@ void ExampleListenCallbacks::OnFirstFrame(uint64_t sessionid,
     MasterStackConfig config;
 
     // use the master and outstation addresses that the outstation is using
-    config.link.LocalAddr = header.dest;
-    config.link.RemoteAddr = header.src;
+    config.link.LocalAddr = header.addresses.destination;
+    config.link.RemoteAddr = header.addresses.source;
 
     // don't disable unsolicited reporting when the master comes online
     config.master.disableUnsolOnStartup = false;
@@ -174,13 +174,13 @@ void ExampleListenCallbacks::OnFirstFrame(uint64_t sessionid,
     config.master.startupIntegrityClassMask = ClassField::None();
 
     const auto session
-        = acceptor.AcceptSession(GetSessionName(header.src, sessionid), std::make_shared<ExampleSOEHandler>(header.src),
+        = acceptor.AcceptSession(GetSessionName(header.addresses.source, sessionid), std::make_shared<ExampleSOEHandler>(header.addresses.source),
                                  std::make_shared<DefaultMasterApplication>(), config);
 
     // add to the list
-    this->sessions.emplace_back(SessionInfo{sessionid, header.src, session});
+    this->sessions.emplace_back(SessionInfo{sessionid, header.addresses.source, session});
 
-    std::cout << "Outstation session start: " << header.src << std::endl;
+    std::cout << "Outstation session start: " << header.addresses.source << std::endl;
 }
 
 void ExampleListenCallbacks::OnConnectionClose(uint64_t sessionid,

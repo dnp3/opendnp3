@@ -34,6 +34,11 @@ const uint8_t LPDU_DATA_PLUS_CRC_SIZE = 18;
 const uint8_t LPDU_MAX_USER_DATA_SIZE = 250;
 const uint16_t LPDU_MAX_FRAME_SIZE = 292; // 10(header) + 250 (user data) + 32 (block CRC's) = 292 frame bytes
 
+// Broadcast addresses
+const uint16_t LL_BROADCAST_DONT_CONFIRM = 0xFFFD;
+const uint16_t LL_BROADCAST_SHALL_CONFIRM = 0xFFFE;
+const uint16_t LL_BROADCAST_OPTIONAL_CONFIRM = 0xFFFF;
+
 /// Indices for use with buffers containing link headers
 enum LinkHeaderIndex : uint8_t
 {

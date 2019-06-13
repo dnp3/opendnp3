@@ -30,19 +30,13 @@ struct LinkHeaderFields
 {
     LinkHeaderFields();
 
-    LinkHeaderFields(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, uint16_t dest, uint16_t src_);
-
-    Addresses ToAddresses() const
-    {
-        return Addresses(src, dest);
-    }
+    LinkHeaderFields(LinkFunction func, bool isMaster, bool fcb, bool fcvdfc, Addresses addresses);
 
     LinkFunction func;
     bool isFromMaster;
     bool fcb;
     bool fcvdfc;
-    uint16_t dest;
-    uint16_t src;
+    Addresses addresses;
 };
 
 } // namespace opendnp3

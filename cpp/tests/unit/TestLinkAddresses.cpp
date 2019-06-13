@@ -34,3 +34,11 @@ TEST_CASE(SUITE("LinkAddressesEqualityComparison"))
     REQUIRE(lr1 != lr2);
     REQUIRE(lr3 == lr2);
 }
+
+TEST_CASE(SUITE("LinkAddressesIsBroadcast"))
+{
+    REQUIRE(Addresses(1, 0xFFFD).IsBroadcast());
+    REQUIRE(Addresses(1, 0xFFFE).IsBroadcast());
+    REQUIRE(Addresses(1, 0xFFFF).IsBroadcast());
+    REQUIRE(!Addresses(1, 1024).IsBroadcast());
+}

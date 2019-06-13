@@ -17,19 +17,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "opendnp3/link/LinkHeaderFields.h"
+#include "opendnp3/link/Addresses.h"
+
+#include "link/LinkLayerConstants.h"
 
 namespace opendnp3
 {
-LinkHeaderFields::LinkHeaderFields()
-    : func(LinkFunction::INVALID), isFromMaster(false), fcb(false), fcvdfc(false), addresses(Addresses())
-{
-}
 
-LinkHeaderFields::LinkHeaderFields(
-    LinkFunction func_, bool isMaster_, bool fcb_, bool fcvdfc_, Addresses addresses_)
-    : func(func_), isFromMaster(isMaster_), fcb(fcb_), fcvdfc(fcvdfc_), addresses(addresses_)
+bool Addresses::IsBroadcast() const
 {
+    return this->destination == LL_BROADCAST_DONT_CONFIRM ||
+           this->destination == LL_BROADCAST_SHALL_CONFIRM ||
+           this->destination == LL_BROADCAST_OPTIONAL_CONFIRM;
 }
 
 } // namespace opendnp3

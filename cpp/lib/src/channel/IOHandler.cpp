@@ -239,12 +239,12 @@ void IOHandler::OnNewChannel(const std::shared_ptr<IAsyncChannel>& channel)
 
 bool IOHandler::OnFrame(const LinkHeaderFields& header, const ser4cpp::rseq_t& userdata)
 {
-    if (this->SendToSession(Addresses(header.src, header.dest), header, userdata))
+    if (this->SendToSession(header.addresses, header, userdata))
     {
         return true;
     }
 
-    FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Frame w/ unknown route, source: %i, dest %i", header.src, header.dest);
+    FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Frame w/ unknown route, source: %i, dest %i", header.addresses.source, header.addresses.destination);
     return false;
 }
 
