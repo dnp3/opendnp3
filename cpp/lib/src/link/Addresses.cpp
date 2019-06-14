@@ -26,9 +26,9 @@ namespace opendnp3
 
 bool Addresses::IsBroadcast() const
 {
-    return this->destination == LL_BROADCAST_DONT_CONFIRM ||
-           this->destination == LL_BROADCAST_SHALL_CONFIRM ||
-           this->destination == LL_BROADCAST_OPTIONAL_CONFIRM;
+    return this->destination == LinkBroadcastAddress::DontConfirm ||
+           this->destination == LinkBroadcastAddress::ShallConfirm ||
+           this->destination == LinkBroadcastAddress::OptionalConfirm;
 }
 
 } // namespace opendnp3

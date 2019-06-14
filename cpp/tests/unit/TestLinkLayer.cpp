@@ -109,7 +109,7 @@ TEST_CASE(SUITE("UnconfirmedBroadcastDataPassedUpFromIdleUnreset"))
     LinkLayerTest t;
     t.link.OnLowerLayerUp();
     ByteStr bs(250, 0);
-    t.OnFrame(LinkFunction::PRI_UNCONFIRMED_USER_DATA, false, false, false, LL_BROADCAST_SHALL_CONFIRM, 1024, bs.ToRSeq());
+    t.OnFrame(LinkFunction::PRI_UNCONFIRMED_USER_DATA, false, false, false, LinkBroadcastAddress::ShallConfirm, 1024, bs.ToRSeq());
     REQUIRE(t.upper->receivedQueue.size() == 1);
     REQUIRE(t.upper->receivedQueue.front() == bs.ToHex());
 }
@@ -141,7 +141,7 @@ TEST_CASE(SUITE("BroadcastSecondaryResetLink"))
 {
     LinkLayerTest t(LinkLayerTest::DefaultConfig());
     t.link.OnLowerLayerUp();
-    t.OnFrame(LinkFunction::PRI_RESET_LINK_STATES, false, false, false, LL_BROADCAST_SHALL_CONFIRM, 1024);
+    t.OnFrame(LinkFunction::PRI_RESET_LINK_STATES, false, false, false, LinkBroadcastAddress::ShallConfirm, 1024);
 
     REQUIRE(t.NumTotalWrites() == 0);
     REQUIRE(t.link.GetStatistics().numUnexpectedFrame == 1);
@@ -176,15 +176,12 @@ TEST_CASE(SUITE("BroadcastConfirmedData"))
     LinkLayerTest t(cfg);
     t.link.OnLowerLayerUp();
 
-    t.OnFrame(LinkFunction::PRI_RESET_LINK_STATES, false, false, false, 1, 1024);
-    REQUIRE(t.NumTotalWrites() == 1);
-    t.link.OnTxReady();
-
     ByteStr b(250, 0);
-    t.OnFrame(LinkFunction::PRI_CONFIRMED_USER_DATA, false, false, false, LL_BROADCAST_SHALL_CONFIRM, 1024, b.ToRSeq());
+    t.OnFrame(LinkFunction::PRI_CONFIRMED_USER_DATA, false, false, false, LinkBroadcastAddress::ShallConfirm, 1024, b.ToRSeq());
     t.link.OnTxReady();
-    REQUIRE(t.NumTotalWrites() == 1);
-    REQUIRE(t.link.GetStatistics().numUnexpectedFrame == 1);
+    REQUIRE(t.upper->receivedQueue.size() == 1);
+    REQUIRE(t.upper->receivedQueue.front() == b.ToHex());
+    REQUIRE(t.link.GetStatistics().numUnexpectedFrame == 0);
 }
 
 // When we get another reset links when we're already reset,
@@ -252,7 +249,7 @@ TEST_CASE(SUITE("BroadcastRequestStatusOfLink"))
 {
     LinkLayerTest t;
     t.link.OnLowerLayerUp();
-    t.OnFrame(LinkFunction::PRI_REQUEST_LINK_STATUS, false, false, false, LL_BROADCAST_SHALL_CONFIRM,
+    t.OnFrame(LinkFunction::PRI_REQUEST_LINK_STATUS, false, false, false, LinkBroadcastAddress::ShallConfirm,
               1024);
     REQUIRE(t.NumTotalWrites() == 0);
     REQUIRE(t.link.GetStatistics().numUnexpectedFrame == 1);
@@ -279,7 +276,7 @@ TEST_CASE(SUITE("BroadcastTestLinkStates"))
 {
     LinkLayerTest t;
     t.link.OnLowerLayerUp();
-    t.OnFrame(LinkFunction::PRI_TEST_LINK_STATES, false, false, false, LL_BROADCAST_SHALL_CONFIRM, 1024);
+    t.OnFrame(LinkFunction::PRI_TEST_LINK_STATES, false, false, false, LinkBroadcastAddress::ShallConfirm, 1024);
     REQUIRE(t.NumTotalWrites() == 0);
     REQUIRE(t.link.GetStatistics().numUnexpectedFrame == 1);
 }

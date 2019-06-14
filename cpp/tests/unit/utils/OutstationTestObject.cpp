@@ -59,6 +59,13 @@ size_t OutstationTestObject::SendToOutstation(const std::string& hex)
     return exe->run_many();
 }
 
+size_t OutstationTestObject::BroadcastToOutstation(LinkBroadcastAddress broadcast_address, const std::string& hex)
+{
+    HexSequence hs(hex);
+    context.OnReceive(Message(Addresses(0, broadcast_address), hs.ToRSeq()));
+    return exe->run_many();
+}
+
 size_t OutstationTestObject::NumPendingTimers() const
 {
     return exe->num_pending_timers();

@@ -21,6 +21,7 @@
 #define OPENDNP3_OUTSTATIONCONTEXT_H
 
 #include "LayerInterfaces.h"
+#include "link/LinkLayerConstants.h"
 #include "outstation/ControlState.h"
 #include "outstation/Database.h"
 #include "outstation/DeferredRequest.h"
@@ -40,6 +41,7 @@
 #include "opendnp3/outstation/OutstationConfig.h"
 
 #include <ser4cpp/container/Pair.h>
+#include <ser4cpp/container/Settable.h>
 
 #include <exe4cpp/IExecutor.h>
 
@@ -106,13 +108,19 @@ private:
 
     bool ProcessRequest(const ParsedRequest& request);
 
+    bool ProcessBroadcastRequest(const ParsedRequest& request);
+
+    bool HandleBroadcastRequest(const ParsedRequest& request);
+
     bool ProcessRequestNoAck(const ParsedRequest& request);
 
     bool ProcessConfirm(const ParsedRequest& request);
 
     // ---- common helper methods ----
 
-    void BeginResponseTx(uint16_t destination, const ser4cpp::rseq_t& data, const AppControlField& control);
+    OutstationState& BeginResponseTx(uint16_t destination, APDUResponse& response);
+
+    void BeginRetransmitLastResponse(uint16_t destination);
 
     void BeginUnsolTx(const AppControlField& control, const ser4cpp::rseq_t& response);
 
@@ -152,8 +160,8 @@ private:
     IINField HandleRecordCurrentTime();
     IINField HandleRestart(const ser4cpp::rseq_t& objects, bool isWarmRestart, HeaderWriter* pWriter);
     IINField HandleAssignClass(const ser4cpp::rseq_t& objects);
-    IINField HandleDisableUnsolicited(const ser4cpp::rseq_t& objects, HeaderWriter& writer);
-    IINField HandleEnableUnsolicited(const ser4cpp::rseq_t& objects, HeaderWriter& writer);
+    IINField HandleDisableUnsolicited(const ser4cpp::rseq_t& objects, HeaderWriter* writer);
+    IINField HandleEnableUnsolicited(const ser4cpp::rseq_t& objects, HeaderWriter* writer);
     IINField HandleCommandWithConstant(const ser4cpp::rseq_t& objects, HeaderWriter& writer, CommandStatus status);
 
     // ------ resources --------
@@ -190,6 +198,9 @@ private:
     OutstationSolState sol;
     OutstationUnsolState unsol;
     OutstationState* state = &StateIdle::Inst();
+
+    // ------ Dynamic state related to broadcast messages ------
+    ser4cpp::Settable<LinkBroadcastAddress> lastBroadcastMessageReceived;
 };
 
 } // namespace opendnp3

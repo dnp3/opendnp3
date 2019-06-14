@@ -59,13 +59,13 @@ OutstationState& StateIdle::OnNewNonReadRequest(OContext& ctx, const ParsedReque
 
 OutstationState& StateIdle::OnRepeatNonReadRequest(OContext& ctx, const ParsedRequest& request)
 {
-    ctx.BeginResponseTx(request.addresses.source, ctx.sol.tx.GetLastResponse(), ctx.sol.tx.GetLastControl());
+    ctx.BeginRetransmitLastResponse(request.addresses.source);
     return *this;
 }
 
 OutstationState& StateIdle::OnRepeatReadRequest(OContext& ctx, const ParsedRequest& request)
 {
-    ctx.BeginResponseTx(request.addresses.source, ctx.sol.tx.GetLastResponse(), ctx.sol.tx.GetLastControl());
+    ctx.BeginRetransmitLastResponse(request.addresses.source);
     return *this;
 }
 
@@ -93,6 +93,7 @@ OutstationState& StateSolicitedConfirmWait::OnConfirm(OContext& ctx, const Parse
     ctx.history.Reset(); // any time we get a confirm we can treat any request as a new request
     ctx.confirmTimer.cancel();
     ctx.eventBuffer.ClearWritten();
+    ctx.lastBroadcastMessageReceived.clear();
 
     if (ctx.rspContext.HasSelection())
     {
@@ -124,14 +125,14 @@ OutstationState& StateSolicitedConfirmWait::OnNewNonReadRequest(OContext& ctx, c
 OutstationState& StateSolicitedConfirmWait::OnRepeatNonReadRequest(OContext& ctx, const ParsedRequest& request)
 {
     ctx.confirmTimer.cancel();
-    ctx.BeginResponseTx(request.addresses.source, ctx.sol.tx.GetLastResponse(), ctx.sol.tx.GetLastControl());
+    ctx.BeginRetransmitLastResponse(request.addresses.source);
     return *this;
 }
 
 OutstationState& StateSolicitedConfirmWait::OnRepeatReadRequest(OContext& ctx, const ParsedRequest& request)
 {
     ctx.RestartConfirmTimer();
-    ctx.BeginResponseTx(request.addresses.source, ctx.sol.tx.GetLastResponse(), ctx.sol.tx.GetLastControl());
+    ctx.BeginRetransmitLastResponse(request.addresses.source);
     return *this;
 }
 
@@ -198,7 +199,7 @@ OutstationState& StateUnsolicitedConfirmWait::OnNewNonReadRequest(OContext& ctx,
 
 OutstationState& StateUnsolicitedConfirmWait::OnRepeatNonReadRequest(OContext& ctx, const ParsedRequest& request)
 {
-    ctx.BeginResponseTx(request.addresses.source, ctx.sol.tx.GetLastResponse(), ctx.sol.tx.GetLastControl());
+    ctx.BeginRetransmitLastResponse(request.addresses.source);
     return *this;
 }
 

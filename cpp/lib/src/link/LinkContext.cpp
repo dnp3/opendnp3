@@ -348,11 +348,22 @@ bool LinkContext::OnFrame(const LinkHeaderFields& header, const ser4cpp::rseq_t&
         return false;
     }
 
-    // Broadcast addresses can only be used for PRI_UNCONFIRMED_USER_DATA
-    if(header.addresses.IsBroadcast() && header.func != LinkFunction::PRI_UNCONFIRMED_USER_DATA)
+    if(header.addresses.IsBroadcast())
     {
-        ++statistics.numUnexpectedFrame;
-        return false;
+        // Broadcast addresses can only be used for sending data.
+        // If confirmed data is used, no response is sent back.
+        if(header.func == LinkFunction::PRI_UNCONFIRMED_USER_DATA || header.func == LinkFunction::PRI_CONFIRMED_USER_DATA)
+        {
+            this->PushDataUp(Message(header.addresses, userdata));
+            return true;
+        }
+        else
+        {
+            FORMAT_LOG_BLOCK(logger, flags::WARN, "Received invalid function (%s) with broadcast destination address", LinkFunctionToString(header.func));
+            ++statistics.numUnexpectedFrame;
+            return false;
+        }
+        
     }
 
     // reset the keep-alive timestamp
