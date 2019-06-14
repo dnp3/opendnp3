@@ -110,8 +110,6 @@ private:
 
     bool ProcessBroadcastRequest(const ParsedRequest& request);
 
-    bool HandleBroadcastRequest(const ParsedRequest& request);
-
     bool ProcessRequestNoAck(const ParsedRequest& request);
 
     bool ProcessConfirm(const ParsedRequest& request);
@@ -122,7 +120,7 @@ private:
 
     void BeginRetransmitLastResponse(uint16_t destination);
 
-    void BeginUnsolTx(const AppControlField& control, const ser4cpp::rseq_t& response);
+    void BeginUnsolTx(APDUResponse& response);
 
     void BeginTx(uint16_t destination, const ser4cpp::rseq_t& message);
 
@@ -139,6 +137,10 @@ private:
     IINField GetResponseIIN();
 
     IINField GetDynamicIIN();
+
+    void UpdateLastBroadcastMessageReceived(uint16_t destination);
+
+    void CheckForBroadcastConfirmation(APDUResponse& response);
 
     /// --- methods for handling app-layer functions ---
 

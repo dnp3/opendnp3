@@ -183,7 +183,8 @@ bool OContext::ProcessObjects(const ParsedRequest& request)
 {
     if(request.addresses.IsBroadcast())
     {
-        return this->ProcessBroadcastRequest(request);
+        this->state = &this->state->OnBroadcastMessage(*this, request);
+        return true;
     }
 
     if (Functions::IsNoAckFuncCode(request.header.function))
@@ -228,22 +229,7 @@ bool OContext::ProcessConfirm(const ParsedRequest& request)
 
 OutstationState& OContext::BeginResponseTx(uint16_t destination, APDUResponse& response)
 {
-    if(lastBroadcastMessageReceived.is_set())
-    {
-        response.SetIIN(response.GetIIN() | IINField(IINBit::ALL_STATIONS));
-
-        if(lastBroadcastMessageReceived.get() != LinkBroadcastAddress::ShallConfirm)
-        {
-            lastBroadcastMessageReceived.clear();
-        }
-        else
-        {
-            // The broadcast address requested a confirmation
-            auto control = response.GetControl();
-            control.CON = true;
-            response.SetControl(control);
-        }
-    }
+    CheckForBroadcastConfirmation(response);
 
     const auto data = response.ToRSeq();
     this->sol.tx.Record(response.GetControl(), data);
@@ -264,12 +250,15 @@ void OContext::BeginRetransmitLastResponse(uint16_t destination)
     this->BeginTx(destination, this->sol.tx.GetLastResponse());
 }
 
-void OContext::BeginUnsolTx(const AppControlField& control, const ser4cpp::rseq_t& response)
+void OContext::BeginUnsolTx(APDUResponse& response)
 {
-    this->unsol.tx.Record(control, response);
+    CheckForBroadcastConfirmation(response);
+
+    const auto data = response.ToRSeq();
+    this->unsol.tx.Record(response.GetControl(), data);
     this->unsol.seq.confirmNum = this->unsol.seq.num;
     this->unsol.seq.num.Increment();
-    this->BeginTx(this->addresses.destination, response);
+    this->BeginTx(this->addresses.destination, data);
 }
 
 void OContext::BeginTx(uint16_t destination, const ser4cpp::rseq_t& message)
@@ -333,7 +322,7 @@ void OContext::CheckForUnsolicited()
                 build::NullUnsolicited(response, this->unsol.seq.num, this->GetResponseIIN());
                 this->RestartConfirmTimer();
                 this->state = &StateUnsolicitedConfirmWait::Inst();
-                this->BeginUnsolTx(response.GetControl(), response.ToRSeq());
+                this->BeginUnsolTx(response);
             }
         }
         else
@@ -343,7 +332,7 @@ void OContext::CheckForUnsolicited()
             build::NullUnsolicited(response, this->unsol.seq.num, this->GetResponseIIN());
             this->RestartConfirmTimer();
             this->state = &StateUnsolicitedConfirmWait::Inst();
-            this->BeginUnsolTx(response.GetControl(), response.ToRSeq());
+            this->BeginUnsolTx(response);
         }
     }
 }
@@ -423,6 +412,45 @@ IINField OContext::GetDynamicIIN()
     return ret;
 }
 
+void OContext::UpdateLastBroadcastMessageReceived(uint16_t destination)
+{
+    auto broadcastType = LinkBroadcastAddress::OptionalConfirm;
+    switch(destination)
+    {
+    case LinkBroadcastAddress::DontConfirm:
+        lastBroadcastMessageReceived.set(LinkBroadcastAddress::DontConfirm);
+        break;
+    case LinkBroadcastAddress::ShallConfirm:
+        lastBroadcastMessageReceived.set(LinkBroadcastAddress::ShallConfirm);
+        break;
+    case LinkBroadcastAddress::OptionalConfirm:
+        lastBroadcastMessageReceived.set(LinkBroadcastAddress::OptionalConfirm);
+        break;
+    default:
+        lastBroadcastMessageReceived.clear();
+    }
+}
+
+void OContext::CheckForBroadcastConfirmation(APDUResponse& response)
+{
+    if(lastBroadcastMessageReceived.is_set())
+    {
+        response.SetIIN(response.GetIIN() | IINField(IINBit::ALL_STATIONS));
+
+        if(lastBroadcastMessageReceived.get() != LinkBroadcastAddress::ShallConfirm)
+        {
+            lastBroadcastMessageReceived.clear();
+        }
+        else
+        {
+            // The broadcast address requested a confirmation
+            auto control = response.GetControl();
+            control.CON = true;
+            response.SetControl(control);
+        }
+    }
+}
+
 bool OContext::ProcessMessage(const Message& message)
 {
     // is the message addressed to this outstation
@@ -438,6 +466,11 @@ bool OContext::ProcessMessage(const Message& message)
     }
 
     FORMAT_HEX_BLOCK(this->logger, flags::APP_HEX_RX, message.payload, 18, 18);
+
+    if(message.addresses.IsBroadcast())
+    {
+        UpdateLastBroadcastMessageReceived(message.addresses.destination);
+    }
 
     const auto result = APDUHeaderParser::ParseRequest(message.payload, &this->logger);
     if (!result.success)
@@ -482,32 +515,6 @@ IUpdateHandler& OContext::GetUpdateHandler()
 //// ----------------------------- function handlers -----------------------------
 
 bool OContext::ProcessBroadcastRequest(const ParsedRequest& request)
-{
-    const auto isHandled = HandleBroadcastRequest(request);
-
-    if(isHandled)
-    {
-        auto broadcastType = LinkBroadcastAddress::OptionalConfirm;
-        switch(request.addresses.destination)
-        {
-        case LinkBroadcastAddress::DontConfirm:
-            broadcastType = LinkBroadcastAddress::DontConfirm;
-            break;
-        case LinkBroadcastAddress::ShallConfirm:
-            broadcastType = LinkBroadcastAddress::ShallConfirm;
-            break;
-        case LinkBroadcastAddress::OptionalConfirm:
-            broadcastType = LinkBroadcastAddress::OptionalConfirm;
-            break;
-        }
-
-        lastBroadcastMessageReceived.set(broadcastType);
-    }
-
-    return isHandled;
-}
-
-bool OContext::HandleBroadcastRequest(const ParsedRequest& request)
 {
     switch (request.header.function)
     {

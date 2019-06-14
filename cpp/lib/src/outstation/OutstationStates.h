@@ -53,18 +53,20 @@ public:
     virtual OutstationState& OnRepeatNonReadRequest(OContext&, const ParsedRequest& request) = 0;
 
     virtual OutstationState& OnRepeatReadRequest(OContext&, const ParsedRequest& request) = 0;
+
+    virtual OutstationState& OnBroadcastMessage(OContext&, const ParsedRequest& request) = 0;
 };
 
 class StateIdle final : public OutstationState
 {
 
 public:
-    virtual bool IsIdle() override
+    bool IsIdle() final
     {
         return true;
     }
 
-    virtual const char* Name() override
+    const char* Name() final
     {
         return "Idle";
     }
@@ -74,17 +76,19 @@ public:
         return instance;
     }
 
-    virtual OutstationState& OnConfirm(OContext&, const ParsedRequest& request) override;
+    OutstationState& OnConfirm(OContext&, const ParsedRequest& request) final;
 
-    virtual OutstationState& OnConfirmTimeout(OContext&) override;
+    OutstationState& OnConfirmTimeout(OContext&) final;
 
-    virtual OutstationState& OnNewReadRequest(OContext&, const ParsedRequest& request) override;
+    OutstationState& OnNewReadRequest(OContext&, const ParsedRequest& request) final;
 
-    virtual OutstationState& OnNewNonReadRequest(OContext&, const ParsedRequest& request) override;
+    OutstationState& OnNewNonReadRequest(OContext&, const ParsedRequest& request) final;
 
-    virtual OutstationState& OnRepeatNonReadRequest(OContext&, const ParsedRequest& request) override;
+    OutstationState& OnRepeatNonReadRequest(OContext&, const ParsedRequest& request) final;
 
-    virtual OutstationState& OnRepeatReadRequest(OContext&, const ParsedRequest& request) override;
+    OutstationState& OnRepeatReadRequest(OContext&, const ParsedRequest& request) final;
+
+    OutstationState& OnBroadcastMessage(OContext&, const ParsedRequest& request) final;
 
 private:
     static StateIdle instance;
@@ -104,22 +108,24 @@ public:
         return instance;
     }
 
-    virtual const char* Name() override
+    const char* Name() final
     {
         return "SolicitedConfirmWait";
     }
 
-    virtual OutstationState& OnConfirm(OContext&, const ParsedRequest& request) override;
+    OutstationState& OnConfirm(OContext&, const ParsedRequest& request) final;
 
-    virtual OutstationState& OnConfirmTimeout(OContext&) override;
+    OutstationState& OnConfirmTimeout(OContext&) final;
 
-    virtual OutstationState& OnNewReadRequest(OContext&, const ParsedRequest& request) override;
+    OutstationState& OnNewReadRequest(OContext&, const ParsedRequest& request) final;
 
-    virtual OutstationState& OnNewNonReadRequest(OContext&, const ParsedRequest& request) override;
+    OutstationState& OnNewNonReadRequest(OContext&, const ParsedRequest& request) final;
 
-    virtual OutstationState& OnRepeatNonReadRequest(OContext&, const ParsedRequest& request) override;
+    OutstationState& OnRepeatNonReadRequest(OContext&, const ParsedRequest& request) final;
 
-    virtual OutstationState& OnRepeatReadRequest(OContext&, const ParsedRequest& request) override;
+    OutstationState& OnRepeatReadRequest(OContext&, const ParsedRequest& request) final;
+
+    OutstationState& OnBroadcastMessage(OContext&, const ParsedRequest& request) final;
 
 private:
     static StateSolicitedConfirmWait instance;
@@ -139,22 +145,24 @@ public:
         return instance;
     }
 
-    virtual const char* Name() override
+    const char* Name() final
     {
         return "UnsolicitedConfirmWait";
     }
 
-    virtual OutstationState& OnConfirm(OContext&, const ParsedRequest& request) override;
+    OutstationState& OnConfirm(OContext&, const ParsedRequest& request) final;
 
-    virtual OutstationState& OnConfirmTimeout(OContext&) override;
+    OutstationState& OnConfirmTimeout(OContext&) final;
 
-    virtual OutstationState& OnNewReadRequest(OContext&, const ParsedRequest& request) override;
+    OutstationState& OnNewReadRequest(OContext&, const ParsedRequest& request) final;
 
-    virtual OutstationState& OnNewNonReadRequest(OContext&, const ParsedRequest& request) override;
+    OutstationState& OnNewNonReadRequest(OContext&, const ParsedRequest& request) final;
 
-    virtual OutstationState& OnRepeatNonReadRequest(OContext&, const ParsedRequest& request) override;
+    OutstationState& OnRepeatNonReadRequest(OContext&, const ParsedRequest& request) final;
 
-    virtual OutstationState& OnRepeatReadRequest(OContext&, const ParsedRequest& request) override;
+    OutstationState& OnRepeatReadRequest(OContext&, const ParsedRequest& request) final;
+
+    OutstationState& OnBroadcastMessage(OContext&, const ParsedRequest& request) final;
 
 private:
     static StateUnsolicitedConfirmWait instance;

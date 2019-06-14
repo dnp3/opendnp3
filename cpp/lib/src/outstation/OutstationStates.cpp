@@ -68,6 +68,12 @@ OutstationState& StateIdle::OnRepeatReadRequest(OContext& ctx, const ParsedReque
     return *this;
 }
 
+OutstationState& StateIdle::OnBroadcastMessage(OContext& ctx, const ParsedRequest& request)
+{
+    ctx.ProcessBroadcastRequest(request);
+    return *this;
+}
+
 // ------------- StateSolicitedConfirmWait ----------------
 
 StateSolicitedConfirmWait StateSolicitedConfirmWait::instance;
@@ -134,6 +140,12 @@ OutstationState& StateSolicitedConfirmWait::OnRepeatReadRequest(OContext& ctx, c
     return *this;
 }
 
+OutstationState& StateSolicitedConfirmWait::OnBroadcastMessage(OContext& ctx, const ParsedRequest& request)
+{
+    ctx.ProcessBroadcastRequest(request);
+    return StateIdle::Inst();
+}
+
 // ------------- StateUnsolicitedConfirmWait ----------------
 
 StateUnsolicitedConfirmWait StateUnsolicitedConfirmWait::instance;
@@ -157,6 +169,7 @@ OutstationState& StateUnsolicitedConfirmWait::OnConfirm(OContext& ctx, const Par
 
     ctx.history.Reset(); // any time we get a confirm we can treat any request as a new request
     ctx.confirmTimer.cancel();
+    ctx.lastBroadcastMessageReceived.clear();
 
     if (ctx.unsol.completedNull)
     {
@@ -205,6 +218,12 @@ OutstationState& StateUnsolicitedConfirmWait::OnRepeatReadRequest(OContext& ctx,
 {
     ctx.deferred.Set(request);
     return *this;
+}
+
+OutstationState& StateUnsolicitedConfirmWait::OnBroadcastMessage(OContext& ctx, const ParsedRequest& request)
+{
+    ctx.ProcessBroadcastRequest(request);
+    return StateIdle::Inst();
 }
 
 } // namespace opendnp3

@@ -363,7 +363,6 @@ bool LinkContext::OnFrame(const LinkHeaderFields& header, const ser4cpp::rseq_t&
             ++statistics.numUnexpectedFrame;
             return false;
         }
-        
     }
 
     // reset the keep-alive timestamp

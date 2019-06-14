@@ -30,7 +30,7 @@ using namespace opendnp3;
 
 #define SUITE(name) "OutstationBroadcastTestSuite - " name
 
-TEST_CASE(SUITE("Mandatory confirmation broadcast asks for confirmation"))
+TEST_CASE(SUITE("ShallConfirm broadcast asks for confirmation and resets on confirm"))
 {
     OutstationConfig config;
     OutstationTestObject t(config, DatabaseConfig());
@@ -56,8 +56,8 @@ TEST_CASE(SUITE("Mandatory confirmation broadcast asks for confirmation"))
     t.OnTxReady();
 
     // Check that no confirmation is asked and that ALL_STATIONS IIN is reset
-    t.SendToOutstation(hex::ClassPoll(3, PointClass::Class0));
-    REQUIRE(t.lower->PopWriteAsHex() == "C3 81 00 00");
+    t.SendToOutstation(hex::ClassPoll(4, PointClass::Class0));
+    REQUIRE(t.lower->PopWriteAsHex() == "C4 81 00 00");
 }
 
 TEST_CASE(SUITE("Confirmation sequence number is properly updated even if the response is not sequence related"))
@@ -85,7 +85,7 @@ TEST_CASE(SUITE("Confirmation sequence number is properly updated even if the re
     REQUIRE(t.lower->PopWriteAsHex() == "C3 81 00 00");
 }
 
-TEST_CASE(SUITE("No confirmation broadcast does not ask for confirmation, but set the ALL_STATIONS IIN bit once."))
+TEST_CASE(SUITE("DontConfirm broadcast does not ask for confirmation, but set the ALL_STATIONS IIN bit once"))
 {
     OutstationConfig config;
     OutstationTestObject t(config, DatabaseConfig());
@@ -106,19 +106,136 @@ TEST_CASE(SUITE("No confirmation broadcast does not ask for confirmation, but se
     REQUIRE(t.lower->PopWriteAsHex() == "C3 81 00 00");
 }
 
-TEST_CASE(SUITE("Broadcast on unsupported function code should not set the ALL_STATIONS."))
+TEST_CASE(SUITE("Receiving a broadcast should assume confirmation failed"))
+{
+    OutstationConfig config;
+    config.eventBufferConfig = EventBufferConfig::AllTypes(10);
+    OutstationTestObject t(config, configure::by_count_of::binary_input(1));
+    t.LowerLayerUp();
+
+    // Generate an event
+    t.Transaction([](IUpdateHandler& handler) {
+        handler.Update(Binary(true), 0);
+    });
+
+    // When reading, check that we receive a response with a confirmation
+    t.SendToOutstation(hex::ClassPoll(0, PointClass::Class1));
+    REQUIRE(t.lower->PopWriteAsHex().substr(0, 11) == "E0 81 80 00");
+    t.OnTxReady();
+
+    // Send a broadcast message
+    t.BroadcastToOutstation(LinkBroadcastAddress::DontConfirm, hex::ClearRestartIIN(1));
+
+    // Outstation should not respond to broadcast request
+    REQUIRE(t.lower->HasNoData());
+
+    // Try confirming
+    t.SendToOutstation(hex::SolicitedConfirm(0));
+    t.OnTxReady();
+
+    // When reading, check ALL_STATIONS IIN, check that the events are still pending
+    t.SendToOutstation(hex::ClassPoll(2, PointClass::Class0));
+    REQUIRE(t.lower->PopWriteAsHex().substr(0, 11) == "C2 81 03 00");
+    t.OnTxReady();
+}
+
+TEST_CASE(SUITE("Broadcast with malformed request should still set the ALL_STATIONS IIN"))
 {
     OutstationConfig config;
     OutstationTestObject t(config, DatabaseConfig());
     t.LowerLayerUp();
 
-    t.BroadcastToOutstation(LinkBroadcastAddress::DontConfirm, hex::MeasureDelay(0));
+    t.BroadcastToOutstation(LinkBroadcastAddress::DontConfirm, "FF FF FF");
 
     // Outstation should not respond to broadcast request
     REQUIRE(t.lower->HasNoData());
 
-    // The next response should NOT have ALL_STATIONS IIN
+    // The next response should have ALL_STATIONS IIN
     t.SendToOutstation(hex::ClassPoll(2, PointClass::Class0));
-    REQUIRE(t.lower->PopWriteAsHex() == "C2 81 80 00");
+    REQUIRE(t.lower->PopWriteAsHex() == "C2 81 81 00");
     t.OnTxReady();
+}
+
+TEST_CASE(SUITE("Unsolicited responses should advertise ALL_STATIONS IIN"))
+{
+    OutstationConfig config;
+    config.params.unsolClassMask = ClassField::AllClasses();
+    config.eventBufferConfig = EventBufferConfig::AllTypes(10);
+    config.params.allowUnsolicited = true;
+    OutstationTestObject t(config, configure::by_count_of::binary_input(1));
+    t.LowerLayerUp();
+    t.context.OnTxReady();
+
+    REQUIRE(t.lower->PopWriteAsHex() == hex::NullUnsolicited(0));
+
+    // Confirm unsolicited NULL response
+    t.SendToOutstation(hex::UnsolConfirm(0));
+
+    // Send a broadcast message
+    t.BroadcastToOutstation(LinkBroadcastAddress::DontConfirm, hex::ClearRestartIIN(1));
+
+    // Outstation should not respond to broadcast request
+    REQUIRE(t.lower->HasNoData());
+
+    // Generate an event
+    t.Transaction([](IUpdateHandler& handler) {
+        handler.Update(Binary(true), 0);
+    });
+
+    // Should send unsolicited with ALL_STATIONS IIN set
+    REQUIRE(t.lower->PopWriteAsHex().substr(0, 11) == "F1 82 01 00");
+    t.context.OnTxReady();
+
+    t.AdvanceToNextTimer();
+
+    // Next unsolicited shouldn't have ALL_STATIONS IIN set
+    REQUIRE(t.lower->PopWriteAsHex().substr(0, 11) == "F2 82 00 00");
+    t.context.OnTxReady();
+}
+
+TEST_CASE(SUITE("ShallConfirm: Unsolicited responses should clear ALL_STATIONS when confirm is received"))
+{
+    OutstationConfig config;
+    config.params.unsolClassMask = ClassField::AllClasses();
+    config.eventBufferConfig = EventBufferConfig::AllTypes(10);
+    config.params.allowUnsolicited = true;
+    OutstationTestObject t(config, configure::by_count_of::binary_input(1));
+    t.LowerLayerUp();
+    t.context.OnTxReady();
+
+    REQUIRE(t.lower->PopWriteAsHex() == hex::NullUnsolicited(0));
+
+    // Confirm unsolicited NULL response
+    t.SendToOutstation(hex::UnsolConfirm(0));
+
+    // Send a broadcast message
+    t.BroadcastToOutstation(LinkBroadcastAddress::ShallConfirm, hex::ClearRestartIIN(1));
+
+    // Outstation should not respond to broadcast request
+    REQUIRE(t.lower->HasNoData());
+
+    // Generate an event
+    t.Transaction([](IUpdateHandler& handler) {
+        handler.Update(Binary(true), 0);
+    });
+
+    // Should send unsolicited with ALL_STATIONS IIN set
+    REQUIRE(t.lower->PopWriteAsHex().substr(0, 11) == "F1 82 01 00");
+    t.context.OnTxReady();
+
+    t.AdvanceToNextTimer();
+
+    // Next unsolicited should still have ALL_STATIONS IIN set
+    REQUIRE(t.lower->PopWriteAsHex().substr(0, 11) == "F2 82 01 00");
+    t.context.OnTxReady();
+
+    // Confirm the unsolicited response
+    t.SendToOutstation(hex::UnsolConfirm(2));
+
+    // Generate an event
+    t.Transaction([](IUpdateHandler& handler) {
+        handler.Update(Binary(false), 0);
+    });
+
+    REQUIRE(t.lower->PopWriteAsHex().substr(0, 11) == "F3 82 00 00");
 }
