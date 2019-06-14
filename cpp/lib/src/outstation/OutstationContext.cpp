@@ -247,6 +247,7 @@ OutstationState& OContext::BeginResponseTx(uint16_t destination, APDUResponse& r
 
     const auto data = response.ToRSeq();
     this->sol.tx.Record(response.GetControl(), data);
+    this->sol.seq.confirmNum = response.GetControl().SEQ;
     this->BeginTx(destination, data);
 
     if (response.GetControl().CON)
@@ -358,7 +359,7 @@ void OContext::RestartConfirmTimer()
     this->confirmTimer = this->executor->start(this->params.unsolConfirmTimeout.value, timeout);
 }
 
-void OContext::RespondToNonReadRequest(const ParsedRequest& request)
+OutstationState& OContext::RespondToNonReadRequest(const ParsedRequest& request)
 {
     this->history.RecordLastProcessedRequest(request.header, request.objects);
 
@@ -368,7 +369,7 @@ void OContext::RespondToNonReadRequest(const ParsedRequest& request)
     response.SetControl(AppControlField(true, true, false, false, request.header.control.SEQ));
     auto iin = this->HandleNonReadResponse(request.header, request.objects, writer);
     response.SetIIN(iin | this->GetResponseIIN());
-    this->BeginResponseTx(request.addresses.source, response);
+    return this->BeginResponseTx(request.addresses.source, response);
 }
 
 OutstationState& OContext::RespondToReadRequest(const ParsedRequest& request)
@@ -380,7 +381,6 @@ OutstationState& OContext::RespondToReadRequest(const ParsedRequest& request)
     response.SetFunction(FunctionCode::RESPONSE);
     auto result = this->HandleRead(request.objects, writer);
     result.second.SEQ = request.header.control.SEQ;
-    this->sol.seq.confirmNum = request.header.control.SEQ;
     response.SetControl(result.second);
     response.SetIIN(result.first | this->GetResponseIIN());
 
@@ -394,7 +394,6 @@ OutstationState& OContext::ContinueMultiFragResponse(const Addresses& addresses,
     response.SetFunction(FunctionCode::RESPONSE);
     auto control = this->rspContext.LoadResponse(writer);
     control.SEQ = seq;
-    this->sol.seq.confirmNum = seq;
     response.SetControl(control);
     response.SetIIN(this->GetResponseIIN());
 

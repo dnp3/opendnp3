@@ -98,7 +98,7 @@ private:
 
     OutstationState& OnReceiveSolRequest(const ParsedRequest& request);
 
-    void RespondToNonReadRequest(const ParsedRequest& request);
+    OutstationState& RespondToNonReadRequest(const ParsedRequest& request);
 
     // ---- Processing functions --------
 

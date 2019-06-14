@@ -60,6 +60,31 @@ TEST_CASE(SUITE("Mandatory confirmation broadcast asks for confirmation"))
     REQUIRE(t.lower->PopWriteAsHex() == "C3 81 00 00");
 }
 
+TEST_CASE(SUITE("Confirmation sequence number is properly updated even if the response is not sequence related"))
+{
+    OutstationConfig config;
+    OutstationTestObject t(config, DatabaseConfig());
+    t.LowerLayerUp();
+
+    t.BroadcastToOutstation(LinkBroadcastAddress::ShallConfirm, hex::ClearRestartIIN(0));
+
+    // Outstation should not respond to broadcast request
+    REQUIRE(t.lower->HasNoData());
+
+    // The next response should have ALL_STATIONS IIN set, and should ask for confirmation
+    t.SendToOutstation(hex::RecordCurrentTime(2));
+    REQUIRE(t.lower->PopWriteAsHex() == "E2 81 01 00");
+    t.OnTxReady();
+
+    // Confirm the last response
+    t.SendToOutstation(hex::SolicitedConfirm(2));
+    t.OnTxReady();
+
+    // Check that no confirmation is asked and that ALL_STATIONS IIN is reset
+    t.SendToOutstation(hex::ClassPoll(3, PointClass::Class0));
+    REQUIRE(t.lower->PopWriteAsHex() == "C3 81 00 00");
+}
+
 TEST_CASE(SUITE("No confirmation broadcast does not ask for confirmation, but set the ALL_STATIONS IIN bit once."))
 {
     OutstationConfig config;

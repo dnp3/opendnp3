@@ -53,8 +53,7 @@ OutstationState& StateIdle::OnNewReadRequest(OContext& ctx, const ParsedRequest&
 
 OutstationState& StateIdle::OnNewNonReadRequest(OContext& ctx, const ParsedRequest& request)
 {
-    ctx.RespondToNonReadRequest(request);
-    return *this;
+    return ctx.RespondToNonReadRequest(request);
 }
 
 OutstationState& StateIdle::OnRepeatNonReadRequest(OContext& ctx, const ParsedRequest& request)
@@ -118,8 +117,7 @@ OutstationState& StateSolicitedConfirmWait::OnNewReadRequest(OContext& ctx, cons
 OutstationState& StateSolicitedConfirmWait::OnNewNonReadRequest(OContext& ctx, const ParsedRequest& request)
 {
     ctx.confirmTimer.cancel();
-    ctx.RespondToNonReadRequest(request);
-    return StateIdle::Inst();
+    return ctx.RespondToNonReadRequest(request);
 }
 
 OutstationState& StateSolicitedConfirmWait::OnRepeatNonReadRequest(OContext& ctx, const ParsedRequest& request)
