@@ -168,7 +168,7 @@ TEST_CASE(SUITE("SecAckWrongFCB"))
     REQUIRE(t.upper->receivedQueue.empty()); // data should not be passed up!
 }
 
-TEST_CASE(SUITE("BroadcastConfirmedData"))
+TEST_CASE(SUITE("BroadcastConfirmedDataWithoutResetDoesntForward"))
 {
     LinkConfig cfg = LinkLayerTest::DefaultConfig();
     cfg.UseConfirms = true;
@@ -179,9 +179,34 @@ TEST_CASE(SUITE("BroadcastConfirmedData"))
     ByteStr b(250, 0);
     t.OnFrame(LinkFunction::PRI_CONFIRMED_USER_DATA, false, false, false, LinkBroadcastAddress::ShallConfirm, 1024, b.ToRSeq());
     t.link.OnTxReady();
+    REQUIRE(t.upper->receivedQueue.empty());
+}
+
+TEST_CASE(SUITE("BroadcastConfirmedDataFlipNFCBAndDoesntRespond"))
+{
+    LinkConfig cfg = LinkLayerTest::DefaultConfig();
+    cfg.UseConfirms = true;
+
+    LinkLayerTest t(cfg);
+    t.link.OnLowerLayerUp();
+
+    t.OnFrame(LinkFunction::PRI_RESET_LINK_STATES, false, false, false, 1, 1024);
+    REQUIRE(t.NumTotalWrites() == 1);
+    t.link.OnTxReady();
+
+    ByteStr b(250, 0);
+    t.OnFrame(LinkFunction::PRI_CONFIRMED_USER_DATA, false, true, false, LinkBroadcastAddress::ShallConfirm, 1024, b.ToRSeq());
+    t.link.OnTxReady();
     REQUIRE(t.upper->receivedQueue.size() == 1);
     REQUIRE(t.upper->receivedQueue.front() == b.ToHex());
     REQUIRE(t.link.GetStatistics().numUnexpectedFrame == 0);
+    REQUIRE(t.NumTotalWrites() == 1);
+
+    // Wrong FCB shouldn't be forwarded
+    t.OnFrame(LinkFunction::PRI_CONFIRMED_USER_DATA, false, true, false, LinkBroadcastAddress::ShallConfirm, 1024, b.ToRSeq());
+    t.link.OnTxReady();
+    REQUIRE(t.upper->receivedQueue.size() == 1);
+    REQUIRE(t.NumTotalWrites() == 1);
 }
 
 // When we get another reset links when we're already reset,

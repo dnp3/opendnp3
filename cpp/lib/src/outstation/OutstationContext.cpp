@@ -414,7 +414,6 @@ IINField OContext::GetDynamicIIN()
 
 void OContext::UpdateLastBroadcastMessageReceived(uint16_t destination)
 {
-    auto broadcastType = LinkBroadcastAddress::OptionalConfirm;
     switch(destination)
     {
     case LinkBroadcastAddress::DontConfirm:

@@ -352,10 +352,14 @@ bool LinkContext::OnFrame(const LinkHeaderFields& header, const ser4cpp::rseq_t&
     {
         // Broadcast addresses can only be used for sending data.
         // If confirmed data is used, no response is sent back.
-        if(header.func == LinkFunction::PRI_UNCONFIRMED_USER_DATA || header.func == LinkFunction::PRI_CONFIRMED_USER_DATA)
+        if(header.func == LinkFunction::PRI_UNCONFIRMED_USER_DATA)
         {
             this->PushDataUp(Message(header.addresses, userdata));
             return true;
+        }
+        else if(header.func == LinkFunction::PRI_CONFIRMED_USER_DATA)
+        {
+            pSecState = &pSecState->OnConfirmedUserData(*this, header.addresses.source, header.fcb, true, Message(header.addresses, userdata));
         }
         else
         {
@@ -393,7 +397,7 @@ bool LinkContext::OnFrame(const LinkHeaderFields& header, const ser4cpp::rseq_t&
         break;
     case (LinkFunction::PRI_CONFIRMED_USER_DATA):
         pSecState
-            = &pSecState->OnConfirmedUserData(*this, header.addresses.source, header.fcb, Message(header.addresses, userdata));
+            = &pSecState->OnConfirmedUserData(*this, header.addresses.source, header.fcb, false, Message(header.addresses, userdata));
         break;
     case (LinkFunction::PRI_UNCONFIRMED_USER_DATA):
         this->PushDataUp(Message(header.addresses, userdata));
