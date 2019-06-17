@@ -363,7 +363,7 @@ bool LinkContext::OnFrame(const LinkHeaderFields& header, const ser4cpp::rseq_t&
         }
         else
         {
-            FORMAT_LOG_BLOCK(logger, flags::WARN, "Received invalid function (%s) with broadcast destination address", LinkFunctionToString(header.func));
+            FORMAT_LOG_BLOCK(logger, flags::WARN, "Received invalid function (%s) with broadcast destination address", LinkFunctionSpec::to_string(header.func));
             ++statistics.numUnexpectedFrame;
             return false;
         }

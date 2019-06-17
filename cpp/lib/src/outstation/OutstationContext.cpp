@@ -573,8 +573,7 @@ bool OContext::ProcessBroadcastRequest(const ParsedRequest& request)
         }
     }
     default:
-        FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring broadcast on function code: %s",
-                         FunctionCodeToString(request.header.function));
+        FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring broadcast on function code: %s", FunctionCodeSpec::to_string(request.header.function));
         return false;
     }
 }
