@@ -38,8 +38,7 @@ TLSServer::TLSServer(const log4cpp::Logger& logger,
       executor(executor),
       ctx(logger, true, config, ec),
       endpoint(asio::ip::tcp::v4(), endpoint.port),
-      acceptor(*executor->get_context()),
-      session_id(0)
+      acceptor(*executor->get_context())
 {
     if (!ec)
     {
@@ -49,7 +48,17 @@ TLSServer::TLSServer(const log4cpp::Logger& logger,
 
 void TLSServer::Shutdown()
 {
-    this->acceptor.close();
+    if(this->isShutdown)
+        return;
+
+    this->isShutdown = true;
+    std::error_code ec;
+    this->acceptor.close(ec);
+
+    if (ec)
+    {
+        SIMPLE_LOG_BLOCK(logger, flags::ERR, ec.message().c_str());
+    }
 }
 
 std::error_code TLSServer::ConfigureListener(const std::string& adapter, std::error_code& ec)
@@ -105,6 +114,22 @@ void TLSServer::StartAccept(std::error_code& ec)
         {
             SIMPLE_LOG_BLOCK(self->logger, flags::INFO, ec.message().c_str());
             self->OnShutdown();
+            return;
+        }
+
+        // With epoll, even if the acceptor was closed, if a socket was accepted
+        // and put in ASIO handler queue, it will survive up to here.
+        // So we need to make sure we are still alive before really accepting the connection.
+        if(self->isShutdown)
+        {
+            return;
+        }
+
+        // For an unknown reason, the socket may not be properly opened when accepted.
+        // We simply ignore it.
+        if (!stream->lowest_layer().is_open())
+        {
+            self->StartAccept(ec);
             return;
         }
 

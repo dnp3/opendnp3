@@ -81,3 +81,42 @@ TEST_CASE("TestDeadlock")
         // shutdown manager2 followed by manager1
     }
 }
+
+// See issue #216
+TEST_CASE("TestDeadlock2")
+{
+    const auto FILTERS = levels::NOTHING;
+
+    for(auto i = 0; i < 1000; ++i)
+    {
+        auto manager2 = std::make_unique<DNP3Manager>(3, ConsoleLogger::Create());
+        auto channel2 = manager2->AddTCPServer("server", FILTERS, ServerAcceptMode::CloseNew, "127.0.0.1", 20000, PrintingChannelListener::Create());
+        OutstationStackConfig config(DatabaseConfig(1));
+        config.link.LocalAddr = 10;
+        config.link.RemoteAddr = 1;
+        auto outstation = channel2->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), config);
+        outstation->Enable();
+
+        auto manager = std::make_unique<DNP3Manager>(3, ConsoleLogger::Create());
+        auto channel = manager->AddTCPClient("tcpclient", FILTERS, ChannelRetry(TimeDuration::Seconds(0), TimeDuration::Seconds(0)),
+                                {IPEndpoint("127.0.0.1", 20000)}, "127.0.0.1", PrintingChannelListener::Create());
+        MasterStackConfig stackConfig;
+        stackConfig.link.LocalAddr = 1;
+        stackConfig.link.RemoteAddr = 10;
+        auto master = channel->AddMaster("master", PrintingSOEHandler::Create(), DefaultMasterApplication::Create(),stackConfig);
+        auto integrityScan = master->AddClassScan(ClassField::AllClasses(), TimeDuration::Milliseconds(1));
+        master->Enable();
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(2));
+
+        integrityScan.reset();
+        master.reset();
+        channel.reset();
+
+        outstation.reset();
+        channel2.reset();
+
+        manager2.reset();
+        manager.reset();
+    }
+}
