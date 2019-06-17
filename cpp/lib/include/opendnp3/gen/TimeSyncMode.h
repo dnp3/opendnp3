@@ -33,6 +33,7 @@
 #define OPENDNP3_TIMESYNCMODE_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -49,6 +50,16 @@ enum class TimeSyncMode : uint8_t
   None = 0
 };
 
+struct TimeSyncModeSpec
+{
+  using enum_type_t = TimeSyncMode;
+
+  static uint8_t to_type(TimeSyncMode arg);
+  static TimeSyncMode from_type(uint8_t arg);
+  static char const* to_string(TimeSyncMode arg);
+  static char const* to_human_string(TimeSyncMode arg);
+  static TimeSyncMode from_string(const std::string& arg);
+};
 
 }
 

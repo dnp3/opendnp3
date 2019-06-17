@@ -80,7 +80,7 @@ struct LinkHeader
     }
     LinkFunction GetFuncEnum() const
     {
-        return LinkFunctionFromType(ctrl & MASK_FUNC_OR_PRM);
+        return LinkFunctionSpec::from_type(ctrl & MASK_FUNC_OR_PRM);
     }
 
     bool ValidLength()

@@ -33,6 +33,7 @@
 #define OPENDNP3_KEYSTATUS_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -52,9 +53,16 @@ enum class KeyStatus : uint8_t
   UNDEFINED = 0x0
 };
 
-uint8_t KeyStatusToType(KeyStatus arg);
-KeyStatus KeyStatusFromType(uint8_t arg);
-char const* KeyStatusToString(KeyStatus arg);
+struct KeyStatusSpec
+{
+  using enum_type_t = KeyStatus;
+
+  static uint8_t to_type(KeyStatus arg);
+  static KeyStatus from_type(uint8_t arg);
+  static char const* to_string(KeyStatus arg);
+  static char const* to_human_string(KeyStatus arg);
+  static KeyStatus from_string(const std::string& arg);
+};
 
 }
 

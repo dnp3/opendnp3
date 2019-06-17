@@ -30,14 +30,16 @@
 //
 
 #include "opendnp3/gen/GroupVariation.h"
+#include <stdexcept>
 
 namespace opendnp3 {
 
-uint16_t GroupVariationToType(GroupVariation arg)
+uint16_t GroupVariationSpec::to_type(GroupVariation arg)
 {
   return static_cast<uint16_t>(arg);
 }
-GroupVariation GroupVariationFromType(uint16_t arg)
+
+GroupVariation GroupVariationSpec::from_type(uint16_t arg)
 {
   switch(arg)
   {
@@ -311,7 +313,283 @@ GroupVariation GroupVariationFromType(uint16_t arg)
       return GroupVariation::UNKNOWN;
   }
 }
-char const* GroupVariationToString(GroupVariation arg)
+
+char const* GroupVariationSpec::to_string(GroupVariation arg)
+{
+  switch(arg)
+  {
+    case(GroupVariation::Group1Var0):
+      return "Group1Var0";
+    case(GroupVariation::Group1Var1):
+      return "Group1Var1";
+    case(GroupVariation::Group1Var2):
+      return "Group1Var2";
+    case(GroupVariation::Group2Var0):
+      return "Group2Var0";
+    case(GroupVariation::Group2Var1):
+      return "Group2Var1";
+    case(GroupVariation::Group2Var2):
+      return "Group2Var2";
+    case(GroupVariation::Group2Var3):
+      return "Group2Var3";
+    case(GroupVariation::Group3Var0):
+      return "Group3Var0";
+    case(GroupVariation::Group3Var1):
+      return "Group3Var1";
+    case(GroupVariation::Group3Var2):
+      return "Group3Var2";
+    case(GroupVariation::Group4Var0):
+      return "Group4Var0";
+    case(GroupVariation::Group4Var1):
+      return "Group4Var1";
+    case(GroupVariation::Group4Var2):
+      return "Group4Var2";
+    case(GroupVariation::Group4Var3):
+      return "Group4Var3";
+    case(GroupVariation::Group10Var0):
+      return "Group10Var0";
+    case(GroupVariation::Group10Var1):
+      return "Group10Var1";
+    case(GroupVariation::Group10Var2):
+      return "Group10Var2";
+    case(GroupVariation::Group11Var0):
+      return "Group11Var0";
+    case(GroupVariation::Group11Var1):
+      return "Group11Var1";
+    case(GroupVariation::Group11Var2):
+      return "Group11Var2";
+    case(GroupVariation::Group12Var0):
+      return "Group12Var0";
+    case(GroupVariation::Group12Var1):
+      return "Group12Var1";
+    case(GroupVariation::Group13Var1):
+      return "Group13Var1";
+    case(GroupVariation::Group13Var2):
+      return "Group13Var2";
+    case(GroupVariation::Group20Var0):
+      return "Group20Var0";
+    case(GroupVariation::Group20Var1):
+      return "Group20Var1";
+    case(GroupVariation::Group20Var2):
+      return "Group20Var2";
+    case(GroupVariation::Group20Var5):
+      return "Group20Var5";
+    case(GroupVariation::Group20Var6):
+      return "Group20Var6";
+    case(GroupVariation::Group21Var0):
+      return "Group21Var0";
+    case(GroupVariation::Group21Var1):
+      return "Group21Var1";
+    case(GroupVariation::Group21Var2):
+      return "Group21Var2";
+    case(GroupVariation::Group21Var5):
+      return "Group21Var5";
+    case(GroupVariation::Group21Var6):
+      return "Group21Var6";
+    case(GroupVariation::Group21Var9):
+      return "Group21Var9";
+    case(GroupVariation::Group21Var10):
+      return "Group21Var10";
+    case(GroupVariation::Group22Var0):
+      return "Group22Var0";
+    case(GroupVariation::Group22Var1):
+      return "Group22Var1";
+    case(GroupVariation::Group22Var2):
+      return "Group22Var2";
+    case(GroupVariation::Group22Var5):
+      return "Group22Var5";
+    case(GroupVariation::Group22Var6):
+      return "Group22Var6";
+    case(GroupVariation::Group23Var0):
+      return "Group23Var0";
+    case(GroupVariation::Group23Var1):
+      return "Group23Var1";
+    case(GroupVariation::Group23Var2):
+      return "Group23Var2";
+    case(GroupVariation::Group23Var5):
+      return "Group23Var5";
+    case(GroupVariation::Group23Var6):
+      return "Group23Var6";
+    case(GroupVariation::Group30Var0):
+      return "Group30Var0";
+    case(GroupVariation::Group30Var1):
+      return "Group30Var1";
+    case(GroupVariation::Group30Var2):
+      return "Group30Var2";
+    case(GroupVariation::Group30Var3):
+      return "Group30Var3";
+    case(GroupVariation::Group30Var4):
+      return "Group30Var4";
+    case(GroupVariation::Group30Var5):
+      return "Group30Var5";
+    case(GroupVariation::Group30Var6):
+      return "Group30Var6";
+    case(GroupVariation::Group32Var0):
+      return "Group32Var0";
+    case(GroupVariation::Group32Var1):
+      return "Group32Var1";
+    case(GroupVariation::Group32Var2):
+      return "Group32Var2";
+    case(GroupVariation::Group32Var3):
+      return "Group32Var3";
+    case(GroupVariation::Group32Var4):
+      return "Group32Var4";
+    case(GroupVariation::Group32Var5):
+      return "Group32Var5";
+    case(GroupVariation::Group32Var6):
+      return "Group32Var6";
+    case(GroupVariation::Group32Var7):
+      return "Group32Var7";
+    case(GroupVariation::Group32Var8):
+      return "Group32Var8";
+    case(GroupVariation::Group40Var0):
+      return "Group40Var0";
+    case(GroupVariation::Group40Var1):
+      return "Group40Var1";
+    case(GroupVariation::Group40Var2):
+      return "Group40Var2";
+    case(GroupVariation::Group40Var3):
+      return "Group40Var3";
+    case(GroupVariation::Group40Var4):
+      return "Group40Var4";
+    case(GroupVariation::Group41Var0):
+      return "Group41Var0";
+    case(GroupVariation::Group41Var1):
+      return "Group41Var1";
+    case(GroupVariation::Group41Var2):
+      return "Group41Var2";
+    case(GroupVariation::Group41Var3):
+      return "Group41Var3";
+    case(GroupVariation::Group41Var4):
+      return "Group41Var4";
+    case(GroupVariation::Group42Var0):
+      return "Group42Var0";
+    case(GroupVariation::Group42Var1):
+      return "Group42Var1";
+    case(GroupVariation::Group42Var2):
+      return "Group42Var2";
+    case(GroupVariation::Group42Var3):
+      return "Group42Var3";
+    case(GroupVariation::Group42Var4):
+      return "Group42Var4";
+    case(GroupVariation::Group42Var5):
+      return "Group42Var5";
+    case(GroupVariation::Group42Var6):
+      return "Group42Var6";
+    case(GroupVariation::Group42Var7):
+      return "Group42Var7";
+    case(GroupVariation::Group42Var8):
+      return "Group42Var8";
+    case(GroupVariation::Group43Var1):
+      return "Group43Var1";
+    case(GroupVariation::Group43Var2):
+      return "Group43Var2";
+    case(GroupVariation::Group43Var3):
+      return "Group43Var3";
+    case(GroupVariation::Group43Var4):
+      return "Group43Var4";
+    case(GroupVariation::Group43Var5):
+      return "Group43Var5";
+    case(GroupVariation::Group43Var6):
+      return "Group43Var6";
+    case(GroupVariation::Group43Var7):
+      return "Group43Var7";
+    case(GroupVariation::Group43Var8):
+      return "Group43Var8";
+    case(GroupVariation::Group50Var1):
+      return "Group50Var1";
+    case(GroupVariation::Group50Var3):
+      return "Group50Var3";
+    case(GroupVariation::Group50Var4):
+      return "Group50Var4";
+    case(GroupVariation::Group51Var1):
+      return "Group51Var1";
+    case(GroupVariation::Group51Var2):
+      return "Group51Var2";
+    case(GroupVariation::Group52Var1):
+      return "Group52Var1";
+    case(GroupVariation::Group52Var2):
+      return "Group52Var2";
+    case(GroupVariation::Group60Var1):
+      return "Group60Var1";
+    case(GroupVariation::Group60Var2):
+      return "Group60Var2";
+    case(GroupVariation::Group60Var3):
+      return "Group60Var3";
+    case(GroupVariation::Group60Var4):
+      return "Group60Var4";
+    case(GroupVariation::Group70Var1):
+      return "Group70Var1";
+    case(GroupVariation::Group70Var2):
+      return "Group70Var2";
+    case(GroupVariation::Group70Var3):
+      return "Group70Var3";
+    case(GroupVariation::Group70Var4):
+      return "Group70Var4";
+    case(GroupVariation::Group70Var5):
+      return "Group70Var5";
+    case(GroupVariation::Group70Var6):
+      return "Group70Var6";
+    case(GroupVariation::Group70Var7):
+      return "Group70Var7";
+    case(GroupVariation::Group70Var8):
+      return "Group70Var8";
+    case(GroupVariation::Group80Var1):
+      return "Group80Var1";
+    case(GroupVariation::Group110Var0):
+      return "Group110Var0";
+    case(GroupVariation::Group111Var0):
+      return "Group111Var0";
+    case(GroupVariation::Group112Var0):
+      return "Group112Var0";
+    case(GroupVariation::Group113Var0):
+      return "Group113Var0";
+    case(GroupVariation::Group120Var1):
+      return "Group120Var1";
+    case(GroupVariation::Group120Var2):
+      return "Group120Var2";
+    case(GroupVariation::Group120Var3):
+      return "Group120Var3";
+    case(GroupVariation::Group120Var4):
+      return "Group120Var4";
+    case(GroupVariation::Group120Var5):
+      return "Group120Var5";
+    case(GroupVariation::Group120Var6):
+      return "Group120Var6";
+    case(GroupVariation::Group120Var7):
+      return "Group120Var7";
+    case(GroupVariation::Group120Var8):
+      return "Group120Var8";
+    case(GroupVariation::Group120Var9):
+      return "Group120Var9";
+    case(GroupVariation::Group120Var10):
+      return "Group120Var10";
+    case(GroupVariation::Group120Var11):
+      return "Group120Var11";
+    case(GroupVariation::Group120Var12):
+      return "Group120Var12";
+    case(GroupVariation::Group120Var13):
+      return "Group120Var13";
+    case(GroupVariation::Group120Var14):
+      return "Group120Var14";
+    case(GroupVariation::Group120Var15):
+      return "Group120Var15";
+    case(GroupVariation::Group121Var0):
+      return "Group121Var0";
+    case(GroupVariation::Group121Var1):
+      return "Group121Var1";
+    case(GroupVariation::Group122Var0):
+      return "Group122Var0";
+    case(GroupVariation::Group122Var1):
+      return "Group122Var1";
+    case(GroupVariation::Group122Var2):
+      return "Group122Var2";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+char const* GroupVariationSpec::to_human_string(GroupVariation arg)
 {
   switch(arg)
   {
@@ -585,5 +863,144 @@ char const* GroupVariationToString(GroupVariation arg)
       return "UNKNOWN";
   }
 }
+
+GroupVariation GroupVariationSpec::from_string(const std::string& arg)
+{
+  if(arg == "Group1Var0") return GroupVariation::Group1Var0;
+  if(arg == "Group1Var1") return GroupVariation::Group1Var1;
+  if(arg == "Group1Var2") return GroupVariation::Group1Var2;
+  if(arg == "Group2Var0") return GroupVariation::Group2Var0;
+  if(arg == "Group2Var1") return GroupVariation::Group2Var1;
+  if(arg == "Group2Var2") return GroupVariation::Group2Var2;
+  if(arg == "Group2Var3") return GroupVariation::Group2Var3;
+  if(arg == "Group3Var0") return GroupVariation::Group3Var0;
+  if(arg == "Group3Var1") return GroupVariation::Group3Var1;
+  if(arg == "Group3Var2") return GroupVariation::Group3Var2;
+  if(arg == "Group4Var0") return GroupVariation::Group4Var0;
+  if(arg == "Group4Var1") return GroupVariation::Group4Var1;
+  if(arg == "Group4Var2") return GroupVariation::Group4Var2;
+  if(arg == "Group4Var3") return GroupVariation::Group4Var3;
+  if(arg == "Group10Var0") return GroupVariation::Group10Var0;
+  if(arg == "Group10Var1") return GroupVariation::Group10Var1;
+  if(arg == "Group10Var2") return GroupVariation::Group10Var2;
+  if(arg == "Group11Var0") return GroupVariation::Group11Var0;
+  if(arg == "Group11Var1") return GroupVariation::Group11Var1;
+  if(arg == "Group11Var2") return GroupVariation::Group11Var2;
+  if(arg == "Group12Var0") return GroupVariation::Group12Var0;
+  if(arg == "Group12Var1") return GroupVariation::Group12Var1;
+  if(arg == "Group13Var1") return GroupVariation::Group13Var1;
+  if(arg == "Group13Var2") return GroupVariation::Group13Var2;
+  if(arg == "Group20Var0") return GroupVariation::Group20Var0;
+  if(arg == "Group20Var1") return GroupVariation::Group20Var1;
+  if(arg == "Group20Var2") return GroupVariation::Group20Var2;
+  if(arg == "Group20Var5") return GroupVariation::Group20Var5;
+  if(arg == "Group20Var6") return GroupVariation::Group20Var6;
+  if(arg == "Group21Var0") return GroupVariation::Group21Var0;
+  if(arg == "Group21Var1") return GroupVariation::Group21Var1;
+  if(arg == "Group21Var2") return GroupVariation::Group21Var2;
+  if(arg == "Group21Var5") return GroupVariation::Group21Var5;
+  if(arg == "Group21Var6") return GroupVariation::Group21Var6;
+  if(arg == "Group21Var9") return GroupVariation::Group21Var9;
+  if(arg == "Group21Var10") return GroupVariation::Group21Var10;
+  if(arg == "Group22Var0") return GroupVariation::Group22Var0;
+  if(arg == "Group22Var1") return GroupVariation::Group22Var1;
+  if(arg == "Group22Var2") return GroupVariation::Group22Var2;
+  if(arg == "Group22Var5") return GroupVariation::Group22Var5;
+  if(arg == "Group22Var6") return GroupVariation::Group22Var6;
+  if(arg == "Group23Var0") return GroupVariation::Group23Var0;
+  if(arg == "Group23Var1") return GroupVariation::Group23Var1;
+  if(arg == "Group23Var2") return GroupVariation::Group23Var2;
+  if(arg == "Group23Var5") return GroupVariation::Group23Var5;
+  if(arg == "Group23Var6") return GroupVariation::Group23Var6;
+  if(arg == "Group30Var0") return GroupVariation::Group30Var0;
+  if(arg == "Group30Var1") return GroupVariation::Group30Var1;
+  if(arg == "Group30Var2") return GroupVariation::Group30Var2;
+  if(arg == "Group30Var3") return GroupVariation::Group30Var3;
+  if(arg == "Group30Var4") return GroupVariation::Group30Var4;
+  if(arg == "Group30Var5") return GroupVariation::Group30Var5;
+  if(arg == "Group30Var6") return GroupVariation::Group30Var6;
+  if(arg == "Group32Var0") return GroupVariation::Group32Var0;
+  if(arg == "Group32Var1") return GroupVariation::Group32Var1;
+  if(arg == "Group32Var2") return GroupVariation::Group32Var2;
+  if(arg == "Group32Var3") return GroupVariation::Group32Var3;
+  if(arg == "Group32Var4") return GroupVariation::Group32Var4;
+  if(arg == "Group32Var5") return GroupVariation::Group32Var5;
+  if(arg == "Group32Var6") return GroupVariation::Group32Var6;
+  if(arg == "Group32Var7") return GroupVariation::Group32Var7;
+  if(arg == "Group32Var8") return GroupVariation::Group32Var8;
+  if(arg == "Group40Var0") return GroupVariation::Group40Var0;
+  if(arg == "Group40Var1") return GroupVariation::Group40Var1;
+  if(arg == "Group40Var2") return GroupVariation::Group40Var2;
+  if(arg == "Group40Var3") return GroupVariation::Group40Var3;
+  if(arg == "Group40Var4") return GroupVariation::Group40Var4;
+  if(arg == "Group41Var0") return GroupVariation::Group41Var0;
+  if(arg == "Group41Var1") return GroupVariation::Group41Var1;
+  if(arg == "Group41Var2") return GroupVariation::Group41Var2;
+  if(arg == "Group41Var3") return GroupVariation::Group41Var3;
+  if(arg == "Group41Var4") return GroupVariation::Group41Var4;
+  if(arg == "Group42Var0") return GroupVariation::Group42Var0;
+  if(arg == "Group42Var1") return GroupVariation::Group42Var1;
+  if(arg == "Group42Var2") return GroupVariation::Group42Var2;
+  if(arg == "Group42Var3") return GroupVariation::Group42Var3;
+  if(arg == "Group42Var4") return GroupVariation::Group42Var4;
+  if(arg == "Group42Var5") return GroupVariation::Group42Var5;
+  if(arg == "Group42Var6") return GroupVariation::Group42Var6;
+  if(arg == "Group42Var7") return GroupVariation::Group42Var7;
+  if(arg == "Group42Var8") return GroupVariation::Group42Var8;
+  if(arg == "Group43Var1") return GroupVariation::Group43Var1;
+  if(arg == "Group43Var2") return GroupVariation::Group43Var2;
+  if(arg == "Group43Var3") return GroupVariation::Group43Var3;
+  if(arg == "Group43Var4") return GroupVariation::Group43Var4;
+  if(arg == "Group43Var5") return GroupVariation::Group43Var5;
+  if(arg == "Group43Var6") return GroupVariation::Group43Var6;
+  if(arg == "Group43Var7") return GroupVariation::Group43Var7;
+  if(arg == "Group43Var8") return GroupVariation::Group43Var8;
+  if(arg == "Group50Var1") return GroupVariation::Group50Var1;
+  if(arg == "Group50Var3") return GroupVariation::Group50Var3;
+  if(arg == "Group50Var4") return GroupVariation::Group50Var4;
+  if(arg == "Group51Var1") return GroupVariation::Group51Var1;
+  if(arg == "Group51Var2") return GroupVariation::Group51Var2;
+  if(arg == "Group52Var1") return GroupVariation::Group52Var1;
+  if(arg == "Group52Var2") return GroupVariation::Group52Var2;
+  if(arg == "Group60Var1") return GroupVariation::Group60Var1;
+  if(arg == "Group60Var2") return GroupVariation::Group60Var2;
+  if(arg == "Group60Var3") return GroupVariation::Group60Var3;
+  if(arg == "Group60Var4") return GroupVariation::Group60Var4;
+  if(arg == "Group70Var1") return GroupVariation::Group70Var1;
+  if(arg == "Group70Var2") return GroupVariation::Group70Var2;
+  if(arg == "Group70Var3") return GroupVariation::Group70Var3;
+  if(arg == "Group70Var4") return GroupVariation::Group70Var4;
+  if(arg == "Group70Var5") return GroupVariation::Group70Var5;
+  if(arg == "Group70Var6") return GroupVariation::Group70Var6;
+  if(arg == "Group70Var7") return GroupVariation::Group70Var7;
+  if(arg == "Group70Var8") return GroupVariation::Group70Var8;
+  if(arg == "Group80Var1") return GroupVariation::Group80Var1;
+  if(arg == "Group110Var0") return GroupVariation::Group110Var0;
+  if(arg == "Group111Var0") return GroupVariation::Group111Var0;
+  if(arg == "Group112Var0") return GroupVariation::Group112Var0;
+  if(arg == "Group113Var0") return GroupVariation::Group113Var0;
+  if(arg == "Group120Var1") return GroupVariation::Group120Var1;
+  if(arg == "Group120Var2") return GroupVariation::Group120Var2;
+  if(arg == "Group120Var3") return GroupVariation::Group120Var3;
+  if(arg == "Group120Var4") return GroupVariation::Group120Var4;
+  if(arg == "Group120Var5") return GroupVariation::Group120Var5;
+  if(arg == "Group120Var6") return GroupVariation::Group120Var6;
+  if(arg == "Group120Var7") return GroupVariation::Group120Var7;
+  if(arg == "Group120Var8") return GroupVariation::Group120Var8;
+  if(arg == "Group120Var9") return GroupVariation::Group120Var9;
+  if(arg == "Group120Var10") return GroupVariation::Group120Var10;
+  if(arg == "Group120Var11") return GroupVariation::Group120Var11;
+  if(arg == "Group120Var12") return GroupVariation::Group120Var12;
+  if(arg == "Group120Var13") return GroupVariation::Group120Var13;
+  if(arg == "Group120Var14") return GroupVariation::Group120Var14;
+  if(arg == "Group120Var15") return GroupVariation::Group120Var15;
+  if(arg == "Group121Var0") return GroupVariation::Group121Var0;
+  if(arg == "Group121Var1") return GroupVariation::Group121Var1;
+  if(arg == "Group122Var0") return GroupVariation::Group122Var0;
+  if(arg == "Group122Var1") return GroupVariation::Group122Var1;
+  if(arg == "Group122Var2") return GroupVariation::Group122Var2;
+  else return GroupVariation::UNKNOWN;
+}
+
 
 }

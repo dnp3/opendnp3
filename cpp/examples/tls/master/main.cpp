@@ -127,7 +127,7 @@ int main(int argc, char* argv[])
                 }
                 else
                 {
-                    std::cout << "Failure: " << TaskCompletionToString(result.summary) << std::endl;
+                    std::cout << "Failure: " << TaskCompletionSpec::to_string(result.summary) << std::endl;
                 }
             };
             master->Restart(RestartType::COLD, print);

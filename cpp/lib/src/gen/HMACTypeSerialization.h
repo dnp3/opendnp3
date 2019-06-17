@@ -39,15 +39,15 @@ namespace ser4cpp
     template<>
     inline bool write_one(wseq_t& dest, const opendnp3::HMACType& value)
     {
-      return UInt8::write_to(dest, opendnp3::HMACTypeToType(value));
+      return UInt8::write_to(dest, opendnp3::HMACTypeSpec::to_type(value));
     }
 
     template<>
     inline bool read_one(rseq_t& input, opendnp3::HMACType& out)
     {
-      UInt8::type_t tempHMACType;
+      uint8_t tempHMACType;
       bool result = UInt8::read_from(input, tempHMACType);
-      out = opendnp3::HMACTypeFromType(tempHMACType);
+      out = opendnp3::HMACTypeSpec::from_type(tempHMACType);
       return result;
     }
   }

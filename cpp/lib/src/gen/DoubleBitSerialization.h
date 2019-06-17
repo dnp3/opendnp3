@@ -39,15 +39,15 @@ namespace ser4cpp
     template<>
     inline bool write_one(wseq_t& dest, const opendnp3::DoubleBit& value)
     {
-      return UInt8::write_to(dest, opendnp3::DoubleBitToType(value));
+      return UInt8::write_to(dest, opendnp3::DoubleBitSpec::to_type(value));
     }
 
     template<>
     inline bool read_one(rseq_t& input, opendnp3::DoubleBit& out)
     {
-      UInt8::type_t tempDoubleBit;
+      uint8_t tempDoubleBit;
       bool result = UInt8::read_from(input, tempDoubleBit);
-      out = opendnp3::DoubleBitFromType(tempDoubleBit);
+      out = opendnp3::DoubleBitSpec::from_type(tempDoubleBit);
       return result;
     }
   }

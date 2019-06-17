@@ -292,7 +292,7 @@ template<class T> IINField LoggingHandler::PrintAO(const ICollection<Indexed<T>>
     auto logItem = [this](const Indexed<T>& item) {
         std::ostringstream oss;
         oss << "[" << item.index << "] - value: " << item.value.value;
-        oss << " status: " << CommandStatusToString(item.value.status);
+        oss << " status: " << CommandStatusSpec::to_human_string(item.value.status);
         SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
     };
 

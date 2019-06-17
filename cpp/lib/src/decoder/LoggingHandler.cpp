@@ -76,11 +76,11 @@ IINField LoggingHandler::PrintCrob(const ICollection<Indexed<ControlRelayOutputB
     auto logItem = [this](const Indexed<ControlRelayOutputBlock>& item) {
         std::ostringstream oss;
         oss << "[" << item.index << "] - code: 0x" << ToHex(item.value.rawCode) << " ("
-            << ControlCodeToString(item.value.functionCode) << ")";
+            << ControlCodeSpec::to_human_string(item.value.functionCode) << ")";
         oss << " count: " << static_cast<size_t>(item.value.count);
         oss << " on-time: " << static_cast<size_t>(item.value.onTimeMS);
         oss << " off-time: " << static_cast<size_t>(item.value.offTimeMS);
-        oss << " status: " << CommandStatusToString(item.value.status);
+        oss << " status: " << CommandStatusSpec::to_human_string(item.value.status);
         SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
     };
 
@@ -111,7 +111,7 @@ IINField LoggingHandler::PrintTimeAndInterval(const ICollection<Indexed<TimeAndI
         std::ostringstream oss;
         oss << "[" << item.index << "] - startTime: " << ToUTCString(item.value.time);
         oss << " count: " << item.value.interval;
-        oss << " units: " << IntervalUnitsToString(item.value.GetUnitsEnum()) << " ("
+        oss << " units: " << IntervalUnitsSpec::to_human_string(item.value.GetUnitsEnum()) << " ("
             << static_cast<int>(item.value.units) << ")";
         SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
     };
@@ -130,8 +130,8 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
     std::ostringstream oss;
     oss << "csq: " << value.challengeSeqNum;
     oss << " user: " << value.userNum;
-    oss << " MAC: " << HMACTypeToString(value.hmacAlgo);
-    oss << " reason: " << ChallengeReasonToString(value.challengeReason);
+    oss << " MAC: " << HMACTypeSpec::to_human_string(value.hmacAlgo);
+    oss << " reason: " << ChallengeReasonSpec::to_human_string(value.challengeReason);
     SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
 
     SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "challenge data: ");
@@ -166,9 +166,9 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
     std::ostringstream oss;
     oss << "ksq: " << value.keyChangeSeqNum;
     oss << " user: " << value.userNum;
-    oss << " KW: " << KeyWrapAlgorithmToString(value.keyWrapAlgo);
-    oss << " KS: " << KeyStatusToString(value.keyStatus);
-    oss << " MAC: " << HMACTypeToString(value.hmacAlgo);
+    oss << " KW: " << KeyWrapAlgorithmSpec::to_human_string(value.keyWrapAlgo);
+    oss << " KS: " << KeyStatusSpec::to_human_string(value.keyStatus);
+    oss << " MAC: " << HMACTypeSpec::to_human_string(value.hmacAlgo);
     SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
 
     SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "challenge data: ");
@@ -208,7 +208,7 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
         oss << "seq: " << value.challengeSeqNum;
         oss << " user: " << value.userNum;
         oss << " assoc: " << value.assocId;
-        oss << " error: " << AuthErrorCodeToString(value.errorCode);
+        oss << " error: " << AuthErrorCodeSpec::to_human_string(value.errorCode);
         SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
     }
 
@@ -231,8 +231,8 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
     Indent i(*callbacks);
 
     std::ostringstream oss;
-    oss << "kcm: " << KeyChangeMethodToString(value.keyChangeMethod);
-    oss << " type: " << CertificateTypeToString(value.certificateType);
+    oss << "kcm: " << KeyChangeMethodSpec::to_human_string(value.keyChangeMethod);
+    oss << " type: " << CertificateTypeSpec::to_human_string(value.certificateType);
     SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
 
     SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, "certificate: ");
@@ -261,8 +261,8 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
 
     {
         std::ostringstream oss;
-        oss << "kcm: " << KeyChangeMethodToString(value.keyChangeMethod);
-        oss << " op: " << UserOperationToString(value.userOperation);
+        oss << "kcm: " << KeyChangeMethodSpec::to_human_string(value.keyChangeMethod);
+        oss << " op: " << UserOperationSpec::to_human_string(value.userOperation);
         oss << " scsn: " << value.statusChangeSeqNum;
         oss << " role: " << value.userRole;
         oss << "exp: " << value.userRoleExpDays;
@@ -289,7 +289,7 @@ IINField LoggingHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
 
     {
         std::ostringstream oss;
-        oss << "kcm: " << KeyChangeMethodToString(value.keyChangeMethod);
+        oss << "kcm: " << KeyChangeMethodSpec::to_human_string(value.keyChangeMethod);
         SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
     }
 
@@ -433,7 +433,7 @@ IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollect
 
 IINField LoggingHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values)
 {
-    auto stringify = [](DoubleBit db) -> const char* { return DoubleBitToString(db); };
+    auto stringify = [](DoubleBit db) -> const char* { return DoubleBitSpec::to_human_string(db); };
     return this->PrintVQTStringify(header.enumeration, values, stringify);
 }
 
@@ -493,7 +493,7 @@ IINField LoggingHandler::ProcessHeader(const PrefixHeader& header,
 
 IINField LoggingHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values)
 {
-    auto stringify = [](DoubleBit db) -> const char* { return DoubleBitToString(db); };
+    auto stringify = [](DoubleBit db) -> const char* { return DoubleBitSpec::to_human_string(db); };
     return this->PrintVQTStringify(header.enumeration, values, stringify);
 }
 
@@ -537,7 +537,7 @@ IINField LoggingHandler::ProcessHeader(const PrefixHeader& header,
     auto logItem = [this, HAS_TIME](const Indexed<BinaryCommandEvent>& item) {
         std::ostringstream oss;
         oss << "[" << item.index << "] - value: " << GetStringValue(item.value.value)
-            << "  status: " << CommandStatusToString(item.value.status);
+            << "  status: " << CommandStatusSpec::to_human_string(item.value.status);
         if (HAS_TIME)
         {
             oss << " time: " << ToUTCString(item.value.time);
@@ -558,7 +558,7 @@ IINField LoggingHandler::ProcessHeader(const PrefixHeader& header,
     auto logItem = [this, HAS_TIME](const Indexed<AnalogCommandEvent>& item) {
         std::ostringstream oss;
         oss << "[" << item.index << "] - value: " << item.value.value
-            << "  status: " << CommandStatusToString(item.value.status);
+            << "  status: " << CommandStatusSpec::to_human_string(item.value.status);
         if (HAS_TIME)
         {
             oss << " time: " << ToUTCString(item.value.time);

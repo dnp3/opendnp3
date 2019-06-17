@@ -26,15 +26,19 @@ object EnumToType extends HeaderImplModelRender[EnumModel] {
   def header: ModelRenderer[EnumModel] = HeaderRender
   def impl: ModelRenderer[EnumModel] =  ImplRender
 
-  private def signature(em: EnumModel) : String = List(getEnumType(em.enumType), List(em.name,"ToType(", em.name," arg)").mkString).mkString(" ")
+  private def signatureReturnType(enum: EnumModel) = getEnumType(enum.enumType)
+  private def signatureMethod(enum: EnumModel) = f"to_type(${enum.name} arg)"
 
   private object HeaderRender extends ModelRenderer[EnumModel] {
-    def render(em: EnumModel)(implicit indent: Indentation) : Iterator[String] = Iterator(signature(em)+";")
+    def render(em: EnumModel)(implicit indent: Indentation) : Iterator[String] = Iterator(toHeaderSignature(signatureReturnType(em), signatureMethod(em)))
   }
 
   private object ImplRender extends ModelRenderer[EnumModel] {
     def render(em: EnumModel)(implicit indent: Indentation) : Iterator[String] = {
-      Iterator(signature(em)) ++ bracket {
+
+      def header = Iterator(toImplSignature(signatureReturnType(em), signatureMethod(em), em))
+
+      header ++ bracket {
         Iterator(List("return ", staticCast(em.enumType)("arg"),";").mkString)
       }
     }

@@ -64,12 +64,12 @@ DoubleBit DoubleBitBinary::GetValue(Flags flags)
 {
     // the value is the top 2 bits, so down-shift 6
     uint8_t value = flags.value >> 6;
-    return DoubleBitFromType(value);
+    return DoubleBitSpec::from_type(value);
 }
 
 Flags DoubleBitBinary::GetFlags(Flags flags, DoubleBit state)
 {
-    uint8_t value = DoubleBitToType(state) << 6;
+    uint8_t value = DoubleBitSpec::to_type(state) << 6;
     return (QualityMask & flags.value) | value;
 }
 
@@ -160,7 +160,7 @@ TimeAndInterval::TimeAndInterval(DNPTime time_, uint32_t interval_, IntervalUnit
 
 IntervalUnits TimeAndInterval::GetUnitsEnum() const
 {
-    return IntervalUnitsFromType(units);
+    return IntervalUnitsSpec::from_type(units);
 }
 
 } // namespace opendnp3

@@ -30,14 +30,16 @@
 //
 
 #include "opendnp3/gen/IntervalUnits.h"
+#include <stdexcept>
 
 namespace opendnp3 {
 
-uint8_t IntervalUnitsToType(IntervalUnits arg)
+uint8_t IntervalUnitsSpec::to_type(IntervalUnits arg)
 {
   return static_cast<uint8_t>(arg);
 }
-IntervalUnits IntervalUnitsFromType(uint8_t arg)
+
+IntervalUnits IntervalUnitsSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -67,7 +69,8 @@ IntervalUnits IntervalUnitsFromType(uint8_t arg)
       return IntervalUnits::Undefined;
   }
 }
-char const* IntervalUnitsToString(IntervalUnits arg)
+
+char const* IntervalUnitsSpec::to_string(IntervalUnits arg)
 {
   switch(arg)
   {
@@ -97,5 +100,53 @@ char const* IntervalUnitsToString(IntervalUnits arg)
       return "Undefined";
   }
 }
+
+char const* IntervalUnitsSpec::to_human_string(IntervalUnits arg)
+{
+  switch(arg)
+  {
+    case(IntervalUnits::NoRepeat):
+      return "NoRepeat";
+    case(IntervalUnits::Milliseconds):
+      return "Milliseconds";
+    case(IntervalUnits::Seconds):
+      return "Seconds";
+    case(IntervalUnits::Minutes):
+      return "Minutes";
+    case(IntervalUnits::Hours):
+      return "Hours";
+    case(IntervalUnits::Days):
+      return "Days";
+    case(IntervalUnits::Weeks):
+      return "Weeks";
+    case(IntervalUnits::Months7):
+      return "Months7";
+    case(IntervalUnits::Months8):
+      return "Months8";
+    case(IntervalUnits::Months9):
+      return "Months9";
+    case(IntervalUnits::Seasons):
+      return "Seasons";
+    default:
+      return "Undefined";
+  }
+}
+
+IntervalUnits IntervalUnitsSpec::from_string(const std::string& arg)
+{
+  if(arg == "NoRepeat") return IntervalUnits::NoRepeat;
+  if(arg == "Milliseconds") return IntervalUnits::Milliseconds;
+  if(arg == "Seconds") return IntervalUnits::Seconds;
+  if(arg == "Minutes") return IntervalUnits::Minutes;
+  if(arg == "Hours") return IntervalUnits::Hours;
+  if(arg == "Days") return IntervalUnits::Days;
+  if(arg == "Weeks") return IntervalUnits::Weeks;
+  if(arg == "Months7") return IntervalUnits::Months7;
+  if(arg == "Months8") return IntervalUnits::Months8;
+  if(arg == "Months9") return IntervalUnits::Months9;
+  if(arg == "Seasons") return IntervalUnits::Seasons;
+  else return IntervalUnits::Undefined;
+}
+
 
 }

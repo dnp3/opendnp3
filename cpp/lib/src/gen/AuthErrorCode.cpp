@@ -30,14 +30,16 @@
 //
 
 #include "opendnp3/gen/AuthErrorCode.h"
+#include <stdexcept>
 
 namespace opendnp3 {
 
-uint8_t AuthErrorCodeToType(AuthErrorCode arg)
+uint8_t AuthErrorCodeSpec::to_type(AuthErrorCode arg)
 {
   return static_cast<uint8_t>(arg);
 }
-AuthErrorCode AuthErrorCodeFromType(uint8_t arg)
+
+AuthErrorCode AuthErrorCodeSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -65,7 +67,8 @@ AuthErrorCode AuthErrorCodeFromType(uint8_t arg)
       return AuthErrorCode::UNKNOWN;
   }
 }
-char const* AuthErrorCodeToString(AuthErrorCode arg)
+
+char const* AuthErrorCodeSpec::to_string(AuthErrorCode arg)
 {
   switch(arg)
   {
@@ -93,5 +96,50 @@ char const* AuthErrorCodeToString(AuthErrorCode arg)
       return "UNKNOWN";
   }
 }
+
+char const* AuthErrorCodeSpec::to_human_string(AuthErrorCode arg)
+{
+  switch(arg)
+  {
+    case(AuthErrorCode::AUTHENTICATION_FAILED):
+      return "AUTHENTICATION_FAILED";
+    case(AuthErrorCode::AGGRESSIVE_MODE_UNSUPPORTED):
+      return "AGGRESSIVE_MODE_UNSUPPORTED";
+    case(AuthErrorCode::MAC_NOT_SUPPORTED):
+      return "MAC_NOT_SUPPORTED";
+    case(AuthErrorCode::KEY_WRAP_NOT_SUPPORTED):
+      return "KEY_WRAP_NOT_SUPPORTED";
+    case(AuthErrorCode::AUTHORIZATION_FAILED):
+      return "AUTHORIZATION_FAILED";
+    case(AuthErrorCode::UPDATE_KEY_METHOD_NOT_PERMITTED):
+      return "UPDATE_KEY_METHOD_NOT_PERMITTED";
+    case(AuthErrorCode::INVALID_SIGNATURE):
+      return "INVALID_SIGNATURE";
+    case(AuthErrorCode::INVALID_CERTIFICATION_DATA):
+      return "INVALID_CERTIFICATION_DATA";
+    case(AuthErrorCode::UNKNOWN_USER):
+      return "UNKNOWN_USER";
+    case(AuthErrorCode::MAX_SESSION_KEY_STATUS_REQUESTS_EXCEEDED):
+      return "MAX_SESSION_KEY_STATUS_REQUESTS_EXCEEDED";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+AuthErrorCode AuthErrorCodeSpec::from_string(const std::string& arg)
+{
+  if(arg == "AUTHENTICATION_FAILED") return AuthErrorCode::AUTHENTICATION_FAILED;
+  if(arg == "AGGRESSIVE_MODE_UNSUPPORTED") return AuthErrorCode::AGGRESSIVE_MODE_UNSUPPORTED;
+  if(arg == "MAC_NOT_SUPPORTED") return AuthErrorCode::MAC_NOT_SUPPORTED;
+  if(arg == "KEY_WRAP_NOT_SUPPORTED") return AuthErrorCode::KEY_WRAP_NOT_SUPPORTED;
+  if(arg == "AUTHORIZATION_FAILED") return AuthErrorCode::AUTHORIZATION_FAILED;
+  if(arg == "UPDATE_KEY_METHOD_NOT_PERMITTED") return AuthErrorCode::UPDATE_KEY_METHOD_NOT_PERMITTED;
+  if(arg == "INVALID_SIGNATURE") return AuthErrorCode::INVALID_SIGNATURE;
+  if(arg == "INVALID_CERTIFICATION_DATA") return AuthErrorCode::INVALID_CERTIFICATION_DATA;
+  if(arg == "UNKNOWN_USER") return AuthErrorCode::UNKNOWN_USER;
+  if(arg == "MAX_SESSION_KEY_STATUS_REQUESTS_EXCEEDED") return AuthErrorCode::MAX_SESSION_KEY_STATUS_REQUESTS_EXCEEDED;
+  else return AuthErrorCode::UNKNOWN;
+}
+
 
 }

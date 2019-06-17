@@ -73,7 +73,7 @@ MasterTaskType RestartOperationTask::GetTaskType() const
 
 char const* RestartOperationTask::Name() const
 {
-    return FunctionCodeToString(this->function);
+    return FunctionCodeSpec::to_human_string(this->function);
 }
 
 IMasterTask::ResponseResult RestartOperationTask::ProcessResponse(const APDUResponseHeader& header,

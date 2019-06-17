@@ -33,6 +33,7 @@
 #define OPENDNP3_ANALOGOUTPUTSTATUSQUALITY_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -59,6 +60,16 @@ enum class AnalogOutputStatusQuality : uint8_t
   RESERVED = 0x80
 };
 
+struct AnalogOutputStatusQualitySpec
+{
+  using enum_type_t = AnalogOutputStatusQuality;
+
+  static uint8_t to_type(AnalogOutputStatusQuality arg);
+  static AnalogOutputStatusQuality from_type(uint8_t arg);
+  static char const* to_string(AnalogOutputStatusQuality arg);
+  static char const* to_human_string(AnalogOutputStatusQuality arg);
+  static AnalogOutputStatusQuality from_string(const std::string& arg);
+};
 
 }
 

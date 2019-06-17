@@ -33,6 +33,7 @@
 #define OPENDNP3_FLAGSTYPE_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -50,9 +51,16 @@ enum class FlagsType : uint8_t
   BinaryInput = 0x0
 };
 
-uint8_t FlagsTypeToType(FlagsType arg);
-FlagsType FlagsTypeFromType(uint8_t arg);
-char const* FlagsTypeToString(FlagsType arg);
+struct FlagsTypeSpec
+{
+  using enum_type_t = FlagsType;
+
+  static uint8_t to_type(FlagsType arg);
+  static FlagsType from_type(uint8_t arg);
+  static char const* to_string(FlagsType arg);
+  static char const* to_human_string(FlagsType arg);
+  static FlagsType from_string(const std::string& arg);
+};
 
 }
 

@@ -22,6 +22,7 @@
 
 #include "app/DownSampling.h"
 
+#include "opendnp3/gen/CommandStatus.h"
 #include "opendnp3/util/StaticOnly.h"
 
 #include <cstdint>
@@ -167,10 +168,11 @@ template<class Target, class Source> struct ConvertQS : private StaticOnly
     {
         Target t;
         t.value = src.value;
-        t.status = CommandStatusToType(src.status);
+        t.status = CommandStatusSpec::to_type(src.status);
         return t;
     }
 };
+
 } // namespace opendnp3
 
 #endif

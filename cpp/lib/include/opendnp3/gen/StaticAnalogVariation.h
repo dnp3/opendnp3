@@ -33,6 +33,7 @@
 #define OPENDNP3_STATICANALOGVARIATION_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -46,6 +47,16 @@ enum class StaticAnalogVariation : uint8_t
   Group30Var6 = 5
 };
 
+struct StaticAnalogVariationSpec
+{
+  using enum_type_t = StaticAnalogVariation;
+
+  static uint8_t to_type(StaticAnalogVariation arg);
+  static StaticAnalogVariation from_type(uint8_t arg);
+  static char const* to_string(StaticAnalogVariation arg);
+  static char const* to_human_string(StaticAnalogVariation arg);
+  static StaticAnalogVariation from_string(const std::string& arg);
+};
 
 }
 

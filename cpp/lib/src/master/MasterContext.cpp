@@ -198,7 +198,7 @@ void MContext::ProcessAPDU(const APDUResponseHeader& header, const ser4cpp::rseq
         break;
     default:
         FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring unsupported function code: %s",
-                         FunctionCodeToString(header.function));
+                         FunctionCodeSpec::to_human_string(header.function));
         break;
     }
 }

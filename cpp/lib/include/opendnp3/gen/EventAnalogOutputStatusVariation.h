@@ -33,6 +33,7 @@
 #define OPENDNP3_EVENTANALOGOUTPUTSTATUSVARIATION_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -48,6 +49,16 @@ enum class EventAnalogOutputStatusVariation : uint8_t
   Group42Var8 = 7
 };
 
+struct EventAnalogOutputStatusVariationSpec
+{
+  using enum_type_t = EventAnalogOutputStatusVariation;
+
+  static uint8_t to_type(EventAnalogOutputStatusVariation arg);
+  static EventAnalogOutputStatusVariation from_type(uint8_t arg);
+  static char const* to_string(EventAnalogOutputStatusVariation arg);
+  static char const* to_human_string(EventAnalogOutputStatusVariation arg);
+  static EventAnalogOutputStatusVariation from_string(const std::string& arg);
+};
 
 }
 

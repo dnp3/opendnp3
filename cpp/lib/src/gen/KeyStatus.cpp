@@ -30,14 +30,16 @@
 //
 
 #include "opendnp3/gen/KeyStatus.h"
+#include <stdexcept>
 
 namespace opendnp3 {
 
-uint8_t KeyStatusToType(KeyStatus arg)
+uint8_t KeyStatusSpec::to_type(KeyStatus arg)
 {
   return static_cast<uint8_t>(arg);
 }
-KeyStatus KeyStatusFromType(uint8_t arg)
+
+KeyStatus KeyStatusSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -53,7 +55,8 @@ KeyStatus KeyStatusFromType(uint8_t arg)
       return KeyStatus::UNDEFINED;
   }
 }
-char const* KeyStatusToString(KeyStatus arg)
+
+char const* KeyStatusSpec::to_string(KeyStatus arg)
 {
   switch(arg)
   {
@@ -69,5 +72,32 @@ char const* KeyStatusToString(KeyStatus arg)
       return "UNDEFINED";
   }
 }
+
+char const* KeyStatusSpec::to_human_string(KeyStatus arg)
+{
+  switch(arg)
+  {
+    case(KeyStatus::OK):
+      return "OK";
+    case(KeyStatus::NOT_INIT):
+      return "NOT_INIT";
+    case(KeyStatus::COMM_FAIL):
+      return "COMM_FAIL";
+    case(KeyStatus::AUTH_FAIL):
+      return "AUTH_FAIL";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+KeyStatus KeyStatusSpec::from_string(const std::string& arg)
+{
+  if(arg == "OK") return KeyStatus::OK;
+  if(arg == "NOT_INIT") return KeyStatus::NOT_INIT;
+  if(arg == "COMM_FAIL") return KeyStatus::COMM_FAIL;
+  if(arg == "AUTH_FAIL") return KeyStatus::AUTH_FAIL;
+  else return KeyStatus::UNDEFINED;
+}
+
 
 }

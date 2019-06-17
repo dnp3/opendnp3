@@ -39,15 +39,15 @@ namespace ser4cpp
     template<>
     inline bool write_one(wseq_t& dest, const opendnp3::IntervalUnits& value)
     {
-      return UInt8::write_to(dest, opendnp3::IntervalUnitsToType(value));
+      return UInt8::write_to(dest, opendnp3::IntervalUnitsSpec::to_type(value));
     }
 
     template<>
     inline bool read_one(rseq_t& input, opendnp3::IntervalUnits& out)
     {
-      UInt8::type_t tempIntervalUnits;
+      uint8_t tempIntervalUnits;
       bool result = UInt8::read_from(input, tempIntervalUnits);
-      out = opendnp3::IntervalUnitsFromType(tempIntervalUnits);
+      out = opendnp3::IntervalUnitsSpec::from_type(tempIntervalUnits);
       return result;
     }
   }

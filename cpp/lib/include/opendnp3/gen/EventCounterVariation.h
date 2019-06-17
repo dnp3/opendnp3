@@ -33,6 +33,7 @@
 #define OPENDNP3_EVENTCOUNTERVARIATION_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -44,6 +45,16 @@ enum class EventCounterVariation : uint8_t
   Group22Var6 = 3
 };
 
+struct EventCounterVariationSpec
+{
+  using enum_type_t = EventCounterVariation;
+
+  static uint8_t to_type(EventCounterVariation arg);
+  static EventCounterVariation from_type(uint8_t arg);
+  static char const* to_string(EventCounterVariation arg);
+  static char const* to_human_string(EventCounterVariation arg);
+  static EventCounterVariation from_string(const std::string& arg);
+};
 
 }
 

@@ -59,7 +59,7 @@ bool HeaderWriter::WriteHeader(GroupVariationID id, QualifierCode qc)
 
     ser4cpp::UInt8::write_to(*position, id.group);
     ser4cpp::UInt8::write_to(*position, id.variation);
-    ser4cpp::UInt8::write_to(*position, QualifierCodeToType(qc));
+    ser4cpp::UInt8::write_to(*position, QualifierCodeSpec::to_type(qc));
     return true;
 }
 

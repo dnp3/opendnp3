@@ -33,6 +33,7 @@
 #define OPENDNP3_TASKCOMPLETION_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -55,7 +56,16 @@ enum class TaskCompletion : uint8_t
   FAILURE_NO_COMMS = 255
 };
 
-char const* TaskCompletionToString(TaskCompletion arg);
+struct TaskCompletionSpec
+{
+  using enum_type_t = TaskCompletion;
+
+  static uint8_t to_type(TaskCompletion arg);
+  static TaskCompletion from_type(uint8_t arg);
+  static char const* to_string(TaskCompletion arg);
+  static char const* to_human_string(TaskCompletion arg);
+  static TaskCompletion from_string(const std::string& arg);
+};
 
 }
 

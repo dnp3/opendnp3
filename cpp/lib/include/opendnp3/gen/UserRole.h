@@ -33,6 +33,7 @@
 #define OPENDNP3_USERROLE_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -52,9 +53,16 @@ enum class UserRole : uint16_t
   UNDEFINED = 32767
 };
 
-uint16_t UserRoleToType(UserRole arg);
-UserRole UserRoleFromType(uint16_t arg);
-char const* UserRoleToString(UserRole arg);
+struct UserRoleSpec
+{
+  using enum_type_t = UserRole;
+
+  static uint16_t to_type(UserRole arg);
+  static UserRole from_type(uint16_t arg);
+  static char const* to_string(UserRole arg);
+  static char const* to_human_string(UserRole arg);
+  static UserRole from_string(const std::string& arg);
+};
 
 }
 

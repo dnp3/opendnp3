@@ -39,15 +39,15 @@ namespace ser4cpp
     template<>
     inline bool write_one(wseq_t& dest, const opendnp3::StopBits& value)
     {
-      return UInt8::write_to(dest, opendnp3::StopBitsToType(value));
+      return UInt8::write_to(dest, opendnp3::StopBitsSpec::to_type(value));
     }
 
     template<>
     inline bool read_one(rseq_t& input, opendnp3::StopBits& out)
     {
-      UInt8::type_t tempStopBits;
+      uint8_t tempStopBits;
       bool result = UInt8::read_from(input, tempStopBits);
-      out = opendnp3::StopBitsFromType(tempStopBits);
+      out = opendnp3::StopBitsSpec::from_type(tempStopBits);
       return result;
     }
   }

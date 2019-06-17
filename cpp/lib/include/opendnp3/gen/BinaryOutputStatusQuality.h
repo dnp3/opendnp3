@@ -33,6 +33,7 @@
 #define OPENDNP3_BINARYOUTPUTSTATUSQUALITY_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -59,6 +60,16 @@ enum class BinaryOutputStatusQuality : uint8_t
   STATE = 0x80
 };
 
+struct BinaryOutputStatusQualitySpec
+{
+  using enum_type_t = BinaryOutputStatusQuality;
+
+  static uint8_t to_type(BinaryOutputStatusQuality arg);
+  static BinaryOutputStatusQuality from_type(uint8_t arg);
+  static char const* to_string(BinaryOutputStatusQuality arg);
+  static char const* to_human_string(BinaryOutputStatusQuality arg);
+  static BinaryOutputStatusQuality from_string(const std::string& arg);
+};
 
 }
 

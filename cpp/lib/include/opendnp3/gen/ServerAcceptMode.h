@@ -33,6 +33,7 @@
 #define OPENDNP3_SERVERACCEPTMODE_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -45,6 +46,16 @@ enum class ServerAcceptMode : uint8_t
   CloseExisting = 1
 };
 
+struct ServerAcceptModeSpec
+{
+  using enum_type_t = ServerAcceptMode;
+
+  static uint8_t to_type(ServerAcceptMode arg);
+  static ServerAcceptMode from_type(uint8_t arg);
+  static char const* to_string(ServerAcceptMode arg);
+  static char const* to_human_string(ServerAcceptMode arg);
+  static ServerAcceptMode from_string(const std::string& arg);
+};
 
 }
 

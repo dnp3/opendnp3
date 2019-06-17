@@ -33,6 +33,7 @@
 #define OPENDNP3_USEROPERATION_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -47,9 +48,16 @@ enum class UserOperation : uint8_t
   OP_UNDEFINED = 0xFF
 };
 
-uint8_t UserOperationToType(UserOperation arg);
-UserOperation UserOperationFromType(uint8_t arg);
-char const* UserOperationToString(UserOperation arg);
+struct UserOperationSpec
+{
+  using enum_type_t = UserOperation;
+
+  static uint8_t to_type(UserOperation arg);
+  static UserOperation from_type(uint8_t arg);
+  static char const* to_string(UserOperation arg);
+  static char const* to_human_string(UserOperation arg);
+  static UserOperation from_string(const std::string& arg);
+};
 
 }
 

@@ -33,6 +33,7 @@
 #define OPENDNP3_ASSIGNCLASSTYPE_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -50,6 +51,16 @@ enum class AssignClassType : uint8_t
   AnalogOutputStatus = 0x6
 };
 
+struct AssignClassTypeSpec
+{
+  using enum_type_t = AssignClassType;
+
+  static uint8_t to_type(AssignClassType arg);
+  static AssignClassType from_type(uint8_t arg);
+  static char const* to_string(AssignClassType arg);
+  static char const* to_human_string(AssignClassType arg);
+  static AssignClassType from_string(const std::string& arg);
+};
 
 }
 

@@ -30,14 +30,16 @@
 //
 
 #include "opendnp3/gen/ChallengeReason.h"
+#include <stdexcept>
 
 namespace opendnp3 {
 
-uint8_t ChallengeReasonToType(ChallengeReason arg)
+uint8_t ChallengeReasonSpec::to_type(ChallengeReason arg)
 {
   return static_cast<uint8_t>(arg);
 }
-ChallengeReason ChallengeReasonFromType(uint8_t arg)
+
+ChallengeReason ChallengeReasonSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -47,7 +49,8 @@ ChallengeReason ChallengeReasonFromType(uint8_t arg)
       return ChallengeReason::UNKNOWN;
   }
 }
-char const* ChallengeReasonToString(ChallengeReason arg)
+
+char const* ChallengeReasonSpec::to_string(ChallengeReason arg)
 {
   switch(arg)
   {
@@ -57,5 +60,23 @@ char const* ChallengeReasonToString(ChallengeReason arg)
       return "UNKNOWN";
   }
 }
+
+char const* ChallengeReasonSpec::to_human_string(ChallengeReason arg)
+{
+  switch(arg)
+  {
+    case(ChallengeReason::CRITICAL):
+      return "CRITICAL";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+ChallengeReason ChallengeReasonSpec::from_string(const std::string& arg)
+{
+  if(arg == "CRITICAL") return ChallengeReason::CRITICAL;
+  else return ChallengeReason::UNKNOWN;
+}
+
 
 }

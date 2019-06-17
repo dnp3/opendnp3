@@ -33,6 +33,7 @@
 #define OPENDNP3_POINTCLASS_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -51,6 +52,16 @@ enum class PointClass : uint8_t
   Class3 = 0x8
 };
 
+struct PointClassSpec
+{
+  using enum_type_t = PointClass;
+
+  static uint8_t to_type(PointClass arg);
+  static PointClass from_type(uint8_t arg);
+  static char const* to_string(PointClass arg);
+  static char const* to_human_string(PointClass arg);
+  static PointClass from_string(const std::string& arg);
+};
 
 }
 

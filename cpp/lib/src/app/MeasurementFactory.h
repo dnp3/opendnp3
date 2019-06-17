@@ -128,7 +128,7 @@ struct ControlRelayOutputBlockFactory : private StaticOnly
     inline static ControlRelayOutputBlock From(
         uint8_t code, uint8_t count, uint32_t onTime, uint32_t offTime, uint8_t status)
     {
-        return ControlRelayOutputBlock(code, count, onTime, offTime, CommandStatusFromType(status));
+        return ControlRelayOutputBlock(code, count, onTime, offTime, CommandStatusSpec::from_type(status));
     }
 };
 
@@ -175,12 +175,12 @@ struct AnalogCommandEventFactory : private StaticOnly
 {
     inline static AnalogCommandEvent From(uint8_t status, double value)
     {
-        return AnalogCommandEvent(value, CommandStatusFromType(status));
+        return AnalogCommandEvent(value, CommandStatusSpec::from_type(status));
     }
 
     inline static AnalogCommandEvent From(uint8_t status, double value, DNPTime time)
     {
-        return AnalogCommandEvent(value, CommandStatusFromType(status), time);
+        return AnalogCommandEvent(value, CommandStatusSpec::from_type(status), time);
     }
 };
 
@@ -201,7 +201,7 @@ template<class Target, class ValueType> struct AnalogOutputFactory : private Sta
 {
     inline static Target From(ValueType value, uint8_t status)
     {
-        return Target(value, CommandStatusFromType(status));
+        return Target(value, CommandStatusSpec::from_type(status));
     }
 };
 

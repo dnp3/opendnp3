@@ -33,24 +33,24 @@ class DefaultSwitchModelRenderer[A](fCase: A => String)(fAction: A => String) ex
 
 class SwitchModelRenderer[A](fCase: A => String)(fAction: A => String) {
 
-  def render(nonDefaults: List[A], default: A)(implicit indent: Indentation): Iterator[String] = {
+  def render(nonDefaults: List[A], default: Option[A])(implicit indent: Indentation): Iterator[String] = {
 
     def switch = Iterator("switch(arg)")
 
-    def nonDefaultCases: Iterator[String] = nonDefaults.toIterator.map { c =>
+    def nonDefaultCases: Iterator[String] = nonDefaults.toIterator.flatMap { c =>
       Iterator(List("case(", fCase(c), "):").mkString) ++
         indent {
           Iterator("return " + fAction(c) + ";")
         }
-    }.flatten.toIterator
+    }
 
-    def defaultCase: Iterator[String] = {
-      Iterator("default:") ++ indent { Iterator("return " + fAction(default) + ";") }
+    def defaultCase: Iterator[String] = default match {
+      case Some(value) => Iterator("default:") ++ indent { Iterator("return " + fAction(value) + ";") }
+      case None => Iterator("default:") ++ indent { Iterator(s"""throw new std::invalid_argument("Unknown value");""") }
     }
 
     switch ++ bracket {
-      nonDefaultCases ++
-      defaultCase
+      nonDefaultCases ++ defaultCase
     }
   }
 }

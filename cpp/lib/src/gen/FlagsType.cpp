@@ -30,14 +30,16 @@
 //
 
 #include "opendnp3/gen/FlagsType.h"
+#include <stdexcept>
 
 namespace opendnp3 {
 
-uint8_t FlagsTypeToType(FlagsType arg)
+uint8_t FlagsTypeSpec::to_type(FlagsType arg)
 {
   return static_cast<uint8_t>(arg);
 }
-FlagsType FlagsTypeFromType(uint8_t arg)
+
+FlagsType FlagsTypeSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -57,7 +59,8 @@ FlagsType FlagsTypeFromType(uint8_t arg)
       return FlagsType::BinaryInput;
   }
 }
-char const* FlagsTypeToString(FlagsType arg)
+
+char const* FlagsTypeSpec::to_string(FlagsType arg)
 {
   switch(arg)
   {
@@ -77,5 +80,38 @@ char const* FlagsTypeToString(FlagsType arg)
       return "BinaryInput";
   }
 }
+
+char const* FlagsTypeSpec::to_human_string(FlagsType arg)
+{
+  switch(arg)
+  {
+    case(FlagsType::DoubleBinaryInput):
+      return "DoubleBinaryInput";
+    case(FlagsType::Counter):
+      return "Counter";
+    case(FlagsType::FrozenCounter):
+      return "FrozenCounter";
+    case(FlagsType::AnalogInput):
+      return "AnalogInput";
+    case(FlagsType::BinaryOutputStatus):
+      return "BinaryOutputStatus";
+    case(FlagsType::AnalogOutputStatus):
+      return "AnalogOutputStatus";
+    default:
+      return "BinaryInput";
+  }
+}
+
+FlagsType FlagsTypeSpec::from_string(const std::string& arg)
+{
+  if(arg == "DoubleBinaryInput") return FlagsType::DoubleBinaryInput;
+  if(arg == "Counter") return FlagsType::Counter;
+  if(arg == "FrozenCounter") return FlagsType::FrozenCounter;
+  if(arg == "AnalogInput") return FlagsType::AnalogInput;
+  if(arg == "BinaryOutputStatus") return FlagsType::BinaryOutputStatus;
+  if(arg == "AnalogOutputStatus") return FlagsType::AnalogOutputStatus;
+  else return FlagsType::BinaryInput;
+}
+
 
 }

@@ -19,9 +19,17 @@
  */
 package com.automatak.render.cpp
 
-import com.automatak.render.ModelRenderer
+import com.automatak.render.{EnumModel, ModelRenderer}
 
 trait HeaderImplModelRender[A] {
   def header: ModelRenderer[A]
   def impl: ModelRenderer[A]
+
+  def toHeaderSignature(returnType: String, method: String) : String = {
+    f"static $returnType $method;"
+  }
+
+  def toImplSignature(returnType: String, method: String, em: EnumModel) : String = {
+    f"$returnType ${em.name}Spec::$method"
+  }
 }

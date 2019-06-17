@@ -30,14 +30,16 @@
 //
 
 #include "opendnp3/gen/DoubleBit.h"
+#include <stdexcept>
 
 namespace opendnp3 {
 
-uint8_t DoubleBitToType(DoubleBit arg)
+uint8_t DoubleBitSpec::to_type(DoubleBit arg)
 {
   return static_cast<uint8_t>(arg);
 }
-DoubleBit DoubleBitFromType(uint8_t arg)
+
+DoubleBit DoubleBitSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -51,7 +53,8 @@ DoubleBit DoubleBitFromType(uint8_t arg)
       return DoubleBit::INDETERMINATE;
   }
 }
-char const* DoubleBitToString(DoubleBit arg)
+
+char const* DoubleBitSpec::to_string(DoubleBit arg)
 {
   switch(arg)
   {
@@ -65,5 +68,29 @@ char const* DoubleBitToString(DoubleBit arg)
       return "INDETERMINATE";
   }
 }
+
+char const* DoubleBitSpec::to_human_string(DoubleBit arg)
+{
+  switch(arg)
+  {
+    case(DoubleBit::INTERMEDIATE):
+      return "INTERMEDIATE";
+    case(DoubleBit::DETERMINED_OFF):
+      return "DETERMINED_OFF";
+    case(DoubleBit::DETERMINED_ON):
+      return "DETERMINED_ON";
+    default:
+      return "INDETERMINATE";
+  }
+}
+
+DoubleBit DoubleBitSpec::from_string(const std::string& arg)
+{
+  if(arg == "INTERMEDIATE") return DoubleBit::INTERMEDIATE;
+  if(arg == "DETERMINED_OFF") return DoubleBit::DETERMINED_OFF;
+  if(arg == "DETERMINED_ON") return DoubleBit::DETERMINED_ON;
+  else return DoubleBit::INDETERMINATE;
+}
+
 
 }

@@ -33,6 +33,7 @@
 #define OPENDNP3_EVENTOCTETSTRINGVARIATION_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -41,6 +42,16 @@ enum class EventOctetStringVariation : uint8_t
   Group111Var0 = 0
 };
 
+struct EventOctetStringVariationSpec
+{
+  using enum_type_t = EventOctetStringVariation;
+
+  static uint8_t to_type(EventOctetStringVariation arg);
+  static EventOctetStringVariation from_type(uint8_t arg);
+  static char const* to_string(EventOctetStringVariation arg);
+  static char const* to_human_string(EventOctetStringVariation arg);
+  static EventOctetStringVariation from_string(const std::string& arg);
+};
 
 }
 

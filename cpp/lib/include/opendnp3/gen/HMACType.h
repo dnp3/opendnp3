@@ -33,6 +33,7 @@
 #define OPENDNP3_HMACTYPE_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -57,9 +58,16 @@ enum class HMACType : uint8_t
   UNKNOWN = 0xFF
 };
 
-uint8_t HMACTypeToType(HMACType arg);
-HMACType HMACTypeFromType(uint8_t arg);
-char const* HMACTypeToString(HMACType arg);
+struct HMACTypeSpec
+{
+  using enum_type_t = HMACType;
+
+  static uint8_t to_type(HMACType arg);
+  static HMACType from_type(uint8_t arg);
+  static char const* to_string(HMACType arg);
+  static char const* to_human_string(HMACType arg);
+  static HMACType from_string(const std::string& arg);
+};
 
 }
 

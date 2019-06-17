@@ -478,20 +478,40 @@ set(opendnp3_src
     ./src/decoder/DecoderImpl.cpp
     ./src/decoder/LoggingHandler.cpp
 
+    ./src/gen/AnalogOutputStatusQuality.cpp
+    ./src/gen/AnalogQuality.cpp
+    ./src/gen/AssignClassType.cpp
     ./src/gen/Attributes.cpp
     ./src/gen/AuthErrorCode.cpp
+    ./src/gen/BinaryOutputStatusQuality.cpp
+    ./src/gen/BinaryQuality.cpp
     ./src/gen/CertificateType.cpp
     ./src/gen/ChallengeReason.cpp
     ./src/gen/ChannelState.cpp
     ./src/gen/CommandPointState.cpp
     ./src/gen/CommandStatus.cpp
+    ./src/gen/ConfigAuthMode.cpp
     ./src/gen/ControlCode.cpp
+    ./src/gen/CounterQuality.cpp
     ./src/gen/DoubleBit.cpp
+    ./src/gen/DoubleBitBinaryQuality.cpp
+    ./src/gen/EventAnalogOutputStatusVariation.cpp
+    ./src/gen/EventAnalogVariation.cpp
+    ./src/gen/EventBinaryOutputStatusVariation.cpp
+    ./src/gen/EventBinaryVariation.cpp
+    ./src/gen/EventCounterVariation.cpp
+    ./src/gen/EventDoubleBinaryVariation.cpp
+    ./src/gen/EventFrozenCounterVariation.cpp
+    ./src/gen/EventMode.cpp
+    ./src/gen/EventOctetStringVariation.cpp
+    ./src/gen/EventSecurityStatVariation.cpp
     ./src/gen/FlagsType.cpp
     ./src/gen/FlowControl.cpp
+    ./src/gen/FrozenCounterQuality.cpp
     ./src/gen/FunctionCode.cpp
     ./src/gen/GroupVariation.cpp
     ./src/gen/HMACType.cpp
+    ./src/gen/IndexQualifierMode.cpp
     ./src/gen/IntervalUnits.cpp
     ./src/gen/KeyChangeMethod.cpp
     ./src/gen/KeyStatus.cpp
@@ -499,11 +519,29 @@ set(opendnp3_src
     ./src/gen/LinkFunction.cpp
     ./src/gen/LinkStatus.cpp
     ./src/gen/MasterTaskType.cpp
+    ./src/gen/OperateType.cpp
     ./src/gen/Parity.cpp
+    ./src/gen/PointClass.cpp
     ./src/gen/QualifierCode.cpp
+    ./src/gen/RestartMode.cpp
+    ./src/gen/RestartType.cpp
+    ./src/gen/SecurityStatIndex.cpp
     ./src/gen/ServerAcceptMode.cpp
+    ./src/gen/StaticAnalogOutputStatusVariation.cpp
+    ./src/gen/StaticAnalogVariation.cpp
+    ./src/gen/StaticBinaryOutputStatusVariation.cpp
+    ./src/gen/StaticBinaryVariation.cpp
+    ./src/gen/StaticCounterVariation.cpp
+    ./src/gen/StaticDoubleBinaryVariation.cpp
+    ./src/gen/StaticFrozenCounterVariation.cpp
+    ./src/gen/StaticOctetStringVariation.cpp
+    ./src/gen/StaticSecurityStatVariation.cpp
+    ./src/gen/StaticTimeAndIntervalVariation.cpp
+    ./src/gen/StaticTypeBitmask.cpp
     ./src/gen/StopBits.cpp
     ./src/gen/TaskCompletion.cpp
+    ./src/gen/TimestampMode.cpp
+    ./src/gen/TimeSyncMode.cpp
     ./src/gen/UserOperation.cpp
     ./src/gen/UserRole.cpp
 

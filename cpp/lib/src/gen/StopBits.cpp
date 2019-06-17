@@ -30,14 +30,16 @@
 //
 
 #include "opendnp3/gen/StopBits.h"
+#include <stdexcept>
 
 namespace opendnp3 {
 
-uint8_t StopBitsToType(StopBits arg)
+uint8_t StopBitsSpec::to_type(StopBits arg)
 {
   return static_cast<uint8_t>(arg);
 }
-StopBits StopBitsFromType(uint8_t arg)
+
+StopBits StopBitsSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -51,7 +53,8 @@ StopBits StopBitsFromType(uint8_t arg)
       return StopBits::None;
   }
 }
-char const* StopBitsToString(StopBits arg)
+
+char const* StopBitsSpec::to_string(StopBits arg)
 {
   switch(arg)
   {
@@ -65,5 +68,29 @@ char const* StopBitsToString(StopBits arg)
       return "None";
   }
 }
+
+char const* StopBitsSpec::to_human_string(StopBits arg)
+{
+  switch(arg)
+  {
+    case(StopBits::One):
+      return "One";
+    case(StopBits::OnePointFive):
+      return "OnePointFive";
+    case(StopBits::Two):
+      return "Two";
+    default:
+      return "None";
+  }
+}
+
+StopBits StopBitsSpec::from_string(const std::string& arg)
+{
+  if(arg == "One") return StopBits::One;
+  if(arg == "OnePointFive") return StopBits::OnePointFive;
+  if(arg == "Two") return StopBits::Two;
+  else return StopBits::None;
+}
+
 
 }

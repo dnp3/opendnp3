@@ -30,14 +30,16 @@
 //
 
 #include "opendnp3/gen/KeyWrapAlgorithm.h"
+#include <stdexcept>
 
 namespace opendnp3 {
 
-uint8_t KeyWrapAlgorithmToType(KeyWrapAlgorithm arg)
+uint8_t KeyWrapAlgorithmSpec::to_type(KeyWrapAlgorithm arg)
 {
   return static_cast<uint8_t>(arg);
 }
-KeyWrapAlgorithm KeyWrapAlgorithmFromType(uint8_t arg)
+
+KeyWrapAlgorithm KeyWrapAlgorithmSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -49,7 +51,8 @@ KeyWrapAlgorithm KeyWrapAlgorithmFromType(uint8_t arg)
       return KeyWrapAlgorithm::UNDEFINED;
   }
 }
-char const* KeyWrapAlgorithmToString(KeyWrapAlgorithm arg)
+
+char const* KeyWrapAlgorithmSpec::to_string(KeyWrapAlgorithm arg)
 {
   switch(arg)
   {
@@ -61,5 +64,26 @@ char const* KeyWrapAlgorithmToString(KeyWrapAlgorithm arg)
       return "UNDEFINED";
   }
 }
+
+char const* KeyWrapAlgorithmSpec::to_human_string(KeyWrapAlgorithm arg)
+{
+  switch(arg)
+  {
+    case(KeyWrapAlgorithm::AES_128):
+      return "AES_128";
+    case(KeyWrapAlgorithm::AES_256):
+      return "AES_256";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+KeyWrapAlgorithm KeyWrapAlgorithmSpec::from_string(const std::string& arg)
+{
+  if(arg == "AES_128") return KeyWrapAlgorithm::AES_128;
+  if(arg == "AES_256") return KeyWrapAlgorithm::AES_256;
+  else return KeyWrapAlgorithm::UNDEFINED;
+}
+
 
 }

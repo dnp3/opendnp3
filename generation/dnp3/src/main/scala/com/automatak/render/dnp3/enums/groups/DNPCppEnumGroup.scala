@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -25,7 +25,7 @@ import com.automatak.render.dnp3.enums._
 
 object DNPCppEnumGroup {
 
-  def enums : List[EnumConfig] = List(fullEnums, simpleEnums, stringOnlyEnums).flatten
+  def enums : List[EnumConfig] = List(fullEnums, simpleEnums).flatten
 
   private def fullEnums = List(
     FunctionCode(),
@@ -49,7 +49,7 @@ object DNPCppEnumGroup {
     StopBits(),
     FlowControl(),
     FlagsType()
-  ).map(x => EnumConfig(x, true, true))
+  ).map(x => EnumConfig(x, true, true, true))
 
   private def simpleEnums = (List(
     AssignClassType(),
@@ -64,14 +64,12 @@ object DNPCppEnumGroup {
     RestartType(),
     OperateType(),
     ServerAcceptMode(),
-    IndexQualifierMode()
-  ) ::: DefaultVariations.enums ::: QualityMasks.enums).map(x => EnumConfig(x, false, false))
-
-  private def stringOnlyEnums = List(
+    IndexQualifierMode(),
     MasterTaskType(),
     TaskCompletion(),
     ChannelState(),
     LinkStatus(),
-    CommandPointState()).map(x => EnumConfig(x, false, true))
+    CommandPointState()
+  ) ::: DefaultVariations.enums ::: QualityMasks.enums).map(x => EnumConfig(x, true, true, false))
 
 }

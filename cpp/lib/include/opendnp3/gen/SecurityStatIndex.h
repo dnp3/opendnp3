@@ -33,6 +33,7 @@
 #define OPENDNP3_SECURITYSTATINDEX_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -79,6 +80,16 @@ enum class SecurityStatIndex : uint8_t
   REKEYS_DUE_TO_RESTART = 17
 };
 
+struct SecurityStatIndexSpec
+{
+  using enum_type_t = SecurityStatIndex;
+
+  static uint8_t to_type(SecurityStatIndex arg);
+  static SecurityStatIndex from_type(uint8_t arg);
+  static char const* to_string(SecurityStatIndex arg);
+  static char const* to_human_string(SecurityStatIndex arg);
+  static SecurityStatIndex from_string(const std::string& arg);
+};
 
 }
 

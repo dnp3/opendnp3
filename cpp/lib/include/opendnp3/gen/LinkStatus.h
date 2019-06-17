@@ -33,6 +33,7 @@
 #define OPENDNP3_LINKSTATUS_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -47,7 +48,16 @@ enum class LinkStatus : uint8_t
   RESET = 1
 };
 
-char const* LinkStatusToString(LinkStatus arg);
+struct LinkStatusSpec
+{
+  using enum_type_t = LinkStatus;
+
+  static uint8_t to_type(LinkStatus arg);
+  static LinkStatus from_type(uint8_t arg);
+  static char const* to_string(LinkStatus arg);
+  static char const* to_human_string(LinkStatus arg);
+  static LinkStatus from_string(const std::string& arg);
+};
 
 }
 

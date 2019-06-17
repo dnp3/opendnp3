@@ -39,15 +39,15 @@ namespace ser4cpp
     template<>
     inline bool write_one(wseq_t& dest, const opendnp3::CommandStatus& value)
     {
-      return UInt8::write_to(dest, opendnp3::CommandStatusToType(value));
+      return UInt8::write_to(dest, opendnp3::CommandStatusSpec::to_type(value));
     }
 
     template<>
     inline bool read_one(rseq_t& input, opendnp3::CommandStatus& out)
     {
-      UInt8::type_t tempCommandStatus;
+      uint8_t tempCommandStatus;
       bool result = UInt8::read_from(input, tempCommandStatus);
-      out = opendnp3::CommandStatusFromType(tempCommandStatus);
+      out = opendnp3::CommandStatusSpec::from_type(tempCommandStatus);
       return result;
     }
   }

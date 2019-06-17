@@ -30,10 +30,37 @@
 //
 
 #include "opendnp3/gen/CommandPointState.h"
+#include <stdexcept>
 
 namespace opendnp3 {
 
-char const* CommandPointStateToString(CommandPointState arg)
+uint8_t CommandPointStateSpec::to_type(CommandPointState arg)
+{
+  return static_cast<uint8_t>(arg);
+}
+
+CommandPointState CommandPointStateSpec::from_type(uint8_t arg)
+{
+  switch(arg)
+  {
+    case(0):
+      return CommandPointState::INIT;
+    case(1):
+      return CommandPointState::SELECT_SUCCESS;
+    case(2):
+      return CommandPointState::SELECT_MISMATCH;
+    case(3):
+      return CommandPointState::SELECT_FAIL;
+    case(4):
+      return CommandPointState::OPERATE_FAIL;
+    case(5):
+      return CommandPointState::SUCCESS;
+    default:
+      throw new std::invalid_argument("Unknown value");
+  }
+}
+
+char const* CommandPointStateSpec::to_string(CommandPointState arg)
 {
   switch(arg)
   {
@@ -53,5 +80,38 @@ char const* CommandPointStateToString(CommandPointState arg)
       return "UNDEFINED";
   }
 }
+
+char const* CommandPointStateSpec::to_human_string(CommandPointState arg)
+{
+  switch(arg)
+  {
+    case(CommandPointState::INIT):
+      return "INIT";
+    case(CommandPointState::SELECT_SUCCESS):
+      return "SELECT_SUCCESS";
+    case(CommandPointState::SELECT_MISMATCH):
+      return "SELECT_MISMATCH";
+    case(CommandPointState::SELECT_FAIL):
+      return "SELECT_FAIL";
+    case(CommandPointState::OPERATE_FAIL):
+      return "OPERATE_FAIL";
+    case(CommandPointState::SUCCESS):
+      return "SUCCESS";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+CommandPointState CommandPointStateSpec::from_string(const std::string& arg)
+{
+  if(arg == "INIT") return CommandPointState::INIT;
+  if(arg == "SELECT_SUCCESS") return CommandPointState::SELECT_SUCCESS;
+  if(arg == "SELECT_MISMATCH") return CommandPointState::SELECT_MISMATCH;
+  if(arg == "SELECT_FAIL") return CommandPointState::SELECT_FAIL;
+  if(arg == "OPERATE_FAIL") return CommandPointState::OPERATE_FAIL;
+  if(arg == "SUCCESS") return CommandPointState::SUCCESS;
+  else throw std::invalid_argument(std::string("Unknown value: ") + arg);
+}
+
 
 }

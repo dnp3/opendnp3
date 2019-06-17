@@ -30,14 +30,16 @@
 //
 
 #include "opendnp3/gen/CertificateType.h"
+#include <stdexcept>
 
 namespace opendnp3 {
 
-uint8_t CertificateTypeToType(CertificateType arg)
+uint8_t CertificateTypeSpec::to_type(CertificateType arg)
 {
   return static_cast<uint8_t>(arg);
 }
-CertificateType CertificateTypeFromType(uint8_t arg)
+
+CertificateType CertificateTypeSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -49,7 +51,8 @@ CertificateType CertificateTypeFromType(uint8_t arg)
       return CertificateType::UNKNOWN;
   }
 }
-char const* CertificateTypeToString(CertificateType arg)
+
+char const* CertificateTypeSpec::to_string(CertificateType arg)
 {
   switch(arg)
   {
@@ -61,5 +64,26 @@ char const* CertificateTypeToString(CertificateType arg)
       return "UNKNOWN";
   }
 }
+
+char const* CertificateTypeSpec::to_human_string(CertificateType arg)
+{
+  switch(arg)
+  {
+    case(CertificateType::ID_CERTIFICATE):
+      return "ID_CERTIFICATE";
+    case(CertificateType::ATTRIBUTE_CERTIFICATE):
+      return "ATTRIBUTE_CERTIFICATE";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+CertificateType CertificateTypeSpec::from_string(const std::string& arg)
+{
+  if(arg == "ID_CERTIFICATE") return CertificateType::ID_CERTIFICATE;
+  if(arg == "ATTRIBUTE_CERTIFICATE") return CertificateType::ATTRIBUTE_CERTIFICATE;
+  else return CertificateType::UNKNOWN;
+}
+
 
 }

@@ -33,6 +33,7 @@
 #define OPENDNP3_STOPBITS_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -47,9 +48,16 @@ enum class StopBits : uint8_t
   None = 0
 };
 
-uint8_t StopBitsToType(StopBits arg);
-StopBits StopBitsFromType(uint8_t arg);
-char const* StopBitsToString(StopBits arg);
+struct StopBitsSpec
+{
+  using enum_type_t = StopBits;
+
+  static uint8_t to_type(StopBits arg);
+  static StopBits from_type(uint8_t arg);
+  static char const* to_string(StopBits arg);
+  static char const* to_human_string(StopBits arg);
+  static StopBits from_string(const std::string& arg);
+};
 
 }
 

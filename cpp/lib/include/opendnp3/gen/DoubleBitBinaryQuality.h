@@ -33,6 +33,7 @@
 #define OPENDNP3_DOUBLEBITBINARYQUALITY_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -59,6 +60,16 @@ enum class DoubleBitBinaryQuality : uint8_t
   STATE2 = 0x80
 };
 
+struct DoubleBitBinaryQualitySpec
+{
+  using enum_type_t = DoubleBitBinaryQuality;
+
+  static uint8_t to_type(DoubleBitBinaryQuality arg);
+  static DoubleBitBinaryQuality from_type(uint8_t arg);
+  static char const* to_string(DoubleBitBinaryQuality arg);
+  static char const* to_human_string(DoubleBitBinaryQuality arg);
+  static DoubleBitBinaryQuality from_string(const std::string& arg);
+};
 
 }
 

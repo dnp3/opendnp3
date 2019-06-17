@@ -141,7 +141,7 @@ bool DecoderImpl::IsResponse(const ser4cpp::rseq_t& data)
         return false;
     }
 
-    switch (FunctionCodeFromType(data[1]))
+    switch (FunctionCodeSpec::from_type(data[1]))
     {
     case (FunctionCode::RESPONSE):
     case (FunctionCode::UNSOLICITED_RESPONSE):

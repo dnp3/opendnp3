@@ -33,6 +33,7 @@
 #define OPENDNP3_EVENTDOUBLEBINARYVARIATION_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -43,6 +44,16 @@ enum class EventDoubleBinaryVariation : uint8_t
   Group4Var3 = 2
 };
 
+struct EventDoubleBinaryVariationSpec
+{
+  using enum_type_t = EventDoubleBinaryVariation;
+
+  static uint8_t to_type(EventDoubleBinaryVariation arg);
+  static EventDoubleBinaryVariation from_type(uint8_t arg);
+  static char const* to_string(EventDoubleBinaryVariation arg);
+  static char const* to_human_string(EventDoubleBinaryVariation arg);
+  static EventDoubleBinaryVariation from_string(const std::string& arg);
+};
 
 }
 

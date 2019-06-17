@@ -33,6 +33,7 @@
 #define OPENDNP3_FLOWCONTROL_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -46,9 +47,16 @@ enum class FlowControl : uint8_t
   None = 0
 };
 
-uint8_t FlowControlToType(FlowControl arg);
-FlowControl FlowControlFromType(uint8_t arg);
-char const* FlowControlToString(FlowControl arg);
+struct FlowControlSpec
+{
+  using enum_type_t = FlowControl;
+
+  static uint8_t to_type(FlowControl arg);
+  static FlowControl from_type(uint8_t arg);
+  static char const* to_string(FlowControl arg);
+  static char const* to_human_string(FlowControl arg);
+  static FlowControl from_string(const std::string& arg);
+};
 
 }
 

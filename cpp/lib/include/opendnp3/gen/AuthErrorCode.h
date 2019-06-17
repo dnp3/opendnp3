@@ -33,6 +33,7 @@
 #define OPENDNP3_AUTHERRORCODE_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -65,9 +66,16 @@ enum class AuthErrorCode : uint8_t
   UNKNOWN = 0x0
 };
 
-uint8_t AuthErrorCodeToType(AuthErrorCode arg);
-AuthErrorCode AuthErrorCodeFromType(uint8_t arg);
-char const* AuthErrorCodeToString(AuthErrorCode arg);
+struct AuthErrorCodeSpec
+{
+  using enum_type_t = AuthErrorCode;
+
+  static uint8_t to_type(AuthErrorCode arg);
+  static AuthErrorCode from_type(uint8_t arg);
+  static char const* to_string(AuthErrorCode arg);
+  static char const* to_human_string(AuthErrorCode arg);
+  static AuthErrorCode from_string(const std::string& arg);
+};
 
 }
 

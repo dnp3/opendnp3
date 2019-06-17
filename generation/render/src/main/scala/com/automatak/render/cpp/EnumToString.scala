@@ -26,20 +26,23 @@ object EnumToString extends HeaderImplModelRender[EnumModel] {
   def impl: ModelRenderer[EnumModel]  = ImplRender
   def header: ModelRenderer[EnumModel]  = HeaderRender
 
-  private def signature(name: String) : String = List(cString, List(name,"ToString(", name," arg)").mkString).mkString(" ")
+  private def signatureReturnType = cString
+  private def signatureMethod(enum: EnumModel) = f"to_string(${enum.name} arg)"
 
   private object HeaderRender extends ModelRenderer[EnumModel] {
-    def render(em: EnumModel)(implicit indent: Indentation) : Iterator[String] = Iterator(signature(em.name)+";")
+    def render(em: EnumModel)(implicit indent: Indentation) : Iterator[String] = {
+      Iterator(toHeaderSignature(signatureReturnType, signatureMethod(em)))
+    }
   }
 
   private object ImplRender extends ModelRenderer[EnumModel] {
 
     def render(em: EnumModel)(implicit indent: Indentation) : Iterator[String] = {
 
-      def header = Iterator(signature(em.name))
-      def smr = new SwitchModelRenderer[EnumValue](ev => em.qualified(ev))(ev => quoted(ev.displayName))
+      def header = Iterator(toImplSignature(signatureReturnType, signatureMethod(em), em))
+      def smr = new SwitchModelRenderer[EnumValue](ev => em.qualified(ev))(ev => quoted(ev.name))
       def getDefault : EnumValue = em.defaultValue.getOrElse(EnumValue("UNDEFINED",0))
-      def switch = smr.render(em.nonDefaultValues, getDefault)
+      def switch = smr.render(em.nonDefaultValues, Some(getDefault))
 
       header ++ bracket {
         switch

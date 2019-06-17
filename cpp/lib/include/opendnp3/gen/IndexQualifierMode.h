@@ -33,6 +33,7 @@
 #define OPENDNP3_INDEXQUALIFIERMODE_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -47,6 +48,16 @@ enum class IndexQualifierMode : uint8_t
   always_two_bytes = 0x1
 };
 
+struct IndexQualifierModeSpec
+{
+  using enum_type_t = IndexQualifierMode;
+
+  static uint8_t to_type(IndexQualifierMode arg);
+  static IndexQualifierMode from_type(uint8_t arg);
+  static char const* to_string(IndexQualifierMode arg);
+  static char const* to_human_string(IndexQualifierMode arg);
+  static IndexQualifierMode from_string(const std::string& arg);
+};
 
 }
 

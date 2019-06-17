@@ -33,6 +33,7 @@
 #define OPENDNP3_CHALLENGEREASON_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -47,9 +48,16 @@ enum class ChallengeReason : uint8_t
   UNKNOWN = 0xFF
 };
 
-uint8_t ChallengeReasonToType(ChallengeReason arg);
-ChallengeReason ChallengeReasonFromType(uint8_t arg);
-char const* ChallengeReasonToString(ChallengeReason arg);
+struct ChallengeReasonSpec
+{
+  using enum_type_t = ChallengeReason;
+
+  static uint8_t to_type(ChallengeReason arg);
+  static ChallengeReason from_type(uint8_t arg);
+  static char const* to_string(ChallengeReason arg);
+  static char const* to_human_string(ChallengeReason arg);
+  static ChallengeReason from_string(const std::string& arg);
+};
 
 }
 

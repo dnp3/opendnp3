@@ -62,8 +62,8 @@ ParseResult CountParser::ParseHeader(ser4cpp::rseq_t& buffer,
     if (result == ParseResult::OK)
     {
         FORMAT_LOGGER_BLOCK(pLogger, settings.LogLevel(), "%03u,%03u %s, %s [%u]", record.group, record.variation,
-                            GroupVariationToString(record.enumeration),
-                            QualifierCodeToString(record.GetQualifierCode()), count);
+                            GroupVariationSpec::to_human_string(record.enumeration),
+                            QualifierCodeSpec::to_human_string(record.GetQualifierCode()), count);
 
         if (settings.ExpectsContents())
         {
@@ -117,7 +117,7 @@ ParseResult CountParser::ParseCountOfObjects(ser4cpp::rseq_t& buffer,
 
     default:
         FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unsupported qualifier/object - %s - %i / %i",
-                            QualifierCodeToString(record.GetQualifierCode()), record.group, record.variation);
+                            QualifierCodeSpec::to_human_string(record.GetQualifierCode()), record.group, record.variation);
 
         return ParseResult::INVALID_OBJECT_QUALIFIER;
     }

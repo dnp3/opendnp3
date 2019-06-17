@@ -33,6 +33,7 @@
 #define OPENDNP3_COUNTERQUALITY_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -59,6 +60,16 @@ enum class CounterQuality : uint8_t
   RESERVED = 0x80
 };
 
+struct CounterQualitySpec
+{
+  using enum_type_t = CounterQuality;
+
+  static uint8_t to_type(CounterQuality arg);
+  static CounterQuality from_type(uint8_t arg);
+  static char const* to_string(CounterQuality arg);
+  static char const* to_human_string(CounterQuality arg);
+  static CounterQuality from_string(const std::string& arg);
+};
 
 }
 

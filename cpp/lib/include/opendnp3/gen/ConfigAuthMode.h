@@ -33,6 +33,7 @@
 #define OPENDNP3_CONFIGAUTHMODE_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -47,6 +48,16 @@ enum class ConfigAuthMode : uint8_t
   SAV5 = 0x1
 };
 
+struct ConfigAuthModeSpec
+{
+  using enum_type_t = ConfigAuthMode;
+
+  static uint8_t to_type(ConfigAuthMode arg);
+  static ConfigAuthMode from_type(uint8_t arg);
+  static char const* to_string(ConfigAuthMode arg);
+  static char const* to_human_string(ConfigAuthMode arg);
+  static ConfigAuthMode from_string(const std::string& arg);
+};
 
 }
 

@@ -39,15 +39,15 @@ namespace ser4cpp
     template<>
     inline bool write_one(wseq_t& dest, const opendnp3::QualifierCode& value)
     {
-      return UInt8::write_to(dest, opendnp3::QualifierCodeToType(value));
+      return UInt8::write_to(dest, opendnp3::QualifierCodeSpec::to_type(value));
     }
 
     template<>
     inline bool read_one(rseq_t& input, opendnp3::QualifierCode& out)
     {
-      UInt8::type_t tempQualifierCode;
+      uint8_t tempQualifierCode;
       bool result = UInt8::read_from(input, tempQualifierCode);
-      out = opendnp3::QualifierCodeFromType(tempQualifierCode);
+      out = opendnp3::QualifierCodeSpec::from_type(tempQualifierCode);
       return result;
     }
   }

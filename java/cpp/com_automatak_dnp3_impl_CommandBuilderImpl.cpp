@@ -61,7 +61,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandBuilderImpl_add_1crob
         Indexed<ControlRelayOutputBlock> value(
             ControlRelayOutputBlock(static_cast<uint8_t>(code), static_cast<uint8_t>(count),
                                     static_cast<uint32_t>(onTime), static_cast<uint32_t>(offTime),
-                                    CommandStatusFromType(static_cast<uint8_t>(status))),
+                                    CommandStatusSpec::from_type(static_cast<uint8_t>(status))),
             static_cast<uint16_t>(jindex));
 
         commands.push_back(value);
@@ -83,7 +83,7 @@ template<class T, class Cache> void process_analogs(JNIEnv* env, jlong native, j
         const auto avalue = cache.getvalue(env, jcommand);
         const auto status = jni::JCache::CommandStatus.toType(env, cache.getstatus(env, jcommand));
 
-        Indexed<T> value(T(avalue, CommandStatusFromType(static_cast<uint8_t>(status))), static_cast<uint16_t>(jindex));
+        Indexed<T> value(T(avalue, CommandStatusSpec::from_type(static_cast<uint8_t>(status))), static_cast<uint16_t>(jindex));
 
         commands.push_back(value);
     };

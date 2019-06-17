@@ -30,14 +30,16 @@
 //
 
 #include "opendnp3/gen/QualifierCode.h"
+#include <stdexcept>
 
 namespace opendnp3 {
 
-uint8_t QualifierCodeToType(QualifierCode arg)
+uint8_t QualifierCodeSpec::to_type(QualifierCode arg)
 {
   return static_cast<uint8_t>(arg);
 }
-QualifierCode QualifierCodeFromType(uint8_t arg)
+
+QualifierCode QualifierCodeSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -61,7 +63,33 @@ QualifierCode QualifierCodeFromType(uint8_t arg)
       return QualifierCode::UNDEFINED;
   }
 }
-char const* QualifierCodeToString(QualifierCode arg)
+
+char const* QualifierCodeSpec::to_string(QualifierCode arg)
+{
+  switch(arg)
+  {
+    case(QualifierCode::UINT8_START_STOP):
+      return "UINT8_START_STOP";
+    case(QualifierCode::UINT16_START_STOP):
+      return "UINT16_START_STOP";
+    case(QualifierCode::ALL_OBJECTS):
+      return "ALL_OBJECTS";
+    case(QualifierCode::UINT8_CNT):
+      return "UINT8_CNT";
+    case(QualifierCode::UINT16_CNT):
+      return "UINT16_CNT";
+    case(QualifierCode::UINT8_CNT_UINT8_INDEX):
+      return "UINT8_CNT_UINT8_INDEX";
+    case(QualifierCode::UINT16_CNT_UINT16_INDEX):
+      return "UINT16_CNT_UINT16_INDEX";
+    case(QualifierCode::UINT16_FREE_FORMAT):
+      return "UINT16_FREE_FORMAT";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+char const* QualifierCodeSpec::to_human_string(QualifierCode arg)
 {
   switch(arg)
   {
@@ -85,5 +113,19 @@ char const* QualifierCodeToString(QualifierCode arg)
       return "unknown";
   }
 }
+
+QualifierCode QualifierCodeSpec::from_string(const std::string& arg)
+{
+  if(arg == "UINT8_START_STOP") return QualifierCode::UINT8_START_STOP;
+  if(arg == "UINT16_START_STOP") return QualifierCode::UINT16_START_STOP;
+  if(arg == "ALL_OBJECTS") return QualifierCode::ALL_OBJECTS;
+  if(arg == "UINT8_CNT") return QualifierCode::UINT8_CNT;
+  if(arg == "UINT16_CNT") return QualifierCode::UINT16_CNT;
+  if(arg == "UINT8_CNT_UINT8_INDEX") return QualifierCode::UINT8_CNT_UINT8_INDEX;
+  if(arg == "UINT16_CNT_UINT16_INDEX") return QualifierCode::UINT16_CNT_UINT16_INDEX;
+  if(arg == "UINT16_FREE_FORMAT") return QualifierCode::UINT16_FREE_FORMAT;
+  else return QualifierCode::UNDEFINED;
+}
+
 
 }

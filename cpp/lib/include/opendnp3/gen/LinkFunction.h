@@ -33,6 +33,7 @@
 #define OPENDNP3_LINKFUNCTION_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -53,9 +54,16 @@ enum class LinkFunction : uint8_t
   INVALID = 0xFF
 };
 
-uint8_t LinkFunctionToType(LinkFunction arg);
-LinkFunction LinkFunctionFromType(uint8_t arg);
-char const* LinkFunctionToString(LinkFunction arg);
+struct LinkFunctionSpec
+{
+  using enum_type_t = LinkFunction;
+
+  static uint8_t to_type(LinkFunction arg);
+  static LinkFunction from_type(uint8_t arg);
+  static char const* to_string(LinkFunction arg);
+  static char const* to_human_string(LinkFunction arg);
+  static LinkFunction from_string(const std::string& arg);
+};
 
 }
 

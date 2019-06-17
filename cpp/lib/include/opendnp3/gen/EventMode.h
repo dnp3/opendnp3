@@ -33,6 +33,7 @@
 #define OPENDNP3_EVENTMODE_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -51,6 +52,16 @@ enum class EventMode : uint8_t
   EventOnly = 0x3
 };
 
+struct EventModeSpec
+{
+  using enum_type_t = EventMode;
+
+  static uint8_t to_type(EventMode arg);
+  static EventMode from_type(uint8_t arg);
+  static char const* to_string(EventMode arg);
+  static char const* to_human_string(EventMode arg);
+  static EventMode from_string(const std::string& arg);
+};
 
 }
 

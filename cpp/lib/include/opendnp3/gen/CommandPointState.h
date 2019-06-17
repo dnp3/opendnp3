@@ -33,6 +33,7 @@
 #define OPENDNP3_COMMANDPOINTSTATE_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -55,7 +56,16 @@ enum class CommandPointState : uint8_t
   SUCCESS = 5
 };
 
-char const* CommandPointStateToString(CommandPointState arg);
+struct CommandPointStateSpec
+{
+  using enum_type_t = CommandPointState;
+
+  static uint8_t to_type(CommandPointState arg);
+  static CommandPointState from_type(uint8_t arg);
+  static char const* to_string(CommandPointState arg);
+  static char const* to_human_string(CommandPointState arg);
+  static CommandPointState from_string(const std::string& arg);
+};
 
 }
 

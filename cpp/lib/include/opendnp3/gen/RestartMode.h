@@ -33,6 +33,7 @@
 #define OPENDNP3_RESTARTMODE_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -49,6 +50,16 @@ enum class RestartMode : uint8_t
   SUPPORTED_DELAY_COARSE = 2
 };
 
+struct RestartModeSpec
+{
+  using enum_type_t = RestartMode;
+
+  static uint8_t to_type(RestartMode arg);
+  static RestartMode from_type(uint8_t arg);
+  static char const* to_string(RestartMode arg);
+  static char const* to_human_string(RestartMode arg);
+  static RestartMode from_string(const std::string& arg);
+};
 
 }
 

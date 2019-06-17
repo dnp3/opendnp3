@@ -33,6 +33,7 @@
 #define OPENDNP3_STATICDOUBLEBINARYVARIATION_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -41,6 +42,16 @@ enum class StaticDoubleBinaryVariation : uint8_t
   Group3Var2 = 0
 };
 
+struct StaticDoubleBinaryVariationSpec
+{
+  using enum_type_t = StaticDoubleBinaryVariation;
+
+  static uint8_t to_type(StaticDoubleBinaryVariation arg);
+  static StaticDoubleBinaryVariation from_type(uint8_t arg);
+  static char const* to_string(StaticDoubleBinaryVariation arg);
+  static char const* to_human_string(StaticDoubleBinaryVariation arg);
+  static StaticDoubleBinaryVariation from_string(const std::string& arg);
+};
 
 }
 

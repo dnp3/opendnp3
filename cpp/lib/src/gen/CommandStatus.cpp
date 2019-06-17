@@ -30,14 +30,16 @@
 //
 
 #include "opendnp3/gen/CommandStatus.h"
+#include <stdexcept>
 
 namespace opendnp3 {
 
-uint8_t CommandStatusToType(CommandStatus arg)
+uint8_t CommandStatusSpec::to_type(CommandStatus arg)
 {
   return static_cast<uint8_t>(arg);
 }
-CommandStatus CommandStatusFromType(uint8_t arg)
+
+CommandStatus CommandStatusSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -85,7 +87,8 @@ CommandStatus CommandStatusFromType(uint8_t arg)
       return CommandStatus::UNDEFINED;
   }
 }
-char const* CommandStatusToString(CommandStatus arg)
+
+char const* CommandStatusSpec::to_string(CommandStatus arg)
 {
   switch(arg)
   {
@@ -133,5 +136,80 @@ char const* CommandStatusToString(CommandStatus arg)
       return "UNDEFINED";
   }
 }
+
+char const* CommandStatusSpec::to_human_string(CommandStatus arg)
+{
+  switch(arg)
+  {
+    case(CommandStatus::SUCCESS):
+      return "SUCCESS";
+    case(CommandStatus::TIMEOUT):
+      return "TIMEOUT";
+    case(CommandStatus::NO_SELECT):
+      return "NO_SELECT";
+    case(CommandStatus::FORMAT_ERROR):
+      return "FORMAT_ERROR";
+    case(CommandStatus::NOT_SUPPORTED):
+      return "NOT_SUPPORTED";
+    case(CommandStatus::ALREADY_ACTIVE):
+      return "ALREADY_ACTIVE";
+    case(CommandStatus::HARDWARE_ERROR):
+      return "HARDWARE_ERROR";
+    case(CommandStatus::LOCAL):
+      return "LOCAL";
+    case(CommandStatus::TOO_MANY_OPS):
+      return "TOO_MANY_OPS";
+    case(CommandStatus::NOT_AUTHORIZED):
+      return "NOT_AUTHORIZED";
+    case(CommandStatus::AUTOMATION_INHIBIT):
+      return "AUTOMATION_INHIBIT";
+    case(CommandStatus::PROCESSING_LIMITED):
+      return "PROCESSING_LIMITED";
+    case(CommandStatus::OUT_OF_RANGE):
+      return "OUT_OF_RANGE";
+    case(CommandStatus::DOWNSTREAM_LOCAL):
+      return "DOWNSTREAM_LOCAL";
+    case(CommandStatus::ALREADY_COMPLETE):
+      return "ALREADY_COMPLETE";
+    case(CommandStatus::BLOCKED):
+      return "BLOCKED";
+    case(CommandStatus::CANCELLED):
+      return "CANCELLED";
+    case(CommandStatus::BLOCKED_OTHER_MASTER):
+      return "BLOCKED_OTHER_MASTER";
+    case(CommandStatus::DOWNSTREAM_FAIL):
+      return "DOWNSTREAM_FAIL";
+    case(CommandStatus::NON_PARTICIPATING):
+      return "NON_PARTICIPATING";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+CommandStatus CommandStatusSpec::from_string(const std::string& arg)
+{
+  if(arg == "SUCCESS") return CommandStatus::SUCCESS;
+  if(arg == "TIMEOUT") return CommandStatus::TIMEOUT;
+  if(arg == "NO_SELECT") return CommandStatus::NO_SELECT;
+  if(arg == "FORMAT_ERROR") return CommandStatus::FORMAT_ERROR;
+  if(arg == "NOT_SUPPORTED") return CommandStatus::NOT_SUPPORTED;
+  if(arg == "ALREADY_ACTIVE") return CommandStatus::ALREADY_ACTIVE;
+  if(arg == "HARDWARE_ERROR") return CommandStatus::HARDWARE_ERROR;
+  if(arg == "LOCAL") return CommandStatus::LOCAL;
+  if(arg == "TOO_MANY_OPS") return CommandStatus::TOO_MANY_OPS;
+  if(arg == "NOT_AUTHORIZED") return CommandStatus::NOT_AUTHORIZED;
+  if(arg == "AUTOMATION_INHIBIT") return CommandStatus::AUTOMATION_INHIBIT;
+  if(arg == "PROCESSING_LIMITED") return CommandStatus::PROCESSING_LIMITED;
+  if(arg == "OUT_OF_RANGE") return CommandStatus::OUT_OF_RANGE;
+  if(arg == "DOWNSTREAM_LOCAL") return CommandStatus::DOWNSTREAM_LOCAL;
+  if(arg == "ALREADY_COMPLETE") return CommandStatus::ALREADY_COMPLETE;
+  if(arg == "BLOCKED") return CommandStatus::BLOCKED;
+  if(arg == "CANCELLED") return CommandStatus::CANCELLED;
+  if(arg == "BLOCKED_OTHER_MASTER") return CommandStatus::BLOCKED_OTHER_MASTER;
+  if(arg == "DOWNSTREAM_FAIL") return CommandStatus::DOWNSTREAM_FAIL;
+  if(arg == "NON_PARTICIPATING") return CommandStatus::NON_PARTICIPATING;
+  else return CommandStatus::UNDEFINED;
+}
+
 
 }

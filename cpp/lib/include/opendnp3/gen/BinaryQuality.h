@@ -33,6 +33,7 @@
 #define OPENDNP3_BINARYQUALITY_H
 
 #include <cstdint>
+#include <string>
 
 namespace opendnp3 {
 
@@ -59,6 +60,16 @@ enum class BinaryQuality : uint8_t
   STATE = 0x80
 };
 
+struct BinaryQualitySpec
+{
+  using enum_type_t = BinaryQuality;
+
+  static uint8_t to_type(BinaryQuality arg);
+  static BinaryQuality from_type(uint8_t arg);
+  static char const* to_string(BinaryQuality arg);
+  static char const* to_human_string(BinaryQuality arg);
+  static BinaryQuality from_string(const std::string& arg);
+};
 
 }
 
