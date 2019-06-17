@@ -9,11 +9,10 @@ sessions or huge device simulations. It also embeds with a small footprint on Li
 Build status
 ============
 
-| Branch  | Ubuntu 18.04 | Windows | Code coverage |
-| ------- | ------------ | ------- | ------------- |
-| master  | [![CircleCI](https://circleci.com/gh/dnp3/opendnp3/tree/master.svg?style=svg)](https://circleci.com/gh/dnp3/opendnp3/tree/master) | [![AppVeyor](https://ci.appveyor.com/api/projects/status/971s9e53c9uoge4k/branch/master?svg=true)](https://ci.appveyor.com/project/dnp3/dnp3?branch=master) | [![Codecov](https://codecov.io/gh/dnp3/opendnp3/branch/master/graph/badge.svg)](https://codecov.io/gh/dnp3/opendnp3/branch/master) |
-| develop | [![CircleCI](https://circleci.com/gh/dnp3/opendnp3/tree/develop.svg?style=svg)](https://circleci.com/gh/dnp3/opendnp3/tree/develop) | [![AppVeyor](https://ci.appveyor.com/api/projects/status/971s9e53c9uoge4k/branch/develop?svg=true)](https://ci.appveyor.com/project/dnp3/dnp3?branch=develop) | [![Codecov](https://codecov.io/gh/dnp3/opendnp3/branch/develop/graph/badge.svg)](https://codecov.io/gh/dnp3/opendnp3/branch/develop) |
-
+| Branch       | Ubuntu 18.04 | Windows | Code coverage |
+| ------------ | ------------ | ------- | ------------- |
+| release-2.x  | [![CircleCI](https://circleci.com/gh/dnp3/opendnp3/tree/release-2.x.svg?style=svg)](https://circleci.com/gh/dnp3/opendnp3/tree/release-2.x) | [![AppVeyor](https://ci.appveyor.com/api/projects/status/971s9e53c9uoge4k/branch/release-2.x?svg=true)](https://ci.appveyor.com/project/dnp3/dnp3?branch=release-2.x) | [![Codecov](https://codecov.io/gh/dnp3/opendnp3/branch/release-2.x/graph/badge.svg)](https://codecov.io/gh/dnp3/opendnp3/branch/release-2.x) |
+| develop      | [![CircleCI](https://circleci.com/gh/dnp3/opendnp3/tree/develop.svg?style=svg)](https://circleci.com/gh/dnp3/opendnp3/tree/develop) | [![AppVeyor](https://ci.appveyor.com/api/projects/status/971s9e53c9uoge4k/branch/develop?svg=true)](https://ci.appveyor.com/project/dnp3/dnp3?branch=develop) | [![Codecov](https://codecov.io/gh/dnp3/opendnp3/branch/develop/graph/badge.svg)](https://codecov.io/gh/dnp3/opendnp3/branch/develop) |
 
 Documentation
 =============
@@ -32,9 +31,3 @@ Copyright (c) 2010, 2011 Green Energy Corp
 Copyright (c) 2013 - 2019 Automatak LLC
 
 Copyright (c) 2010 - 2019 various contributors
-
-
-
-
-    
-
