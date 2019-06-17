@@ -43,10 +43,16 @@ enum class StaticBinaryVariation : uint8_t
   Group1Var2 = 1
 };
 
-uint8_t StaticBinaryVariationToType(StaticBinaryVariation arg);
-StaticBinaryVariation StaticBinaryVariationFromType(uint8_t arg);
-char const* StaticBinaryVariationToString(StaticBinaryVariation arg);
-StaticBinaryVariation StaticBinaryVariationFromString(const std::string& arg);
+struct StaticBinaryVariationSpec
+{
+  using enum_type_t = StaticBinaryVariation;
+
+  static uint8_t to_type(StaticBinaryVariation arg);
+  static StaticBinaryVariation from_type(uint8_t arg);
+  static char const* to_string(StaticBinaryVariation arg);
+  static char const* to_human_string(StaticBinaryVariation arg);
+  static StaticBinaryVariation from_string(const std::string& arg);
+};
 
 }
 

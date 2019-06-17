@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t StaticAnalogVariationToType(StaticAnalogVariation arg)
+uint8_t StaticAnalogVariationSpec::to_type(StaticAnalogVariation arg)
 {
   return static_cast<uint8_t>(arg);
 }
-StaticAnalogVariation StaticAnalogVariationFromType(uint8_t arg)
+
+StaticAnalogVariation StaticAnalogVariationSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -58,7 +59,8 @@ StaticAnalogVariation StaticAnalogVariationFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* StaticAnalogVariationToString(StaticAnalogVariation arg)
+
+char const* StaticAnalogVariationSpec::to_string(StaticAnalogVariation arg)
 {
   switch(arg)
   {
@@ -78,7 +80,29 @@ char const* StaticAnalogVariationToString(StaticAnalogVariation arg)
       return "UNDEFINED";
   }
 }
-StaticAnalogVariation StaticAnalogVariationFromString(const std::string& arg)
+
+char const* StaticAnalogVariationSpec::to_human_string(StaticAnalogVariation arg)
+{
+  switch(arg)
+  {
+    case(StaticAnalogVariation::Group30Var1):
+      return "Group30Var1";
+    case(StaticAnalogVariation::Group30Var2):
+      return "Group30Var2";
+    case(StaticAnalogVariation::Group30Var3):
+      return "Group30Var3";
+    case(StaticAnalogVariation::Group30Var4):
+      return "Group30Var4";
+    case(StaticAnalogVariation::Group30Var5):
+      return "Group30Var5";
+    case(StaticAnalogVariation::Group30Var6):
+      return "Group30Var6";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+StaticAnalogVariation StaticAnalogVariationSpec::from_string(const std::string& arg)
 {
   if(arg == "Group30Var1") return StaticAnalogVariation::Group30Var1;
   if(arg == "Group30Var2") return StaticAnalogVariation::Group30Var2;
@@ -88,5 +112,6 @@ StaticAnalogVariation StaticAnalogVariationFromString(const std::string& arg)
   if(arg == "Group30Var6") return StaticAnalogVariation::Group30Var6;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

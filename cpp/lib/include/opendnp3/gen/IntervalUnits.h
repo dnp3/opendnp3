@@ -68,10 +68,16 @@ enum class IntervalUnits : uint8_t
   Undefined = 0x7F
 };
 
-uint8_t IntervalUnitsToType(IntervalUnits arg);
-IntervalUnits IntervalUnitsFromType(uint8_t arg);
-char const* IntervalUnitsToString(IntervalUnits arg);
-IntervalUnits IntervalUnitsFromString(const std::string& arg);
+struct IntervalUnitsSpec
+{
+  using enum_type_t = IntervalUnits;
+
+  static uint8_t to_type(IntervalUnits arg);
+  static IntervalUnits from_type(uint8_t arg);
+  static char const* to_string(IntervalUnits arg);
+  static char const* to_human_string(IntervalUnits arg);
+  static IntervalUnits from_string(const std::string& arg);
+};
 
 }
 

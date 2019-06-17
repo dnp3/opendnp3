@@ -56,10 +56,16 @@ enum class CommandPointState : uint8_t
   SUCCESS = 5
 };
 
-uint8_t CommandPointStateToType(CommandPointState arg);
-CommandPointState CommandPointStateFromType(uint8_t arg);
-char const* CommandPointStateToString(CommandPointState arg);
-CommandPointState CommandPointStateFromString(const std::string& arg);
+struct CommandPointStateSpec
+{
+  using enum_type_t = CommandPointState;
+
+  static uint8_t to_type(CommandPointState arg);
+  static CommandPointState from_type(uint8_t arg);
+  static char const* to_string(CommandPointState arg);
+  static char const* to_human_string(CommandPointState arg);
+  static CommandPointState from_string(const std::string& arg);
+};
 
 }
 

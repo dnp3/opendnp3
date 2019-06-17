@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t ChannelStateToType(ChannelState arg)
+uint8_t ChannelStateSpec::to_type(ChannelState arg)
 {
   return static_cast<uint8_t>(arg);
 }
-ChannelState ChannelStateFromType(uint8_t arg)
+
+ChannelState ChannelStateSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -52,7 +53,8 @@ ChannelState ChannelStateFromType(uint8_t arg)
       return ChannelState::SHUTDOWN;
   }
 }
-char const* ChannelStateToString(ChannelState arg)
+
+char const* ChannelStateSpec::to_string(ChannelState arg)
 {
   switch(arg)
   {
@@ -66,12 +68,29 @@ char const* ChannelStateToString(ChannelState arg)
       return "SHUTDOWN";
   }
 }
-ChannelState ChannelStateFromString(const std::string& arg)
+
+char const* ChannelStateSpec::to_human_string(ChannelState arg)
+{
+  switch(arg)
+  {
+    case(ChannelState::CLOSED):
+      return "CLOSED";
+    case(ChannelState::OPENING):
+      return "OPENING";
+    case(ChannelState::OPEN):
+      return "OPEN";
+    default:
+      return "SHUTDOWN";
+  }
+}
+
+ChannelState ChannelStateSpec::from_string(const std::string& arg)
 {
   if(arg == "CLOSED") return ChannelState::CLOSED;
   if(arg == "OPENING") return ChannelState::OPENING;
   if(arg == "OPEN") return ChannelState::OPEN;
   else return ChannelState::SHUTDOWN;
 }
+
 
 }

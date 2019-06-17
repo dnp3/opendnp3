@@ -37,7 +37,7 @@ class PrintingChannelListener final : public IChannelListener, private Uncopyabl
 public:
     virtual void OnStateChange(ChannelState state) override
     {
-        std::cout << "channel state change: " << ChannelStateToString(state) << std::endl;
+        std::cout << "channel state change: " << ChannelStateSpec::to_human_string(state) << std::endl;
     }
 
     static std::shared_ptr<IChannelListener> Create()

@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t StaticOctetStringVariationToType(StaticOctetStringVariation arg)
+uint8_t StaticOctetStringVariationSpec::to_type(StaticOctetStringVariation arg)
 {
   return static_cast<uint8_t>(arg);
 }
-StaticOctetStringVariation StaticOctetStringVariationFromType(uint8_t arg)
+
+StaticOctetStringVariation StaticOctetStringVariationSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -48,7 +49,8 @@ StaticOctetStringVariation StaticOctetStringVariationFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* StaticOctetStringVariationToString(StaticOctetStringVariation arg)
+
+char const* StaticOctetStringVariationSpec::to_string(StaticOctetStringVariation arg)
 {
   switch(arg)
   {
@@ -58,10 +60,23 @@ char const* StaticOctetStringVariationToString(StaticOctetStringVariation arg)
       return "UNDEFINED";
   }
 }
-StaticOctetStringVariation StaticOctetStringVariationFromString(const std::string& arg)
+
+char const* StaticOctetStringVariationSpec::to_human_string(StaticOctetStringVariation arg)
+{
+  switch(arg)
+  {
+    case(StaticOctetStringVariation::Group110Var0):
+      return "Group110Var0";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+StaticOctetStringVariation StaticOctetStringVariationSpec::from_string(const std::string& arg)
 {
   if(arg == "Group110Var0") return StaticOctetStringVariation::Group110Var0;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

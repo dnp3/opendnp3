@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -21,13 +21,13 @@ package com.automatak.render.cpp
 
 import com.automatak.render._
 
-object EnumToString extends HeaderImplModelRender[EnumModel] {
+object EnumToHumanString extends HeaderImplModelRender[EnumModel] {
 
   def impl: ModelRenderer[EnumModel]  = ImplRender
   def header: ModelRenderer[EnumModel]  = HeaderRender
 
   private def signatureReturnType = cString
-  private def signatureMethod(enum: EnumModel) = f"to_string(${enum.name} arg)"
+  private def signatureMethod(enum: EnumModel) = f"to_human_string(${enum.name} arg)"
 
   private object HeaderRender extends ModelRenderer[EnumModel] {
     def render(em: EnumModel)(implicit indent: Indentation) : Iterator[String] = {
@@ -40,7 +40,7 @@ object EnumToString extends HeaderImplModelRender[EnumModel] {
     def render(em: EnumModel)(implicit indent: Indentation) : Iterator[String] = {
 
       def header = Iterator(toImplSignature(signatureReturnType, signatureMethod(em), em))
-      def smr = new SwitchModelRenderer[EnumValue](ev => em.qualified(ev))(ev => quoted(ev.name))
+      def smr = new SwitchModelRenderer[EnumValue](ev => em.qualified(ev))(ev => quoted(ev.displayName))
       def getDefault : EnumValue = em.defaultValue.getOrElse(EnumValue("UNDEFINED",0))
       def switch = smr.render(em.nonDefaultValues, Some(getDefault))
 

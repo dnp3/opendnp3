@@ -60,10 +60,16 @@ enum class CounterQuality : uint8_t
   RESERVED = 0x80
 };
 
-uint8_t CounterQualityToType(CounterQuality arg);
-CounterQuality CounterQualityFromType(uint8_t arg);
-char const* CounterQualityToString(CounterQuality arg);
-CounterQuality CounterQualityFromString(const std::string& arg);
+struct CounterQualitySpec
+{
+  using enum_type_t = CounterQuality;
+
+  static uint8_t to_type(CounterQuality arg);
+  static CounterQuality from_type(uint8_t arg);
+  static char const* to_string(CounterQuality arg);
+  static char const* to_human_string(CounterQuality arg);
+  static CounterQuality from_string(const std::string& arg);
+};
 
 }
 

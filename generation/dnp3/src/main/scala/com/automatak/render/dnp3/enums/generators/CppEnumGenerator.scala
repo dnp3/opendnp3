@@ -41,8 +41,7 @@ object CppEnumGenerator {
     def writeEnumToFiles(cfg: EnumConfig): Unit = {
 
       val intConversions = if(cfg.intConv) List(EnumToType, EnumFromType) else Nil
-      val stringConversions = if(cfg.stringConv) List(EnumToString, EnumFromString) else Nil
-      val serialization = if(cfg.serialization) List(EnumSerialization) else Nil
+      val stringConversions = if(cfg.stringConv) List(EnumToString, EnumToHumanString, EnumFromString) else Nil
 
       val renders = intConversions ::: stringConversions
 
@@ -50,15 +49,16 @@ object CppEnumGenerator {
         def license = commented(LicenseHeader())
         def includes = cstdint ++ string
         def enum = EnumModelRenderer.render(cfg.model)
-        def signatures = renders.flatMap(c => c.header.render(cfg.model))
-        def lines = license ++ space ++ includeGuards(cfg.model.name)(includes ++ space ++ namespace(cppNamespace)(enum ++ space ++ signatures))
+        def spec = struct(f"${cfg.model.name}Spec")(
+          Iterator(f"using enum_type_t = ${cfg.model.name};") ++ space ++ renders.flatMap(c => c.header.render(cfg.model)).toIterator)
+        def lines = license ++ space ++ includeGuards(cfg.model.name)(includes ++ space ++ namespace(cppNamespace)(enum ++ space ++ spec))
         writeTo(headerPath(cfg.model))(lines)
         println("Wrote: " + headerPath(cfg.model))
       }
 
       def writeImpl() {
         def license = commented(LicenseHeader())
-        def funcs = renders.flatMap(r => r.impl.render(cfg.model)).toIterator
+        def funcs = renders.flatMap(r => r.impl.render(cfg.model) ++ space).toIterator
         def inc = List(quoted(String.format(incFormatString, headerName(cfg.model))), bracketed("stdexcept")).map(i => include(i))
         def lines = license ++ space ++ inc ++ space ++ namespace(cppNamespace)(funcs)
 

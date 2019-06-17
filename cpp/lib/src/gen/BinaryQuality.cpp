@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t BinaryQualityToType(BinaryQuality arg)
+uint8_t BinaryQualitySpec::to_type(BinaryQuality arg)
 {
   return static_cast<uint8_t>(arg);
 }
-BinaryQuality BinaryQualityFromType(uint8_t arg)
+
+BinaryQuality BinaryQualitySpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -62,7 +63,8 @@ BinaryQuality BinaryQualityFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* BinaryQualityToString(BinaryQuality arg)
+
+char const* BinaryQualitySpec::to_string(BinaryQuality arg)
 {
   switch(arg)
   {
@@ -86,7 +88,33 @@ char const* BinaryQualityToString(BinaryQuality arg)
       return "UNDEFINED";
   }
 }
-BinaryQuality BinaryQualityFromString(const std::string& arg)
+
+char const* BinaryQualitySpec::to_human_string(BinaryQuality arg)
+{
+  switch(arg)
+  {
+    case(BinaryQuality::ONLINE):
+      return "ONLINE";
+    case(BinaryQuality::RESTART):
+      return "RESTART";
+    case(BinaryQuality::COMM_LOST):
+      return "COMM_LOST";
+    case(BinaryQuality::REMOTE_FORCED):
+      return "REMOTE_FORCED";
+    case(BinaryQuality::LOCAL_FORCED):
+      return "LOCAL_FORCED";
+    case(BinaryQuality::CHATTER_FILTER):
+      return "CHATTER_FILTER";
+    case(BinaryQuality::RESERVED):
+      return "RESERVED";
+    case(BinaryQuality::STATE):
+      return "STATE";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+BinaryQuality BinaryQualitySpec::from_string(const std::string& arg)
 {
   if(arg == "ONLINE") return BinaryQuality::ONLINE;
   if(arg == "RESTART") return BinaryQuality::RESTART;
@@ -98,5 +126,6 @@ BinaryQuality BinaryQualityFromString(const std::string& arg)
   if(arg == "STATE") return BinaryQuality::STATE;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

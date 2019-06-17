@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t FrozenCounterQualityToType(FrozenCounterQuality arg)
+uint8_t FrozenCounterQualitySpec::to_type(FrozenCounterQuality arg)
 {
   return static_cast<uint8_t>(arg);
 }
-FrozenCounterQuality FrozenCounterQualityFromType(uint8_t arg)
+
+FrozenCounterQuality FrozenCounterQualitySpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -62,7 +63,8 @@ FrozenCounterQuality FrozenCounterQualityFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* FrozenCounterQualityToString(FrozenCounterQuality arg)
+
+char const* FrozenCounterQualitySpec::to_string(FrozenCounterQuality arg)
 {
   switch(arg)
   {
@@ -86,7 +88,33 @@ char const* FrozenCounterQualityToString(FrozenCounterQuality arg)
       return "UNDEFINED";
   }
 }
-FrozenCounterQuality FrozenCounterQualityFromString(const std::string& arg)
+
+char const* FrozenCounterQualitySpec::to_human_string(FrozenCounterQuality arg)
+{
+  switch(arg)
+  {
+    case(FrozenCounterQuality::ONLINE):
+      return "ONLINE";
+    case(FrozenCounterQuality::RESTART):
+      return "RESTART";
+    case(FrozenCounterQuality::COMM_LOST):
+      return "COMM_LOST";
+    case(FrozenCounterQuality::REMOTE_FORCED):
+      return "REMOTE_FORCED";
+    case(FrozenCounterQuality::LOCAL_FORCED):
+      return "LOCAL_FORCED";
+    case(FrozenCounterQuality::ROLLOVER):
+      return "ROLLOVER";
+    case(FrozenCounterQuality::DISCONTINUITY):
+      return "DISCONTINUITY";
+    case(FrozenCounterQuality::RESERVED):
+      return "RESERVED";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+FrozenCounterQuality FrozenCounterQualitySpec::from_string(const std::string& arg)
 {
   if(arg == "ONLINE") return FrozenCounterQuality::ONLINE;
   if(arg == "RESTART") return FrozenCounterQuality::RESTART;
@@ -98,5 +126,6 @@ FrozenCounterQuality FrozenCounterQualityFromString(const std::string& arg)
   if(arg == "RESERVED") return FrozenCounterQuality::RESERVED;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

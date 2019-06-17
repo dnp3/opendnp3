@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t EventOctetStringVariationToType(EventOctetStringVariation arg)
+uint8_t EventOctetStringVariationSpec::to_type(EventOctetStringVariation arg)
 {
   return static_cast<uint8_t>(arg);
 }
-EventOctetStringVariation EventOctetStringVariationFromType(uint8_t arg)
+
+EventOctetStringVariation EventOctetStringVariationSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -48,7 +49,8 @@ EventOctetStringVariation EventOctetStringVariationFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* EventOctetStringVariationToString(EventOctetStringVariation arg)
+
+char const* EventOctetStringVariationSpec::to_string(EventOctetStringVariation arg)
 {
   switch(arg)
   {
@@ -58,10 +60,23 @@ char const* EventOctetStringVariationToString(EventOctetStringVariation arg)
       return "UNDEFINED";
   }
 }
-EventOctetStringVariation EventOctetStringVariationFromString(const std::string& arg)
+
+char const* EventOctetStringVariationSpec::to_human_string(EventOctetStringVariation arg)
+{
+  switch(arg)
+  {
+    case(EventOctetStringVariation::Group111Var0):
+      return "Group111Var0";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+EventOctetStringVariation EventOctetStringVariationSpec::from_string(const std::string& arg)
 {
   if(arg == "Group111Var0") return EventOctetStringVariation::Group111Var0;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

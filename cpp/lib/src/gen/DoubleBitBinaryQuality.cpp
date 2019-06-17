@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t DoubleBitBinaryQualityToType(DoubleBitBinaryQuality arg)
+uint8_t DoubleBitBinaryQualitySpec::to_type(DoubleBitBinaryQuality arg)
 {
   return static_cast<uint8_t>(arg);
 }
-DoubleBitBinaryQuality DoubleBitBinaryQualityFromType(uint8_t arg)
+
+DoubleBitBinaryQuality DoubleBitBinaryQualitySpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -62,7 +63,8 @@ DoubleBitBinaryQuality DoubleBitBinaryQualityFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* DoubleBitBinaryQualityToString(DoubleBitBinaryQuality arg)
+
+char const* DoubleBitBinaryQualitySpec::to_string(DoubleBitBinaryQuality arg)
 {
   switch(arg)
   {
@@ -86,7 +88,33 @@ char const* DoubleBitBinaryQualityToString(DoubleBitBinaryQuality arg)
       return "UNDEFINED";
   }
 }
-DoubleBitBinaryQuality DoubleBitBinaryQualityFromString(const std::string& arg)
+
+char const* DoubleBitBinaryQualitySpec::to_human_string(DoubleBitBinaryQuality arg)
+{
+  switch(arg)
+  {
+    case(DoubleBitBinaryQuality::ONLINE):
+      return "ONLINE";
+    case(DoubleBitBinaryQuality::RESTART):
+      return "RESTART";
+    case(DoubleBitBinaryQuality::COMM_LOST):
+      return "COMM_LOST";
+    case(DoubleBitBinaryQuality::REMOTE_FORCED):
+      return "REMOTE_FORCED";
+    case(DoubleBitBinaryQuality::LOCAL_FORCED):
+      return "LOCAL_FORCED";
+    case(DoubleBitBinaryQuality::CHATTER_FILTER):
+      return "CHATTER_FILTER";
+    case(DoubleBitBinaryQuality::STATE1):
+      return "STATE1";
+    case(DoubleBitBinaryQuality::STATE2):
+      return "STATE2";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+DoubleBitBinaryQuality DoubleBitBinaryQualitySpec::from_string(const std::string& arg)
 {
   if(arg == "ONLINE") return DoubleBitBinaryQuality::ONLINE;
   if(arg == "RESTART") return DoubleBitBinaryQuality::RESTART;
@@ -98,5 +126,6 @@ DoubleBitBinaryQuality DoubleBitBinaryQualityFromString(const std::string& arg)
   if(arg == "STATE2") return DoubleBitBinaryQuality::STATE2;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

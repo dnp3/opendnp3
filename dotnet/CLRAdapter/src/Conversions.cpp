@@ -103,7 +103,7 @@ namespace DNP3
 
         ControlCode Conversions::ConvertControlCode(opendnp3::ControlCode code)
         {
-            return (ControlCode)ControlCodeToType(code);
+            return (ControlCode)opendnp3::ControlCodeSpec::to_type(code);
         }
 
         opendnp3::ControlCode Conversions::ConvertControlCode(ControlCode code)

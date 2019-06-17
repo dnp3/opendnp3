@@ -81,7 +81,7 @@ struct ConvertGroup12Var1 : private StaticOnly
         ret.count = crob.count;
         ret.onTime = crob.onTimeMS;
         ret.offTime = crob.offTimeMS;
-        ret.status = CommandStatusToType(crob.status);
+        ret.status = CommandStatusSpec::to_type(crob.status);
         return ret;
     }
 };
@@ -184,7 +184,7 @@ template<class Target> struct ConvertGroup43RangeCheck : private StaticOnly
     {
         Target t;
         DownSampling<double, typename Target::ValueType>::Apply(src.value, t.value);
-        t.status = CommandStatusToType(src.status);
+        t.status = CommandStatusSpec::to_type(src.status);
         return t;
     }
 };
@@ -195,7 +195,7 @@ template<class Target> struct ConvertGroup43WithTimeRangeCheck : private StaticO
     {
         Target t;
         DownSampling<double, typename Target::ValueType>::Apply(src.value, t.value);
-        t.status = CommandStatusToType(src.status);
+        t.status = CommandStatusSpec::to_type(src.status);
         t.time = src.time;
         return t;
     }
@@ -213,7 +213,7 @@ struct ConvertGroup43Var6 : private StaticOnly
     {
         Group43Var6 t;
         t.value = src.value;
-        t.status = CommandStatusToType(src.status);
+        t.status = CommandStatusSpec::to_type(src.status);
         return t;
     }
 };
@@ -226,7 +226,7 @@ struct ConvertGroup43Var8 : private StaticOnly
     {
         Group43Var8 t;
         t.value = src.value;
-        t.status = CommandStatusToType(src.status);
+        t.status = CommandStatusSpec::to_type(src.status);
         t.time = src.time;
         return t;
     }

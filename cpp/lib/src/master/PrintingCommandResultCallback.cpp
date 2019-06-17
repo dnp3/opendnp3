@@ -28,11 +28,11 @@ namespace opendnp3
 CommandResultCallbackT PrintingCommandResultCallback::Get()
 {
     return [](const ICommandTaskResult& result) -> void {
-        std::cout << "Received command result w/ summary: " << TaskCompletionToString(result.summary) << std::endl;
+        std::cout << "Received command result w/ summary: " << TaskCompletionSpec::to_human_string(result.summary) << std::endl;
         auto print = [](const CommandPointResult& res) {
             std::cout << "Header: " << res.headerIndex << " Index: " << res.index
-                      << " State: " << CommandPointStateToString(res.state)
-                      << " Status: " << CommandStatusToString(res.status);
+                      << " State: " << CommandPointStateSpec::to_human_string(res.state)
+                      << " Status: " << CommandStatusSpec::to_human_string(res.status);
         };
         result.ForeachItem(print);
     };

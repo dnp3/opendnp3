@@ -42,10 +42,16 @@ enum class StaticTimeAndIntervalVariation : uint8_t
   Group50Var4 = 0
 };
 
-uint8_t StaticTimeAndIntervalVariationToType(StaticTimeAndIntervalVariation arg);
-StaticTimeAndIntervalVariation StaticTimeAndIntervalVariationFromType(uint8_t arg);
-char const* StaticTimeAndIntervalVariationToString(StaticTimeAndIntervalVariation arg);
-StaticTimeAndIntervalVariation StaticTimeAndIntervalVariationFromString(const std::string& arg);
+struct StaticTimeAndIntervalVariationSpec
+{
+  using enum_type_t = StaticTimeAndIntervalVariation;
+
+  static uint8_t to_type(StaticTimeAndIntervalVariation arg);
+  static StaticTimeAndIntervalVariation from_type(uint8_t arg);
+  static char const* to_string(StaticTimeAndIntervalVariation arg);
+  static char const* to_human_string(StaticTimeAndIntervalVariation arg);
+  static StaticTimeAndIntervalVariation from_string(const std::string& arg);
+};
 
 }
 

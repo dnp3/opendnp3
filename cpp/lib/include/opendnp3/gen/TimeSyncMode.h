@@ -50,10 +50,16 @@ enum class TimeSyncMode : uint8_t
   None = 0
 };
 
-uint8_t TimeSyncModeToType(TimeSyncMode arg);
-TimeSyncMode TimeSyncModeFromType(uint8_t arg);
-char const* TimeSyncModeToString(TimeSyncMode arg);
-TimeSyncMode TimeSyncModeFromString(const std::string& arg);
+struct TimeSyncModeSpec
+{
+  using enum_type_t = TimeSyncMode;
+
+  static uint8_t to_type(TimeSyncMode arg);
+  static TimeSyncMode from_type(uint8_t arg);
+  static char const* to_string(TimeSyncMode arg);
+  static char const* to_human_string(TimeSyncMode arg);
+  static TimeSyncMode from_string(const std::string& arg);
+};
 
 }
 

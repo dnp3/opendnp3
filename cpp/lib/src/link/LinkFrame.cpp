@@ -218,7 +218,7 @@ ser4cpp::rseq_t LinkFrame::FormatHeader(ser4cpp::wseq_t& buffer,
     LinkHeader header(aDataLength + LPDU_MIN_LENGTH, aSrc, aDest, aIsMaster, aFcvDfc, aFcb, aFuncCode);
 
     FORMAT_LOGGER_BLOCK(pLogger, flags::LINK_TX, "Function: %s Dest: %u Source: %u Length: %u",
-                        LinkFunctionToString(aFuncCode), aDest, aSrc, aDataLength);
+                        LinkFunctionSpec::to_human_string(aFuncCode), aDest, aSrc, aDataLength);
 
     header.Write(buffer);
     auto ret = buffer.readonly().take(10);

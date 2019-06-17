@@ -60,10 +60,16 @@ enum class AnalogQuality : uint8_t
   RESERVED = 0x80
 };
 
-uint8_t AnalogQualityToType(AnalogQuality arg);
-AnalogQuality AnalogQualityFromType(uint8_t arg);
-char const* AnalogQualityToString(AnalogQuality arg);
-AnalogQuality AnalogQualityFromString(const std::string& arg);
+struct AnalogQualitySpec
+{
+  using enum_type_t = AnalogQuality;
+
+  static uint8_t to_type(AnalogQuality arg);
+  static AnalogQuality from_type(uint8_t arg);
+  static char const* to_string(AnalogQuality arg);
+  static char const* to_human_string(AnalogQuality arg);
+  static AnalogQuality from_string(const std::string& arg);
+};
 
 }
 

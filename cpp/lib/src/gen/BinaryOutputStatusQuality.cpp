@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t BinaryOutputStatusQualityToType(BinaryOutputStatusQuality arg)
+uint8_t BinaryOutputStatusQualitySpec::to_type(BinaryOutputStatusQuality arg)
 {
   return static_cast<uint8_t>(arg);
 }
-BinaryOutputStatusQuality BinaryOutputStatusQualityFromType(uint8_t arg)
+
+BinaryOutputStatusQuality BinaryOutputStatusQualitySpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -62,7 +63,8 @@ BinaryOutputStatusQuality BinaryOutputStatusQualityFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* BinaryOutputStatusQualityToString(BinaryOutputStatusQuality arg)
+
+char const* BinaryOutputStatusQualitySpec::to_string(BinaryOutputStatusQuality arg)
 {
   switch(arg)
   {
@@ -86,7 +88,33 @@ char const* BinaryOutputStatusQualityToString(BinaryOutputStatusQuality arg)
       return "UNDEFINED";
   }
 }
-BinaryOutputStatusQuality BinaryOutputStatusQualityFromString(const std::string& arg)
+
+char const* BinaryOutputStatusQualitySpec::to_human_string(BinaryOutputStatusQuality arg)
+{
+  switch(arg)
+  {
+    case(BinaryOutputStatusQuality::ONLINE):
+      return "ONLINE";
+    case(BinaryOutputStatusQuality::RESTART):
+      return "RESTART";
+    case(BinaryOutputStatusQuality::COMM_LOST):
+      return "COMM_LOST";
+    case(BinaryOutputStatusQuality::REMOTE_FORCED):
+      return "REMOTE_FORCED";
+    case(BinaryOutputStatusQuality::LOCAL_FORCED):
+      return "LOCAL_FORCED";
+    case(BinaryOutputStatusQuality::RESERVED1):
+      return "RESERVED1";
+    case(BinaryOutputStatusQuality::RESERVED2):
+      return "RESERVED2";
+    case(BinaryOutputStatusQuality::STATE):
+      return "STATE";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+BinaryOutputStatusQuality BinaryOutputStatusQualitySpec::from_string(const std::string& arg)
 {
   if(arg == "ONLINE") return BinaryOutputStatusQuality::ONLINE;
   if(arg == "RESTART") return BinaryOutputStatusQuality::RESTART;
@@ -98,5 +126,6 @@ BinaryOutputStatusQuality BinaryOutputStatusQualityFromString(const std::string&
   if(arg == "STATE") return BinaryOutputStatusQuality::STATE;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

@@ -133,7 +133,7 @@ bool ConvertJHeader(JNIEnv* env, jobject jheader, opendnp3::Header& header)
 {
     const auto group = jni::JCache::Header.getgroup(env, jheader);
     const auto var = jni::JCache::Header.getvariation(env, jheader);
-    const auto qualifier = opendnp3::QualifierCodeFromType(
+    const auto qualifier = opendnp3::QualifierCodeSpec::from_type(
         static_cast<uint8_t>(jni::JCache::QualifierCode.toType(env, jni::JCache::Header.getqualifier(env, jheader))));
     const auto count = jni::JCache::Header.getcount(env, jheader);
     const auto start = jni::JCache::Header.getstart(env, jheader);

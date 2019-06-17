@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t ServerAcceptModeToType(ServerAcceptMode arg)
+uint8_t ServerAcceptModeSpec::to_type(ServerAcceptMode arg)
 {
   return static_cast<uint8_t>(arg);
 }
-ServerAcceptMode ServerAcceptModeFromType(uint8_t arg)
+
+ServerAcceptMode ServerAcceptModeSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -50,7 +51,8 @@ ServerAcceptMode ServerAcceptModeFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* ServerAcceptModeToString(ServerAcceptMode arg)
+
+char const* ServerAcceptModeSpec::to_string(ServerAcceptMode arg)
 {
   switch(arg)
   {
@@ -62,11 +64,26 @@ char const* ServerAcceptModeToString(ServerAcceptMode arg)
       return "UNDEFINED";
   }
 }
-ServerAcceptMode ServerAcceptModeFromString(const std::string& arg)
+
+char const* ServerAcceptModeSpec::to_human_string(ServerAcceptMode arg)
+{
+  switch(arg)
+  {
+    case(ServerAcceptMode::CloseNew):
+      return "CloseNew";
+    case(ServerAcceptMode::CloseExisting):
+      return "CloseExisting";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+ServerAcceptMode ServerAcceptModeSpec::from_string(const std::string& arg)
 {
   if(arg == "CloseNew") return ServerAcceptMode::CloseNew;
   if(arg == "CloseExisting") return ServerAcceptMode::CloseExisting;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

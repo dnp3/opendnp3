@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t StaticCounterVariationToType(StaticCounterVariation arg)
+uint8_t StaticCounterVariationSpec::to_type(StaticCounterVariation arg)
 {
   return static_cast<uint8_t>(arg);
 }
-StaticCounterVariation StaticCounterVariationFromType(uint8_t arg)
+
+StaticCounterVariation StaticCounterVariationSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -54,7 +55,8 @@ StaticCounterVariation StaticCounterVariationFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* StaticCounterVariationToString(StaticCounterVariation arg)
+
+char const* StaticCounterVariationSpec::to_string(StaticCounterVariation arg)
 {
   switch(arg)
   {
@@ -70,7 +72,25 @@ char const* StaticCounterVariationToString(StaticCounterVariation arg)
       return "UNDEFINED";
   }
 }
-StaticCounterVariation StaticCounterVariationFromString(const std::string& arg)
+
+char const* StaticCounterVariationSpec::to_human_string(StaticCounterVariation arg)
+{
+  switch(arg)
+  {
+    case(StaticCounterVariation::Group20Var1):
+      return "Group20Var1";
+    case(StaticCounterVariation::Group20Var2):
+      return "Group20Var2";
+    case(StaticCounterVariation::Group20Var5):
+      return "Group20Var5";
+    case(StaticCounterVariation::Group20Var6):
+      return "Group20Var6";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+StaticCounterVariation StaticCounterVariationSpec::from_string(const std::string& arg)
 {
   if(arg == "Group20Var1") return StaticCounterVariation::Group20Var1;
   if(arg == "Group20Var2") return StaticCounterVariation::Group20Var2;
@@ -78,5 +98,6 @@ StaticCounterVariation StaticCounterVariationFromString(const std::string& arg)
   if(arg == "Group20Var6") return StaticCounterVariation::Group20Var6;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

@@ -34,14 +34,14 @@ namespace logging
     {
         FORMAT_LOG_BLOCK(logger, flags, "FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s", header.control.FIR,
                          header.control.FIN, header.control.CON, header.control.UNS, header.control.SEQ,
-                         FunctionCodeToString(header.function));
+                         FunctionCodeSpec::to_human_string(header.function));
     }
 
     void LogHeader(log4cpp::Logger& logger, const log4cpp::LogLevel& flags, const APDUResponseHeader& header)
     {
         FORMAT_LOG_BLOCK(logger, flags, "FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
                          header.control.FIR, header.control.FIN, header.control.CON, header.control.UNS,
-                         header.control.SEQ, FunctionCodeToString(header.function), header.IIN.LSB, header.IIN.MSB);
+                         header.control.SEQ, FunctionCodeSpec::to_human_string(header.function), header.IIN.LSB, header.IIN.MSB);
     }
 
     void ParseAndLogRequestTx(log4cpp::Logger& logger, const ser4cpp::rseq_t& apdu)

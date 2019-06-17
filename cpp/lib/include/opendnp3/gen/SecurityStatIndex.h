@@ -80,10 +80,16 @@ enum class SecurityStatIndex : uint8_t
   REKEYS_DUE_TO_RESTART = 17
 };
 
-uint8_t SecurityStatIndexToType(SecurityStatIndex arg);
-SecurityStatIndex SecurityStatIndexFromType(uint8_t arg);
-char const* SecurityStatIndexToString(SecurityStatIndex arg);
-SecurityStatIndex SecurityStatIndexFromString(const std::string& arg);
+struct SecurityStatIndexSpec
+{
+  using enum_type_t = SecurityStatIndex;
+
+  static uint8_t to_type(SecurityStatIndex arg);
+  static SecurityStatIndex from_type(uint8_t arg);
+  static char const* to_string(SecurityStatIndex arg);
+  static char const* to_human_string(SecurityStatIndex arg);
+  static SecurityStatIndex from_string(const std::string& arg);
+};
 
 }
 

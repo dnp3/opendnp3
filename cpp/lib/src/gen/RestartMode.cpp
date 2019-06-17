@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t RestartModeToType(RestartMode arg)
+uint8_t RestartModeSpec::to_type(RestartMode arg)
 {
   return static_cast<uint8_t>(arg);
 }
-RestartMode RestartModeFromType(uint8_t arg)
+
+RestartMode RestartModeSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -52,7 +53,8 @@ RestartMode RestartModeFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* RestartModeToString(RestartMode arg)
+
+char const* RestartModeSpec::to_string(RestartMode arg)
 {
   switch(arg)
   {
@@ -66,12 +68,29 @@ char const* RestartModeToString(RestartMode arg)
       return "UNDEFINED";
   }
 }
-RestartMode RestartModeFromString(const std::string& arg)
+
+char const* RestartModeSpec::to_human_string(RestartMode arg)
+{
+  switch(arg)
+  {
+    case(RestartMode::UNSUPPORTED):
+      return "UNSUPPORTED";
+    case(RestartMode::SUPPORTED_DELAY_FINE):
+      return "SUPPORTED_DELAY_FINE";
+    case(RestartMode::SUPPORTED_DELAY_COARSE):
+      return "SUPPORTED_DELAY_COARSE";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+RestartMode RestartModeSpec::from_string(const std::string& arg)
 {
   if(arg == "UNSUPPORTED") return RestartMode::UNSUPPORTED;
   if(arg == "SUPPORTED_DELAY_FINE") return RestartMode::SUPPORTED_DELAY_FINE;
   if(arg == "SUPPORTED_DELAY_COARSE") return RestartMode::SUPPORTED_DELAY_COARSE;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

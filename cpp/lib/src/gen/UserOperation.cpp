@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t UserOperationToType(UserOperation arg)
+uint8_t UserOperationSpec::to_type(UserOperation arg)
 {
   return static_cast<uint8_t>(arg);
 }
-UserOperation UserOperationFromType(uint8_t arg)
+
+UserOperation UserOperationSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -52,7 +53,8 @@ UserOperation UserOperationFromType(uint8_t arg)
       return UserOperation::OP_UNDEFINED;
   }
 }
-char const* UserOperationToString(UserOperation arg)
+
+char const* UserOperationSpec::to_string(UserOperation arg)
 {
   switch(arg)
   {
@@ -66,12 +68,29 @@ char const* UserOperationToString(UserOperation arg)
       return "OP_UNDEFINED";
   }
 }
-UserOperation UserOperationFromString(const std::string& arg)
+
+char const* UserOperationSpec::to_human_string(UserOperation arg)
+{
+  switch(arg)
+  {
+    case(UserOperation::OP_ADD):
+      return "OP_ADD";
+    case(UserOperation::OP_DELETE):
+      return "OP_DELETE";
+    case(UserOperation::OP_CHANGE):
+      return "OP_CHANGE";
+    default:
+      return "OP_UNDEFINED";
+  }
+}
+
+UserOperation UserOperationSpec::from_string(const std::string& arg)
 {
   if(arg == "OP_ADD") return UserOperation::OP_ADD;
   if(arg == "OP_DELETE") return UserOperation::OP_DELETE;
   if(arg == "OP_CHANGE") return UserOperation::OP_CHANGE;
   else return UserOperation::OP_UNDEFINED;
 }
+
 
 }

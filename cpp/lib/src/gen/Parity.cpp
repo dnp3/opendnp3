@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t ParityToType(Parity arg)
+uint8_t ParitySpec::to_type(Parity arg)
 {
   return static_cast<uint8_t>(arg);
 }
-Parity ParityFromType(uint8_t arg)
+
+Parity ParitySpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -50,7 +51,8 @@ Parity ParityFromType(uint8_t arg)
       return Parity::None;
   }
 }
-char const* ParityToString(Parity arg)
+
+char const* ParitySpec::to_string(Parity arg)
 {
   switch(arg)
   {
@@ -62,11 +64,26 @@ char const* ParityToString(Parity arg)
       return "None";
   }
 }
-Parity ParityFromString(const std::string& arg)
+
+char const* ParitySpec::to_human_string(Parity arg)
+{
+  switch(arg)
+  {
+    case(Parity::Even):
+      return "Even";
+    case(Parity::Odd):
+      return "Odd";
+    default:
+      return "None";
+  }
+}
+
+Parity ParitySpec::from_string(const std::string& arg)
 {
   if(arg == "Even") return Parity::Even;
   if(arg == "Odd") return Parity::Odd;
   else return Parity::None;
 }
+
 
 }

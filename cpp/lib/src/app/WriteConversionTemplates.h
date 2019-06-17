@@ -167,7 +167,7 @@ template<class Target, class Source> struct ConvertQS : private StaticOnly
     {
         Target t;
         t.value = src.value;
-        t.status = CommandStatusToType(src.status);
+        t.status = CommandStatusSpec::to_type(src.status);
         return t;
     }
 };

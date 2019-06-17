@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t AnalogOutputStatusQualityToType(AnalogOutputStatusQuality arg)
+uint8_t AnalogOutputStatusQualitySpec::to_type(AnalogOutputStatusQuality arg)
 {
   return static_cast<uint8_t>(arg);
 }
-AnalogOutputStatusQuality AnalogOutputStatusQualityFromType(uint8_t arg)
+
+AnalogOutputStatusQuality AnalogOutputStatusQualitySpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -62,7 +63,8 @@ AnalogOutputStatusQuality AnalogOutputStatusQualityFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* AnalogOutputStatusQualityToString(AnalogOutputStatusQuality arg)
+
+char const* AnalogOutputStatusQualitySpec::to_string(AnalogOutputStatusQuality arg)
 {
   switch(arg)
   {
@@ -86,7 +88,33 @@ char const* AnalogOutputStatusQualityToString(AnalogOutputStatusQuality arg)
       return "UNDEFINED";
   }
 }
-AnalogOutputStatusQuality AnalogOutputStatusQualityFromString(const std::string& arg)
+
+char const* AnalogOutputStatusQualitySpec::to_human_string(AnalogOutputStatusQuality arg)
+{
+  switch(arg)
+  {
+    case(AnalogOutputStatusQuality::ONLINE):
+      return "ONLINE";
+    case(AnalogOutputStatusQuality::RESTART):
+      return "RESTART";
+    case(AnalogOutputStatusQuality::COMM_LOST):
+      return "COMM_LOST";
+    case(AnalogOutputStatusQuality::REMOTE_FORCED):
+      return "REMOTE_FORCED";
+    case(AnalogOutputStatusQuality::LOCAL_FORCED):
+      return "LOCAL_FORCED";
+    case(AnalogOutputStatusQuality::OVERRANGE):
+      return "OVERRANGE";
+    case(AnalogOutputStatusQuality::REFERENCE_ERR):
+      return "REFERENCE_ERR";
+    case(AnalogOutputStatusQuality::RESERVED):
+      return "RESERVED";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+AnalogOutputStatusQuality AnalogOutputStatusQualitySpec::from_string(const std::string& arg)
 {
   if(arg == "ONLINE") return AnalogOutputStatusQuality::ONLINE;
   if(arg == "RESTART") return AnalogOutputStatusQuality::RESTART;
@@ -98,5 +126,6 @@ AnalogOutputStatusQuality AnalogOutputStatusQualityFromString(const std::string&
   if(arg == "RESERVED") return AnalogOutputStatusQuality::RESERVED;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

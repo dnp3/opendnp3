@@ -207,7 +207,7 @@ bool OContext::ProcessRequest(const ParsedRequest& request)
     if (request.header.control.UNS)
     {
         FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring unsol with invalid function code: %s",
-                         FunctionCodeToString(request.header.function));
+                         FunctionCodeSpec::to_human_string(request.header.function));
         return false;
     }
 
@@ -471,7 +471,7 @@ bool OContext::ProcessRequestNoAck(const ParsedRequest& request)
         return true;
     default:
         FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring NR function code: %s",
-                         FunctionCodeToString(request.header.function));
+                         FunctionCodeSpec::to_human_string(request.header.function));
         return false;
     }
 }

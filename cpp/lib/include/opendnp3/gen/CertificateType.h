@@ -50,10 +50,16 @@ enum class CertificateType : uint8_t
   UNKNOWN = 0x0
 };
 
-uint8_t CertificateTypeToType(CertificateType arg);
-CertificateType CertificateTypeFromType(uint8_t arg);
-char const* CertificateTypeToString(CertificateType arg);
-CertificateType CertificateTypeFromString(const std::string& arg);
+struct CertificateTypeSpec
+{
+  using enum_type_t = CertificateType;
+
+  static uint8_t to_type(CertificateType arg);
+  static CertificateType from_type(uint8_t arg);
+  static char const* to_string(CertificateType arg);
+  static char const* to_human_string(CertificateType arg);
+  static CertificateType from_string(const std::string& arg);
+};
 
 }
 

@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t IndexQualifierModeToType(IndexQualifierMode arg)
+uint8_t IndexQualifierModeSpec::to_type(IndexQualifierMode arg)
 {
   return static_cast<uint8_t>(arg);
 }
-IndexQualifierMode IndexQualifierModeFromType(uint8_t arg)
+
+IndexQualifierMode IndexQualifierModeSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -50,7 +51,8 @@ IndexQualifierMode IndexQualifierModeFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* IndexQualifierModeToString(IndexQualifierMode arg)
+
+char const* IndexQualifierModeSpec::to_string(IndexQualifierMode arg)
 {
   switch(arg)
   {
@@ -62,11 +64,26 @@ char const* IndexQualifierModeToString(IndexQualifierMode arg)
       return "UNDEFINED";
   }
 }
-IndexQualifierMode IndexQualifierModeFromString(const std::string& arg)
+
+char const* IndexQualifierModeSpec::to_human_string(IndexQualifierMode arg)
+{
+  switch(arg)
+  {
+    case(IndexQualifierMode::allow_one_byte):
+      return "allow_one_byte";
+    case(IndexQualifierMode::always_two_bytes):
+      return "always_two_bytes";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+IndexQualifierMode IndexQualifierModeSpec::from_string(const std::string& arg)
 {
   if(arg == "allow_one_byte") return IndexQualifierMode::allow_one_byte;
   if(arg == "always_two_bytes") return IndexQualifierMode::always_two_bytes;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

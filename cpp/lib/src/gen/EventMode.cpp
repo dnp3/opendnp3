@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t EventModeToType(EventMode arg)
+uint8_t EventModeSpec::to_type(EventMode arg)
 {
   return static_cast<uint8_t>(arg);
 }
-EventMode EventModeFromType(uint8_t arg)
+
+EventMode EventModeSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -54,7 +55,8 @@ EventMode EventModeFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* EventModeToString(EventMode arg)
+
+char const* EventModeSpec::to_string(EventMode arg)
 {
   switch(arg)
   {
@@ -70,7 +72,25 @@ char const* EventModeToString(EventMode arg)
       return "UNDEFINED";
   }
 }
-EventMode EventModeFromString(const std::string& arg)
+
+char const* EventModeSpec::to_human_string(EventMode arg)
+{
+  switch(arg)
+  {
+    case(EventMode::Detect):
+      return "Detect";
+    case(EventMode::Force):
+      return "Force";
+    case(EventMode::Suppress):
+      return "Suppress";
+    case(EventMode::EventOnly):
+      return "EventOnly";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+EventMode EventModeSpec::from_string(const std::string& arg)
 {
   if(arg == "Detect") return EventMode::Detect;
   if(arg == "Force") return EventMode::Force;
@@ -78,5 +98,6 @@ EventMode EventModeFromString(const std::string& arg)
   if(arg == "EventOnly") return EventMode::EventOnly;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

@@ -88,7 +88,7 @@ void PrintingSOEHandler::Process(const HeaderInfo& /*info*/, const ICollection<I
     auto print = [](const Indexed<TimeAndInterval>& pair) {
         std::cout << "TimeAndInterval: "
                   << "[" << pair.index << "] : " << pair.value.time.value << " : " << pair.value.interval << " : "
-                  << IntervalUnitsToString(pair.value.GetUnitsEnum()) << std::endl;
+                  << IntervalUnitsSpec::to_human_string(pair.value.GetUnitsEnum()) << std::endl;
     };
 
     values.ForeachItem(print);
@@ -99,7 +99,7 @@ void PrintingSOEHandler::Process(const HeaderInfo& /*info*/, const ICollection<I
     auto print = [](const Indexed<BinaryCommandEvent>& pair) {
         std::cout << "BinaryCommandEvent: "
                   << "[" << pair.index << "] : " << pair.value.time.value << " : " << pair.value.value << " : "
-                  << CommandStatusToString(pair.value.status) << std::endl;
+                  << CommandStatusSpec::to_human_string(pair.value.status) << std::endl;
     };
 
     values.ForeachItem(print);
@@ -110,7 +110,7 @@ void PrintingSOEHandler::Process(const HeaderInfo& /*info*/, const ICollection<I
     auto print = [](const Indexed<AnalogCommandEvent>& pair) {
         std::cout << "AnalogCommandEvent: "
                   << "[" << pair.index << "] : " << pair.value.time.value << " : " << pair.value.value << " : "
-                  << CommandStatusToString(pair.value.status) << std::endl;
+                  << CommandStatusSpec::to_human_string(pair.value.status) << std::endl;
     };
 
     values.ForeachItem(print);

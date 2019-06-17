@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t EventAnalogVariationToType(EventAnalogVariation arg)
+uint8_t EventAnalogVariationSpec::to_type(EventAnalogVariation arg)
 {
   return static_cast<uint8_t>(arg);
 }
-EventAnalogVariation EventAnalogVariationFromType(uint8_t arg)
+
+EventAnalogVariation EventAnalogVariationSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -62,7 +63,8 @@ EventAnalogVariation EventAnalogVariationFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* EventAnalogVariationToString(EventAnalogVariation arg)
+
+char const* EventAnalogVariationSpec::to_string(EventAnalogVariation arg)
 {
   switch(arg)
   {
@@ -86,7 +88,33 @@ char const* EventAnalogVariationToString(EventAnalogVariation arg)
       return "UNDEFINED";
   }
 }
-EventAnalogVariation EventAnalogVariationFromString(const std::string& arg)
+
+char const* EventAnalogVariationSpec::to_human_string(EventAnalogVariation arg)
+{
+  switch(arg)
+  {
+    case(EventAnalogVariation::Group32Var1):
+      return "Group32Var1";
+    case(EventAnalogVariation::Group32Var2):
+      return "Group32Var2";
+    case(EventAnalogVariation::Group32Var3):
+      return "Group32Var3";
+    case(EventAnalogVariation::Group32Var4):
+      return "Group32Var4";
+    case(EventAnalogVariation::Group32Var5):
+      return "Group32Var5";
+    case(EventAnalogVariation::Group32Var6):
+      return "Group32Var6";
+    case(EventAnalogVariation::Group32Var7):
+      return "Group32Var7";
+    case(EventAnalogVariation::Group32Var8):
+      return "Group32Var8";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+EventAnalogVariation EventAnalogVariationSpec::from_string(const std::string& arg)
 {
   if(arg == "Group32Var1") return EventAnalogVariation::Group32Var1;
   if(arg == "Group32Var2") return EventAnalogVariation::Group32Var2;
@@ -98,5 +126,6 @@ EventAnalogVariation EventAnalogVariationFromString(const std::string& arg)
   if(arg == "Group32Var8") return EventAnalogVariation::Group32Var8;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

@@ -49,10 +49,16 @@ enum class KeyWrapAlgorithm : uint8_t
   UNDEFINED = 0x0
 };
 
-uint8_t KeyWrapAlgorithmToType(KeyWrapAlgorithm arg);
-KeyWrapAlgorithm KeyWrapAlgorithmFromType(uint8_t arg);
-char const* KeyWrapAlgorithmToString(KeyWrapAlgorithm arg);
-KeyWrapAlgorithm KeyWrapAlgorithmFromString(const std::string& arg);
+struct KeyWrapAlgorithmSpec
+{
+  using enum_type_t = KeyWrapAlgorithm;
+
+  static uint8_t to_type(KeyWrapAlgorithm arg);
+  static KeyWrapAlgorithm from_type(uint8_t arg);
+  static char const* to_string(KeyWrapAlgorithm arg);
+  static char const* to_human_string(KeyWrapAlgorithm arg);
+  static KeyWrapAlgorithm from_string(const std::string& arg);
+};
 
 }
 

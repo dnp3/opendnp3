@@ -39,15 +39,15 @@ namespace ser4cpp
     template<>
     inline bool write_one(wseq_t& dest, const opendnp3::KeyWrapAlgorithm& value)
     {
-      return UInt8::write_to(dest, opendnp3::KeyWrapAlgorithmToType(value));
+      return UInt8::write_to(dest, opendnp3::KeyWrapAlgorithmSpec::to_type(value));
     }
 
     template<>
     inline bool read_one(rseq_t& input, opendnp3::KeyWrapAlgorithm& out)
     {
-      UInt8::type_t tempKeyWrapAlgorithm;
+      uint8_t tempKeyWrapAlgorithm;
       bool result = UInt8::read_from(input, tempKeyWrapAlgorithm);
-      out = opendnp3::KeyWrapAlgorithmFromType(tempKeyWrapAlgorithm);
+      out = opendnp3::KeyWrapAlgorithmSpec::from_type(tempKeyWrapAlgorithm);
       return result;
     }
   }

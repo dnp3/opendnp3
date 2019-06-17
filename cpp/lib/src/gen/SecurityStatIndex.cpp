@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t SecurityStatIndexToType(SecurityStatIndex arg)
+uint8_t SecurityStatIndexSpec::to_type(SecurityStatIndex arg)
 {
   return static_cast<uint8_t>(arg);
 }
-SecurityStatIndex SecurityStatIndexFromType(uint8_t arg)
+
+SecurityStatIndex SecurityStatIndexSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -82,7 +83,8 @@ SecurityStatIndex SecurityStatIndexFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* SecurityStatIndexToString(SecurityStatIndex arg)
+
+char const* SecurityStatIndexSpec::to_string(SecurityStatIndex arg)
 {
   switch(arg)
   {
@@ -126,7 +128,53 @@ char const* SecurityStatIndexToString(SecurityStatIndex arg)
       return "UNDEFINED";
   }
 }
-SecurityStatIndex SecurityStatIndexFromString(const std::string& arg)
+
+char const* SecurityStatIndexSpec::to_human_string(SecurityStatIndex arg)
+{
+  switch(arg)
+  {
+    case(SecurityStatIndex::UNEXPECTED_MESSAGES):
+      return "UNEXPECTED_MESSAGES";
+    case(SecurityStatIndex::AUTHORIZATION_FAILURES):
+      return "AUTHORIZATION_FAILURES";
+    case(SecurityStatIndex::AUTHENTICATION_FAILURES):
+      return "AUTHENTICATION_FAILURES";
+    case(SecurityStatIndex::REPLY_TIMEOUTS):
+      return "REPLY_TIMEOUTS";
+    case(SecurityStatIndex::REKEYS_DUE_TO_AUTH_FAILUE):
+      return "REKEYS_DUE_TO_AUTH_FAILUE";
+    case(SecurityStatIndex::TOTAL_MESSAGES_TX):
+      return "TOTAL_MESSAGES_TX";
+    case(SecurityStatIndex::TOTAL_MESSAGES_RX):
+      return "TOTAL_MESSAGES_RX";
+    case(SecurityStatIndex::CRITICAL_MESSAGES_TX):
+      return "CRITICAL_MESSAGES_TX";
+    case(SecurityStatIndex::CRITICAL_MESSAGES_RX):
+      return "CRITICAL_MESSAGES_RX";
+    case(SecurityStatIndex::DISCARED_MESSAGES):
+      return "DISCARED_MESSAGES";
+    case(SecurityStatIndex::ERROR_MESSAGES_TX):
+      return "ERROR_MESSAGES_TX";
+    case(SecurityStatIndex::ERROR_MESSAGES_RX):
+      return "ERROR_MESSAGES_RX";
+    case(SecurityStatIndex::SUCCESSFUL_AUTHS):
+      return "SUCCESSFUL_AUTHS";
+    case(SecurityStatIndex::SESSION_KEY_CHANGES):
+      return "SESSION_KEY_CHANGES";
+    case(SecurityStatIndex::FAILED_SESSION_KEY_CHANGES):
+      return "FAILED_SESSION_KEY_CHANGES";
+    case(SecurityStatIndex::UPDATE_KEY_CHANGES):
+      return "UPDATE_KEY_CHANGES";
+    case(SecurityStatIndex::FAILED_UPDATE_KEY_CHANGES):
+      return "FAILED_UPDATE_KEY_CHANGES";
+    case(SecurityStatIndex::REKEYS_DUE_TO_RESTART):
+      return "REKEYS_DUE_TO_RESTART";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+SecurityStatIndex SecurityStatIndexSpec::from_string(const std::string& arg)
 {
   if(arg == "UNEXPECTED_MESSAGES") return SecurityStatIndex::UNEXPECTED_MESSAGES;
   if(arg == "AUTHORIZATION_FAILURES") return SecurityStatIndex::AUTHORIZATION_FAILURES;
@@ -148,5 +196,6 @@ SecurityStatIndex SecurityStatIndexFromString(const std::string& arg)
   if(arg == "REKEYS_DUE_TO_RESTART") return SecurityStatIndex::REKEYS_DUE_TO_RESTART;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

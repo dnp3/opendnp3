@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t LinkStatusToType(LinkStatus arg)
+uint8_t LinkStatusSpec::to_type(LinkStatus arg)
 {
   return static_cast<uint8_t>(arg);
 }
-LinkStatus LinkStatusFromType(uint8_t arg)
+
+LinkStatus LinkStatusSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -50,7 +51,8 @@ LinkStatus LinkStatusFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* LinkStatusToString(LinkStatus arg)
+
+char const* LinkStatusSpec::to_string(LinkStatus arg)
 {
   switch(arg)
   {
@@ -62,11 +64,26 @@ char const* LinkStatusToString(LinkStatus arg)
       return "UNDEFINED";
   }
 }
-LinkStatus LinkStatusFromString(const std::string& arg)
+
+char const* LinkStatusSpec::to_human_string(LinkStatus arg)
+{
+  switch(arg)
+  {
+    case(LinkStatus::UNRESET):
+      return "UNRESET";
+    case(LinkStatus::RESET):
+      return "RESET";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+LinkStatus LinkStatusSpec::from_string(const std::string& arg)
 {
   if(arg == "UNRESET") return LinkStatus::UNRESET;
   if(arg == "RESET") return LinkStatus::RESET;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

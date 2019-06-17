@@ -60,10 +60,16 @@ enum class BinaryQuality : uint8_t
   STATE = 0x80
 };
 
-uint8_t BinaryQualityToType(BinaryQuality arg);
-BinaryQuality BinaryQualityFromType(uint8_t arg);
-char const* BinaryQualityToString(BinaryQuality arg);
-BinaryQuality BinaryQualityFromString(const std::string& arg);
+struct BinaryQualitySpec
+{
+  using enum_type_t = BinaryQuality;
+
+  static uint8_t to_type(BinaryQuality arg);
+  static BinaryQuality from_type(uint8_t arg);
+  static char const* to_string(BinaryQuality arg);
+  static char const* to_human_string(BinaryQuality arg);
+  static BinaryQuality from_string(const std::string& arg);
+};
 
 }
 

@@ -52,10 +52,16 @@ enum class PointClass : uint8_t
   Class3 = 0x8
 };
 
-uint8_t PointClassToType(PointClass arg);
-PointClass PointClassFromType(uint8_t arg);
-char const* PointClassToString(PointClass arg);
-PointClass PointClassFromString(const std::string& arg);
+struct PointClassSpec
+{
+  using enum_type_t = PointClass;
+
+  static uint8_t to_type(PointClass arg);
+  static PointClass from_type(uint8_t arg);
+  static char const* to_string(PointClass arg);
+  static char const* to_human_string(PointClass arg);
+  static PointClass from_string(const std::string& arg);
+};
 
 }
 

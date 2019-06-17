@@ -60,10 +60,16 @@ enum class FrozenCounterQuality : uint8_t
   RESERVED = 0x80
 };
 
-uint8_t FrozenCounterQualityToType(FrozenCounterQuality arg);
-FrozenCounterQuality FrozenCounterQualityFromType(uint8_t arg);
-char const* FrozenCounterQualityToString(FrozenCounterQuality arg);
-FrozenCounterQuality FrozenCounterQualityFromString(const std::string& arg);
+struct FrozenCounterQualitySpec
+{
+  using enum_type_t = FrozenCounterQuality;
+
+  static uint8_t to_type(FrozenCounterQuality arg);
+  static FrozenCounterQuality from_type(uint8_t arg);
+  static char const* to_string(FrozenCounterQuality arg);
+  static char const* to_human_string(FrozenCounterQuality arg);
+  static FrozenCounterQuality from_string(const std::string& arg);
+};
 
 }
 

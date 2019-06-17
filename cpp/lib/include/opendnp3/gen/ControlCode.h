@@ -75,10 +75,16 @@ enum class ControlCode : uint8_t
   UNDEFINED = 0xFF
 };
 
-uint8_t ControlCodeToType(ControlCode arg);
-ControlCode ControlCodeFromType(uint8_t arg);
-char const* ControlCodeToString(ControlCode arg);
-ControlCode ControlCodeFromString(const std::string& arg);
+struct ControlCodeSpec
+{
+  using enum_type_t = ControlCode;
+
+  static uint8_t to_type(ControlCode arg);
+  static ControlCode from_type(uint8_t arg);
+  static char const* to_string(ControlCode arg);
+  static char const* to_human_string(ControlCode arg);
+  static ControlCode from_string(const std::string& arg);
+};
 
 }
 

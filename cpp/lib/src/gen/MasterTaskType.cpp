@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t MasterTaskTypeToType(MasterTaskType arg)
+uint8_t MasterTaskTypeSpec::to_type(MasterTaskType arg)
 {
   return static_cast<uint8_t>(arg);
 }
-MasterTaskType MasterTaskTypeFromType(uint8_t arg)
+
+MasterTaskType MasterTaskTypeSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -64,7 +65,8 @@ MasterTaskType MasterTaskTypeFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* MasterTaskTypeToString(MasterTaskType arg)
+
+char const* MasterTaskTypeSpec::to_string(MasterTaskType arg)
 {
   switch(arg)
   {
@@ -90,7 +92,35 @@ char const* MasterTaskTypeToString(MasterTaskType arg)
       return "UNDEFINED";
   }
 }
-MasterTaskType MasterTaskTypeFromString(const std::string& arg)
+
+char const* MasterTaskTypeSpec::to_human_string(MasterTaskType arg)
+{
+  switch(arg)
+  {
+    case(MasterTaskType::CLEAR_RESTART):
+      return "CLEAR_RESTART";
+    case(MasterTaskType::DISABLE_UNSOLICITED):
+      return "DISABLE_UNSOLICITED";
+    case(MasterTaskType::ASSIGN_CLASS):
+      return "ASSIGN_CLASS";
+    case(MasterTaskType::STARTUP_INTEGRITY_POLL):
+      return "STARTUP_INTEGRITY_POLL";
+    case(MasterTaskType::NON_LAN_TIME_SYNC):
+      return "NON_LAN_TIME_SYNC";
+    case(MasterTaskType::LAN_TIME_SYNC):
+      return "LAN_TIME_SYNC";
+    case(MasterTaskType::ENABLE_UNSOLICITED):
+      return "ENABLE_UNSOLICITED";
+    case(MasterTaskType::AUTO_EVENT_SCAN):
+      return "AUTO_EVENT_SCAN";
+    case(MasterTaskType::USER_TASK):
+      return "USER_TASK";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+MasterTaskType MasterTaskTypeSpec::from_string(const std::string& arg)
 {
   if(arg == "CLEAR_RESTART") return MasterTaskType::CLEAR_RESTART;
   if(arg == "DISABLE_UNSOLICITED") return MasterTaskType::DISABLE_UNSOLICITED;
@@ -103,5 +133,6 @@ MasterTaskType MasterTaskTypeFromString(const std::string& arg)
   if(arg == "USER_TASK") return MasterTaskType::USER_TASK;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

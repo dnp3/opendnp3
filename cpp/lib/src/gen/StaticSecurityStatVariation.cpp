@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t StaticSecurityStatVariationToType(StaticSecurityStatVariation arg)
+uint8_t StaticSecurityStatVariationSpec::to_type(StaticSecurityStatVariation arg)
 {
   return static_cast<uint8_t>(arg);
 }
-StaticSecurityStatVariation StaticSecurityStatVariationFromType(uint8_t arg)
+
+StaticSecurityStatVariation StaticSecurityStatVariationSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -48,7 +49,8 @@ StaticSecurityStatVariation StaticSecurityStatVariationFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* StaticSecurityStatVariationToString(StaticSecurityStatVariation arg)
+
+char const* StaticSecurityStatVariationSpec::to_string(StaticSecurityStatVariation arg)
 {
   switch(arg)
   {
@@ -58,10 +60,23 @@ char const* StaticSecurityStatVariationToString(StaticSecurityStatVariation arg)
       return "UNDEFINED";
   }
 }
-StaticSecurityStatVariation StaticSecurityStatVariationFromString(const std::string& arg)
+
+char const* StaticSecurityStatVariationSpec::to_human_string(StaticSecurityStatVariation arg)
+{
+  switch(arg)
+  {
+    case(StaticSecurityStatVariation::Group121Var1):
+      return "Group121Var1";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+StaticSecurityStatVariation StaticSecurityStatVariationSpec::from_string(const std::string& arg)
 {
   if(arg == "Group121Var1") return StaticSecurityStatVariation::Group121Var1;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

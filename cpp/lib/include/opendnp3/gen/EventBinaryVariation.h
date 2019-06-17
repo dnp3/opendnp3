@@ -44,10 +44,16 @@ enum class EventBinaryVariation : uint8_t
   Group2Var3 = 2
 };
 
-uint8_t EventBinaryVariationToType(EventBinaryVariation arg);
-EventBinaryVariation EventBinaryVariationFromType(uint8_t arg);
-char const* EventBinaryVariationToString(EventBinaryVariation arg);
-EventBinaryVariation EventBinaryVariationFromString(const std::string& arg);
+struct EventBinaryVariationSpec
+{
+  using enum_type_t = EventBinaryVariation;
+
+  static uint8_t to_type(EventBinaryVariation arg);
+  static EventBinaryVariation from_type(uint8_t arg);
+  static char const* to_string(EventBinaryVariation arg);
+  static char const* to_human_string(EventBinaryVariation arg);
+  static EventBinaryVariation from_string(const std::string& arg);
+};
 
 }
 

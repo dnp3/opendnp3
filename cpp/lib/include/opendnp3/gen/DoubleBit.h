@@ -52,10 +52,16 @@ enum class DoubleBit : uint8_t
   INDETERMINATE = 0x3
 };
 
-uint8_t DoubleBitToType(DoubleBit arg);
-DoubleBit DoubleBitFromType(uint8_t arg);
-char const* DoubleBitToString(DoubleBit arg);
-DoubleBit DoubleBitFromString(const std::string& arg);
+struct DoubleBitSpec
+{
+  using enum_type_t = DoubleBit;
+
+  static uint8_t to_type(DoubleBit arg);
+  static DoubleBit from_type(uint8_t arg);
+  static char const* to_string(DoubleBit arg);
+  static char const* to_human_string(DoubleBit arg);
+  static DoubleBit from_string(const std::string& arg);
+};
 
 }
 

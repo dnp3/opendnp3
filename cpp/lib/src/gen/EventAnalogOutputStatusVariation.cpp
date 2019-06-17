@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t EventAnalogOutputStatusVariationToType(EventAnalogOutputStatusVariation arg)
+uint8_t EventAnalogOutputStatusVariationSpec::to_type(EventAnalogOutputStatusVariation arg)
 {
   return static_cast<uint8_t>(arg);
 }
-EventAnalogOutputStatusVariation EventAnalogOutputStatusVariationFromType(uint8_t arg)
+
+EventAnalogOutputStatusVariation EventAnalogOutputStatusVariationSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -62,7 +63,8 @@ EventAnalogOutputStatusVariation EventAnalogOutputStatusVariationFromType(uint8_
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* EventAnalogOutputStatusVariationToString(EventAnalogOutputStatusVariation arg)
+
+char const* EventAnalogOutputStatusVariationSpec::to_string(EventAnalogOutputStatusVariation arg)
 {
   switch(arg)
   {
@@ -86,7 +88,33 @@ char const* EventAnalogOutputStatusVariationToString(EventAnalogOutputStatusVari
       return "UNDEFINED";
   }
 }
-EventAnalogOutputStatusVariation EventAnalogOutputStatusVariationFromString(const std::string& arg)
+
+char const* EventAnalogOutputStatusVariationSpec::to_human_string(EventAnalogOutputStatusVariation arg)
+{
+  switch(arg)
+  {
+    case(EventAnalogOutputStatusVariation::Group42Var1):
+      return "Group42Var1";
+    case(EventAnalogOutputStatusVariation::Group42Var2):
+      return "Group42Var2";
+    case(EventAnalogOutputStatusVariation::Group42Var3):
+      return "Group42Var3";
+    case(EventAnalogOutputStatusVariation::Group42Var4):
+      return "Group42Var4";
+    case(EventAnalogOutputStatusVariation::Group42Var5):
+      return "Group42Var5";
+    case(EventAnalogOutputStatusVariation::Group42Var6):
+      return "Group42Var6";
+    case(EventAnalogOutputStatusVariation::Group42Var7):
+      return "Group42Var7";
+    case(EventAnalogOutputStatusVariation::Group42Var8):
+      return "Group42Var8";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+EventAnalogOutputStatusVariation EventAnalogOutputStatusVariationSpec::from_string(const std::string& arg)
 {
   if(arg == "Group42Var1") return EventAnalogOutputStatusVariation::Group42Var1;
   if(arg == "Group42Var2") return EventAnalogOutputStatusVariation::Group42Var2;
@@ -98,5 +126,6 @@ EventAnalogOutputStatusVariation EventAnalogOutputStatusVariationFromString(cons
   if(arg == "Group42Var8") return EventAnalogOutputStatusVariation::Group42Var8;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

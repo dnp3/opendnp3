@@ -53,10 +53,16 @@ enum class KeyChangeMethod : uint8_t
   UNDEFINED = 0x0
 };
 
-uint8_t KeyChangeMethodToType(KeyChangeMethod arg);
-KeyChangeMethod KeyChangeMethodFromType(uint8_t arg);
-char const* KeyChangeMethodToString(KeyChangeMethod arg);
-KeyChangeMethod KeyChangeMethodFromString(const std::string& arg);
+struct KeyChangeMethodSpec
+{
+  using enum_type_t = KeyChangeMethod;
+
+  static uint8_t to_type(KeyChangeMethod arg);
+  static KeyChangeMethod from_type(uint8_t arg);
+  static char const* to_string(KeyChangeMethod arg);
+  static char const* to_human_string(KeyChangeMethod arg);
+  static KeyChangeMethod from_string(const std::string& arg);
+};
 
 }
 

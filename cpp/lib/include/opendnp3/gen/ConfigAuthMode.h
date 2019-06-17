@@ -48,10 +48,16 @@ enum class ConfigAuthMode : uint8_t
   SAV5 = 0x1
 };
 
-uint8_t ConfigAuthModeToType(ConfigAuthMode arg);
-ConfigAuthMode ConfigAuthModeFromType(uint8_t arg);
-char const* ConfigAuthModeToString(ConfigAuthMode arg);
-ConfigAuthMode ConfigAuthModeFromString(const std::string& arg);
+struct ConfigAuthModeSpec
+{
+  using enum_type_t = ConfigAuthMode;
+
+  static uint8_t to_type(ConfigAuthMode arg);
+  static ConfigAuthMode from_type(uint8_t arg);
+  static char const* to_string(ConfigAuthMode arg);
+  static char const* to_human_string(ConfigAuthMode arg);
+  static ConfigAuthMode from_string(const std::string& arg);
+};
 
 }
 

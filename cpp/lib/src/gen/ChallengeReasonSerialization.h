@@ -39,15 +39,15 @@ namespace ser4cpp
     template<>
     inline bool write_one(wseq_t& dest, const opendnp3::ChallengeReason& value)
     {
-      return UInt8::write_to(dest, opendnp3::ChallengeReasonToType(value));
+      return UInt8::write_to(dest, opendnp3::ChallengeReasonSpec::to_type(value));
     }
 
     template<>
     inline bool read_one(rseq_t& input, opendnp3::ChallengeReason& out)
     {
-      UInt8::type_t tempChallengeReason;
+      uint8_t tempChallengeReason;
       bool result = UInt8::read_from(input, tempChallengeReason);
-      out = opendnp3::ChallengeReasonFromType(tempChallengeReason);
+      out = opendnp3::ChallengeReasonSpec::from_type(tempChallengeReason);
       return result;
     }
   }

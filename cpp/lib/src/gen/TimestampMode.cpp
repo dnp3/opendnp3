@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t TimestampModeToType(TimestampMode arg)
+uint8_t TimestampModeSpec::to_type(TimestampMode arg)
 {
   return static_cast<uint8_t>(arg);
 }
-TimestampMode TimestampModeFromType(uint8_t arg)
+
+TimestampMode TimestampModeSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -50,7 +51,8 @@ TimestampMode TimestampModeFromType(uint8_t arg)
       return TimestampMode::INVALID;
   }
 }
-char const* TimestampModeToString(TimestampMode arg)
+
+char const* TimestampModeSpec::to_string(TimestampMode arg)
 {
   switch(arg)
   {
@@ -62,11 +64,26 @@ char const* TimestampModeToString(TimestampMode arg)
       return "INVALID";
   }
 }
-TimestampMode TimestampModeFromString(const std::string& arg)
+
+char const* TimestampModeSpec::to_human_string(TimestampMode arg)
+{
+  switch(arg)
+  {
+    case(TimestampMode::SYNCHRONIZED):
+      return "SYNCHRONIZED";
+    case(TimestampMode::UNSYNCHRONIZED):
+      return "UNSYNCHRONIZED";
+    default:
+      return "INVALID";
+  }
+}
+
+TimestampMode TimestampModeSpec::from_string(const std::string& arg)
 {
   if(arg == "SYNCHRONIZED") return TimestampMode::SYNCHRONIZED;
   if(arg == "UNSYNCHRONIZED") return TimestampMode::UNSYNCHRONIZED;
   else return TimestampMode::INVALID;
 }
+
 
 }

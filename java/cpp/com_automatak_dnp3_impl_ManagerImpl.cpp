@@ -212,9 +212,9 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
     settings.baud = jbaudRate;
     settings.dataBits = jdatabits;
     settings.deviceName = sdevice;
-    settings.flowType = opendnp3::FlowControlFromType(static_cast<uint8_t>(jflowcontrol));
-    settings.parity = opendnp3::ParityFromType(static_cast<uint8_t>(jparity));
-    settings.stopBits = opendnp3::StopBitsFromType(static_cast<uint8_t>(jstopbits));
+    settings.flowType = opendnp3::FlowControlSpec::from_type(static_cast<uint8_t>(jflowcontrol));
+    settings.parity = opendnp3::ParitySpec::from_type(static_cast<uint8_t>(jparity));
+    settings.stopBits = opendnp3::StopBitsSpec::from_type(static_cast<uint8_t>(jstopbits));
 
     auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
 

@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t AssignClassTypeToType(AssignClassType arg)
+uint8_t AssignClassTypeSpec::to_type(AssignClassType arg)
 {
   return static_cast<uint8_t>(arg);
 }
-AssignClassType AssignClassTypeFromType(uint8_t arg)
+
+AssignClassType AssignClassTypeSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -60,7 +61,8 @@ AssignClassType AssignClassTypeFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* AssignClassTypeToString(AssignClassType arg)
+
+char const* AssignClassTypeSpec::to_string(AssignClassType arg)
 {
   switch(arg)
   {
@@ -82,7 +84,31 @@ char const* AssignClassTypeToString(AssignClassType arg)
       return "UNDEFINED";
   }
 }
-AssignClassType AssignClassTypeFromString(const std::string& arg)
+
+char const* AssignClassTypeSpec::to_human_string(AssignClassType arg)
+{
+  switch(arg)
+  {
+    case(AssignClassType::BinaryInput):
+      return "BinaryInput";
+    case(AssignClassType::DoubleBinaryInput):
+      return "DoubleBinaryInput";
+    case(AssignClassType::Counter):
+      return "Counter";
+    case(AssignClassType::FrozenCounter):
+      return "FrozenCounter";
+    case(AssignClassType::AnalogInput):
+      return "AnalogInput";
+    case(AssignClassType::BinaryOutputStatus):
+      return "BinaryOutputStatus";
+    case(AssignClassType::AnalogOutputStatus):
+      return "AnalogOutputStatus";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+AssignClassType AssignClassTypeSpec::from_string(const std::string& arg)
 {
   if(arg == "BinaryInput") return AssignClassType::BinaryInput;
   if(arg == "DoubleBinaryInput") return AssignClassType::DoubleBinaryInput;
@@ -93,5 +119,6 @@ AssignClassType AssignClassTypeFromString(const std::string& arg)
   if(arg == "AnalogOutputStatus") return AssignClassType::AnalogOutputStatus;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

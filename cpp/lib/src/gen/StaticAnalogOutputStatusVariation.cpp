@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t StaticAnalogOutputStatusVariationToType(StaticAnalogOutputStatusVariation arg)
+uint8_t StaticAnalogOutputStatusVariationSpec::to_type(StaticAnalogOutputStatusVariation arg)
 {
   return static_cast<uint8_t>(arg);
 }
-StaticAnalogOutputStatusVariation StaticAnalogOutputStatusVariationFromType(uint8_t arg)
+
+StaticAnalogOutputStatusVariation StaticAnalogOutputStatusVariationSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -54,7 +55,8 @@ StaticAnalogOutputStatusVariation StaticAnalogOutputStatusVariationFromType(uint
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* StaticAnalogOutputStatusVariationToString(StaticAnalogOutputStatusVariation arg)
+
+char const* StaticAnalogOutputStatusVariationSpec::to_string(StaticAnalogOutputStatusVariation arg)
 {
   switch(arg)
   {
@@ -70,7 +72,25 @@ char const* StaticAnalogOutputStatusVariationToString(StaticAnalogOutputStatusVa
       return "UNDEFINED";
   }
 }
-StaticAnalogOutputStatusVariation StaticAnalogOutputStatusVariationFromString(const std::string& arg)
+
+char const* StaticAnalogOutputStatusVariationSpec::to_human_string(StaticAnalogOutputStatusVariation arg)
+{
+  switch(arg)
+  {
+    case(StaticAnalogOutputStatusVariation::Group40Var1):
+      return "Group40Var1";
+    case(StaticAnalogOutputStatusVariation::Group40Var2):
+      return "Group40Var2";
+    case(StaticAnalogOutputStatusVariation::Group40Var3):
+      return "Group40Var3";
+    case(StaticAnalogOutputStatusVariation::Group40Var4):
+      return "Group40Var4";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+StaticAnalogOutputStatusVariation StaticAnalogOutputStatusVariationSpec::from_string(const std::string& arg)
 {
   if(arg == "Group40Var1") return StaticAnalogOutputStatusVariation::Group40Var1;
   if(arg == "Group40Var2") return StaticAnalogOutputStatusVariation::Group40Var2;
@@ -78,5 +98,6 @@ StaticAnalogOutputStatusVariation StaticAnalogOutputStatusVariationFromString(co
   if(arg == "Group40Var4") return StaticAnalogOutputStatusVariation::Group40Var4;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

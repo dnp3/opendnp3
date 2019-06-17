@@ -87,10 +87,16 @@ enum class CommandStatus : uint8_t
   UNDEFINED = 127
 };
 
-uint8_t CommandStatusToType(CommandStatus arg);
-CommandStatus CommandStatusFromType(uint8_t arg);
-char const* CommandStatusToString(CommandStatus arg);
-CommandStatus CommandStatusFromString(const std::string& arg);
+struct CommandStatusSpec
+{
+  using enum_type_t = CommandStatus;
+
+  static uint8_t to_type(CommandStatus arg);
+  static CommandStatus from_type(uint8_t arg);
+  static char const* to_string(CommandStatus arg);
+  static char const* to_human_string(CommandStatus arg);
+  static CommandStatus from_string(const std::string& arg);
+};
 
 }
 

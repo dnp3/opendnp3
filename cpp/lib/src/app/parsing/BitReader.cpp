@@ -50,7 +50,7 @@ DoubleBit GetDoubleBit(const ser4cpp::rseq_t& buffer, size_t index)
     assert(byteNumber < buffer.length());
     uint8_t byte = buffer[byteNumber];
     size_t bitshift = 2 * (index % 4);
-    return DoubleBitFromType((byte >> bitshift) & 0x03);
+    return DoubleBitSpec::from_type((byte >> bitshift) & 0x03);
 }
 
 } // namespace opendnp3

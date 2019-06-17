@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t HMACTypeToType(HMACType arg)
+uint8_t HMACTypeSpec::to_type(HMACType arg)
 {
   return static_cast<uint8_t>(arg);
 }
-HMACType HMACTypeFromType(uint8_t arg)
+
+HMACType HMACTypeSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -58,7 +59,8 @@ HMACType HMACTypeFromType(uint8_t arg)
       return HMACType::UNKNOWN;
   }
 }
-char const* HMACTypeToString(HMACType arg)
+
+char const* HMACTypeSpec::to_string(HMACType arg)
 {
   switch(arg)
   {
@@ -78,7 +80,29 @@ char const* HMACTypeToString(HMACType arg)
       return "UNKNOWN";
   }
 }
-HMACType HMACTypeFromString(const std::string& arg)
+
+char const* HMACTypeSpec::to_human_string(HMACType arg)
+{
+  switch(arg)
+  {
+    case(HMACType::NO_MAC_VALUE):
+      return "NO_MAC_VALUE";
+    case(HMACType::HMAC_SHA1_TRUNC_10):
+      return "HMAC_SHA1_TRUNC_10";
+    case(HMACType::HMAC_SHA256_TRUNC_8):
+      return "HMAC_SHA256_TRUNC_8";
+    case(HMACType::HMAC_SHA256_TRUNC_16):
+      return "HMAC_SHA256_TRUNC_16";
+    case(HMACType::HMAC_SHA1_TRUNC_8):
+      return "HMAC_SHA1_TRUNC_8";
+    case(HMACType::AES_GMAC):
+      return "AES_GMAC";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+HMACType HMACTypeSpec::from_string(const std::string& arg)
 {
   if(arg == "NO_MAC_VALUE") return HMACType::NO_MAC_VALUE;
   if(arg == "HMAC_SHA1_TRUNC_10") return HMACType::HMAC_SHA1_TRUNC_10;
@@ -88,5 +112,6 @@ HMACType HMACTypeFromString(const std::string& arg)
   if(arg == "AES_GMAC") return HMACType::AES_GMAC;
   else return HMACType::UNKNOWN;
 }
+
 
 }

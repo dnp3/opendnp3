@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t TimeSyncModeToType(TimeSyncMode arg)
+uint8_t TimeSyncModeSpec::to_type(TimeSyncMode arg)
 {
   return static_cast<uint8_t>(arg);
 }
-TimeSyncMode TimeSyncModeFromType(uint8_t arg)
+
+TimeSyncMode TimeSyncModeSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -50,7 +51,8 @@ TimeSyncMode TimeSyncModeFromType(uint8_t arg)
       return TimeSyncMode::None;
   }
 }
-char const* TimeSyncModeToString(TimeSyncMode arg)
+
+char const* TimeSyncModeSpec::to_string(TimeSyncMode arg)
 {
   switch(arg)
   {
@@ -62,11 +64,26 @@ char const* TimeSyncModeToString(TimeSyncMode arg)
       return "None";
   }
 }
-TimeSyncMode TimeSyncModeFromString(const std::string& arg)
+
+char const* TimeSyncModeSpec::to_human_string(TimeSyncMode arg)
+{
+  switch(arg)
+  {
+    case(TimeSyncMode::NonLAN):
+      return "NonLAN";
+    case(TimeSyncMode::LAN):
+      return "LAN";
+    default:
+      return "None";
+  }
+}
+
+TimeSyncMode TimeSyncModeSpec::from_string(const std::string& arg)
 {
   if(arg == "NonLAN") return TimeSyncMode::NonLAN;
   if(arg == "LAN") return TimeSyncMode::LAN;
   else return TimeSyncMode::None;
 }
+
 
 }

@@ -45,10 +45,16 @@ enum class StaticCounterVariation : uint8_t
   Group20Var6 = 3
 };
 
-uint8_t StaticCounterVariationToType(StaticCounterVariation arg);
-StaticCounterVariation StaticCounterVariationFromType(uint8_t arg);
-char const* StaticCounterVariationToString(StaticCounterVariation arg);
-StaticCounterVariation StaticCounterVariationFromString(const std::string& arg);
+struct StaticCounterVariationSpec
+{
+  using enum_type_t = StaticCounterVariation;
+
+  static uint8_t to_type(StaticCounterVariation arg);
+  static StaticCounterVariation from_type(uint8_t arg);
+  static char const* to_string(StaticCounterVariation arg);
+  static char const* to_human_string(StaticCounterVariation arg);
+  static StaticCounterVariation from_string(const std::string& arg);
+};
 
 }
 

@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t FlowControlToType(FlowControl arg)
+uint8_t FlowControlSpec::to_type(FlowControl arg)
 {
   return static_cast<uint8_t>(arg);
 }
-FlowControl FlowControlFromType(uint8_t arg)
+
+FlowControl FlowControlSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -50,7 +51,8 @@ FlowControl FlowControlFromType(uint8_t arg)
       return FlowControl::None;
   }
 }
-char const* FlowControlToString(FlowControl arg)
+
+char const* FlowControlSpec::to_string(FlowControl arg)
 {
   switch(arg)
   {
@@ -62,11 +64,26 @@ char const* FlowControlToString(FlowControl arg)
       return "None";
   }
 }
-FlowControl FlowControlFromString(const std::string& arg)
+
+char const* FlowControlSpec::to_human_string(FlowControl arg)
+{
+  switch(arg)
+  {
+    case(FlowControl::Hardware):
+      return "Hardware";
+    case(FlowControl::XONXOFF):
+      return "XONXOFF";
+    default:
+      return "None";
+  }
+}
+
+FlowControl FlowControlSpec::from_string(const std::string& arg)
 {
   if(arg == "Hardware") return FlowControl::Hardware;
   if(arg == "XONXOFF") return FlowControl::XONXOFF;
   else return FlowControl::None;
 }
+
 
 }

@@ -50,10 +50,16 @@ enum class OperateType : uint8_t
   DirectOperateNoAck = 0x2
 };
 
-uint8_t OperateTypeToType(OperateType arg);
-OperateType OperateTypeFromType(uint8_t arg);
-char const* OperateTypeToString(OperateType arg);
-OperateType OperateTypeFromString(const std::string& arg);
+struct OperateTypeSpec
+{
+  using enum_type_t = OperateType;
+
+  static uint8_t to_type(OperateType arg);
+  static OperateType from_type(uint8_t arg);
+  static char const* to_string(OperateType arg);
+  static char const* to_human_string(OperateType arg);
+  static OperateType from_string(const std::string& arg);
+};
 
 }
 

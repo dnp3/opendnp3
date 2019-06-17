@@ -53,10 +53,16 @@ enum class MasterTaskType : uint8_t
   USER_TASK = 8
 };
 
-uint8_t MasterTaskTypeToType(MasterTaskType arg);
-MasterTaskType MasterTaskTypeFromType(uint8_t arg);
-char const* MasterTaskTypeToString(MasterTaskType arg);
-MasterTaskType MasterTaskTypeFromString(const std::string& arg);
+struct MasterTaskTypeSpec
+{
+  using enum_type_t = MasterTaskType;
+
+  static uint8_t to_type(MasterTaskType arg);
+  static MasterTaskType from_type(uint8_t arg);
+  static char const* to_string(MasterTaskType arg);
+  static char const* to_human_string(MasterTaskType arg);
+  static MasterTaskType from_string(const std::string& arg);
+};
 
 }
 

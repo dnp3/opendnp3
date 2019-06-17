@@ -40,7 +40,7 @@ APDUHeaderParser::Result<APDUHeader> APDUHeaderParser::ParseRequest(const ser4cp
         return Result<APDUHeader>::Error();
     }
 
-    return Result<APDUHeader>::Ok(APDUHeader(AppControlField(apdu[0]), FunctionCodeFromType(apdu[1])),
+    return Result<APDUHeader>::Ok(APDUHeader(AppControlField(apdu[0]), FunctionCodeSpec::from_type(apdu[1])),
                                   apdu.skip(APDUHeader::REQUEST_SIZE));
 }
 
@@ -54,7 +54,7 @@ APDUHeaderParser::Result<APDUResponseHeader> APDUHeaderParser::ParseResponse(con
     }
 
     return Result<APDUResponseHeader>::Ok(
-        APDUResponseHeader(AppControlField(apdu[0]), FunctionCodeFromType(apdu[1]), IINField(apdu[2], apdu[3])),
+        APDUResponseHeader(AppControlField(apdu[0]), FunctionCodeSpec::from_type(apdu[1]), IINField(apdu[2], apdu[3])),
         apdu.skip(APDUHeader::RESPONSE_SIZE));
 }
 

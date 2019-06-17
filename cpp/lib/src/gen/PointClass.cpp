@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t PointClassToType(PointClass arg)
+uint8_t PointClassSpec::to_type(PointClass arg)
 {
   return static_cast<uint8_t>(arg);
 }
-PointClass PointClassFromType(uint8_t arg)
+
+PointClass PointClassSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -54,7 +55,8 @@ PointClass PointClassFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* PointClassToString(PointClass arg)
+
+char const* PointClassSpec::to_string(PointClass arg)
 {
   switch(arg)
   {
@@ -70,7 +72,25 @@ char const* PointClassToString(PointClass arg)
       return "UNDEFINED";
   }
 }
-PointClass PointClassFromString(const std::string& arg)
+
+char const* PointClassSpec::to_human_string(PointClass arg)
+{
+  switch(arg)
+  {
+    case(PointClass::Class0):
+      return "Class0";
+    case(PointClass::Class1):
+      return "Class1";
+    case(PointClass::Class2):
+      return "Class2";
+    case(PointClass::Class3):
+      return "Class3";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+PointClass PointClassSpec::from_string(const std::string& arg)
 {
   if(arg == "Class0") return PointClass::Class0;
   if(arg == "Class1") return PointClass::Class1;
@@ -78,5 +98,6 @@ PointClass PointClassFromString(const std::string& arg)
   if(arg == "Class3") return PointClass::Class3;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

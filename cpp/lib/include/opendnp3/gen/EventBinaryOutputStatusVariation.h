@@ -43,10 +43,16 @@ enum class EventBinaryOutputStatusVariation : uint8_t
   Group11Var2 = 1
 };
 
-uint8_t EventBinaryOutputStatusVariationToType(EventBinaryOutputStatusVariation arg);
-EventBinaryOutputStatusVariation EventBinaryOutputStatusVariationFromType(uint8_t arg);
-char const* EventBinaryOutputStatusVariationToString(EventBinaryOutputStatusVariation arg);
-EventBinaryOutputStatusVariation EventBinaryOutputStatusVariationFromString(const std::string& arg);
+struct EventBinaryOutputStatusVariationSpec
+{
+  using enum_type_t = EventBinaryOutputStatusVariation;
+
+  static uint8_t to_type(EventBinaryOutputStatusVariation arg);
+  static EventBinaryOutputStatusVariation from_type(uint8_t arg);
+  static char const* to_string(EventBinaryOutputStatusVariation arg);
+  static char const* to_human_string(EventBinaryOutputStatusVariation arg);
+  static EventBinaryOutputStatusVariation from_string(const std::string& arg);
+};
 
 }
 

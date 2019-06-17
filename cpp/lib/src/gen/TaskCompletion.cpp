@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t TaskCompletionToType(TaskCompletion arg)
+uint8_t TaskCompletionSpec::to_type(TaskCompletion arg)
 {
   return static_cast<uint8_t>(arg);
 }
-TaskCompletion TaskCompletionFromType(uint8_t arg)
+
+TaskCompletion TaskCompletionSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -56,7 +57,8 @@ TaskCompletion TaskCompletionFromType(uint8_t arg)
       return TaskCompletion::FAILURE_NO_COMMS;
   }
 }
-char const* TaskCompletionToString(TaskCompletion arg)
+
+char const* TaskCompletionSpec::to_string(TaskCompletion arg)
 {
   switch(arg)
   {
@@ -74,7 +76,27 @@ char const* TaskCompletionToString(TaskCompletion arg)
       return "FAILURE_NO_COMMS";
   }
 }
-TaskCompletion TaskCompletionFromString(const std::string& arg)
+
+char const* TaskCompletionSpec::to_human_string(TaskCompletion arg)
+{
+  switch(arg)
+  {
+    case(TaskCompletion::SUCCESS):
+      return "SUCCESS";
+    case(TaskCompletion::FAILURE_BAD_RESPONSE):
+      return "FAILURE_BAD_RESPONSE";
+    case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT):
+      return "FAILURE_RESPONSE_TIMEOUT";
+    case(TaskCompletion::FAILURE_START_TIMEOUT):
+      return "FAILURE_START_TIMEOUT";
+    case(TaskCompletion::FAILURE_MESSAGE_FORMAT_ERROR):
+      return "FAILURE_MESSAGE_FORMAT_ERROR";
+    default:
+      return "FAILURE_NO_COMMS";
+  }
+}
+
+TaskCompletion TaskCompletionSpec::from_string(const std::string& arg)
 {
   if(arg == "SUCCESS") return TaskCompletion::SUCCESS;
   if(arg == "FAILURE_BAD_RESPONSE") return TaskCompletion::FAILURE_BAD_RESPONSE;
@@ -83,5 +105,6 @@ TaskCompletion TaskCompletionFromString(const std::string& arg)
   if(arg == "FAILURE_MESSAGE_FORMAT_ERROR") return TaskCompletion::FAILURE_MESSAGE_FORMAT_ERROR;
   else return TaskCompletion::FAILURE_NO_COMMS;
 }
+
 
 }

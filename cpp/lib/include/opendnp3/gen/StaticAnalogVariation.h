@@ -47,10 +47,16 @@ enum class StaticAnalogVariation : uint8_t
   Group30Var6 = 5
 };
 
-uint8_t StaticAnalogVariationToType(StaticAnalogVariation arg);
-StaticAnalogVariation StaticAnalogVariationFromType(uint8_t arg);
-char const* StaticAnalogVariationToString(StaticAnalogVariation arg);
-StaticAnalogVariation StaticAnalogVariationFromString(const std::string& arg);
+struct StaticAnalogVariationSpec
+{
+  using enum_type_t = StaticAnalogVariation;
+
+  static uint8_t to_type(StaticAnalogVariation arg);
+  static StaticAnalogVariation from_type(uint8_t arg);
+  static char const* to_string(StaticAnalogVariation arg);
+  static char const* to_human_string(StaticAnalogVariation arg);
+  static StaticAnalogVariation from_string(const std::string& arg);
+};
 
 }
 

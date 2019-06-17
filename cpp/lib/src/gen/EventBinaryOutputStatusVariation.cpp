@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t EventBinaryOutputStatusVariationToType(EventBinaryOutputStatusVariation arg)
+uint8_t EventBinaryOutputStatusVariationSpec::to_type(EventBinaryOutputStatusVariation arg)
 {
   return static_cast<uint8_t>(arg);
 }
-EventBinaryOutputStatusVariation EventBinaryOutputStatusVariationFromType(uint8_t arg)
+
+EventBinaryOutputStatusVariation EventBinaryOutputStatusVariationSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -50,7 +51,8 @@ EventBinaryOutputStatusVariation EventBinaryOutputStatusVariationFromType(uint8_
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* EventBinaryOutputStatusVariationToString(EventBinaryOutputStatusVariation arg)
+
+char const* EventBinaryOutputStatusVariationSpec::to_string(EventBinaryOutputStatusVariation arg)
 {
   switch(arg)
   {
@@ -62,11 +64,26 @@ char const* EventBinaryOutputStatusVariationToString(EventBinaryOutputStatusVari
       return "UNDEFINED";
   }
 }
-EventBinaryOutputStatusVariation EventBinaryOutputStatusVariationFromString(const std::string& arg)
+
+char const* EventBinaryOutputStatusVariationSpec::to_human_string(EventBinaryOutputStatusVariation arg)
+{
+  switch(arg)
+  {
+    case(EventBinaryOutputStatusVariation::Group11Var1):
+      return "Group11Var1";
+    case(EventBinaryOutputStatusVariation::Group11Var2):
+      return "Group11Var2";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+EventBinaryOutputStatusVariation EventBinaryOutputStatusVariationSpec::from_string(const std::string& arg)
 {
   if(arg == "Group11Var1") return EventBinaryOutputStatusVariation::Group11Var1;
   if(arg == "Group11Var2") return EventBinaryOutputStatusVariation::Group11Var2;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

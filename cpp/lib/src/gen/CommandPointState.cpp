@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t CommandPointStateToType(CommandPointState arg)
+uint8_t CommandPointStateSpec::to_type(CommandPointState arg)
 {
   return static_cast<uint8_t>(arg);
 }
-CommandPointState CommandPointStateFromType(uint8_t arg)
+
+CommandPointState CommandPointStateSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -58,7 +59,8 @@ CommandPointState CommandPointStateFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* CommandPointStateToString(CommandPointState arg)
+
+char const* CommandPointStateSpec::to_string(CommandPointState arg)
 {
   switch(arg)
   {
@@ -78,7 +80,29 @@ char const* CommandPointStateToString(CommandPointState arg)
       return "UNDEFINED";
   }
 }
-CommandPointState CommandPointStateFromString(const std::string& arg)
+
+char const* CommandPointStateSpec::to_human_string(CommandPointState arg)
+{
+  switch(arg)
+  {
+    case(CommandPointState::INIT):
+      return "INIT";
+    case(CommandPointState::SELECT_SUCCESS):
+      return "SELECT_SUCCESS";
+    case(CommandPointState::SELECT_MISMATCH):
+      return "SELECT_MISMATCH";
+    case(CommandPointState::SELECT_FAIL):
+      return "SELECT_FAIL";
+    case(CommandPointState::OPERATE_FAIL):
+      return "OPERATE_FAIL";
+    case(CommandPointState::SUCCESS):
+      return "SUCCESS";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+CommandPointState CommandPointStateSpec::from_string(const std::string& arg)
 {
   if(arg == "INIT") return CommandPointState::INIT;
   if(arg == "SELECT_SUCCESS") return CommandPointState::SELECT_SUCCESS;
@@ -88,5 +112,6 @@ CommandPointState CommandPointStateFromString(const std::string& arg)
   if(arg == "SUCCESS") return CommandPointState::SUCCESS;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

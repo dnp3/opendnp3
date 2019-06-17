@@ -43,7 +43,7 @@ BinaryCommandEvent::BinaryCommandEvent(bool value, CommandStatus status, DNPTime
 
 Flags BinaryCommandEvent::GetFlags() const
 {
-    return (static_cast<uint8_t>(value) << 7) | (CommandStatusToType(status));
+    return (static_cast<uint8_t>(value) << 7) | (CommandStatusSpec::to_type(status));
 }
 
 bool BinaryCommandEvent::operator==(const BinaryCommandEvent& rhs) const
@@ -58,7 +58,7 @@ bool BinaryCommandEvent::GetValueFromFlags(Flags flags)
 
 CommandStatus BinaryCommandEvent::GetStatusFromFlags(Flags flags)
 {
-    return CommandStatusFromType(flags.value & StatusMask);
+    return CommandStatusSpec::from_type(flags.value & StatusMask);
 }
 
 } // namespace opendnp3

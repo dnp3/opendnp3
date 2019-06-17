@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t StaticDoubleBinaryVariationToType(StaticDoubleBinaryVariation arg)
+uint8_t StaticDoubleBinaryVariationSpec::to_type(StaticDoubleBinaryVariation arg)
 {
   return static_cast<uint8_t>(arg);
 }
-StaticDoubleBinaryVariation StaticDoubleBinaryVariationFromType(uint8_t arg)
+
+StaticDoubleBinaryVariation StaticDoubleBinaryVariationSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -48,7 +49,8 @@ StaticDoubleBinaryVariation StaticDoubleBinaryVariationFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* StaticDoubleBinaryVariationToString(StaticDoubleBinaryVariation arg)
+
+char const* StaticDoubleBinaryVariationSpec::to_string(StaticDoubleBinaryVariation arg)
 {
   switch(arg)
   {
@@ -58,10 +60,23 @@ char const* StaticDoubleBinaryVariationToString(StaticDoubleBinaryVariation arg)
       return "UNDEFINED";
   }
 }
-StaticDoubleBinaryVariation StaticDoubleBinaryVariationFromString(const std::string& arg)
+
+char const* StaticDoubleBinaryVariationSpec::to_human_string(StaticDoubleBinaryVariation arg)
+{
+  switch(arg)
+  {
+    case(StaticDoubleBinaryVariation::Group3Var2):
+      return "Group3Var2";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+StaticDoubleBinaryVariation StaticDoubleBinaryVariationSpec::from_string(const std::string& arg)
 {
   if(arg == "Group3Var2") return StaticDoubleBinaryVariation::Group3Var2;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

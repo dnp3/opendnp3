@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint16_t StaticTypeBitmaskToType(StaticTypeBitmask arg)
+uint16_t StaticTypeBitmaskSpec::to_type(StaticTypeBitmask arg)
 {
   return static_cast<uint16_t>(arg);
 }
-StaticTypeBitmask StaticTypeBitmaskFromType(uint16_t arg)
+
+StaticTypeBitmask StaticTypeBitmaskSpec::from_type(uint16_t arg)
 {
   switch(arg)
   {
@@ -64,7 +65,8 @@ StaticTypeBitmask StaticTypeBitmaskFromType(uint16_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* StaticTypeBitmaskToString(StaticTypeBitmask arg)
+
+char const* StaticTypeBitmaskSpec::to_string(StaticTypeBitmask arg)
 {
   switch(arg)
   {
@@ -90,7 +92,35 @@ char const* StaticTypeBitmaskToString(StaticTypeBitmask arg)
       return "UNDEFINED";
   }
 }
-StaticTypeBitmask StaticTypeBitmaskFromString(const std::string& arg)
+
+char const* StaticTypeBitmaskSpec::to_human_string(StaticTypeBitmask arg)
+{
+  switch(arg)
+  {
+    case(StaticTypeBitmask::BinaryInput):
+      return "BinaryInput";
+    case(StaticTypeBitmask::DoubleBinaryInput):
+      return "DoubleBinaryInput";
+    case(StaticTypeBitmask::Counter):
+      return "Counter";
+    case(StaticTypeBitmask::FrozenCounter):
+      return "FrozenCounter";
+    case(StaticTypeBitmask::AnalogInput):
+      return "AnalogInput";
+    case(StaticTypeBitmask::BinaryOutputStatus):
+      return "BinaryOutputStatus";
+    case(StaticTypeBitmask::AnalogOutputStatus):
+      return "AnalogOutputStatus";
+    case(StaticTypeBitmask::TimeAndInterval):
+      return "TimeAndInterval";
+    case(StaticTypeBitmask::OctetString):
+      return "OctetString";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+StaticTypeBitmask StaticTypeBitmaskSpec::from_string(const std::string& arg)
 {
   if(arg == "BinaryInput") return StaticTypeBitmask::BinaryInput;
   if(arg == "DoubleBinaryInput") return StaticTypeBitmask::DoubleBinaryInput;
@@ -103,5 +133,6 @@ StaticTypeBitmask StaticTypeBitmaskFromString(const std::string& arg)
   if(arg == "OctetString") return StaticTypeBitmask::OctetString;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

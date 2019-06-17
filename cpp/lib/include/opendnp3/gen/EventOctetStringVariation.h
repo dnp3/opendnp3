@@ -42,10 +42,16 @@ enum class EventOctetStringVariation : uint8_t
   Group111Var0 = 0
 };
 
-uint8_t EventOctetStringVariationToType(EventOctetStringVariation arg);
-EventOctetStringVariation EventOctetStringVariationFromType(uint8_t arg);
-char const* EventOctetStringVariationToString(EventOctetStringVariation arg);
-EventOctetStringVariation EventOctetStringVariationFromString(const std::string& arg);
+struct EventOctetStringVariationSpec
+{
+  using enum_type_t = EventOctetStringVariation;
+
+  static uint8_t to_type(EventOctetStringVariation arg);
+  static EventOctetStringVariation from_type(uint8_t arg);
+  static char const* to_string(EventOctetStringVariation arg);
+  static char const* to_human_string(EventOctetStringVariation arg);
+  static EventOctetStringVariation from_string(const std::string& arg);
+};
 
 }
 

@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t OperateTypeToType(OperateType arg)
+uint8_t OperateTypeSpec::to_type(OperateType arg)
 {
   return static_cast<uint8_t>(arg);
 }
-OperateType OperateTypeFromType(uint8_t arg)
+
+OperateType OperateTypeSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -52,7 +53,8 @@ OperateType OperateTypeFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* OperateTypeToString(OperateType arg)
+
+char const* OperateTypeSpec::to_string(OperateType arg)
 {
   switch(arg)
   {
@@ -66,12 +68,29 @@ char const* OperateTypeToString(OperateType arg)
       return "UNDEFINED";
   }
 }
-OperateType OperateTypeFromString(const std::string& arg)
+
+char const* OperateTypeSpec::to_human_string(OperateType arg)
+{
+  switch(arg)
+  {
+    case(OperateType::SelectBeforeOperate):
+      return "SelectBeforeOperate";
+    case(OperateType::DirectOperate):
+      return "DirectOperate";
+    case(OperateType::DirectOperateNoAck):
+      return "DirectOperateNoAck";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+OperateType OperateTypeSpec::from_string(const std::string& arg)
 {
   if(arg == "SelectBeforeOperate") return OperateType::SelectBeforeOperate;
   if(arg == "DirectOperate") return OperateType::DirectOperate;
   if(arg == "DirectOperateNoAck") return OperateType::DirectOperateNoAck;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

@@ -43,10 +43,16 @@ enum class EventSecurityStatVariation : uint8_t
   Group122Var2 = 1
 };
 
-uint8_t EventSecurityStatVariationToType(EventSecurityStatVariation arg);
-EventSecurityStatVariation EventSecurityStatVariationFromType(uint8_t arg);
-char const* EventSecurityStatVariationToString(EventSecurityStatVariation arg);
-EventSecurityStatVariation EventSecurityStatVariationFromString(const std::string& arg);
+struct EventSecurityStatVariationSpec
+{
+  using enum_type_t = EventSecurityStatVariation;
+
+  static uint8_t to_type(EventSecurityStatVariation arg);
+  static EventSecurityStatVariation from_type(uint8_t arg);
+  static char const* to_string(EventSecurityStatVariation arg);
+  static char const* to_human_string(EventSecurityStatVariation arg);
+  static EventSecurityStatVariation from_string(const std::string& arg);
+};
 
 }
 

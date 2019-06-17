@@ -26,11 +26,12 @@ object EnumFromType extends HeaderImplModelRender[EnumModel] {
   def header: ModelRenderer[EnumModel] = HeaderRender
   def impl: ModelRenderer[EnumModel]  = ImplRender
 
-  private def signature(enum: EnumModel) = List(enum.name, List(enum.name, "FromType(", getEnumType(enum.enumType)," arg)").mkString).mkString(" ")
+  private def signatureReturnType(enum: EnumModel) = enum.name
+  private def signatureMethod(enum: EnumModel) = f"from_type(${getEnumType(enum.enumType)} arg)"
 
   private object HeaderRender extends ModelRenderer[EnumModel] {
     def render(em: EnumModel)(implicit i: Indentation) : Iterator[String] = {
-      Iterator(signature(em)+";")
+      Iterator(toHeaderSignature(signatureReturnType(em), signatureMethod(em)))
     }
   }
 
@@ -38,7 +39,7 @@ object EnumFromType extends HeaderImplModelRender[EnumModel] {
 
     def render(em: EnumModel)(implicit i: Indentation) : Iterator[String] = {
 
-      def header = Iterator(signature(em))
+      def header = Iterator(toImplSignature(signatureReturnType(em), signatureMethod(em), em))
       def smr = new SwitchModelRenderer[EnumValue](ev => em.render(ev.value))(ev => em.qualified(ev))
       def switch = smr.render(em.nonDefaultValues, em.default)
 

@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t StaticBinaryVariationToType(StaticBinaryVariation arg)
+uint8_t StaticBinaryVariationSpec::to_type(StaticBinaryVariation arg)
 {
   return static_cast<uint8_t>(arg);
 }
-StaticBinaryVariation StaticBinaryVariationFromType(uint8_t arg)
+
+StaticBinaryVariation StaticBinaryVariationSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -50,7 +51,8 @@ StaticBinaryVariation StaticBinaryVariationFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* StaticBinaryVariationToString(StaticBinaryVariation arg)
+
+char const* StaticBinaryVariationSpec::to_string(StaticBinaryVariation arg)
 {
   switch(arg)
   {
@@ -62,11 +64,26 @@ char const* StaticBinaryVariationToString(StaticBinaryVariation arg)
       return "UNDEFINED";
   }
 }
-StaticBinaryVariation StaticBinaryVariationFromString(const std::string& arg)
+
+char const* StaticBinaryVariationSpec::to_human_string(StaticBinaryVariation arg)
+{
+  switch(arg)
+  {
+    case(StaticBinaryVariation::Group1Var1):
+      return "Group1Var1";
+    case(StaticBinaryVariation::Group1Var2):
+      return "Group1Var2";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+StaticBinaryVariation StaticBinaryVariationSpec::from_string(const std::string& arg)
 {
   if(arg == "Group1Var1") return StaticBinaryVariation::Group1Var1;
   if(arg == "Group1Var2") return StaticBinaryVariation::Group1Var2;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

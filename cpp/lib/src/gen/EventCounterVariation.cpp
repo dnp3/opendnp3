@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t EventCounterVariationToType(EventCounterVariation arg)
+uint8_t EventCounterVariationSpec::to_type(EventCounterVariation arg)
 {
   return static_cast<uint8_t>(arg);
 }
-EventCounterVariation EventCounterVariationFromType(uint8_t arg)
+
+EventCounterVariation EventCounterVariationSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -54,7 +55,8 @@ EventCounterVariation EventCounterVariationFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* EventCounterVariationToString(EventCounterVariation arg)
+
+char const* EventCounterVariationSpec::to_string(EventCounterVariation arg)
 {
   switch(arg)
   {
@@ -70,7 +72,25 @@ char const* EventCounterVariationToString(EventCounterVariation arg)
       return "UNDEFINED";
   }
 }
-EventCounterVariation EventCounterVariationFromString(const std::string& arg)
+
+char const* EventCounterVariationSpec::to_human_string(EventCounterVariation arg)
+{
+  switch(arg)
+  {
+    case(EventCounterVariation::Group22Var1):
+      return "Group22Var1";
+    case(EventCounterVariation::Group22Var2):
+      return "Group22Var2";
+    case(EventCounterVariation::Group22Var5):
+      return "Group22Var5";
+    case(EventCounterVariation::Group22Var6):
+      return "Group22Var6";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+EventCounterVariation EventCounterVariationSpec::from_string(const std::string& arg)
 {
   if(arg == "Group22Var1") return EventCounterVariation::Group22Var1;
   if(arg == "Group22Var2") return EventCounterVariation::Group22Var2;
@@ -78,5 +98,6 @@ EventCounterVariation EventCounterVariationFromString(const std::string& arg)
   if(arg == "Group22Var6") return EventCounterVariation::Group22Var6;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

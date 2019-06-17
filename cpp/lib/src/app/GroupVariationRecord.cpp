@@ -37,7 +37,7 @@ HeaderRecord::HeaderRecord(const GroupVariationRecord& gv, uint8_t qualifier_, u
 
 QualifierCode HeaderRecord::GetQualifierCode() const
 {
-    return QualifierCodeFromType(qualifier);
+    return QualifierCodeSpec::from_type(qualifier);
 }
 
 GroupVariationRecord GroupVariationRecord::GetRecord(uint8_t group, uint8_t variation)
@@ -54,7 +54,7 @@ uint16_t GroupVariationRecord::GetGroupVar(uint8_t group, uint8_t variation)
 EnumAndType GroupVariationRecord::GetEnumAndType(uint8_t group, uint8_t variation)
 {
     auto type = GetType(group, variation);
-    auto enumeration = GroupVariationFromType(GetGroupVar(group, variation));
+    auto enumeration = GroupVariationSpec::from_type(GetGroupVar(group, variation));
 
     if (enumeration == GroupVariation::UNKNOWN)
     {

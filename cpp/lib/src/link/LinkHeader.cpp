@@ -57,7 +57,7 @@ void LinkHeader::ChangeFCB(bool aFCB)
 
 uint8_t LinkHeader::ControlByte(bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aFunc)
 {
-    uint8_t ret = LinkFunctionToType(aFunc);
+    uint8_t ret = LinkFunctionSpec::to_type(aFunc);
 
     if (aIsMaster)
         ret |= MASK_DIR;

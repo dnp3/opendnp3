@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t ControlCodeToType(ControlCode arg)
+uint8_t ControlCodeSpec::to_type(ControlCode arg)
 {
   return static_cast<uint8_t>(arg);
 }
-ControlCode ControlCodeFromType(uint8_t arg)
+
+ControlCode ControlCodeSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -74,7 +75,8 @@ ControlCode ControlCodeFromType(uint8_t arg)
       return ControlCode::UNDEFINED;
   }
 }
-char const* ControlCodeToString(ControlCode arg)
+
+char const* ControlCodeSpec::to_string(ControlCode arg)
 {
   switch(arg)
   {
@@ -110,7 +112,45 @@ char const* ControlCodeToString(ControlCode arg)
       return "UNDEFINED";
   }
 }
-ControlCode ControlCodeFromString(const std::string& arg)
+
+char const* ControlCodeSpec::to_human_string(ControlCode arg)
+{
+  switch(arg)
+  {
+    case(ControlCode::NUL):
+      return "NUL";
+    case(ControlCode::NUL_CANCEL):
+      return "NUL_CANCEL";
+    case(ControlCode::PULSE_ON):
+      return "PULSE_ON";
+    case(ControlCode::PULSE_ON_CANCEL):
+      return "PULSE_ON_CANCEL";
+    case(ControlCode::PULSE_OFF):
+      return "PULSE_OFF";
+    case(ControlCode::PULSE_OFF_CANCEL):
+      return "PULSE_OFF_CANCEL";
+    case(ControlCode::LATCH_ON):
+      return "LATCH_ON";
+    case(ControlCode::LATCH_ON_CANCEL):
+      return "LATCH_ON_CANCEL";
+    case(ControlCode::LATCH_OFF):
+      return "LATCH_OFF";
+    case(ControlCode::LATCH_OFF_CANCEL):
+      return "LATCH_OFF_CANCEL";
+    case(ControlCode::CLOSE_PULSE_ON):
+      return "CLOSE_PULSE_ON";
+    case(ControlCode::CLOSE_PULSE_ON_CANCEL):
+      return "CLOSE_PULSE_ON_CANCEL";
+    case(ControlCode::TRIP_PULSE_ON):
+      return "TRIP_PULSE_ON";
+    case(ControlCode::TRIP_PULSE_ON_CANCEL):
+      return "TRIP_PULSE_ON_CANCEL";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+ControlCode ControlCodeSpec::from_string(const std::string& arg)
 {
   if(arg == "NUL") return ControlCode::NUL;
   if(arg == "NUL_CANCEL") return ControlCode::NUL_CANCEL;
@@ -128,5 +168,6 @@ ControlCode ControlCodeFromString(const std::string& arg)
   if(arg == "TRIP_PULSE_ON_CANCEL") return ControlCode::TRIP_PULSE_ON_CANCEL;
   else return ControlCode::UNDEFINED;
 }
+
 
 }

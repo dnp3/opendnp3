@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t FunctionCodeToType(FunctionCode arg)
+uint8_t FunctionCodeSpec::to_type(FunctionCode arg)
 {
   return static_cast<uint8_t>(arg);
 }
-FunctionCode FunctionCodeFromType(uint8_t arg)
+
+FunctionCode FunctionCodeSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -118,7 +119,8 @@ FunctionCode FunctionCodeFromType(uint8_t arg)
       return FunctionCode::UNKNOWN;
   }
 }
-char const* FunctionCodeToString(FunctionCode arg)
+
+char const* FunctionCodeSpec::to_string(FunctionCode arg)
 {
   switch(arg)
   {
@@ -198,7 +200,89 @@ char const* FunctionCodeToString(FunctionCode arg)
       return "UNKNOWN";
   }
 }
-FunctionCode FunctionCodeFromString(const std::string& arg)
+
+char const* FunctionCodeSpec::to_human_string(FunctionCode arg)
+{
+  switch(arg)
+  {
+    case(FunctionCode::CONFIRM):
+      return "CONFIRM";
+    case(FunctionCode::READ):
+      return "READ";
+    case(FunctionCode::WRITE):
+      return "WRITE";
+    case(FunctionCode::SELECT):
+      return "SELECT";
+    case(FunctionCode::OPERATE):
+      return "OPERATE";
+    case(FunctionCode::DIRECT_OPERATE):
+      return "DIRECT_OPERATE";
+    case(FunctionCode::DIRECT_OPERATE_NR):
+      return "DIRECT_OPERATE_NR";
+    case(FunctionCode::IMMED_FREEZE):
+      return "IMMED_FREEZE";
+    case(FunctionCode::IMMED_FREEZE_NR):
+      return "IMMED_FREEZE_NR";
+    case(FunctionCode::FREEZE_CLEAR):
+      return "FREEZE_CLEAR";
+    case(FunctionCode::FREEZE_CLEAR_NR):
+      return "FREEZE_CLEAR_NR";
+    case(FunctionCode::FREEZE_AT_TIME):
+      return "FREEZE_AT_TIME";
+    case(FunctionCode::FREEZE_AT_TIME_NR):
+      return "FREEZE_AT_TIME_NR";
+    case(FunctionCode::COLD_RESTART):
+      return "COLD_RESTART";
+    case(FunctionCode::WARM_RESTART):
+      return "WARM_RESTART";
+    case(FunctionCode::INITIALIZE_DATA):
+      return "INITIALIZE_DATA";
+    case(FunctionCode::INITIALIZE_APPLICATION):
+      return "INITIALIZE_APPLICATION";
+    case(FunctionCode::START_APPLICATION):
+      return "START_APPLICATION";
+    case(FunctionCode::STOP_APPLICATION):
+      return "STOP_APPLICATION";
+    case(FunctionCode::SAVE_CONFIGURATION):
+      return "SAVE_CONFIGURATION";
+    case(FunctionCode::ENABLE_UNSOLICITED):
+      return "ENABLE_UNSOLICITED";
+    case(FunctionCode::DISABLE_UNSOLICITED):
+      return "DISABLE_UNSOLICITED";
+    case(FunctionCode::ASSIGN_CLASS):
+      return "ASSIGN_CLASS";
+    case(FunctionCode::DELAY_MEASURE):
+      return "DELAY_MEASURE";
+    case(FunctionCode::RECORD_CURRENT_TIME):
+      return "RECORD_CURRENT_TIME";
+    case(FunctionCode::OPEN_FILE):
+      return "OPEN_FILE";
+    case(FunctionCode::CLOSE_FILE):
+      return "CLOSE_FILE";
+    case(FunctionCode::DELETE_FILE):
+      return "DELETE_FILE";
+    case(FunctionCode::GET_FILE_INFO):
+      return "GET_FILE_INFO";
+    case(FunctionCode::AUTHENTICATE_FILE):
+      return "AUTHENTICATE_FILE";
+    case(FunctionCode::ABORT_FILE):
+      return "ABORT_FILE";
+    case(FunctionCode::AUTH_REQUEST):
+      return "AUTH_REQUEST";
+    case(FunctionCode::AUTH_REQUEST_NO_ACK):
+      return "AUTH_REQUEST_NO_ACK";
+    case(FunctionCode::RESPONSE):
+      return "RESPONSE";
+    case(FunctionCode::UNSOLICITED_RESPONSE):
+      return "UNSOLICITED_RESPONSE";
+    case(FunctionCode::AUTH_RESPONSE):
+      return "AUTH_RESPONSE";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+FunctionCode FunctionCodeSpec::from_string(const std::string& arg)
 {
   if(arg == "CONFIRM") return FunctionCode::CONFIRM;
   if(arg == "READ") return FunctionCode::READ;
@@ -238,5 +322,6 @@ FunctionCode FunctionCodeFromString(const std::string& arg)
   if(arg == "AUTH_RESPONSE") return FunctionCode::AUTH_RESPONSE;
   else return FunctionCode::UNKNOWN;
 }
+
 
 }

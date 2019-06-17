@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t ConfigAuthModeToType(ConfigAuthMode arg)
+uint8_t ConfigAuthModeSpec::to_type(ConfigAuthMode arg)
 {
   return static_cast<uint8_t>(arg);
 }
-ConfigAuthMode ConfigAuthModeFromType(uint8_t arg)
+
+ConfigAuthMode ConfigAuthModeSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -50,7 +51,8 @@ ConfigAuthMode ConfigAuthModeFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* ConfigAuthModeToString(ConfigAuthMode arg)
+
+char const* ConfigAuthModeSpec::to_string(ConfigAuthMode arg)
 {
   switch(arg)
   {
@@ -62,11 +64,26 @@ char const* ConfigAuthModeToString(ConfigAuthMode arg)
       return "UNDEFINED";
   }
 }
-ConfigAuthMode ConfigAuthModeFromString(const std::string& arg)
+
+char const* ConfigAuthModeSpec::to_human_string(ConfigAuthMode arg)
+{
+  switch(arg)
+  {
+    case(ConfigAuthMode::NONE):
+      return "NONE";
+    case(ConfigAuthMode::SAV5):
+      return "SAV5";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+ConfigAuthMode ConfigAuthModeSpec::from_string(const std::string& arg)
 {
   if(arg == "NONE") return ConfigAuthMode::NONE;
   if(arg == "SAV5") return ConfigAuthMode::SAV5;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

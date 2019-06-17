@@ -47,10 +47,16 @@ enum class Parity : uint8_t
   None = 0
 };
 
-uint8_t ParityToType(Parity arg);
-Parity ParityFromType(uint8_t arg);
-char const* ParityToString(Parity arg);
-Parity ParityFromString(const std::string& arg);
+struct ParitySpec
+{
+  using enum_type_t = Parity;
+
+  static uint8_t to_type(Parity arg);
+  static Parity from_type(uint8_t arg);
+  static char const* to_string(Parity arg);
+  static char const* to_human_string(Parity arg);
+  static Parity from_string(const std::string& arg);
+};
 
 }
 

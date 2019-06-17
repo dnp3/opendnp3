@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint16_t GroupVariationToType(GroupVariation arg)
+uint16_t GroupVariationSpec::to_type(GroupVariation arg)
 {
   return static_cast<uint16_t>(arg);
 }
-GroupVariation GroupVariationFromType(uint16_t arg)
+
+GroupVariation GroupVariationSpec::from_type(uint16_t arg)
 {
   switch(arg)
   {
@@ -312,7 +313,283 @@ GroupVariation GroupVariationFromType(uint16_t arg)
       return GroupVariation::UNKNOWN;
   }
 }
-char const* GroupVariationToString(GroupVariation arg)
+
+char const* GroupVariationSpec::to_string(GroupVariation arg)
+{
+  switch(arg)
+  {
+    case(GroupVariation::Group1Var0):
+      return "Group1Var0";
+    case(GroupVariation::Group1Var1):
+      return "Group1Var1";
+    case(GroupVariation::Group1Var2):
+      return "Group1Var2";
+    case(GroupVariation::Group2Var0):
+      return "Group2Var0";
+    case(GroupVariation::Group2Var1):
+      return "Group2Var1";
+    case(GroupVariation::Group2Var2):
+      return "Group2Var2";
+    case(GroupVariation::Group2Var3):
+      return "Group2Var3";
+    case(GroupVariation::Group3Var0):
+      return "Group3Var0";
+    case(GroupVariation::Group3Var1):
+      return "Group3Var1";
+    case(GroupVariation::Group3Var2):
+      return "Group3Var2";
+    case(GroupVariation::Group4Var0):
+      return "Group4Var0";
+    case(GroupVariation::Group4Var1):
+      return "Group4Var1";
+    case(GroupVariation::Group4Var2):
+      return "Group4Var2";
+    case(GroupVariation::Group4Var3):
+      return "Group4Var3";
+    case(GroupVariation::Group10Var0):
+      return "Group10Var0";
+    case(GroupVariation::Group10Var1):
+      return "Group10Var1";
+    case(GroupVariation::Group10Var2):
+      return "Group10Var2";
+    case(GroupVariation::Group11Var0):
+      return "Group11Var0";
+    case(GroupVariation::Group11Var1):
+      return "Group11Var1";
+    case(GroupVariation::Group11Var2):
+      return "Group11Var2";
+    case(GroupVariation::Group12Var0):
+      return "Group12Var0";
+    case(GroupVariation::Group12Var1):
+      return "Group12Var1";
+    case(GroupVariation::Group13Var1):
+      return "Group13Var1";
+    case(GroupVariation::Group13Var2):
+      return "Group13Var2";
+    case(GroupVariation::Group20Var0):
+      return "Group20Var0";
+    case(GroupVariation::Group20Var1):
+      return "Group20Var1";
+    case(GroupVariation::Group20Var2):
+      return "Group20Var2";
+    case(GroupVariation::Group20Var5):
+      return "Group20Var5";
+    case(GroupVariation::Group20Var6):
+      return "Group20Var6";
+    case(GroupVariation::Group21Var0):
+      return "Group21Var0";
+    case(GroupVariation::Group21Var1):
+      return "Group21Var1";
+    case(GroupVariation::Group21Var2):
+      return "Group21Var2";
+    case(GroupVariation::Group21Var5):
+      return "Group21Var5";
+    case(GroupVariation::Group21Var6):
+      return "Group21Var6";
+    case(GroupVariation::Group21Var9):
+      return "Group21Var9";
+    case(GroupVariation::Group21Var10):
+      return "Group21Var10";
+    case(GroupVariation::Group22Var0):
+      return "Group22Var0";
+    case(GroupVariation::Group22Var1):
+      return "Group22Var1";
+    case(GroupVariation::Group22Var2):
+      return "Group22Var2";
+    case(GroupVariation::Group22Var5):
+      return "Group22Var5";
+    case(GroupVariation::Group22Var6):
+      return "Group22Var6";
+    case(GroupVariation::Group23Var0):
+      return "Group23Var0";
+    case(GroupVariation::Group23Var1):
+      return "Group23Var1";
+    case(GroupVariation::Group23Var2):
+      return "Group23Var2";
+    case(GroupVariation::Group23Var5):
+      return "Group23Var5";
+    case(GroupVariation::Group23Var6):
+      return "Group23Var6";
+    case(GroupVariation::Group30Var0):
+      return "Group30Var0";
+    case(GroupVariation::Group30Var1):
+      return "Group30Var1";
+    case(GroupVariation::Group30Var2):
+      return "Group30Var2";
+    case(GroupVariation::Group30Var3):
+      return "Group30Var3";
+    case(GroupVariation::Group30Var4):
+      return "Group30Var4";
+    case(GroupVariation::Group30Var5):
+      return "Group30Var5";
+    case(GroupVariation::Group30Var6):
+      return "Group30Var6";
+    case(GroupVariation::Group32Var0):
+      return "Group32Var0";
+    case(GroupVariation::Group32Var1):
+      return "Group32Var1";
+    case(GroupVariation::Group32Var2):
+      return "Group32Var2";
+    case(GroupVariation::Group32Var3):
+      return "Group32Var3";
+    case(GroupVariation::Group32Var4):
+      return "Group32Var4";
+    case(GroupVariation::Group32Var5):
+      return "Group32Var5";
+    case(GroupVariation::Group32Var6):
+      return "Group32Var6";
+    case(GroupVariation::Group32Var7):
+      return "Group32Var7";
+    case(GroupVariation::Group32Var8):
+      return "Group32Var8";
+    case(GroupVariation::Group40Var0):
+      return "Group40Var0";
+    case(GroupVariation::Group40Var1):
+      return "Group40Var1";
+    case(GroupVariation::Group40Var2):
+      return "Group40Var2";
+    case(GroupVariation::Group40Var3):
+      return "Group40Var3";
+    case(GroupVariation::Group40Var4):
+      return "Group40Var4";
+    case(GroupVariation::Group41Var0):
+      return "Group41Var0";
+    case(GroupVariation::Group41Var1):
+      return "Group41Var1";
+    case(GroupVariation::Group41Var2):
+      return "Group41Var2";
+    case(GroupVariation::Group41Var3):
+      return "Group41Var3";
+    case(GroupVariation::Group41Var4):
+      return "Group41Var4";
+    case(GroupVariation::Group42Var0):
+      return "Group42Var0";
+    case(GroupVariation::Group42Var1):
+      return "Group42Var1";
+    case(GroupVariation::Group42Var2):
+      return "Group42Var2";
+    case(GroupVariation::Group42Var3):
+      return "Group42Var3";
+    case(GroupVariation::Group42Var4):
+      return "Group42Var4";
+    case(GroupVariation::Group42Var5):
+      return "Group42Var5";
+    case(GroupVariation::Group42Var6):
+      return "Group42Var6";
+    case(GroupVariation::Group42Var7):
+      return "Group42Var7";
+    case(GroupVariation::Group42Var8):
+      return "Group42Var8";
+    case(GroupVariation::Group43Var1):
+      return "Group43Var1";
+    case(GroupVariation::Group43Var2):
+      return "Group43Var2";
+    case(GroupVariation::Group43Var3):
+      return "Group43Var3";
+    case(GroupVariation::Group43Var4):
+      return "Group43Var4";
+    case(GroupVariation::Group43Var5):
+      return "Group43Var5";
+    case(GroupVariation::Group43Var6):
+      return "Group43Var6";
+    case(GroupVariation::Group43Var7):
+      return "Group43Var7";
+    case(GroupVariation::Group43Var8):
+      return "Group43Var8";
+    case(GroupVariation::Group50Var1):
+      return "Group50Var1";
+    case(GroupVariation::Group50Var3):
+      return "Group50Var3";
+    case(GroupVariation::Group50Var4):
+      return "Group50Var4";
+    case(GroupVariation::Group51Var1):
+      return "Group51Var1";
+    case(GroupVariation::Group51Var2):
+      return "Group51Var2";
+    case(GroupVariation::Group52Var1):
+      return "Group52Var1";
+    case(GroupVariation::Group52Var2):
+      return "Group52Var2";
+    case(GroupVariation::Group60Var1):
+      return "Group60Var1";
+    case(GroupVariation::Group60Var2):
+      return "Group60Var2";
+    case(GroupVariation::Group60Var3):
+      return "Group60Var3";
+    case(GroupVariation::Group60Var4):
+      return "Group60Var4";
+    case(GroupVariation::Group70Var1):
+      return "Group70Var1";
+    case(GroupVariation::Group70Var2):
+      return "Group70Var2";
+    case(GroupVariation::Group70Var3):
+      return "Group70Var3";
+    case(GroupVariation::Group70Var4):
+      return "Group70Var4";
+    case(GroupVariation::Group70Var5):
+      return "Group70Var5";
+    case(GroupVariation::Group70Var6):
+      return "Group70Var6";
+    case(GroupVariation::Group70Var7):
+      return "Group70Var7";
+    case(GroupVariation::Group70Var8):
+      return "Group70Var8";
+    case(GroupVariation::Group80Var1):
+      return "Group80Var1";
+    case(GroupVariation::Group110Var0):
+      return "Group110Var0";
+    case(GroupVariation::Group111Var0):
+      return "Group111Var0";
+    case(GroupVariation::Group112Var0):
+      return "Group112Var0";
+    case(GroupVariation::Group113Var0):
+      return "Group113Var0";
+    case(GroupVariation::Group120Var1):
+      return "Group120Var1";
+    case(GroupVariation::Group120Var2):
+      return "Group120Var2";
+    case(GroupVariation::Group120Var3):
+      return "Group120Var3";
+    case(GroupVariation::Group120Var4):
+      return "Group120Var4";
+    case(GroupVariation::Group120Var5):
+      return "Group120Var5";
+    case(GroupVariation::Group120Var6):
+      return "Group120Var6";
+    case(GroupVariation::Group120Var7):
+      return "Group120Var7";
+    case(GroupVariation::Group120Var8):
+      return "Group120Var8";
+    case(GroupVariation::Group120Var9):
+      return "Group120Var9";
+    case(GroupVariation::Group120Var10):
+      return "Group120Var10";
+    case(GroupVariation::Group120Var11):
+      return "Group120Var11";
+    case(GroupVariation::Group120Var12):
+      return "Group120Var12";
+    case(GroupVariation::Group120Var13):
+      return "Group120Var13";
+    case(GroupVariation::Group120Var14):
+      return "Group120Var14";
+    case(GroupVariation::Group120Var15):
+      return "Group120Var15";
+    case(GroupVariation::Group121Var0):
+      return "Group121Var0";
+    case(GroupVariation::Group121Var1):
+      return "Group121Var1";
+    case(GroupVariation::Group122Var0):
+      return "Group122Var0";
+    case(GroupVariation::Group122Var1):
+      return "Group122Var1";
+    case(GroupVariation::Group122Var2):
+      return "Group122Var2";
+    default:
+      return "UNKNOWN";
+  }
+}
+
+char const* GroupVariationSpec::to_human_string(GroupVariation arg)
 {
   switch(arg)
   {
@@ -586,142 +863,144 @@ char const* GroupVariationToString(GroupVariation arg)
       return "UNKNOWN";
   }
 }
-GroupVariation GroupVariationFromString(const std::string& arg)
+
+GroupVariation GroupVariationSpec::from_string(const std::string& arg)
 {
-  if(arg == "Binary Input - Any Variation") return GroupVariation::Group1Var0;
-  if(arg == "Binary Input - Packed Format") return GroupVariation::Group1Var1;
-  if(arg == "Binary Input - With Flags") return GroupVariation::Group1Var2;
-  if(arg == "Binary Input Event - Any Variation") return GroupVariation::Group2Var0;
-  if(arg == "Binary Input Event - Without Time") return GroupVariation::Group2Var1;
-  if(arg == "Binary Input Event - With Absolute Time") return GroupVariation::Group2Var2;
-  if(arg == "Binary Input Event - With Relative Time") return GroupVariation::Group2Var3;
-  if(arg == "Double-bit Binary Input - Any Variation") return GroupVariation::Group3Var0;
-  if(arg == "Double-bit Binary Input - Packed Format") return GroupVariation::Group3Var1;
-  if(arg == "Double-bit Binary Input - With Flags") return GroupVariation::Group3Var2;
-  if(arg == "Double-bit Binary Input Event - Any Variation") return GroupVariation::Group4Var0;
-  if(arg == "Double-bit Binary Input Event - Without Time") return GroupVariation::Group4Var1;
-  if(arg == "Double-bit Binary Input Event - With Absolute Time") return GroupVariation::Group4Var2;
-  if(arg == "Double-bit Binary Input Event - With Relative Time") return GroupVariation::Group4Var3;
-  if(arg == "Binary Output - Any Variation") return GroupVariation::Group10Var0;
-  if(arg == "Binary Output - Packed Format") return GroupVariation::Group10Var1;
-  if(arg == "Binary Output - Output Status With Flags") return GroupVariation::Group10Var2;
-  if(arg == "Binary Output Event - Any Variation") return GroupVariation::Group11Var0;
-  if(arg == "Binary Output Event - Output Status Without Time") return GroupVariation::Group11Var1;
-  if(arg == "Binary Output Event - Output Status With Time") return GroupVariation::Group11Var2;
-  if(arg == "Binary Command - Any Variation") return GroupVariation::Group12Var0;
-  if(arg == "Binary Command - CROB") return GroupVariation::Group12Var1;
-  if(arg == "Binary Command Event - Without Time") return GroupVariation::Group13Var1;
-  if(arg == "Binary Command Event - With Time") return GroupVariation::Group13Var2;
-  if(arg == "Counter - Any Variation") return GroupVariation::Group20Var0;
-  if(arg == "Counter - 32-bit With Flag") return GroupVariation::Group20Var1;
-  if(arg == "Counter - 16-bit With Flag") return GroupVariation::Group20Var2;
-  if(arg == "Counter - 32-bit Without Flag") return GroupVariation::Group20Var5;
-  if(arg == "Counter - 16-bit Without Flag") return GroupVariation::Group20Var6;
-  if(arg == "Frozen Counter - Any Variation") return GroupVariation::Group21Var0;
-  if(arg == "Frozen Counter - 32-bit With Flag") return GroupVariation::Group21Var1;
-  if(arg == "Frozen Counter - 16-bit With Flag") return GroupVariation::Group21Var2;
-  if(arg == "Frozen Counter - 32-bit With Flag and Time") return GroupVariation::Group21Var5;
-  if(arg == "Frozen Counter - 16-bit With Flag and Time") return GroupVariation::Group21Var6;
-  if(arg == "Frozen Counter - 32-bit Without Flag") return GroupVariation::Group21Var9;
-  if(arg == "Frozen Counter - 16-bit Without Flag") return GroupVariation::Group21Var10;
-  if(arg == "Counter Event - Any Variation") return GroupVariation::Group22Var0;
-  if(arg == "Counter Event - 32-bit With Flag") return GroupVariation::Group22Var1;
-  if(arg == "Counter Event - 16-bit With Flag") return GroupVariation::Group22Var2;
-  if(arg == "Counter Event - 32-bit With Flag and Time") return GroupVariation::Group22Var5;
-  if(arg == "Counter Event - 16-bit With Flag and Time") return GroupVariation::Group22Var6;
-  if(arg == "Frozen Counter Event - Any Variation") return GroupVariation::Group23Var0;
-  if(arg == "Frozen Counter Event - 32-bit With Flag") return GroupVariation::Group23Var1;
-  if(arg == "Frozen Counter Event - 16-bit With Flag") return GroupVariation::Group23Var2;
-  if(arg == "Frozen Counter Event - 32-bit With Flag and Time") return GroupVariation::Group23Var5;
-  if(arg == "Frozen Counter Event - 16-bit With Flag and Time") return GroupVariation::Group23Var6;
-  if(arg == "Analog Input - Any Variation") return GroupVariation::Group30Var0;
-  if(arg == "Analog Input - 32-bit With Flag") return GroupVariation::Group30Var1;
-  if(arg == "Analog Input - 16-bit With Flag") return GroupVariation::Group30Var2;
-  if(arg == "Analog Input - 32-bit Without Flag") return GroupVariation::Group30Var3;
-  if(arg == "Analog Input - 16-bit Without Flag") return GroupVariation::Group30Var4;
-  if(arg == "Analog Input - Single-precision With Flag") return GroupVariation::Group30Var5;
-  if(arg == "Analog Input - Double-precision With Flag") return GroupVariation::Group30Var6;
-  if(arg == "Analog Input Event - Any Variation") return GroupVariation::Group32Var0;
-  if(arg == "Analog Input Event - 32-bit With Flag") return GroupVariation::Group32Var1;
-  if(arg == "Analog Input Event - 16-bit With Flag") return GroupVariation::Group32Var2;
-  if(arg == "Analog Input Event - 32-bit With Flag and Time") return GroupVariation::Group32Var3;
-  if(arg == "Analog Input Event - 16-bit With Flag and Time") return GroupVariation::Group32Var4;
-  if(arg == "Analog Input Event - Single-precision With Flag") return GroupVariation::Group32Var5;
-  if(arg == "Analog Input Event - Double-precision With Flag") return GroupVariation::Group32Var6;
-  if(arg == "Analog Input Event - Single-precision With Flag and Time") return GroupVariation::Group32Var7;
-  if(arg == "Analog Input Event - Double-precision With Flag and Time") return GroupVariation::Group32Var8;
-  if(arg == "Analog Output Status - Any Variation") return GroupVariation::Group40Var0;
-  if(arg == "Analog Output Status - 32-bit With Flag") return GroupVariation::Group40Var1;
-  if(arg == "Analog Output Status - 16-bit With Flag") return GroupVariation::Group40Var2;
-  if(arg == "Analog Output Status - Single-precision With Flag") return GroupVariation::Group40Var3;
-  if(arg == "Analog Output Status - Double-precision With Flag") return GroupVariation::Group40Var4;
-  if(arg == "Analog Output - Any Variation") return GroupVariation::Group41Var0;
-  if(arg == "Analog Output - 32-bit With Flag") return GroupVariation::Group41Var1;
-  if(arg == "Analog Output - 16-bit With Flag") return GroupVariation::Group41Var2;
-  if(arg == "Analog Output - Single-precision") return GroupVariation::Group41Var3;
-  if(arg == "Analog Output - Double-precision") return GroupVariation::Group41Var4;
-  if(arg == "Analog Output Event - Any Variation") return GroupVariation::Group42Var0;
-  if(arg == "Analog Output Event - 32-bit With Flag") return GroupVariation::Group42Var1;
-  if(arg == "Analog Output Event - 16-bit With Flag") return GroupVariation::Group42Var2;
-  if(arg == "Analog Output Event - 32-bit With Flag and Time") return GroupVariation::Group42Var3;
-  if(arg == "Analog Output Event - 16-bit With Flag and Time") return GroupVariation::Group42Var4;
-  if(arg == "Analog Output Event - Single-precision With Flag") return GroupVariation::Group42Var5;
-  if(arg == "Analog Output Event - Double-precision With Flag") return GroupVariation::Group42Var6;
-  if(arg == "Analog Output Event - Single-precision With Flag and Time") return GroupVariation::Group42Var7;
-  if(arg == "Analog Output Event - Double-precision With Flag and Time") return GroupVariation::Group42Var8;
-  if(arg == "Analog Command Event - 32-bit") return GroupVariation::Group43Var1;
-  if(arg == "Analog Command Event - 16-bit") return GroupVariation::Group43Var2;
-  if(arg == "Analog Command Event - 32-bit With Time") return GroupVariation::Group43Var3;
-  if(arg == "Analog Command Event - 16-bit With Time") return GroupVariation::Group43Var4;
-  if(arg == "Analog Command Event - Single-precision") return GroupVariation::Group43Var5;
-  if(arg == "Analog Command Event - Double-precision") return GroupVariation::Group43Var6;
-  if(arg == "Analog Command Event - Single-precision With Time") return GroupVariation::Group43Var7;
-  if(arg == "Analog Command Event - Double-precision With Time") return GroupVariation::Group43Var8;
-  if(arg == "Time and Date - Absolute Time") return GroupVariation::Group50Var1;
-  if(arg == "Time and Date - Absolute Time at last recorded time") return GroupVariation::Group50Var3;
-  if(arg == "Time and Date - Indexed absolute time and long interval") return GroupVariation::Group50Var4;
-  if(arg == "Time and Date CTO - Absolute time, synchronized") return GroupVariation::Group51Var1;
-  if(arg == "Time and Date CTO - Absolute time, unsynchronized") return GroupVariation::Group51Var2;
-  if(arg == "Time Delay - Coarse") return GroupVariation::Group52Var1;
-  if(arg == "Time Delay - Fine") return GroupVariation::Group52Var2;
-  if(arg == "Class Data - Class 0") return GroupVariation::Group60Var1;
-  if(arg == "Class Data - Class 1") return GroupVariation::Group60Var2;
-  if(arg == "Class Data - Class 2") return GroupVariation::Group60Var3;
-  if(arg == "Class Data - Class 3") return GroupVariation::Group60Var4;
-  if(arg == "File-control - File identifier") return GroupVariation::Group70Var1;
-  if(arg == "File-control - Authentication") return GroupVariation::Group70Var2;
-  if(arg == "File-control - File command") return GroupVariation::Group70Var3;
-  if(arg == "File-control - File command status") return GroupVariation::Group70Var4;
-  if(arg == "File-control - File transport") return GroupVariation::Group70Var5;
-  if(arg == "File-control - File transport status") return GroupVariation::Group70Var6;
-  if(arg == "File-control - File descriptor") return GroupVariation::Group70Var7;
-  if(arg == "File-control - File specification string") return GroupVariation::Group70Var8;
-  if(arg == "Internal Indications - Packed Format") return GroupVariation::Group80Var1;
-  if(arg == "Octet String - Sized by variation") return GroupVariation::Group110Var0;
-  if(arg == "Octet String Event - Sized by variation") return GroupVariation::Group111Var0;
-  if(arg == "Virtual Terminal Output Block - Sized by variation") return GroupVariation::Group112Var0;
-  if(arg == "Virtual Terminal Event Data - Sized by variation") return GroupVariation::Group113Var0;
-  if(arg == "Authentication - Challenge") return GroupVariation::Group120Var1;
-  if(arg == "Authentication - Reply") return GroupVariation::Group120Var2;
-  if(arg == "Authentication - Aggressive Mode Request") return GroupVariation::Group120Var3;
-  if(arg == "Authentication - Session Key Status Request") return GroupVariation::Group120Var4;
-  if(arg == "Authentication - Session Key Status") return GroupVariation::Group120Var5;
-  if(arg == "Authentication - Session Key Change") return GroupVariation::Group120Var6;
-  if(arg == "Authentication - Error") return GroupVariation::Group120Var7;
-  if(arg == "Authentication - User Certificate") return GroupVariation::Group120Var8;
-  if(arg == "Authentication - HMAC") return GroupVariation::Group120Var9;
-  if(arg == "Authentication - User Status Change") return GroupVariation::Group120Var10;
-  if(arg == "Authentication - Update Key Change Request") return GroupVariation::Group120Var11;
-  if(arg == "Authentication - Update Key Change Reply") return GroupVariation::Group120Var12;
-  if(arg == "Authentication - Update Key Change") return GroupVariation::Group120Var13;
-  if(arg == "Authentication - Update Key Change Signature") return GroupVariation::Group120Var14;
-  if(arg == "Authentication - Update Key Change Confirmation") return GroupVariation::Group120Var15;
-  if(arg == "Security statistic - Any Variation") return GroupVariation::Group121Var0;
-  if(arg == "Security statistic - 32-bit With Flag") return GroupVariation::Group121Var1;
-  if(arg == "Security Statistic event - Any Variation") return GroupVariation::Group122Var0;
-  if(arg == "Security Statistic event - 32-bit With Flag") return GroupVariation::Group122Var1;
-  if(arg == "Security Statistic event - 32-bit With Flag and Time") return GroupVariation::Group122Var2;
+  if(arg == "Group1Var0") return GroupVariation::Group1Var0;
+  if(arg == "Group1Var1") return GroupVariation::Group1Var1;
+  if(arg == "Group1Var2") return GroupVariation::Group1Var2;
+  if(arg == "Group2Var0") return GroupVariation::Group2Var0;
+  if(arg == "Group2Var1") return GroupVariation::Group2Var1;
+  if(arg == "Group2Var2") return GroupVariation::Group2Var2;
+  if(arg == "Group2Var3") return GroupVariation::Group2Var3;
+  if(arg == "Group3Var0") return GroupVariation::Group3Var0;
+  if(arg == "Group3Var1") return GroupVariation::Group3Var1;
+  if(arg == "Group3Var2") return GroupVariation::Group3Var2;
+  if(arg == "Group4Var0") return GroupVariation::Group4Var0;
+  if(arg == "Group4Var1") return GroupVariation::Group4Var1;
+  if(arg == "Group4Var2") return GroupVariation::Group4Var2;
+  if(arg == "Group4Var3") return GroupVariation::Group4Var3;
+  if(arg == "Group10Var0") return GroupVariation::Group10Var0;
+  if(arg == "Group10Var1") return GroupVariation::Group10Var1;
+  if(arg == "Group10Var2") return GroupVariation::Group10Var2;
+  if(arg == "Group11Var0") return GroupVariation::Group11Var0;
+  if(arg == "Group11Var1") return GroupVariation::Group11Var1;
+  if(arg == "Group11Var2") return GroupVariation::Group11Var2;
+  if(arg == "Group12Var0") return GroupVariation::Group12Var0;
+  if(arg == "Group12Var1") return GroupVariation::Group12Var1;
+  if(arg == "Group13Var1") return GroupVariation::Group13Var1;
+  if(arg == "Group13Var2") return GroupVariation::Group13Var2;
+  if(arg == "Group20Var0") return GroupVariation::Group20Var0;
+  if(arg == "Group20Var1") return GroupVariation::Group20Var1;
+  if(arg == "Group20Var2") return GroupVariation::Group20Var2;
+  if(arg == "Group20Var5") return GroupVariation::Group20Var5;
+  if(arg == "Group20Var6") return GroupVariation::Group20Var6;
+  if(arg == "Group21Var0") return GroupVariation::Group21Var0;
+  if(arg == "Group21Var1") return GroupVariation::Group21Var1;
+  if(arg == "Group21Var2") return GroupVariation::Group21Var2;
+  if(arg == "Group21Var5") return GroupVariation::Group21Var5;
+  if(arg == "Group21Var6") return GroupVariation::Group21Var6;
+  if(arg == "Group21Var9") return GroupVariation::Group21Var9;
+  if(arg == "Group21Var10") return GroupVariation::Group21Var10;
+  if(arg == "Group22Var0") return GroupVariation::Group22Var0;
+  if(arg == "Group22Var1") return GroupVariation::Group22Var1;
+  if(arg == "Group22Var2") return GroupVariation::Group22Var2;
+  if(arg == "Group22Var5") return GroupVariation::Group22Var5;
+  if(arg == "Group22Var6") return GroupVariation::Group22Var6;
+  if(arg == "Group23Var0") return GroupVariation::Group23Var0;
+  if(arg == "Group23Var1") return GroupVariation::Group23Var1;
+  if(arg == "Group23Var2") return GroupVariation::Group23Var2;
+  if(arg == "Group23Var5") return GroupVariation::Group23Var5;
+  if(arg == "Group23Var6") return GroupVariation::Group23Var6;
+  if(arg == "Group30Var0") return GroupVariation::Group30Var0;
+  if(arg == "Group30Var1") return GroupVariation::Group30Var1;
+  if(arg == "Group30Var2") return GroupVariation::Group30Var2;
+  if(arg == "Group30Var3") return GroupVariation::Group30Var3;
+  if(arg == "Group30Var4") return GroupVariation::Group30Var4;
+  if(arg == "Group30Var5") return GroupVariation::Group30Var5;
+  if(arg == "Group30Var6") return GroupVariation::Group30Var6;
+  if(arg == "Group32Var0") return GroupVariation::Group32Var0;
+  if(arg == "Group32Var1") return GroupVariation::Group32Var1;
+  if(arg == "Group32Var2") return GroupVariation::Group32Var2;
+  if(arg == "Group32Var3") return GroupVariation::Group32Var3;
+  if(arg == "Group32Var4") return GroupVariation::Group32Var4;
+  if(arg == "Group32Var5") return GroupVariation::Group32Var5;
+  if(arg == "Group32Var6") return GroupVariation::Group32Var6;
+  if(arg == "Group32Var7") return GroupVariation::Group32Var7;
+  if(arg == "Group32Var8") return GroupVariation::Group32Var8;
+  if(arg == "Group40Var0") return GroupVariation::Group40Var0;
+  if(arg == "Group40Var1") return GroupVariation::Group40Var1;
+  if(arg == "Group40Var2") return GroupVariation::Group40Var2;
+  if(arg == "Group40Var3") return GroupVariation::Group40Var3;
+  if(arg == "Group40Var4") return GroupVariation::Group40Var4;
+  if(arg == "Group41Var0") return GroupVariation::Group41Var0;
+  if(arg == "Group41Var1") return GroupVariation::Group41Var1;
+  if(arg == "Group41Var2") return GroupVariation::Group41Var2;
+  if(arg == "Group41Var3") return GroupVariation::Group41Var3;
+  if(arg == "Group41Var4") return GroupVariation::Group41Var4;
+  if(arg == "Group42Var0") return GroupVariation::Group42Var0;
+  if(arg == "Group42Var1") return GroupVariation::Group42Var1;
+  if(arg == "Group42Var2") return GroupVariation::Group42Var2;
+  if(arg == "Group42Var3") return GroupVariation::Group42Var3;
+  if(arg == "Group42Var4") return GroupVariation::Group42Var4;
+  if(arg == "Group42Var5") return GroupVariation::Group42Var5;
+  if(arg == "Group42Var6") return GroupVariation::Group42Var6;
+  if(arg == "Group42Var7") return GroupVariation::Group42Var7;
+  if(arg == "Group42Var8") return GroupVariation::Group42Var8;
+  if(arg == "Group43Var1") return GroupVariation::Group43Var1;
+  if(arg == "Group43Var2") return GroupVariation::Group43Var2;
+  if(arg == "Group43Var3") return GroupVariation::Group43Var3;
+  if(arg == "Group43Var4") return GroupVariation::Group43Var4;
+  if(arg == "Group43Var5") return GroupVariation::Group43Var5;
+  if(arg == "Group43Var6") return GroupVariation::Group43Var6;
+  if(arg == "Group43Var7") return GroupVariation::Group43Var7;
+  if(arg == "Group43Var8") return GroupVariation::Group43Var8;
+  if(arg == "Group50Var1") return GroupVariation::Group50Var1;
+  if(arg == "Group50Var3") return GroupVariation::Group50Var3;
+  if(arg == "Group50Var4") return GroupVariation::Group50Var4;
+  if(arg == "Group51Var1") return GroupVariation::Group51Var1;
+  if(arg == "Group51Var2") return GroupVariation::Group51Var2;
+  if(arg == "Group52Var1") return GroupVariation::Group52Var1;
+  if(arg == "Group52Var2") return GroupVariation::Group52Var2;
+  if(arg == "Group60Var1") return GroupVariation::Group60Var1;
+  if(arg == "Group60Var2") return GroupVariation::Group60Var2;
+  if(arg == "Group60Var3") return GroupVariation::Group60Var3;
+  if(arg == "Group60Var4") return GroupVariation::Group60Var4;
+  if(arg == "Group70Var1") return GroupVariation::Group70Var1;
+  if(arg == "Group70Var2") return GroupVariation::Group70Var2;
+  if(arg == "Group70Var3") return GroupVariation::Group70Var3;
+  if(arg == "Group70Var4") return GroupVariation::Group70Var4;
+  if(arg == "Group70Var5") return GroupVariation::Group70Var5;
+  if(arg == "Group70Var6") return GroupVariation::Group70Var6;
+  if(arg == "Group70Var7") return GroupVariation::Group70Var7;
+  if(arg == "Group70Var8") return GroupVariation::Group70Var8;
+  if(arg == "Group80Var1") return GroupVariation::Group80Var1;
+  if(arg == "Group110Var0") return GroupVariation::Group110Var0;
+  if(arg == "Group111Var0") return GroupVariation::Group111Var0;
+  if(arg == "Group112Var0") return GroupVariation::Group112Var0;
+  if(arg == "Group113Var0") return GroupVariation::Group113Var0;
+  if(arg == "Group120Var1") return GroupVariation::Group120Var1;
+  if(arg == "Group120Var2") return GroupVariation::Group120Var2;
+  if(arg == "Group120Var3") return GroupVariation::Group120Var3;
+  if(arg == "Group120Var4") return GroupVariation::Group120Var4;
+  if(arg == "Group120Var5") return GroupVariation::Group120Var5;
+  if(arg == "Group120Var6") return GroupVariation::Group120Var6;
+  if(arg == "Group120Var7") return GroupVariation::Group120Var7;
+  if(arg == "Group120Var8") return GroupVariation::Group120Var8;
+  if(arg == "Group120Var9") return GroupVariation::Group120Var9;
+  if(arg == "Group120Var10") return GroupVariation::Group120Var10;
+  if(arg == "Group120Var11") return GroupVariation::Group120Var11;
+  if(arg == "Group120Var12") return GroupVariation::Group120Var12;
+  if(arg == "Group120Var13") return GroupVariation::Group120Var13;
+  if(arg == "Group120Var14") return GroupVariation::Group120Var14;
+  if(arg == "Group120Var15") return GroupVariation::Group120Var15;
+  if(arg == "Group121Var0") return GroupVariation::Group121Var0;
+  if(arg == "Group121Var1") return GroupVariation::Group121Var1;
+  if(arg == "Group122Var0") return GroupVariation::Group122Var0;
+  if(arg == "Group122Var1") return GroupVariation::Group122Var1;
+  if(arg == "Group122Var2") return GroupVariation::Group122Var2;
   else return GroupVariation::UNKNOWN;
 }
+
 
 }

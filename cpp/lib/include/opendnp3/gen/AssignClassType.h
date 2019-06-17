@@ -51,10 +51,16 @@ enum class AssignClassType : uint8_t
   AnalogOutputStatus = 0x6
 };
 
-uint8_t AssignClassTypeToType(AssignClassType arg);
-AssignClassType AssignClassTypeFromType(uint8_t arg);
-char const* AssignClassTypeToString(AssignClassType arg);
-AssignClassType AssignClassTypeFromString(const std::string& arg);
+struct AssignClassTypeSpec
+{
+  using enum_type_t = AssignClassType;
+
+  static uint8_t to_type(AssignClassType arg);
+  static AssignClassType from_type(uint8_t arg);
+  static char const* to_string(AssignClassType arg);
+  static char const* to_human_string(AssignClassType arg);
+  static AssignClassType from_string(const std::string& arg);
+};
 
 }
 

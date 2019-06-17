@@ -45,10 +45,16 @@ enum class EventFrozenCounterVariation : uint8_t
   Group23Var6 = 3
 };
 
-uint8_t EventFrozenCounterVariationToType(EventFrozenCounterVariation arg);
-EventFrozenCounterVariation EventFrozenCounterVariationFromType(uint8_t arg);
-char const* EventFrozenCounterVariationToString(EventFrozenCounterVariation arg);
-EventFrozenCounterVariation EventFrozenCounterVariationFromString(const std::string& arg);
+struct EventFrozenCounterVariationSpec
+{
+  using enum_type_t = EventFrozenCounterVariation;
+
+  static uint8_t to_type(EventFrozenCounterVariation arg);
+  static EventFrozenCounterVariation from_type(uint8_t arg);
+  static char const* to_string(EventFrozenCounterVariation arg);
+  static char const* to_human_string(EventFrozenCounterVariation arg);
+  static EventFrozenCounterVariation from_string(const std::string& arg);
+};
 
 }
 

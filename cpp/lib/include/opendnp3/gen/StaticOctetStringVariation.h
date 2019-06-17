@@ -42,10 +42,16 @@ enum class StaticOctetStringVariation : uint8_t
   Group110Var0 = 0
 };
 
-uint8_t StaticOctetStringVariationToType(StaticOctetStringVariation arg);
-StaticOctetStringVariation StaticOctetStringVariationFromType(uint8_t arg);
-char const* StaticOctetStringVariationToString(StaticOctetStringVariation arg);
-StaticOctetStringVariation StaticOctetStringVariationFromString(const std::string& arg);
+struct StaticOctetStringVariationSpec
+{
+  using enum_type_t = StaticOctetStringVariation;
+
+  static uint8_t to_type(StaticOctetStringVariation arg);
+  static StaticOctetStringVariation from_type(uint8_t arg);
+  static char const* to_string(StaticOctetStringVariation arg);
+  static char const* to_human_string(StaticOctetStringVariation arg);
+  static StaticOctetStringVariation from_string(const std::string& arg);
+};
 
 }
 

@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint16_t UserRoleToType(UserRole arg)
+uint16_t UserRoleSpec::to_type(UserRole arg)
 {
   return static_cast<uint16_t>(arg);
 }
-UserRole UserRoleFromType(uint16_t arg)
+
+UserRole UserRoleSpec::from_type(uint16_t arg)
 {
   switch(arg)
   {
@@ -62,7 +63,8 @@ UserRole UserRoleFromType(uint16_t arg)
       return UserRole::UNDEFINED;
   }
 }
-char const* UserRoleToString(UserRole arg)
+
+char const* UserRoleSpec::to_string(UserRole arg)
 {
   switch(arg)
   {
@@ -86,7 +88,33 @@ char const* UserRoleToString(UserRole arg)
       return "UNDEFINED";
   }
 }
-UserRole UserRoleFromString(const std::string& arg)
+
+char const* UserRoleSpec::to_human_string(UserRole arg)
+{
+  switch(arg)
+  {
+    case(UserRole::VIEWER):
+      return "VIEWER";
+    case(UserRole::OPERATOR):
+      return "OPERATOR";
+    case(UserRole::ENGINEER):
+      return "ENGINEER";
+    case(UserRole::INSTALLER):
+      return "INSTALLER";
+    case(UserRole::SECADM):
+      return "SECADM";
+    case(UserRole::SECAUD):
+      return "SECAUD";
+    case(UserRole::RBACMNT):
+      return "RBACMNT";
+    case(UserRole::SINGLE_USER):
+      return "SINGLE_USER";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+UserRole UserRoleSpec::from_string(const std::string& arg)
 {
   if(arg == "VIEWER") return UserRole::VIEWER;
   if(arg == "OPERATOR") return UserRole::OPERATOR;
@@ -98,5 +126,6 @@ UserRole UserRoleFromString(const std::string& arg)
   if(arg == "SINGLE_USER") return UserRole::SINGLE_USER;
   else return UserRole::UNDEFINED;
 }
+
 
 }

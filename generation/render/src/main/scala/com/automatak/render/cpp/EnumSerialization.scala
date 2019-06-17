@@ -40,14 +40,14 @@ object EnumSerialization extends ModelRenderer[EnumModel] {
   def render(em: EnumModel)(implicit i: Indentation) : Iterator[String] = {
 
     def writeOne = writeSignature(em) ++ bracket {
-      Iterator("return %s::write_to(dest, opendnp3::%sToType(value));".format(em.enumType, em.name))
+      Iterator(f"return ${em.enumType}::write_to(dest, opendnp3::${em.name}Spec::to_type(value));")
     }
     def readOne = readSignature(em) ++ bracket {
-      val tempValueName = "temp%s".format(em.name)
+      val tempValueName = f"temp${em.name}"
       Iterator(
-        "%s::type_t %s;".format(em.enumType, tempValueName),
-        "bool result = %s::read_from(input, %s);".format(em.enumType, tempValueName),
-        "out = opendnp3::%sFromType(%s);".format(em.name, tempValueName),
+        f"${getEnumType(em.enumType)} $tempValueName;",
+        f"bool result = ${em.enumType}::read_from(input, $tempValueName);",
+        f"out = opendnp3::${em.name}Spec::from_type($tempValueName);",
         "return result;"
       )
     }

@@ -42,10 +42,16 @@ enum class StaticSecurityStatVariation : uint8_t
   Group121Var1 = 0
 };
 
-uint8_t StaticSecurityStatVariationToType(StaticSecurityStatVariation arg);
-StaticSecurityStatVariation StaticSecurityStatVariationFromType(uint8_t arg);
-char const* StaticSecurityStatVariationToString(StaticSecurityStatVariation arg);
-StaticSecurityStatVariation StaticSecurityStatVariationFromString(const std::string& arg);
+struct StaticSecurityStatVariationSpec
+{
+  using enum_type_t = StaticSecurityStatVariation;
+
+  static uint8_t to_type(StaticSecurityStatVariation arg);
+  static StaticSecurityStatVariation from_type(uint8_t arg);
+  static char const* to_string(StaticSecurityStatVariation arg);
+  static char const* to_human_string(StaticSecurityStatVariation arg);
+  static StaticSecurityStatVariation from_string(const std::string& arg);
+};
 
 }
 

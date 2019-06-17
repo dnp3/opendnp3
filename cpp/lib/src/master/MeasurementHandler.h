@@ -145,7 +145,7 @@ IINField MeasurementHandler::ProcessWithCTO(const HeaderRecord& record, const IC
     if (ctoMode == TimestampMode::INVALID)
     {
         FORMAT_LOG_BLOCK(logger, flags::WARN, "No prior CTO objects for %s",
-                         GroupVariationToString(record.enumeration));
+                         GroupVariationSpec::to_string(record.enumeration));
         return IINField(IINBit::PARAM_ERROR);
     }
 

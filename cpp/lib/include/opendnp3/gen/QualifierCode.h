@@ -53,10 +53,16 @@ enum class QualifierCode : uint8_t
   UNDEFINED = 0xFF
 };
 
-uint8_t QualifierCodeToType(QualifierCode arg);
-QualifierCode QualifierCodeFromType(uint8_t arg);
-char const* QualifierCodeToString(QualifierCode arg);
-QualifierCode QualifierCodeFromString(const std::string& arg);
+struct QualifierCodeSpec
+{
+  using enum_type_t = QualifierCode;
+
+  static uint8_t to_type(QualifierCode arg);
+  static QualifierCode from_type(uint8_t arg);
+  static char const* to_string(QualifierCode arg);
+  static char const* to_human_string(QualifierCode arg);
+  static QualifierCode from_string(const std::string& arg);
+};
 
 }
 

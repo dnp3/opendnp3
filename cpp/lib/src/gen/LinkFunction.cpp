@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t LinkFunctionToType(LinkFunction arg)
+uint8_t LinkFunctionSpec::to_type(LinkFunction arg)
 {
   return static_cast<uint8_t>(arg);
 }
-LinkFunction LinkFunctionFromType(uint8_t arg)
+
+LinkFunction LinkFunctionSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -64,7 +65,8 @@ LinkFunction LinkFunctionFromType(uint8_t arg)
       return LinkFunction::INVALID;
   }
 }
-char const* LinkFunctionToString(LinkFunction arg)
+
+char const* LinkFunctionSpec::to_string(LinkFunction arg)
 {
   switch(arg)
   {
@@ -90,7 +92,35 @@ char const* LinkFunctionToString(LinkFunction arg)
       return "INVALID";
   }
 }
-LinkFunction LinkFunctionFromString(const std::string& arg)
+
+char const* LinkFunctionSpec::to_human_string(LinkFunction arg)
+{
+  switch(arg)
+  {
+    case(LinkFunction::PRI_RESET_LINK_STATES):
+      return "PRI_RESET_LINK_STATES";
+    case(LinkFunction::PRI_TEST_LINK_STATES):
+      return "PRI_TEST_LINK_STATES";
+    case(LinkFunction::PRI_CONFIRMED_USER_DATA):
+      return "PRI_CONFIRMED_USER_DATA";
+    case(LinkFunction::PRI_UNCONFIRMED_USER_DATA):
+      return "PRI_UNCONFIRMED_USER_DATA";
+    case(LinkFunction::PRI_REQUEST_LINK_STATUS):
+      return "PRI_REQUEST_LINK_STATUS";
+    case(LinkFunction::SEC_ACK):
+      return "SEC_ACK";
+    case(LinkFunction::SEC_NACK):
+      return "SEC_NACK";
+    case(LinkFunction::SEC_LINK_STATUS):
+      return "SEC_LINK_STATUS";
+    case(LinkFunction::SEC_NOT_SUPPORTED):
+      return "SEC_NOT_SUPPORTED";
+    default:
+      return "INVALID";
+  }
+}
+
+LinkFunction LinkFunctionSpec::from_string(const std::string& arg)
 {
   if(arg == "PRI_RESET_LINK_STATES") return LinkFunction::PRI_RESET_LINK_STATES;
   if(arg == "PRI_TEST_LINK_STATES") return LinkFunction::PRI_TEST_LINK_STATES;
@@ -103,5 +133,6 @@ LinkFunction LinkFunctionFromString(const std::string& arg)
   if(arg == "SEC_NOT_SUPPORTED") return LinkFunction::SEC_NOT_SUPPORTED;
   else return LinkFunction::INVALID;
 }
+
 
 }

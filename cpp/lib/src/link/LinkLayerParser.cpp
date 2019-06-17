@@ -176,7 +176,7 @@ bool LinkLayerParser::ValidateBody()
     if (LinkFrame::ValidateBodyCRC(buffer.ReadBuffer() + LPDU_HEADER_SIZE, len))
     {
         FORMAT_LOG_BLOCK(logger, flags::LINK_RX, "Function: %s Dest: %u Source: %u Length: %u",
-                         LinkFunctionToString(header.GetFuncEnum()), header.GetDest(), header.GetSrc(),
+                         LinkFunctionSpec::to_human_string(header.GetFuncEnum()), header.GetDest(), header.GetSrc(),
                          header.GetLength());
 
         FORMAT_HEX_BLOCK(logger, flags::LINK_RX_HEX, buffer.ReadBuffer().take(frameSize), 10, 18);
@@ -216,7 +216,7 @@ bool LinkLayerParser::ValidateHeaderParameters()
     if (should_have_payload && !has_payload)
     {
         ++statistics.numBadLength;
-        FORMAT_LOG_BLOCK(logger, flags::ERR, "User data with no payload. FUNCTION: %s", LinkFunctionToString(func));
+        FORMAT_LOG_BLOCK(logger, flags::ERR, "User data with no payload. FUNCTION: %s", LinkFunctionSpec::to_human_string(func));
         return false;
     }
 
@@ -224,7 +224,7 @@ bool LinkLayerParser::ValidateHeaderParameters()
     {
         ++statistics.numBadLength;
         FORMAT_LOG_BLOCK(logger, flags::ERR, "Unexpected LENGTH in frame: %i with FUNCTION: %s", user_data_length,
-                         LinkFunctionToString(func));
+                         LinkFunctionSpec::to_human_string(func));
         return false;
     }
 
@@ -261,7 +261,7 @@ bool LinkLayerParser::ValidateFunctionCode()
         {
             ++statistics.numBadFunctionCode;
             FORMAT_LOG_BLOCK(logger, flags::WARN, "Unknown PriToSec FUNCTION: %s",
-                             LinkFunctionToString(header.GetFuncEnum()));
+                             LinkFunctionSpec::to_human_string(header.GetFuncEnum()));
             return false;
         }
         }
@@ -271,7 +271,7 @@ bool LinkLayerParser::ValidateFunctionCode()
         {
             ++statistics.numBadFCV;
             FORMAT_LOG_BLOCK(logger, flags::WARN, "Bad FCV for FUNCTION: %s",
-                             LinkFunctionToString(header.GetFuncEnum()));
+                             LinkFunctionSpec::to_human_string(header.GetFuncEnum()));
             return false;
         }
 
@@ -290,7 +290,7 @@ bool LinkLayerParser::ValidateFunctionCode()
         {
             ++statistics.numBadFunctionCode;
             FORMAT_LOG_BLOCK(logger, flags::ERR, "Unknown SecToPri FUNCTION: %s",
-                             LinkFunctionToString(header.GetFuncEnum()));
+                             LinkFunctionSpec::to_human_string(header.GetFuncEnum()));
             return false;
         }
         }
@@ -300,7 +300,7 @@ bool LinkLayerParser::ValidateFunctionCode()
         {
             ++statistics.numBadFCB;
             FORMAT_LOG_BLOCK(logger, flags::ERR, "FCB set for SecToPri FUNCTION: %s",
-                             LinkFunctionToString(header.GetFuncEnum()));
+                             LinkFunctionSpec::to_human_string(header.GetFuncEnum()));
             return false;
         }
     }

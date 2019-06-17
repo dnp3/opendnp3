@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t StaticTimeAndIntervalVariationToType(StaticTimeAndIntervalVariation arg)
+uint8_t StaticTimeAndIntervalVariationSpec::to_type(StaticTimeAndIntervalVariation arg)
 {
   return static_cast<uint8_t>(arg);
 }
-StaticTimeAndIntervalVariation StaticTimeAndIntervalVariationFromType(uint8_t arg)
+
+StaticTimeAndIntervalVariation StaticTimeAndIntervalVariationSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -48,7 +49,8 @@ StaticTimeAndIntervalVariation StaticTimeAndIntervalVariationFromType(uint8_t ar
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* StaticTimeAndIntervalVariationToString(StaticTimeAndIntervalVariation arg)
+
+char const* StaticTimeAndIntervalVariationSpec::to_string(StaticTimeAndIntervalVariation arg)
 {
   switch(arg)
   {
@@ -58,10 +60,23 @@ char const* StaticTimeAndIntervalVariationToString(StaticTimeAndIntervalVariatio
       return "UNDEFINED";
   }
 }
-StaticTimeAndIntervalVariation StaticTimeAndIntervalVariationFromString(const std::string& arg)
+
+char const* StaticTimeAndIntervalVariationSpec::to_human_string(StaticTimeAndIntervalVariation arg)
+{
+  switch(arg)
+  {
+    case(StaticTimeAndIntervalVariation::Group50Var4):
+      return "Group50Var4";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+StaticTimeAndIntervalVariation StaticTimeAndIntervalVariationSpec::from_string(const std::string& arg)
 {
   if(arg == "Group50Var4") return StaticTimeAndIntervalVariation::Group50Var4;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

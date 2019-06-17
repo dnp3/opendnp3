@@ -39,15 +39,15 @@ namespace ser4cpp
     template<>
     inline bool write_one(wseq_t& dest, const opendnp3::FlowControl& value)
     {
-      return UInt8::write_to(dest, opendnp3::FlowControlToType(value));
+      return UInt8::write_to(dest, opendnp3::FlowControlSpec::to_type(value));
     }
 
     template<>
     inline bool read_one(rseq_t& input, opendnp3::FlowControl& out)
     {
-      UInt8::type_t tempFlowControl;
+      uint8_t tempFlowControl;
       bool result = UInt8::read_from(input, tempFlowControl);
-      out = opendnp3::FlowControlFromType(tempFlowControl);
+      out = opendnp3::FlowControlSpec::from_type(tempFlowControl);
       return result;
     }
   }

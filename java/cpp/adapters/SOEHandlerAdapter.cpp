@@ -75,7 +75,7 @@ void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexe
 void SOEHandlerAdapter::Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values)
 {
     auto create = [](JNIEnv* env, const DoubleBitBinary& value) -> LocalRef<jobject> {
-        auto evalue = jni::JCache::DoubleBit.fromType(env, DoubleBitToType(value.value));
+        auto evalue = jni::JCache::DoubleBit.fromType(env, DoubleBitSpec::to_type(value.value));
         return jni::JCache::DoubleBitBinaryInput.init3(env, evalue, value.flags.value, value.time.value);
     };
     auto call = [](JNIEnv* env, jobject proxy, jobject hinfo, jobject list) {
@@ -167,8 +167,8 @@ void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info,
 
 LocalRef<jobject> SOEHandlerAdapter::Convert(JNIEnv* env, const opendnp3::HeaderInfo& info)
 {
-    auto gv = jni::JCache::GroupVariation.fromType(env, GroupVariationToType(info.gv));
-    auto qc = jni::JCache::QualifierCode.fromType(env, QualifierCodeToType(info.qualifier));
+    auto gv = jni::JCache::GroupVariation.fromType(env, GroupVariationSpec::to_type(info.gv));
+    auto qc = jni::JCache::QualifierCode.fromType(env, QualifierCodeSpec::to_type(info.qualifier));
     auto tsmode = jni::JCache::TimestampMode.fromType(env, static_cast<jint>(info.tsmode));
     jboolean isEvent = static_cast<jboolean>(info.isEventVariation);
     jboolean flagsValid = static_cast<jboolean>(info.flagsValid);

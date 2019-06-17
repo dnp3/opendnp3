@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t AnalogQualityToType(AnalogQuality arg)
+uint8_t AnalogQualitySpec::to_type(AnalogQuality arg)
 {
   return static_cast<uint8_t>(arg);
 }
-AnalogQuality AnalogQualityFromType(uint8_t arg)
+
+AnalogQuality AnalogQualitySpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -62,7 +63,8 @@ AnalogQuality AnalogQualityFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* AnalogQualityToString(AnalogQuality arg)
+
+char const* AnalogQualitySpec::to_string(AnalogQuality arg)
 {
   switch(arg)
   {
@@ -86,7 +88,33 @@ char const* AnalogQualityToString(AnalogQuality arg)
       return "UNDEFINED";
   }
 }
-AnalogQuality AnalogQualityFromString(const std::string& arg)
+
+char const* AnalogQualitySpec::to_human_string(AnalogQuality arg)
+{
+  switch(arg)
+  {
+    case(AnalogQuality::ONLINE):
+      return "ONLINE";
+    case(AnalogQuality::RESTART):
+      return "RESTART";
+    case(AnalogQuality::COMM_LOST):
+      return "COMM_LOST";
+    case(AnalogQuality::REMOTE_FORCED):
+      return "REMOTE_FORCED";
+    case(AnalogQuality::LOCAL_FORCED):
+      return "LOCAL_FORCED";
+    case(AnalogQuality::OVERRANGE):
+      return "OVERRANGE";
+    case(AnalogQuality::REFERENCE_ERR):
+      return "REFERENCE_ERR";
+    case(AnalogQuality::RESERVED):
+      return "RESERVED";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+AnalogQuality AnalogQualitySpec::from_string(const std::string& arg)
 {
   if(arg == "ONLINE") return AnalogQuality::ONLINE;
   if(arg == "RESTART") return AnalogQuality::RESTART;
@@ -98,5 +126,6 @@ AnalogQuality AnalogQualityFromString(const std::string& arg)
   if(arg == "RESERVED") return AnalogQuality::RESERVED;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

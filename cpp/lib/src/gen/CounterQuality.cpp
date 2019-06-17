@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t CounterQualityToType(CounterQuality arg)
+uint8_t CounterQualitySpec::to_type(CounterQuality arg)
 {
   return static_cast<uint8_t>(arg);
 }
-CounterQuality CounterQualityFromType(uint8_t arg)
+
+CounterQuality CounterQualitySpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -62,7 +63,8 @@ CounterQuality CounterQualityFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* CounterQualityToString(CounterQuality arg)
+
+char const* CounterQualitySpec::to_string(CounterQuality arg)
 {
   switch(arg)
   {
@@ -86,7 +88,33 @@ char const* CounterQualityToString(CounterQuality arg)
       return "UNDEFINED";
   }
 }
-CounterQuality CounterQualityFromString(const std::string& arg)
+
+char const* CounterQualitySpec::to_human_string(CounterQuality arg)
+{
+  switch(arg)
+  {
+    case(CounterQuality::ONLINE):
+      return "ONLINE";
+    case(CounterQuality::RESTART):
+      return "RESTART";
+    case(CounterQuality::COMM_LOST):
+      return "COMM_LOST";
+    case(CounterQuality::REMOTE_FORCED):
+      return "REMOTE_FORCED";
+    case(CounterQuality::LOCAL_FORCED):
+      return "LOCAL_FORCED";
+    case(CounterQuality::ROLLOVER):
+      return "ROLLOVER";
+    case(CounterQuality::DISCONTINUITY):
+      return "DISCONTINUITY";
+    case(CounterQuality::RESERVED):
+      return "RESERVED";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+CounterQuality CounterQualitySpec::from_string(const std::string& arg)
 {
   if(arg == "ONLINE") return CounterQuality::ONLINE;
   if(arg == "RESTART") return CounterQuality::RESTART;
@@ -98,5 +126,6 @@ CounterQuality CounterQualityFromString(const std::string& arg)
   if(arg == "RESERVED") return CounterQuality::RESERVED;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

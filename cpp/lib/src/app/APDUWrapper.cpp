@@ -52,13 +52,13 @@ size_t APDUWrapper::Remaining() const
 void APDUWrapper::SetFunction(FunctionCode code)
 {
     assert(buffer.is_not_empty());
-    buffer[1] = FunctionCodeToType(code);
+    buffer[1] = FunctionCodeSpec::to_type(code);
 }
 
 FunctionCode APDUWrapper::GetFunction() const
 {
     assert(buffer.is_not_empty());
-    return FunctionCodeFromType(buffer[1]);
+    return FunctionCodeSpec::from_type(buffer[1]);
 }
 
 AppControlField APDUWrapper::GetControl() const

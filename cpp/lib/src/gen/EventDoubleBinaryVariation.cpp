@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t EventDoubleBinaryVariationToType(EventDoubleBinaryVariation arg)
+uint8_t EventDoubleBinaryVariationSpec::to_type(EventDoubleBinaryVariation arg)
 {
   return static_cast<uint8_t>(arg);
 }
-EventDoubleBinaryVariation EventDoubleBinaryVariationFromType(uint8_t arg)
+
+EventDoubleBinaryVariation EventDoubleBinaryVariationSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -52,7 +53,8 @@ EventDoubleBinaryVariation EventDoubleBinaryVariationFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* EventDoubleBinaryVariationToString(EventDoubleBinaryVariation arg)
+
+char const* EventDoubleBinaryVariationSpec::to_string(EventDoubleBinaryVariation arg)
 {
   switch(arg)
   {
@@ -66,12 +68,29 @@ char const* EventDoubleBinaryVariationToString(EventDoubleBinaryVariation arg)
       return "UNDEFINED";
   }
 }
-EventDoubleBinaryVariation EventDoubleBinaryVariationFromString(const std::string& arg)
+
+char const* EventDoubleBinaryVariationSpec::to_human_string(EventDoubleBinaryVariation arg)
+{
+  switch(arg)
+  {
+    case(EventDoubleBinaryVariation::Group4Var1):
+      return "Group4Var1";
+    case(EventDoubleBinaryVariation::Group4Var2):
+      return "Group4Var2";
+    case(EventDoubleBinaryVariation::Group4Var3):
+      return "Group4Var3";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+EventDoubleBinaryVariation EventDoubleBinaryVariationSpec::from_string(const std::string& arg)
 {
   if(arg == "Group4Var1") return EventDoubleBinaryVariation::Group4Var1;
   if(arg == "Group4Var2") return EventDoubleBinaryVariation::Group4Var2;
   if(arg == "Group4Var3") return EventDoubleBinaryVariation::Group4Var3;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

@@ -26,11 +26,12 @@ object EnumFromString extends HeaderImplModelRender[EnumModel] {
   def header: ModelRenderer[EnumModel] = HeaderRender
   def impl: ModelRenderer[EnumModel]  = ImplRender
 
-  private def signature(enum: EnumModel) = List(enum.name, List(enum.name, "FromString(const std::string& arg)").mkString).mkString(" ")
+  private def signatureReturnType(enum: EnumModel) = enum.name
+  private def signatureMethod = "from_string(const std::string& arg)"
 
   private object HeaderRender extends ModelRenderer[EnumModel] {
     def render(em: EnumModel)(implicit i: Indentation) : Iterator[String] = {
-      Iterator(signature(em)+";")
+      Iterator(toHeaderSignature(signatureReturnType(em), signatureMethod))
     }
   }
 
@@ -38,10 +39,10 @@ object EnumFromString extends HeaderImplModelRender[EnumModel] {
 
     def render(em: EnumModel)(implicit i: Indentation) : Iterator[String] = {
 
-      def header = Iterator(signature(em))
+      def header = Iterator(toImplSignature(signatureReturnType(em), signatureMethod, em))
       def nonDefaults : Iterator[String] = {
         em.nonDefaultValues.map(c => {
-          s"""if(arg == "${c.displayName}") return ${em.name}::${c.name};"""
+          s"""if(arg == "${c.name}") return ${em.name}::${c.name};"""
         }).toIterator
       }
 

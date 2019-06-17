@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t CommandStatusToType(CommandStatus arg)
+uint8_t CommandStatusSpec::to_type(CommandStatus arg)
 {
   return static_cast<uint8_t>(arg);
 }
-CommandStatus CommandStatusFromType(uint8_t arg)
+
+CommandStatus CommandStatusSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -86,7 +87,8 @@ CommandStatus CommandStatusFromType(uint8_t arg)
       return CommandStatus::UNDEFINED;
   }
 }
-char const* CommandStatusToString(CommandStatus arg)
+
+char const* CommandStatusSpec::to_string(CommandStatus arg)
 {
   switch(arg)
   {
@@ -134,7 +136,57 @@ char const* CommandStatusToString(CommandStatus arg)
       return "UNDEFINED";
   }
 }
-CommandStatus CommandStatusFromString(const std::string& arg)
+
+char const* CommandStatusSpec::to_human_string(CommandStatus arg)
+{
+  switch(arg)
+  {
+    case(CommandStatus::SUCCESS):
+      return "SUCCESS";
+    case(CommandStatus::TIMEOUT):
+      return "TIMEOUT";
+    case(CommandStatus::NO_SELECT):
+      return "NO_SELECT";
+    case(CommandStatus::FORMAT_ERROR):
+      return "FORMAT_ERROR";
+    case(CommandStatus::NOT_SUPPORTED):
+      return "NOT_SUPPORTED";
+    case(CommandStatus::ALREADY_ACTIVE):
+      return "ALREADY_ACTIVE";
+    case(CommandStatus::HARDWARE_ERROR):
+      return "HARDWARE_ERROR";
+    case(CommandStatus::LOCAL):
+      return "LOCAL";
+    case(CommandStatus::TOO_MANY_OPS):
+      return "TOO_MANY_OPS";
+    case(CommandStatus::NOT_AUTHORIZED):
+      return "NOT_AUTHORIZED";
+    case(CommandStatus::AUTOMATION_INHIBIT):
+      return "AUTOMATION_INHIBIT";
+    case(CommandStatus::PROCESSING_LIMITED):
+      return "PROCESSING_LIMITED";
+    case(CommandStatus::OUT_OF_RANGE):
+      return "OUT_OF_RANGE";
+    case(CommandStatus::DOWNSTREAM_LOCAL):
+      return "DOWNSTREAM_LOCAL";
+    case(CommandStatus::ALREADY_COMPLETE):
+      return "ALREADY_COMPLETE";
+    case(CommandStatus::BLOCKED):
+      return "BLOCKED";
+    case(CommandStatus::CANCELLED):
+      return "CANCELLED";
+    case(CommandStatus::BLOCKED_OTHER_MASTER):
+      return "BLOCKED_OTHER_MASTER";
+    case(CommandStatus::DOWNSTREAM_FAIL):
+      return "DOWNSTREAM_FAIL";
+    case(CommandStatus::NON_PARTICIPATING):
+      return "NON_PARTICIPATING";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+CommandStatus CommandStatusSpec::from_string(const std::string& arg)
 {
   if(arg == "SUCCESS") return CommandStatus::SUCCESS;
   if(arg == "TIMEOUT") return CommandStatus::TIMEOUT;
@@ -158,5 +210,6 @@ CommandStatus CommandStatusFromString(const std::string& arg)
   if(arg == "NON_PARTICIPATING") return CommandStatus::NON_PARTICIPATING;
   else return CommandStatus::UNDEFINED;
 }
+
 
 }

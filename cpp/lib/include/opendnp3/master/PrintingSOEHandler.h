@@ -101,7 +101,7 @@ private:
 
     static std::string ValueToString(const DoubleBitBinary& meas)
     {
-        return DoubleBitToString(meas.value);
+        return DoubleBitSpec::to_human_string(meas.value);
     }
 };
 

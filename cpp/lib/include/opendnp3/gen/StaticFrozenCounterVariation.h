@@ -47,10 +47,16 @@ enum class StaticFrozenCounterVariation : uint8_t
   Group21Var10 = 5
 };
 
-uint8_t StaticFrozenCounterVariationToType(StaticFrozenCounterVariation arg);
-StaticFrozenCounterVariation StaticFrozenCounterVariationFromType(uint8_t arg);
-char const* StaticFrozenCounterVariationToString(StaticFrozenCounterVariation arg);
-StaticFrozenCounterVariation StaticFrozenCounterVariationFromString(const std::string& arg);
+struct StaticFrozenCounterVariationSpec
+{
+  using enum_type_t = StaticFrozenCounterVariation;
+
+  static uint8_t to_type(StaticFrozenCounterVariation arg);
+  static StaticFrozenCounterVariation from_type(uint8_t arg);
+  static char const* to_string(StaticFrozenCounterVariation arg);
+  static char const* to_human_string(StaticFrozenCounterVariation arg);
+  static StaticFrozenCounterVariation from_string(const std::string& arg);
+};
 
 }
 

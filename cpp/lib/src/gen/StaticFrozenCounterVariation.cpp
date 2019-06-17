@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t StaticFrozenCounterVariationToType(StaticFrozenCounterVariation arg)
+uint8_t StaticFrozenCounterVariationSpec::to_type(StaticFrozenCounterVariation arg)
 {
   return static_cast<uint8_t>(arg);
 }
-StaticFrozenCounterVariation StaticFrozenCounterVariationFromType(uint8_t arg)
+
+StaticFrozenCounterVariation StaticFrozenCounterVariationSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -58,7 +59,8 @@ StaticFrozenCounterVariation StaticFrozenCounterVariationFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* StaticFrozenCounterVariationToString(StaticFrozenCounterVariation arg)
+
+char const* StaticFrozenCounterVariationSpec::to_string(StaticFrozenCounterVariation arg)
 {
   switch(arg)
   {
@@ -78,7 +80,29 @@ char const* StaticFrozenCounterVariationToString(StaticFrozenCounterVariation ar
       return "UNDEFINED";
   }
 }
-StaticFrozenCounterVariation StaticFrozenCounterVariationFromString(const std::string& arg)
+
+char const* StaticFrozenCounterVariationSpec::to_human_string(StaticFrozenCounterVariation arg)
+{
+  switch(arg)
+  {
+    case(StaticFrozenCounterVariation::Group21Var1):
+      return "Group21Var1";
+    case(StaticFrozenCounterVariation::Group21Var2):
+      return "Group21Var2";
+    case(StaticFrozenCounterVariation::Group21Var5):
+      return "Group21Var5";
+    case(StaticFrozenCounterVariation::Group21Var6):
+      return "Group21Var6";
+    case(StaticFrozenCounterVariation::Group21Var9):
+      return "Group21Var9";
+    case(StaticFrozenCounterVariation::Group21Var10):
+      return "Group21Var10";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+StaticFrozenCounterVariation StaticFrozenCounterVariationSpec::from_string(const std::string& arg)
 {
   if(arg == "Group21Var1") return StaticFrozenCounterVariation::Group21Var1;
   if(arg == "Group21Var2") return StaticFrozenCounterVariation::Group21Var2;
@@ -88,5 +112,6 @@ StaticFrozenCounterVariation StaticFrozenCounterVariationFromString(const std::s
   if(arg == "Group21Var10") return StaticFrozenCounterVariation::Group21Var10;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

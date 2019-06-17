@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t KeyChangeMethodToType(KeyChangeMethod arg)
+uint8_t KeyChangeMethodSpec::to_type(KeyChangeMethod arg)
 {
   return static_cast<uint8_t>(arg);
 }
-KeyChangeMethod KeyChangeMethodFromType(uint8_t arg)
+
+KeyChangeMethod KeyChangeMethodSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -62,7 +63,8 @@ KeyChangeMethod KeyChangeMethodFromType(uint8_t arg)
       return KeyChangeMethod::UNDEFINED;
   }
 }
-char const* KeyChangeMethodToString(KeyChangeMethod arg)
+
+char const* KeyChangeMethodSpec::to_string(KeyChangeMethod arg)
 {
   switch(arg)
   {
@@ -86,7 +88,33 @@ char const* KeyChangeMethodToString(KeyChangeMethod arg)
       return "UNDEFINED";
   }
 }
-KeyChangeMethod KeyChangeMethodFromString(const std::string& arg)
+
+char const* KeyChangeMethodSpec::to_human_string(KeyChangeMethod arg)
+{
+  switch(arg)
+  {
+    case(KeyChangeMethod::AES_128_SHA1_HMAC):
+      return "AES_128_SHA1_HMAC";
+    case(KeyChangeMethod::AES_256_SHA256_HMAC):
+      return "AES_256_SHA256_HMAC";
+    case(KeyChangeMethod::AES_256_AES_GMAC):
+      return "AES_256_AES_GMAC";
+    case(KeyChangeMethod::RSA_1024_DSA_SHA1_HMAC_SHA1):
+      return "RSA_1024_DSA_SHA1_HMAC_SHA1";
+    case(KeyChangeMethod::RSA_2048_DSA_SHA256_HMAC_SHA256):
+      return "RSA_2048_DSA_SHA256_HMAC_SHA256";
+    case(KeyChangeMethod::RSA_3072_DSA_SHA256_HMAC_SHA256):
+      return "RSA_3072_DSA_SHA256_HMAC_SHA256";
+    case(KeyChangeMethod::RSA_2048_DSA_SHA256_AES_GMAC):
+      return "RSA_2048_DSA_SHA256_AES_GMAC";
+    case(KeyChangeMethod::RSA_3072_DSA_SHA256_AES_GMAC):
+      return "RSA_3072_DSA_SHA256_AES_GMAC";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+KeyChangeMethod KeyChangeMethodSpec::from_string(const std::string& arg)
 {
   if(arg == "AES_128_SHA1_HMAC") return KeyChangeMethod::AES_128_SHA1_HMAC;
   if(arg == "AES_256_SHA256_HMAC") return KeyChangeMethod::AES_256_SHA256_HMAC;
@@ -98,5 +126,6 @@ KeyChangeMethod KeyChangeMethodFromString(const std::string& arg)
   if(arg == "RSA_3072_DSA_SHA256_AES_GMAC") return KeyChangeMethod::RSA_3072_DSA_SHA256_AES_GMAC;
   else return KeyChangeMethod::UNDEFINED;
 }
+
 
 }

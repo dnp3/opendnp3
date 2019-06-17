@@ -45,10 +45,16 @@ enum class StaticAnalogOutputStatusVariation : uint8_t
   Group40Var4 = 3
 };
 
-uint8_t StaticAnalogOutputStatusVariationToType(StaticAnalogOutputStatusVariation arg);
-StaticAnalogOutputStatusVariation StaticAnalogOutputStatusVariationFromType(uint8_t arg);
-char const* StaticAnalogOutputStatusVariationToString(StaticAnalogOutputStatusVariation arg);
-StaticAnalogOutputStatusVariation StaticAnalogOutputStatusVariationFromString(const std::string& arg);
+struct StaticAnalogOutputStatusVariationSpec
+{
+  using enum_type_t = StaticAnalogOutputStatusVariation;
+
+  static uint8_t to_type(StaticAnalogOutputStatusVariation arg);
+  static StaticAnalogOutputStatusVariation from_type(uint8_t arg);
+  static char const* to_string(StaticAnalogOutputStatusVariation arg);
+  static char const* to_human_string(StaticAnalogOutputStatusVariation arg);
+  static StaticAnalogOutputStatusVariation from_string(const std::string& arg);
+};
 
 }
 

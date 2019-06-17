@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t EventFrozenCounterVariationToType(EventFrozenCounterVariation arg)
+uint8_t EventFrozenCounterVariationSpec::to_type(EventFrozenCounterVariation arg)
 {
   return static_cast<uint8_t>(arg);
 }
-EventFrozenCounterVariation EventFrozenCounterVariationFromType(uint8_t arg)
+
+EventFrozenCounterVariation EventFrozenCounterVariationSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -54,7 +55,8 @@ EventFrozenCounterVariation EventFrozenCounterVariationFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* EventFrozenCounterVariationToString(EventFrozenCounterVariation arg)
+
+char const* EventFrozenCounterVariationSpec::to_string(EventFrozenCounterVariation arg)
 {
   switch(arg)
   {
@@ -70,7 +72,25 @@ char const* EventFrozenCounterVariationToString(EventFrozenCounterVariation arg)
       return "UNDEFINED";
   }
 }
-EventFrozenCounterVariation EventFrozenCounterVariationFromString(const std::string& arg)
+
+char const* EventFrozenCounterVariationSpec::to_human_string(EventFrozenCounterVariation arg)
+{
+  switch(arg)
+  {
+    case(EventFrozenCounterVariation::Group23Var1):
+      return "Group23Var1";
+    case(EventFrozenCounterVariation::Group23Var2):
+      return "Group23Var2";
+    case(EventFrozenCounterVariation::Group23Var5):
+      return "Group23Var5";
+    case(EventFrozenCounterVariation::Group23Var6):
+      return "Group23Var6";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+EventFrozenCounterVariation EventFrozenCounterVariationSpec::from_string(const std::string& arg)
 {
   if(arg == "Group23Var1") return EventFrozenCounterVariation::Group23Var1;
   if(arg == "Group23Var2") return EventFrozenCounterVariation::Group23Var2;
@@ -78,5 +98,6 @@ EventFrozenCounterVariation EventFrozenCounterVariationFromString(const std::str
   if(arg == "Group23Var6") return EventFrozenCounterVariation::Group23Var6;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }

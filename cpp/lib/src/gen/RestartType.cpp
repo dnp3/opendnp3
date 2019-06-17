@@ -34,11 +34,12 @@
 
 namespace opendnp3 {
 
-uint8_t RestartTypeToType(RestartType arg)
+uint8_t RestartTypeSpec::to_type(RestartType arg)
 {
   return static_cast<uint8_t>(arg);
 }
-RestartType RestartTypeFromType(uint8_t arg)
+
+RestartType RestartTypeSpec::from_type(uint8_t arg)
 {
   switch(arg)
   {
@@ -50,7 +51,8 @@ RestartType RestartTypeFromType(uint8_t arg)
       throw new std::invalid_argument("Unknown value");
   }
 }
-char const* RestartTypeToString(RestartType arg)
+
+char const* RestartTypeSpec::to_string(RestartType arg)
 {
   switch(arg)
   {
@@ -62,11 +64,26 @@ char const* RestartTypeToString(RestartType arg)
       return "UNDEFINED";
   }
 }
-RestartType RestartTypeFromString(const std::string& arg)
+
+char const* RestartTypeSpec::to_human_string(RestartType arg)
+{
+  switch(arg)
+  {
+    case(RestartType::COLD):
+      return "COLD";
+    case(RestartType::WARM):
+      return "WARM";
+    default:
+      return "UNDEFINED";
+  }
+}
+
+RestartType RestartTypeSpec::from_string(const std::string& arg)
 {
   if(arg == "COLD") return RestartType::COLD;
   if(arg == "WARM") return RestartType::WARM;
   else throw std::invalid_argument(std::string("Unknown value: ") + arg);
 }
+
 
 }
