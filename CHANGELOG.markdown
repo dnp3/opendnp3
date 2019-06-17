@@ -1,4 +1,8 @@
-### 2.3.0-RC1 ###
+### 2.3.1 ###
+* :beetle: Fix final case for issue [#216](https://github.com/dnp3/opendnp3/issues/216#issuecomment-500637263). See [PR #310](https://github.com/dnp3/opendnp3/pull/310).
+* :beetle: Add missing include for usage with `ASIO_DYN_LINK` (see [PR #311](https://github.com/dnp3/opendnp3/pull/311))
+
+### 2.3.0 ###
 * :beetle: Fixes for issues [#268](https://github.com/dnp3/opendnp3/issues/268), [#262](https://github.com/dnp3/opendnp3/issues/262), [#259](https://github.com/dnp3/opendnp3/issues/259), [#257](https://github.com/dnp3/opendnp3/issues/257), [#255](https://github.com/dnp3/opendnp3/issues/255), [#251](https://github.com/dnp3/opendnp3/issues/251), [#228](https://github.com/dnp3/opendnp3/issues/228), [#216](https://github.com/dnp3/opendnp3/issues/216).
 * :star: Added overloaded methods for TCP and TLS clients to support outstation redundancy ([#277](https://github.com/dnp3/opendnp3/issues/277)).
 * :star: .NET bindings can now be configured and built using CMake (requires CMake >= 3.8).
@@ -6,7 +10,6 @@
 * :star: Added support for cold/warm restart in Java OutstationApplication interface.
 * :wrench: Migrate default ASIO version to 1-12-2. Older versions may no longer be compatible.
 * :pencil: Added automatic code formating with [clang-format](https://clang.llvm.org/docs/ClangFormat.html).
-
 
 ### 2.3.0-M1 ###
 * :star: Small internal change to support openssl 1.1.x ([pull request](https://github.com/dnp3/opendnp3/pull/207))
