@@ -60,7 +60,7 @@ void MockTLSPair::Connect(size_t num)
 
     auto connected = [this, num]() -> bool { return this->NumConnectionsEqual(num); };
 
-    io->CompleteInXIterations(9, connected);
+    io->CompleteInMaxXIterations(10, connected);
 }
 
 bool MockTLSPair::NumConnectionsEqual(size_t num) const

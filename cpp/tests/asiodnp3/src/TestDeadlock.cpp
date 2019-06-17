@@ -108,10 +108,10 @@ TEST_CASE("TestDeadlock2")
 		stackConfig.link.LocalAddr = 1;
 		stackConfig.link.RemoteAddr = 10;
 		auto master = channel->AddMaster("master",PrintingSOEHandler::Create(),asiodnp3::DefaultMasterApplication::Create(),stackConfig);
-		auto integrityScan = master->AddClassScan(ClassField::AllClasses(), TimeDuration::Milliseconds(0.1));
+		auto integrityScan = master->AddClassScan(ClassField::AllClasses(), TimeDuration::Milliseconds(1));
 		master->Enable();
 
-		std::this_thread::sleep_for(std::chrono::microseconds(700));
+		std::this_thread::sleep_for(std::chrono::milliseconds(2));
 
 		integrityScan.reset();
 		master.reset();
