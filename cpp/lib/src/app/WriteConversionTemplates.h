@@ -22,6 +22,7 @@
 
 #include "app/DownSampling.h"
 
+#include "opendnp3/gen/CommandStatus.h"
 #include "opendnp3/util/StaticOnly.h"
 
 #include <cstdint>
@@ -171,6 +172,7 @@ template<class Target, class Source> struct ConvertQS : private StaticOnly
         return t;
     }
 };
+
 } // namespace opendnp3
 
 #endif
