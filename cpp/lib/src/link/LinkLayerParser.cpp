@@ -141,7 +141,7 @@ LinkLayerParser::State LinkLayerParser::ParseBody()
 void LinkLayerParser::PushFrame(IFrameSink& sink)
 {
     LinkHeaderFields fields(header.GetFuncEnum(), header.IsFromMaster(), header.IsFcbSet(), header.IsFcvDfcSet(),
-                            header.GetDest(), header.GetSrc());
+                            Addresses(header.GetSrc(), header.GetDest()));
 
     sink.OnFrame(fields, userData);
 

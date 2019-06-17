@@ -53,19 +53,24 @@ OutstationState& StateIdle::OnNewReadRequest(OContext& ctx, const ParsedRequest&
 
 OutstationState& StateIdle::OnNewNonReadRequest(OContext& ctx, const ParsedRequest& request)
 {
-    ctx.RespondToNonReadRequest(request);
-    return *this;
+    return ctx.RespondToNonReadRequest(request);
 }
 
 OutstationState& StateIdle::OnRepeatNonReadRequest(OContext& ctx, const ParsedRequest& request)
 {
-    ctx.BeginResponseTx(request.addresses.source, ctx.sol.tx.GetLastResponse(), ctx.sol.tx.GetLastControl());
+    ctx.BeginRetransmitLastResponse(request.addresses.source);
     return *this;
 }
 
 OutstationState& StateIdle::OnRepeatReadRequest(OContext& ctx, const ParsedRequest& request)
 {
-    ctx.BeginResponseTx(request.addresses.source, ctx.sol.tx.GetLastResponse(), ctx.sol.tx.GetLastControl());
+    ctx.BeginRetransmitLastResponse(request.addresses.source);
+    return *this;
+}
+
+OutstationState& StateIdle::OnBroadcastMessage(OContext& ctx, const ParsedRequest& request)
+{
+    ctx.ProcessBroadcastRequest(request);
     return *this;
 }
 
@@ -93,6 +98,7 @@ OutstationState& StateSolicitedConfirmWait::OnConfirm(OContext& ctx, const Parse
     ctx.history.Reset(); // any time we get a confirm we can treat any request as a new request
     ctx.confirmTimer.cancel();
     ctx.eventBuffer.ClearWritten();
+    ctx.lastBroadcastMessageReceived.clear();
 
     if (ctx.rspContext.HasSelection())
     {
@@ -117,22 +123,27 @@ OutstationState& StateSolicitedConfirmWait::OnNewReadRequest(OContext& ctx, cons
 OutstationState& StateSolicitedConfirmWait::OnNewNonReadRequest(OContext& ctx, const ParsedRequest& request)
 {
     ctx.confirmTimer.cancel();
-    ctx.RespondToNonReadRequest(request);
-    return StateIdle::Inst();
+    return ctx.RespondToNonReadRequest(request);
 }
 
 OutstationState& StateSolicitedConfirmWait::OnRepeatNonReadRequest(OContext& ctx, const ParsedRequest& request)
 {
     ctx.confirmTimer.cancel();
-    ctx.BeginResponseTx(request.addresses.source, ctx.sol.tx.GetLastResponse(), ctx.sol.tx.GetLastControl());
+    ctx.BeginRetransmitLastResponse(request.addresses.source);
     return *this;
 }
 
 OutstationState& StateSolicitedConfirmWait::OnRepeatReadRequest(OContext& ctx, const ParsedRequest& request)
 {
     ctx.RestartConfirmTimer();
-    ctx.BeginResponseTx(request.addresses.source, ctx.sol.tx.GetLastResponse(), ctx.sol.tx.GetLastControl());
+    ctx.BeginRetransmitLastResponse(request.addresses.source);
     return *this;
+}
+
+OutstationState& StateSolicitedConfirmWait::OnBroadcastMessage(OContext& ctx, const ParsedRequest& request)
+{
+    ctx.ProcessBroadcastRequest(request);
+    return StateIdle::Inst();
 }
 
 // ------------- StateUnsolicitedConfirmWait ----------------
@@ -158,6 +169,7 @@ OutstationState& StateUnsolicitedConfirmWait::OnConfirm(OContext& ctx, const Par
 
     ctx.history.Reset(); // any time we get a confirm we can treat any request as a new request
     ctx.confirmTimer.cancel();
+    ctx.lastBroadcastMessageReceived.clear();
 
     if (ctx.unsol.completedNull)
     {
@@ -198,7 +210,7 @@ OutstationState& StateUnsolicitedConfirmWait::OnNewNonReadRequest(OContext& ctx,
 
 OutstationState& StateUnsolicitedConfirmWait::OnRepeatNonReadRequest(OContext& ctx, const ParsedRequest& request)
 {
-    ctx.BeginResponseTx(request.addresses.source, ctx.sol.tx.GetLastResponse(), ctx.sol.tx.GetLastControl());
+    ctx.BeginRetransmitLastResponse(request.addresses.source);
     return *this;
 }
 
@@ -206,6 +218,12 @@ OutstationState& StateUnsolicitedConfirmWait::OnRepeatReadRequest(OContext& ctx,
 {
     ctx.deferred.Set(request);
     return *this;
+}
+
+OutstationState& StateUnsolicitedConfirmWait::OnBroadcastMessage(OContext& ctx, const ParsedRequest& request)
+{
+    ctx.ProcessBroadcastRequest(request);
+    return StateIdle::Inst();
 }
 
 } // namespace opendnp3

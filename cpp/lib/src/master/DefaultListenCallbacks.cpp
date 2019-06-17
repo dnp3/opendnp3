@@ -52,8 +52,8 @@ void DefaultListenCallbacks::OnFirstFrame(uint64_t sessionid,
 
     // full implementations will look up config information for the SRC address
 
-    config.link.LocalAddr = header.dest;
-    config.link.RemoteAddr = header.src;
+    config.link.LocalAddr = header.addresses.destination;
+    config.link.RemoteAddr = header.addresses.source;
 
     auto soe = std::make_shared<PrintingSOEHandler>();
     auto app = std::make_shared<DefaultMasterApplication>();

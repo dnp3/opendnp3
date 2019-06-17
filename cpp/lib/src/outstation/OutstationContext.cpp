@@ -181,6 +181,12 @@ OutstationState& OContext::ProcessNewRequest(const ParsedRequest& request)
 
 bool OContext::ProcessObjects(const ParsedRequest& request)
 {
+    if(request.addresses.IsBroadcast())
+    {
+        this->state = &this->state->OnBroadcastMessage(*this, request);
+        return true;
+    }
+
     if (Functions::IsNoAckFuncCode(request.header.function))
     {
         // this is the only request we process while we are transmitting
@@ -221,18 +227,38 @@ bool OContext::ProcessConfirm(const ParsedRequest& request)
     return true;
 }
 
-void OContext::BeginResponseTx(uint16_t destination, const ser4cpp::rseq_t& data, const AppControlField& control)
+OutstationState& OContext::BeginResponseTx(uint16_t destination, APDUResponse& response)
 {
-    this->sol.tx.Record(control, data);
+    CheckForBroadcastConfirmation(response);
+
+    const auto data = response.ToRSeq();
+    this->sol.tx.Record(response.GetControl(), data);
+    this->sol.seq.confirmNum = response.GetControl().SEQ;
     this->BeginTx(destination, data);
+
+    if (response.GetControl().CON)
+    {
+        this->RestartConfirmTimer();
+        return StateSolicitedConfirmWait::Inst();
+    }
+
+    return StateIdle::Inst();
 }
 
-void OContext::BeginUnsolTx(const AppControlField& control, const ser4cpp::rseq_t& response)
+void OContext::BeginRetransmitLastResponse(uint16_t destination)
 {
-    this->unsol.tx.Record(control, response);
+    this->BeginTx(destination, this->sol.tx.GetLastResponse());
+}
+
+void OContext::BeginUnsolTx(APDUResponse& response)
+{
+    CheckForBroadcastConfirmation(response);
+
+    const auto data = response.ToRSeq();
+    this->unsol.tx.Record(response.GetControl(), data);
     this->unsol.seq.confirmNum = this->unsol.seq.num;
     this->unsol.seq.num.Increment();
-    this->BeginTx(this->addresses.destination, response);
+    this->BeginTx(this->addresses.destination, data);
 }
 
 void OContext::BeginTx(uint16_t destination, const ser4cpp::rseq_t& message)
@@ -296,7 +322,7 @@ void OContext::CheckForUnsolicited()
                 build::NullUnsolicited(response, this->unsol.seq.num, this->GetResponseIIN());
                 this->RestartConfirmTimer();
                 this->state = &StateUnsolicitedConfirmWait::Inst();
-                this->BeginUnsolTx(response.GetControl(), response.ToRSeq());
+                this->BeginUnsolTx(response);
             }
         }
         else
@@ -306,7 +332,7 @@ void OContext::CheckForUnsolicited()
             build::NullUnsolicited(response, this->unsol.seq.num, this->GetResponseIIN());
             this->RestartConfirmTimer();
             this->state = &StateUnsolicitedConfirmWait::Inst();
-            this->BeginUnsolTx(response.GetControl(), response.ToRSeq());
+            this->BeginUnsolTx(response);
         }
     }
 }
@@ -322,7 +348,7 @@ void OContext::RestartConfirmTimer()
     this->confirmTimer = this->executor->start(this->params.unsolConfirmTimeout.value, timeout);
 }
 
-void OContext::RespondToNonReadRequest(const ParsedRequest& request)
+OutstationState& OContext::RespondToNonReadRequest(const ParsedRequest& request)
 {
     this->history.RecordLastProcessedRequest(request.header, request.objects);
 
@@ -332,7 +358,7 @@ void OContext::RespondToNonReadRequest(const ParsedRequest& request)
     response.SetControl(AppControlField(true, true, false, false, request.header.control.SEQ));
     auto iin = this->HandleNonReadResponse(request.header, request.objects, writer);
     response.SetIIN(iin | this->GetResponseIIN());
-    this->BeginResponseTx(request.addresses.source, response.ToRSeq(), response.GetControl());
+    return this->BeginResponseTx(request.addresses.source, response);
 }
 
 OutstationState& OContext::RespondToReadRequest(const ParsedRequest& request)
@@ -344,19 +370,10 @@ OutstationState& OContext::RespondToReadRequest(const ParsedRequest& request)
     response.SetFunction(FunctionCode::RESPONSE);
     auto result = this->HandleRead(request.objects, writer);
     result.second.SEQ = request.header.control.SEQ;
-    this->sol.seq.confirmNum = request.header.control.SEQ;
     response.SetControl(result.second);
     response.SetIIN(result.first | this->GetResponseIIN());
 
-    this->BeginResponseTx(request.addresses.source, response.ToRSeq(), response.GetControl());
-
-    if (result.second.CON)
-    {
-        this->RestartConfirmTimer();
-        return StateSolicitedConfirmWait::Inst();
-    }
-
-    return StateIdle::Inst();
+    return this->BeginResponseTx(request.addresses.source, response);
 }
 
 OutstationState& OContext::ContinueMultiFragResponse(const Addresses& addresses, const AppSeqNum& seq)
@@ -366,18 +383,10 @@ OutstationState& OContext::ContinueMultiFragResponse(const Addresses& addresses,
     response.SetFunction(FunctionCode::RESPONSE);
     auto control = this->rspContext.LoadResponse(writer);
     control.SEQ = seq;
-    this->sol.seq.confirmNum = seq;
     response.SetControl(control);
     response.SetIIN(this->GetResponseIIN());
-    this->BeginResponseTx(addresses.source, response.ToRSeq(), response.GetControl());
 
-    if (control.CON)
-    {
-        this->RestartConfirmTimer();
-        return StateSolicitedConfirmWait::Inst();
-    }
-
-    return StateIdle::Inst();
+    return this->BeginResponseTx(addresses.source, response);
 }
 
 bool OContext::CanTransmit() const
@@ -403,10 +412,48 @@ IINField OContext::GetDynamicIIN()
     return ret;
 }
 
+void OContext::UpdateLastBroadcastMessageReceived(uint16_t destination)
+{
+    switch(destination)
+    {
+    case LinkBroadcastAddress::DontConfirm:
+        lastBroadcastMessageReceived.set(LinkBroadcastAddress::DontConfirm);
+        break;
+    case LinkBroadcastAddress::ShallConfirm:
+        lastBroadcastMessageReceived.set(LinkBroadcastAddress::ShallConfirm);
+        break;
+    case LinkBroadcastAddress::OptionalConfirm:
+        lastBroadcastMessageReceived.set(LinkBroadcastAddress::OptionalConfirm);
+        break;
+    default:
+        lastBroadcastMessageReceived.clear();
+    }
+}
+
+void OContext::CheckForBroadcastConfirmation(APDUResponse& response)
+{
+    if(lastBroadcastMessageReceived.is_set())
+    {
+        response.SetIIN(response.GetIIN() | IINField(IINBit::ALL_STATIONS));
+
+        if(lastBroadcastMessageReceived.get() != LinkBroadcastAddress::ShallConfirm)
+        {
+            lastBroadcastMessageReceived.clear();
+        }
+        else
+        {
+            // The broadcast address requested a confirmation
+            auto control = response.GetControl();
+            control.CON = true;
+            response.SetControl(control);
+        }
+    }
+}
+
 bool OContext::ProcessMessage(const Message& message)
 {
     // is the message addressed to this outstation
-    if (message.addresses.destination != this->addresses.source)
+    if (message.addresses.destination != this->addresses.source && !message.addresses.IsBroadcast())
     {
         return false;
     }
@@ -418,6 +465,11 @@ bool OContext::ProcessMessage(const Message& message)
     }
 
     FORMAT_HEX_BLOCK(this->logger, flags::APP_HEX_RX, message.payload, 18, 18);
+
+    if(message.addresses.IsBroadcast())
+    {
+        UpdateLastBroadcastMessageReceived(message.addresses.destination);
+    }
 
     const auto result = APDUHeaderParser::ParseRequest(message.payload, &this->logger);
     if (!result.success)
@@ -461,6 +513,72 @@ IUpdateHandler& OContext::GetUpdateHandler()
 
 //// ----------------------------- function handlers -----------------------------
 
+bool OContext::ProcessBroadcastRequest(const ParsedRequest& request)
+{
+    switch (request.header.function)
+    {
+    case (FunctionCode::WRITE):
+        this->HandleWrite(request.objects);
+        return true;
+    case (FunctionCode::DIRECT_OPERATE_NR):
+        this->HandleDirectOperate(request.objects, OperateType::DirectOperateNoAck, nullptr);
+        return true;
+    case (FunctionCode::ASSIGN_CLASS):
+    {
+        if(this->application->SupportsAssignClass())
+        {
+            this->HandleAssignClass(request.objects);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    case (FunctionCode::RECORD_CURRENT_TIME):
+    {
+        if(request.objects.is_not_empty())
+        {
+            this->HandleRecordCurrentTime();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+        
+    }
+    case (FunctionCode::DISABLE_UNSOLICITED):
+    {
+        if(this->params.allowUnsolicited)
+        {
+            this->HandleDisableUnsolicited(request.objects, nullptr);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    case (FunctionCode::ENABLE_UNSOLICITED):
+    {
+        if(this->params.allowUnsolicited)
+        {
+            this->HandleEnableUnsolicited(request.objects, nullptr);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    default:
+        FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring broadcast on function code: %s",
+                         FunctionCodeToString(request.header.function));
+        return false;
+    }
+}
+
 bool OContext::ProcessRequestNoAck(const ParsedRequest& request)
 {
     switch (request.header.function)
@@ -499,10 +617,10 @@ IINField OContext::HandleNonReadResponse(const APDUHeader& header, const ser4cpp
     case (FunctionCode::RECORD_CURRENT_TIME):
         return objects.is_empty() ? this->HandleRecordCurrentTime() : IINField(IINBit::PARAM_ERROR);
     case (FunctionCode::DISABLE_UNSOLICITED):
-        return this->params.allowUnsolicited ? this->HandleDisableUnsolicited(objects, writer)
+        return this->params.allowUnsolicited ? this->HandleDisableUnsolicited(objects, &writer)
                                              : IINField(IINBit::FUNC_NOT_SUPPORTED);
     case (FunctionCode::ENABLE_UNSOLICITED):
-        return this->params.allowUnsolicited ? this->HandleEnableUnsolicited(objects, writer)
+        return this->params.allowUnsolicited ? this->HandleEnableUnsolicited(objects, &writer)
                                              : IINField(IINBit::FUNC_NOT_SUPPORTED);
     default:
         return IINField(IINBit::FUNC_NOT_SUPPORTED);
@@ -672,7 +790,7 @@ IINField OContext::HandleAssignClass(const ser4cpp::rseq_t& objects)
     return IINField(IINBit::FUNC_NOT_SUPPORTED);
 }
 
-IINField OContext::HandleDisableUnsolicited(const ser4cpp::rseq_t& objects, HeaderWriter& /*writer*/)
+IINField OContext::HandleDisableUnsolicited(const ser4cpp::rseq_t& objects, HeaderWriter* /*writer*/)
 {
     ClassBasedRequestHandler handler;
     auto result = APDUParser::Parse(objects, handler, &this->logger);
@@ -685,7 +803,7 @@ IINField OContext::HandleDisableUnsolicited(const ser4cpp::rseq_t& objects, Head
     return IINFromParseResult(result);
 }
 
-IINField OContext::HandleEnableUnsolicited(const ser4cpp::rseq_t& objects, HeaderWriter& /*writer*/)
+IINField OContext::HandleEnableUnsolicited(const ser4cpp::rseq_t& objects, HeaderWriter* /*writer*/)
 {
     ClassBasedRequestHandler handler;
     auto result = APDUParser::Parse(objects, handler, &this->logger);

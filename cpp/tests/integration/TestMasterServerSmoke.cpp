@@ -117,8 +117,8 @@ public:
     void OnFirstFrame(uint64_t sessionid, const opendnp3::LinkHeaderFields& header, ISessionAcceptor& acceptor) override
     {
         MasterStackConfig config;
-        config.link.LocalAddr = header.dest;
-        config.link.RemoteAddr = header.src;
+        config.link.LocalAddr = header.addresses.destination;
+        config.link.RemoteAddr = header.addresses.source;
         auto soe = std::make_shared<PrintingSOEHandler>();
         auto app = std::make_shared<DefaultMasterApplication>();
 

@@ -53,6 +53,7 @@ SecStateBase& SLLS_NotReset::OnTestLinkStatus(LinkContext& ctx, uint16_t /*sourc
 SecStateBase& SLLS_NotReset::OnConfirmedUserData(LinkContext& ctx,
                                                  uint16_t /*source*/,
                                                  bool /*fcb*/,
+                                                 bool /*isBroadcast*/,
                                                  const Message& /*message*/)
 {
     ++ctx.statistics.numUnexpectedFrame;
@@ -94,9 +95,12 @@ SecStateBase& SLLS_Reset::OnTestLinkStatus(LinkContext& ctx, uint16_t source, bo
     return *this;
 }
 
-SecStateBase& SLLS_Reset::OnConfirmedUserData(LinkContext& ctx, uint16_t source, bool fcb, const Message& message)
+SecStateBase& SLLS_Reset::OnConfirmedUserData(LinkContext& ctx, uint16_t source, bool fcb, bool isBroadcast, const Message& message)
 {
-    ctx.QueueAck(source);
+    if(!isBroadcast)
+    {
+        ctx.QueueAck(source);
+    }
 
     if (ctx.nextReadFCB == fcb)
     {

@@ -46,6 +46,7 @@ set(unittests_src
     ./TestMasterUnsolBehaviors.cpp
     ./TestMeasurementHandler.cpp
     ./TestOutstation.cpp
+    ./TestOutstationBroadcast.cpp
     ./TestOutstationAssignClass.cpp
     ./TestOutstationCommandResponses.cpp
     ./TestOutstationDiscontiguousIndices.cpp

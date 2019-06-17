@@ -21,6 +21,7 @@
 #define OPENDNP3_UNITTESTS_OUTSTATION_TEST_OBJECT_H
 
 #include <opendnp3/LogLevels.h>
+#include <link/LinkLayerConstants.h>
 #include <outstation/Database.h>
 #include <outstation/OutstationContext.h>
 
@@ -40,6 +41,8 @@ public:
     OutstationTestObject(const opendnp3::OutstationConfig& config, const opendnp3::DatabaseConfig& db_config = opendnp3::DatabaseConfig());
 
     size_t SendToOutstation(const std::string& hex);
+
+    size_t BroadcastToOutstation(opendnp3::LinkBroadcastAddress broadcast_address, const std::string& hex);
 
     size_t LowerLayerUp();
 

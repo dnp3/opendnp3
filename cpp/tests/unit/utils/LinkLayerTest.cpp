@@ -45,7 +45,7 @@ bool LinkLayerTest::OnFrame(LinkFunction func,
                             uint16_t source,
                             const ser4cpp::rseq_t& userdata)
 {
-    LinkHeaderFields fields(func, isMaster, fcb, fcvdfc, dest, source);
+    LinkHeaderFields fields(func, isMaster, fcb, fcvdfc, Addresses(source, dest));
     return link.OnFrame(fields, userdata);
 }
 

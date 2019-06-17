@@ -46,6 +46,8 @@ struct Addresses
         return !((*this) == other);
     }
 
+    bool IsBroadcast() const;
+
     uint16_t source = 0;
     uint16_t destination = 0;
 };

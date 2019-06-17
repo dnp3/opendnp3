@@ -30,7 +30,7 @@ using namespace opendnp3;
 
 #define SUITE(name) "OutstationStateMachineTestSuite - " name
 
-TEST_CASE(SUITE("Responds to repeat READ request with same octets as last repsond"))
+TEST_CASE(SUITE("Responds to repeat READ request with same octets as last response"))
 {
     OutstationConfig config;
     OutstationTestObject t(config, configure::by_count_of::analog_input(1));
