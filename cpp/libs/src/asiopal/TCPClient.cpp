@@ -23,6 +23,7 @@
 #include "asiopal/SocketHelpers.h"
 
 #include <utility>
+#include <sstream>
 
 namespace asiopal
 {
