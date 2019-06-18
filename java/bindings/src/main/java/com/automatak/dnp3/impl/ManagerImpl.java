@@ -75,6 +75,23 @@ class ManagerImpl implements DNP3Manager {
     }
 
     @Override
+    public synchronized Channel addUDPChannel(String id, int levels, ChannelRetry retry, IPEndpoint localEndpoint, IPEndpoint remoteEndpoint, ChannelListener listener) throws DNP3Exception
+    {
+        if(this.pointer == 0)
+        {
+            throw new DNP3Exception("Manager has been shutdown");
+        }
+
+        long ptr = get_native_channel_udp(this.pointer, id, levels, retry.minRetryDelay.toMillis(), retry.maxRetryDelay.toMillis(), localEndpoint, remoteEndpoint, listener);
+
+        if(ptr == 0) {
+            throw new DNP3Exception("Unable to create channel");
+        }
+
+        return new ChannelImpl(ptr);
+    }
+
+    @Override
     public synchronized Channel addTLSClient(String id, int levels, ChannelRetry retry, List<IPEndpoint> remotes, String adapter, TLSConfig config, ChannelListener listener) throws DNP3Exception
     {
         if(this.pointer == 0)
@@ -153,6 +170,7 @@ class ManagerImpl implements DNP3Manager {
 
     private native long get_native_channel_tcp_client(long nativePointer, String id, int level, long minRetryMs, long maxRetryMs, List<IPEndpoint> remotes, String adapter, ChannelListener listener);
     private native long get_native_channel_tcp_server(long nativePointer, String id, int level, int acceptMode, IPEndpoint endpoint, ChannelListener listener);
+    private native long get_native_channel_udp(long nativePointer, String id, int level, long minRetryMs, long maxRetryMs, IPEndpoint localEndpoint, IPEndpoint remoteEndpoint, ChannelListener listener);
     private native long get_native_channel_tls_client(long nativePointer, String id, int level, long minRetryMs, long maxRetryMs, List<IPEndpoint> remotes, String adapter, TLSConfig config, ChannelListener listener);
     private native long get_native_channel_tls_server(long nativePointer, String id, int level, int acceptMode, IPEndpoint endpoint, TLSConfig config, ChannelListener listener);
     private native long get_native_channel_serial(long nativePointer, String id, int level, long minRetryMs, long maxRetryMs, String port, int baudRate, int dataBits, int parity, int stopBits, int flowControl, ChannelListener listener);

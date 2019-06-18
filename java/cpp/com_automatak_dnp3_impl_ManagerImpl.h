@@ -41,6 +41,14 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
 /*
  * Class:     com_automatak_dnp3_impl_ManagerImpl
+ * Method:    get_native_channel_udp
+ * Signature: (JLjava/lang/String;IJJLcom/automatak/dnp3/IPEndpoint;Lcom/automatak/dnp3/IPEndpoint;Lcom/automatak/dnp3/ChannelListener;)J
+ */
+JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1udp
+  (JNIEnv *, jobject, jlong, jstring, jint, jlong, jlong, jobject, jobject, jobject);
+
+/*
+ * Class:     com_automatak_dnp3_impl_ManagerImpl
  * Method:    get_native_channel_tls_client
  * Signature: (JLjava/lang/String;IJJLjava/util/List;Ljava/lang/String;Lcom/automatak/dnp3/TLSConfig;Lcom/automatak/dnp3/ChannelListener;)J
  */

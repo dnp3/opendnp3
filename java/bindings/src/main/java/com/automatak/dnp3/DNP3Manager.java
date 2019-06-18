@@ -58,6 +58,19 @@ public interface DNP3Manager {
     Channel addTCPServer(String id, int levels, ServerAcceptMode mode, IPEndpoint endpoint, ChannelListener listener) throws DNP3Exception;
 
     /**
+     * Add a UDP channel.
+     * @param id An id used for logging purposes
+     * @param levels The starting level for logging output
+     * @param retry Retry configuration for the channel
+     * @param localEndpoint Local endpoint from which datagrams will be received
+     * @param remoteEndpoint Remote endpoint where datagrams will be sent to
+     * @param listener Optional listener (can be null) for monitoring the state of the channel
+     * @return A channel interface
+     * @throws DNP3Exception if an error occurs creating the channel
+     */
+    Channel addUDPChannel(String id, int levels, ChannelRetry retry, IPEndpoint localEndpoint, IPEndpoint remoteEndpoint, ChannelListener listener) throws DNP3Exception;
+
+    /**
      * Add a TCP client channel. The channel does not try to connect until you add a stack.
      * @param id An id used for logging purposes
      * @param levels The starting level for logging output

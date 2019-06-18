@@ -122,6 +122,22 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
     return (jlong) new std::shared_ptr<IChannel>(channel);
 }
 
+JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1udp
+    (JNIEnv* env, jobject /*unused*/, jlong native, jstring jid, jint jlevels, jlong jminRetry, jlong jmaxRetry, jobject jlocalEndpoint, jobject jremoteEndpoint, jobject jlistener)
+{
+    const auto manager = (DNP3Manager*)native;
+
+    CString id(env, jid);
+    auto localEndpoint = ConvertIPEndpoint(env, jlocalEndpoint);
+    auto remoteEndpoint = ConvertIPEndpoint(env, jremoteEndpoint);
+    ChannelRetry retry(TimeDuration::Milliseconds(jminRetry), TimeDuration::Milliseconds(jmaxRetry));
+    auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
+
+    auto channel = manager->AddUDPChannel(id.str(), log4cpp::LogLevel(jlevels), retry, localEndpoint, remoteEndpoint, listener);
+
+    return (jlong) new std::shared_ptr<IChannel>(channel);
+}
+
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tls_1client(JNIEnv* env,
                                                                                                    jobject /*unused*/,
                                                                                                    jlong native,
