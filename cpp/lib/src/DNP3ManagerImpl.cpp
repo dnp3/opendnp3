@@ -34,6 +34,7 @@
 #include "channel/SerialIOHandler.h"
 #include "channel/TCPClientIOHandler.h"
 #include "channel/TCPServerIOHandler.h"
+#include "channel/UDPClientIOHandler.h"
 #include "master/MasterTCPServer.h"
 
 #include "opendnp3/ErrorCodes.h"
@@ -96,6 +97,23 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPServer(const std::string& id,
         auto executor = exe4cpp::StrandExecutor::create(this->io);
         auto iohandler = TCPServerIOHandler::Create(clogger, mode, listener, executor, IPEndpoint(endpoint, port), ec);
         return ec ? nullptr : DNP3Channel::Create(clogger, executor, iohandler, this->resources);
+    };
+
+    return this->resources->Bind<IChannel>(create);
+}
+
+std::shared_ptr<IChannel> DNP3ManagerImpl::AddUDPChannel(const std::string& id,
+                                                         const log4cpp::LogLevels& levels,
+                                                         const ChannelRetry& retry,
+                                                         const IPEndpoint& localEndpoint,
+                                                         const IPEndpoint& remoteEndpoint,
+                                                         std::shared_ptr<IChannelListener> listener)
+{
+    auto create = [&]() -> std::shared_ptr<IChannel> {
+        auto clogger = this->logger.detach(id, levels);
+        auto executor = exe4cpp::StrandExecutor::create(this->io);
+        auto iohandler = UDPClientIOHandler::Create(clogger, listener, executor, retry, localEndpoint, remoteEndpoint);
+        return DNP3Channel::Create(clogger, executor, iohandler, this->resources);
     };
 
     return this->resources->Bind<IChannel>(create);

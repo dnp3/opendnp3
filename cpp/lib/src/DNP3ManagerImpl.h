@@ -69,6 +69,13 @@ public:
                                            uint16_t port,
                                            std::shared_ptr<IChannelListener> listener);
 
+    std::shared_ptr<IChannel> AddUDPChannel(const std::string& id,
+                                            const log4cpp::LogLevels& levels,
+                                            const ChannelRetry& retry,
+                                            const IPEndpoint& localEndpoint,
+                                            const IPEndpoint& remoteEndpoint,
+                                            std::shared_ptr<IChannelListener> listener);
+
     std::shared_ptr<IChannel> AddSerial(const std::string& id,
                                         const log4cpp::LogLevels& levels,
                                         const ChannelRetry& retry,

@@ -109,6 +109,24 @@ public:
                                            std::shared_ptr<IChannelListener> listener);
 
     /**
+     * Add a persistent UDP channel.
+     *
+     * @param id Alias that will be used for logging purposes with this channel
+     * @param levels Bitfield that describes the logging level for this channel and associated sessions
+     * @param retry Retry parameters for failed channels
+     * @param localEndpoint Local endpoint from which datagrams will be received
+     * @param remoteEndpoint Remote endpoint where datagrams will be sent to
+     * @param listener optional callback interface (can be nullptr) for info about the running channel
+     * @return shared_ptr to a channel interface
+     */
+    std::shared_ptr<IChannel> AddUDPChannel(const std::string& id,
+                                            const log4cpp::LogLevels& levels,
+                                            const ChannelRetry& retry,
+                                            const IPEndpoint& localEndpoint,
+                                            const IPEndpoint& remoteEndpoint,
+                                            std::shared_ptr<IChannelListener> listener);
+
+    /**
      * Add a persistent serial channel
      *
      * @param id Alias that will be used for logging purposes with this channel

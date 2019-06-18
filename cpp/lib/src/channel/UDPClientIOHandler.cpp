@@ -18,51 +18,51 @@
  * limitations under the License.
  */
 
-#include "channel/TCPClientIOHandler.h"
+#include "channel/UDPClientIOHandler.h"
 
-#include "channel/TCPSocketChannel.h"
+#include "channel/UDPSocketChannel.h"
 
 #include <utility>
 
 namespace opendnp3
 {
 
-TCPClientIOHandler::TCPClientIOHandler(const log4cpp::Logger& logger,
+UDPClientIOHandler::UDPClientIOHandler(const log4cpp::Logger& logger,
                                        const std::shared_ptr<IChannelListener>& listener,
                                        const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                        const ChannelRetry& retry,
-                                       const IPEndpointsList& remotes,
-                                       std::string adapter)
+                                       const IPEndpoint& localEndpoint,
+                                       const IPEndpoint& remoteEndpoint)
     : IOHandler(logger, false, listener),
       executor(executor),
       retry(retry),
-      remotes(remotes),
-      adapter(std::move(adapter))
+      localEndpoint(localEndpoint),
+      remoteEndpoint(remoteEndpoint)
 {
 }
 
-void TCPClientIOHandler::ShutdownImpl()
-{
-    this->ResetState();
-}
-
-void TCPClientIOHandler::BeginChannelAccept()
-{
-    this->client = TCPClient::Create(logger, executor, adapter);
-    this->StartConnect(this->retry.minOpenRetry);
-}
-
-void TCPClientIOHandler::SuspendChannelAccept()
+void UDPClientIOHandler::ShutdownImpl()
 {
     this->ResetState();
 }
 
-void TCPClientIOHandler::OnChannelShutdown()
+void UDPClientIOHandler::BeginChannelAccept()
+{
+    client = std::make_shared<UDPClient>(logger, executor);
+    this->TryOpen(this->retry.minOpenRetry);
+}
+
+void UDPClientIOHandler::SuspendChannelAccept()
+{
+    this->ResetState();
+}
+
+void UDPClientIOHandler::OnChannelShutdown()
 {
     this->BeginChannelAccept();
 }
 
-bool TCPClientIOHandler::StartConnect(const TimeDuration& delay)
+bool UDPClientIOHandler::TryOpen(const TimeDuration& delay)
 {
     if (!client)
     {
@@ -70,10 +70,10 @@ bool TCPClientIOHandler::StartConnect(const TimeDuration& delay)
     }
 
     auto cb = [=, self = shared_from_this()](const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
-                                             asio::ip::tcp::socket socket, const std::error_code& ec) -> void {
+                                             asio::ip::udp::socket socket, const std::error_code& ec) -> void {
         if (ec)
         {
-            FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Error Connecting: %s", ec.message().c_str());
+            FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Error opening UDP socket: %s", ec.message().c_str());
 
             ++this->statistics.numOpenFail;
 
@@ -82,8 +82,7 @@ bool TCPClientIOHandler::StartConnect(const TimeDuration& delay)
             if (client)
             {
                 auto retry_cb = [self, newDelay, this]() {
-                    this->remotes.Next();
-                    this->StartConnect(newDelay);
+                    this->TryOpen(newDelay);
                 };
 
                 this->retrytimer = this->executor->start(delay.value, retry_cb);
@@ -91,34 +90,31 @@ bool TCPClientIOHandler::StartConnect(const TimeDuration& delay)
         }
         else
         {
-            FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Connected to: %s, port %u",
-                             this->remotes.GetCurrentEndpoint().address.c_str(),
-                             this->remotes.GetCurrentEndpoint().port);
+            FORMAT_LOG_BLOCK(this->logger, flags::INFO, "UDP socket binded to: %s, port %u, sending to %s, port %u",
+                             localEndpoint.address.c_str(), localEndpoint.port,
+                             remoteEndpoint.address.c_str(), remoteEndpoint.port);
 
             if (client)
             {
-                this->OnNewChannel(TCPSocketChannel::Create(executor, std::move(socket)));
+                this->OnNewChannel(UDPSocketChannel::Create(executor, std::move(socket)));
             }
         }
     };
 
-    FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Connecting to: %s, port %u",
-                     this->remotes.GetCurrentEndpoint().address.c_str(), this->remotes.GetCurrentEndpoint().port);
+    FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Binding UDP socket to: %s, port %u, resolving address: %s, port %u",
+                     localEndpoint.address.c_str(), localEndpoint.port,
+                     remoteEndpoint.address.c_str(), remoteEndpoint.port);
 
-    this->client->BeginConnect(this->remotes.GetCurrentEndpoint(), cb);
-
-    return true;
+    this->client->Open(localEndpoint, remoteEndpoint, cb);
 }
 
-void TCPClientIOHandler::ResetState()
+void UDPClientIOHandler::ResetState()
 {
     if (this->client)
     {
         this->client->Cancel();
         this->client.reset();
     }
-
-    this->remotes.Reset();
 
     retrytimer.cancel();
 }
