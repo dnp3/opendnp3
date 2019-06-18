@@ -114,8 +114,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
     auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
 
-    auto channel = manager->AddTCPServer(id.str(), log4cpp::LogLevel(jlevels), static_cast<ServerAcceptMode>(jmode), adapter.str(),
-                                         static_cast<uint16_t>(jport), listener);
+    auto channel = manager->AddTCPServer(id.str(), log4cpp::LogLevel(jlevels), static_cast<ServerAcceptMode>(jmode), IPEndpoint(adapter.str(), static_cast<uint16_t>(jport)), listener);
 
     return (jlong) new std::shared_ptr<IChannel>(channel);
 }
@@ -180,8 +179,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
     std::error_code ec;
 
-    auto channel = manager->AddTLSServer(id.str(), log4cpp::LogLevel(jlevels), static_cast<ServerAcceptMode>(jmode), adapter.str(),
-                                         static_cast<uint16_t>(jport), tlsconf, listener, ec);
+    auto channel = manager->AddTLSServer(id.str(), log4cpp::LogLevel(jlevels), static_cast<ServerAcceptMode>(jmode), IPEndpoint(adapter.str(), static_cast<uint16_t>(jport)), tlsconf, listener, ec);
 
     return ec ? 0 : (jlong) new std::shared_ptr<IChannel>(channel);
 }

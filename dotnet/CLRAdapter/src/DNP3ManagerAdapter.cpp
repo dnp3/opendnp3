@@ -102,7 +102,7 @@ namespace Automatak
                     ? std::shared_ptr<opendnp3::IChannelListener>(new ChannelListenerAdapter(listener))
                     : nullptr;
 
-				auto channel = this->manager->AddTCPServer(stdName.c_str(), log4cpp::LogLevel(filters), (opendnp3::ServerAcceptMode) mode, stdEndpoint, port, listenAdapter);
+				auto channel = this->manager->AddTCPServer(stdName.c_str(), log4cpp::LogLevel(filters), (opendnp3::ServerAcceptMode) mode, opendnp3::IPEndpoint(stdEndpoint, port), listenAdapter);
 
 				return channel ? gcnew ChannelAdapter(channel) : nullptr;
 			}
@@ -150,7 +150,7 @@ namespace Automatak
                     : nullptr;
 				
 				std::error_code ec;
-                auto channel = this->manager->AddTLSServer(stdName.c_str(), log4cpp::LogLevel(filters), (opendnp3::ServerAcceptMode) mode, stdEndpoint, port, Conversions::Convert(config), listenAdapter, ec);
+                auto channel = this->manager->AddTLSServer(stdName.c_str(), log4cpp::LogLevel(filters), (opendnp3::ServerAcceptMode) mode, opendnp3::IPEndpoint(stdEndpoint, port), Conversions::Convert(config), listenAdapter, ec);
 				if (ec)
 				{
 					throw gcnew System::Exception(Conversions::ConvertString(ec.message()));

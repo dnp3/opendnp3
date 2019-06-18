@@ -96,16 +96,14 @@ public:
      * @param id Alias that will be used for logging purposes with this channel
      * @param levels Bitfield that describes the logging level for this channel and associated sessions
      * @param mode Describes how new connections are treated when another session already exists
-     * @param endpoint Network adapter to listen on, i.e. 127.0.0.1 or 0.0.0.0
-     * @param port Port to listen on
+     * @param endpoint Network adapter to listen on (i.e. 127.0.0.1 or 0.0.0.0) and port
      * @param listener optional callback interface (can be nullptr) for info about the running channel
      * @return shared_ptr to a channel interface
      */
     std::shared_ptr<IChannel> AddTCPServer(const std::string& id,
                                            const log4cpp::LogLevels& levels,
                                            ServerAcceptMode mode,
-                                           const std::string& endpoint,
-                                           uint16_t port,
+                                           const IPEndpoint& endpoint,
                                            std::shared_ptr<IChannelListener> listener);
 
     /**
@@ -174,8 +172,7 @@ public:
      * @param id Alias that will be used for logging purposes with this channel
      * @param levels Bitfield that describes the logging level for this channel and associated sessions
      * @param mode Describes how new connections are treated when another session already exists
-     * @param endpoint Network adapter to listen on, i.e. 127.0.0.1 or 0.0.0.0
-     * @param port Port to listen on
+     * @param endpoint Network adapter to listen on (i.e. 127.0.0.1 or 0.0.0.0) and port
      * @param config TLS configuration information
      * @param listener optional callback interface (can be nullptr) for info about the running channel
      * @param ec An error code. If set, a nullptr will be returned
@@ -184,8 +181,7 @@ public:
     std::shared_ptr<IChannel> AddTLSServer(const std::string& id,
                                            const log4cpp::LogLevels& levels,
                                            ServerAcceptMode mode,
-                                           const std::string& endpoint,
-                                           uint16_t port,
+                                           const IPEndpoint& endpoint,
                                            const TLSConfig& config,
                                            std::shared_ptr<IChannelListener> listener,
                                            std::error_code& ec);
@@ -195,7 +191,7 @@ public:
      */
     std::shared_ptr<IListener> CreateListener(std::string loggerid,
                                               const log4cpp::LogLevels& loglevel,
-                                              IPEndpoint endpoint,
+                                              const IPEndpoint& endpoint,
                                               const std::shared_ptr<IListenCallbacks>& callbacks,
                                               std::error_code& ec);
 
@@ -204,7 +200,7 @@ public:
      */
     std::shared_ptr<IListener> CreateListener(std::string loggerid,
                                               const log4cpp::LogLevels& loglevel,
-                                              IPEndpoint endpoint,
+                                              const IPEndpoint& endpoint,
                                               const TLSConfig& config,
                                               const std::shared_ptr<IListenCallbacks>& callbacks,
                                               std::error_code& ec);
