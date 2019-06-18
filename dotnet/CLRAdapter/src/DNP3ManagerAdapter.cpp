@@ -101,6 +101,21 @@ namespace Automatak
 				return channel ? gcnew ChannelAdapter(channel) : nullptr;
 			}
 
+            IChannel^ DNP3ManagerAdapter::AddUDPChannel(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, Interface::IPEndpoint^ localEndpoint, Interface::IPEndpoint^ remoteEndpoint, Interface::IChannelListener^ listener)
+            {
+                std::string stdName = Conversions::ConvertString(id);
+                auto stdLocalEndpoint = Conversions::Convert(localEndpoint);
+                auto stdRemoteEndpoint = Conversions::Convert(remoteEndpoint);
+
+                auto listenAdapter = listener
+                    ? std::shared_ptr<opendnp3::IChannelListener>(new ChannelListenerAdapter(listener))
+                    : nullptr;
+
+                auto channel = this->manager->AddUDPChannel(stdName.c_str(), log4cpp::LogLevel(filters), Convert(retry), stdLocalEndpoint, stdRemoteEndpoint, listenAdapter);
+
+                return channel ? gcnew ChannelAdapter(channel) : nullptr;
+            }
+
             IChannel^ DNP3ManagerAdapter::AddTLSClient(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, System::Collections::Generic::IList<Interface::IPEndpoint^>^ remotes, Automatak::DNP3::Interface::TLSConfig^ config, Automatak::DNP3::Interface::IChannelListener^ listener)
             {
                 std::string stdName = Conversions::ConvertString(id);

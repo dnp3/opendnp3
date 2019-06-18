@@ -58,6 +58,18 @@ namespace Automatak.DNP3.Interface
         IChannel AddTCPServer(String id, UInt32 filters, ServerAcceptMode mode, IPEndpoint endpoint, IChannelListener listener);
 
         /// <summary>
+        /// Add a UDP channel.
+		/// </summary>
+        /// <param name="id">An id used for logging purposes</param>
+        /// <param name="filters">The starting level for logging output</param>
+        /// <param name="retry">Retry configuration for the channel</param>
+        /// <param name="localEndpoint">Local endpoint from which datagrams will be received</param>
+        /// <param name="remoteEndpoint">Remote endpoint where datagrams will be sent to</param>
+        /// <param name="listener">Callback interface for the channel</param>
+        /// <returns>A channel interface</returns>
+        IChannel AddUDPChannel(String id, UInt32 filters, ChannelRetry retry, IPEndpoint localEndpoint, IPEndpoint remoteEndpoint, IChannelListener listener);
+
+        /// <summary>
         /// Add a TLS client channel. The channel does not try to connect until you add a stack.
         /// </summary>
         /// 

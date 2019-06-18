@@ -76,6 +76,7 @@ namespace Automatak
 
 				virtual IChannel^ AddTCPClient(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, System::Collections::Generic::IList<Interface::IPEndpoint^>^ remotes, Interface::IChannelListener^ listener)  sealed;
 				virtual IChannel^ AddTCPServer(System::String^ id, System::UInt32 filters, Interface::ServerAcceptMode mode, Interface::IPEndpoint^ endpoint, Interface::IChannelListener^ listener) sealed;
+                virtual IChannel^ AddUDPChannel(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, Interface::IPEndpoint^ localEndpoint, Interface::IPEndpoint^ remoteEndpoint, Interface::IChannelListener^ listener);
 
 				virtual IChannel^ AddTLSClient(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, System::Collections::Generic::IList<Interface::IPEndpoint^>^ remotes, Interface::TLSConfig^ config, Interface::IChannelListener^ listener)  sealed;
 				virtual IChannel^ AddTLSServer(System::String^ id, System::UInt32 filters, Interface::ServerAcceptMode mode, Interface::IPEndpoint^ endpoint, Interface::TLSConfig^ config, Interface::IChannelListener^ listener) sealed;
