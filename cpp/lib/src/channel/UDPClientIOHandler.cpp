@@ -106,6 +106,8 @@ bool UDPClientIOHandler::TryOpen(const TimeDuration& delay)
                      remoteEndpoint.address.c_str(), remoteEndpoint.port);
 
     this->client->Open(localEndpoint, remoteEndpoint, cb);
+
+    return true;
 }
 
 void UDPClientIOHandler::ResetState()

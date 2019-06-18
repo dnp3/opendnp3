@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
 
     // Specify what log levels to use. NORMAL is warning and above
     // You can add all the comms logging by uncommenting below.
-    const auto logLevels = levels::NORMAL | levels::ALL_COMMS;
+    const auto logLevels = levels::ALL;
 
     // This is the main point of interaction with the stack
     // Allocate a single thread to the pool since this is a single outstation

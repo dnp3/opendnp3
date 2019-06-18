@@ -43,7 +43,7 @@ public:
                                    socket_t& socket,
                                    std::error_code& ec)
     {
-        proto_t::endpoint endpoint;
+        typename proto_t::endpoint endpoint;
         auto string = address.empty() ? "0.0.0.0" : address;
         auto addr = asio::ip::address::from_string(string, ec);
         if (!ec)

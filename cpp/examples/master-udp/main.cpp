@@ -33,14 +33,14 @@ int main(int argc, char* argv[])
 {
     // Specify what log levels to use. NORMAL is warning and above
     // You can add all the comms logging by uncommenting below
-    const auto logLevels = levels::NORMAL | levels::ALL_APP_COMMS;
+    const auto logLevels = levels::ALL;
 
     // This is the main point of interaction with the stack
     DNP3Manager manager(1, ConsoleLogger::Create());
 
     // Connect via a UDP socket to a outstation
-    auto channel = manager.AddUDPChannel("udpclient", logLevels, ChannelRetry::Default(), IPEndpoint("127.0.0.1", 20000),
-                                         IPEndpoint("127.0.0.1", 19999), PrintingChannelListener::Create());
+    auto channel = manager.AddUDPChannel("udpclient", logLevels, ChannelRetry::Default(), IPEndpoint("0.0.0.0", 20000),
+                                         IPEndpoint("192.168.0.106", 19999), PrintingChannelListener::Create());
 
     // The master config object for a master. The default are
     // useable, but understanding the options are important.

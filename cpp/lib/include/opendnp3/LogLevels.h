@@ -41,22 +41,22 @@ namespace flags
     // up-shift the custom dnp3 filters
 
     const log4cpp::LogLevel LINK_RX = DBG.next();
-    const log4cpp::LogLevel LINK_RX_HEX = DBG.next();
+    const log4cpp::LogLevel LINK_RX_HEX = LINK_RX.next();
 
-    const log4cpp::LogLevel LINK_TX = DBG.next();
-    const log4cpp::LogLevel LINK_TX_HEX = DBG.next();
+    const log4cpp::LogLevel LINK_TX = LINK_RX_HEX.next();
+    const log4cpp::LogLevel LINK_TX_HEX = LINK_TX.next();
 
-    const log4cpp::LogLevel TRANSPORT_RX = DBG.next();
-    const log4cpp::LogLevel TRANSPORT_TX = DBG.next();
+    const log4cpp::LogLevel TRANSPORT_RX = LINK_TX_HEX.next();
+    const log4cpp::LogLevel TRANSPORT_TX = TRANSPORT_RX.next();
 
-    const log4cpp::LogLevel APP_HEADER_RX = DBG.next();
-    const log4cpp::LogLevel APP_HEADER_TX = DBG.next();
+    const log4cpp::LogLevel APP_HEADER_RX = TRANSPORT_TX.next();
+    const log4cpp::LogLevel APP_HEADER_TX = APP_HEADER_RX.next();
 
-    const log4cpp::LogLevel APP_OBJECT_RX = DBG.next();
-    const log4cpp::LogLevel APP_OBJECT_TX = DBG.next();
+    const log4cpp::LogLevel APP_OBJECT_RX = APP_HEADER_TX.next();
+    const log4cpp::LogLevel APP_OBJECT_TX = APP_OBJECT_RX.next();
 
-    const log4cpp::LogLevel APP_HEX_RX = DBG.next();
-    const log4cpp::LogLevel APP_HEX_TX = DBG.next();
+    const log4cpp::LogLevel APP_HEX_RX = APP_OBJECT_TX.next();
+    const log4cpp::LogLevel APP_HEX_TX = APP_HEX_RX.next();
 
 } // namespace flags
 
