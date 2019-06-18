@@ -300,7 +300,7 @@ namespace DNP3
         LinkHeader ^ Conversions::Convert(const opendnp3::LinkHeaderFields& fields)
         {
             return gcnew LinkHeader((LinkFunction)fields.func, fields.isFromMaster, fields.fcb, fields.fcvdfc,
-                                    fields.dest, fields.src);
+                                    fields.addresses.destination, fields.addresses.source);
         }
 
         opendnp3::IPEndpoint Conversions::Convert(IPEndpoint ^ endpoint)
