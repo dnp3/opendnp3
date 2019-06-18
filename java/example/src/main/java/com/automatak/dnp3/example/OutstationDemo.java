@@ -61,8 +61,7 @@ public class OutstationDemo {
                 "client",
                 LogMasks.NORMAL | LogMasks.APP_COMMS,
                 ServerAcceptMode.CloseExisting,
-                "127.0.0.1",
-                20000,
+                new IPEndpoint("127.0.0.1", 20000),
                 PrintingChannelListener.getInstance()
         );
 

@@ -37,20 +37,6 @@ public interface DNP3Manager {
      * @param id An id used for logging purposes
      * @param levels The starting level for logging output
      * @param retry Retry configuration for the channel
-     * @param address The address of remote host as a INET address i.e. "127.0.0.1" or name "www.google.com"
-     * @param adapter The local adapter to use. "0.0.0.0* means "any adapter'.
-     * @param port The port to make the connection on. Note that only the range 0 to 65535 is valid
-     * @param listener Optional listener (can be null) for monitoring the state of the channel
-     * @return A channel interface
-     * @throws DNP3Exception if an error occurs creating the channel
-     */
-    Channel addTCPClient(String id, int levels, ChannelRetry retry, String address, String adapter, int port, ChannelListener listener) throws DNP3Exception;
-
-    /**
-     * Add a TCP client channel. The channel does not try to connect until you add a stack.
-     * @param id An id used for logging purposes
-     * @param levels The starting level for logging output
-     * @param retry Retry configuration for the channel
      * @param remotes List of IP endpoints to try to connect to. The address can be an IP "127.0.0.1" or name "www.google.com"
      * @param adapter The local adapter to use. "0.0.0.0* means "any adapter'.
      * @param listener Optional listener (can be null) for monitoring the state of the channel
@@ -64,28 +50,12 @@ public interface DNP3Manager {
      * @param id An id used for logging purposes
      * @param levels The starting level for logging output
      * @param mode Describes which TCP session is closed when an active session already exists
-     * @param endpoint The address that identifies the network adapter to bind i.e. "127.0.0.1" or "0.0.0.0"
-     * @param port The port to make the connection on. Note that only the range 0 to 65535 is valid
+     * @param endpoint The address that identifies the network adapter to bind (i.e. "127.0.0.1" or "0.0.0.0") and the port
      * @param listener Optional listener (can be null) for monitoring the state of the channel
      * @return A channel interface
      * @throws DNP3Exception if an error occurs creating the channel
      */
-    Channel addTCPServer(String id, int levels, ServerAcceptMode mode, String endpoint, int port, ChannelListener listener) throws DNP3Exception;
-
-    /**
-     * Add a TCP client channel. The channel does not try to connect until you add a stack.
-     * @param id An id used for logging purposes
-     * @param levels The starting level for logging output
-     * @param retry Retry configuration for the channel
-     * @param address The address of remote host as a INET address i.e. "127.0.0.1" or name "www.google.com"
-     * @param adapter The local adapter to use. "0.0.0.0* means "any adapter'.
-     * @param port The port to make the connection on. Note that only the range 0 to 65535 is valid
-     * @param config TLS configuration
-     * @param listener Optional listener (can be null) for monitoring the state of the channel
-     * @return A channel interface
-     * @throws DNP3Exception if an error occurs creating the channel
-     */
-    Channel addTLSClient(String id, int levels, ChannelRetry retry, String address, String adapter, int port, TLSConfig config, ChannelListener listener) throws DNP3Exception;
+    Channel addTCPServer(String id, int levels, ServerAcceptMode mode, IPEndpoint endpoint, ChannelListener listener) throws DNP3Exception;
 
     /**
      * Add a TCP client channel. The channel does not try to connect until you add a stack.
@@ -106,14 +76,13 @@ public interface DNP3Manager {
      * @param id An id used for logging purposes
      * @param levels The starting level for logging output
      * @param mode Describes which TCP session is closed when an active session already exists
-     * @param endpoint The address that identifies the network adapter to bind i.e. "127.0.0.1" or "0.0.0.0"
-     * @param port The port to make the connection on. Note that only the range 0 to 65535 is valid
+     * @param endpoint The address that identifies the network adapter to bind (i.e. "127.0.0.1" or "0.0.0.0") and port
      * @param config TLS configuration
      * @param listener Optional listener (can be null) for monitoring the state of the channel
      * @return A channel interface
      * @throws DNP3Exception if an error occurs creating the channel
      */
-    Channel addTLSServer(String id, int levels, ServerAcceptMode mode, String endpoint, int port, TLSConfig config, ChannelListener listener) throws DNP3Exception;
+    Channel addTLSServer(String id, int levels, ServerAcceptMode mode, IPEndpoint endpoint, TLSConfig config, ChannelListener listener) throws DNP3Exception;
 
     /**
      * Add a serial channel. The port does not try to open until you add a stack.

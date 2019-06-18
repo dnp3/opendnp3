@@ -34,10 +34,10 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 /*
  * Class:     com_automatak_dnp3_impl_ManagerImpl
  * Method:    get_native_channel_tcp_server
- * Signature: (JLjava/lang/String;IILjava/lang/String;ILcom/automatak/dnp3/ChannelListener;)J
+ * Signature: (JLjava/lang/String;IILcom/automatak/dnp3/IPEndpoint;Lcom/automatak/dnp3/ChannelListener;)J
  */
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1server
-  (JNIEnv *, jobject, jlong, jstring, jint, jint, jstring, jint, jobject);
+  (JNIEnv *, jobject, jlong, jstring, jint, jint, jobject, jobject);
 
 /*
  * Class:     com_automatak_dnp3_impl_ManagerImpl
@@ -50,10 +50,10 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 /*
  * Class:     com_automatak_dnp3_impl_ManagerImpl
  * Method:    get_native_channel_tls_server
- * Signature: (JLjava/lang/String;IILjava/lang/String;ILcom/automatak/dnp3/TLSConfig;Lcom/automatak/dnp3/ChannelListener;)J
+ * Signature: (JLjava/lang/String;IILcom/automatak/dnp3/IPEndpoint;Lcom/automatak/dnp3/TLSConfig;Lcom/automatak/dnp3/ChannelListener;)J
  */
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tls_1server
-  (JNIEnv *, jobject, jlong, jstring, jint, jint, jstring, jint, jobject, jobject);
+  (JNIEnv *, jobject, jlong, jstring, jint, jint, jobject, jobject, jobject);
 
 /*
  * Class:     com_automatak_dnp3_impl_ManagerImpl
