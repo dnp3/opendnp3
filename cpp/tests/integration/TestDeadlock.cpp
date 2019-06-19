@@ -24,10 +24,11 @@
 #include <opendnp3/DNP3Manager.h>
 #include <opendnp3/channel/PrintingChannelListener.h>
 #include <opendnp3/master/DefaultMasterApplication.h>
-#include <opendnp3/master/PrintingSOEHandler.h>
 #include <opendnp3/master/PrintingCommandResultCallback.h>
 
 #include <dnp3mocks/DatabaseHelpers.h>
+
+#include "mocks/CountingSOEHandler.h"
 
 #include <catch.hpp>
 
@@ -52,7 +53,7 @@ void start_master(DNP3Manager& manager)
     const auto channel
         = manager.AddTCPClient("client", FILTERS, ChannelRetry(TimeDuration::Seconds(0), TimeDuration::Seconds(0)),
                                { IPEndpoint("127.0.0.1", 20000) }, "127.0.0.1", nullptr);
-    const auto master = channel->AddMaster("master", PrintingSOEHandler::Create(),
+    const auto master = channel->AddMaster("master", std::make_shared<CountingSOEHandler>(),
                                            DefaultMasterApplication::Create(), MasterStackConfig());
     const auto scan = master->AddClassScan(ClassField::AllClasses(), TimeDuration::Milliseconds(1));
     master->Enable();
@@ -90,7 +91,7 @@ TEST_CASE("TestDeadlock2")
     for(auto i = 0; i < 1000; ++i)
     {
         auto manager2 = std::make_unique<DNP3Manager>(3, ConsoleLogger::Create());
-        auto channel2 = manager2->AddTCPServer("server", FILTERS, ServerAcceptMode::CloseNew, "127.0.0.1", 20000, PrintingChannelListener::Create());
+        auto channel2 = manager2->AddTCPServer("server", FILTERS, ServerAcceptMode::CloseNew, "127.0.0.1", 20000, nullptr);
         OutstationStackConfig config(DatabaseConfig(1));
         config.link.LocalAddr = 10;
         config.link.RemoteAddr = 1;
@@ -99,11 +100,11 @@ TEST_CASE("TestDeadlock2")
 
         auto manager = std::make_unique<DNP3Manager>(3, ConsoleLogger::Create());
         auto channel = manager->AddTCPClient("tcpclient", FILTERS, ChannelRetry(TimeDuration::Seconds(0), TimeDuration::Seconds(0)),
-                                {IPEndpoint("127.0.0.1", 20000)}, "127.0.0.1", PrintingChannelListener::Create());
+                                {IPEndpoint("127.0.0.1", 20000)}, "127.0.0.1", nullptr);
         MasterStackConfig stackConfig;
         stackConfig.link.LocalAddr = 1;
         stackConfig.link.RemoteAddr = 10;
-        auto master = channel->AddMaster("master", PrintingSOEHandler::Create(), DefaultMasterApplication::Create(),stackConfig);
+        auto master = channel->AddMaster("master", std::make_shared<CountingSOEHandler>(), DefaultMasterApplication::Create(),stackConfig);
         auto integrityScan = master->AddClassScan(ClassField::AllClasses(), TimeDuration::Milliseconds(1));
         master->Enable();
 
