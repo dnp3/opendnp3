@@ -44,6 +44,8 @@ import com.automatak.dnp3.mock.*;
 import junit.framework.TestCase;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 public class StackStatisticsTest extends TestCase {
 
     @Test
@@ -54,9 +56,8 @@ public class StackStatisticsTest extends TestCase {
                 "client",
                 LogMasks.NORMAL | LogMasks.APP_COMMS,
                 ChannelRetry.getDefault(),
-                "127.0.0.1",
+                Arrays.asList(new IPEndpoint("127.0.0.1", 20000)),
                 "0.0.0.0",
-                20000,
                 PrintingChannelListener.getInstance()
         );
         Master master = channel.addMaster("master",
@@ -78,9 +79,8 @@ public class StackStatisticsTest extends TestCase {
                 "client",
                 LogMasks.NORMAL | LogMasks.APP_COMMS,
                 ChannelRetry.getDefault(),
-                "127.0.0.1",
+                Arrays.asList(new IPEndpoint("127.0.0.1", 20000)),
                 "0.0.0.0",
-                20000,
                 PrintingChannelListener.getInstance()
         );
         Outstation outstation = channel.addOutstation("outstation",
@@ -102,9 +102,8 @@ public class StackStatisticsTest extends TestCase {
                 "client",
                 LogMasks.NORMAL | LogMasks.APP_COMMS,
                 ChannelRetry.getDefault(),
-                "127.0.0.1",
+                Arrays.asList(new IPEndpoint("127.0.0.1", 20000)),
                 "0.0.0.0",
-                20000,
                 PrintingChannelListener.getInstance()
         );
 

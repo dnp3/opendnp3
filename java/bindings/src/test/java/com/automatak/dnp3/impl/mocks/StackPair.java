@@ -30,10 +30,7 @@ import com.automatak.dnp3.mock.DefaultOutstationApplication;
 import com.automatak.dnp3.mock.SuccessCommandHandler;
 
 import java.time.Duration;
-import java.util.ArrayDeque;
-import java.util.List;
-import java.util.Queue;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class StackPair {
@@ -82,17 +79,15 @@ public class StackPair {
                     String.format("client:%d", port),
                     LEVELS,
                     ChannelRetry.getDefault(),
+                    Arrays.asList(new IPEndpoint("127.0.0.1", port)),
                     "127.0.0.1",
-                    "127.0.0.1",
-                    port,
                     clientListener);
 
             Channel server = manager.addTCPServer(
                     String.format("server:%d", port),
                     LEVELS | LogLevels.APP_HEADER_TX | LogLevels.APP_OBJECT_TX,
                     ServerAcceptMode.CloseExisting,
-                    "127.0.0.1",
-                    port,
+                    new IPEndpoint("127.0.0.1", port),
                     serverListener);
 
             this.master = client.addMaster(

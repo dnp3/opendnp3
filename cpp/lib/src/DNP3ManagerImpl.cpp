@@ -34,6 +34,7 @@
 #include "channel/SerialIOHandler.h"
 #include "channel/TCPClientIOHandler.h"
 #include "channel/TCPServerIOHandler.h"
+#include "channel/UDPClientIOHandler.h"
 #include "master/MasterTCPServer.h"
 
 #include "opendnp3/ErrorCodes.h"
@@ -86,16 +87,32 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPClient(const std::string& id,
 std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPServer(const std::string& id,
                                                         const log4cpp::LogLevels& levels,
                                                         ServerAcceptMode mode,
-                                                        const std::string& endpoint,
-                                                        uint16_t port,
+                                                        const IPEndpoint& endpoint,
                                                         std::shared_ptr<IChannelListener> listener)
 {
     auto create = [&]() -> std::shared_ptr<IChannel> {
         std::error_code ec;
         auto clogger = this->logger.detach(id, levels);
         auto executor = exe4cpp::StrandExecutor::create(this->io);
-        auto iohandler = TCPServerIOHandler::Create(clogger, mode, listener, executor, IPEndpoint(endpoint, port), ec);
+        auto iohandler = TCPServerIOHandler::Create(clogger, mode, listener, executor, endpoint, ec);
         return ec ? nullptr : DNP3Channel::Create(clogger, executor, iohandler, this->resources);
+    };
+
+    return this->resources->Bind<IChannel>(create);
+}
+
+std::shared_ptr<IChannel> DNP3ManagerImpl::AddUDPChannel(const std::string& id,
+                                                         const log4cpp::LogLevels& levels,
+                                                         const ChannelRetry& retry,
+                                                         const IPEndpoint& localEndpoint,
+                                                         const IPEndpoint& remoteEndpoint,
+                                                         std::shared_ptr<IChannelListener> listener)
+{
+    auto create = [&]() -> std::shared_ptr<IChannel> {
+        auto clogger = this->logger.detach(id, levels);
+        auto executor = exe4cpp::StrandExecutor::create(this->io);
+        auto iohandler = UDPClientIOHandler::Create(clogger, listener, executor, retry, localEndpoint, remoteEndpoint);
+        return DNP3Channel::Create(clogger, executor, iohandler, this->resources);
     };
 
     return this->resources->Bind<IChannel>(create);
@@ -152,8 +169,7 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSClient(const std::string& id,
 std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSServer(const std::string& id,
                                                         const log4cpp::LogLevels& levels,
                                                         ServerAcceptMode mode,
-                                                        const std::string& endpoint,
-                                                        uint16_t port,
+                                                        const IPEndpoint& endpoint,
                                                         const TLSConfig& config,
                                                         std::shared_ptr<IChannelListener> listener,
                                                         std::error_code& ec)
@@ -165,7 +181,7 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSServer(const std::string& id,
         auto clogger = this->logger.detach(id, levels);
         auto executor = exe4cpp::StrandExecutor::create(this->io);
         auto iohandler
-            = TLSServerIOHandler::Create(clogger, mode, listener, executor, IPEndpoint(endpoint, port), config, ec);
+            = TLSServerIOHandler::Create(clogger, mode, listener, executor, endpoint, config, ec);
         return ec ? nullptr : DNP3Channel::Create(clogger, executor, iohandler, this->resources);
     };
 
@@ -186,7 +202,7 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSServer(const std::string& id,
 
 std::shared_ptr<IListener> DNP3ManagerImpl::CreateListener(std::string loggerid,
                                                            const log4cpp::LogLevels& levels,
-                                                           IPEndpoint endpoint,
+                                                           const IPEndpoint& endpoint,
                                                            const std::shared_ptr<IListenCallbacks>& callbacks,
                                                            std::error_code& ec)
 {
@@ -207,7 +223,7 @@ std::shared_ptr<IListener> DNP3ManagerImpl::CreateListener(std::string loggerid,
 
 std::shared_ptr<IListener> DNP3ManagerImpl::CreateListener(std::string loggerid,
                                                            const log4cpp::LogLevels& levels,
-                                                           IPEndpoint endpoint,
+                                                           const IPEndpoint& endpoint,
                                                            const TLSConfig& config,
                                                            const std::shared_ptr<IListenCallbacks>& callbacks,
                                                            std::error_code& ec)

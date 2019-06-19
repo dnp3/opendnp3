@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-#include "channel/TCPClient.h"
+#include "channel/UDPClient.h"
 
 #include "channel/SocketHelpers.h"
 
@@ -28,18 +28,16 @@
 namespace opendnp3
 {
 
-TCPClient::TCPClient(const log4cpp::Logger& logger,
-                     const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
-                     std::string adapter)
+UDPClient::UDPClient(const log4cpp::Logger& logger,
+                     const std::shared_ptr<exe4cpp::StrandExecutor>& executor)
     : condition(logger),
       executor(executor),
-      adapter(std::move(adapter)),
       socket(*executor->get_context()),
       resolver(*executor->get_context())
 {
 }
 
-bool TCPClient::Cancel()
+bool UDPClient::Cancel()
 {
     if (this->canceled || !this->connecting)
     {
@@ -53,7 +51,7 @@ bool TCPClient::Cancel()
     return true;
 }
 
-bool TCPClient::BeginConnect(const IPEndpoint& remote, const connect_callback_t& callback)
+bool UDPClient::Open(const IPEndpoint& localEndpoint, const IPEndpoint& remoteEndpoint, connect_callback_t callback)
 {
     if (connecting || canceled)
         return false;
@@ -61,31 +59,32 @@ bool TCPClient::BeginConnect(const IPEndpoint& remote, const connect_callback_t&
     this->connecting = true;
 
     std::error_code ec;
-    SocketHelpers::BindToLocalAddress<asio::ip::tcp>(this->adapter, 0, this->socket, ec);
+    SocketHelpers::BindToLocalAddress<asio::ip::udp>(localEndpoint.address, localEndpoint.port, this->socket, ec);
 
     if (ec)
     {
         return this->PostConnectError(callback, ec);
     }
 
-    const auto address = asio::ip::address::from_string(remote.address, ec);
+    // Find remote address
+    const auto address = asio::ip::address::from_string(remoteEndpoint.address, ec);
     auto self = this->shared_from_this();
     if (ec)
     {
         // Try DNS resolution instead
-        auto cb = [self, callback](const std::error_code& ec, asio::ip::tcp::resolver::iterator endpoints) {
+        auto cb = [self, callback](const std::error_code& ec, asio::ip::udp::resolver::iterator endpoints) {
             self->HandleResolveResult(callback, endpoints, ec);
         };
 
         std::stringstream portstr;
-        portstr << remote.port;
+        portstr << remoteEndpoint.port;
 
-        resolver.async_resolve(asio::ip::tcp::resolver::query(remote.address, portstr.str()), executor->wrap(cb));
+        resolver.async_resolve(asio::ip::udp::resolver::query(remoteEndpoint.address, portstr.str()), executor->wrap(cb));
 
         return true;
     }
 
-    asio::ip::tcp::endpoint remoteEndpoint(address, remote.port);
+    asio::ip::udp::endpoint asioRemoteEndpoint(address, remoteEndpoint.port);
     auto cb = [self, callback](const std::error_code& ec) {
         self->connecting = false;
         if (!self->canceled)
@@ -94,12 +93,13 @@ bool TCPClient::BeginConnect(const IPEndpoint& remote, const connect_callback_t&
         }
     };
 
-    socket.async_connect(remoteEndpoint, executor->wrap(cb));
+    // On UDP sockets, connecting only sets the address used in future async_send.
+    socket.async_connect(asioRemoteEndpoint, executor->wrap(cb));
     return true;
 }
 
-void TCPClient::HandleResolveResult(const connect_callback_t& callback,
-                                    const asio::ip::tcp::resolver::iterator& endpoints,
+void UDPClient::HandleResolveResult(const connect_callback_t& callback,
+                                    const asio::ip::udp::resolver::iterator& endpoints,
                                     const std::error_code& ec)
 {
     if (ec)
@@ -110,7 +110,7 @@ void TCPClient::HandleResolveResult(const connect_callback_t& callback,
     {
         // attempt a connection to each endpoint in the iterator until we connect
         auto cb = [self = shared_from_this(), callback](const std::error_code& ec,
-                                                        asio::ip::tcp::resolver::iterator endpoints) {
+                                                        asio::ip::udp::resolver::iterator endpoints) {
             self->connecting = false;
             if (!self->canceled)
             {
@@ -122,7 +122,7 @@ void TCPClient::HandleResolveResult(const connect_callback_t& callback,
     }
 }
 
-bool TCPClient::PostConnectError(const connect_callback_t& callback, const std::error_code& ec)
+bool UDPClient::PostConnectError(const connect_callback_t& callback, const std::error_code& ec)
 {
     auto cb = [self = shared_from_this(), ec, callback]() {
         self->connecting = false;

@@ -50,7 +50,7 @@ void SerialIOHandler::BeginChannelAccept()
 
 void SerialIOHandler::SuspendChannelAccept()
 {
-    this->retrytimer.cancel();
+    this->ResetState();
 }
 
 void SerialIOHandler::OnChannelShutdown()

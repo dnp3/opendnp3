@@ -85,7 +85,7 @@ bool TLSClient::BeginConnect(const IPEndpoint& remote, const connect_callback_t&
         return true;
     }
 
-    SocketHelpers::BindToLocalAddress(this->adapter, this->localEndpoint, stream->lowest_layer(), ec);
+    SocketHelpers::BindToLocalAddress<asio::ip::tcp>(this->adapter, 0, stream->lowest_layer(), ec);
 
     if (ec)
     {

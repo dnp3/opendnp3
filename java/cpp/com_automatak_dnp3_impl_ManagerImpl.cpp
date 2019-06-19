@@ -43,6 +43,14 @@ opendnp3::TLSConfig ConvertTLSConfig(JNIEnv* env, jobject jconfig)
                               cipherList.str());
 }
 
+opendnp3::IPEndpoint ConvertIPEndpoint(JNIEnv* env, jobject jendpoint)
+{
+    const auto jaddress = jni::JCache::IPEndpoint.getaddress(env, jendpoint);
+    CString address(env, jaddress);
+    const auto port = jni::JCache::IPEndpoint.getport(env, jendpoint);
+    return opendnp3::IPEndpoint(address.str(), static_cast<uint16_t>(port));
+}
+
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_create_1native_1manager(JNIEnv* /*env*/,
                                                                                          jobject /*unused*/,
                                                                                          jint concurreny,
@@ -84,11 +92,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
     // Convert endpoints
     std::vector<opendnp3::IPEndpoint> endpoints;
     auto process = [&](LocalRef<jobject> jendpoint) {
-        const auto jaddress = jni::JCache::IPEndpoint.getaddress(env, jendpoint);
-        CString address(env, jaddress);
-        const auto port = jni::JCache::IPEndpoint.getport(env, jendpoint);
-        opendnp3::IPEndpoint endpoint(address.str(), static_cast<uint16_t>(port));
-        endpoints.push_back(endpoint);
+        endpoints.push_back(ConvertIPEndpoint(env, jendpoint));
     };
     JNI::Iterate(env, jremotes, process);
 
@@ -103,19 +107,33 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
                                                                                                    jstring jid,
                                                                                                    jint jlevels,
                                                                                                    jint jmode,
-                                                                                                   jstring jadapter,
-                                                                                                   jint jport,
+                                                                                                   jobject jendpoint,
                                                                                                    jobject jlistener)
 {
     const auto manager = (DNP3Manager*)native;
 
     CString id(env, jid);
-    CString adapter(env, jadapter);
+    auto endpoint = ConvertIPEndpoint(env, jendpoint);
 
     auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
 
-    auto channel = manager->AddTCPServer(id.str(), log4cpp::LogLevel(jlevels), static_cast<ServerAcceptMode>(jmode), adapter.str(),
-                                         static_cast<uint16_t>(jport), listener);
+    auto channel = manager->AddTCPServer(id.str(), log4cpp::LogLevel(jlevels), static_cast<ServerAcceptMode>(jmode), endpoint, listener);
+
+    return (jlong) new std::shared_ptr<IChannel>(channel);
+}
+
+JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1udp
+    (JNIEnv* env, jobject /*unused*/, jlong native, jstring jid, jint jlevels, jlong jminRetry, jlong jmaxRetry, jobject jlocalEndpoint, jobject jremoteEndpoint, jobject jlistener)
+{
+    const auto manager = (DNP3Manager*)native;
+
+    CString id(env, jid);
+    auto localEndpoint = ConvertIPEndpoint(env, jlocalEndpoint);
+    auto remoteEndpoint = ConvertIPEndpoint(env, jremoteEndpoint);
+    ChannelRetry retry(TimeDuration::Milliseconds(jminRetry), TimeDuration::Milliseconds(jmaxRetry));
+    auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
+
+    auto channel = manager->AddUDPChannel(id.str(), log4cpp::LogLevel(jlevels), retry, localEndpoint, remoteEndpoint, listener);
 
     return (jlong) new std::shared_ptr<IChannel>(channel);
 }
@@ -143,11 +161,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
     // Convert endpoints
     std::vector<opendnp3::IPEndpoint> endpoints;
     auto process = [&](LocalRef<jobject> jendpoint) {
-        const auto jaddress = jni::JCache::IPEndpoint.getaddress(env, jendpoint);
-        CString address(env, jaddress);
-        const auto port = jni::JCache::IPEndpoint.getport(env, jendpoint);
-        opendnp3::IPEndpoint endpoint(address.str(), static_cast<uint16_t>(port));
-        endpoints.push_back(endpoint);
+        endpoints.push_back(ConvertIPEndpoint(env, jendpoint));
     };
     JNI::Iterate(env, jremotes, process);
 
@@ -164,15 +178,14 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
                                                                                                    jstring jid,
                                                                                                    jint jlevels,
                                                                                                    jint jmode,
-                                                                                                   jstring jadapter,
-                                                                                                   jint jport,
+                                                                                                   jobject jendpoint,
                                                                                                    jobject jtlsconfig,
                                                                                                    jobject jlistener)
 {
     const auto manager = (DNP3Manager*)native;
 
     CString id(env, jid);
-    CString adapter(env, jadapter);
+    auto endpoint = ConvertIPEndpoint(env, jendpoint);
 
     auto tlsconf = ConvertTLSConfig(env, jtlsconfig);
 
@@ -180,8 +193,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
     std::error_code ec;
 
-    auto channel = manager->AddTLSServer(id.str(), log4cpp::LogLevel(jlevels), static_cast<ServerAcceptMode>(jmode), adapter.str(),
-                                         static_cast<uint16_t>(jport), tlsconf, listener, ec);
+    auto channel = manager->AddTLSServer(id.str(), log4cpp::LogLevel(jlevels), static_cast<ServerAcceptMode>(jmode), endpoint, tlsconf, listener, ec);
 
     return ec ? 0 : (jlong) new std::shared_ptr<IChannel>(channel);
 }

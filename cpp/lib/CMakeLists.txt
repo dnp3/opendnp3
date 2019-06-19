@@ -237,12 +237,15 @@ set(opendnp3_private_headers
     ./src/channel/LoggingConnectionCondition.h
     ./src/channel/SerialChannel.h
     ./src/channel/SerialIOHandler.h
-    ./src/channel/SocketChannel.h
     ./src/channel/SocketHelpers.h
     ./src/channel/TCPClient.h
     ./src/channel/TCPClientIOHandler.h
     ./src/channel/TCPServer.h
     ./src/channel/TCPServerIOHandler.h
+    ./src/channel/TCPSocketChannel.h
+    ./src/channel/UDPClient.h
+    ./src/channel/UDPClientIOHandler.h
+    ./src/channel/UDPSocketChannel.h
 
     ./src/decoder/DecoderImpl.h
     ./src/decoder/Indent.h
@@ -468,11 +471,14 @@ set(opendnp3_src
     ./src/channel/IPEndpointsList.cpp
     ./src/channel/SerialChannel.cpp
     ./src/channel/SerialIOHandler.cpp
-    ./src/channel/SocketChannel.cpp
     ./src/channel/TCPClient.cpp
     ./src/channel/TCPClientIOHandler.cpp
     ./src/channel/TCPServer.cpp
     ./src/channel/TCPServerIOHandler.cpp
+    ./src/channel/TCPSocketChannel.cpp
+    ./src/channel/UDPClient.cpp
+    ./src/channel/UDPClientIOHandler.cpp
+    ./src/channel/UDPSocketChannel.cpp
 
     ./src/decoder/Decoder.cpp
     ./src/decoder/DecoderImpl.cpp

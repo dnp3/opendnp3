@@ -17,25 +17,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_SOCKETCHANNEL_H
-#define OPENDNP3_SOCKETCHANNEL_H
+#ifndef OPENDNP3_TCPSOCKETCHANNEL_H
+#define OPENDNP3_TCPSOCKETCHANNEL_H
 
 #include "channel/IAsyncChannel.h"
 
 namespace opendnp3
 {
 
-class SocketChannel final : public IAsyncChannel
+class TCPSocketChannel final : public IAsyncChannel
 {
 
 public:
     static std::shared_ptr<IAsyncChannel> Create(std::shared_ptr<exe4cpp::StrandExecutor> executor,
                                                  asio::ip::tcp::socket socket)
     {
-        return std::make_shared<SocketChannel>(executor, std::move(socket));
+        return std::make_shared<TCPSocketChannel>(executor, std::move(socket));
     }
 
-    SocketChannel(const std::shared_ptr<exe4cpp::StrandExecutor>& executor, asio::ip::tcp::socket socket);
+    TCPSocketChannel(const std::shared_ptr<exe4cpp::StrandExecutor>& executor, asio::ip::tcp::socket socket);
 
 protected:
     void BeginReadImpl(ser4cpp::wseq_t dest) final;

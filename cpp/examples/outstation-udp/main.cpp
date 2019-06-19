@@ -59,16 +59,16 @@ int main(int argc, char* argv[])
 
     // Specify what log levels to use. NORMAL is warning and above
     // You can add all the comms logging by uncommenting below.
-    const auto logLevels = levels::NORMAL | levels::ALL_COMMS;
+    const auto logLevels = levels::ALL;
 
     // This is the main point of interaction with the stack
     // Allocate a single thread to the pool since this is a single outstation
     // Log messages to the console
     DNP3Manager manager(1, ConsoleLogger::Create());
 
-    // Create a TCP server (listener)
-    auto channel = manager.AddTCPServer("server", logLevels, ServerAcceptMode::CloseExisting, IPEndpoint("0.0.0.0", 20000),
-                                        PrintingChannelListener::Create());
+    // Create a UDP socket
+    auto channel = manager.AddUDPChannel("server", logLevels, ChannelRetry::Default(), IPEndpoint("192.168.0.106", 19999),
+                                         IPEndpoint("192.168.0.193", 20000), PrintingChannelListener::Create());
 
     // The main object for a outstation. The defaults are useable,
     // but understanding the options are important.

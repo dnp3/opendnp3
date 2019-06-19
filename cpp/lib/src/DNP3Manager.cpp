@@ -54,11 +54,20 @@ std::shared_ptr<IChannel> DNP3Manager::AddTCPClient(const std::string& id,
 std::shared_ptr<IChannel> DNP3Manager::AddTCPServer(const std::string& id,
                                                     const log4cpp::LogLevels& levels,
                                                     ServerAcceptMode mode,
-                                                    const std::string& endpoint,
-                                                    uint16_t port,
+                                                    const IPEndpoint& endpoint,
                                                     std::shared_ptr<IChannelListener> listener)
 {
-    return this->impl->AddTCPServer(id, levels, mode, endpoint, port, std::move(listener));
+    return this->impl->AddTCPServer(id, levels, mode, endpoint, std::move(listener));
+}
+
+std::shared_ptr<IChannel> DNP3Manager::AddUDPChannel(const std::string& id,
+                                                     const log4cpp::LogLevels& levels,
+                                                     const ChannelRetry& retry,
+                                                     const IPEndpoint& localEndpoint,
+                                                     const IPEndpoint& remoteEndpoint,
+                                                     std::shared_ptr<IChannelListener> listener)
+{
+    return this->impl->AddUDPChannel(id, levels, retry, localEndpoint, remoteEndpoint, std::move(listener));
 }
 
 std::shared_ptr<IChannel> DNP3Manager::AddSerial(const std::string& id,
@@ -85,32 +94,31 @@ std::shared_ptr<IChannel> DNP3Manager::AddTLSClient(const std::string& id,
 std::shared_ptr<IChannel> DNP3Manager::AddTLSServer(const std::string& id,
                                                     const log4cpp::LogLevels& levels,
                                                     ServerAcceptMode mode,
-                                                    const std::string& endpoint,
-                                                    uint16_t port,
+                                                    const IPEndpoint& endpoint,
                                                     const TLSConfig& config,
                                                     std::shared_ptr<IChannelListener> listener,
                                                     std::error_code& ec)
 {
-    return this->impl->AddTLSServer(id, levels, mode, endpoint, port, config, std::move(listener), ec);
+    return this->impl->AddTLSServer(id, levels, mode, endpoint, config, std::move(listener), ec);
 }
 
 std::shared_ptr<IListener> DNP3Manager::CreateListener(std::string loggerid,
                                                        const log4cpp::LogLevels& loglevel,
-                                                       IPEndpoint endpoint,
+                                                       const IPEndpoint& endpoint,
                                                        const std::shared_ptr<IListenCallbacks>& callbacks,
                                                        std::error_code& ec)
 {
-    return impl->CreateListener(std::move(loggerid), loglevel, std::move(endpoint), callbacks, ec);
+    return impl->CreateListener(std::move(loggerid), loglevel, endpoint, callbacks, ec);
 }
 
 std::shared_ptr<IListener> DNP3Manager::CreateListener(std::string loggerid,
                                                        const log4cpp::LogLevels& loglevel,
-                                                       IPEndpoint endpoint,
+                                                       const IPEndpoint& endpoint,
                                                        const TLSConfig& config,
                                                        const std::shared_ptr<IListenCallbacks>& callbacks,
                                                        std::error_code& ec)
 {
-    return impl->CreateListener(std::move(loggerid), loglevel, std::move(endpoint), config, callbacks, ec);
+    return impl->CreateListener(std::move(loggerid), loglevel, endpoint, config, callbacks, ec);
 }
 
 } // namespace opendnp3

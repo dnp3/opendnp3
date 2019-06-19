@@ -18,31 +18,31 @@
  * limitations under the License.
  */
 
-#include "channel/SocketChannel.h"
+#include "channel/TCPSocketChannel.h"
 
 namespace opendnp3
 {
 
-SocketChannel::SocketChannel(const std::shared_ptr<exe4cpp::StrandExecutor>& executor, asio::ip::tcp::socket socket)
+TCPSocketChannel::TCPSocketChannel(const std::shared_ptr<exe4cpp::StrandExecutor>& executor, asio::ip::tcp::socket socket)
     : IAsyncChannel(executor), socket(std::move(socket))
 {
 }
 
-void SocketChannel::BeginReadImpl(ser4cpp::wseq_t dest)
+void TCPSocketChannel::BeginReadImpl(ser4cpp::wseq_t dest)
 {
     auto callback = [this](const std::error_code& ec, size_t num) { this->OnReadCallback(ec, num); };
 
     socket.async_read_some(asio::buffer(dest, dest.length()), this->executor->wrap(callback));
 }
 
-void SocketChannel::BeginWriteImpl(const ser4cpp::rseq_t& buffer)
+void TCPSocketChannel::BeginWriteImpl(const ser4cpp::rseq_t& buffer)
 {
     auto callback = [this](const std::error_code& ec, size_t num) { this->OnWriteCallback(ec, num); };
 
     asio::async_write(socket, asio::buffer(buffer, buffer.length()), this->executor->wrap(callback));
 }
 
-void SocketChannel::ShutdownImpl()
+void TCPSocketChannel::ShutdownImpl()
 {
     std::error_code ec;
     socket.shutdown(asio::socket_base::shutdown_type::shutdown_both, ec);
