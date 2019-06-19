@@ -124,7 +124,6 @@ private:
     bool txInitiated;
     ISOEHandler* pSOEHandler;
 
-    TimestampMode ctoMode;
     DNPTime commonTimeOccurence;
 
     void CheckForTxStart();
@@ -142,25 +141,24 @@ private:
 template<class T>
 IINField MeasurementHandler::ProcessWithCTO(const HeaderRecord& record, const ICollection<Indexed<T>>& values)
 {
-    if (ctoMode == TimestampMode::INVALID)
+    if (this->commonTimeOccurence.quality == TimestampMode::INVALID)
     {
         FORMAT_LOG_BLOCK(logger, flags::WARN, "No prior CTO objects for %s",
                          GroupVariationSpec::to_string(record.enumeration));
         return IINField(IINBit::PARAM_ERROR);
     }
 
-    const auto MODE = this->ctoMode;
     const auto cto = this->commonTimeOccurence;
 
     auto transform = [cto](const Indexed<T>& input) -> Indexed<T> {
         Indexed<T> copy(input);
-        copy.value.time = DNPTime(input.value.time.value + cto.value);
+        copy.value.time = DNPTime(input.value.time.value + cto.value, cto.quality);
         return copy;
     };
 
     auto adjusted = Map<Indexed<T>, Indexed<T>>(values, transform);
 
-    return this->LoadValues(record, MODE, adjusted);
+    return this->LoadValues(record, cto.quality, adjusted);
 }
 
 } // namespace opendnp3

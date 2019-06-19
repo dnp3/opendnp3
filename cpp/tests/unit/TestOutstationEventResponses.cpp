@@ -332,14 +332,14 @@ TEST_CASE(SUITE("ReadGrp2Var3SingleValue"))
 {
     auto update = [](IUpdateHandler& db) { db.Update(Binary(false, 0x01, DNPTime(0x4571)), 3); };
 
-    TestEventRead("C0 01 02 03 06", "E0 81 80 00 33 01 07 01 71 45 00 00 00 00 02 03 28 01 00 03 00 01 00 00", update);
+    TestEventRead("C0 01 02 03 06", "E0 81 80 00 33 02 07 01 71 45 00 00 00 00 02 03 28 01 00 03 00 01 00 00", update);
 }
 
 TEST_CASE(SUITE("ReadGrp2Var3TwoValues"))
 {
     auto update = [](IUpdateHandler& db) {
-        db.Update(Binary(false, 0x01, DNPTime(0x4571)), 3);
-        db.Update(Binary(true, 0x01, DNPTime(0x4579)), 4);
+        db.Update(Binary(false, 0x01, DNPTime(0x4571, TimestampMode::SYNCHRONIZED)), 3);
+        db.Update(Binary(true, 0x01, DNPTime(0x4579, TimestampMode::SYNCHRONIZED)), 4);
     };
 
     auto rsp = "E0 81 80 00 33 01 07 01 71 45 00 00 00 00 02 03 28 02 00 03 00 01 00 00 04 00 81 08 00";
@@ -350,8 +350,8 @@ TEST_CASE(SUITE("ReadGrp2Var3TwoValues"))
 TEST_CASE(SUITE("ReadGrp2Var3TwoValuesNegativeDifference"))
 {
     auto update = [](IUpdateHandler& db) {
-        db.Update(Binary(false, 0x01, DNPTime(0x4571)), 3);
-        db.Update(Binary(true, 0x01, DNPTime(0x4570)), 4);
+        db.Update(Binary(false, 0x01, DNPTime(0x4571, TimestampMode::SYNCHRONIZED)), 3);
+        db.Update(Binary(true, 0x01, DNPTime(0x4570, TimestampMode::SYNCHRONIZED)), 4);
     };
 
     std::string header = "E0 81 80 00";
@@ -366,8 +366,8 @@ TEST_CASE(SUITE("ReadGrp2Var3TwoValuesNegativeDifference"))
 TEST_CASE(SUITE("ReadGrp2Var3TwoValuesDifferenceTooBigForCTO"))
 {
     auto update = [](IUpdateHandler& db) {
-        db.Update(Binary(false, 0x01, DNPTime(0x000000)), 3);
-        db.Update(Binary(true, 0x01, DNPTime(0x010000)), 4);
+        db.Update(Binary(false, 0x01, DNPTime(0x000000, TimestampMode::SYNCHRONIZED)), 3);
+        db.Update(Binary(true, 0x01, DNPTime(0x010000, TimestampMode::SYNCHRONIZED)), 4);
     };
 
     std::string header = "E0 81 80 00";
@@ -375,6 +375,34 @@ TEST_CASE(SUITE("ReadGrp2Var3TwoValuesDifferenceTooBigForCTO"))
     std::string cto2 = " 33 01 07 01 00 00 01 00 00 00 02 03 28 01 00 04 00 81 00 00";
 
     auto rsp = header + cto1 + cto2;
+
+    TestEventRead("C0 01 02 03 06", rsp, update);
+}
+
+TEST_CASE(SUITE("ReadGrp2Var3TwoValuesWithDifferentTimeQuality"))
+{
+    auto update = [](IUpdateHandler& db) {
+        db.Update(Binary(false, 0x01, DNPTime(0x4571, TimestampMode::SYNCHRONIZED)), 3);
+        db.Update(Binary(true, 0x01, DNPTime(0x4579, TimestampMode::UNSYNCHRONIZED)), 4);
+    };
+
+    std::string header = "E0 81 80 00";
+    std::string cto1 = " 33 01 07 01 71 45 00 00 00 00 02 03 28 01 00 03 00 01 00 00";
+    std::string cto2 = " 33 02 07 01 79 45 00 00 00 00 02 03 28 01 00 04 00 81 00 00";
+
+    auto rsp = header + cto1 + cto2;
+
+    TestEventRead("C0 01 02 03 06", rsp, update);
+}
+
+TEST_CASE(SUITE("ReadGrp2Var3TwoValuesWithDifferentInvalidOrUnsynchronizedAreReportedTogether"))
+{
+    auto update = [](IUpdateHandler& db) {
+        db.Update(Binary(false, 0x01, DNPTime(0x4571, TimestampMode::UNSYNCHRONIZED)), 3);
+        db.Update(Binary(true, 0x01, DNPTime(0x4579, TimestampMode::INVALID)), 4);
+    };
+
+    auto rsp = "E0 81 80 00 33 02 07 01 71 45 00 00 00 00 02 03 28 02 00 03 00 01 00 00 04 00 81 08 00";
 
     TestEventRead("C0 01 02 03 06", rsp, update);
 }

@@ -39,8 +39,7 @@ MeasurementHandler::MeasurementHandler(ResponseInfo info, const log4cpp::Logger&
 	  logger(logger),
       txInitiated(false),
       pSOEHandler(pSOEHandler),
-      ctoMode(TimestampMode::INVALID),
-      commonTimeOccurence(0)
+      commonTimeOccurence(0, TimestampMode::INVALID)
 {
 }
 
@@ -85,7 +84,7 @@ IINField MeasurementHandler::ProcessHeader(const CountHeader& /*header*/, const 
     Group51Var1 cto;
     if (values.ReadOnlyValue(cto))
     {
-        ctoMode = TimestampMode::SYNCHRONIZED;
+        cto.time.quality = TimestampMode::SYNCHRONIZED;
         commonTimeOccurence = cto.time;
     }
     return IINField::Empty();
@@ -96,7 +95,7 @@ IINField MeasurementHandler::ProcessHeader(const CountHeader& /*header*/, const 
     Group51Var2 cto;
     if (values.ReadOnlyValue(cto))
     {
-        ctoMode = TimestampMode::UNSYNCHRONIZED;
+        cto.time.quality = TimestampMode::UNSYNCHRONIZED;
         commonTimeOccurence = cto.time;
     }
 

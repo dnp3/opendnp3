@@ -373,6 +373,36 @@ TEST_CASE(SUITE("ParsesGroup2Var3Correctly"))
     }
 }
 
+TEST_CASE(SUITE("ParsesGroup2Var3TimeQualityCorrectly"))
+{
+    auto config = NoStartupTasks();
+    config.startupIntegrityClassMask = ClassField(~0);
+    MasterTestFixture t(config);
+    t.context->OnLowerLayerUp();
+
+    REQUIRE(t.exe->run_many() > 0);
+
+    REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
+    t.context->OnTxReady();
+
+    // g51v1, t = 3,
+    // g2v3, index 7, t = 2, Synchronized, true/online
+    // g2v3, index 8, t = 3, Unsychronized, true/online
+    t.SendToMaster("C0 81 00 00 33 01 07 01 03 00 00 00 00 00 02 03 17 01 07 81 02 00 33 02 07 01 03 00 00 00 00 00 02 03 17 01 08 81 03 00");
+
+    REQUIRE(t.meas->binarySOE.size() == 2);
+    {
+        auto record = t.meas->binarySOE[7];
+        REQUIRE(record.meas.time == DNPTime(5, TimestampMode::SYNCHRONIZED));
+        REQUIRE(record.info.gv == GroupVariation::Group2Var3);
+    }
+    {
+        auto record = t.meas->binarySOE[8];
+        REQUIRE(record.meas.time == DNPTime(6, TimestampMode::UNSYNCHRONIZED));
+        REQUIRE(record.info.gv == GroupVariation::Group2Var3);
+    }
+}
+
 TEST_CASE(SUITE("ParsesGroup50Var4"))
 {
     auto config = NoStartupTasks();
@@ -546,7 +576,7 @@ TEST_CASE(SUITE("ReceiveCTOSynchronized"))
 
     REQUIRE(t.meas->TotalReceived() == 1);
     auto record = t.meas->binarySOE[7];
-    bool equal = record.meas == Binary(true, 0x01, DNPTime(0x04)); // timestamp is 4
+    bool equal = record.meas == Binary(true, 0x01, DNPTime(0x04, TimestampMode::SYNCHRONIZED)); // timestamp is 4
     REQUIRE(equal);
     REQUIRE(record.info.tsmode == TimestampMode::SYNCHRONIZED);
 }
@@ -562,7 +592,7 @@ TEST_CASE(SUITE("ReceiveCTOUnsynchronized"))
 
     REQUIRE(t.meas->TotalReceived() == 1);
     auto record = t.meas->binarySOE[7];
-    bool equal = record.meas == Binary(true, 0x01, DNPTime(0x04)); // timestamp is 4
+    bool equal = record.meas == Binary(true, 0x01, DNPTime(0x04, TimestampMode::UNSYNCHRONIZED)); // timestamp is 4
     REQUIRE(equal);
     REQUIRE(record.info.tsmode == TimestampMode::UNSYNCHRONIZED);
 }

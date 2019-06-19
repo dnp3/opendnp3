@@ -20,6 +20,8 @@
 #ifndef OPENDNP3_DNPTIME_H
 #define OPENDNP3_DNPTIME_H
 
+#include "opendnp3/gen/TimestampMode.h"
+
 #include <cstdint>
 
 namespace opendnp3
@@ -28,14 +30,17 @@ namespace opendnp3
 struct DNPTime
 {
     DNPTime() : value(0) {}
-    explicit DNPTime(uint64_t value) : value(value) {}
+    explicit DNPTime(uint64_t value) : value(value), quality(TimestampMode::INVALID) {}
+    DNPTime(uint64_t value, TimestampMode quality)
+        : value(value), quality(quality) {}
 
     bool operator==(const DNPTime& rhs) const
     {
-        return this->value == rhs.value;
+        return this->value == rhs.value && this->quality == rhs.quality;
     }
 
     uint64_t value;
+    TimestampMode quality;
 };
 
 }

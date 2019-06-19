@@ -48,10 +48,21 @@ public:
                                  IEventCollection<T>& items,
                                  const DNP3Serializer<T>& serializer)
     {
-        Group51Var1 value;
-        value.time = cto;
-        CTOEventWriter<T, Group51Var1> handler(value, writer, serializer);
-        return items.WriteSome(handler);
+        if (cto.quality == TimestampMode::SYNCHRONIZED)
+        {
+            Group51Var1 value;
+            value.time = cto;
+            CTOEventWriter<T, Group51Var1> handler(value, writer, serializer);
+            return items.WriteSome(handler);
+        }
+        else
+        {
+            Group51Var2 value;
+            value.time = cto;
+            CTOEventWriter<T, Group51Var2> handler(value, writer, serializer);
+            return items.WriteSome(handler);
+        }
+        
     }
 
     static uint16_t Write(uint8_t firstSize, HeaderWriter& writer, IEventCollection<OctetString>& items);
@@ -89,9 +100,20 @@ private:
 
         virtual bool Write(const T& meas, uint16_t index) override
         {
-
             if (!this->iterator.IsValid())
                 return false;
+
+            // Check that the quality of the measurement fits with the CTO variation
+            if (this->cto.quality == TimestampMode::SYNCHRONIZED)
+            {
+                if (meas.time.quality != TimestampMode::SYNCHRONIZED)
+                    return false;
+            }
+            else
+            {
+                if (meas.time.quality == TimestampMode::SYNCHRONIZED)
+                    return false;
+            }
 
             // can't encode timestamps that go backwards
             if (meas.time.value < this->cto.value)
