@@ -45,7 +45,7 @@ struct Channels
     explicit Channels(DNP3Manager& manager)
         : client(manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(), { opendnp3::IPEndpoint("127.0.0.1", 20000) }, "", nullptr)),
           server(
-              manager.AddTCPServer("server", levels::ALL, ServerAcceptMode::CloseExisting, "0.0.0.0", 20000, nullptr))
+              manager.AddTCPServer("server", levels::ALL, ServerAcceptMode::CloseExisting, IPEndpoint("0.0.0.0", 20000), nullptr))
     {
     }
 

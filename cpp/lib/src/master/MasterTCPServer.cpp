@@ -20,7 +20,7 @@
 
 #include "master/MasterTCPServer.h"
 
-#include "channel/SocketChannel.h"
+#include "channel/TCPSocketChannel.h"
 #include "link/LinkSession.h"
 
 #include "opendnp3/LogLevels.h"
@@ -60,7 +60,7 @@ void MasterTCPServer::AcceptConnection(uint64_t sessionid,
         FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Accepted connection from: %s", oss.str().c_str());
 
         auto channel
-            = SocketChannel::Create(executor->fork(), std::move(socket)); // run the link session in its own strand
+            = TCPSocketChannel::Create(executor->fork(), std::move(socket)); // run the link session in its own strand
 
         auto create = [&]() -> std::shared_ptr<LinkSession> {
             return LinkSession::Create(this->logger.detach(SessionIdToString(sessionid)), sessionid, this->manager,

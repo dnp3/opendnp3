@@ -17,30 +17,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#ifndef OPENDNP3_UDPSOCKETCHANNEL_H
+#define OPENDNP3_UDPSOCKETCHANNEL_H
 
-#include "MockTCPClientHandler.h"
+#include "channel/IAsyncChannel.h"
 
-#include "channel/TCPSocketChannel.h"
-
-using namespace opendnp3;
-
-void MockTCPClientHandler::OnConnect(const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
-                                     asio::ip::tcp::socket socket,
-                                     const std::error_code& ec)
+namespace opendnp3
 {
-    if (ec)
+
+class UDPSocketChannel final : public IAsyncChannel
+{
+
+public:
+    static std::shared_ptr<IAsyncChannel> Create(std::shared_ptr<exe4cpp::StrandExecutor> executor,
+                                                 asio::ip::udp::socket socket)
     {
-        ++this->num_error;
-        throw std::logic_error(ec.message());
+        return std::make_shared<UDPSocketChannel>(executor, std::move(socket));
     }
 
-    this->channels.push_back(TCPSocketChannel::Create(executor, std::move(socket)));
-}
+    UDPSocketChannel(const std::shared_ptr<exe4cpp::StrandExecutor>& executor, asio::ip::udp::socket socket);
 
-MockTCPClientHandler::~MockTCPClientHandler()
-{
-    for (auto& channel : channels)
-    {
-        channel->Shutdown();
-    }
-}
+protected:
+    void BeginReadImpl(ser4cpp::wseq_t dest) final;
+    void BeginWriteImpl(const ser4cpp::rseq_t& buffer) final;
+    void ShutdownImpl() final;
+
+private:
+    asio::ip::udp::socket socket;
+};
+
+} // namespace opendnp3
+
+#endif

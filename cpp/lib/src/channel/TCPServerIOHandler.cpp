@@ -20,7 +20,7 @@
 
 #include "TCPServerIOHandler.h"
 
-#include "channel/SocketChannel.h"
+#include "channel/TCPSocketChannel.h"
 
 #include "opendnp3/LogLevels.h"
 
@@ -63,7 +63,7 @@ void TCPServerIOHandler::BeginChannelAccept()
 {
     auto callback = [self = shared_from_this(), this](const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                                       asio::ip::tcp::socket socket) {
-        this->OnNewChannel(SocketChannel::Create(executor, std::move(socket)));
+        this->OnNewChannel(TCPSocketChannel::Create(executor, std::move(socket)));
     };
 
     if (this->server)

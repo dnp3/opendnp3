@@ -29,6 +29,7 @@
 
 namespace opendnp3
 {
+
 class SocketHelpers : private StaticOnly
 {
 
@@ -36,18 +37,20 @@ public:
     /**
      * Bind a socket object to a local endpoint given an address. If the address is empty, 0.0.0.0 is used
      */
-    template<class SocketType>
+    template<typename proto_t, typename socket_t>
     static void BindToLocalAddress(const std::string& address,
-                                   asio::ip::tcp::endpoint& endpoint,
-                                   SocketType& socket,
+                                   uint16_t port,
+                                   socket_t& socket,
                                    std::error_code& ec)
     {
+        typename proto_t::endpoint endpoint;
         auto string = address.empty() ? "0.0.0.0" : address;
         auto addr = asio::ip::address::from_string(string, ec);
         if (!ec)
         {
             endpoint.address(addr);
-            socket.open(asio::ip::tcp::v4(), ec);
+            endpoint.port(port);
+            socket.open(proto_t::v4(), ec);
             if (!ec)
             {
                 socket.bind(endpoint, ec);

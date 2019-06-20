@@ -22,7 +22,7 @@
 #define OPENDNP3_ASIOTESTS_MOCKTCPSERVER_H
 
 #include "channel/IAsyncChannel.h"
-#include "channel/SocketChannel.h"
+#include "channel/TCPSocketChannel.h"
 #include "channel/TCPServer.h"
 
 #include <deque>
@@ -58,7 +58,7 @@ public:
                                   const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                   asio::ip::tcp::socket socket) override
     {
-        this->channels.push_back(opendnp3::SocketChannel::Create(executor, std::move(socket)));
+        this->channels.push_back(opendnp3::TCPSocketChannel::Create(executor, std::move(socket)));
     }
 
     virtual void OnShutdown() override {}

@@ -218,8 +218,7 @@ std::shared_ptr<IOutstation> StackPair::CreateOutstation(log4cpp::LogLevels leve
                                                          uint16_t eventBufferSize,
                                                          std::shared_ptr<IChannelListener> listener)
 {
-    auto channel = manager.AddTCPServer(GetId("server", port), levels, ServerAcceptMode::CloseExisting, "127.0.0.1",
-                                        port, std::move(listener));
+    auto channel = manager.AddTCPServer(GetId("server", port), levels, ServerAcceptMode::CloseExisting, IPEndpoint("127.0.0.1", port), std::move(listener));
 
     return channel->AddOutstation(GetId("outstation", port), SuccessCommandHandler::Create(),
                                   DefaultOutstationApplication::Create(),

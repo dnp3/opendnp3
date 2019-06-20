@@ -65,9 +65,15 @@ public:
     std::shared_ptr<IChannel> AddTCPServer(const std::string& id,
                                            const log4cpp::LogLevels& levels,
                                            ServerAcceptMode mode,
-                                           const std::string& endpoint,
-                                           uint16_t port,
+                                           const IPEndpoint& endpoint,
                                            std::shared_ptr<IChannelListener> listener);
+
+    std::shared_ptr<IChannel> AddUDPChannel(const std::string& id,
+                                            const log4cpp::LogLevels& levels,
+                                            const ChannelRetry& retry,
+                                            const IPEndpoint& localEndpoint,
+                                            const IPEndpoint& remoteEndpoint,
+                                            std::shared_ptr<IChannelListener> listener);
 
     std::shared_ptr<IChannel> AddSerial(const std::string& id,
                                         const log4cpp::LogLevels& levels,
@@ -87,21 +93,20 @@ public:
     std::shared_ptr<IChannel> AddTLSServer(const std::string& id,
                                            const log4cpp::LogLevels& levels,
                                            ServerAcceptMode mode,
-                                           const std::string& endpoint,
-                                           uint16_t port,
+                                           const IPEndpoint& endpoint,
                                            const TLSConfig& config,
                                            std::shared_ptr<IChannelListener> listener,
                                            std::error_code& ec);
 
     std::shared_ptr<IListener> CreateListener(std::string loggerid,
                                               const log4cpp::LogLevels& levels,
-                                              IPEndpoint endpoint,
+                                              const IPEndpoint& endpoint,
                                               const std::shared_ptr<IListenCallbacks>& callbacks,
                                               std::error_code& ec);
 
     std::shared_ptr<IListener> CreateListener(std::string loggerid,
                                               const log4cpp::LogLevels& levels,
-                                              IPEndpoint endpoint,
+                                              const IPEndpoint& endpoint,
                                               const TLSConfig& config,
                                               const std::shared_ptr<IListenCallbacks>& callbacks,
                                               std::error_code& ec);

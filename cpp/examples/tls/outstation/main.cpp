@@ -79,7 +79,7 @@ int main(int argc, char* argv[])
     std::error_code ec;
 
     // Create a TCP server (listener)
-    auto channel = manager.AddTLSServer("server", logLevels, ServerAcceptMode::CloseExisting, "0.0.0.0", 20001,
+    auto channel = manager.AddTLSServer("server", logLevels, ServerAcceptMode::CloseExisting, IPEndpoint("0.0.0.0", 20001),
                                         TLSConfig(caCertificate, certificateChain, privateKey, 2),
                                         PrintingChannelListener::Create(), ec);
 

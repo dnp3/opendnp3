@@ -42,7 +42,7 @@ const uint32_t NUM_THREADS = 1;
 void start_outstation(DNP3Manager& manager)
 {
     const auto channel
-        = manager.AddTCPServer("server", FILTERS, ServerAcceptMode::CloseNew, "127.0.0.1", 20000, nullptr);
+        = manager.AddTCPServer("server", FILTERS, ServerAcceptMode::CloseNew, IPEndpoint("127.0.0.1", 20000), nullptr);
     const auto outstation
         = channel->AddOutstation("outstation", SuccessCommandHandler::Create(), DefaultOutstationApplication::Create(), OutstationStackConfig(configure::by_count_of::all_types(0)));
     outstation->Enable();
@@ -91,7 +91,7 @@ TEST_CASE("TestDeadlock2")
     for(auto i = 0; i < 1000; ++i)
     {
         auto manager2 = std::make_unique<DNP3Manager>(3, ConsoleLogger::Create());
-        auto channel2 = manager2->AddTCPServer("server", FILTERS, ServerAcceptMode::CloseNew, "127.0.0.1", 20000, nullptr);
+        auto channel2 = manager2->AddTCPServer("server", FILTERS, ServerAcceptMode::CloseNew, IPEndpoint("127.0.0.1", 20000), nullptr);
         OutstationStackConfig config(DatabaseConfig(1));
         config.link.LocalAddr = 10;
         config.link.RemoteAddr = 1;
