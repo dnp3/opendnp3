@@ -48,7 +48,7 @@ public:
                                  IEventCollection<T>& items,
                                  const DNP3Serializer<T>& serializer)
     {
-        if (cto.quality == TimestampMode::SYNCHRONIZED)
+        if (cto.quality == TimestampQuality::SYNCHRONIZED)
         {
             Group51Var1 value;
             value.time = cto;
@@ -104,14 +104,14 @@ private:
                 return false;
 
             // Check that the quality of the measurement fits with the CTO variation
-            if (this->cto.quality == TimestampMode::SYNCHRONIZED)
+            if (this->cto.quality == TimestampQuality::SYNCHRONIZED)
             {
-                if (meas.time.quality != TimestampMode::SYNCHRONIZED)
+                if (meas.time.quality != TimestampQuality::SYNCHRONIZED)
                     return false;
             }
             else
             {
-                if (meas.time.quality == TimestampMode::SYNCHRONIZED)
+                if (meas.time.quality == TimestampQuality::SYNCHRONIZED)
                     return false;
             }
 

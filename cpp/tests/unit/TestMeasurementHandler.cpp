@@ -54,7 +54,7 @@ TEST_CASE(SUITE("parses g121v1 correctly"))
 
         auto& stat = soe.securityStatSOE[2];
 
-        REQUIRE(stat.info.tsmode == TimestampMode::INVALID);
+        REQUIRE(stat.info.tsmode == TimestampQuality::INVALID);
         REQUIRE(stat.info.gv == GroupVariation::Group121Var1);
         REQUIRE_FALSE(stat.info.isEventVariation);
         REQUIRE(stat.meas.value.count == 8);
@@ -74,7 +74,7 @@ TEST_CASE(SUITE("parses g122v1 correctly"))
 
         auto& stat = soe.securityStatSOE[3];
 
-        REQUIRE(stat.info.tsmode == TimestampMode::INVALID);
+        REQUIRE(stat.info.tsmode == TimestampQuality::INVALID);
         REQUIRE(stat.info.gv == GroupVariation::Group122Var1);
         REQUIRE(stat.meas.value.count == 8);
         REQUIRE(stat.meas.value.assocId == 7);
@@ -93,7 +93,7 @@ TEST_CASE(SUITE("parses g122v2 correctly"))
 
         auto& stat = soe.securityStatSOE[3];
 
-        REQUIRE(stat.info.tsmode == TimestampMode::SYNCHRONIZED);
+        REQUIRE(stat.info.tsmode == TimestampQuality::SYNCHRONIZED);
         REQUIRE(stat.info.gv == GroupVariation::Group122Var2);
         REQUIRE(stat.info.isEventVariation);
         REQUIRE(stat.meas.value.count == 8);

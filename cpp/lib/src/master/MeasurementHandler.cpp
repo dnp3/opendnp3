@@ -39,7 +39,7 @@ MeasurementHandler::MeasurementHandler(ResponseInfo info, const log4cpp::Logger&
 	  logger(logger),
       txInitiated(false),
       pSOEHandler(pSOEHandler),
-      commonTimeOccurence(0, TimestampMode::INVALID)
+      commonTimeOccurence(0, TimestampQuality::INVALID)
 {
 }
 
@@ -51,9 +51,9 @@ MeasurementHandler::~MeasurementHandler()
     }
 }
 
-TimestampMode MeasurementHandler::ModeFromType(GroupVariation gv)
+TimestampQuality MeasurementHandler::ModeFromType(GroupVariation gv)
 {
-    return HasAbsoluteTime(gv) ? TimestampMode::SYNCHRONIZED : TimestampMode::INVALID;
+    return HasAbsoluteTime(gv) ? TimestampQuality::SYNCHRONIZED : TimestampQuality::INVALID;
 }
 
 void MeasurementHandler::CheckForTxStart()
@@ -73,7 +73,7 @@ IINField MeasurementHandler::ProcessHeader(const CountHeader& header, const ICol
 
     auto collection = Map<Group50Var1, DNPTime>(values, transform);
 
-    HeaderInfo info(header.enumeration, header.GetQualifierCode(), TimestampMode::INVALID, header.headerIndex);
+    HeaderInfo info(header.enumeration, header.GetQualifierCode(), TimestampQuality::INVALID, header.headerIndex);
     this->pSOEHandler->Process(info, collection);
 
     return IINField();
@@ -84,7 +84,7 @@ IINField MeasurementHandler::ProcessHeader(const CountHeader& /*header*/, const 
     Group51Var1 cto;
     if (values.ReadOnlyValue(cto))
     {
-        cto.time.quality = TimestampMode::SYNCHRONIZED;
+        cto.time.quality = TimestampQuality::SYNCHRONIZED;
         commonTimeOccurence = cto.time;
     }
     return IINField::Empty();
@@ -95,7 +95,7 @@ IINField MeasurementHandler::ProcessHeader(const CountHeader& /*header*/, const 
     Group51Var2 cto;
     if (values.ReadOnlyValue(cto))
     {
-        cto.time.quality = TimestampMode::UNSYNCHRONIZED;
+        cto.time.quality = TimestampQuality::UNSYNCHRONIZED;
         commonTimeOccurence = cto.time;
     }
 

@@ -29,38 +29,47 @@
 // limitations under the License.
 //
 
-#ifndef OPENDNP3_TIMESTAMPMODE_H
-#define OPENDNP3_TIMESTAMPMODE_H
-
-#include <cstdint>
-#include <string>
-
-namespace opendnp3 {
-
+package com.automatak.dnp3.enums;
 /**
-  Indicates the validity of timestamp values for an entire object header
+* Indicates the quality of timestamp values
 */
-enum class TimestampMode : uint8_t
+public enum TimestampQuality
 {
-  /// The timestamp is UTC synchronized at the remote device
-  SYNCHRONIZED = 1,
-  /// The device indicate the timestamp may be unsynchronized
-  UNSYNCHRONIZED = 2,
-  /// Timestamp is not valid, ignore the value and use a local timestamp
-  INVALID = 0
-};
+  /**
+  * The timestamp is UTC synchronized at the remote device
+  */
+  SYNCHRONIZED(1),
+  /**
+  * The device indicate the timestamp may be unsynchronized
+  */
+  UNSYNCHRONIZED(2),
+  /**
+  * Timestamp is not valid, ignore the value and use a local timestamp
+  */
+  INVALID(0);
 
-struct TimestampModeSpec
-{
-  using enum_type_t = TimestampMode;
+  private final int id;
 
-  static uint8_t to_type(TimestampMode arg);
-  static TimestampMode from_type(uint8_t arg);
-  static char const* to_string(TimestampMode arg);
-  static char const* to_human_string(TimestampMode arg);
-  static TimestampMode from_string(const std::string& arg);
-};
+  public int toType()
+  {
+    return id;
+  }
 
+  TimestampQuality(int id)
+  {
+    this.id = id;
+  }
+
+  public static TimestampQuality fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(1):
+        return SYNCHRONIZED;
+      case(2):
+        return UNSYNCHRONIZED;
+      default:
+        return INVALID;
+    }
+  }
 }
-
-#endif

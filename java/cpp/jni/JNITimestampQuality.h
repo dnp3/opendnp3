@@ -29,41 +29,41 @@
 // limitations under the License.
 //
 
-#include "JNITimestampMode.h"
+#ifndef OPENDNP3JAVA_JNITIMESTAMPQUALITY_H
+#define OPENDNP3JAVA_JNITIMESTAMPQUALITY_H
+
+#include <jni.h>
+
+#include "../adapters/LocalRef.h"
 
 namespace jni
 {
+    struct JCache;
+
     namespace cache
     {
-        bool TimestampMode::init(JNIEnv* env)
+        class TimestampQuality
         {
-            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/enums/TimestampMode;");
-            if(!clazzTemp) return false;
-            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-            env->DeleteLocalRef(clazzTemp);
+            friend struct jni::JCache;
 
-            this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/TimestampMode;");
-            if(!this->fromTypeMethod) return false;
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-            this->toTypeMethod = env->GetMethodID(this->clazz, "toType", "()I");
-            if(!this->toTypeMethod) return false;
+            public:
 
-            return true;
-        }
+            // methods
+            LocalRef<jobject> fromType(JNIEnv* env, jint arg0);
+            jint toType(JNIEnv* env, jobject instance);
 
-        void TimestampMode::cleanup(JNIEnv* env)
-        {
-            env->DeleteGlobalRef(this->clazz);
-        }
+            private:
 
-        LocalRef<jobject> TimestampMode::fromType(JNIEnv* env, jint arg0)
-        {
-            return LocalRef<jobject>(env, env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0));
-        }
+            jclass clazz = nullptr;
 
-        jint TimestampMode::toType(JNIEnv* env, jobject instance)
-        {
-            return env->CallIntMethod(instance, this->toTypeMethod);
-        }
+            // method ids
+            jmethodID fromTypeMethod = nullptr;
+            jmethodID toTypeMethod = nullptr;
+        };
     }
 }
+
+#endif

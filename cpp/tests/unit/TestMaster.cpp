@@ -393,12 +393,12 @@ TEST_CASE(SUITE("ParsesGroup2Var3TimeQualityCorrectly"))
     REQUIRE(t.meas->binarySOE.size() == 2);
     {
         auto record = t.meas->binarySOE[7];
-        REQUIRE(record.meas.time == DNPTime(5, TimestampMode::SYNCHRONIZED));
+        REQUIRE(record.meas.time == DNPTime(5, TimestampQuality::SYNCHRONIZED));
         REQUIRE(record.info.gv == GroupVariation::Group2Var3);
     }
     {
         auto record = t.meas->binarySOE[8];
-        REQUIRE(record.meas.time == DNPTime(6, TimestampMode::UNSYNCHRONIZED));
+        REQUIRE(record.meas.time == DNPTime(6, TimestampQuality::UNSYNCHRONIZED));
         REQUIRE(record.info.gv == GroupVariation::Group2Var3);
     }
 }
@@ -576,9 +576,9 @@ TEST_CASE(SUITE("ReceiveCTOSynchronized"))
 
     REQUIRE(t.meas->TotalReceived() == 1);
     auto record = t.meas->binarySOE[7];
-    bool equal = record.meas == Binary(true, Flags(0x01), DNPTime(0x04, TimestampMode::SYNCHRONIZED)); // timestamp is 4
+    bool equal = record.meas == Binary(true, Flags(0x01), DNPTime(0x04, TimestampQuality::SYNCHRONIZED)); // timestamp is 4
     REQUIRE(equal);
-    REQUIRE(record.info.tsmode == TimestampMode::SYNCHRONIZED);
+    REQUIRE(record.info.tsmode == TimestampQuality::SYNCHRONIZED);
 }
 
 TEST_CASE(SUITE("ReceiveCTOUnsynchronized"))
@@ -592,9 +592,9 @@ TEST_CASE(SUITE("ReceiveCTOUnsynchronized"))
 
     REQUIRE(t.meas->TotalReceived() == 1);
     auto record = t.meas->binarySOE[7];
-    bool equal = record.meas == Binary(true, Flags(0x01), DNPTime(0x04, TimestampMode::UNSYNCHRONIZED)); // timestamp is 4
+    bool equal = record.meas == Binary(true, Flags(0x01), DNPTime(0x04, TimestampQuality::UNSYNCHRONIZED)); // timestamp is 4
     REQUIRE(equal);
-    REQUIRE(record.info.tsmode == TimestampMode::UNSYNCHRONIZED);
+    REQUIRE(record.info.tsmode == TimestampQuality::UNSYNCHRONIZED);
 }
 
 TEST_CASE(SUITE("ReceiveIINinResponses"))

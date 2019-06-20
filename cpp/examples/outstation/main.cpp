@@ -25,12 +25,74 @@
 #include <opendnp3/outstation/SimpleCommandHandler.h>
 #include <opendnp3/outstation/UpdateBuilder.h>
 
+#include <chrono>
 #include <iostream>
 #include <string>
 #include <thread>
 
 using namespace std;
 using namespace opendnp3;
+
+class OutstationApplication : public IOutstationApplication
+{
+public:
+    virtual bool SupportsWriteAbsoluteTime()
+    {
+        return true;
+    }
+
+    /// Write the time to outstation, only called if SupportsWriteAbsoluteTime return true
+    /// @return boolean value indicating if the time value supplied was accepted. Returning
+    /// false will cause the outstation to set IIN 2.3 (PARAM_ERROR) in its response.
+    /// The outstation should clear its NEED_TIME field when handling this response
+    virtual bool WriteAbsoluteTime(const UTCTimestamp& timestamp)
+    {
+        this->lastTimestamp = timestamp;
+        this->lastUpdate = std::chrono::steady_clock::now();
+        return true;
+    }
+
+    /// Queries whether the outstation supports the writing of TimeAndInterval
+    /// If this function returns false, WriteTimeAndInterval will never be called
+    /// and the outstation will return IIN 2.1 (FUNC_NOT_SUPPORTED) when it receives this request
+    virtual bool SupportsWriteTimeAndInterval()
+    {
+        return false;
+    }
+
+    /// Write one or more TimeAndInterval values. Only called if SupportsWriteTimeAndInterval returns true.
+    /// The outstation application code is reponsible for updating TimeAndInterval values in the database if this
+    /// behavior is desired
+    /// @return boolean value indicating if the values supplied were accepted. Returning
+    /// false will cause the outstation to set IIN 2.3 (PARAM_ERROR) in its response.
+    virtual bool WriteTimeAndInterval(const ICollection<Indexed<TimeAndInterval>>& values)
+    {
+        return false;
+    }
+
+    /// Returns the application-controlled IIN field
+    virtual ApplicationIIN GetApplicationIIN() const
+    {
+        ApplicationIIN result;
+        result.needTime = !IsTimeValid();
+        return result;
+    }
+
+    DNPTime GetCurrentTime() const
+    {
+        auto result = DNPTime(lastTimestamp.msSinceEpoch + std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - lastUpdate).count());
+        result.quality = IsTimeValid() ? TimestampQuality::SYNCHRONIZED : TimestampQuality::UNSYNCHRONIZED;
+        return result;
+    }
+
+    bool IsTimeValid() const
+    {
+        return std::chrono::steady_clock::now() - lastUpdate <= std::chrono::seconds(10);
+    }
+
+    UTCTimestamp lastTimestamp;
+    std::chrono::steady_clock::time_point lastUpdate = std::chrono::steady_clock::time_point(std::chrono::milliseconds(0));
+};
 
 DatabaseConfig ConfigureDatabase()
 {
@@ -52,7 +114,7 @@ struct State
     uint8_t octetStringValue = 1;
 };
 
-void AddUpdates(UpdateBuilder& builder, State& state, const std::string& arguments);
+void AddUpdates(UpdateBuilder& builder, State& state, const OutstationApplication& app, const std::string& arguments);
 
 int main(int argc, char* argv[])
 {
@@ -80,19 +142,21 @@ int main(int argc, char* argv[])
     // you can override an default outstation parameters here
     // in this example, we've enabled the oustation to use unsolicted reporting
     // if the master enables it
-    config.outstation.params.allowUnsolicited = true;
+    config.outstation.params.allowUnsolicited = false;
 
     // You can override the default link layer settings here
     // in this example we've changed the default link layer addressing
     config.link.LocalAddr = 10;
     config.link.RemoteAddr = 1;
-    config.link.KeepAliveTimeout = TimeDuration::Max();    
+    config.link.KeepAliveTimeout = TimeDuration::Max();
+
+    auto app = std::make_shared<OutstationApplication>();
 
     // Create a new outstation with a log level, command handler, and
     // config info this	returns a thread-safe interface used for
     // updating the outstation's database.
     auto outstation = channel->AddOutstation("outstation", SuccessCommandHandler::Create(),
-                                             DefaultOutstationApplication::Create(), config);
+                                             app, config);
 
     // Enable the outstation and start communications
     outstation->Enable();
@@ -113,7 +177,7 @@ int main(int argc, char* argv[])
         {
             // update measurement values based on input string
             UpdateBuilder builder;
-            AddUpdates(builder, state, input);
+            AddUpdates(builder, state, *app, input);
             outstation->Apply(builder.Build());
         }
     }
@@ -121,7 +185,7 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-void AddUpdates(UpdateBuilder& builder, State& state, const std::string& arguments)
+void AddUpdates(UpdateBuilder& builder, State& state, const OutstationApplication& app, const std::string& arguments)
 {
     for (const char& c : arguments)
     {
@@ -141,7 +205,7 @@ void AddUpdates(UpdateBuilder& builder, State& state, const std::string& argumen
         }
         case ('b'):
         {
-            builder.Update(Binary(state.binary), 0);
+            builder.Update(Binary(state.binary, Flags(0x81), app.GetCurrentTime()), 0);
             state.binary = !state.binary;
             break;
         }

@@ -68,7 +68,7 @@ private:
     ResponseInfo info;
     log4cpp::Logger logger;
 
-    static TimestampMode ModeFromType(GroupVariation gv);
+    static TimestampQuality ModeFromType(GroupVariation gv);
 
     IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& values) override;
 
@@ -111,7 +111,7 @@ private:
     }
 
     template<class T>
-    IINField LoadValues(const HeaderRecord& record, TimestampMode tsmode, const ICollection<Indexed<T>>& values)
+    IINField LoadValues(const HeaderRecord& record, TimestampQuality tsmode, const ICollection<Indexed<T>>& values)
     {
         this->CheckForTxStart();
         HeaderInfo info(record.enumeration, record.GetQualifierCode(), tsmode, record.headerIndex);
@@ -141,7 +141,7 @@ private:
 template<class T>
 IINField MeasurementHandler::ProcessWithCTO(const HeaderRecord& record, const ICollection<Indexed<T>>& values)
 {
-    if (this->commonTimeOccurence.quality == TimestampMode::INVALID)
+    if (this->commonTimeOccurence.quality == TimestampQuality::INVALID)
     {
         FORMAT_LOG_BLOCK(logger, flags::WARN, "No prior CTO objects for %s",
                          GroupVariationSpec::to_string(record.enumeration));

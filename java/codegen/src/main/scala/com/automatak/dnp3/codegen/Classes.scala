@@ -35,7 +35,7 @@ object Classes {
   private def enumerations : List[ClassConfig] = List(
     classOf[GroupVariation],
     classOf[QualifierCode],
-    classOf[TimestampMode],
+    classOf[TimestampQuality],
     classOf[DoubleBit],
     classOf[TimeSyncMode],
     classOf[MasterTaskType],

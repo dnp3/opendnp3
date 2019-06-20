@@ -51,7 +51,7 @@ namespace Automatak.DNP3.Interface
 
         private static void PrintHeaderInfo(HeaderInfo info)
         {
-            Console.WriteLine(String.Format("{0} : {1} : timestamps {2}", info.variation, info.qualifier, info.tsmode));
+            Console.WriteLine(String.Format("{0} : {1} : timestamps {2}", info.variation, info.qualifier, info.tsquality));
         }
 
         void ISOEHandler.Process(HeaderInfo info, IEnumerable<IndexedValue<Binary>> values)

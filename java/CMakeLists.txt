@@ -230,8 +230,8 @@ set(all_sources
 	./cpp/jni/JNITaskId.h
 	./cpp/jni/JNITaskInfo.cpp
 	./cpp/jni/JNITaskInfo.h
-	./cpp/jni/JNITimestampMode.cpp
-	./cpp/jni/JNITimestampMode.h
+	./cpp/jni/JNITimestampQuality.cpp
+	./cpp/jni/JNITimestampQuality.h
 	./cpp/jni/JNITimeSyncMode.cpp
 	./cpp/jni/JNITimeSyncMode.h
 	./cpp/jni/JNITLSConfig.cpp

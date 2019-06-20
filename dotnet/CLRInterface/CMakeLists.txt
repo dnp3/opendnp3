@@ -126,7 +126,7 @@ src/gen/StaticTypeBitmask.cs
 src/gen/StopBits.cs
 src/gen/TaskCompletion.cs
 src/gen/TimeSyncMode.cs
-src/gen/TimestampMode.cs
+src/gen/TimestampQuality.cs
 src/gen/UserOperation.cs
 src/gen/UserRole.cs
 )

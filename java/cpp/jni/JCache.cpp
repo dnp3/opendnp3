@@ -129,7 +129,7 @@ namespace jni
     cache::TaskId JCache::TaskId;
     cache::TaskInfo JCache::TaskInfo;
     cache::TimeSyncMode JCache::TimeSyncMode;
-    cache::TimestampMode JCache::TimestampMode;
+    cache::TimestampQuality JCache::TimestampQuality;
     cache::TransportStatistics JCache::TransportStatistics;
 
     bool JCache::init(JNIEnv* env)
@@ -230,7 +230,7 @@ namespace jni
         && TaskId.init(env)
         && TaskInfo.init(env)
         && TimeSyncMode.init(env)
-        && TimestampMode.init(env)
+        && TimestampQuality.init(env)
         && TransportStatistics.init(env)
         ;
     }
@@ -333,7 +333,7 @@ namespace jni
         TaskId.cleanup(env);
         TaskInfo.cleanup(env);
         TimeSyncMode.cleanup(env);
-        TimestampMode.cleanup(env);
+        TimestampQuality.cleanup(env);
         TransportStatistics.cleanup(env);
     }
 }

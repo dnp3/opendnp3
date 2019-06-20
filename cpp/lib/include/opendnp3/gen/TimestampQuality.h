@@ -29,41 +29,38 @@
 // limitations under the License.
 //
 
-#ifndef OPENDNP3JAVA_JNITIMESTAMPMODE_H
-#define OPENDNP3JAVA_JNITIMESTAMPMODE_H
+#ifndef OPENDNP3_TIMESTAMPQUALITY_H
+#define OPENDNP3_TIMESTAMPQUALITY_H
 
-#include <jni.h>
+#include <cstdint>
+#include <string>
 
-#include "../adapters/LocalRef.h"
+namespace opendnp3 {
 
-namespace jni
+/**
+  Indicates the quality of timestamp values
+*/
+enum class TimestampQuality : uint8_t
 {
-    struct JCache;
+  /// The timestamp is UTC synchronized at the remote device
+  SYNCHRONIZED = 1,
+  /// The device indicate the timestamp may be unsynchronized
+  UNSYNCHRONIZED = 2,
+  /// Timestamp is not valid, ignore the value and use a local timestamp
+  INVALID = 0
+};
 
-    namespace cache
-    {
-        class TimestampMode
-        {
-            friend struct jni::JCache;
+struct TimestampQualitySpec
+{
+  using enum_type_t = TimestampQuality;
 
-            bool init(JNIEnv* env);
-            void cleanup(JNIEnv* env);
+  static uint8_t to_type(TimestampQuality arg);
+  static TimestampQuality from_type(uint8_t arg);
+  static char const* to_string(TimestampQuality arg);
+  static char const* to_human_string(TimestampQuality arg);
+  static TimestampQuality from_string(const std::string& arg);
+};
 
-            public:
-
-            // methods
-            LocalRef<jobject> fromType(JNIEnv* env, jint arg0);
-            jint toType(JNIEnv* env, jobject instance);
-
-            private:
-
-            jclass clazz = nullptr;
-
-            // method ids
-            jmethodID fromTypeMethod = nullptr;
-            jmethodID toTypeMethod = nullptr;
-        };
-    }
 }
 
 #endif

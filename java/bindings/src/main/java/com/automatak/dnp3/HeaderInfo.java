@@ -21,15 +21,15 @@ package com.automatak.dnp3;
 
 import com.automatak.dnp3.enums.GroupVariation;
 import com.automatak.dnp3.enums.QualifierCode;
-import com.automatak.dnp3.enums.TimestampMode;
+import com.automatak.dnp3.enums.TimestampQuality;
 
 public class HeaderInfo
 {
-    public HeaderInfo(GroupVariation variation, QualifierCode qualifier, TimestampMode tsmode, boolean isEvent, boolean flagsValid, int headerIndex)
+    public HeaderInfo(GroupVariation variation, QualifierCode qualifier, TimestampQuality tsquality, boolean isEvent, boolean flagsValid, int headerIndex)
     {
         this.variation = variation;
         this.qualifier = qualifier;
-        this.tsmode = tsmode;
+        this.tsquality = tsquality;
         this.isEvent = isEvent;
         this.flagsValid = flagsValid;
         this.headerIndex = headerIndex;
@@ -37,7 +37,7 @@ public class HeaderInfo
 
     @Override
     public String toString() {
-        return String.format("HeaderInfo(%s, %s, timestamp: %s, isEvent: %b, flagsValid: %b, #: %d)", variation, qualifier, tsmode, isEvent, flagsValid, headerIndex);
+        return String.format("HeaderInfo(%s, %s, timestamp: %s, isEvent: %b, flagsValid: %b, #: %d)", variation, qualifier, tsquality, isEvent, flagsValid, headerIndex);
     }
 
     /**
@@ -53,7 +53,7 @@ public class HeaderInfo
     /**
      * An enumeration describing the validity of the timestamp on the measurements
      */
-    public final TimestampMode tsmode;
+    public final TimestampQuality tsquality;
 
     /**
      * True if this qualifier is an event type

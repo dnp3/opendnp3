@@ -107,7 +107,7 @@ set(opendnp3_public_headers
     ./include/opendnp3/gen/StaticTypeBitmask.h
     ./include/opendnp3/gen/StopBits.h
     ./include/opendnp3/gen/TaskCompletion.h
-    ./include/opendnp3/gen/TimestampMode.h
+    ./include/opendnp3/gen/TimestampQuality.h
     ./include/opendnp3/gen/TimeSyncMode.h
     ./include/opendnp3/gen/UserOperation.h
     ./include/opendnp3/gen/UserRole.h
@@ -546,7 +546,7 @@ set(opendnp3_src
     ./src/gen/StaticTypeBitmask.cpp
     ./src/gen/StopBits.cpp
     ./src/gen/TaskCompletion.cpp
-    ./src/gen/TimestampMode.cpp
+    ./src/gen/TimestampQuality.cpp
     ./src/gen/TimeSyncMode.cpp
     ./src/gen/UserOperation.cpp
     ./src/gen/UserRole.cpp

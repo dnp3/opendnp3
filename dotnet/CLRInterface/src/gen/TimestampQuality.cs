@@ -29,47 +29,24 @@
 // limitations under the License.
 //
 
-package com.automatak.dnp3.enums;
-/**
-* Indicates the validity of timestamp values for an entire object header
-*/
-public enum TimestampMode
+namespace Automatak.DNP3.Interface
 {
-  /**
-  * The timestamp is UTC synchronized at the remote device
-  */
-  SYNCHRONIZED(1),
-  /**
-  * The device indicate the timestamp may be unsynchronized
-  */
-  UNSYNCHRONIZED(2),
-  /**
-  * Timestamp is not valid, ignore the value and use a local timestamp
-  */
-  INVALID(0);
-
-  private final int id;
-
-  public int toType()
+  /// <summary>
+  /// Indicates the quality of timestamp values
+  /// </summary>
+  public enum TimestampQuality : byte
   {
-    return id;
-  }
-
-  TimestampMode(int id)
-  {
-    this.id = id;
-  }
-
-  public static TimestampMode fromType(int arg)
-  {
-    switch(arg)
-    {
-      case(1):
-        return SYNCHRONIZED;
-      case(2):
-        return UNSYNCHRONIZED;
-      default:
-        return INVALID;
-    }
+    /// <summary>
+    /// The timestamp is UTC synchronized at the remote device
+    /// </summary>
+    SYNCHRONIZED = 1,
+    /// <summary>
+    /// The device indicate the timestamp may be unsynchronized
+    /// </summary>
+    UNSYNCHRONIZED = 2,
+    /// <summary>
+    /// Timestamp is not valid, ignore the value and use a local timestamp
+    /// </summary>
+    INVALID = 0
   }
 }
