@@ -29,7 +29,7 @@ namespace opendnp3
 
 struct DNPTime
 {
-    DNPTime() : value(0) {}
+    DNPTime() : value(0), quality(TimestampMode::INVALID) {}
     explicit DNPTime(uint64_t value) : value(value), quality(TimestampMode::INVALID) {}
     DNPTime(uint64_t value, TimestampMode quality)
         : value(value), quality(quality) {}
