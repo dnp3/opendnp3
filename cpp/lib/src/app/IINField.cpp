@@ -26,8 +26,8 @@ bool IINField::IsSet(IINBit bit) const
 {
     switch (bit)
     {
-    case (IINBit::ALL_STATIONS):
-        return Get(LSBMask::ALL_STATIONS);
+    case (IINBit::BROADCAST):
+        return Get(LSBMask::BROADCAST);
     case (IINBit::CLASS1_EVENTS):
         return Get(LSBMask::CLASS1_EVENTS);
     case (IINBit::CLASS2_EVENTS):
@@ -79,8 +79,8 @@ void IINField::SetBit(IINBit bit)
 {
     switch (bit)
     {
-    case (IINBit::ALL_STATIONS):
-        Set(LSBMask::ALL_STATIONS);
+    case (IINBit::BROADCAST):
+        Set(LSBMask::BROADCAST);
         break;
     case (IINBit::CLASS1_EVENTS):
         Set(LSBMask::CLASS1_EVENTS);
@@ -136,8 +136,8 @@ void IINField::ClearBit(IINBit bit)
 {
     switch (bit)
     {
-    case (IINBit::ALL_STATIONS):
-        Clear(LSBMask::ALL_STATIONS);
+    case (IINBit::BROADCAST):
+        Clear(LSBMask::BROADCAST);
         break;
     case (IINBit::CLASS1_EVENTS):
         Clear(LSBMask::CLASS1_EVENTS);

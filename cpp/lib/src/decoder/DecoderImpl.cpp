@@ -81,7 +81,7 @@ void DecoderImpl::DecodeAPDU(const ser4cpp::rseq_t& data)
             logging::LogHeader(this->logger, flags::APP_HEADER_RX, result.header);
 
             if ((result.header.IIN.LSB & 0x01) != 0)
-                SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.0 - All stations");
+                SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.0 - Broadcast");
             if ((result.header.IIN.LSB & 0x02) != 0)
                 SIMPLE_LOG_BLOCK(this->logger, flags::APP_HEADER_RX, "IIN1.1 - Class 1 events");
             if ((result.header.IIN.LSB & 0x04) != 0)

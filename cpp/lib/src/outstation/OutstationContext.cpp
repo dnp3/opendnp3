@@ -434,7 +434,7 @@ void OContext::CheckForBroadcastConfirmation(APDUResponse& response)
 {
     if(lastBroadcastMessageReceived.is_set())
     {
-        response.SetIIN(response.GetIIN() | IINField(IINBit::ALL_STATIONS));
+        response.SetIIN(response.GetIIN() | IINField(IINBit::BROADCAST));
 
         if(lastBroadcastMessageReceived.get() != LinkBroadcastAddress::ShallConfirm)
         {
