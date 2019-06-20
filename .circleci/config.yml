@@ -19,10 +19,20 @@ aliases:
       name: Build
       command: cmake --build .
       working_directory: build
-  - run: &test
-      name: Test
-      command: ctest -VV .
+  - run: &unittests
+      name: Unit tests
+      command: mkdir results && ./cpp/tests/unit/unittests -r junit -o results/unittests.xml
       working_directory: build
+  - run: &asiotests
+      name: ASIO tests
+      command: ./cpp/tests/asiotests/asiotests -r junit -o results/asiotests.xml
+      working_directory: build
+  - run: &integrationtests
+      name: Integration tests
+      command: ./cpp/tests/integration/integrationtests -r junit -o results/integrationtests.xml
+      working_directory: build
+  - store_artifacts: &store_test_results
+      path: build/results
   - run: &coverage
       name: Code coverage
       command: cmake --build . --target coverage && bash <(curl -s https://codecov.io/bash) -f coverage.info.cleaned
@@ -59,8 +69,11 @@ jobs:
           command: cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="-Wall -Werror -Wno-format-truncation" -DDNP3_TLS=ON -DDNP3_TESTS=ON -DDNP3_EXAMPLES=ON -DDNP3_COVERAGE=ON ..
           working_directory: build
       - run: *build
-      - run: *test
+      - run: *unittests
+      - run: *asiotests
+      - run: *integrationtests
       - run: *coverage
+      - store_test_results: *store_test_results
       #- run: *build_java
       #- run: *test_java
       #- run: *package
@@ -78,7 +91,10 @@ jobs:
           command: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-Wall -Werror -Wno-format-truncation" -DDNP3_TLS=ON -DDNP3_TESTS=ON -DDNP3_EXAMPLES=ON ..
           working_directory: build
       - run: *build
-      - run: *test
+      - run: *unittests
+      - run: *asiotests
+      - run: *integrationtests
+      - store_test_results: *store_test_results
       #- run: *build_java
       #- run: *test_java
       #- run: *package
@@ -96,7 +112,10 @@ jobs:
           command: cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="-Wall -Werror" -DDNP3_TLS=ON -DDNP3_TESTS=ON -DDNP3_EXAMPLES=ON ..
           working_directory: build
       - run: *build
-      - run: *test
+      - run: *unittests
+      - run: *asiotests
+      - run: *integrationtests
+      - store_test_results: *store_test_results
       #- run: *build_java
       #- run: *test_java
       #- run: *package
@@ -114,7 +133,10 @@ jobs:
           command: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-Wall -Werror" -DDNP3_TLS=ON -DDNP3_TESTS=ON -DDNP3_EXAMPLES=ON ..
           working_directory: build
       - run: *build
-      - run: *test
+      - run: *unittests
+      - run: *asiotests
+      - run: *integrationtests
+      - store_test_results: *store_test_results
       #- run: *build_java
       #- run: *test_java
       #- run: *package
