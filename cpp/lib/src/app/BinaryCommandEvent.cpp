@@ -43,7 +43,7 @@ BinaryCommandEvent::BinaryCommandEvent(bool value, CommandStatus status, DNPTime
 
 Flags BinaryCommandEvent::GetFlags() const
 {
-    return (static_cast<uint8_t>(value) << 7) | (CommandStatusSpec::to_type(status));
+    return Flags((static_cast<uint8_t>(value) << 7) | (CommandStatusSpec::to_type(status)));
 }
 
 bool BinaryCommandEvent::operator==(const BinaryCommandEvent& rhs) const

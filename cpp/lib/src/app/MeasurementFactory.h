@@ -33,9 +33,9 @@ namespace opendnp3
 
 struct BinaryFactory : private StaticOnly
 {
-    inline static Binary From(Flags flags)
+    inline static Binary From(uint8_t flags)
     {
-        return Binary(flags);
+        return Binary(Flags(flags));
     }
 
     inline static Binary From(uint8_t flags, uint16_t time)
@@ -51,19 +51,19 @@ struct BinaryFactory : private StaticOnly
 
 struct DoubleBitBinaryFactory : private StaticOnly
 {
-    inline static DoubleBitBinary From(Flags flags)
+    inline static DoubleBitBinary From(uint8_t flags)
     {
-        return DoubleBitBinary(flags);
+        return DoubleBitBinary(Flags(flags));
     }
 
-    inline static DoubleBitBinary From(Flags flags, uint16_t time)
+    inline static DoubleBitBinary From(uint8_t flags, uint16_t time)
     {
         return From(flags, DNPTime(time));
     }
 
-    inline static DoubleBitBinary From(Flags flags, DNPTime time)
+    inline static DoubleBitBinary From(uint8_t flags, DNPTime time)
     {
-        return DoubleBitBinary(flags, time);
+        return DoubleBitBinary(Flags(flags), time);
     }
 };
 
@@ -73,13 +73,13 @@ struct AnalogFactory : private StaticOnly
     {
         return Analog(count);
     }
-    static Analog From(Flags flags, double value)
+    static Analog From(uint8_t flags, double value)
     {
-        return Analog(value, flags);
+        return Analog(value, Flags(flags));
     }
-    static Analog From(Flags flags, double value, DNPTime time)
+    static Analog From(uint8_t flags, double value, DNPTime time)
     {
-        return Analog(value, flags, time);
+        return Analog(value, Flags(flags), time);
     }
 };
 
@@ -89,13 +89,13 @@ struct CounterFactory : private StaticOnly
     {
         return Counter(count);
     }
-    inline static Counter From(Flags flags, uint32_t count)
+    inline static Counter From(uint8_t flags, uint32_t count)
     {
-        return Counter(count, flags);
+        return Counter(count, Flags(flags));
     }
-    inline static Counter From(Flags flags, uint32_t count, DNPTime time)
+    inline static Counter From(uint8_t flags, uint32_t count, DNPTime time)
     {
-        return Counter(count, flags, time);
+        return Counter(count, Flags(flags), time);
     }
 };
 
@@ -105,13 +105,13 @@ struct FrozenCounterFactory : private StaticOnly
     {
         return FrozenCounter(count);
     }
-    inline static FrozenCounter From(Flags flags, uint32_t count)
+    inline static FrozenCounter From(uint8_t flags, uint32_t count)
     {
-        return FrozenCounter(count, flags);
+        return FrozenCounter(count, Flags(flags));
     }
-    inline static FrozenCounter From(Flags flags, uint32_t count, DNPTime time)
+    inline static FrozenCounter From(uint8_t flags, uint32_t count, DNPTime time)
     {
-        return FrozenCounter(count, flags, time);
+        return FrozenCounter(count, Flags(flags), time);
     }
 };
 
@@ -134,27 +134,27 @@ struct ControlRelayOutputBlockFactory : private StaticOnly
 
 struct BinaryOutputStatusFactory : private StaticOnly
 {
-    inline static BinaryOutputStatus From(Flags flags)
+    inline static BinaryOutputStatus From(uint8_t flags)
     {
-        return BinaryOutputStatus(flags);
+        return BinaryOutputStatus(Flags(flags));
     }
 
-    inline static BinaryOutputStatus From(Flags flags, DNPTime time)
+    inline static BinaryOutputStatus From(uint8_t flags, DNPTime time)
     {
-        return BinaryOutputStatus(flags, time);
+        return BinaryOutputStatus(Flags(flags), time);
     }
 };
 
 struct BinaryCommandEventFactory : private StaticOnly
 {
-    inline static BinaryCommandEvent From(Flags flags)
+    inline static BinaryCommandEvent From(uint8_t flags)
     {
-        return BinaryCommandEvent(flags);
+        return BinaryCommandEvent(Flags(flags));
     }
 
     inline static BinaryCommandEvent From(uint8_t flags, DNPTime time)
     {
-        return BinaryCommandEvent(flags, time);
+        return BinaryCommandEvent(Flags(flags), time);
     }
 };
 
@@ -162,12 +162,12 @@ struct AnalogOutputStatusFactory : private StaticOnly
 {
     inline static AnalogOutputStatus From(uint8_t flags, double value)
     {
-        return AnalogOutputStatus(value, flags);
+        return AnalogOutputStatus(value, Flags(flags));
     }
 
     inline static AnalogOutputStatus From(uint8_t flags, double value, DNPTime time)
     {
-        return AnalogOutputStatus(value, flags, time);
+        return AnalogOutputStatus(value, Flags(flags), time);
     }
 };
 

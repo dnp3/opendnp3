@@ -155,8 +155,8 @@ TEST_CASE(SUITE("UnsolMultiFragments"))
     REQUIRE(t.lower->PopWriteAsHex().empty());
 
     t.Transaction([](IUpdateHandler& db) {
-        db.Update(Analog(7, 0x01), 1);
-        db.Update(Analog(13, 0x01), 3);
+        db.Update(Analog(7, Flags(0x01)), 1);
+        db.Update(Analog(13, Flags(0x01)), 3);
     });
 
     // Only enough room to in the APDU to carry a single value

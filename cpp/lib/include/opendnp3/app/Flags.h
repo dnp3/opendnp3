@@ -33,7 +33,7 @@ class Flags
 public:
     Flags() : value(0) {}
 
-    Flags(uint8_t value) : value(value) {}
+    explicit Flags(uint8_t value) : value(value) {}
 
     inline bool IsSet(BinaryQuality flag) const
     {

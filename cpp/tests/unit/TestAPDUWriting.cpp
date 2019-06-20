@@ -159,9 +159,9 @@ TEST_CASE(SUITE("CountWriteIteratorFillsUpCorrectly"))
     {
         auto iter = writer.IterateOverCount<UInt8, Analog>(QualifierCode::UINT8_CNT, Group30Var2::Inst());
 
-        REQUIRE(iter.Write(Analog(9, 0xFF)));
-        REQUIRE(iter.Write(Analog(7, 0xFF)));
-        REQUIRE(!iter.Write(Analog(7, 0xFF))); // we're full
+        REQUIRE(iter.Write(Analog(9, Flags(0xFF))));
+        REQUIRE(iter.Write(Analog(7, Flags(0xFF))));
+        REQUIRE(!iter.Write(Analog(7, Flags(0xFF)))); // we're full
     }
 
     REQUIRE("C0 81 00 00 1E 02 07 02 FF 09 00 FF 07 00" == HexConversions::to_hex(response.ToRSeq()));
@@ -196,8 +196,8 @@ TEST_CASE(SUITE("PrefixWriteIteratorCTO"))
                                                                             Group2Var3::Inst(), cto);
         REQUIRE(iter.IsValid());
 
-        REQUIRE(iter.Write(Binary(true, 0x01, DNPTime(0x0B, TimestampMode::SYNCHRONIZED)), 6));
-        REQUIRE(iter.Write(Binary(true, 0x01, DNPTime(0x0C, TimestampMode::SYNCHRONIZED)), 7));
+        REQUIRE(iter.Write(Binary(true, Flags(0x01), DNPTime(0x0B, TimestampMode::SYNCHRONIZED)), 6));
+        REQUIRE(iter.Write(Binary(true, Flags(0x01), DNPTime(0x0C, TimestampMode::SYNCHRONIZED)), 7));
     }
 
     REQUIRE("C0 81 00 00 33 01 07 01 AA 00 00 00 00 00 02 03 28 02 00 06 00 81 0B 00 07 00 81 0C 00"
@@ -216,8 +216,8 @@ TEST_CASE(SUITE("PrefixWriteIteratorCTOSpaceForOnly1Value"))
         auto iter = writer.IterateOverCountWithPrefixAndCTO<UInt16, Binary>(QualifierCode::UINT16_CNT_UINT16_INDEX,
                                                                             Group2Var3::Inst(), cto);
         REQUIRE(iter.IsValid());
-        REQUIRE(iter.Write(Binary(true, 0x01, DNPTime(0x0B, TimestampMode::SYNCHRONIZED)), 6));
-        REQUIRE(!iter.Write(Binary(true, 0x01, DNPTime(0x0C, TimestampMode::SYNCHRONIZED)), 7));
+        REQUIRE(iter.Write(Binary(true, Flags(0x01), DNPTime(0x0B, TimestampMode::SYNCHRONIZED)), 6));
+        REQUIRE(!iter.Write(Binary(true, Flags(0x01), DNPTime(0x0C, TimestampMode::SYNCHRONIZED)), 7));
     }
 
     REQUIRE("C0 81 00 00 33 01 07 01 AA 00 00 00 00 00 02 03 28 01 00 06 00 81 0B 00" == HexConversions::to_hex(response.ToRSeq()));

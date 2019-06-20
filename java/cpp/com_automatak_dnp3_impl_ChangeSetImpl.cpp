@@ -40,7 +40,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChangeSetImpl_update_1binary
     JNIEnv* /*env*/, jobject /*unused*/, jlong native, jboolean value, jbyte flags, jlong time, jint index, jint mode)
 {
     const auto changes = (UpdateBuilder*)native;
-    changes->Update(Binary(!(value == 0u), flags, DNPTime(time)), static_cast<uint16_t>(index),
+    changes->Update(Binary(!(value == 0u), Flags(flags), DNPTime(time)), static_cast<uint16_t>(index),
                     static_cast<EventMode>(mode));
 }
 
@@ -48,7 +48,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChangeSetImpl_update_1double
     JNIEnv* /*env*/, jobject /*unused*/, jlong native, jint value, jbyte flags, jlong time, jint index, jint mode)
 {
     const auto changes = (UpdateBuilder*)native;
-    changes->Update(DoubleBitBinary(static_cast<DoubleBit>(value), flags, DNPTime(time)), static_cast<uint16_t>(index),
+    changes->Update(DoubleBitBinary(static_cast<DoubleBit>(value), Flags(flags), DNPTime(time)), static_cast<uint16_t>(index),
                     static_cast<EventMode>(mode));
 }
 
@@ -56,14 +56,14 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChangeSetImpl_update_1analog
     JNIEnv* /*env*/, jobject /*unused*/, jlong native, jdouble value, jbyte flags, jlong time, jint index, jint mode)
 {
     const auto changes = (UpdateBuilder*)native;
-    changes->Update(Analog(value, flags, DNPTime(time)), static_cast<uint16_t>(index), static_cast<EventMode>(mode));
+    changes->Update(Analog(value, Flags(flags), DNPTime(time)), static_cast<uint16_t>(index), static_cast<EventMode>(mode));
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChangeSetImpl_update_1counter_1native(
     JNIEnv* /*env*/, jobject /*unused*/, jlong native, jlong value, jbyte flags, jlong time, jint index, jint mode)
 {
     const auto changes = (UpdateBuilder*)native;
-    changes->Update(Counter(static_cast<uint32_t>(value), flags, DNPTime(time)), static_cast<uint16_t>(index),
+    changes->Update(Counter(static_cast<uint32_t>(value), Flags(flags), DNPTime(time)), static_cast<uint16_t>(index),
                     static_cast<EventMode>(mode));
 }
 
@@ -71,7 +71,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChangeSetImpl_update_1frozen
     JNIEnv* /*env*/, jobject /*unused*/, jlong native, jlong value, jbyte flags, jlong time, jint index, jint mode)
 {
     const auto changes = (UpdateBuilder*)native;
-    changes->Update(FrozenCounter(static_cast<uint32_t>(value), flags, DNPTime(time)), static_cast<uint16_t>(index),
+    changes->Update(FrozenCounter(static_cast<uint32_t>(value), Flags(flags), DNPTime(time)), static_cast<uint16_t>(index),
                     static_cast<EventMode>(mode));
 }
 
@@ -79,7 +79,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChangeSetImpl_update_1bo_1st
     JNIEnv* /*env*/, jobject /*unused*/, jlong native, jboolean value, jbyte flags, jlong time, jint index, jint mode)
 {
     const auto changes = (UpdateBuilder*)native;
-    changes->Update(BinaryOutputStatus(!(value == 0u), flags, DNPTime(time)), static_cast<uint16_t>(index),
+    changes->Update(BinaryOutputStatus(!(value == 0u), Flags(flags), DNPTime(time)), static_cast<uint16_t>(index),
                     static_cast<EventMode>(mode));
 }
 
@@ -87,6 +87,6 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChangeSetImpl_update_1ao_1st
     JNIEnv* /*env*/, jobject /*unused*/, jlong native, jdouble value, jbyte flags, jlong time, jint index, jint mode)
 {
     const auto changes = (UpdateBuilder*)native;
-    changes->Update(AnalogOutputStatus(value, flags, DNPTime(time)), static_cast<uint16_t>(index),
+    changes->Update(AnalogOutputStatus(value, Flags(flags), DNPTime(time)), static_cast<uint16_t>(index),
                     static_cast<EventMode>(mode));
 }

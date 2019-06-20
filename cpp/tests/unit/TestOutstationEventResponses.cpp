@@ -66,9 +66,9 @@ TEST_CASE(SUITE("ReadClass1WithSOE"))
     t.LowerLayerUp();
 
     t.Transaction([](IUpdateHandler& db) {
-        db.Update(Analog(0x1234, 0x01), 0x17); // 0x 12 34 00 00 in little endian
+        db.Update(Analog(0x1234, Flags(0x01)), 0x17); // 0x 12 34 00 00 in little endian
         db.Update(Binary(true, Flags(0x01)), 0x10);
-        db.Update(Analog(0x2222, 0x01), 0x17); // 0x 22 22 00 00 in little endian
+        db.Update(Analog(0x2222, Flags(0x01)), 0x17); // 0x 22 22 00 00 in little endian
     });
 
     t.SendToOutstation(hex::ClassPoll(0, PointClass::Class1));
@@ -230,7 +230,7 @@ TEST_CASE(SUITE("MixedClassLimitedCount"))
 
 TEST_CASE(SUITE("reports g22v5 correctly"))
 {
-    auto update = [](IUpdateHandler& db) { db.Update(Counter(23, 0x01, DNPTime(1512595515000)), 0); };
+    auto update = [](IUpdateHandler& db) { db.Update(Counter(23, Flags(0x01), DNPTime(1512595515000)), 0); };
 
     auto configure
         = [](DatabaseConfig& db) { db.counter[0].evariation = EventCounterVariation::Group22Var5; };
@@ -241,7 +241,7 @@ TEST_CASE(SUITE("reports g22v5 correctly"))
 
 TEST_CASE(SUITE("reports g22v6 correctly"))
 {
-    auto update = [](IUpdateHandler& db) { db.Update(Counter(23, 0x01, DNPTime(1512595515000)), 0); };
+    auto update = [](IUpdateHandler& db) { db.Update(Counter(23, Flags(0x01), DNPTime(1512595515000)), 0); };
 
     auto configure
         = [](DatabaseConfig& db) { db.counter[0].evariation = EventCounterVariation::Group22Var6; };
@@ -258,21 +258,21 @@ TEST_CASE(SUITE("ReadGrp2Var0"))
 
 TEST_CASE(SUITE("ReadGrp22Var0"))
 {
-    auto update = [](IUpdateHandler& db) { db.Update(Counter(0, 0x01), 0); };
+    auto update = [](IUpdateHandler& db) { db.Update(Counter(0, Flags(0x01)), 0); };
 
     TestEventRead("C0 01 16 00 06", "E0 81 80 00 16 01 28 01 00 00 00 01 00 00 00 00", update);
 }
 
 TEST_CASE(SUITE("ReadGrp32Var0"))
 {
-    auto update = [](IUpdateHandler& db) { db.Update(Analog(0.0, 0x01), 0); };
+    auto update = [](IUpdateHandler& db) { db.Update(Analog(0.0, Flags(0x01)), 0); };
 
     TestEventRead("C0 01 20 00 06", "E0 81 80 00 20 01 28 01 00 00 00 01 00 00 00 00", update);
 }
 
 TEST_CASE(SUITE("ReadGrp32Var7"))
 {
-    auto update = [](IUpdateHandler& db) { db.Update(Analog(0.0, 0x01, DNPTime(0x010203040506)), 0); };
+    auto update = [](IUpdateHandler& db) { db.Update(Analog(0.0, Flags(0x01), DNPTime(0x010203040506)), 0); };
 
     const auto response = "E0 81 80 00 20 07 28 01 00 00 00 01 00 00 00 00 06 05 04 03 02 01";
 
@@ -287,7 +287,7 @@ TEST_CASE(SUITE("ReadGrp32Var7"))
 
 TEST_CASE(SUITE("ReadGrp32Var5"))
 {
-    auto update = [](IUpdateHandler& db) { db.Update(Analog(0.0, 0x01, DNPTime(0x010203040506)), 0); };
+    auto update = [](IUpdateHandler& db) { db.Update(Analog(0.0, Flags(0x01), DNPTime(0x010203040506)), 0); };
 
     const auto response = "E0 81 80 00 20 05 28 01 00 00 00 01 00 00 00 00";
 
@@ -322,7 +322,7 @@ TEST_CASE(SUITE("ReadGrp2Var1LimitedCount"))
 
 TEST_CASE(SUITE("ReadGrp2Var2"))
 {
-    auto update = [](IUpdateHandler& db) { db.Update(Binary(false, 0x01, DNPTime(0x4571)), 3); };
+    auto update = [](IUpdateHandler& db) { db.Update(Binary(false, Flags(0x01), DNPTime(0x4571)), 3); };
 
     TestEventRead("C0 01 02 02 06", "E0 81 80 00 02 02 28 01 00 03 00 01 71 45 00 00 00 00",
                   update); // 1 byte count == 1, ONLINE quality
@@ -330,7 +330,7 @@ TEST_CASE(SUITE("ReadGrp2Var2"))
 
 TEST_CASE(SUITE("ReadGrp2Var3SingleValue"))
 {
-    auto update = [](IUpdateHandler& db) { db.Update(Binary(false, 0x01, DNPTime(0x4571)), 3); };
+    auto update = [](IUpdateHandler& db) { db.Update(Binary(false, Flags(0x01), DNPTime(0x4571)), 3); };
 
     TestEventRead("C0 01 02 03 06", "E0 81 80 00 33 02 07 01 71 45 00 00 00 00 02 03 28 01 00 03 00 01 00 00", update);
 }
@@ -338,8 +338,8 @@ TEST_CASE(SUITE("ReadGrp2Var3SingleValue"))
 TEST_CASE(SUITE("ReadGrp2Var3TwoValues"))
 {
     auto update = [](IUpdateHandler& db) {
-        db.Update(Binary(false, 0x01, DNPTime(0x4571, TimestampMode::SYNCHRONIZED)), 3);
-        db.Update(Binary(true, 0x01, DNPTime(0x4579, TimestampMode::SYNCHRONIZED)), 4);
+        db.Update(Binary(false, Flags(0x01), DNPTime(0x4571, TimestampMode::SYNCHRONIZED)), 3);
+        db.Update(Binary(true, Flags(0x01), DNPTime(0x4579, TimestampMode::SYNCHRONIZED)), 4);
     };
 
     auto rsp = "E0 81 80 00 33 01 07 01 71 45 00 00 00 00 02 03 28 02 00 03 00 01 00 00 04 00 81 08 00";
@@ -350,8 +350,8 @@ TEST_CASE(SUITE("ReadGrp2Var3TwoValues"))
 TEST_CASE(SUITE("ReadGrp2Var3TwoValuesNegativeDifference"))
 {
     auto update = [](IUpdateHandler& db) {
-        db.Update(Binary(false, 0x01, DNPTime(0x4571, TimestampMode::SYNCHRONIZED)), 3);
-        db.Update(Binary(true, 0x01, DNPTime(0x4570, TimestampMode::SYNCHRONIZED)), 4);
+        db.Update(Binary(false, Flags(0x01), DNPTime(0x4571, TimestampMode::SYNCHRONIZED)), 3);
+        db.Update(Binary(true, Flags(0x01), DNPTime(0x4570, TimestampMode::SYNCHRONIZED)), 4);
     };
 
     std::string header = "E0 81 80 00";
@@ -366,8 +366,8 @@ TEST_CASE(SUITE("ReadGrp2Var3TwoValuesNegativeDifference"))
 TEST_CASE(SUITE("ReadGrp2Var3TwoValuesDifferenceTooBigForCTO"))
 {
     auto update = [](IUpdateHandler& db) {
-        db.Update(Binary(false, 0x01, DNPTime(0x000000, TimestampMode::SYNCHRONIZED)), 3);
-        db.Update(Binary(true, 0x01, DNPTime(0x010000, TimestampMode::SYNCHRONIZED)), 4);
+        db.Update(Binary(false, Flags(0x01), DNPTime(0x000000, TimestampMode::SYNCHRONIZED)), 3);
+        db.Update(Binary(true, Flags(0x01), DNPTime(0x010000, TimestampMode::SYNCHRONIZED)), 4);
     };
 
     std::string header = "E0 81 80 00";
@@ -382,8 +382,8 @@ TEST_CASE(SUITE("ReadGrp2Var3TwoValuesDifferenceTooBigForCTO"))
 TEST_CASE(SUITE("ReadGrp2Var3TwoValuesWithDifferentTimeQuality"))
 {
     auto update = [](IUpdateHandler& db) {
-        db.Update(Binary(false, 0x01, DNPTime(0x4571, TimestampMode::SYNCHRONIZED)), 3);
-        db.Update(Binary(true, 0x01, DNPTime(0x4579, TimestampMode::UNSYNCHRONIZED)), 4);
+        db.Update(Binary(false, Flags(0x01), DNPTime(0x4571, TimestampMode::SYNCHRONIZED)), 3);
+        db.Update(Binary(true, Flags(0x01), DNPTime(0x4579, TimestampMode::UNSYNCHRONIZED)), 4);
     };
 
     std::string header = "E0 81 80 00";
@@ -398,8 +398,8 @@ TEST_CASE(SUITE("ReadGrp2Var3TwoValuesWithDifferentTimeQuality"))
 TEST_CASE(SUITE("ReadGrp2Var3TwoValuesWithDifferentInvalidOrUnsynchronizedAreReportedTogether"))
 {
     auto update = [](IUpdateHandler& db) {
-        db.Update(Binary(false, 0x01, DNPTime(0x4571, TimestampMode::UNSYNCHRONIZED)), 3);
-        db.Update(Binary(true, 0x01, DNPTime(0x4579, TimestampMode::INVALID)), 4);
+        db.Update(Binary(false, Flags(0x01), DNPTime(0x4571, TimestampMode::UNSYNCHRONIZED)), 3);
+        db.Update(Binary(true, Flags(0x01), DNPTime(0x4579, TimestampMode::INVALID)), 4);
     };
 
     auto rsp = "E0 81 80 00 33 02 07 01 71 45 00 00 00 00 02 03 28 02 00 03 00 01 00 00 04 00 81 08 00";
