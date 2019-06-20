@@ -111,10 +111,10 @@ private:
     }
 
     template<class T>
-    IINField LoadValues(const HeaderRecord& record, TimestampQuality tsmode, const ICollection<Indexed<T>>& values)
+    IINField LoadValues(const HeaderRecord& record, TimestampQuality tsquality, const ICollection<Indexed<T>>& values)
     {
         this->CheckForTxStart();
-        HeaderInfo info(record.enumeration, record.GetQualifierCode(), tsmode, record.headerIndex);
+        HeaderInfo info(record.enumeration, record.GetQualifierCode(), tsquality, record.headerIndex);
         this->pSOEHandler->Process(info, values);
         return IINField();
     }

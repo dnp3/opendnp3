@@ -578,7 +578,7 @@ TEST_CASE(SUITE("ReceiveCTOSynchronized"))
     auto record = t.meas->binarySOE[7];
     bool equal = record.meas == Binary(true, Flags(0x01), DNPTime(0x04, TimestampQuality::SYNCHRONIZED)); // timestamp is 4
     REQUIRE(equal);
-    REQUIRE(record.info.tsmode == TimestampQuality::SYNCHRONIZED);
+    REQUIRE(record.info.tsquality == TimestampQuality::SYNCHRONIZED);
 }
 
 TEST_CASE(SUITE("ReceiveCTOUnsynchronized"))
@@ -594,7 +594,7 @@ TEST_CASE(SUITE("ReceiveCTOUnsynchronized"))
     auto record = t.meas->binarySOE[7];
     bool equal = record.meas == Binary(true, Flags(0x01), DNPTime(0x04, TimestampQuality::UNSYNCHRONIZED)); // timestamp is 4
     REQUIRE(equal);
-    REQUIRE(record.info.tsmode == TimestampQuality::UNSYNCHRONIZED);
+    REQUIRE(record.info.tsquality == TimestampQuality::UNSYNCHRONIZED);
 }
 
 TEST_CASE(SUITE("ReceiveIINinResponses"))

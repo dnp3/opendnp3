@@ -80,10 +80,10 @@ private:
         return oss.str();
     }
 
-    static std::string GetTimeString(TimestampQuality tsmode)
+    static std::string GetTimeString(TimestampQuality tsquality)
     {
         std::ostringstream oss;
-        switch (tsmode)
+        switch (tsquality)
         {
         case (TimestampQuality::SYNCHRONIZED):
             return "synchronized";

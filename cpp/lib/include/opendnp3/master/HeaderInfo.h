@@ -38,17 +38,17 @@ public:
     HeaderInfo()
         : gv(GroupVariation::UNKNOWN),
           qualifier(QualifierCode::UNDEFINED),
-          tsmode(TimestampQuality::INVALID),
+          tsquality(TimestampQuality::INVALID),
           isEventVariation(false),
           flagsValid(false),
           headerIndex(0)
     {
     }
 
-    HeaderInfo(GroupVariation gv_, QualifierCode qualifier_, TimestampQuality tsmode_, uint32_t headerIndex_)
+    HeaderInfo(GroupVariation gv_, QualifierCode qualifier_, TimestampQuality tsquality_, uint32_t headerIndex_)
         : gv(gv_),
           qualifier(qualifier_),
-          tsmode(tsmode_),
+          tsquality(tsquality_),
           isEventVariation(IsEvent(gv_)),
           flagsValid(HasFlags(gv_)),
           headerIndex(headerIndex_)
@@ -60,7 +60,7 @@ public:
     /// The qualifier code enumeration for the header
     QualifierCode qualifier;
     /// Enumeration that provides information about the validity of timestamps on the associated objects
-    TimestampQuality tsmode;
+    TimestampQuality tsquality;
     /// True if the specfied variation is an event variation
     bool isEventVariation;
     /// True if the flags on the value were present on underlying type, false if online is just assumed
