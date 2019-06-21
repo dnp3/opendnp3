@@ -162,7 +162,7 @@ namespace Automatak
 				static opendnp3::MasterStackConfig ConvertConfig(MasterStackConfig^ config);
 				static opendnp3::OutstationStackConfig ConvertConfig(OutstationStackConfig^ config);				
 
-				static opendnp3::GroupVariationID Convert(PointClass clazz);				
+				static opendnp3::PointClass Convert(PointClass clazz);				
 				static array<System::Byte>^ Convert(const opendnp3::Buffer& bytes);				
 
 				template <class Target, class Source>
@@ -215,6 +215,7 @@ namespace Automatak
 
 						for (int i = 0; i < source->Count; ++i)
 						{
+                            target[i].clazz = Convert(source[i]->clazz);
 							target[i].evariation = (typename Info::event_variation_t) source[i]->eventVariation;
 						}
 					}

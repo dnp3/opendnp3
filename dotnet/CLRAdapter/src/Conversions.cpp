@@ -437,6 +437,7 @@ namespace DNP3
 
             cfg.database = Convert(config->databaseTemplate);
             cfg.link = ConvertConfig(config->link);
+            cfg.outstation = ConvertConfig(config->outstation);
 
             return cfg;
         }
@@ -459,18 +460,18 @@ namespace DNP3
             return config;
         }
 
-        opendnp3::GroupVariationID Conversions::Convert(PointClass clazz)
+        opendnp3::PointClass Conversions::Convert(PointClass clazz)
         {
             switch (clazz)
             {
             case (PointClass::Class1):
-                return opendnp3::GroupVariationID(60, 1);
+                return opendnp3::PointClass::Class1;
             case (PointClass::Class2):
-                return opendnp3::GroupVariationID(60, 2);
+                return opendnp3::PointClass::Class2;
             case (PointClass::Class3):
-                return opendnp3::GroupVariationID(60, 3);
+                return opendnp3::PointClass::Class3;
             default:
-                return opendnp3::GroupVariationID(60, 4);
+                return opendnp3::PointClass::Class0;
             }
         }
 
