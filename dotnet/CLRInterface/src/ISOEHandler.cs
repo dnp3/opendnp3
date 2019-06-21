@@ -59,11 +59,11 @@ namespace Automatak.DNP3.Interface
 
     public class HeaderInfo
     {
-        public HeaderInfo(GroupVariation variation, QualifierCode qualifier, TimestampMode tsmode, bool isEvent, bool flagsValid, UInt32 headerIndex)
+        public HeaderInfo(GroupVariation variation, QualifierCode qualifier, TimestampQuality tsquality, bool isEvent, bool flagsValid, UInt32 headerIndex)
         {
             this.variation = variation;
             this.qualifier = qualifier;
-            this.tsmode = tsmode;
+            this.tsquality = tsquality;
             this.isEvent = isEvent;
             this.flagsValid = flagsValid;
             this.headerIndex = headerIndex;
@@ -82,7 +82,7 @@ namespace Automatak.DNP3.Interface
         /// <summary>
         /// An enumeration describing the validity of the timestamp on the measurements
         /// </summary>
-        public readonly TimestampMode tsmode;
+        public readonly TimestampQuality tsquality;
 
         /// <summary>
         /// True if this qualifier is an event type

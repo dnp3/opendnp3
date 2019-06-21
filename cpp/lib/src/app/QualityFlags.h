@@ -30,11 +30,8 @@ namespace opendnp3
 namespace flags
 {
 
-    enum Quality : uint8_t
-    {
-        ONLINE = 0x01,
-        RESTART = 0x02
-    };
+    const Flags ONLINE(0x01);
+    const Flags RESTART(0x02);
 
     bool GetBinaryValue(Flags flags);
 

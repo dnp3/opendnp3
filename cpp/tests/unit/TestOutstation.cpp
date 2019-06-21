@@ -1,5 +1,5 @@
 /*
- * Copyright 2013-2019 Automatak, LLC
+ )* Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
  * LLC (www.automatak.com) under one or more contributor license agreements.
@@ -341,7 +341,7 @@ TEST_CASE(SUITE("ReadClass0MultiFragAnalog"))
     t.Transaction([](IUpdateHandler& db) {
         for (uint16_t i = 0; i < 8; i++)
         {
-            db.Update(Analog(0, 0x01), i);
+            db.Update(Analog(0, Flags(0x01)), i);
         }
     });
 
@@ -495,8 +495,8 @@ TEST_CASE(SUITE("ReadByRangeHeader"))
     t.LowerLayerUp();
 
     t.Transaction([](IUpdateHandler& db) {
-        db.Update(Analog(42, 0x01), 5);
-        db.Update(Analog(41, 0x01), 6);
+        db.Update(Analog(42, Flags(0x01)), 5);
+        db.Update(Analog(41, Flags(0x01)), 6);
     });
 
     t.SendToOutstation("C2 01 1E 02 00 05 06"); // read 30 var 2, [05 : 06]

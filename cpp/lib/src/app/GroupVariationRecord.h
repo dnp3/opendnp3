@@ -25,7 +25,7 @@
 #include "opendnp3/util/Uncopyable.h"
 #include "opendnp3/gen/GroupVariation.h"
 #include "opendnp3/gen/QualifierCode.h"
-#include "opendnp3/gen/TimestampMode.h"
+#include "opendnp3/gen/TimestampQuality.h"
 
 #include <cstdint>
 

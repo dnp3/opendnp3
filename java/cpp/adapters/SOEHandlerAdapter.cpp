@@ -169,10 +169,10 @@ LocalRef<jobject> SOEHandlerAdapter::Convert(JNIEnv* env, const opendnp3::Header
 {
     auto gv = jni::JCache::GroupVariation.fromType(env, GroupVariationSpec::to_type(info.gv));
     auto qc = jni::JCache::QualifierCode.fromType(env, QualifierCodeSpec::to_type(info.qualifier));
-    auto tsmode = jni::JCache::TimestampMode.fromType(env, static_cast<jint>(info.tsmode));
+    auto tsquality = jni::JCache::TimestampQuality.fromType(env, static_cast<jint>(info.tsquality));
     jboolean isEvent = static_cast<jboolean>(info.isEventVariation);
     jboolean flagsValid = static_cast<jboolean>(info.flagsValid);
     jint headerIndex = info.headerIndex;
 
-    return jni::JCache::HeaderInfo.init6(env, gv, qc, tsmode, isEvent, flagsValid, headerIndex);
+    return jni::JCache::HeaderInfo.init6(env, gv, qc, tsquality, isEvent, flagsValid, headerIndex);
 }

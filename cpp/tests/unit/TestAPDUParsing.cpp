@@ -352,8 +352,8 @@ TEST_CASE(SUITE("TestDoubleBitCTO"))
         REQUIRE(1 == mock.records.size());
         REQUIRE(2 == mock.eventDoubleBinaries.size());
 
-        Indexed<DoubleBitBinary> event1(DoubleBitBinary(DoubleBit::INDETERMINATE, 0x01, DNPTime(7)), 3);
-        Indexed<DoubleBitBinary> event2(DoubleBitBinary(DoubleBit::DETERMINED_OFF, 0x01, DNPTime(9)), 5);
+        Indexed<DoubleBitBinary> event1(DoubleBitBinary(DoubleBit::INDETERMINATE, Flags(0x01), DNPTime(7)), 3);
+        Indexed<DoubleBitBinary> event2(DoubleBitBinary(DoubleBit::DETERMINED_OFF, Flags(0x01), DNPTime(9)), 5);
 
         REQUIRE((event1 == mock.eventDoubleBinaries[0]));
         REQUIRE((event2 == mock.eventDoubleBinaries[1]));

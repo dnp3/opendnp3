@@ -27,7 +27,7 @@ namespace opendnp3
 
 enum class IINBit
 {
-    ALL_STATIONS = 0,
+    BROADCAST = 0,
     CLASS1_EVENTS,
     CLASS2_EVENTS,
     CLASS3_EVENTS,
@@ -53,7 +53,7 @@ class IINField
 private:
     enum class LSBMask : uint8_t
     {
-        ALL_STATIONS = 0x01,
+        BROADCAST = 0x01,
         CLASS1_EVENTS = 0x02,
         CLASS2_EVENTS = 0x04,
         CLASS3_EVENTS = 0x08,

@@ -228,35 +228,35 @@ namespace DNP3
 
         opendnp3::Binary Conversions::ConvertMeas(Binary ^ meas)
         {
-            return opendnp3::Binary(meas->Value, meas->Quality, opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
+            return opendnp3::Binary(meas->Value, opendnp3::Flags(meas->Quality), opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
         }
 
         opendnp3::DoubleBitBinary Conversions::ConvertMeas(DoubleBitBinary ^ meas)
         {
-            return opendnp3::DoubleBitBinary((opendnp3::DoubleBit)meas->Value, meas->Quality,
+            return opendnp3::DoubleBitBinary((opendnp3::DoubleBit)meas->Value, opendnp3::Flags(meas->Quality),
                                              opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
         }
 
         opendnp3::Analog Conversions::ConvertMeas(Analog ^ meas)
         {
-            return opendnp3::Analog(meas->Value, meas->Quality, opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
+            return opendnp3::Analog(meas->Value, opendnp3::Flags(meas->Quality), opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
         }
 
         opendnp3::Counter Conversions::ConvertMeas(Counter ^ meas)
         {
-            return opendnp3::Counter(meas->Value, meas->Quality,
+            return opendnp3::Counter(meas->Value, opendnp3::Flags(meas->Quality),
                                      opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
         }
 
         opendnp3::FrozenCounter Conversions::ConvertMeas(FrozenCounter ^ meas)
         {
-            return opendnp3::FrozenCounter(meas->Value, meas->Quality,
+            return opendnp3::FrozenCounter(meas->Value, opendnp3::Flags(meas->Quality),
                                            opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
         }
 
         opendnp3::AnalogOutputStatus Conversions::ConvertMeas(AnalogOutputStatus ^ meas)
         {
-            return opendnp3::AnalogOutputStatus(meas->Value, meas->Quality,
+            return opendnp3::AnalogOutputStatus(meas->Value, opendnp3::Flags(meas->Quality),
                                                 opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
         }
 
@@ -293,7 +293,7 @@ namespace DNP3
 
         opendnp3::BinaryOutputStatus Conversions::ConvertMeas(BinaryOutputStatus ^ meas)
         {
-            return opendnp3::BinaryOutputStatus(meas->Value, meas->Quality,
+            return opendnp3::BinaryOutputStatus(meas->Value, opendnp3::Flags(meas->Quality),
                                                 opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
         }
 

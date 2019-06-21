@@ -24,7 +24,7 @@
 namespace opendnp3
 {
 
-SecurityStat::SecurityStat() : quality(flags::RESTART), value({0, 0}) {}
+SecurityStat::SecurityStat() : quality(flags::RESTART.value), value({0, 0}) {}
 
 SecurityStat::SecurityStat(Value value_, uint8_t quality_, DNPTime time_)
     : quality(quality_), value(value_), time(time_)

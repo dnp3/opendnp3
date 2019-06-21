@@ -70,7 +70,7 @@ DoubleBit DoubleBitBinary::GetValue(Flags flags)
 Flags DoubleBitBinary::GetFlags(Flags flags, DoubleBit state)
 {
     uint8_t value = DoubleBitSpec::to_type(state) << 6;
-    return (QualityMask & flags.value) | value;
+    return Flags((QualityMask & flags.value) | value);
 }
 
 // ------------ Binary Output Status ---------------

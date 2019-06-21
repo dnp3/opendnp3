@@ -33,8 +33,8 @@ namespace flags
 
     Flags GetBinaryFlags(Flags flags, bool value)
     {
-        return (value) ? (flags.value | static_cast<uint8_t>(BinaryQuality::STATE))
-                       : (flags.value & (~static_cast<uint8_t>(BinaryQuality::STATE)));
+        return (value) ? Flags(flags.value | static_cast<uint8_t>(BinaryQuality::STATE))
+                       : Flags(flags.value & (~static_cast<uint8_t>(BinaryQuality::STATE)));
     }
 
 } // namespace flags

@@ -130,7 +130,7 @@
 #include "JNITaskId.h"
 #include "JNITaskInfo.h"
 #include "JNITimeSyncMode.h"
-#include "JNITimestampMode.h"
+#include "JNITimestampQuality.h"
 #include "JNITransportStatistics.h"
 
 namespace jni
@@ -236,7 +236,7 @@ namespace jni
         static cache::TaskId TaskId;
         static cache::TaskInfo TaskInfo;
         static cache::TimeSyncMode TimeSyncMode;
-        static cache::TimestampMode TimestampMode;
+        static cache::TimestampQuality TimestampQuality;
         static cache::TransportStatistics TransportStatistics;
     };
 }

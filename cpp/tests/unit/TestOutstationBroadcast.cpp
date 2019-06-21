@@ -41,12 +41,12 @@ TEST_CASE(SUITE("ShallConfirm broadcast asks for confirmation and resets on conf
     // Outstation should not respond to broadcast request
     REQUIRE(t.lower->HasNoData());
 
-    // The next response should have ALL_STATIONS IIN set, and should ask for confirmation
+    // The next response should have BROADCAST IIN set, and should ask for confirmation
     t.SendToOutstation(hex::ClassPoll(2, PointClass::Class0));
     REQUIRE(t.lower->PopWriteAsHex() == "E2 81 01 00");
     t.OnTxReady();
 
-    // The next response should have ALL_STATIONS IIN set, and should ask for confirmation
+    // The next response should have BROADCAST IIN set, and should ask for confirmation
     t.SendToOutstation(hex::ClassPoll(3, PointClass::Class0));
     REQUIRE(t.lower->PopWriteAsHex() == "E3 81 01 00");
     t.OnTxReady();
@@ -55,7 +55,7 @@ TEST_CASE(SUITE("ShallConfirm broadcast asks for confirmation and resets on conf
     t.SendToOutstation(hex::SolicitedConfirm(3));
     t.OnTxReady();
 
-    // Check that no confirmation is asked and that ALL_STATIONS IIN is reset
+    // Check that no confirmation is asked and that BROADCAST IIN is reset
     t.SendToOutstation(hex::ClassPoll(4, PointClass::Class0));
     REQUIRE(t.lower->PopWriteAsHex() == "C4 81 00 00");
 }
@@ -71,7 +71,7 @@ TEST_CASE(SUITE("Confirmation sequence number is properly updated even if the re
     // Outstation should not respond to broadcast request
     REQUIRE(t.lower->HasNoData());
 
-    // The next response should have ALL_STATIONS IIN set, and should ask for confirmation
+    // The next response should have BROADCAST IIN set, and should ask for confirmation
     t.SendToOutstation(hex::RecordCurrentTime(2));
     REQUIRE(t.lower->PopWriteAsHex() == "E2 81 01 00");
     t.OnTxReady();
@@ -80,12 +80,12 @@ TEST_CASE(SUITE("Confirmation sequence number is properly updated even if the re
     t.SendToOutstation(hex::SolicitedConfirm(2));
     t.OnTxReady();
 
-    // Check that no confirmation is asked and that ALL_STATIONS IIN is reset
+    // Check that no confirmation is asked and that BROADCAST IIN is reset
     t.SendToOutstation(hex::ClassPoll(3, PointClass::Class0));
     REQUIRE(t.lower->PopWriteAsHex() == "C3 81 00 00");
 }
 
-TEST_CASE(SUITE("DontConfirm broadcast does not ask for confirmation, but set the ALL_STATIONS IIN bit once"))
+TEST_CASE(SUITE("DontConfirm broadcast does not ask for confirmation, but set the BROADCAST IIN bit once"))
 {
     OutstationConfig config;
     OutstationTestObject t(config, DatabaseConfig());
@@ -96,12 +96,12 @@ TEST_CASE(SUITE("DontConfirm broadcast does not ask for confirmation, but set th
     // Outstation should not respond to broadcast request
     REQUIRE(t.lower->HasNoData());
 
-    // The next response should have ALL_STATIONS IIN set and restart IIN reset.
+    // The next response should have BROADCAST IIN set and restart IIN reset.
     t.SendToOutstation(hex::ClassPoll(2, PointClass::Class0));
     REQUIRE(t.lower->PopWriteAsHex() == "C2 81 01 00");
     t.OnTxReady();
 
-    // The next response should have ALL_STATIONS IIN reset
+    // The next response should have BROADCAST IIN reset
     t.SendToOutstation(hex::ClassPoll(3, PointClass::Class0));
     REQUIRE(t.lower->PopWriteAsHex() == "C3 81 00 00");
 }
@@ -133,13 +133,13 @@ TEST_CASE(SUITE("Receiving a broadcast should assume confirmation failed"))
     t.SendToOutstation(hex::SolicitedConfirm(0));
     t.OnTxReady();
 
-    // When reading, check ALL_STATIONS IIN, check that the events are still pending
+    // When reading, check BROADCAST IIN, check that the events are still pending
     t.SendToOutstation(hex::ClassPoll(2, PointClass::Class0));
     REQUIRE(t.lower->PopWriteAsHex().substr(0, 11) == "C2 81 03 00");
     t.OnTxReady();
 }
 
-TEST_CASE(SUITE("Broadcast with malformed request should still set the ALL_STATIONS IIN"))
+TEST_CASE(SUITE("Broadcast with malformed request should still set the BROADCAST IIN"))
 {
     OutstationConfig config;
     OutstationTestObject t(config, DatabaseConfig());
@@ -150,13 +150,13 @@ TEST_CASE(SUITE("Broadcast with malformed request should still set the ALL_STATI
     // Outstation should not respond to broadcast request
     REQUIRE(t.lower->HasNoData());
 
-    // The next response should have ALL_STATIONS IIN
+    // The next response should have BROADCAST IIN
     t.SendToOutstation(hex::ClassPoll(2, PointClass::Class0));
     REQUIRE(t.lower->PopWriteAsHex() == "C2 81 81 00");
     t.OnTxReady();
 }
 
-TEST_CASE(SUITE("Unsolicited responses should advertise ALL_STATIONS IIN"))
+TEST_CASE(SUITE("Unsolicited responses should advertise BROADCAST IIN"))
 {
     OutstationConfig config;
     config.params.unsolClassMask = ClassField::AllClasses();
@@ -182,18 +182,18 @@ TEST_CASE(SUITE("Unsolicited responses should advertise ALL_STATIONS IIN"))
         handler.Update(Binary(true), 0);
     });
 
-    // Should send unsolicited with ALL_STATIONS IIN set
+    // Should send unsolicited with BROADCAST IIN set
     REQUIRE(t.lower->PopWriteAsHex().substr(0, 11) == "F1 82 01 00");
     t.context.OnTxReady();
 
     t.AdvanceToNextTimer();
 
-    // Next unsolicited shouldn't have ALL_STATIONS IIN set
+    // Next unsolicited shouldn't have BROADCAST IIN set
     REQUIRE(t.lower->PopWriteAsHex().substr(0, 11) == "F2 82 00 00");
     t.context.OnTxReady();
 }
 
-TEST_CASE(SUITE("ShallConfirm: Unsolicited responses should clear ALL_STATIONS when confirm is received"))
+TEST_CASE(SUITE("ShallConfirm: Unsolicited responses should clear BROADCAST when confirm is received"))
 {
     OutstationConfig config;
     config.params.unsolClassMask = ClassField::AllClasses();
@@ -219,13 +219,13 @@ TEST_CASE(SUITE("ShallConfirm: Unsolicited responses should clear ALL_STATIONS w
         handler.Update(Binary(true), 0);
     });
 
-    // Should send unsolicited with ALL_STATIONS IIN set
+    // Should send unsolicited with BROADCAST IIN set
     REQUIRE(t.lower->PopWriteAsHex().substr(0, 11) == "F1 82 01 00");
     t.context.OnTxReady();
 
     t.AdvanceToNextTimer();
 
-    // Next unsolicited should still have ALL_STATIONS IIN set
+    // Next unsolicited should still have BROADCAST IIN set
     REQUIRE(t.lower->PopWriteAsHex().substr(0, 11) == "F2 82 01 00");
     t.context.OnTxReady();
 

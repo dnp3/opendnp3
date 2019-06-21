@@ -39,7 +39,7 @@ object CSharpEnumGroup {
     ChannelState(),
     TimeSyncMode(),
     RestartMode(),
-    TimestampMode(),
+    TimestampQuality(),
     QualifierCode(),
     GroupVariationEnum(),
     EventMode(),

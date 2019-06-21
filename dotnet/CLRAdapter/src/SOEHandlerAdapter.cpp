@@ -31,7 +31,7 @@ namespace Automatak
 			HeaderInfo ^ ConvertHeaderInfo(const opendnp3::HeaderInfo& info)
             {
                 return gcnew HeaderInfo((GroupVariation)info.gv, (QualifierCode)info.qualifier,
-                                        (TimestampMode)info.tsmode, info.isEventVariation, info.flagsValid,
+                                        (TimestampQuality)info.tsquality, info.isEventVariation, info.flagsValid,
                                         info.headerIndex);
             }
 

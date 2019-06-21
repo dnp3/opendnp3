@@ -29,24 +29,61 @@
 // limitations under the License.
 //
 
-namespace Automatak.DNP3.Interface
+#include "opendnp3/gen/TimestampQuality.h"
+#include <stdexcept>
+
+namespace opendnp3 {
+
+uint8_t TimestampQualitySpec::to_type(TimestampQuality arg)
 {
-  /// <summary>
-  /// Indicates the validity of timestamp values for an entire object header
-  /// </summary>
-  public enum TimestampMode : byte
+  return static_cast<uint8_t>(arg);
+}
+
+TimestampQuality TimestampQualitySpec::from_type(uint8_t arg)
+{
+  switch(arg)
   {
-    /// <summary>
-    /// The timestamp is UTC synchronized at the remote device
-    /// </summary>
-    SYNCHRONIZED = 1,
-    /// <summary>
-    /// The device indicate the timestamp may be unsynchronized
-    /// </summary>
-    UNSYNCHRONIZED = 2,
-    /// <summary>
-    /// Timestamp is not valid, ignore the value and use a local timestamp
-    /// </summary>
-    INVALID = 0
+    case(1):
+      return TimestampQuality::SYNCHRONIZED;
+    case(2):
+      return TimestampQuality::UNSYNCHRONIZED;
+    default:
+      return TimestampQuality::INVALID;
   }
+}
+
+char const* TimestampQualitySpec::to_string(TimestampQuality arg)
+{
+  switch(arg)
+  {
+    case(TimestampQuality::SYNCHRONIZED):
+      return "SYNCHRONIZED";
+    case(TimestampQuality::UNSYNCHRONIZED):
+      return "UNSYNCHRONIZED";
+    default:
+      return "INVALID";
+  }
+}
+
+char const* TimestampQualitySpec::to_human_string(TimestampQuality arg)
+{
+  switch(arg)
+  {
+    case(TimestampQuality::SYNCHRONIZED):
+      return "SYNCHRONIZED";
+    case(TimestampQuality::UNSYNCHRONIZED):
+      return "UNSYNCHRONIZED";
+    default:
+      return "INVALID";
+  }
+}
+
+TimestampQuality TimestampQualitySpec::from_string(const std::string& arg)
+{
+  if(arg == "SYNCHRONIZED") return TimestampQuality::SYNCHRONIZED;
+  if(arg == "UNSYNCHRONIZED") return TimestampQuality::UNSYNCHRONIZED;
+  else return TimestampQuality::INVALID;
+}
+
+
 }

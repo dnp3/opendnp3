@@ -272,7 +272,7 @@ bool StaticDataMap<Spec>::modify(uint16_t start, uint16_t stop, uint8_t flags, I
         }
 
         auto new_value = iter->second.value;
-        new_value.flags = flags;
+        new_value.flags = Flags(flags);
         this->update(iter, new_value, EventMode::Detect, receiver);
     }
 

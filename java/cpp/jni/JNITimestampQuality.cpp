@@ -29,61 +29,41 @@
 // limitations under the License.
 //
 
-#include "opendnp3/gen/TimestampMode.h"
-#include <stdexcept>
+#include "JNITimestampQuality.h"
 
-namespace opendnp3 {
-
-uint8_t TimestampModeSpec::to_type(TimestampMode arg)
+namespace jni
 {
-  return static_cast<uint8_t>(arg);
-}
+    namespace cache
+    {
+        bool TimestampQuality::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/enums/TimestampQuality;");
+            if(!clazzTemp) return false;
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-TimestampMode TimestampModeSpec::from_type(uint8_t arg)
-{
-  switch(arg)
-  {
-    case(1):
-      return TimestampMode::SYNCHRONIZED;
-    case(2):
-      return TimestampMode::UNSYNCHRONIZED;
-    default:
-      return TimestampMode::INVALID;
-  }
-}
+            this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/TimestampQuality;");
+            if(!this->fromTypeMethod) return false;
 
-char const* TimestampModeSpec::to_string(TimestampMode arg)
-{
-  switch(arg)
-  {
-    case(TimestampMode::SYNCHRONIZED):
-      return "SYNCHRONIZED";
-    case(TimestampMode::UNSYNCHRONIZED):
-      return "UNSYNCHRONIZED";
-    default:
-      return "INVALID";
-  }
-}
+            this->toTypeMethod = env->GetMethodID(this->clazz, "toType", "()I");
+            if(!this->toTypeMethod) return false;
 
-char const* TimestampModeSpec::to_human_string(TimestampMode arg)
-{
-  switch(arg)
-  {
-    case(TimestampMode::SYNCHRONIZED):
-      return "SYNCHRONIZED";
-    case(TimestampMode::UNSYNCHRONIZED):
-      return "UNSYNCHRONIZED";
-    default:
-      return "INVALID";
-  }
-}
+            return true;
+        }
 
-TimestampMode TimestampModeSpec::from_string(const std::string& arg)
-{
-  if(arg == "SYNCHRONIZED") return TimestampMode::SYNCHRONIZED;
-  if(arg == "UNSYNCHRONIZED") return TimestampMode::UNSYNCHRONIZED;
-  else return TimestampMode::INVALID;
-}
+        void TimestampQuality::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
+        LocalRef<jobject> TimestampQuality::fromType(JNIEnv* env, jint arg0)
+        {
+            return LocalRef<jobject>(env, env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0));
+        }
 
+        jint TimestampQuality::toType(JNIEnv* env, jobject instance)
+        {
+            return env->CallIntMethod(instance, this->toTypeMethod);
+        }
+    }
 }
