@@ -73,6 +73,8 @@ void CRC::AddCrc(uint8_t* input, size_t length)
 
 bool CRC::IsCorrectCRC(const uint8_t* input, size_t length)
 {
+// This definition is automatically set when compiling for OSS-Fuzz.
+// See https://llvm.org/docs/LibFuzzer.html#fuzzer-friendly-build-mode
 #ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
     return true;
 #else
