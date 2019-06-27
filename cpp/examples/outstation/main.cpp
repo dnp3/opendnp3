@@ -21,6 +21,7 @@
 #include <opendnp3/DNP3Manager.h>
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/channel/PrintingChannelListener.h>
+#include <opendnp3/outstation/DefaultOutstationApplication.h>
 #include <opendnp3/outstation/IUpdateHandler.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
 #include <opendnp3/outstation/UpdateBuilder.h>
@@ -52,6 +53,8 @@ struct State
     uint8_t octetStringValue = 1;
 };
 
+auto app = DefaultOutstationApplication::Create();
+
 void AddUpdates(UpdateBuilder& builder, State& state, const std::string& arguments);
 
 int main(int argc, char* argv[])
@@ -80,11 +83,11 @@ int main(int argc, char* argv[])
     // you can override an default outstation parameters here
     // in this example, we've enabled the oustation to use unsolicted reporting
     // if the master enables it
-    config.outstation.params.allowUnsolicited = true;
+    config.outstation.params.allowUnsolicited = false;
 
     // You can override the default link layer settings here
     // in this example we've changed the default link layer addressing
-    config.link.LocalAddr = 10;
+    config.link.LocalAddr = 1024;
     config.link.RemoteAddr = 1;
     config.link.KeepAliveTimeout = TimeDuration::Max();    
 
@@ -92,7 +95,7 @@ int main(int argc, char* argv[])
     // config info this	returns a thread-safe interface used for
     // updating the outstation's database.
     auto outstation = channel->AddOutstation("outstation", SuccessCommandHandler::Create(),
-                                             DefaultOutstationApplication::Create(), config);
+                                             app, config);
 
     // Enable the outstation and start communications
     outstation->Enable();
@@ -141,7 +144,7 @@ void AddUpdates(UpdateBuilder& builder, State& state, const std::string& argumen
         }
         case ('b'):
         {
-            builder.Update(Binary(state.binary), 0);
+            builder.Update(Binary(state.binary, Flags(0x01), app->Now()), 0);
             state.binary = !state.binary;
             break;
         }

@@ -92,7 +92,7 @@ public class QueuedSOEHandler implements SOEHandler {
     @Override
     public void processFC(HeaderInfo info, Iterable<IndexedValue<FrozenCounter>> values)
     {
-        
+
     }
 
     @Override

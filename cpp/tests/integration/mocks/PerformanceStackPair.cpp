@@ -21,6 +21,7 @@
 #include "mocks/PerformanceStackPair.h"
 
 #include <opendnp3/master/DefaultMasterApplication.h>
+#include <opendnp3/outstation/DefaultOutstationApplication.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
 
 #include <dnp3mocks/DatabaseHelpers.h>

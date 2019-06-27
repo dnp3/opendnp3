@@ -127,21 +127,7 @@ public:
         return 65535;
     }
 
-    virtual ~IOutstationApplication() {}
-};
-
-/**
- * A singleton with default setting useful for examples
- */
-class DefaultOutstationApplication : public IOutstationApplication
-{
-public:
-    static std::shared_ptr<IOutstationApplication> Create()
-    {
-        return std::make_shared<DefaultOutstationApplication>();
-    }
-
-    DefaultOutstationApplication() = default;
+    virtual ~IOutstationApplication() = default;
 };
 
 } // namespace opendnp3

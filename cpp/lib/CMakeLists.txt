@@ -149,6 +149,7 @@ set(opendnp3_public_headers
 
     ./include/opendnp3/outstation/ApplicationIIN.h
     ./include/opendnp3/outstation/DatabaseConfig.h
+    ./include/opendnp3/outstation/DefaultOutstationApplication.h
     ./include/opendnp3/outstation/EventBufferConfig.h
     ./include/opendnp3/outstation/ICommandHandler.h
     ./include/opendnp3/outstation/IDnpTimeSource.h
@@ -632,6 +633,7 @@ set(opendnp3_src
     ./src/outstation/CommandResponseHandler.cpp
     ./src/outstation/Database.cpp
     ./src/outstation/DatabaseConfig.cpp
+    ./src/outstation/DefaultOutstationApplication.cpp
     ./src/outstation/DeferredRequest.cpp
     ./src/outstation/EventBufferConfig.cpp
     ./src/outstation/FreezeRequestHandler.cpp
