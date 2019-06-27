@@ -66,15 +66,6 @@ namespace Automatak.DNP3.Interface
         void Update(Counter update, System.UInt16 index, EventMode mode = EventMode.Detect);
 
         /// <summary>
-        /// Update a FrozenCounter
-        /// </summary>
-        /// <param name="update">measurement to update</param>
-        /// <param name="index">index of measurement</param>
-        /// <param name="forceEvent"> if true, an event is created regardess of the last reported value</param>
-        /// <returns> true if the point exists </returns>
-        void Update(FrozenCounter update, System.UInt16 index, EventMode mode = EventMode.Detect);
-
-        /// <summary>
         /// Update a BinaryOutputStatus
         /// </summary>
         /// <param name="update">measurement to update</param>

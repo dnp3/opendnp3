@@ -57,14 +57,6 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChangeSetImpl_update_1counte
 
 /*
  * Class:     com_automatak_dnp3_impl_ChangeSetImpl
- * Method:    update_frozen_counter_native
- * Signature: (JJBJII)V
- */
-JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChangeSetImpl_update_1frozen_1counter_1native
-  (JNIEnv *, jobject, jlong, jlong, jbyte, jlong, jint, jint);
-
-/*
- * Class:     com_automatak_dnp3_impl_ChangeSetImpl
  * Method:    update_bo_status_native
  * Signature: (JZBJII)V
  */

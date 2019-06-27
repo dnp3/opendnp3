@@ -28,7 +28,6 @@ public class ExpectedValue {
         DoubleBinaryType,
         AnalogType,
         CounterType,
-        FrozenCounterType,
         BOStatusType,
         AOStatusType
     }
@@ -57,11 +56,6 @@ public class ExpectedValue {
     public ExpectedValue(Counter measurement, int index)
     {
         this(measurement.value, index, Type.CounterType);
-    }
-
-    public ExpectedValue(FrozenCounter measurement, int index)
-    {
-        this(measurement.value, index, Type.FrozenCounterType);
     }
 
     public ExpectedValue(BinaryOutputStatus measurement, int index)

@@ -65,11 +65,6 @@ namespace Automatak
 			{
 				builder->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode) mode);
 			}
-
-			void ChangeSetAdapter::Update(FrozenCounter^ update, System::UInt16 index, EventMode mode)
-			{
-				builder->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode) mode);
-			}
 			
 			void ChangeSetAdapter::Update(BinaryOutputStatus^ update, System::UInt16 index, EventMode mode)
 			{

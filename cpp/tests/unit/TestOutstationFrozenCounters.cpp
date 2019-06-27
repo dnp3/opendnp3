@@ -168,3 +168,46 @@ TEST_CASE(SUITE("Broadcast Support"))
     REQUIRE(t.lower->PopWriteAsHex() == "C5 81 80 00 14 01 00 00 00 01 00 00 00 00"); // Counter is now reset
     t.OnTxReady();
 }
+
+TEST_CASE(SUITE("Range freeze"))
+{
+    const uint16_t num_counters = 10;
+
+    OutstationConfig config;
+    auto database = configure::by_count_of::counter(num_counters, true);
+    OutstationTestObject t(config, database);
+    t.Transaction([=](IUpdateHandler& db) {
+        db.Modify(FlagsType::Counter, 0, num_counters - 1, 0x01);
+        db.Modify(FlagsType::FrozenCounter, 0, num_counters - 1, 0x01);
+    });
+    t.LowerLayerUp();
+
+    // Read all frozen counters
+    t.SendToOutstation("C0 01 15 00 06");
+    REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 15 01 00 00 09 "
+        "01 00 00 00 00 01 00 00 00 00 "
+        "01 00 00 00 00 01 00 00 00 00 01 00 00 00 00 01 00 00 00 00 01 00 00 00 00 "
+        "01 00 00 00 00 01 00 00 00 00 01 00 00 00 00"); // Frozen value at 0
+    t.OnTxReady();
+
+    // Update the counters
+    t.Transaction([=](IUpdateHandler& db) {
+        for(uint16_t i = 0; i < num_counters; ++i)
+        {
+            db.Update(Counter(counterValue), i);
+        }
+    });
+
+    // Freeze subset of counters
+    t.SendToOutstation("C1 07 14 00 00 02 06");
+    REQUIRE(t.lower->PopWriteAsHex() == "C1 81 80 00");
+    t.OnTxReady();
+
+    // Read all frozen counters
+    t.SendToOutstation("C2 01 15 00 06");
+    REQUIRE(t.lower->PopWriteAsHex() == "C2 81 80 00 15 01 00 00 09 "
+        "01 00 00 00 00 01 00 00 00 00 "
+        "01 29 00 00 00 01 29 00 00 00 01 29 00 00 00 01 29 00 00 00 01 29 00 00 00 "
+        "01 00 00 00 00 01 00 00 00 00 01 00 00 00 00"); // Frozen values are updated
+    t.OnTxReady();
+}

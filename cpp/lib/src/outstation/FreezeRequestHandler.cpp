@@ -36,15 +36,30 @@ FreezeRequestHandler::FreezeRequestHandler(bool clear, Database& database)
 
 bool FreezeRequestHandler::IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc)
 {
-    if(gv == GroupVariation::Group20Var0 && qc == QualifierCode::ALL_OBJECTS)
-        return true;
+    if(gv != GroupVariation::Group20Var0)
+        return false;
     
-    return false;
+    switch(qc)
+    {
+    case QualifierCode::ALL_OBJECTS:
+    case QualifierCode::UINT8_START_STOP:
+    case QualifierCode::UINT16_START_STOP:
+        return true;
+    default:
+        return false;
+    }
 }
 
 IINField FreezeRequestHandler::ProcessHeader(const AllObjectsHeader& record)
 {
-    this->database.SelectAll(GroupVariation::Group20Var0);
+    this->database.SelectAll(record.enumeration);
+    this->database.FreezeSelectedCounters(clear);
+    return IINField::Empty();
+}
+
+IINField FreezeRequestHandler::ProcessHeader(const RangeHeader& header)
+{
+    this->database.SelectRange(header.enumeration, header.range);
     this->database.FreezeSelectedCounters(clear);
     return IINField::Empty();
 }

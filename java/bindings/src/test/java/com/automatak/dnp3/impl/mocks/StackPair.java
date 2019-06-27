@@ -191,11 +191,6 @@ public class StackPair {
                 set.update(v, index, EventMode.Force);
                 return new ExpectedValue(v, index);
             }
-            case FrozenCounterType: {
-                FrozenCounter v = new FrozenCounter(random.nextInt(65535), (byte) 0x01, 0);
-                set.update(v, index, EventMode.Force);
-                return new ExpectedValue(v, index);
-            }
             case AnalogType: {
                 AnalogInput v = new AnalogInput(random.nextInt(65535), (byte) 0x01, 0);
                 set.update(v, index, EventMode.Force);

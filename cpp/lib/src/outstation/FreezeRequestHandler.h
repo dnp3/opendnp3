@@ -35,6 +35,7 @@ public:
 
 private:
     IINField ProcessHeader(const AllObjectsHeader& record) final;
+    IINField ProcessHeader(const RangeHeader& header) final;
 
     bool clear;
     Database& database;

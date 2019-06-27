@@ -89,11 +89,6 @@ namespace Automatak.DNP3.Interface
             updates.Add((IDatabase db) => db.Update(update, index, mode));
         }
 
-        public void Update(FrozenCounter update, ushort index, EventMode mode = EventMode.Detect)
-        {
-            updates.Add((IDatabase db) => db.Update(update, index, mode));
-        }
-
         public void Update(BinaryOutputStatus update, ushort index, EventMode mode = EventMode.Detect)
         {
             updates.Add((IDatabase db) => db.Update(update, index, mode));

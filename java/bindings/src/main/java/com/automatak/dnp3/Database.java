@@ -59,13 +59,6 @@ public interface Database
      * @param value measurement to update
      * @param index index of measurement
      */
-    void update(FrozenCounter value, int index);
-
-    /**
-     * Update a value in the database
-     * @param value measurement to update
-     * @param index index of measurement
-     */
     void update(BinaryOutputStatus value, int index);
 
     /**
@@ -106,14 +99,6 @@ public interface Database
      * @param mode EventMode to use
      */
     void update(Counter value, int index, EventMode mode);
-
-    /**
-     * Update a value in the database
-     * @param value measurement to update
-     * @param index index of measurement
-     * @param mode EventMode to use
-     */
-    void update(FrozenCounter value, int index, EventMode mode);
 
     /**
      * Update a value in the database
