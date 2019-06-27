@@ -29,7 +29,7 @@ namespace by_count_of
 {
     opendnp3::DatabaseConfig all_types(uint16_t num);
     opendnp3::DatabaseConfig binary_input(uint16_t num);
-    opendnp3::DatabaseConfig counter(uint16_t num);
+    opendnp3::DatabaseConfig counter(uint16_t num, bool with_frozen=false);
     opendnp3::DatabaseConfig binary_output_status(uint16_t num);
     opendnp3::DatabaseConfig analog_input(uint16_t num);    
 	opendnp3::DatabaseConfig analog_output_status(uint16_t num);

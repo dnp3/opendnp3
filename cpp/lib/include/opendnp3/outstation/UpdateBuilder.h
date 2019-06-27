@@ -33,7 +33,6 @@ public:
     UpdateBuilder& Update(const DoubleBitBinary& meas, uint16_t index, EventMode mode = EventMode::Detect);
     UpdateBuilder& Update(const Analog& meas, uint16_t index, EventMode mode = EventMode::Detect);
     UpdateBuilder& Update(const Counter& meas, uint16_t index, EventMode mode = EventMode::Detect);
-    UpdateBuilder& Update(const FrozenCounter& meas, uint16_t index, EventMode mode = EventMode::Detect);
     UpdateBuilder& Update(const BinaryOutputStatus& meas, uint16_t index, EventMode mode = EventMode::Detect);
     UpdateBuilder& Update(const AnalogOutputStatus& meas, uint16_t index, EventMode mode = EventMode::Detect);
     UpdateBuilder& Update(const OctetString& meas, uint16_t index, EventMode mode = EventMode::Detect);

@@ -78,7 +78,7 @@ void PerformanceStackPair::AddValue(uint32_t i, UpdateBuilder& builder)
 {
     const uint16_t index = i % NUM_POINTS_PER_TYPE;
 
-    switch (i % 7)
+    switch (i % 6)
     {
     case (0):
         builder.Update(Binary(i % 2 == 0), index, EventMode::Force);
@@ -94,9 +94,6 @@ void PerformanceStackPair::AddValue(uint32_t i, UpdateBuilder& builder)
         builder.Update(Counter(i), index, EventMode::Force);
         break;
     case (4):
-        builder.Update(FrozenCounter(i), index, EventMode::Force);
-        break;
-    case (5):
         builder.Update(BinaryOutputStatus(i % 2 == 0), index, EventMode::Force);
         break;
     default:

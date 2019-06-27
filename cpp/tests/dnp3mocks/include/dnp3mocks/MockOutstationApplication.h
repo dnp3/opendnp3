@@ -29,7 +29,8 @@ class MockOutstationApplication : public opendnp3::IOutstationApplication
 {
 public:
     MockOutstationApplication()
-        : supportsTimeWrite(true),
+        : currentTime(opendnp3::DNPTime(0, opendnp3::TimestampQuality::INVALID)),
+          supportsTimeWrite(true),
           supportsAssignClass(false),
           supportsWriteTimeAndInterval(false),
           allowTimeWrite(true),
@@ -38,6 +39,11 @@ public:
           warmRestartTimeDelay(0),
           coldRestartTimeDelay(0)
     {
+    }
+
+    opendnp3::DNPTime Now() final
+    {
+        return currentTime;
     }
 
     void OnStateChange(opendnp3::LinkStatus value) final {}
@@ -110,6 +116,13 @@ public:
     {
         return warmRestartTimeDelay;
     }
+
+    void SetTime(opendnp3::DNPTime time)
+    {
+        this->currentTime = time;
+    }
+
+    opendnp3::DNPTime currentTime;
 
     bool supportsTimeWrite;
     bool supportsAssignClass;
