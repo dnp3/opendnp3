@@ -60,8 +60,8 @@ public:
 
     virtual RestartMode ColdRestartSupport() const override { return RestartMode::UNSUPPORTED; }
     virtual RestartMode WarmRestartSupport() const override { return RestartMode::UNSUPPORTED; }
-    virtual uint16_t ColdRestart() { return 65535; }
-    virtual uint16_t WarmRestart() { return 65535; }
+    virtual uint16_t ColdRestart() override { return 65535; }
+    virtual uint16_t WarmRestart() override { return 65535; }
 
 private:
     bool IsTimeValid() const;
