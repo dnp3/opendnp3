@@ -404,7 +404,7 @@ bool Database::Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t fla
 
 bool Database::FreezeSelectedCounters(bool clear)
 {
-    for(auto& c : this->counter)
+    for(auto c : this->counter)
     {
         FrozenCounter new_value(c.second.value.value, c.second.value.flags, time_source.Now());
         this->frozen_counter.update(new_value, c.first, EventMode::Detect, this->event_receiver);
