@@ -30,7 +30,7 @@ DefaultOutstationApplication::DefaultOutstationApplication(TimeDuration timeSync
 
 DNPTime DefaultOutstationApplication::Now()
 {
-    auto result = DNPTime(last_timestamp.msSinceEpoch + std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - last_update).count());
+    auto result = DNPTime(last_timestamp.msSinceEpoch + std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - last_update).count());
     result.quality = IsTimeValid() ? TimestampQuality::SYNCHRONIZED : TimestampQuality::UNSYNCHRONIZED;
     return result;
 }
@@ -38,20 +38,25 @@ DNPTime DefaultOutstationApplication::Now()
 bool DefaultOutstationApplication::WriteAbsoluteTime(const UTCTimestamp& timestamp)
 {
     last_timestamp = timestamp;
-    last_update = std::chrono::steady_clock::now();
+    last_update = std::chrono::system_clock::now();
     return true;
 }
 
 ApplicationIIN DefaultOutstationApplication::GetApplicationIIN() const
 {
     ApplicationIIN result;
-    result.needTime = !IsTimeValid();
+    result.needTime = NeedsTime();
     return result;
 }
 
 bool DefaultOutstationApplication::IsTimeValid() const
 {
-    return std::chrono::steady_clock::now() - last_update <= refresh_rate.value;
+    return std::chrono::system_clock::now() - last_update <= refresh_rate.value;
+}
+
+bool DefaultOutstationApplication::NeedsTime() const
+{
+    return std::chrono::system_clock::now() - last_update > refresh_rate.value / 2;
 }
 
 } // namespace opendnp3

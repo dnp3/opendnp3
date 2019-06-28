@@ -65,10 +65,11 @@ public:
 
 private:
     bool IsTimeValid() const;
+    bool NeedsTime() const;
 
     TimeDuration refresh_rate;
-    UTCTimestamp last_timestamp;
-    std::chrono::steady_clock::time_point last_update = std::chrono::steady_clock::time_point(std::chrono::milliseconds(0));
+    UTCTimestamp last_timestamp = UTCTimestamp();
+    std::chrono::system_clock::time_point last_update = std::chrono::system_clock::time_point(std::chrono::milliseconds(0));
 };
 
 } // namespace opendnp3
