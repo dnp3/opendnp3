@@ -83,11 +83,11 @@ int main(int argc, char* argv[])
     // you can override an default outstation parameters here
     // in this example, we've enabled the oustation to use unsolicted reporting
     // if the master enables it
-    config.outstation.params.allowUnsolicited = false;
+    config.outstation.params.allowUnsolicited = true;
 
     // You can override the default link layer settings here
     // in this example we've changed the default link layer addressing
-    config.link.LocalAddr = 1024;
+    config.link.LocalAddr = 10;
     config.link.RemoteAddr = 1;
     config.link.KeepAliveTimeout = TimeDuration::Max();    
 
@@ -96,11 +96,6 @@ int main(int argc, char* argv[])
     // updating the outstation's database.
     auto outstation = channel->AddOutstation("outstation", SuccessCommandHandler::Create(),
                                              app, config);
-
-    UpdateBuilder builder;
-    builder.Modify(FlagsType::Counter, 0, 9, 0x01);
-    builder.Modify(FlagsType::FrozenCounter, 0, 9, 0x01);
-    outstation->Apply(builder.Build());
 
     // Enable the outstation and start communications
     outstation->Enable();
@@ -139,6 +134,11 @@ void AddUpdates(UpdateBuilder& builder, State& state, const std::string& argumen
         {
             builder.Update(Counter(state.count), 0);
             ++state.count;
+            break;
+        }
+        case ('f'):
+        {
+            builder.FreezeCounter(0, false);
             break;
         }
         case ('a'):
