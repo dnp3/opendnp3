@@ -359,6 +359,14 @@ bool Database::Update(const Counter& meas, uint16_t index, EventMode mode)
     return this->counter.update(meas, index, mode, event_receiver);
 }
 
+bool Database::FreezeCounter(uint16_t index, bool clear, EventMode mode)
+{
+    auto num_selected = this->counter.select(Range::From(index, index));
+    this->FreezeSelectedCounters(clear, mode);
+
+    return num_selected > 0;
+}
+
 bool Database::Update(const BinaryOutputStatus& meas, uint16_t index, EventMode mode)
 {
     return this->binary_output_status.update(meas, index, mode, event_receiver);
@@ -402,20 +410,22 @@ bool Database::Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t fla
     return false;
 }
 
-bool Database::FreezeSelectedCounters(bool clear)
+bool Database::FreezeSelectedCounters(bool clear, EventMode mode)
 {
     for(auto c : this->counter)
     {
         FrozenCounter new_value(c.second.value.value, c.second.value.flags, time_source.Now());
-        this->frozen_counter.update(new_value, c.first, EventMode::Detect, this->event_receiver);
+        this->frozen_counter.update(new_value, c.first, mode, this->event_receiver);
 
         if(clear)
         {
             c.second.value.value = 0;
             c.second.value.time = time_source.Now();
-            this->counter.update(c.second.value, c.first, EventMode::Detect, this->event_receiver);
+            this->counter.update(c.second.value, c.first, mode, this->event_receiver);
         }
     }
+
+    this->counter.clear_selection();
 
     return true;
 }

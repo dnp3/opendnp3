@@ -35,7 +35,7 @@ using namespace opendnp3;
 
 DatabaseConfig ConfigureDatabase()
 {
-    DatabaseConfig config(10); // 10 of each type
+    DatabaseConfig config(1); // 10 of each type
             
     config.analog_input[0].clazz = PointClass::Class2;
     config.analog_input[0].svariation = StaticAnalogVariation::Group30Var5;
@@ -96,6 +96,11 @@ int main(int argc, char* argv[])
     // updating the outstation's database.
     auto outstation = channel->AddOutstation("outstation", SuccessCommandHandler::Create(),
                                              app, config);
+
+    UpdateBuilder builder;
+    builder.Modify(FlagsType::Counter, 0, 9, 0x01);
+    builder.Modify(FlagsType::FrozenCounter, 0, 9, 0x01);
+    outstation->Apply(builder.Build());
 
     // Enable the outstation and start communications
     outstation->Enable();

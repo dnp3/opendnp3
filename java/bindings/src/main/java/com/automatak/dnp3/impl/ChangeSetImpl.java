@@ -63,6 +63,12 @@ class ChangeSetImpl implements Database {
     }
 
     @Override
+    public void freezeCounter(int index, boolean clear)
+    {
+        this.freezeCounter(index, clear, EventMode.Detect);
+    }
+
+    @Override
     public void update(BinaryOutputStatus value, int index)
     {
         this.update(value, index, EventMode.Detect);
@@ -100,6 +106,12 @@ class ChangeSetImpl implements Database {
     }
 
     @Override
+    public void freezeCounter(int index, boolean clear, EventMode mode)
+    {
+        this.freeze_counter_native(this.nativePointer, index, clear, mode.toType());
+    }
+
+    @Override
     public void update(BinaryOutputStatus value, int index, EventMode mode)
     {
         this.update_bo_status_native(this.nativePointer, value.value, value.quality, value.timestamp, index, mode.toType());
@@ -118,6 +130,7 @@ class ChangeSetImpl implements Database {
     private native void update_double_binary_native(long nativePointer, int value, byte flags, long time, int index, int mode);
     private native void update_analog_native(long nativePointer, double value, byte flags, long time, int index, int mode);
     private native void update_counter_native(long nativePointer, long value, byte flags, long time, int index, int mode);
+    private native void freeze_counter_native(long nativePointer, int index, boolean clear, int mode);
     private native void update_bo_status_native(long nativePointer, boolean value, byte flags, long time, int index, int mode);
     private native void update_ao_status_native(long nativePointer, double value, byte flags, long time, int index, int mode);
 }

@@ -73,6 +73,15 @@ public:
     virtual bool Update(const Counter& meas, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
     /**
+     * Freeze a Counter measurement
+     * @param index index of the measurement
+     * @param clear clear the original counter
+     * @param mode Describes how event generation is handled for this method
+     * @return true if the value exists and it was updated
+     */
+    virtual bool FreezeCounter(uint16_t index, bool clear = false, EventMode mode = EventMode::Detect) = 0;
+
+    /**
      * Update a BinaryOutputStatus measurement
      * @param meas measurement to be processed
      * @param index index of the measurement

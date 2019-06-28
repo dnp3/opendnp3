@@ -33,6 +33,8 @@ import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import static com.automatak.dnp3.impl.mocks.ExpectedValue.Type.FrozenCounterType;
+
 public class StackPair {
 
     public static final int LEVELS = LogLevels.INFO;
@@ -190,6 +192,10 @@ public class StackPair {
                 Counter v = new Counter(random.nextInt(65535), (byte) 0x01, 0);
                 set.update(v, index, EventMode.Force);
                 return new ExpectedValue(v, index);
+            }
+            case FrozenCounterType: {
+                set.freezeCounter(index, false, EventMode.Force);
+                return new ExpectedValue(index, FrozenCounterType);
             }
             case AnalogType: {
                 AnalogInput v = new AnalogInput(random.nextInt(65535), (byte) 0x01, 0);

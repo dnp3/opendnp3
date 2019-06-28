@@ -48,6 +48,12 @@ UpdateBuilder& UpdateBuilder::Update(const Counter& meas, uint16_t index, EventM
     return this->AddMeas(meas, index, mode);
 }
 
+UpdateBuilder& UpdateBuilder::FreezeCounter(uint16_t index, bool clear, EventMode mode)
+{
+    this->Add([=](IUpdateHandler& handler) { handler.FreezeCounter(index, clear, mode); });
+    return *this;
+}
+
 UpdateBuilder& UpdateBuilder::Update(const BinaryOutputStatus& meas, uint16_t index, EventMode mode)
 {
     return this->AddMeas(meas, index, mode);

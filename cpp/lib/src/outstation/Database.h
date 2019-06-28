@@ -64,13 +64,14 @@ public:
     bool Update(const DoubleBitBinary& meas, uint16_t index, EventMode mode) override;
     bool Update(const Analog& meas, uint16_t index, EventMode mode) override;
     bool Update(const Counter& meas, uint16_t index, EventMode mode) override;
+    bool FreezeCounter(uint16_t index, bool clear, EventMode mode) override;
     bool Update(const BinaryOutputStatus& meas, uint16_t index, EventMode mode) override;
     bool Update(const AnalogOutputStatus& meas, uint16_t index, EventMode mode) override;
     bool Update(const OctetString& meas, uint16_t index, EventMode mode) override;
     bool Update(const TimeAndInterval& meas, uint16_t index) override;
     bool Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t flags) override;
 
-    bool FreezeSelectedCounters(bool clear);
+    bool FreezeSelectedCounters(bool clear, EventMode mode = EventMode::Detect);
 
 private:
 
