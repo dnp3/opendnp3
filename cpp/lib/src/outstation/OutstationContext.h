@@ -132,7 +132,7 @@ private:
 
     void CheckForUnsolicitedNull();
 
-    bool CheckForUnsolicited();
+    void CheckForUnsolicited();
 
     bool ProcessDeferredRequest(const ParsedRequest& request);
 

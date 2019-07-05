@@ -312,7 +312,7 @@ void OContext::CheckForUnsolicitedNull()
     }
 }
 
-bool OContext::CheckForUnsolicited()
+void OContext::CheckForUnsolicited()
 {
     if (this->shouldCheckForUnsolicited && this->CanTransmit() && this->state->IsIdle() && this->params.allowUnsolicited)
     {
@@ -336,8 +336,6 @@ bool OContext::CheckForUnsolicited()
                 this->RestartUnsolConfirmTimer();
                 this->state = &StateUnsolicitedConfirmWait::Inst();
                 this->BeginUnsolTx(response);
-
-                return true;
             }
         }
     }
