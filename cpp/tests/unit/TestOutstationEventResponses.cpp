@@ -82,6 +82,42 @@ TEST_CASE(SUITE("ReadClass1WithSOE"))
     REQUIRE(t.lower->PopWriteAsHex() == "C1 81 80 00");        // Buffer should have been cleared
 }
 
+TEST_CASE(SUITE("ReadClass1WithSOEWithTimeoutInBetween"))
+{
+    OutstationConfig config;
+    config.eventBufferConfig = EventBufferConfig::AllTypes(10);
+    config.params.solConfirmTimeout = TimeDuration::Seconds(5);
+    config.params.unsolConfirmTimeout = TimeDuration::Seconds(10);
+    OutstationTestObject t(config, configure::by_count_of::all_types(100));
+
+    t.LowerLayerUp();
+
+    // Generate event
+    t.Transaction([](IUpdateHandler& db) {
+        db.Update(Binary(true), 0);
+    });
+
+    // Read and expect the event
+    t.SendToOutstation(hex::ClassPoll(0, PointClass::Class1));
+    REQUIRE(t.lower->PopWriteAsHex() == "E0 81 80 00 02 01 28 01 00 00 00 81");
+    t.OnTxReady();
+
+    // Wait for timeout
+    t.AdvanceTime(TimeDuration::Seconds(5));
+
+    // Send confirmation too late
+    t.SendToOutstation(hex::SolicitedConfirm(0));
+
+    // Generate another event
+    t.Transaction([](IUpdateHandler& db) {
+        db.Update(Binary(false), 0);
+    });
+
+    // Read again and expect two events
+    t.SendToOutstation(hex::ClassPoll(1, PointClass::Class1));
+    REQUIRE(t.lower->PopWriteAsHex() == "E1 81 80 00 02 01 28 02 00 00 00 81 00 00 01");
+}
+
 TEST_CASE(SUITE("EventBufferOverflowAndClear"))
 {
     OutstationConfig config;

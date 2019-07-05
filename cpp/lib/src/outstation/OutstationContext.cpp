@@ -59,7 +59,7 @@ OContext::OContext(const Addresses& addresses,
       commandHandler(std::move(commandHandler)),
       application(std::move(application)),
       eventBuffer(config.eventBufferConfig),
-      database(db_config, eventBuffer,  config.params.typesAllowedInClass0),
+      database(db_config, eventBuffer, config.params.typesAllowedInClass0),
       rspContext(database, eventBuffer),
       params(config.params),
       isOnline(false),
@@ -67,7 +67,9 @@ OContext::OContext(const Addresses& addresses,
       staticIIN(IINBit::DEVICE_RESTART),
       deferred(config.params.maxRxFragSize),
       sol(config.params.maxTxFragSize),
-      unsol(config.params.maxTxFragSize)
+      unsol(config.params.maxTxFragSize),
+      unsolRetries(config.params.numUnsolRetries),
+      shouldCheckForUnsolicited(false)
 {
 }
 
@@ -80,6 +82,7 @@ bool OContext::OnLowerLayerUp()
     }
 
     isOnline = true;
+    this->shouldCheckForUnsolicited = true;
     this->CheckForTaskStart();
     return true;
 }
@@ -238,7 +241,7 @@ OutstationState& OContext::BeginResponseTx(uint16_t destination, APDUResponse& r
 
     if (response.GetControl().CON)
     {
-        this->RestartConfirmTimer();
+        this->RestartSolConfirmTimer();
         return StateSolicitedConfirmWait::Inst();
     }
 
@@ -248,6 +251,11 @@ OutstationState& OContext::BeginResponseTx(uint16_t destination, APDUResponse& r
 void OContext::BeginRetransmitLastResponse(uint16_t destination)
 {
     this->BeginTx(destination, this->sol.tx.GetLastResponse());
+}
+
+void OContext::BeginRetransmitLastUnsolicitedResponse()
+{
+    this->BeginTx(this->addresses.destination, this->unsol.tx.GetLastResponse());
 }
 
 void OContext::BeginUnsolTx(APDUResponse& response)
@@ -268,12 +276,69 @@ void OContext::BeginTx(uint16_t destination, const ser4cpp::rseq_t& message)
     this->lower->BeginTransmit(Message(Addresses(this->addresses.source, destination), message));
 }
 
+void OContext::CheckForTaskStart()
+{
+    // do these checks in order of priority
+    this->CheckForDeferredRequest();
+    this->CheckForUnsolicitedNull();
+    if(this->shouldCheckForUnsolicited)
+    {
+        this->CheckForUnsolicited();
+    }
+}
+
 void OContext::CheckForDeferredRequest()
 {
     if (this->CanTransmit() && this->deferred.IsSet())
     {
         auto handler = [this](const ParsedRequest& request) { return this->ProcessDeferredRequest(request); };
         this->deferred.Process(handler);
+    }
+}
+
+void OContext::CheckForUnsolicitedNull()
+{
+    if (this->CanTransmit() && this->state->IsIdle() && this->params.allowUnsolicited)
+    {
+        if (!this->unsol.completedNull)
+        {
+            // send a NULL unsolcited message
+            auto response = this->unsol.tx.Start();
+            build::NullUnsolicited(response, this->unsol.seq.num, this->GetResponseIIN());
+            this->RestartUnsolConfirmTimer();
+            this->state = &StateUnsolicitedConfirmWait::Inst();
+            this->BeginUnsolTx(response);
+        }
+    }
+}
+
+bool OContext::CheckForUnsolicited()
+{
+    if (this->shouldCheckForUnsolicited && this->CanTransmit() && this->state->IsIdle() && this->params.allowUnsolicited)
+    {
+        this->shouldCheckForUnsolicited = false;
+
+        if (this->unsol.completedNull)
+        {
+            // are there events to be reported?
+            if (this->params.unsolClassMask.Intersects(this->eventBuffer.UnwrittenClassField()))
+            {
+
+                auto response = this->unsol.tx.Start();
+                auto writer = response.GetWriter();
+
+                this->eventBuffer.Unselect();
+                this->eventBuffer.SelectAllByClass(this->params.unsolClassMask);
+                this->eventBuffer.Load(writer);
+
+                build::NullUnsolicited(response, this->unsol.seq.num, this->GetResponseIIN());
+                this->RestartUnsolConfirmTimer();
+                this->state = &StateUnsolicitedConfirmWait::Inst();
+                this->BeginUnsolTx(response);
+
+                return true;
+            }
+        }
     }
 }
 
@@ -302,42 +367,18 @@ bool OContext::ProcessDeferredRequest(const ParsedRequest& request)
     }
 }
 
-void OContext::CheckForUnsolicited()
+void OContext::RestartSolConfirmTimer()
 {
-    if (this->CanTransmit() && this->state->IsIdle() && this->params.allowUnsolicited)
-    {
-        if (this->unsol.completedNull)
-        {
-            // are there events to be reported?
-            if (this->params.unsolClassMask.Intersects(this->eventBuffer.UnwrittenClassField()))
-            {
+    auto timeout = [&]() {
+        this->state = &this->state->OnConfirmTimeout(*this);
+        this->CheckForTaskStart();
+    };
 
-                auto response = this->unsol.tx.Start();
-                auto writer = response.GetWriter();
-
-                this->eventBuffer.Unselect();
-                this->eventBuffer.SelectAllByClass(this->params.unsolClassMask);
-                this->eventBuffer.Load(writer);
-
-                build::NullUnsolicited(response, this->unsol.seq.num, this->GetResponseIIN());
-                this->RestartConfirmTimer();
-                this->state = &StateUnsolicitedConfirmWait::Inst();
-                this->BeginUnsolTx(response);
-            }
-        }
-        else
-        {
-            // send a NULL unsolcited message
-            auto response = this->unsol.tx.Start();
-            build::NullUnsolicited(response, this->unsol.seq.num, this->GetResponseIIN());
-            this->RestartConfirmTimer();
-            this->state = &StateUnsolicitedConfirmWait::Inst();
-            this->BeginUnsolTx(response);
-        }
-    }
+    this->confirmTimer.cancel();
+    this->confirmTimer = this->executor->start(this->params.solConfirmTimeout.value, timeout);
 }
 
-void OContext::RestartConfirmTimer()
+void OContext::RestartUnsolConfirmTimer()
 {
     auto timeout = [&]() {
         this->state = &this->state->OnConfirmTimeout(*this);
@@ -494,11 +535,10 @@ bool OContext::ProcessMessage(const Message& message)
     return this->ProcessObjects(ParsedRequest(message.addresses, result.header, result.objects));
 }
 
-void OContext::CheckForTaskStart()
+void OContext::HandleNewEvents()
 {
-    // do these checks in order of priority
-    this->CheckForDeferredRequest();
-    this->CheckForUnsolicited();
+    this->shouldCheckForUnsolicited = true;
+    this->CheckForTaskStart();
 }
 
 void OContext::SetRestartIIN()
@@ -809,6 +849,7 @@ IINField OContext::HandleEnableUnsolicited(const ser4cpp::rseq_t& objects, Heade
     if (result == ParseResult::OK)
     {
         this->params.unsolClassMask.Set(handler.GetClassField());
+        shouldCheckForUnsolicited = true;
         return handler.Errors();
     }
 

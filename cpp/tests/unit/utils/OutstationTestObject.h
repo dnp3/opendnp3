@@ -62,7 +62,7 @@ public:
     {
         // auto& handler = context.GetUpdateHandler();
         apply(context.GetUpdateHandler());
-        context.CheckForTaskStart();
+        context.HandleNewEvents();
     }
 
 private:

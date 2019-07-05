@@ -135,7 +135,7 @@ OutstationState& StateSolicitedConfirmWait::OnRepeatNonReadRequest(OContext& ctx
 
 OutstationState& StateSolicitedConfirmWait::OnRepeatReadRequest(OContext& ctx, const ParsedRequest& request)
 {
-    ctx.RestartConfirmTimer();
+    ctx.RestartSolConfirmTimer();
     ctx.BeginRetransmitLastResponse(request.addresses.source);
     return *this;
 }
@@ -180,6 +180,8 @@ OutstationState& StateUnsolicitedConfirmWait::OnConfirm(OContext& ctx, const Par
         ctx.unsol.completedNull = true;
     }
 
+    ctx.shouldCheckForUnsolicited = true;
+
     return StateIdle::Inst();
 }
 
@@ -189,7 +191,17 @@ OutstationState& StateUnsolicitedConfirmWait::OnConfirmTimeout(OContext& ctx)
 
     if (ctx.unsol.completedNull)
     {
-        ctx.eventBuffer.Unselect();
+        auto shouldRetry = ctx.unsolRetries.Retry();
+        if(shouldRetry)
+        {
+            ctx.RestartUnsolConfirmTimer();
+            ctx.BeginRetransmitLastUnsolicitedResponse();
+            return *this;
+        }
+        else
+        {
+            ctx.eventBuffer.Unselect();
+        }
     }
 
     return StateIdle::Inst();

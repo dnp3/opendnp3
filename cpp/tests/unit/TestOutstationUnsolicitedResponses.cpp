@@ -57,10 +57,11 @@ TEST_CASE(SUITE("Non-read during null unsol"))
     REQUIRE(t.NumPendingTimers() == 1);
 }
 
-TEST_CASE(SUITE("UnsolRetryDelay"))
+TEST_CASE(SUITE("UnsolConfirmTimeout"))
 {
     OutstationConfig cfg;
     cfg.params.allowUnsolicited = true;
+    cfg.params.unsolConfirmTimeout = TimeDuration::Seconds(5);
     OutstationTestObject t(cfg);
 
     t.LowerLayerUp();
@@ -70,10 +71,45 @@ TEST_CASE(SUITE("UnsolRetryDelay"))
     t.OnTxReady();
 
     REQUIRE(t.NumPendingTimers() == 1); // confirm timer
-    REQUIRE(t.AdvanceToNextTimer());
+    REQUIRE(t.AdvanceTime(TimeDuration::Seconds(5)));
 
     // immediately retries with new sequence #
     REQUIRE(t.lower->PopWriteAsHex() == hex::NullUnsolicited(1, IINField(IINBit::DEVICE_RESTART)));
+}
+
+TEST_CASE(SUITE("UnsolNumRetries"))
+{
+    OutstationConfig cfg;
+    cfg.params.allowUnsolicited = true;
+    cfg.params.unsolConfirmTimeout = TimeDuration::Seconds(5);
+    cfg.params.numUnsolRetries = NumRetries::Fixed(3);
+    cfg.params.unsolClassMask = ClassField::AllEventClasses();
+    cfg.eventBufferConfig = EventBufferConfig::AllTypes(5);
+    auto database = configure::by_count_of::binary_input(1);
+    OutstationTestObject t(cfg, std::move(database));
+
+    t.LowerLayerUp();
+
+    // Confirm the unsolicited NULL response
+    REQUIRE(t.lower->PopWriteAsHex() == hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
+    t.OnTxReady();
+    t.SendToOutstation(hex::UnsolConfirm(0));
+
+    // Generate an event
+    t.Transaction([](IUpdateHandler& db) { db.Update(Binary(true), 0); });
+
+    // Check original unsolicited response, followed by the 3 retries
+    for(unsigned int i = 0; i <= 3; ++i)
+    {
+        REQUIRE(t.NumPendingTimers() == 1); // confirm timer
+        REQUIRE(t.AdvanceTime(TimeDuration::Seconds(5)));
+        REQUIRE(t.lower->PopWriteAsHex() == "F1 82 80 00 02 01 28 01 00 00 00 81");
+        t.OnTxReady();
+    }
+
+    // Check that it stops sending stuff
+    REQUIRE(t.NumPendingTimers() == 0); // no confirm timer
+    REQUIRE(t.lower->PopWriteAsHex().empty());
 }
 
 TEST_CASE(SUITE("UnsolData"))

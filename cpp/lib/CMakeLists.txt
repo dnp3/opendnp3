@@ -155,6 +155,7 @@ set(opendnp3_public_headers
     ./include/opendnp3/outstation/IOutstationApplication.h
     ./include/opendnp3/outstation/IUpdateHandler.h
     ./include/opendnp3/outstation/MeasurementConfig.h
+    ./include/opendnp3/outstation/NumRetries.h
     ./include/opendnp3/outstation/OutstationConfig.h
     ./include/opendnp3/outstation/OutstationParams.h
     ./include/opendnp3/outstation/OutstationStackConfig.h
@@ -634,6 +635,7 @@ set(opendnp3_src
     ./src/outstation/EventBufferConfig.cpp
     ./src/outstation/IINHelpers.cpp
     ./src/outstation/IOutstationApplication.cpp
+    ./src/outstation/NumRetries.cpp
     ./src/outstation/OctetStringSerializer.cpp
     ./src/outstation/OutstationContext.cpp
     ./src/outstation/OutstationStack.cpp
