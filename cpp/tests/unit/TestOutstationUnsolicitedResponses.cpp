@@ -110,6 +110,65 @@ TEST_CASE(SUITE("UnsolNumRetries"))
     // Check that it stops sending stuff
     REQUIRE(t.NumPendingTimers() == 0); // no confirm timer
     REQUIRE(t.lower->PopWriteAsHex().empty());
+
+    // Generate another event
+    t.Transaction([](IUpdateHandler& db) { db.Update(Binary(false), 0); });
+
+    // Check seq number increment and 3 retries
+    for(unsigned int i = 0; i <= 3; ++i)
+    {
+        REQUIRE(t.NumPendingTimers() == 1); // confirm timer
+        REQUIRE(t.AdvanceTime(TimeDuration::Seconds(5)));
+        REQUIRE(t.lower->PopWriteAsHex() == "F2 82 80 00 02 01 28 02 00 00 00 81 00 00 01");
+        t.OnTxReady();
+    }
+
+    // Check that it stops sending stuff
+    REQUIRE(t.NumPendingTimers() == 0); // no confirm timer
+    REQUIRE(t.lower->PopWriteAsHex().empty());
+}
+
+TEST_CASE(SUITE("UnsolInfiniteRetries"))
+{
+    OutstationConfig cfg;
+    cfg.params.allowUnsolicited = true;
+    cfg.params.unsolConfirmTimeout = TimeDuration::Seconds(5);
+    cfg.params.numUnsolRetries = NumRetries::Infinite();
+    cfg.params.unsolClassMask = ClassField::AllEventClasses();
+    cfg.eventBufferConfig = EventBufferConfig::AllTypes(5);
+    auto database = configure::by_count_of::binary_input(1);
+    OutstationTestObject t(cfg, std::move(database));
+
+    t.LowerLayerUp();
+
+    // Confirm the unsolicited NULL response
+    REQUIRE(t.lower->PopWriteAsHex() == hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
+    t.OnTxReady();
+    t.SendToOutstation(hex::UnsolConfirm(0));
+
+    // Generate an event
+    t.Transaction([](IUpdateHandler& db) { db.Update(Binary(true), 0); });
+
+    // Check that it keeps repeating the unsolicited response
+    for(unsigned int i = 0; i < 1000; ++i)
+    {
+        REQUIRE(t.NumPendingTimers() == 1); // confirm timer
+        REQUIRE(t.AdvanceTime(TimeDuration::Seconds(5)));
+        REQUIRE(t.lower->PopWriteAsHex() == "F1 82 80 00 02 01 28 01 00 00 00 81");
+        t.OnTxReady();
+    }
+
+    // Generate another event
+    t.Transaction([](IUpdateHandler& db) { db.Update(Binary(false), 0); });
+
+    // Check that it keeps repeating the same non-regenerated unsolicited response
+    for(unsigned int i = 0; i < 1000; ++i)
+    {
+        REQUIRE(t.NumPendingTimers() == 1); // confirm timer
+        REQUIRE(t.AdvanceTime(TimeDuration::Seconds(5)));
+        REQUIRE(t.lower->PopWriteAsHex() == "F1 82 80 00 02 01 28 01 00 00 00 81");
+        t.OnTxReady();
+    }
 }
 
 TEST_CASE(SUITE("UnsolData"))
@@ -257,7 +316,7 @@ TEST_CASE(SUITE("WriteDuringUnsolAfterTx"))
     WriteDuringUnsol(false);
 }
 
-TEST_CASE(SUITE("ReadDuringUnsol"))
+TEST_CASE(SUITE("ReadDuringUnsolConfirm"))
 {
     OutstationConfig cfg;
     cfg.params.allowUnsolicited = true;
@@ -275,16 +334,45 @@ TEST_CASE(SUITE("ReadDuringUnsol"))
 
     REQUIRE(t.lower->PopWriteAsHex() == "F1 82 80 00 02 01 28 01 00 00 00 81");
 
-    auto readClass1 = "C0 01 3C 02 06";
-
-    {
-        t.OnTxReady();
-        t.SendToOutstation(readClass1);
-    }
+    t.OnTxReady();
+    t.SendToOutstation("C0 01 3C 02 06");
 
     t.SendToOutstation(hex::UnsolConfirm(1));
 
     REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00");
+}
+
+TEST_CASE(SUITE("ReadDuringUnsolWithoutConfirm"))
+{
+    OutstationConfig cfg;
+    cfg.params.allowUnsolicited = true;
+    cfg.params.unsolClassMask = ClassField::AllEventClasses();
+    cfg.eventBufferConfig = EventBufferConfig(5);
+    cfg.params.unsolConfirmTimeout = TimeDuration::Seconds(5);
+    OutstationTestObject t(cfg, configure::by_count_of::binary_input(5));
+
+    t.LowerLayerUp();
+
+    REQUIRE(t.lower->PopWriteAsHex() == hex::NullUnsolicited(0));
+    t.OnTxReady();
+    t.SendToOutstation(hex::UnsolConfirm(0));
+
+    t.Transaction([](IUpdateHandler& db) { db.Update(Binary(true, Flags(0x01)), 0); });
+
+    REQUIRE(t.lower->PopWriteAsHex() == "F1 82 80 00 02 01 28 01 00 00 00 81");
+    t.OnTxReady();
+
+    // Send read request during the unsolicited
+    t.SendToOutstation("C0 01 3C 02 06");
+
+    // Outstation should not respond
+    REQUIRE(t.lower->PopWriteAsHex().empty());
+
+    // Timeout unsolicited response
+    t.AdvanceTime(TimeDuration::Seconds(5));
+
+    // Outstation should immediatly answer to the READ request with the event
+    REQUIRE(t.lower->PopWriteAsHex() == "E0 81 80 00 02 01 28 01 00 00 00 81");
 }
 
 TEST_CASE(SUITE("ReadWriteDuringUnsol"))

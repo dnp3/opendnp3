@@ -327,6 +327,7 @@ bool OContext::CheckForUnsolicited()
                 auto response = this->unsol.tx.Start();
                 auto writer = response.GetWriter();
 
+                this->unsolRetries.Reset();
                 this->eventBuffer.Unselect();
                 this->eventBuffer.SelectAllByClass(this->params.unsolClassMask);
                 this->eventBuffer.Load(writer);

@@ -192,7 +192,7 @@ OutstationState& StateUnsolicitedConfirmWait::OnConfirmTimeout(OContext& ctx)
     if (ctx.unsol.completedNull)
     {
         auto shouldRetry = ctx.unsolRetries.Retry();
-        if(shouldRetry)
+        if(shouldRetry && !ctx.deferred.IsSet())
         {
             ctx.RestartUnsolConfirmTimer();
             ctx.BeginRetransmitLastUnsolicitedResponse();
