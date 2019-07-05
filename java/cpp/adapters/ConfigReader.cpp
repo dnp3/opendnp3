@@ -169,7 +169,8 @@ opendnp3::OutstationParams ConfigReader::ConvertOutstationConfig(JNIEnv* env, jo
     config.maxControlsPerRequest = static_cast<uint8_t>(cfg.getmaxControlsPerRequest(env, jconfig));
     config.selectTimeout = ConvertDuration(env, cfg.getselectTimeout(env, jconfig));
     config.solConfirmTimeout = ConvertDuration(env, cfg.getsolConfirmTimeout(env, jconfig));
-    config.unsolRetryTimeout = ConvertDuration(env, cfg.getunsolRetryTimeout(env, jconfig));
+    config.unsolConfirmTimeout = ConvertDuration(env, cfg.getunsolConfirmTimeout(env, jconfig));
+    config.numUnsolRetries = ConvertNumRetries(env, cfg.getnumUnsolRetries(env, jconfig));
     config.maxTxFragSize = cfg.getmaxTxFragSize(env, jconfig);
     config.maxRxFragSize = cfg.getmaxRxFragSize(env, jconfig);
     config.allowUnsolicited = !(cfg.getallowUnsolicited(env, jconfig) == 0u);
@@ -177,11 +178,21 @@ opendnp3::OutstationParams ConfigReader::ConvertOutstationConfig(JNIEnv* env, jo
     return config;
 }
 
-
-
 opendnp3::TimeDuration ConfigReader::ConvertDuration(JNIEnv* env, jobject jduration)
 {
     return opendnp3::TimeDuration::Milliseconds(jni::JCache::Duration.toMillis(env, jduration));
+}
+
+opendnp3::NumRetries ConfigReader::ConvertNumRetries(JNIEnv* env, jobject jnumretries)
+{
+    if(jni::JCache::NumRetries.getisInfinite(env, jnumretries))
+    {
+        return opendnp3::NumRetries::Infinite();
+    }
+    else
+    {
+        return opendnp3::NumRetries::Fixed(jni::JCache::NumRetries.getmaxNumRetries(env, jnumretries));
+    }
 }
 
 template<class Info, class ConfigType, class ConfigCache, class StaticVariation, class EventVariation>

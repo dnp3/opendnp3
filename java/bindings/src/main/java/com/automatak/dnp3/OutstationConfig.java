@@ -50,9 +50,14 @@ public class OutstationConfig {
     public Duration solConfirmTimeout = Duration.ofSeconds(5);
 
     /**
-     * Timeout for unsolicited retries
+     * Timeout for unsolicited confirms
      */
-    public Duration unsolRetryTimeout = Duration.ofSeconds(5);
+    public Duration unsolConfirmTimeout = Duration.ofSeconds(5);
+
+    /**
+     * Number of unsolicited response retries
+     */
+    public NumRetries numUnsolRetries = NumRetries.Infinite();
 
     /**
      * The maximum fragment size the outstation will use for fragments it sends
@@ -67,5 +72,5 @@ public class OutstationConfig {
     /**
      * Global enabled / disable for unsolicited messages. If false, the NULL unsolicited message is not even sent
      */
-    public boolean allowUnsolicited = false;
+    public boolean allowUnsolicited = true;
 }

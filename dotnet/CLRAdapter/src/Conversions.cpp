@@ -398,8 +398,8 @@ namespace DNP3
             params.selectTimeout = ConvertTimespan(config->selectTimeout);
             params.solConfirmTimeout = ConvertTimespan(config->solicitedConfirmTimeout);
             params.unsolClassMask = ConvertClassField(config->unsolClassMask);
-            params.unsolConfirmTimeout = ConvertTimespan(config->unsolicitedConfirmTimeout);
-            params.unsolRetryTimeout = ConvertTimespan(config->unsolicitedRetryPeriod);
+            params.unsolConfirmTimeout = ConvertTimespan(config->unsolConfirmTimeout);
+            params.numUnsolRetries = ConvertNumRetries(config->numUnsolRetries);
             params.respondToAnyMaster = config->respondToAnyMaster;
 
             return params;
@@ -442,6 +442,18 @@ namespace DNP3
             return cfg;
         }
 
+        opendnp3::NumRetries Conversions::ConvertNumRetries(NumRetries ^ numRetries)
+        {
+            if (numRetries->isInfinite)
+            {
+                return opendnp3::NumRetries::Infinite();
+            }
+            else
+            {
+                return opendnp3::NumRetries::Fixed(numRetries->maxNumRetries);
+            }
+        }
+
         opendnp3::DatabaseConfig Conversions::Convert(DatabaseTemplate ^ lhs)
         {
             opendnp3::DatabaseConfig config;
@@ -476,7 +488,7 @@ namespace DNP3
         }
 
         array<System::Byte> ^ Conversions::Convert(const opendnp3::Buffer& bytes)
-        {           
+        {
             array<System::Byte> ^ ret = gcnew array<System::Byte>(static_cast<int>(bytes.length));
 
             for (int i = 0; i < ret->Length; ++i)
