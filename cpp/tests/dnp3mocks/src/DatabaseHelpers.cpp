@@ -35,9 +35,10 @@ namespace by_count_of
         return database_by_sizes(num, 0, 0, 0, 0, 0, 0, 0, 0);
     }
 
-    opendnp3::DatabaseConfig counter(uint16_t num)
+    opendnp3::DatabaseConfig counter(uint16_t num, bool with_frozen)
     {
-        return database_by_sizes(0, 0, 0, num, 0, 0, 0, 0, 0);
+        auto num_frozen = with_frozen ? num : 0;
+        return database_by_sizes(0, 0, 0, num, num_frozen, 0, 0, 0, 0);
     }
 
     opendnp3::DatabaseConfig binary_output_status(uint16_t num)

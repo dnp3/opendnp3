@@ -67,12 +67,11 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChangeSetImpl_update_1counte
                     static_cast<EventMode>(mode));
 }
 
-JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChangeSetImpl_update_1frozen_1counter_1native(
-    JNIEnv* /*env*/, jobject /*unused*/, jlong native, jlong value, jbyte flags, jlong time, jint index, jint mode)
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChangeSetImpl_freeze_1counter_1native(
+    JNIEnv * /*env*/, jobject /*unused*/, jlong native, jint index, jboolean clear, jint mode)
 {
     const auto changes = (UpdateBuilder*)native;
-    changes->Update(FrozenCounter(static_cast<uint32_t>(value), Flags(flags), DNPTime(time)), static_cast<uint16_t>(index),
-                    static_cast<EventMode>(mode));
+    changes->FreezeCounter(static_cast<uint16_t>(index), clear, static_cast<EventMode>(mode));
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChangeSetImpl_update_1bo_1status_1native(

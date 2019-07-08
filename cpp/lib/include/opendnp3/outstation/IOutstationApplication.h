@@ -29,6 +29,7 @@
 #include "opendnp3/gen/RestartMode.h"
 #include "opendnp3/link/ILinkListener.h"
 #include "opendnp3/outstation/ApplicationIIN.h"
+#include "opendnp3/outstation/IDnpTimeSource.h"
 
 #include <memory>
 
@@ -38,7 +39,7 @@ namespace opendnp3
 /**
  * Interface for all outstation application callback info except for control requests
  */
-class IOutstationApplication : public ILinkListener
+class IOutstationApplication : public ILinkListener, public IDnpTimeSource
 {
 public:
     /// Queries whether the the outstation supports absolute time writes
@@ -126,21 +127,7 @@ public:
         return 65535;
     }
 
-    virtual ~IOutstationApplication() {}
-};
-
-/**
- * A singleton with default setting useful for examples
- */
-class DefaultOutstationApplication : public IOutstationApplication
-{
-public:
-    static std::shared_ptr<IOutstationApplication> Create()
-    {
-        return std::make_shared<DefaultOutstationApplication>();
-    }
-
-    DefaultOutstationApplication() = default;
+    virtual ~IOutstationApplication() = default;
 };
 
 } // namespace opendnp3

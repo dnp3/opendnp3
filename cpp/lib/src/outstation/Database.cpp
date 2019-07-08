@@ -47,8 +47,10 @@ template<class Spec> bool load_type(StaticDataMap<Spec>& map, HeaderWriter& writ
 
 Database::Database(const DatabaseConfig& config,
                    IEventReceiver& event_receiver,
+                   IDnpTimeSource& time_source,
                    StaticTypeBitField allowed_class_zero_types)
     : event_receiver(event_receiver),
+      time_source(time_source),
       allowed_class_zero_types(allowed_class_zero_types),
       binary_input(config.binary_input),
       double_binary(config.double_binary),
@@ -357,9 +359,12 @@ bool Database::Update(const Counter& meas, uint16_t index, EventMode mode)
     return this->counter.update(meas, index, mode, event_receiver);
 }
 
-bool Database::Update(const FrozenCounter& meas, uint16_t index, EventMode mode)
+bool Database::FreezeCounter(uint16_t index, bool clear, EventMode mode)
 {
-    return this->frozen_counter.update(meas, index, mode, event_receiver);
+    auto num_selected = this->counter.select(Range::From(index, index));
+    this->FreezeSelectedCounters(clear, mode);
+
+    return num_selected > 0;
 }
 
 bool Database::Update(const BinaryOutputStatus& meas, uint16_t index, EventMode mode)
@@ -403,6 +408,26 @@ bool Database::Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t fla
     }
 
     return false;
+}
+
+bool Database::FreezeSelectedCounters(bool clear, EventMode mode)
+{
+    for(auto c : this->counter)
+    {
+        FrozenCounter new_value(c.second.value.value, c.second.value.flags, time_source.Now());
+        this->frozen_counter.update(new_value, c.first, mode, this->event_receiver);
+
+        if(clear)
+        {
+            c.second.value.value = 0;
+            c.second.value.time = time_source.Now();
+            this->counter.update(c.second.value, c.first, mode, this->event_receiver);
+        }
+    }
+
+    this->counter.clear_selection();
+
+    return true;
 }
 
 template<class Spec> void Database::select_all_class_zero(StaticDataMap<Spec>& map)

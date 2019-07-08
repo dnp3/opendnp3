@@ -155,6 +155,8 @@ public:
 
     iterator end();
 
+    iterator find(uint16_t index);
+
 private:
     map_t map;
     Range selected;

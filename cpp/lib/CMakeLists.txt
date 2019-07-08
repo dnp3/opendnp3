@@ -140,17 +140,19 @@ set(opendnp3_public_headers
     ./include/opendnp3/master/IUTCTimeSource.h
     ./include/opendnp3/master/MasterParams.h
     ./include/opendnp3/master/PrintingSOEHandler.h
-	./include/opendnp3/master/ResponseInfo.h
+    ./include/opendnp3/master/ResponseInfo.h
     ./include/opendnp3/master/RestartOperationResult.h
     ./include/opendnp3/master/TaskConfig.h
     ./include/opendnp3/master/TaskId.h
     ./include/opendnp3/master/TaskInfo.h
-	./include/opendnp3/master/X509Info.h
+    ./include/opendnp3/master/X509Info.h
 
     ./include/opendnp3/outstation/ApplicationIIN.h
-    ./include/opendnp3/outstation/DatabaseConfig.h    
+    ./include/opendnp3/outstation/DatabaseConfig.h
+    ./include/opendnp3/outstation/DefaultOutstationApplication.h
     ./include/opendnp3/outstation/EventBufferConfig.h
     ./include/opendnp3/outstation/ICommandHandler.h
+    ./include/opendnp3/outstation/IDnpTimeSource.h
     ./include/opendnp3/outstation/IOutstation.h
     ./include/opendnp3/outstation/IOutstationApplication.h
     ./include/opendnp3/outstation/IUpdateHandler.h
@@ -371,6 +373,7 @@ set(opendnp3_private_headers
     ./src/outstation/Database.h
     ./src/outstation/DeferredRequest.h
     ./src/outstation/Event.h
+    ./src/outstation/FreezeRequestHandler.h
     ./src/outstation/IClassAssigner.h
     ./src/outstation/ICommandAction.h
     ./src/outstation/IEventReceiver.h
@@ -631,8 +634,10 @@ set(opendnp3_src
     ./src/outstation/CommandResponseHandler.cpp
     ./src/outstation/Database.cpp
     ./src/outstation/DatabaseConfig.cpp
+    ./src/outstation/DefaultOutstationApplication.cpp
     ./src/outstation/DeferredRequest.cpp
     ./src/outstation/EventBufferConfig.cpp
+    ./src/outstation/FreezeRequestHandler.cpp
     ./src/outstation/IINHelpers.cpp
     ./src/outstation/IOutstationApplication.cpp
     ./src/outstation/NumRetries.cpp

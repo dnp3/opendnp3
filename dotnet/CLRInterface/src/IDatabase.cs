@@ -28,22 +28,22 @@ namespace Automatak.DNP3.Interface
     /// </summary>
     public interface IDatabase
 	{
-        
-        /// <summary>
-        /// Update a Binary input
-        /// </summary>
-        /// <param name="update">measurement to update</param>
-        /// <param name="index">index of measurement</param>        
-        /// <param name="forceEvent"> if true, an event is created regardess of the last reported value</param>
-        /// <returns> true if the point exists </returns>
-		void Update(Binary update, System.UInt16 index, EventMode mode = EventMode.Detect);
 
         /// <summary>
         /// Update a Binary input
         /// </summary>
         /// <param name="update">measurement to update</param>
         /// <param name="index">index of measurement</param>        
-        /// <param name="forceEvent"> if true, an event is created regardess of the last reported value</param>
+        /// <param name="mode"> EventMode to use</param>
+        /// <returns> true if the point exists </returns>
+        void Update(Binary update, System.UInt16 index, EventMode mode = EventMode.Detect);
+
+        /// <summary>
+        /// Update a Binary input
+        /// </summary>
+        /// <param name="update">measurement to update</param>
+        /// <param name="index">index of measurement</param>        
+        /// <param name="mode"> EventMode to use</param>
         /// <returns> true if the point exists </returns>
         void Update(DoubleBitBinary update, System.UInt16 index, EventMode mode = EventMode.Detect);
 
@@ -52,7 +52,7 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="update">measurement to update</param>
         /// <param name="index">index of measurement</param>
-        /// <param name="forceEvent"> if true, an event is created regardess of the last reported value</param>
+        /// <param name="mode"> EventMode to use</param>
         /// <returns> true if the point exists </returns>
         void Update(Analog update, System.UInt16 index, EventMode mode = EventMode.Detect);
 
@@ -61,25 +61,25 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="update">measurement to update</param>
         /// <param name="index">index of measurement</param>
-        /// <param name="forceEvent"> if true, an event is created regardess of the last reported value</param>
+        /// <param name="mode"> EventMode to use</param>
         /// <returns> true if the point exists </returns>
         void Update(Counter update, System.UInt16 index, EventMode mode = EventMode.Detect);
 
         /// <summary>
-        /// Update a FrozenCounter
+        /// Freeze a Counter
         /// </summary>
-        /// <param name="update">measurement to update</param>
         /// <param name="index">index of measurement</param>
-        /// <param name="forceEvent"> if true, an event is created regardess of the last reported value</param>
+        /// <param name="clear">clear original counter</param>
+        /// <param name="mode"> EventMode to use</param>
         /// <returns> true if the point exists </returns>
-        void Update(FrozenCounter update, System.UInt16 index, EventMode mode = EventMode.Detect);
+        void FreezeCounter(System.UInt16 index, bool clear, EventMode mode = EventMode.Detect);
 
         /// <summary>
         /// Update a BinaryOutputStatus
         /// </summary>
         /// <param name="update">measurement to update</param>
         /// <param name="index">index of measurement</param>
-        /// <param name="forceEvent"> if true, an event is created regardess of the last reported value</param>
+        /// <param name="mode"> EventMode to use</param>
         /// <returns> true if the point exists </returns>
         void Update(BinaryOutputStatus update, System.UInt16 index, EventMode mode = EventMode.Detect);
 
@@ -88,7 +88,7 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="update">measurement to update</param>
         /// <param name="index">index of measurement</param>
-        /// <param name="forceEvent"> if true, an event is created regardess of the last reported value</param>
+        /// <param name="mode"> EventMode to use</param>
         /// <returns> true if the point exists </returns>
         void Update(AnalogOutputStatus update, System.UInt16 index, EventMode mode = EventMode.Detect);
 
@@ -97,7 +97,7 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="update">measurement to update</param>
         /// <param name="index">index of measurement</param>
-        /// <param name="forceEvent"> if true, an event is created regardess of the last reported value</param>
+        /// <param name="mode"> EventMode to use</param>
         /// <returns> true if the point exists </returns>
         void Update(OctetString update, System.UInt16 index, EventMode mode = EventMode.Detect);
 
@@ -106,7 +106,7 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="update"></param>
         /// <param name="index"></param>
-        /// <param name="forceEvent"> if true, an event is created regardess of the last reported value</param>
+        /// <param name="mode"> EventMode to use</param>
         /// <returns> true if the point exists </returns>
         void Update(TimeAndInterval update, System.UInt16 index);                
 	}

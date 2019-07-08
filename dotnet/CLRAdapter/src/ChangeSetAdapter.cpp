@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -23,74 +23,73 @@
 
 namespace Automatak
 {
-	namespace DNP3
-	{
-		namespace Adapter
-		{
+namespace DNP3
+{
+    namespace Adapter
+    {
 
-			ChangeSetAdapter::ChangeSetAdapter() : builder(new opendnp3::UpdateBuilder())
-			{}
+        ChangeSetAdapter::ChangeSetAdapter() : builder(new opendnp3::UpdateBuilder()) {}
 
-			ChangeSetAdapter::~ChangeSetAdapter()
-			{
-				this->!ChangeSetAdapter();
-			}
+        ChangeSetAdapter::~ChangeSetAdapter()
+        {
+            this->!ChangeSetAdapter();
+        }
 
-			ChangeSetAdapter::!ChangeSetAdapter()
-			{
-				delete builder;
-			}
-		
-			void ChangeSetAdapter::Apply(opendnp3::IOutstation& proxy)
-			{
-				proxy.Apply(builder->Build());				
-			}
+        ChangeSetAdapter::!ChangeSetAdapter()
+        {
+            delete builder;
+        }
 
-			void ChangeSetAdapter::Update(Binary^ update, System::UInt16 index, EventMode mode)
-			{
-				builder->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode) mode);
-			}
-			
-			void ChangeSetAdapter::Update(DoubleBitBinary^ update, System::UInt16 index, EventMode mode)
-			{
-				builder->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode) mode);
-			}
+        void ChangeSetAdapter::Apply(opendnp3::IOutstation& proxy)
+        {
+            proxy.Apply(builder->Build());
+        }
 
-			void ChangeSetAdapter::Update(Analog^ update, System::UInt16 index, EventMode mode)
-			{
-				builder->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode) mode);
-			}
+        void ChangeSetAdapter::Update(Binary ^ update, System::UInt16 index, EventMode mode)
+        {
+            builder->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode)mode);
+        }
 
-			void ChangeSetAdapter::Update(Counter^ update, System::UInt16 index, EventMode mode)
-			{
-				builder->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode) mode);
-			}
+        void ChangeSetAdapter::Update(DoubleBitBinary ^ update, System::UInt16 index, EventMode mode)
+        {
+            builder->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode)mode);
+        }
 
-			void ChangeSetAdapter::Update(FrozenCounter^ update, System::UInt16 index, EventMode mode)
-			{
-				builder->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode) mode);
-			}
-			
-			void ChangeSetAdapter::Update(BinaryOutputStatus^ update, System::UInt16 index, EventMode mode)
-			{
-				builder->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode) mode);
-			}
+        void ChangeSetAdapter::Update(Analog ^ update, System::UInt16 index, EventMode mode)
+        {
+            builder->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode)mode);
+        }
 
-			void ChangeSetAdapter::Update(AnalogOutputStatus^ update, System::UInt16 index, EventMode mode)
-			{
-				builder->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode) mode);
-			}
+        void ChangeSetAdapter::Update(Counter ^ update, System::UInt16 index, EventMode mode)
+        {
+            builder->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode)mode);
+        }
 
-			void ChangeSetAdapter::Update(OctetString^ update, System::UInt16 index, EventMode mode)
-			{				
-				builder->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode) mode);
-			}
+        void ChangeSetAdapter::FreezeCounter(System::UInt16 index, System::Boolean clear, EventMode mode)
+        {
+            builder->FreezeCounter(index, clear, (opendnp3::EventMode)mode);
+        }
 
-			void ChangeSetAdapter::Update(TimeAndInterval^ update, System::UInt16 index)
-			{
-				builder->Update(Conversions::ConvertMeas(update), index);
-			}
+        void ChangeSetAdapter::Update(BinaryOutputStatus ^ update, System::UInt16 index, EventMode mode)
+        {
+            builder->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode)mode);
+        }
 
-		}
-	}
-}
+        void ChangeSetAdapter::Update(AnalogOutputStatus ^ update, System::UInt16 index, EventMode mode)
+        {
+            builder->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode)mode);
+        }
+
+        void ChangeSetAdapter::Update(OctetString ^ update, System::UInt16 index, EventMode mode)
+        {
+            builder->Update(Conversions::ConvertMeas(update), index, (opendnp3::EventMode)mode);
+        }
+
+        void ChangeSetAdapter::Update(TimeAndInterval ^ update, System::UInt16 index)
+        {
+            builder->Update(Conversions::ConvertMeas(update), index);
+        }
+
+    } // namespace Adapter
+} // namespace DNP3
+} // namespace Automatak
