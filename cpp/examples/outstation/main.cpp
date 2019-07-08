@@ -35,7 +35,7 @@ using namespace opendnp3;
 
 DatabaseConfig ConfigureDatabase()
 {
-    DatabaseConfig config(1); // 10 of each type
+    DatabaseConfig config(10); // 10 of each type
             
     config.analog_input[0].clazz = PointClass::Class2;
     config.analog_input[0].svariation = StaticAnalogVariation::Group30Var5;
@@ -89,7 +89,7 @@ int main(int argc, char* argv[])
     // in this example we've changed the default link layer addressing
     config.link.LocalAddr = 10;
     config.link.RemoteAddr = 1;
-    config.link.KeepAliveTimeout = TimeDuration::Max();    
+    config.link.KeepAliveTimeout = TimeDuration::Max();
 
     // Create a new outstation with a log level, command handler, and
     // config info this	returns a thread-safe interface used for
