@@ -21,6 +21,7 @@
 #include "mocks/StackPair.h"
 
 #include <opendnp3/master/DefaultMasterApplication.h>
+#include <opendnp3/outstation/DefaultOutstationApplication.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
 
 #include <dnp3mocks/DatabaseHelpers.h>
@@ -47,7 +48,7 @@ StackPair::StackPair(log4cpp::LogLevels levels,
       outstation(CreateOutstation(
           levels, timeout, manager, port, numPointsPerType, 3 * eventsPerIteration, this->serverListener)),
       index_distribution(0, numPointsPerType - 1),
-      type_distribution(0, 6),
+      type_distribution(0, 5),
       bool_distribution(0, 1),
       int_distribution(0, 32767)
 {
@@ -150,12 +151,6 @@ ExpectedValue StackPair::AddRandomValue(UpdateBuilder& builder)
         return ExpectedValue(value, index);
     }
     case (4):
-    {
-        FrozenCounter value(int_distribution(generator));
-        builder.Update(value, index, EventMode::Force);
-        return ExpectedValue(value, index);
-    }
-    case (5):
     {
         BinaryOutputStatus value(bool_distribution(generator) == 0);
         builder.Update(value, index, EventMode::Force);

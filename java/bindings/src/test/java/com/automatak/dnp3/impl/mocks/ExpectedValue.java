@@ -21,6 +21,8 @@ package com.automatak.dnp3.impl.mocks;
 
 import com.automatak.dnp3.*;
 
+import java.util.Objects;
+
 public class ExpectedValue {
 
     enum Type {
@@ -36,7 +38,7 @@ public class ExpectedValue {
     public static final ExpectedValue.Type[] ALL_TYPES = ExpectedValue.Type.values();
 
     final int index;
-    final long value;
+    final Long value;
     final Type type;
 
     public ExpectedValue(BinaryInput measurement, int index)
@@ -59,11 +61,6 @@ public class ExpectedValue {
         this(measurement.value, index, Type.CounterType);
     }
 
-    public ExpectedValue(FrozenCounter measurement, int index)
-    {
-        this(measurement.value, index, Type.FrozenCounterType);
-    }
-
     public ExpectedValue(BinaryOutputStatus measurement, int index)
     {
         this(measurement.value ? 1 : 0, index, Type.BOStatusType);
@@ -82,9 +79,16 @@ public class ExpectedValue {
         this.type = type;
     }
 
+    ExpectedValue(int index, Type type)
+    {
+        this.value = null;
+        this.index = index;
+        this.type = type;
+    }
+
     public boolean isEqual(ExpectedValue other)
     {
-        return (this.type == other.type) && (this.index == other.index) && (this.value == other.value);
+        return (this.type == other.type) && (this.index == other.index) && (Objects.equals(this.value, other.value));
     }
 
     @Override

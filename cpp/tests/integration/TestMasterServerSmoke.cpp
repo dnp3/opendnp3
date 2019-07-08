@@ -25,7 +25,7 @@
 #include <opendnp3/master/DefaultMasterApplication.h>
 #include <opendnp3/master/ISOEHandler.h>
 #include <opendnp3/master/PrintingSOEHandler.h>
-#include <opendnp3/outstation/IOutstationApplication.h>
+#include <opendnp3/outstation/DefaultOutstationApplication.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
 
 #include "mocks/NullSOEHandler.h"

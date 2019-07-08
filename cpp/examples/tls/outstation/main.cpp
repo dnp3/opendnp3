@@ -21,6 +21,7 @@
 #include <opendnp3/DNP3Manager.h>
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/channel/PrintingChannelListener.h>
+#include <opendnp3/outstation/DefaultOutstationApplication.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
 #include <opendnp3/outstation/UpdateBuilder.h>
 

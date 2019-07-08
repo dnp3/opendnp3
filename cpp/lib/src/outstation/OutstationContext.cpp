@@ -30,6 +30,7 @@
 #include "outstation/CommandResponseHandler.h"
 #include "outstation/ConstantCommandAction.h"
 #include "outstation/IINHelpers.h"
+#include "outstation/FreezeRequestHandler.h"
 #include "outstation/ReadHandler.h"
 #include "outstation/WriteHandler.h"
 
@@ -59,7 +60,7 @@ OContext::OContext(const Addresses& addresses,
       commandHandler(std::move(commandHandler)),
       application(std::move(application)),
       eventBuffer(config.eventBufferConfig),
-      database(db_config, eventBuffer,  config.params.typesAllowedInClass0),
+      database(db_config, eventBuffer, *this->application, config.params.typesAllowedInClass0),
       rspContext(database, eventBuffer),
       params(config.params),
       isOnline(false),
@@ -523,6 +524,12 @@ bool OContext::ProcessBroadcastRequest(const ParsedRequest& request)
     case (FunctionCode::DIRECT_OPERATE_NR):
         this->HandleDirectOperate(request.objects, OperateType::DirectOperateNoAck, nullptr);
         return true;
+    case (FunctionCode::IMMED_FREEZE_NR):
+        this->HandleFreeze(request.objects);
+        return true;
+    case (FunctionCode::FREEZE_CLEAR_NR):
+        this->HandleFreezeAndClear(request.objects);
+        return true;
     case (FunctionCode::ASSIGN_CLASS):
     {
         if(this->application->SupportsAssignClass())
@@ -586,6 +593,12 @@ bool OContext::ProcessRequestNoAck(const ParsedRequest& request)
         this->HandleDirectOperate(request.objects, OperateType::DirectOperateNoAck,
                                   nullptr); // no object writer, this is a no ack code
         return true;
+    case (FunctionCode::IMMED_FREEZE_NR):
+        this->HandleFreeze(request.objects);
+        return true;
+    case (FunctionCode::FREEZE_CLEAR_NR):
+        this->HandleFreezeAndClear(request.objects);
+        return true;
     default:
         FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring NR function code: %s",
                          FunctionCodeSpec::to_human_string(request.header.function));
@@ -621,6 +634,10 @@ IINField OContext::HandleNonReadResponse(const APDUHeader& header, const ser4cpp
     case (FunctionCode::ENABLE_UNSOLICITED):
         return this->params.allowUnsolicited ? this->HandleEnableUnsolicited(objects, &writer)
                                              : IINField(IINBit::FUNC_NOT_SUPPORTED);
+    case (FunctionCode::IMMED_FREEZE):
+        return this->HandleFreeze(objects);
+    case (FunctionCode::FREEZE_CLEAR):
+        return this->HandleFreezeAndClear(objects);
     default:
         return IINField(IINBit::FUNC_NOT_SUPPORTED);
     }
@@ -820,6 +837,20 @@ IINField OContext::HandleCommandWithConstant(const ser4cpp::rseq_t& objects, Hea
     ConstantCommandAction constant(status);
     CommandResponseHandler handler(this->params.maxControlsPerRequest, &constant, &writer);
     auto result = APDUParser::Parse(objects, handler, &this->logger);
+    return IINFromParseResult(result);
+}
+
+IINField OContext::HandleFreeze(const ser4cpp::rseq_t& objects)
+{
+    FreezeRequestHandler handler(false, database);
+    auto result = APDUParser::Parse(objects, handler, &this->logger, ParserSettings::NoContents());
+    return IINFromParseResult(result);
+}
+
+IINField OContext::HandleFreezeAndClear(const ser4cpp::rseq_t& objects)
+{
+    FreezeRequestHandler handler(true, database);
+    auto result = APDUParser::Parse(objects, handler, &this->logger, ParserSettings::NoContents());
     return IINFromParseResult(result);
 }
 
