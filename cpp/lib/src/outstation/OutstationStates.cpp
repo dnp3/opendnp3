@@ -238,4 +238,48 @@ OutstationState& StateUnsolicitedConfirmWait::OnBroadcastMessage(OContext& ctx, 
     return StateIdle::Inst();
 }
 
+// ------------- StateUnsolicitedConfirmWait ----------------
+
+StateNullUnsolicitedConfirmWait StateNullUnsolicitedConfirmWait::instance;
+
+
+OutstationState& StateNullUnsolicitedConfirmWait::OnConfirmTimeout(OContext& ctx)
+{
+    SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "unsolicited confirm timeout");
+
+    return StateIdle::Inst();
+}
+
+OutstationState& StateNullUnsolicitedConfirmWait::OnNewReadRequest(OContext& ctx, const ParsedRequest& request)
+{
+    ctx.confirmTimer.cancel();
+    ctx.unsol.completedNull = true;
+    return ctx.RespondToReadRequest(request);
+}
+
+OutstationState& StateNullUnsolicitedConfirmWait::OnNewNonReadRequest(OContext& ctx, const ParsedRequest& request)
+{
+    ctx.confirmTimer.cancel();
+    ctx.unsol.completedNull = true;
+    return ctx.RespondToNonReadRequest(request);
+}
+
+OutstationState& StateNullUnsolicitedConfirmWait::OnRepeatNonReadRequest(OContext& ctx, const ParsedRequest& request)
+{
+    // This should never be called
+    ctx.confirmTimer.cancel();
+    ctx.unsol.completedNull = true;
+    ctx.BeginRetransmitLastResponse(request.addresses.source);
+    return StateIdle::Inst();
+}
+
+OutstationState& StateNullUnsolicitedConfirmWait::OnRepeatReadRequest(OContext& ctx, const ParsedRequest& request)
+{
+    // This should never be called
+    ctx.RestartSolConfirmTimer();
+    ctx.unsol.completedNull = true;
+    ctx.BeginRetransmitLastResponse(request.addresses.source);
+    return StateIdle::Inst();
+}
+
 } // namespace opendnp3

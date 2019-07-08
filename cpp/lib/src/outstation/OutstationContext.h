@@ -58,6 +58,7 @@ class OContext : public IUpperLayer
     friend class StateIdle;
     friend class StateSolicitedConfirmWait;
     friend class StateUnsolicitedConfirmWait;
+    friend class StateNullUnsolicitedConfirmWait;
 
 public:
     OContext(const Addresses& addresses,

@@ -306,7 +306,7 @@ void OContext::CheckForUnsolicitedNull()
             auto response = this->unsol.tx.Start();
             build::NullUnsolicited(response, this->unsol.seq.num, this->GetResponseIIN());
             this->RestartUnsolConfirmTimer();
-            this->state = &StateUnsolicitedConfirmWait::Inst();
+            this->state = this->params.noDefferedReadDuringUnsolicitedNullResponse ? &StateNullUnsolicitedConfirmWait::Inst() : &StateUnsolicitedConfirmWait::Inst();
             this->BeginUnsolTx(response);
         }
     }
