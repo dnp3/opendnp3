@@ -173,6 +173,8 @@ private:
     IINField HandleDisableUnsolicited(const ser4cpp::rseq_t& objects, HeaderWriter* writer);
     IINField HandleEnableUnsolicited(const ser4cpp::rseq_t& objects, HeaderWriter* writer);
     IINField HandleCommandWithConstant(const ser4cpp::rseq_t& objects, HeaderWriter& writer, CommandStatus status);
+    IINField HandleFreeze(const ser4cpp::rseq_t& objects);
+    IINField HandleFreezeAndClear(const ser4cpp::rseq_t& objects);
 
     // ------ resources --------
     const Addresses addresses;
