@@ -187,15 +187,7 @@ public:
         return "NullUnsolicitedConfirmWait";
     }
 
-    OutstationState& OnConfirmTimeout(OContext&) final;
-
     OutstationState& OnNewReadRequest(OContext&, const ParsedRequest& request) final;
-
-    OutstationState& OnNewNonReadRequest(OContext&, const ParsedRequest& request) final;
-
-    OutstationState& OnRepeatNonReadRequest(OContext&, const ParsedRequest& request) final;
-
-    OutstationState& OnRepeatReadRequest(OContext&, const ParsedRequest& request) final;
 
 private:
     static StateNullUnsolicitedConfirmWait instance;

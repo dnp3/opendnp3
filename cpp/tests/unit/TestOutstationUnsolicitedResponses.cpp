@@ -82,10 +82,10 @@ TEST_CASE(SUITE("Non-read during null unsol with workaround"))
     REQUIRE(t.lower->PopWriteAsHex() == hex::EmptyResponse(0));
     t.OnTxReady();
 
-    // Stop sending unsolicited NULL responses
+    // Continue sending unsolicited NULL responses
     t.AdvanceTime(TimeDuration::Seconds(5));
-    REQUIRE(t.lower->PopWriteAsHex().empty());
-    REQUIRE(t.NumPendingTimers() == 0);
+    REQUIRE(t.lower->PopWriteAsHex() == hex::NullUnsolicited(1, IINField()));
+    REQUIRE(t.NumPendingTimers() == 1);
 }
 
 TEST_CASE(SUITE("Read during null unsol without workaround"))
@@ -138,10 +138,9 @@ TEST_CASE(SUITE("Read during null unsol with workaround"))
     REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00");
     t.OnTxReady();
 
-    // No unsolicited NULL responses should be sent
-    t.AdvanceTime(TimeDuration::Seconds(5));
-    REQUIRE(t.lower->PopWriteAsHex().empty());
-    REQUIRE(t.NumPendingTimers() == 0);
+    // Then continue sending unsolicited NULL responses
+    REQUIRE(t.lower->PopWriteAsHex() == hex::NullUnsolicited(1, IINField(IINBit::DEVICE_RESTART)));
+    REQUIRE(t.NumPendingTimers() == 1);
 }
 
 TEST_CASE(SUITE("UnsolConfirmTimeout"))
