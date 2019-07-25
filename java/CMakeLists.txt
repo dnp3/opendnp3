@@ -182,6 +182,8 @@ set(all_sources
 	./cpp/jni/JNIMasterStackConfig.h
 	./cpp/jni/JNIMasterTaskType.cpp
 	./cpp/jni/JNIMasterTaskType.h
+	./cpp/jni/JNINumRetries.cpp
+	./cpp/jni/JNINumRetries.h
 	./cpp/jni/JNIOperateType.cpp
 	./cpp/jni/JNIOperateType.h
 	./cpp/jni/JNIOutstationApplication.cpp

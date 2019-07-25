@@ -147,7 +147,8 @@ object Classes {
     ClassConfig(classOf[LinkLayerStatistics], Set(Features.Constructors)),
     ClassConfig(classOf[TransportStatistics], Set(Features.Constructors)),
     ClassConfig(classOf[StackStatistics], Set(Features.Constructors)),
-    ClassConfig(classOf[IPEndpoint], Set(Features.Fields))
+    ClassConfig(classOf[IPEndpoint], Set(Features.Fields)),
+    ClassConfig(classOf[NumRetries], Set(Features.Fields))
   )
 
 

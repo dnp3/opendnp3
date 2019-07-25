@@ -162,6 +162,7 @@ TEST_CASE(SUITE("Unsolicited responses should advertise BROADCAST IIN"))
     config.params.unsolClassMask = ClassField::AllClasses();
     config.eventBufferConfig = EventBufferConfig::AllTypes(10);
     config.params.allowUnsolicited = true;
+    config.params.numUnsolRetries = NumRetries::Fixed(0);
     OutstationTestObject t(config, configure::by_count_of::binary_input(1));
     t.LowerLayerUp();
     t.context.OnTxReady();
@@ -186,7 +187,11 @@ TEST_CASE(SUITE("Unsolicited responses should advertise BROADCAST IIN"))
     REQUIRE(t.lower->PopWriteAsHex().substr(0, 11) == "F1 82 01 00");
     t.context.OnTxReady();
 
+    // Timeout and generate another unsolicited
     t.AdvanceToNextTimer();
+    t.Transaction([](IUpdateHandler& handler) {
+        handler.Update(Binary(false), 0);
+    });
 
     // Next unsolicited shouldn't have BROADCAST IIN set
     REQUIRE(t.lower->PopWriteAsHex().substr(0, 11) == "F2 82 00 00");
@@ -199,6 +204,7 @@ TEST_CASE(SUITE("ShallConfirm: Unsolicited responses should clear BROADCAST when
     config.params.unsolClassMask = ClassField::AllClasses();
     config.eventBufferConfig = EventBufferConfig::AllTypes(10);
     config.params.allowUnsolicited = true;
+    config.params.numUnsolRetries = NumRetries::Fixed(0);
     OutstationTestObject t(config, configure::by_count_of::binary_input(1));
     t.LowerLayerUp();
     t.context.OnTxReady();
@@ -223,7 +229,11 @@ TEST_CASE(SUITE("ShallConfirm: Unsolicited responses should clear BROADCAST when
     REQUIRE(t.lower->PopWriteAsHex().substr(0, 11) == "F1 82 01 00");
     t.context.OnTxReady();
 
+    // Timeout and generate another unsolicited
     t.AdvanceToNextTimer();
+    t.Transaction([](IUpdateHandler& handler) {
+        handler.Update(Binary(false), 0);
+    });
 
     // Next unsolicited should still have BROADCAST IIN set
     REQUIRE(t.lower->PopWriteAsHex().substr(0, 11) == "F2 82 01 00");
@@ -234,7 +244,7 @@ TEST_CASE(SUITE("ShallConfirm: Unsolicited responses should clear BROADCAST when
 
     // Generate an event
     t.Transaction([](IUpdateHandler& handler) {
-        handler.Update(Binary(false), 0);
+        handler.Update(Binary(true), 0);
     });
 
     REQUIRE(t.lower->PopWriteAsHex().substr(0, 11) == "F3 82 00 00");

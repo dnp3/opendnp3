@@ -147,23 +147,24 @@ namespace Automatak
 				static opendnp3::AnalogCommandEvent ConvertMeas(AnalogCommandEvent^ meas);
 
 				static LinkHeader^ Conversions::Convert(const opendnp3::LinkHeaderFields& fields);
-				static opendnp3::IPEndpoint Convert(IPEndpoint^ endpoint);				
+				static opendnp3::IPEndpoint Convert(IPEndpoint^ endpoint);
 
 				static X509Info^ Convert(const opendnp3::X509Info& info);
 
 				//Convert the configuration types
 				static opendnp3::SerialSettings ConvertSerialSettings(SerialSettings^ settings);
-				static opendnp3::EventBufferConfig ConvertConfig(EventBufferConfig^ cm);				
+				static opendnp3::EventBufferConfig ConvertConfig(EventBufferConfig^ cm);
 
 				static opendnp3::LinkConfig ConvertConfig(LinkConfig^ config);
 				static opendnp3::MasterParams ConvertConfig(MasterConfig^ config);
 				static opendnp3::OutstationConfig ConvertConfig(OutstationConfig^ config);
 				static opendnp3::OutstationParams ConvertConfig(OutstationParams^ config);
 				static opendnp3::MasterStackConfig ConvertConfig(MasterStackConfig^ config);
-				static opendnp3::OutstationStackConfig ConvertConfig(OutstationStackConfig^ config);				
+				static opendnp3::OutstationStackConfig ConvertConfig(OutstationStackConfig^ config);
+                static opendnp3::NumRetries ConvertNumRetries(NumRetries^ numRetries);
 
-				static opendnp3::PointClass Convert(PointClass clazz);				
-				static array<System::Byte>^ Convert(const opendnp3::Buffer& bytes);				
+				static opendnp3::PointClass Convert(PointClass clazz);
+				static array<System::Byte>^ Convert(const opendnp3::Buffer& bytes);
 
 				template <class Target, class Source>
 				static IndexedValue<Target>^ ConvertIndexValue(const opendnp3::Indexed<Source>& pair)
