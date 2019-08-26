@@ -34,7 +34,7 @@ class CommandActionAdapter final : public ICommandAction
 {
 
 public:
-    CommandActionAdapter(ICommandHandler& handler, bool is_select, OperateType op_type);
+    CommandActionAdapter(ICommandHandler& handler, bool is_select, IUpdateHandler& updates, OperateType op_type);
 
     ~CommandActionAdapter();
 
@@ -52,7 +52,7 @@ private:
     template<class T> CommandStatus ActionT(const T& command, uint16_t index)
     {
         this->CheckStart();
-        return is_select ? this->handler.Select(command, index) : this->handler.Operate(command, index, this->op_type);
+        return is_select ? this->handler.Select(command, index) : this->handler.Operate(command, index, this->updates, this->op_type);
     }
 
     void CheckStart();
@@ -61,6 +61,7 @@ private:
 
     ICommandHandler& handler;
     bool is_select;
+    IUpdateHandler& updates;
     OperateType op_type;
 };
 

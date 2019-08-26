@@ -42,19 +42,31 @@ public:
     virtual void end() override;
 
     CommandStatus Select(const ControlRelayOutputBlock& command, uint16_t index) override;
-    CommandStatus Operate(const ControlRelayOutputBlock& command, uint16_t index, OperateType opType) override;
+    CommandStatus Operate(const ControlRelayOutputBlock& command, uint16_t index, IUpdateHandler& handler, OperateType opType) override;
 
     CommandStatus Select(const AnalogOutputInt16& command, uint16_t index) override;
-    CommandStatus Operate(const AnalogOutputInt16& command, uint16_t index, OperateType opType) override;
+    CommandStatus Operate(const AnalogOutputInt16& command,
+                          uint16_t index,
+                          IUpdateHandler& handler,
+                          OperateType opType) override;
 
     CommandStatus Select(const AnalogOutputInt32& command, uint16_t index) override;
-    CommandStatus Operate(const AnalogOutputInt32& command, uint16_t index, OperateType opType) override;
+    CommandStatus Operate(const AnalogOutputInt32& command,
+                          uint16_t index,
+                          IUpdateHandler& handler,
+                          OperateType opType) override;
 
     CommandStatus Select(const AnalogOutputFloat32& command, uint16_t index) override;
-    CommandStatus Operate(const AnalogOutputFloat32& command, uint16_t index, OperateType opType) override;
+    CommandStatus Operate(const AnalogOutputFloat32& command,
+                          uint16_t index,
+                          IUpdateHandler& handler,
+                          OperateType opType) override;
 
     CommandStatus Select(const AnalogOutputDouble64& command, uint16_t index) override;
-    CommandStatus Operate(const AnalogOutputDouble64& command, uint16_t index, OperateType opType) override;
+    CommandStatus Operate(const AnalogOutputDouble64& command,
+                          uint16_t index,
+                          IUpdateHandler& handler,
+                          OperateType opType) override;
 
 protected:
     virtual void DoSelect(const ControlRelayOutputBlock& command, uint16_t index) {}
