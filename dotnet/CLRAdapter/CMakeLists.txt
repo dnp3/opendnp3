@@ -5,8 +5,6 @@ add_library(DNP3CLRAdapter SHARED
 ${CMAKE_CURRENT_BINARY_DIR}/AssemblyInfo.cpp
 src/CallbackAdapters.cpp
 src/CallbackAdapters.h
-src/ChangeSetAdapter.cpp
-src/ChangeSetAdapter.h
 src/ChannelAdapter.cpp
 src/ChannelAdapter.h
 src/ChannelListenerAdapter.h
@@ -15,6 +13,7 @@ src/CommandSetBuilder.cpp
 src/CommandSetBuilder.h
 src/Conversions.cpp
 src/Conversions.h
+src/DatabaseAdapter.h
 src/DNP3ManagerAdapter.cpp
 src/DNP3ManagerAdapter.h
 src/EventConverter.h
@@ -48,6 +47,8 @@ src/SessionAcceptorAdapter.h
 src/StdIOWorkaround.cpp
 src/StdIOWorkaround.h
 src/TaskCallbackAdapter.h
+src/UpdateAdapter.cpp
+src/UpdateAdapter.h
 )
 
 set_target_properties(DNP3CLRAdapter PROPERTIES FOLDER "dotnet/libs" COMMON_LANGUAGE_RUNTIME "")

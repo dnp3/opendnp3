@@ -2,7 +2,7 @@
  * Copyright 2013-2019 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -30,40 +30,60 @@ using namespace System::Collections::ObjectModel;
 
 namespace Automatak
 {
-	namespace DNP3
-	{
-		namespace Adapter
-		{
+namespace DNP3
+{
+    namespace Adapter
+    {
 
-			//this object goes into the stack
-			private class OutstationCommandHandlerAdapter : public opendnp3::ICommandHandler
-			{					
-			public:
+        // this object goes into the stack
+    private
+        class OutstationCommandHandlerAdapter : public opendnp3::ICommandHandler
+        {
+        public:
+            OutstationCommandHandlerAdapter(Automatak::DNP3::Interface::ICommandHandler ^ proxy);
 
-				OutstationCommandHandlerAdapter(Automatak::DNP3::Interface::ICommandHandler^ proxy);
+            void begin() override final;
+            void end() override final;
 
-				void begin() override final;
-                void end() override final;
-				
-				opendnp3::CommandStatus Select(const opendnp3::ControlRelayOutputBlock& command, uint16_t index) override final;
-				opendnp3::CommandStatus Select(const opendnp3::AnalogOutputInt32& command, uint16_t index) override final;
-				opendnp3::CommandStatus Select(const opendnp3::AnalogOutputInt16& command, uint16_t index) override final;
-				opendnp3::CommandStatus Select(const opendnp3::AnalogOutputFloat32& command, uint16_t index) override final;
-				opendnp3::CommandStatus Select(const opendnp3::AnalogOutputDouble64& command, uint16_t index) override final;
+            opendnp3::CommandStatus Select(const opendnp3::ControlRelayOutputBlock& command,
+                                           uint16_t index) override final;
+            opendnp3::CommandStatus Select(const opendnp3::AnalogOutputInt32& command, uint16_t index) override final;
+            opendnp3::CommandStatus Select(const opendnp3::AnalogOutputInt16& command, uint16_t index) override final;
+            opendnp3::CommandStatus Select(const opendnp3::AnalogOutputFloat32& command, uint16_t index) override final;
+            opendnp3::CommandStatus Select(const opendnp3::AnalogOutputDouble64& command,
+                                           uint16_t index) override final;
 
-				opendnp3::CommandStatus Operate(const opendnp3::ControlRelayOutputBlock& command, uint16_t index, opendnp3::OperateType opType) override final;
-				opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputInt32& command, uint16_t index, opendnp3::OperateType opType) override final;
-				opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputInt16& command, uint16_t index, opendnp3::OperateType opType) override final;
-				opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputFloat32& command, uint16_t index, opendnp3::OperateType opType) override final;
-				opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputDouble64& command, uint16_t index, opendnp3::OperateType opType) override final;
+            opendnp3::CommandStatus Operate(const opendnp3::ControlRelayOutputBlock& command,
+                                            uint16_t index,
+                                            opendnp3::IUpdateHandler& handler,
+                                            opendnp3::OperateType opType) override final;
 
-			private:
+            opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputInt32& command,
+                                            uint16_t index,
+                                            opendnp3::IUpdateHandler& handler,
+                                            opendnp3::OperateType opType) override final;
 
-				gcroot < Automatak::DNP3::Interface::ICommandHandler^ > proxy;
-			};
+            opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputInt16& command,
+                                            uint16_t index,
+                                            opendnp3::IUpdateHandler& handler,
+                                            opendnp3::OperateType opType) override final;
 
-		}
-	}
-}
+            opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputFloat32& command,
+                                            uint16_t index,
+                                            opendnp3::IUpdateHandler& handler,
+                                            opendnp3::OperateType opType) override final;
+
+            opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputDouble64& command,
+                                            uint16_t index,
+                                            opendnp3::IUpdateHandler& handler,
+                                            opendnp3::OperateType opType) override final;
+
+        private:
+            gcroot<Automatak::DNP3::Interface::ICommandHandler ^> proxy;
+        };
+
+    } // namespace Adapter
+} // namespace DNP3
+} // namespace Automatak
 
 #endif
