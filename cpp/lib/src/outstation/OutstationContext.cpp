@@ -723,6 +723,7 @@ IINField OContext::HandleDirectOperate(const ser4cpp::rseq_t& objects, OperateTy
     CommandActionAdapter adapter(*this->commandHandler, false, this->database, opType);
     CommandResponseHandler handler(this->params.maxControlsPerRequest, &adapter, pWriter);
     auto result = APDUParser::Parse(objects, handler, &this->logger);
+    this->shouldCheckForUnsolicited = true;
     return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
 }
 
@@ -771,6 +772,7 @@ IINField OContext::HandleOperate(const ser4cpp::rseq_t& objects, HeaderWriter& w
         CommandActionAdapter adapter(*this->commandHandler, false, this->database, OperateType::SelectBeforeOperate);
         CommandResponseHandler handler(this->params.maxControlsPerRequest, &adapter, &writer);
         auto result = APDUParser::Parse(objects, handler, &this->logger);
+        this->shouldCheckForUnsolicited = true;
         return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
     }
 
@@ -865,7 +867,7 @@ IINField OContext::HandleEnableUnsolicited(const ser4cpp::rseq_t& objects, Heade
     if (result == ParseResult::OK)
     {
         this->params.unsolClassMask.Set(handler.GetClassField());
-        shouldCheckForUnsolicited = true;
+        this->shouldCheckForUnsolicited = true;
         return handler.Errors();
     }
 
