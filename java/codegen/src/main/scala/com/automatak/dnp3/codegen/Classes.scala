@@ -81,7 +81,8 @@ object Classes {
     classOf[Stack],
     classOf[ChannelListener],
     classOf[CommandHandler],
-    classOf[IndexMode]
+    classOf[IndexMode],
+    classOf[Database]
   ).map(c => ClassConfig(c, Set(Features.Methods)))
 
   private def javaTypes : List[ClassConfig] = List(

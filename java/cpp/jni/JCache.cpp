@@ -65,6 +65,7 @@ namespace jni
     cache::Counter JCache::Counter;
     cache::CounterConfig JCache::CounterConfig;
     cache::DNPTime JCache::DNPTime;
+    cache::Database JCache::Database;
     cache::DatabaseConfig JCache::DatabaseConfig;
     cache::DoubleBinaryConfig JCache::DoubleBinaryConfig;
     cache::DoubleBit JCache::DoubleBit;
@@ -167,6 +168,7 @@ namespace jni
         && Counter.init(env)
         && CounterConfig.init(env)
         && DNPTime.init(env)
+        && Database.init(env)
         && DatabaseConfig.init(env)
         && DoubleBinaryConfig.init(env)
         && DoubleBit.init(env)
@@ -271,6 +273,7 @@ namespace jni
         Counter.cleanup(env);
         CounterConfig.cleanup(env);
         DNPTime.cleanup(env);
+        Database.cleanup(env);
         DatabaseConfig.cleanup(env);
         DoubleBinaryConfig.cleanup(env);
         DoubleBit.cleanup(env);

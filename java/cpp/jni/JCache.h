@@ -66,6 +66,7 @@
 #include "JNICounter.h"
 #include "JNICounterConfig.h"
 #include "JNIDNPTime.h"
+#include "JNIDatabase.h"
 #include "JNIDatabaseConfig.h"
 #include "JNIDoubleBinaryConfig.h"
 #include "JNIDoubleBit.h"
@@ -173,6 +174,7 @@ namespace jni
         static cache::Counter Counter;
         static cache::CounterConfig CounterConfig;
         static cache::DNPTime DNPTime;
+        static cache::Database Database;
         static cache::DatabaseConfig DatabaseConfig;
         static cache::DoubleBinaryConfig DoubleBinaryConfig;
         static cache::DoubleBit DoubleBit;

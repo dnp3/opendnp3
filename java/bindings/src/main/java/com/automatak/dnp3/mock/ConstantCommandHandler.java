@@ -60,23 +60,23 @@ public class ConstantCommandHandler implements CommandHandler {
         return status;
     }
 
-    public CommandStatus operateCROB(ControlRelayOutputBlock command, int index, OperateType opType)
+    public CommandStatus operateCROB(ControlRelayOutputBlock command, int index, Database database, OperateType opType)
     {
         return status;
     }
-    public CommandStatus operateAOI32(AnalogOutputInt32 command, int index, OperateType opType)
+    public CommandStatus operateAOI32(AnalogOutputInt32 command, int index, Database database, OperateType opType)
     {
         return status;
     }
-    public CommandStatus operateAOI16(AnalogOutputInt16 command, int index, OperateType opType)
+    public CommandStatus operateAOI16(AnalogOutputInt16 command, int index, Database database, OperateType opType)
     {
         return status;
     }
-    public CommandStatus operateAOF32(AnalogOutputFloat32 command, int index, OperateType opType)
+    public CommandStatus operateAOF32(AnalogOutputFloat32 command, int index, Database database, OperateType opType)
     {
         return status;
     }
-    public CommandStatus operateAOD64(AnalogOutputDouble64 command, int index, OperateType opType)
+    public CommandStatus operateAOD64(AnalogOutputDouble64 command, int index, Database database, OperateType opType)
     {
         return status;
     }

@@ -54,11 +54,11 @@ namespace jni
             // methods
             void begin(JNIEnv* env, jobject instance);
             void end(JNIEnv* env, jobject instance);
-            LocalRef<jobject> operateAOD64(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
-            LocalRef<jobject> operateAOF32(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
-            LocalRef<jobject> operateAOI16(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
-            LocalRef<jobject> operateAOI32(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
-            LocalRef<jobject> operateCROB(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
+            LocalRef<jobject> operateAOD64(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2, jobject arg3);
+            LocalRef<jobject> operateAOF32(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2, jobject arg3);
+            LocalRef<jobject> operateAOI16(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2, jobject arg3);
+            LocalRef<jobject> operateAOI32(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2, jobject arg3);
+            LocalRef<jobject> operateCROB(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2, jobject arg3);
             LocalRef<jobject> selectAOD64(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
             LocalRef<jobject> selectAOF32(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
             LocalRef<jobject> selectAOI16(JNIEnv* env, jobject instance, jobject arg0, jint arg1);

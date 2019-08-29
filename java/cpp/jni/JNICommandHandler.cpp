@@ -48,19 +48,19 @@ namespace jni
             this->endMethod = env->GetMethodID(this->clazz, "end", "()V");
             if(!this->endMethod) return false;
 
-            this->operateAOD64Method = env->GetMethodID(this->clazz, "operateAOD64", "(Lcom/automatak/dnp3/AnalogOutputDouble64;ILcom/automatak/dnp3/enums/OperateType;)Lcom/automatak/dnp3/enums/CommandStatus;");
+            this->operateAOD64Method = env->GetMethodID(this->clazz, "operateAOD64", "(Lcom/automatak/dnp3/AnalogOutputDouble64;ILcom/automatak/dnp3/Database;Lcom/automatak/dnp3/enums/OperateType;)Lcom/automatak/dnp3/enums/CommandStatus;");
             if(!this->operateAOD64Method) return false;
 
-            this->operateAOF32Method = env->GetMethodID(this->clazz, "operateAOF32", "(Lcom/automatak/dnp3/AnalogOutputFloat32;ILcom/automatak/dnp3/enums/OperateType;)Lcom/automatak/dnp3/enums/CommandStatus;");
+            this->operateAOF32Method = env->GetMethodID(this->clazz, "operateAOF32", "(Lcom/automatak/dnp3/AnalogOutputFloat32;ILcom/automatak/dnp3/Database;Lcom/automatak/dnp3/enums/OperateType;)Lcom/automatak/dnp3/enums/CommandStatus;");
             if(!this->operateAOF32Method) return false;
 
-            this->operateAOI16Method = env->GetMethodID(this->clazz, "operateAOI16", "(Lcom/automatak/dnp3/AnalogOutputInt16;ILcom/automatak/dnp3/enums/OperateType;)Lcom/automatak/dnp3/enums/CommandStatus;");
+            this->operateAOI16Method = env->GetMethodID(this->clazz, "operateAOI16", "(Lcom/automatak/dnp3/AnalogOutputInt16;ILcom/automatak/dnp3/Database;Lcom/automatak/dnp3/enums/OperateType;)Lcom/automatak/dnp3/enums/CommandStatus;");
             if(!this->operateAOI16Method) return false;
 
-            this->operateAOI32Method = env->GetMethodID(this->clazz, "operateAOI32", "(Lcom/automatak/dnp3/AnalogOutputInt32;ILcom/automatak/dnp3/enums/OperateType;)Lcom/automatak/dnp3/enums/CommandStatus;");
+            this->operateAOI32Method = env->GetMethodID(this->clazz, "operateAOI32", "(Lcom/automatak/dnp3/AnalogOutputInt32;ILcom/automatak/dnp3/Database;Lcom/automatak/dnp3/enums/OperateType;)Lcom/automatak/dnp3/enums/CommandStatus;");
             if(!this->operateAOI32Method) return false;
 
-            this->operateCROBMethod = env->GetMethodID(this->clazz, "operateCROB", "(Lcom/automatak/dnp3/ControlRelayOutputBlock;ILcom/automatak/dnp3/enums/OperateType;)Lcom/automatak/dnp3/enums/CommandStatus;");
+            this->operateCROBMethod = env->GetMethodID(this->clazz, "operateCROB", "(Lcom/automatak/dnp3/ControlRelayOutputBlock;ILcom/automatak/dnp3/Database;Lcom/automatak/dnp3/enums/OperateType;)Lcom/automatak/dnp3/enums/CommandStatus;");
             if(!this->operateCROBMethod) return false;
 
             this->selectAOD64Method = env->GetMethodID(this->clazz, "selectAOD64", "(Lcom/automatak/dnp3/AnalogOutputDouble64;I)Lcom/automatak/dnp3/enums/CommandStatus;");
@@ -96,29 +96,29 @@ namespace jni
             env->CallVoidMethod(instance, this->endMethod);
         }
 
-        LocalRef<jobject> CommandHandler::operateAOD64(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2)
+        LocalRef<jobject> CommandHandler::operateAOD64(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2, jobject arg3)
         {
-            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->operateAOD64Method, arg0, arg1, arg2));
+            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->operateAOD64Method, arg0, arg1, arg2, arg3));
         }
 
-        LocalRef<jobject> CommandHandler::operateAOF32(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2)
+        LocalRef<jobject> CommandHandler::operateAOF32(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2, jobject arg3)
         {
-            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->operateAOF32Method, arg0, arg1, arg2));
+            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->operateAOF32Method, arg0, arg1, arg2, arg3));
         }
 
-        LocalRef<jobject> CommandHandler::operateAOI16(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2)
+        LocalRef<jobject> CommandHandler::operateAOI16(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2, jobject arg3)
         {
-            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->operateAOI16Method, arg0, arg1, arg2));
+            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->operateAOI16Method, arg0, arg1, arg2, arg3));
         }
 
-        LocalRef<jobject> CommandHandler::operateAOI32(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2)
+        LocalRef<jobject> CommandHandler::operateAOI32(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2, jobject arg3)
         {
-            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->operateAOI32Method, arg0, arg1, arg2));
+            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->operateAOI32Method, arg0, arg1, arg2, arg3));
         }
 
-        LocalRef<jobject> CommandHandler::operateCROB(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2)
+        LocalRef<jobject> CommandHandler::operateCROB(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2, jobject arg3)
         {
-            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->operateCROBMethod, arg0, arg1, arg2));
+            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->operateCROBMethod, arg0, arg1, arg2, arg3));
         }
 
         LocalRef<jobject> CommandHandler::selectAOD64(JNIEnv* env, jobject instance, jobject arg0, jint arg1)

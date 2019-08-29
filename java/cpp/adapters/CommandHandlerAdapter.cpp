@@ -45,29 +45,11 @@ CommandStatus CommandHandlerAdapter::Select(const ControlRelayOutputBlock& comma
     return CommandStatusSpec::from_type(static_cast<uint8_t>(JCache::CommandStatus.toType(env, jstatus)));
 }
 
-CommandStatus CommandHandlerAdapter::Operate(const ControlRelayOutputBlock& command, uint16_t index, OperateType opType)
-{
-    const auto env = JNI::GetEnv();
-    auto jcommand = Convert(env, command);
-    auto jopType = JCache::OperateType.fromType(env, static_cast<jint>(opType));
-    auto jstatus = JCache::CommandHandler.operateCROB(env, proxy, jcommand, index, jopType);
-    return CommandStatusSpec::from_type(static_cast<uint8_t>(JCache::CommandStatus.toType(env, jstatus)));
-}
-
 CommandStatus CommandHandlerAdapter::Select(const AnalogOutputInt16& command, uint16_t index)
 {
     const auto env = JNI::GetEnv();
     auto jcommand = Convert(env, command);
     auto jstatus = JCache::CommandHandler.selectAOI16(env, proxy, jcommand, index);
-    return CommandStatusSpec::from_type(static_cast<uint8_t>(JCache::CommandStatus.toType(env, jstatus)));
-}
-
-CommandStatus CommandHandlerAdapter::Operate(const AnalogOutputInt16& command, uint16_t index, OperateType opType)
-{
-    const auto env = JNI::GetEnv();
-    auto jcommand = Convert(env, command);
-    auto jopType = JCache::OperateType.fromType(env, static_cast<jint>(opType));
-    auto jstatus = JCache::CommandHandler.operateAOI16(env, proxy, jcommand, index, jopType);
     return CommandStatusSpec::from_type(static_cast<uint8_t>(JCache::CommandStatus.toType(env, jstatus)));
 }
 
@@ -79,29 +61,11 @@ CommandStatus CommandHandlerAdapter::Select(const AnalogOutputInt32& command, ui
     return CommandStatusSpec::from_type(static_cast<uint8_t>(JCache::CommandStatus.toType(env, jstatus)));
 }
 
-CommandStatus CommandHandlerAdapter::Operate(const AnalogOutputInt32& command, uint16_t index, OperateType opType)
-{
-    const auto env = JNI::GetEnv();
-    auto jcommand = Convert(env, command);
-    auto jopType = JCache::OperateType.fromType(env, static_cast<jint>(opType));
-    auto jstatus = JCache::CommandHandler.operateAOI32(env, proxy, jcommand, index, jopType);
-    return CommandStatusSpec::from_type(static_cast<uint8_t>(JCache::CommandStatus.toType(env, jstatus)));
-}
-
 CommandStatus CommandHandlerAdapter::Select(const AnalogOutputFloat32& command, uint16_t index)
 {
     const auto env = JNI::GetEnv();
     auto jcommand = Convert(env, command);
     auto jstatus = JCache::CommandHandler.selectAOF32(env, proxy, jcommand, index);
-    return CommandStatusSpec::from_type(static_cast<uint8_t>(JCache::CommandStatus.toType(env, jstatus)));
-}
-
-CommandStatus CommandHandlerAdapter::Operate(const AnalogOutputFloat32& command, uint16_t index, OperateType opType)
-{
-    const auto env = JNI::GetEnv();
-    auto jcommand = Convert(env, command);
-    auto jopType = JCache::OperateType.fromType(env, static_cast<jint>(opType));
-    auto jstatus = JCache::CommandHandler.operateAOF32(env, proxy, jcommand, index, jopType);
     return CommandStatusSpec::from_type(static_cast<uint8_t>(JCache::CommandStatus.toType(env, jstatus)));
 }
 
@@ -113,7 +77,58 @@ CommandStatus CommandHandlerAdapter::Select(const AnalogOutputDouble64& command,
     return CommandStatusSpec::from_type(static_cast<uint8_t>(JCache::CommandStatus.toType(env, jstatus)));
 }
 
-CommandStatus CommandHandlerAdapter::Operate(const AnalogOutputDouble64& command, uint16_t index, OperateType opType)
+CommandStatus CommandHandlerAdapter::Operate(const ControlRelayOutputBlock& command,
+                                             uint16_t index,
+                                             opendnp3::IUpdateHandler& database,
+                                             OperateType opType)
+{
+    const auto env = JNI::GetEnv();
+    auto jcommand = Convert(env, command);
+    auto jopType = JCache::OperateType.fromType(env, static_cast<jint>(opType));
+    auto jstatus = JCache::CommandHandler.operateCROB(env, proxy, jcommand, index, jopType);
+    return CommandStatusSpec::from_type(static_cast<uint8_t>(JCache::CommandStatus.toType(env, jstatus)));
+}
+
+CommandStatus CommandHandlerAdapter::Operate(const AnalogOutputInt16& command,
+                                             uint16_t index,
+                                             opendnp3::IUpdateHandler& database,
+                                             OperateType opType)
+{
+    const auto env = JNI::GetEnv();
+    auto jcommand = Convert(env, command);
+    auto jopType = JCache::OperateType.fromType(env, static_cast<jint>(opType));
+    auto jstatus = JCache::CommandHandler.operateAOI16(env, proxy, jcommand, index, jopType);
+    return CommandStatusSpec::from_type(static_cast<uint8_t>(JCache::CommandStatus.toType(env, jstatus)));
+}
+
+CommandStatus CommandHandlerAdapter::Operate(const AnalogOutputInt32& command,
+                                             uint16_t index,
+                                             opendnp3::IUpdateHandler& database,
+                                             OperateType opType)
+{
+    const auto env = JNI::GetEnv();
+    auto jcommand = Convert(env, command);
+    auto jopType = JCache::OperateType.fromType(env, static_cast<jint>(opType));
+    auto jstatus = JCache::CommandHandler.operateAOI32(env, proxy, jcommand, index, jopType);
+    return CommandStatusSpec::from_type(static_cast<uint8_t>(JCache::CommandStatus.toType(env, jstatus)));
+}
+
+CommandStatus CommandHandlerAdapter::Operate(const AnalogOutputFloat32& command,
+                                             uint16_t index,
+                                             opendnp3::IUpdateHandler& database,
+                                             OperateType opType)
+{
+    const auto env = JNI::GetEnv();
+    auto jcommand = Convert(env, command);
+    auto jopType = JCache::OperateType.fromType(env, static_cast<jint>(opType));
+    auto jstatus = JCache::CommandHandler.operateAOF32(env, proxy, jcommand, index, jopType);
+    return CommandStatusSpec::from_type(static_cast<uint8_t>(JCache::CommandStatus.toType(env, jstatus)));
+}
+
+CommandStatus CommandHandlerAdapter::Operate(const AnalogOutputDouble64& command,
+                                             uint16_t index,
+                                             opendnp3::IUpdateHandler& database,
+                                             OperateType opType)
 {
     const auto env = JNI::GetEnv();
     auto jcommand = Convert(env, command);
