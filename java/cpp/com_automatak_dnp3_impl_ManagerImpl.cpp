@@ -32,18 +32,20 @@ opendnp3::TLSConfig ConvertTLSConfig(JNIEnv* env, jobject jconfig)
 {
     auto& ref = jni::JCache::TLSConfig;
 
-    CString peerCertFilePath(env, ref.getpeerCertFilePath(env, jconfig));
-    CString localCertFilePath(env, ref.getlocalCertFilePath(env, jconfig));
-    CString privateKeyFilePath(env, ref.getprivateKeyFilePath(env, jconfig));
-    CString cipherList(env, ref.getcipherList(env, jconfig));
+    CString peer_cert_file_path(env, ref.getpeerCertFilePath(env, jconfig));
+    CString local_cert_file_path(env, ref.getlocalCertFilePath(env, jconfig));
+    CString private_key_file_path(env, ref.getprivateKeyFilePath(env, jconfig));
+    CString cipher_list(env, ref.getcipherList(env, jconfig));
 
-    return opendnp3::TLSConfig(peerCertFilePath.str(), localCertFilePath.str(), privateKeyFilePath.str(),
-                              ref.getmaxVerifyDepth(env, jconfig), !(ref.getallowTLSv10(env, jconfig) == 0u),
-                              !(ref.getallowTLSv11(env, jconfig) == 0u), !(ref.getallowTLSv12(env, jconfig) == 0u),
-                              cipherList.str());
+    return opendnp3::TLSConfig(peer_cert_file_path.str(), local_cert_file_path.str(), private_key_file_path.str(),
+                              ref.getmaxVerifyDepth(env, jconfig),
+                              ref.getallowTLSv10(env, jconfig) != 0,
+                              ref.getallowTLSv11(env, jconfig) != 0,
+                              ref.getallowTLSv12(env, jconfig) != 0,
+                              cipher_list.str());
 }
 
-opendnp3::IPEndpoint ConvertIPEndpoint(JNIEnv* env, jobject jendpoint)
+opendnp3::IPEndpoint ConvertIPEndpoint(JNIEnv* env, jni::JIPEndpoint jendpoint)
 {
     const auto jaddress = jni::JCache::IPEndpoint.getaddress(env, jendpoint);
     CString address(env, jaddress);
@@ -91,10 +93,10 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
     // Convert endpoints
     std::vector<opendnp3::IPEndpoint> endpoints;
-    auto process = [&](LocalRef<jobject> jendpoint) {
+    auto process = [&](jni::JIPEndpoint jendpoint) {
         endpoints.push_back(ConvertIPEndpoint(env, jendpoint));
     };
-    JNI::Iterate(env, jremotes, process);
+    JNI::Iterate<jni::JIPEndpoint>(env, jni::JIterable(jremotes), process);
 
     auto channel = manager->AddTCPClient(id.str(), log4cpp::LogLevel(jlevels), retry, endpoints, adapter.str(), listener);
 
@@ -160,10 +162,10 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
     // Convert endpoints
     std::vector<opendnp3::IPEndpoint> endpoints;
-    auto process = [&](LocalRef<jobject> jendpoint) {
+    auto process = [&](jni::JIPEndpoint jendpoint) {
         endpoints.push_back(ConvertIPEndpoint(env, jendpoint));
     };
-    JNI::Iterate(env, jremotes, process);
+    JNI::Iterate<jni::JIPEndpoint>(env, jni::JIterable(jremotes), process);
 
     std::error_code ec;
 

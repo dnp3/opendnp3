@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNICOMMANDPOINTRESULT_H
 #define OPENDNP3JAVA_JNICOMMANDPOINTRESULT_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,14 +52,14 @@ namespace jni
             public:
 
             // constructor methods
-            LocalRef<jobject> init4(JNIEnv* env, jint arg0, jint arg1, jobject arg2, jobject arg3);
+            LocalRef<JCommandPointResult> construct(JNIEnv* env, jint arg0, jint arg1, JCommandPointState arg2, JCommandStatus arg3);
 
             private:
 
             jclass clazz = nullptr;
 
             // constructor method ids
-            jmethodID init4Constructor = nullptr;
+            jmethodID constructor0 = nullptr;
         };
     }
 }

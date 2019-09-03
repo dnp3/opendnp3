@@ -55,6 +55,7 @@
 #include "JNIClassAssignment.h"
 #include "JNIClassField.h"
 #include "JNICommandHandler.h"
+#include "JNICommandHeaders.h"
 #include "JNICommandPointResult.h"
 #include "JNICommandPointState.h"
 #include "JNICommandProcessor.h"
@@ -82,6 +83,7 @@
 #include "JNIEventCounterVariation.h"
 #include "JNIEventDoubleBinaryVariation.h"
 #include "JNIEventFrozenCounterVariation.h"
+#include "JNIEventMode.h"
 #include "JNIFrozenCounter.h"
 #include "JNIFrozenCounterConfig.h"
 #include "JNIGroupVariation.h"
@@ -107,6 +109,7 @@
 #include "JNIMasterStackConfig.h"
 #include "JNIMasterTaskType.h"
 #include "JNINumRetries.h"
+#include "JNIObject.h"
 #include "JNIOperateType.h"
 #include "JNIOutstationApplication.h"
 #include "JNIOutstationConfig.h"
@@ -118,6 +121,7 @@
 #include "JNIResponseInfo.h"
 #include "JNIRestartMode.h"
 #include "JNISOEHandler.h"
+#include "JNISet.h"
 #include "JNIStack.h"
 #include "JNIStackStatistics.h"
 #include "JNIStaticAnalogOutputStatusVariation.h"
@@ -163,6 +167,7 @@ namespace jni
         static cache::ClassAssignment ClassAssignment;
         static cache::ClassField ClassField;
         static cache::CommandHandler CommandHandler;
+        static cache::CommandHeaders CommandHeaders;
         static cache::CommandPointResult CommandPointResult;
         static cache::CommandPointState CommandPointState;
         static cache::CommandProcessor CommandProcessor;
@@ -190,6 +195,7 @@ namespace jni
         static cache::EventCounterVariation EventCounterVariation;
         static cache::EventDoubleBinaryVariation EventDoubleBinaryVariation;
         static cache::EventFrozenCounterVariation EventFrozenCounterVariation;
+        static cache::EventMode EventMode;
         static cache::FrozenCounter FrozenCounter;
         static cache::FrozenCounterConfig FrozenCounterConfig;
         static cache::GroupVariation GroupVariation;
@@ -215,6 +221,7 @@ namespace jni
         static cache::MasterStackConfig MasterStackConfig;
         static cache::MasterTaskType MasterTaskType;
         static cache::NumRetries NumRetries;
+        static cache::Object Object;
         static cache::OperateType OperateType;
         static cache::OutstationApplication OutstationApplication;
         static cache::OutstationConfig OutstationConfig;
@@ -226,6 +233,7 @@ namespace jni
         static cache::ResponseInfo ResponseInfo;
         static cache::RestartMode RestartMode;
         static cache::SOEHandler SOEHandler;
+        static cache::Set Set;
         static cache::Stack Stack;
         static cache::StackStatistics StackStatistics;
         static cache::StaticAnalogOutputStatusVariation StaticAnalogOutputStatusVariation;

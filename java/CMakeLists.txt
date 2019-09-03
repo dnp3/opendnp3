@@ -38,6 +38,7 @@ set(all_sources
 	./cpp/adapters/SOEHandlerAdapter.cpp
 	./cpp/adapters/SOEHandlerAdapter.h
 
+	./cpp/jni/JNIWrappers.h
 	./cpp/jni/JCache.cpp
 	./cpp/jni/JCache.h
 	./cpp/jni/JNIAnalogConfig.cpp
@@ -82,6 +83,8 @@ set(all_sources
 	./cpp/jni/JNIClassField.h
 	./cpp/jni/JNICommandHandler.cpp
 	./cpp/jni/JNICommandHandler.h
+	./cpp/jni/JNICommandHeaders.cpp
+	./cpp/jni/JNICommandHeaders.h
 	./cpp/jni/JNICommandPointResult.cpp
 	./cpp/jni/JNICommandPointResult.h
 	./cpp/jni/JNICommandPointState.cpp
@@ -136,6 +139,8 @@ set(all_sources
 	./cpp/jni/JNIEventDoubleBinaryVariation.h
 	./cpp/jni/JNIEventFrozenCounterVariation.cpp
 	./cpp/jni/JNIEventFrozenCounterVariation.h
+	./cpp/jni/JNIEventMode.h
+	./cpp/jni/JNIEventMode.cpp
 	./cpp/jni/JNIFrozenCounter.cpp
 	./cpp/jni/JNIFrozenCounter.h
 	./cpp/jni/JNIFrozenCounterConfig.cpp
@@ -186,6 +191,8 @@ set(all_sources
 	./cpp/jni/JNIMasterTaskType.h
 	./cpp/jni/JNINumRetries.cpp
 	./cpp/jni/JNINumRetries.h
+    ./cpp/jni/JNIObject.cpp
+	./cpp/jni/JNIObject.h
 	./cpp/jni/JNIOperateType.cpp
 	./cpp/jni/JNIOperateType.h
 	./cpp/jni/JNIOutstationApplication.cpp
@@ -206,6 +213,8 @@ set(all_sources
 	./cpp/jni/JNIResponseInfo.h
 	./cpp/jni/JNIRestartMode.cpp
 	./cpp/jni/JNIRestartMode.h
+	./cpp/jni/JNISet.h
+	./cpp/jni/JNISet.cpp
 	./cpp/jni/JNISOEHandler.cpp
 	./cpp/jni/JNISOEHandler.h
 	./cpp/jni/JNIStack.cpp

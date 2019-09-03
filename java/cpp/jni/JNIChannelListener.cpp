@@ -42,8 +42,8 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->onStateChangeMethod = env->GetMethodID(this->clazz, "onStateChange", "(Lcom/automatak/dnp3/enums/ChannelState;)V");
-            if(!this->onStateChangeMethod) return false;
+            this->method0 = env->GetMethodID(this->clazz, "onStateChange", "(Lcom/automatak/dnp3/enums/ChannelState;)V");
+            if(!this->method0) return false;
 
             return true;
         }
@@ -53,9 +53,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        void ChannelListener::onStateChange(JNIEnv* env, jobject instance, jobject arg0)
+        void ChannelListener::onStateChange(JNIEnv* env, JChannelListener instance, JChannelState arg0)
         {
-            env->CallVoidMethod(instance, this->onStateChangeMethod, arg0);
+            env->CallVoidMethod(instance, this->method0, arg0);
         }
     }
 }

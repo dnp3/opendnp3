@@ -42,8 +42,8 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->init2Constructor = env->GetMethodID(this->clazz, "<init>", "(Ljava/lang/Object;I)V");
-            if(!this->init2Constructor) return false;
+            this->constructor0 = env->GetMethodID(this->clazz, "<init>", "(Ljava/lang/Object;I)V");
+            if(!this->constructor0) return false;
 
             this->valueField = env->GetFieldID(this->clazz, "value", "Ljava/lang/Object;");
             if(!this->valueField) return false;
@@ -59,19 +59,19 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> IndexedValue::init2(JNIEnv* env, jobject arg0, jint arg1)
+        LocalRef<JIndexedValue> IndexedValue::construct(JNIEnv* env, JObject arg0, jint arg1)
         {
-            return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init2Constructor, arg0, arg1));
+            return LocalRef<JIndexedValue>(env, JIndexedValue(env->NewObject(this->clazz, this->constructor0)));
         }
 
-        jint IndexedValue::getindex(JNIEnv* env, jobject instance)
+        jint IndexedValue::getindex(JNIEnv* env, JIndexedValue instance)
         {
             return env->GetIntField(instance, this->indexField);
         }
 
-        LocalRef<jobject> IndexedValue::getvalue(JNIEnv* env, jobject instance)
+        LocalRef<JObject> IndexedValue::getvalue(JNIEnv* env, JIndexedValue instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->valueField));
+            return LocalRef<JObject>(env, env->GetObjectField(instance, this->valueField));
         }
     }
 }

@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIITERATOR_H
 #define OPENDNP3JAVA_JNIITERATOR_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,16 +52,16 @@ namespace jni
             public:
 
             // methods
-            jboolean hasNext(JNIEnv* env, jobject instance);
-            LocalRef<jobject> next(JNIEnv* env, jobject instance);
+            jboolean hasNext(JNIEnv* env, JIterator instance);
+            LocalRef<JObject> next(JNIEnv* env, JIterator instance);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID hasNextMethod = nullptr;
-            jmethodID nextMethod = nullptr;
+            jmethodID method0 = nullptr;
+            jmethodID method1 = nullptr;
         };
     }
 }

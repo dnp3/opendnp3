@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIDURATION_H
 #define OPENDNP3JAVA_JNIDURATION_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,14 +52,14 @@ namespace jni
             public:
 
             // methods
-            jlong toMillis(JNIEnv* env, jobject instance);
+            jlong toMillis(JNIEnv* env, JDuration instance);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID toMillisMethod = nullptr;
+            jmethodID method0 = nullptr;
         };
     }
 }

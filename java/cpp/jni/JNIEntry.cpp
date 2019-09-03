@@ -42,11 +42,11 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->getKeyMethod = env->GetMethodID(this->clazz, "getKey", "()Ljava/lang/Object;");
-            if(!this->getKeyMethod) return false;
+            this->method0 = env->GetMethodID(this->clazz, "getKey", "()Ljava/lang/Object;");
+            if(!this->method0) return false;
 
-            this->getValueMethod = env->GetMethodID(this->clazz, "getValue", "()Ljava/lang/Object;");
-            if(!this->getValueMethod) return false;
+            this->method1 = env->GetMethodID(this->clazz, "getValue", "()Ljava/lang/Object;");
+            if(!this->method1) return false;
 
             return true;
         }
@@ -56,14 +56,14 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> Entry::getKey(JNIEnv* env, jobject instance)
+        LocalRef<JObject> Entry::getKey(JNIEnv* env, JEntry instance)
         {
-            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->getKeyMethod));
+            return LocalRef<JObject>(env, env->CallObjectMethod(instance, this->method0));
         }
 
-        LocalRef<jobject> Entry::getValue(JNIEnv* env, jobject instance)
+        LocalRef<JObject> Entry::getValue(JNIEnv* env, JEntry instance)
         {
-            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->getValueMethod));
+            return LocalRef<JObject>(env, env->CallObjectMethod(instance, this->method1));
         }
     }
 }

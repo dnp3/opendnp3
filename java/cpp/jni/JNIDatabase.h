@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIDATABASE_H
 #define OPENDNP3JAVA_JNIDATABASE_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,40 +52,40 @@ namespace jni
             public:
 
             // methods
-            void freezeCounter(JNIEnv* env, jobject instance, jint arg0, jboolean arg1, jobject arg2);
-            void freezeCounter(JNIEnv* env, jobject instance, jint arg0, jboolean arg1);
-            void update(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
-            void update(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
-            void update(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
-            void update(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
-            void update(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
-            void update(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
-            void update(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
-            void update(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
-            void update(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
-            void update(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
-            void update(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
-            void update(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
+            void freezeCounter(JNIEnv* env, JDatabase instance, jint arg0, jboolean arg1, JEventMode arg2);
+            void freezeCounter(JNIEnv* env, JDatabase instance, jint arg0, jboolean arg1);
+            void update(JNIEnv* env, JDatabase instance, JAnalogInput arg0, jint arg1, JEventMode arg2);
+            void update(JNIEnv* env, JDatabase instance, JDoubleBitBinaryInput arg0, jint arg1, JEventMode arg2);
+            void update(JNIEnv* env, JDatabase instance, JBinaryInput arg0, jint arg1, JEventMode arg2);
+            void update(JNIEnv* env, JDatabase instance, JAnalogOutputStatus arg0, jint arg1);
+            void update(JNIEnv* env, JDatabase instance, JCounter arg0, jint arg1, JEventMode arg2);
+            void update(JNIEnv* env, JDatabase instance, JBinaryOutputStatus arg0, jint arg1, JEventMode arg2);
+            void update(JNIEnv* env, JDatabase instance, JAnalogOutputStatus arg0, jint arg1, JEventMode arg2);
+            void update(JNIEnv* env, JDatabase instance, JBinaryInput arg0, jint arg1);
+            void update(JNIEnv* env, JDatabase instance, JDoubleBitBinaryInput arg0, jint arg1);
+            void update(JNIEnv* env, JDatabase instance, JAnalogInput arg0, jint arg1);
+            void update(JNIEnv* env, JDatabase instance, JBinaryOutputStatus arg0, jint arg1);
+            void update(JNIEnv* env, JDatabase instance, JCounter arg0, jint arg1);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID freezeCounterMethod = nullptr;
-            jmethodID freezeCounterMethod = nullptr;
-            jmethodID updateMethod = nullptr;
-            jmethodID updateMethod = nullptr;
-            jmethodID updateMethod = nullptr;
-            jmethodID updateMethod = nullptr;
-            jmethodID updateMethod = nullptr;
-            jmethodID updateMethod = nullptr;
-            jmethodID updateMethod = nullptr;
-            jmethodID updateMethod = nullptr;
-            jmethodID updateMethod = nullptr;
-            jmethodID updateMethod = nullptr;
-            jmethodID updateMethod = nullptr;
-            jmethodID updateMethod = nullptr;
+            jmethodID method0 = nullptr;
+            jmethodID method1 = nullptr;
+            jmethodID method2 = nullptr;
+            jmethodID method3 = nullptr;
+            jmethodID method4 = nullptr;
+            jmethodID method5 = nullptr;
+            jmethodID method6 = nullptr;
+            jmethodID method7 = nullptr;
+            jmethodID method8 = nullptr;
+            jmethodID method9 = nullptr;
+            jmethodID method10 = nullptr;
+            jmethodID method11 = nullptr;
+            jmethodID method12 = nullptr;
+            jmethodID method13 = nullptr;
         };
     }
 }

@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNICOUNTERCONFIG_H
 #define OPENDNP3JAVA_JNICOUNTERCONFIG_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,9 +52,9 @@ namespace jni
             public:
 
             // field getter methods
-            jint getdeadband(JNIEnv* env, jobject instance);
-            LocalRef<jobject> geteventVariation(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getstaticVariation(JNIEnv* env, jobject instance);
+            jint getdeadband(JNIEnv* env, JCounterConfig instance);
+            LocalRef<JEventCounterVariation> geteventVariation(JNIEnv* env, JCounterConfig instance);
+            LocalRef<JStaticCounterVariation> getstaticVariation(JNIEnv* env, JCounterConfig instance);
 
             private:
 

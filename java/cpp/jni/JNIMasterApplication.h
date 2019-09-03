@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIMASTERAPPLICATION_H
 #define OPENDNP3JAVA_JNIMASTERAPPLICATION_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,28 +52,28 @@ namespace jni
             public:
 
             // methods
-            jboolean assignClassDuringStartup(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getClassAssignments(JNIEnv* env, jobject instance);
-            jlong getMillisecondsSinceEpoch(JNIEnv* env, jobject instance);
-            void onClose(JNIEnv* env, jobject instance);
-            void onOpen(JNIEnv* env, jobject instance);
-            void onReceiveIIN(JNIEnv* env, jobject instance, jobject arg0);
-            void onTaskComplete(JNIEnv* env, jobject instance, jobject arg0);
-            void onTaskStart(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
+            jboolean assignClassDuringStartup(JNIEnv* env, JMasterApplication instance);
+            LocalRef<JIterable> getClassAssignments(JNIEnv* env, JMasterApplication instance);
+            jlong getMillisecondsSinceEpoch(JNIEnv* env, JMasterApplication instance);
+            void onClose(JNIEnv* env, JMasterApplication instance);
+            void onOpen(JNIEnv* env, JMasterApplication instance);
+            void onReceiveIIN(JNIEnv* env, JMasterApplication instance, JIINField arg0);
+            void onTaskComplete(JNIEnv* env, JMasterApplication instance, JTaskInfo arg0);
+            void onTaskStart(JNIEnv* env, JMasterApplication instance, JMasterTaskType arg0, JTaskId arg1);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID assignClassDuringStartupMethod = nullptr;
-            jmethodID getClassAssignmentsMethod = nullptr;
-            jmethodID getMillisecondsSinceEpochMethod = nullptr;
-            jmethodID onCloseMethod = nullptr;
-            jmethodID onOpenMethod = nullptr;
-            jmethodID onReceiveIINMethod = nullptr;
-            jmethodID onTaskCompleteMethod = nullptr;
-            jmethodID onTaskStartMethod = nullptr;
+            jmethodID method0 = nullptr;
+            jmethodID method1 = nullptr;
+            jmethodID method2 = nullptr;
+            jmethodID method3 = nullptr;
+            jmethodID method4 = nullptr;
+            jmethodID method5 = nullptr;
+            jmethodID method6 = nullptr;
+            jmethodID method7 = nullptr;
         };
     }
 }

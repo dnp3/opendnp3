@@ -42,17 +42,11 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/IndexMode;");
-            if(!this->fromTypeMethod) return false;
+            this->method0 = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/IndexMode;");
+            if(!this->method0) return false;
 
-            this->toTypeMethod = env->GetMethodID(this->clazz, "toType", "()I");
-            if(!this->toTypeMethod) return false;
-
-            this->valueOfMethod = env->GetStaticMethodID(this->clazz, "valueOf", "(Ljava/lang/String;)Lcom/automatak/dnp3/enums/IndexMode;");
-            if(!this->valueOfMethod) return false;
-
-            this->valuesMethod = env->GetStaticMethodID(this->clazz, "values", "()[Lcom/automatak/dnp3/enums/IndexMode;");
-            if(!this->valuesMethod) return false;
+            this->method1 = env->GetMethodID(this->clazz, "toType", "()I");
+            if(!this->method1) return false;
 
             return true;
         }
@@ -62,24 +56,14 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> IndexMode::fromType(JNIEnv* env, jint arg0)
+        LocalRef<JIndexMode> IndexMode::fromType(JNIEnv* env, jint arg0)
         {
-            return LocalRef<jobject>(env, env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0));
+            return LocalRef<JIndexMode>(env, env->CallStaticObjectMethod(this->clazz, this->method0, arg0));
         }
 
-        jint IndexMode::toType(JNIEnv* env, jobject instance)
+        jint IndexMode::toType(JNIEnv* env, JIndexMode instance)
         {
-            return env->CallIntMethod(instance, this->toTypeMethod);
-        }
-
-        LocalRef<jobject> IndexMode::valueOf(JNIEnv* env, jstring arg0)
-        {
-            return LocalRef<jobject>(env, env->CallStaticObjectMethod(this->clazz, this->valueOfMethod, arg0));
-        }
-
-        LocalRef<jobject> IndexMode::values(JNIEnv* env)
-        {
-            return LocalRef<jobject>(env, env->CallStaticObjectMethod(this->clazz, this->valuesMethod));
+            return env->CallIntMethod(instance, this->method1);
         }
     }
 }

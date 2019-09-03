@@ -42,8 +42,8 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->init2Constructor = env->GetMethodID(this->clazz, "<init>", "(BB)V");
-            if(!this->init2Constructor) return false;
+            this->constructor0 = env->GetMethodID(this->clazz, "<init>", "(BB)V");
+            if(!this->constructor0) return false;
 
             return true;
         }
@@ -53,9 +53,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> IINField::init2(JNIEnv* env, jbyte arg0, jbyte arg1)
+        LocalRef<JIINField> IINField::construct(JNIEnv* env, jbyte arg0, jbyte arg1)
         {
-            return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init2Constructor, arg0, arg1));
+            return LocalRef<JIINField>(env, JIINField(env->NewObject(this->clazz, this->constructor0)));
         }
     }
 }

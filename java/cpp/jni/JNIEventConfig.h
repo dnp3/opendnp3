@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIEVENTCONFIG_H
 #define OPENDNP3JAVA_JNIEVENTCONFIG_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,7 +52,7 @@ namespace jni
             public:
 
             // field getter methods
-            LocalRef<jobject> getclazz(JNIEnv* env, jobject instance);
+            LocalRef<JPointClass> getclazz(JNIEnv* env, JEventConfig instance);
 
             private:
 

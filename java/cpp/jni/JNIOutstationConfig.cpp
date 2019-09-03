@@ -77,49 +77,49 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jboolean OutstationConfig::getallowUnsolicited(JNIEnv* env, jobject instance)
+        jboolean OutstationConfig::getallowUnsolicited(JNIEnv* env, JOutstationConfig instance)
         {
             return env->GetBooleanField(instance, this->allowUnsolicitedField);
         }
 
-        LocalRef<jobject> OutstationConfig::getindexMode(JNIEnv* env, jobject instance)
+        LocalRef<JIndexMode> OutstationConfig::getindexMode(JNIEnv* env, JOutstationConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->indexModeField));
+            return LocalRef<JIndexMode>(env, env->GetObjectField(instance, this->indexModeField));
         }
 
-        jshort OutstationConfig::getmaxControlsPerRequest(JNIEnv* env, jobject instance)
+        jshort OutstationConfig::getmaxControlsPerRequest(JNIEnv* env, JOutstationConfig instance)
         {
             return env->GetShortField(instance, this->maxControlsPerRequestField);
         }
 
-        jint OutstationConfig::getmaxRxFragSize(JNIEnv* env, jobject instance)
+        jint OutstationConfig::getmaxRxFragSize(JNIEnv* env, JOutstationConfig instance)
         {
             return env->GetIntField(instance, this->maxRxFragSizeField);
         }
 
-        jint OutstationConfig::getmaxTxFragSize(JNIEnv* env, jobject instance)
+        jint OutstationConfig::getmaxTxFragSize(JNIEnv* env, JOutstationConfig instance)
         {
             return env->GetIntField(instance, this->maxTxFragSizeField);
         }
 
-        LocalRef<jobject> OutstationConfig::getnumUnsolRetries(JNIEnv* env, jobject instance)
+        LocalRef<JNumRetries> OutstationConfig::getnumUnsolRetries(JNIEnv* env, JOutstationConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->numUnsolRetriesField));
+            return LocalRef<JNumRetries>(env, env->GetObjectField(instance, this->numUnsolRetriesField));
         }
 
-        LocalRef<jobject> OutstationConfig::getselectTimeout(JNIEnv* env, jobject instance)
+        LocalRef<JDuration> OutstationConfig::getselectTimeout(JNIEnv* env, JOutstationConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->selectTimeoutField));
+            return LocalRef<JDuration>(env, env->GetObjectField(instance, this->selectTimeoutField));
         }
 
-        LocalRef<jobject> OutstationConfig::getsolConfirmTimeout(JNIEnv* env, jobject instance)
+        LocalRef<JDuration> OutstationConfig::getsolConfirmTimeout(JNIEnv* env, JOutstationConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->solConfirmTimeoutField));
+            return LocalRef<JDuration>(env, env->GetObjectField(instance, this->solConfirmTimeoutField));
         }
 
-        LocalRef<jobject> OutstationConfig::getunsolConfirmTimeout(JNIEnv* env, jobject instance)
+        LocalRef<JDuration> OutstationConfig::getunsolConfirmTimeout(JNIEnv* env, JOutstationConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->unsolConfirmTimeoutField));
+            return LocalRef<JDuration>(env, env->GetObjectField(instance, this->unsolConfirmTimeoutField));
         }
     }
 }

@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIOUTSTATIONCONFIG_H
 #define OPENDNP3JAVA_JNIOUTSTATIONCONFIG_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,15 +52,15 @@ namespace jni
             public:
 
             // field getter methods
-            jboolean getallowUnsolicited(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getindexMode(JNIEnv* env, jobject instance);
-            jshort getmaxControlsPerRequest(JNIEnv* env, jobject instance);
-            jint getmaxRxFragSize(JNIEnv* env, jobject instance);
-            jint getmaxTxFragSize(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getnumUnsolRetries(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getselectTimeout(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getsolConfirmTimeout(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getunsolConfirmTimeout(JNIEnv* env, jobject instance);
+            jboolean getallowUnsolicited(JNIEnv* env, JOutstationConfig instance);
+            LocalRef<JIndexMode> getindexMode(JNIEnv* env, JOutstationConfig instance);
+            jshort getmaxControlsPerRequest(JNIEnv* env, JOutstationConfig instance);
+            jint getmaxRxFragSize(JNIEnv* env, JOutstationConfig instance);
+            jint getmaxTxFragSize(JNIEnv* env, JOutstationConfig instance);
+            LocalRef<JNumRetries> getnumUnsolRetries(JNIEnv* env, JOutstationConfig instance);
+            LocalRef<JDuration> getselectTimeout(JNIEnv* env, JOutstationConfig instance);
+            LocalRef<JDuration> getsolConfirmTimeout(JNIEnv* env, JOutstationConfig instance);
+            LocalRef<JDuration> getunsolConfirmTimeout(JNIEnv* env, JOutstationConfig instance);
 
             private:
 

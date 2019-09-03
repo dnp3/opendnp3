@@ -53,9 +53,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> EventConfig::getclazz(JNIEnv* env, jobject instance)
+        LocalRef<JPointClass> EventConfig::getclazz(JNIEnv* env, JEventConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->clazzField));
+            return LocalRef<JPointClass>(env, env->GetObjectField(instance, this->clazzField));
         }
     }
 }

@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIDATABASECONFIG_H
 #define OPENDNP3JAVA_JNIDATABASECONFIG_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,13 +52,13 @@ namespace jni
             public:
 
             // field getter methods
-            LocalRef<jobject> getanalog(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getaoStatus(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getbinary(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getboStatus(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getcounter(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getdoubleBinary(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getfrozenCounter(JNIEnv* env, jobject instance);
+            LocalRef<JMap> getanalog(JNIEnv* env, JDatabaseConfig instance);
+            LocalRef<JMap> getaoStatus(JNIEnv* env, JDatabaseConfig instance);
+            LocalRef<JMap> getbinary(JNIEnv* env, JDatabaseConfig instance);
+            LocalRef<JMap> getboStatus(JNIEnv* env, JDatabaseConfig instance);
+            LocalRef<JMap> getcounter(JNIEnv* env, JDatabaseConfig instance);
+            LocalRef<JMap> getdoubleBinary(JNIEnv* env, JDatabaseConfig instance);
+            LocalRef<JMap> getfrozenCounter(JNIEnv* env, JDatabaseConfig instance);
 
             private:
 

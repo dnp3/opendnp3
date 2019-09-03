@@ -21,14 +21,12 @@
 #ifndef OPENDNP3_JNI_H
 #define OPENDNP3_JNI_H
 
-#include "LocalRef.h"
-
 #include <opendnp3/util/StaticOnly.h>
 
-#include <jni.h>
+#include "LocalRef.h"
+#include "../jni/JNIWrappers.h"
 
 #include <functional>
-#include <string>
 
 #define OPENDNP3_JNI_VERSION JNI_VERSION_1_8
 
@@ -47,11 +45,33 @@ public:
     static jobject CreateGlobalRef(jobject ref);
     static void DeleteGlobalRef(jobject ref);
 
-    static void Iterate(JNIEnv* env, jobject iterable, const std::function<void(LocalRef<jobject>)>& callback);
+    
 
-    static void IterateWithIndex(JNIEnv* env,
-                                 jobject iterable,
-                                 const std::function<void(LocalRef<jobject>, int)>& callback);
+    template<class T,  class U>
+    static void IterateWithIndex(JNIEnv* env, jni::JIterable iterable, const U& callback)
+    {
+        const auto iterator = jni::JCache::Iterable.iterator(env, iterable);
+
+        int i = 0;
+        while (jni::JCache::Iterator.hasNext(env, iterator) != 0u)
+        {
+            const auto local_ref = jni::JCache::Iterator.next(env, iterator);
+            callback(T(local_ref.get().value), i);
+            ++i;
+        }
+    }
+
+    template<class T, class U>
+    static void Iterate(JNIEnv* env, jni::JIterable iterable, const U& callback)
+    {
+        const auto iterator = jni::JCache::Iterable.iterator(env, iterable);
+
+        while (jni::JCache::Iterator.hasNext(env, iterator))
+        {
+            const auto local_ref = jni::JCache::Iterator.next(env, iterator);
+            callback(T(local_ref.get().value));
+        }
+    }
 
 private:
     static JavaVM* vm;

@@ -42,8 +42,8 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->init5Constructor = env->GetMethodID(this->clazz, "<init>", "(Lcom/automatak/dnp3/enums/ControlCode;SJJLcom/automatak/dnp3/enums/CommandStatus;)V");
-            if(!this->init5Constructor) return false;
+            this->constructor0 = env->GetMethodID(this->clazz, "<init>", "(Lcom/automatak/dnp3/enums/ControlCode;SJJLcom/automatak/dnp3/enums/CommandStatus;)V");
+            if(!this->constructor0) return false;
 
             this->functionField = env->GetFieldID(this->clazz, "function", "Lcom/automatak/dnp3/enums/ControlCode;");
             if(!this->functionField) return false;
@@ -68,34 +68,34 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> ControlRelayOutputBlock::init5(JNIEnv* env, jobject arg0, jshort arg1, jlong arg2, jlong arg3, jobject arg4)
+        LocalRef<JControlRelayOutputBlock> ControlRelayOutputBlock::construct(JNIEnv* env, JControlCode arg0, jshort arg1, jlong arg2, jlong arg3, JCommandStatus arg4)
         {
-            return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init5Constructor, arg0, arg1, arg2, arg3, arg4));
+            return LocalRef<JControlRelayOutputBlock>(env, JControlRelayOutputBlock(env->NewObject(this->clazz, this->constructor0)));
         }
 
-        jshort ControlRelayOutputBlock::getcount(JNIEnv* env, jobject instance)
+        jshort ControlRelayOutputBlock::getcount(JNIEnv* env, JControlRelayOutputBlock instance)
         {
             return env->GetShortField(instance, this->countField);
         }
 
-        LocalRef<jobject> ControlRelayOutputBlock::getfunction(JNIEnv* env, jobject instance)
+        LocalRef<JControlCode> ControlRelayOutputBlock::getfunction(JNIEnv* env, JControlRelayOutputBlock instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->functionField));
+            return LocalRef<JControlCode>(env, env->GetObjectField(instance, this->functionField));
         }
 
-        jlong ControlRelayOutputBlock::getoffTimeMs(JNIEnv* env, jobject instance)
+        jlong ControlRelayOutputBlock::getoffTimeMs(JNIEnv* env, JControlRelayOutputBlock instance)
         {
             return env->GetLongField(instance, this->offTimeMsField);
         }
 
-        jlong ControlRelayOutputBlock::getonTimeMs(JNIEnv* env, jobject instance)
+        jlong ControlRelayOutputBlock::getonTimeMs(JNIEnv* env, JControlRelayOutputBlock instance)
         {
             return env->GetLongField(instance, this->onTimeMsField);
         }
 
-        LocalRef<jobject> ControlRelayOutputBlock::getstatus(JNIEnv* env, jobject instance)
+        LocalRef<JCommandStatus> ControlRelayOutputBlock::getstatus(JNIEnv* env, JControlRelayOutputBlock instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->statusField));
+            return LocalRef<JCommandStatus>(env, env->GetObjectField(instance, this->statusField));
         }
     }
 }

@@ -56,12 +56,12 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jboolean NumRetries::getisInfinite(JNIEnv* env, jobject instance)
+        jboolean NumRetries::getisInfinite(JNIEnv* env, JNumRetries instance)
         {
             return env->GetBooleanField(instance, this->isInfiniteField);
         }
 
-        jint NumRetries::getmaxNumRetries(JNIEnv* env, jobject instance)
+        jint NumRetries::getmaxNumRetries(JNIEnv* env, JNumRetries instance)
         {
             return env->GetIntField(instance, this->maxNumRetriesField);
         }

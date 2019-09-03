@@ -42,8 +42,8 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->init3Constructor = env->GetMethodID(this->clazz, "<init>", "(Lcom/automatak/dnp3/enums/MasterTaskType;Lcom/automatak/dnp3/enums/TaskCompletion;Lcom/automatak/dnp3/TaskId;)V");
-            if(!this->init3Constructor) return false;
+            this->constructor0 = env->GetMethodID(this->clazz, "<init>", "(Lcom/automatak/dnp3/enums/MasterTaskType;Lcom/automatak/dnp3/enums/TaskCompletion;Lcom/automatak/dnp3/TaskId;)V");
+            if(!this->constructor0) return false;
 
             return true;
         }
@@ -53,9 +53,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> TaskInfo::init3(JNIEnv* env, jobject arg0, jobject arg1, jobject arg2)
+        LocalRef<JTaskInfo> TaskInfo::construct(JNIEnv* env, JMasterTaskType arg0, JTaskCompletion arg1, JTaskId arg2)
         {
-            return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init3Constructor, arg0, arg1, arg2));
+            return LocalRef<JTaskInfo>(env, JTaskInfo(env->NewObject(this->clazz, this->constructor0)));
         }
     }
 }

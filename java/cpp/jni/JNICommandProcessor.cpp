@@ -42,41 +42,41 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->directOperateMethod = env->GetMethodID(this->clazz, "directOperate", "(Lcom/automatak/dnp3/CommandHeaders;)Ljava/util/concurrent/CompletableFuture;");
-            if(!this->directOperateMethod) return false;
+            this->method0 = env->GetMethodID(this->clazz, "directOperate", "(Lcom/automatak/dnp3/CommandHeaders;)Ljava/util/concurrent/CompletableFuture;");
+            if(!this->method0) return false;
 
-            this->directOperateAODouble64Method = env->GetMethodID(this->clazz, "directOperateAODouble64", "(Lcom/automatak/dnp3/AnalogOutputDouble64;I)Ljava/util/concurrent/CompletableFuture;");
-            if(!this->directOperateAODouble64Method) return false;
+            this->method1 = env->GetMethodID(this->clazz, "directOperateAODouble64", "(Lcom/automatak/dnp3/AnalogOutputDouble64;I)Ljava/util/concurrent/CompletableFuture;");
+            if(!this->method1) return false;
 
-            this->directOperateAOFloat32Method = env->GetMethodID(this->clazz, "directOperateAOFloat32", "(Lcom/automatak/dnp3/AnalogOutputFloat32;I)Ljava/util/concurrent/CompletableFuture;");
-            if(!this->directOperateAOFloat32Method) return false;
+            this->method2 = env->GetMethodID(this->clazz, "directOperateAOFloat32", "(Lcom/automatak/dnp3/AnalogOutputFloat32;I)Ljava/util/concurrent/CompletableFuture;");
+            if(!this->method2) return false;
 
-            this->directOperateAOInt16Method = env->GetMethodID(this->clazz, "directOperateAOInt16", "(Lcom/automatak/dnp3/AnalogOutputInt16;I)Ljava/util/concurrent/CompletableFuture;");
-            if(!this->directOperateAOInt16Method) return false;
+            this->method3 = env->GetMethodID(this->clazz, "directOperateAOInt16", "(Lcom/automatak/dnp3/AnalogOutputInt16;I)Ljava/util/concurrent/CompletableFuture;");
+            if(!this->method3) return false;
 
-            this->directOperateAOInt32Method = env->GetMethodID(this->clazz, "directOperateAOInt32", "(Lcom/automatak/dnp3/AnalogOutputInt32;I)Ljava/util/concurrent/CompletableFuture;");
-            if(!this->directOperateAOInt32Method) return false;
+            this->method4 = env->GetMethodID(this->clazz, "directOperateAOInt32", "(Lcom/automatak/dnp3/AnalogOutputInt32;I)Ljava/util/concurrent/CompletableFuture;");
+            if(!this->method4) return false;
 
-            this->directOperateCROBMethod = env->GetMethodID(this->clazz, "directOperateCROB", "(Lcom/automatak/dnp3/ControlRelayOutputBlock;I)Ljava/util/concurrent/CompletableFuture;");
-            if(!this->directOperateCROBMethod) return false;
+            this->method5 = env->GetMethodID(this->clazz, "directOperateCROB", "(Lcom/automatak/dnp3/ControlRelayOutputBlock;I)Ljava/util/concurrent/CompletableFuture;");
+            if(!this->method5) return false;
 
-            this->selectAndOperateMethod = env->GetMethodID(this->clazz, "selectAndOperate", "(Lcom/automatak/dnp3/CommandHeaders;)Ljava/util/concurrent/CompletableFuture;");
-            if(!this->selectAndOperateMethod) return false;
+            this->method6 = env->GetMethodID(this->clazz, "selectAndOperate", "(Lcom/automatak/dnp3/CommandHeaders;)Ljava/util/concurrent/CompletableFuture;");
+            if(!this->method6) return false;
 
-            this->selectAndOperateAODouble64Method = env->GetMethodID(this->clazz, "selectAndOperateAODouble64", "(Lcom/automatak/dnp3/AnalogOutputDouble64;I)Ljava/util/concurrent/CompletableFuture;");
-            if(!this->selectAndOperateAODouble64Method) return false;
+            this->method7 = env->GetMethodID(this->clazz, "selectAndOperateAODouble64", "(Lcom/automatak/dnp3/AnalogOutputDouble64;I)Ljava/util/concurrent/CompletableFuture;");
+            if(!this->method7) return false;
 
-            this->selectAndOperateAOFloat32Method = env->GetMethodID(this->clazz, "selectAndOperateAOFloat32", "(Lcom/automatak/dnp3/AnalogOutputFloat32;I)Ljava/util/concurrent/CompletableFuture;");
-            if(!this->selectAndOperateAOFloat32Method) return false;
+            this->method8 = env->GetMethodID(this->clazz, "selectAndOperateAOFloat32", "(Lcom/automatak/dnp3/AnalogOutputFloat32;I)Ljava/util/concurrent/CompletableFuture;");
+            if(!this->method8) return false;
 
-            this->selectAndOperateAOInt16Method = env->GetMethodID(this->clazz, "selectAndOperateAOInt16", "(Lcom/automatak/dnp3/AnalogOutputInt16;I)Ljava/util/concurrent/CompletableFuture;");
-            if(!this->selectAndOperateAOInt16Method) return false;
+            this->method9 = env->GetMethodID(this->clazz, "selectAndOperateAOInt16", "(Lcom/automatak/dnp3/AnalogOutputInt16;I)Ljava/util/concurrent/CompletableFuture;");
+            if(!this->method9) return false;
 
-            this->selectAndOperateAOInt32Method = env->GetMethodID(this->clazz, "selectAndOperateAOInt32", "(Lcom/automatak/dnp3/AnalogOutputInt32;I)Ljava/util/concurrent/CompletableFuture;");
-            if(!this->selectAndOperateAOInt32Method) return false;
+            this->method10 = env->GetMethodID(this->clazz, "selectAndOperateAOInt32", "(Lcom/automatak/dnp3/AnalogOutputInt32;I)Ljava/util/concurrent/CompletableFuture;");
+            if(!this->method10) return false;
 
-            this->selectAndOperateCROBMethod = env->GetMethodID(this->clazz, "selectAndOperateCROB", "(Lcom/automatak/dnp3/ControlRelayOutputBlock;I)Ljava/util/concurrent/CompletableFuture;");
-            if(!this->selectAndOperateCROBMethod) return false;
+            this->method11 = env->GetMethodID(this->clazz, "selectAndOperateCROB", "(Lcom/automatak/dnp3/ControlRelayOutputBlock;I)Ljava/util/concurrent/CompletableFuture;");
+            if(!this->method11) return false;
 
             return true;
         }
@@ -86,64 +86,64 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> CommandProcessor::directOperate(JNIEnv* env, jobject instance, jobject arg0)
+        LocalRef<JCompletableFuture> CommandProcessor::directOperate(JNIEnv* env, JCommandProcessor instance, JCommandHeaders arg0)
         {
-            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->directOperateMethod, arg0));
+            return LocalRef<JCompletableFuture>(env, env->CallObjectMethod(instance, this->method0, arg0));
         }
 
-        LocalRef<jobject> CommandProcessor::directOperateAODouble64(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
+        LocalRef<JCompletableFuture> CommandProcessor::directOperateAODouble64(JNIEnv* env, JCommandProcessor instance, JAnalogOutputDouble64 arg0, jint arg1)
         {
-            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->directOperateAODouble64Method, arg0, arg1));
+            return LocalRef<JCompletableFuture>(env, env->CallObjectMethod(instance, this->method1, arg0, arg1));
         }
 
-        LocalRef<jobject> CommandProcessor::directOperateAOFloat32(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
+        LocalRef<JCompletableFuture> CommandProcessor::directOperateAOFloat32(JNIEnv* env, JCommandProcessor instance, JAnalogOutputFloat32 arg0, jint arg1)
         {
-            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->directOperateAOFloat32Method, arg0, arg1));
+            return LocalRef<JCompletableFuture>(env, env->CallObjectMethod(instance, this->method2, arg0, arg1));
         }
 
-        LocalRef<jobject> CommandProcessor::directOperateAOInt16(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
+        LocalRef<JCompletableFuture> CommandProcessor::directOperateAOInt16(JNIEnv* env, JCommandProcessor instance, JAnalogOutputInt16 arg0, jint arg1)
         {
-            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->directOperateAOInt16Method, arg0, arg1));
+            return LocalRef<JCompletableFuture>(env, env->CallObjectMethod(instance, this->method3, arg0, arg1));
         }
 
-        LocalRef<jobject> CommandProcessor::directOperateAOInt32(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
+        LocalRef<JCompletableFuture> CommandProcessor::directOperateAOInt32(JNIEnv* env, JCommandProcessor instance, JAnalogOutputInt32 arg0, jint arg1)
         {
-            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->directOperateAOInt32Method, arg0, arg1));
+            return LocalRef<JCompletableFuture>(env, env->CallObjectMethod(instance, this->method4, arg0, arg1));
         }
 
-        LocalRef<jobject> CommandProcessor::directOperateCROB(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
+        LocalRef<JCompletableFuture> CommandProcessor::directOperateCROB(JNIEnv* env, JCommandProcessor instance, JControlRelayOutputBlock arg0, jint arg1)
         {
-            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->directOperateCROBMethod, arg0, arg1));
+            return LocalRef<JCompletableFuture>(env, env->CallObjectMethod(instance, this->method5, arg0, arg1));
         }
 
-        LocalRef<jobject> CommandProcessor::selectAndOperate(JNIEnv* env, jobject instance, jobject arg0)
+        LocalRef<JCompletableFuture> CommandProcessor::selectAndOperate(JNIEnv* env, JCommandProcessor instance, JCommandHeaders arg0)
         {
-            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->selectAndOperateMethod, arg0));
+            return LocalRef<JCompletableFuture>(env, env->CallObjectMethod(instance, this->method6, arg0));
         }
 
-        LocalRef<jobject> CommandProcessor::selectAndOperateAODouble64(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
+        LocalRef<JCompletableFuture> CommandProcessor::selectAndOperateAODouble64(JNIEnv* env, JCommandProcessor instance, JAnalogOutputDouble64 arg0, jint arg1)
         {
-            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->selectAndOperateAODouble64Method, arg0, arg1));
+            return LocalRef<JCompletableFuture>(env, env->CallObjectMethod(instance, this->method7, arg0, arg1));
         }
 
-        LocalRef<jobject> CommandProcessor::selectAndOperateAOFloat32(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
+        LocalRef<JCompletableFuture> CommandProcessor::selectAndOperateAOFloat32(JNIEnv* env, JCommandProcessor instance, JAnalogOutputFloat32 arg0, jint arg1)
         {
-            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->selectAndOperateAOFloat32Method, arg0, arg1));
+            return LocalRef<JCompletableFuture>(env, env->CallObjectMethod(instance, this->method8, arg0, arg1));
         }
 
-        LocalRef<jobject> CommandProcessor::selectAndOperateAOInt16(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
+        LocalRef<JCompletableFuture> CommandProcessor::selectAndOperateAOInt16(JNIEnv* env, JCommandProcessor instance, JAnalogOutputInt16 arg0, jint arg1)
         {
-            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->selectAndOperateAOInt16Method, arg0, arg1));
+            return LocalRef<JCompletableFuture>(env, env->CallObjectMethod(instance, this->method9, arg0, arg1));
         }
 
-        LocalRef<jobject> CommandProcessor::selectAndOperateAOInt32(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
+        LocalRef<JCompletableFuture> CommandProcessor::selectAndOperateAOInt32(JNIEnv* env, JCommandProcessor instance, JAnalogOutputInt32 arg0, jint arg1)
         {
-            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->selectAndOperateAOInt32Method, arg0, arg1));
+            return LocalRef<JCompletableFuture>(env, env->CallObjectMethod(instance, this->method10, arg0, arg1));
         }
 
-        LocalRef<jobject> CommandProcessor::selectAndOperateCROB(JNIEnv* env, jobject instance, jobject arg0, jint arg1)
+        LocalRef<JCompletableFuture> CommandProcessor::selectAndOperateCROB(JNIEnv* env, JCommandProcessor instance, JControlRelayOutputBlock arg0, jint arg1)
         {
-            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->selectAndOperateCROBMethod, arg0, arg1));
+            return LocalRef<JCompletableFuture>(env, env->CallObjectMethod(instance, this->method11, arg0, arg1));
         }
     }
 }

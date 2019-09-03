@@ -42,8 +42,8 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->init4Constructor = env->GetMethodID(this->clazz, "<init>", "(IILcom/automatak/dnp3/enums/CommandPointState;Lcom/automatak/dnp3/enums/CommandStatus;)V");
-            if(!this->init4Constructor) return false;
+            this->constructor0 = env->GetMethodID(this->clazz, "<init>", "(IILcom/automatak/dnp3/enums/CommandPointState;Lcom/automatak/dnp3/enums/CommandStatus;)V");
+            if(!this->constructor0) return false;
 
             return true;
         }
@@ -53,9 +53,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> CommandPointResult::init4(JNIEnv* env, jint arg0, jint arg1, jobject arg2, jobject arg3)
+        LocalRef<JCommandPointResult> CommandPointResult::construct(JNIEnv* env, jint arg0, jint arg1, JCommandPointState arg2, JCommandStatus arg3)
         {
-            return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init4Constructor, arg0, arg1, arg2, arg3));
+            return LocalRef<JCommandPointResult>(env, JCommandPointResult(env->NewObject(this->clazz, this->constructor0)));
         }
     }
 }

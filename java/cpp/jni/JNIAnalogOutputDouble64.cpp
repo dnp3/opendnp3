@@ -42,8 +42,8 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->init2Constructor = env->GetMethodID(this->clazz, "<init>", "(DLcom/automatak/dnp3/enums/CommandStatus;)V");
-            if(!this->init2Constructor) return false;
+            this->constructor0 = env->GetMethodID(this->clazz, "<init>", "(DLcom/automatak/dnp3/enums/CommandStatus;)V");
+            if(!this->constructor0) return false;
 
             this->valueField = env->GetFieldID(this->clazz, "value", "D");
             if(!this->valueField) return false;
@@ -59,17 +59,17 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> AnalogOutputDouble64::init2(JNIEnv* env, jdouble arg0, jobject arg1)
+        LocalRef<JAnalogOutputDouble64> AnalogOutputDouble64::construct(JNIEnv* env, jdouble arg0, JCommandStatus arg1)
         {
-            return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init2Constructor, arg0, arg1));
+            return LocalRef<JAnalogOutputDouble64>(env, JAnalogOutputDouble64(env->NewObject(this->clazz, this->constructor0)));
         }
 
-        LocalRef<jobject> AnalogOutputDouble64::getstatus(JNIEnv* env, jobject instance)
+        LocalRef<JCommandStatus> AnalogOutputDouble64::getstatus(JNIEnv* env, JAnalogOutputDouble64 instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->statusField));
+            return LocalRef<JCommandStatus>(env, env->GetObjectField(instance, this->statusField));
         }
 
-        jdouble AnalogOutputDouble64::getvalue(JNIEnv* env, jobject instance)
+        jdouble AnalogOutputDouble64::getvalue(JNIEnv* env, JAnalogOutputDouble64 instance)
         {
             return env->GetDoubleField(instance, this->valueField);
         }

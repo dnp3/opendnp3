@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIMAP_H
 #define OPENDNP3JAVA_JNIMAP_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,14 +52,14 @@ namespace jni
             public:
 
             // methods
-            LocalRef<jobject> entrySet(JNIEnv* env, jobject instance);
+            LocalRef<JSet> entrySet(JNIEnv* env, JMap instance);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID entrySetMethod = nullptr;
+            jmethodID method0 = nullptr;
         };
     }
 }

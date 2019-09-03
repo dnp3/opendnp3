@@ -42,8 +42,8 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->init3Constructor = env->GetMethodID(this->clazz, "<init>", "(ZZZ)V");
-            if(!this->init3Constructor) return false;
+            this->constructor0 = env->GetMethodID(this->clazz, "<init>", "(ZZZ)V");
+            if(!this->constructor0) return false;
 
             return true;
         }
@@ -53,9 +53,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> ResponseInfo::init3(JNIEnv* env, jboolean arg0, jboolean arg1, jboolean arg2)
+        LocalRef<JResponseInfo> ResponseInfo::construct(JNIEnv* env, jboolean arg0, jboolean arg1, jboolean arg2)
         {
-            return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init3Constructor, arg0, arg1, arg2));
+            return LocalRef<JResponseInfo>(env, JResponseInfo(env->NewObject(this->clazz, this->constructor0)));
         }
     }
 }

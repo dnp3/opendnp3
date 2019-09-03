@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIRANGE_H
 #define OPENDNP3JAVA_JNIRANGE_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,18 +52,18 @@ namespace jni
             public:
 
             // methods
-            jboolean isDefined(JNIEnv* env, jobject instance);
+            jboolean isDefined(JNIEnv* env, JRange instance);
 
             // field getter methods
-            jint getstart(JNIEnv* env, jobject instance);
-            jint getstop(JNIEnv* env, jobject instance);
+            jint getstart(JNIEnv* env, JRange instance);
+            jint getstop(JNIEnv* env, JRange instance);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID isDefinedMethod = nullptr;
+            jmethodID method0 = nullptr;
 
             // field ids
             jfieldID startField = nullptr;

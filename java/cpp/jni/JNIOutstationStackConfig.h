@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIOUTSTATIONSTACKCONFIG_H
 #define OPENDNP3JAVA_JNIOUTSTATIONSTACKCONFIG_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,10 +52,10 @@ namespace jni
             public:
 
             // field getter methods
-            LocalRef<jobject> getdatabaseConfig(JNIEnv* env, jobject instance);
-            LocalRef<jobject> geteventBufferConfig(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getlinkConfig(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getoutstationConfig(JNIEnv* env, jobject instance);
+            LocalRef<JDatabaseConfig> getdatabaseConfig(JNIEnv* env, JOutstationStackConfig instance);
+            LocalRef<JEventBufferConfig> geteventBufferConfig(JNIEnv* env, JOutstationStackConfig instance);
+            LocalRef<JLinkLayerConfig> getlinkConfig(JNIEnv* env, JOutstationStackConfig instance);
+            LocalRef<JOutstationConfig> getoutstationConfig(JNIEnv* env, JOutstationStackConfig instance);
 
             private:
 

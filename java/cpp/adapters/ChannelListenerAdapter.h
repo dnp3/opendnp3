@@ -20,17 +20,19 @@
 #ifndef OPENDNP3_CHANNELLISTENERADAPTER_H
 #define OPENDNP3_CHANNELLISTENERADAPTER_H
 
-#include "../jni/JCache.h"
+#include <opendnp3/channel/IChannelListener.h>
+
 #include "GlobalRef.h"
+#include "../jni/JCache.h"
+#include "../jni/JNIWrappers.h"
 
-#include "opendnp3/channel/IChannelListener.h"
 
-class ChannelListenerAdapter : public opendnp3::IChannelListener
+class ChannelListenerAdapter final : public opendnp3::IChannelListener
 {
 public:
-    ChannelListenerAdapter(jobject proxy) : proxy(proxy) {}
+    ChannelListenerAdapter(jni::JChannelListener proxy) : proxy(proxy) {}
 
-    virtual void OnStateChange(opendnp3::ChannelState state) override
+    void OnStateChange(opendnp3::ChannelState state) override
     {
         const auto env = JNI::GetEnv();
         auto jstate = jni::JCache::ChannelState.fromType(env, static_cast<jint>(state));
@@ -38,7 +40,7 @@ public:
     }
 
 private:
-    GlobalRef proxy;
+    GlobalRef<jni::JChannelListener> proxy;
 };
 
 #endif

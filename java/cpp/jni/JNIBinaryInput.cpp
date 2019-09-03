@@ -42,8 +42,8 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->init3Constructor = env->GetMethodID(this->clazz, "<init>", "(ZBJ)V");
-            if(!this->init3Constructor) return false;
+            this->constructor0 = env->GetMethodID(this->clazz, "<init>", "(ZBJ)V");
+            if(!this->constructor0) return false;
 
             return true;
         }
@@ -53,9 +53,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> BinaryInput::init3(JNIEnv* env, jboolean arg0, jbyte arg1, jlong arg2)
+        LocalRef<JBinaryInput> BinaryInput::construct(JNIEnv* env, jboolean arg0, jbyte arg1, jlong arg2)
         {
-            return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init3Constructor, arg0, arg1, arg2));
+            return LocalRef<JBinaryInput>(env, JBinaryInput(env->NewObject(this->clazz, this->constructor0)));
         }
     }
 }

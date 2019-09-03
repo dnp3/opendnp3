@@ -42,8 +42,8 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->init6Constructor = env->GetMethodID(this->clazz, "<init>", "(Lcom/automatak/dnp3/enums/GroupVariation;Lcom/automatak/dnp3/enums/QualifierCode;Lcom/automatak/dnp3/enums/TimestampQuality;ZZI)V");
-            if(!this->init6Constructor) return false;
+            this->constructor0 = env->GetMethodID(this->clazz, "<init>", "(Lcom/automatak/dnp3/enums/GroupVariation;Lcom/automatak/dnp3/enums/QualifierCode;Lcom/automatak/dnp3/enums/TimestampQuality;ZZI)V");
+            if(!this->constructor0) return false;
 
             return true;
         }
@@ -53,9 +53,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> HeaderInfo::init6(JNIEnv* env, jobject arg0, jobject arg1, jobject arg2, jboolean arg3, jboolean arg4, jint arg5)
+        LocalRef<JHeaderInfo> HeaderInfo::construct(JNIEnv* env, JGroupVariation arg0, JQualifierCode arg1, JTimestampQuality arg2, jboolean arg3, jboolean arg4, jint arg5)
         {
-            return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init6Constructor, arg0, arg1, arg2, arg3, arg4, arg5));
+            return LocalRef<JHeaderInfo>(env, JHeaderInfo(env->NewObject(this->clazz, this->constructor0)));
         }
     }
 }

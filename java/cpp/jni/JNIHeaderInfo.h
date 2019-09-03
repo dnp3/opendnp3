@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIHEADERINFO_H
 #define OPENDNP3JAVA_JNIHEADERINFO_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,14 +52,14 @@ namespace jni
             public:
 
             // constructor methods
-            LocalRef<jobject> init6(JNIEnv* env, jobject arg0, jobject arg1, jobject arg2, jboolean arg3, jboolean arg4, jint arg5);
+            LocalRef<JHeaderInfo> construct(JNIEnv* env, JGroupVariation arg0, JQualifierCode arg1, JTimestampQuality arg2, jboolean arg3, jboolean arg4, jint arg5);
 
             private:
 
             jclass clazz = nullptr;
 
             // constructor method ids
-            jmethodID init6Constructor = nullptr;
+            jmethodID constructor0 = nullptr;
         };
     }
 }

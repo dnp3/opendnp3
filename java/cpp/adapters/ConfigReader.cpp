@@ -26,17 +26,17 @@
 
 using namespace opendnp3;
 
-MasterStackConfig ConfigReader::ConvertMasterStackConfig(JNIEnv* env, jobject jcfg)
+MasterStackConfig ConfigReader::Convert(JNIEnv* env, jni::JMasterStackConfig jcfg)
 {
     MasterStackConfig cfg;
 
-    cfg.link = ConvertLinkConfig(env, jni::JCache::MasterStackConfig.getlink(env, jcfg));
-    cfg.master = ConvertMasterConfig(env, jni::JCache::MasterStackConfig.getmaster(env, jcfg));
+    cfg.link = Convert(env, jni::JCache::MasterStackConfig.getlink(env, jcfg));
+    cfg.master = Convert(env, jni::JCache::MasterStackConfig.getmaster(env, jcfg));
 
     return cfg;
 }
 
-MasterParams ConfigReader::ConvertMasterConfig(JNIEnv* env, jobject jcfg)
+MasterParams ConfigReader::Convert(JNIEnv* env, jni::JMasterConfig jcfg)
 {
     MasterParams cfg;
 
@@ -48,8 +48,8 @@ MasterParams ConfigReader::ConvertMasterConfig(JNIEnv* env, jobject jcfg)
         = static_cast<TimeSyncMode>(jni::JCache::TimeSyncMode.toType(env, config.gettimeSyncMode(env, jcfg)));
     cfg.disableUnsolOnStartup = !(config.getdisableUnsolOnStartup(env, jcfg) == 0u);
     cfg.ignoreRestartIIN = !(config.getignoreRestartIIN(env, jcfg) == 0u);
-    cfg.unsolClassMask = ConvertClassField(env, config.getunsolClassMask(env, jcfg));
-    cfg.startupIntegrityClassMask = ConvertClassField(env, config.getstartupIntegrityClassMask(env, jcfg));
+    cfg.unsolClassMask = Convert(env, config.getunsolClassMask(env, jcfg));
+    cfg.startupIntegrityClassMask = Convert(env, config.getstartupIntegrityClassMask(env, jcfg));
     cfg.integrityOnEventOverflowIIN = !(config.getintegrityOnEventOverflowIIN(env, jcfg) == 0u);
     cfg.taskRetryPeriod = TimeDuration::Milliseconds(dur.toMillis(env, config.gettaskRetryPeriod(env, jcfg)));
     cfg.taskStartTimeout = TimeDuration::Milliseconds(dur.toMillis(env, config.gettaskStartTimeout(env, jcfg)));
@@ -61,7 +61,7 @@ MasterParams ConfigReader::ConvertMasterConfig(JNIEnv* env, jobject jcfg)
     return cfg;
 }
 
-LinkConfig ConfigReader::ConvertLinkConfig(JNIEnv* env, jobject jlinkcfg)
+LinkConfig ConfigReader::Convert(JNIEnv* env, jni::JLinkLayerConfig jlinkcfg)
 {
     LinkConfig cfg(true, false);
 
@@ -80,75 +80,75 @@ LinkConfig ConfigReader::ConvertLinkConfig(JNIEnv* env, jobject jlinkcfg)
     return cfg;
 }
 
-OutstationStackConfig ConfigReader::ConvertOutstationStackConfig(JNIEnv* env, jobject jconfig)
+OutstationStackConfig ConfigReader::Convert(JNIEnv* env, jni::JOutstationStackConfig jconfig)
 {
     auto& cfg = jni::JCache::OutstationStackConfig;
 
     OutstationStackConfig config;
 
-    config.link = ConvertLinkConfig(env, cfg.getlinkConfig(env, jconfig));
-    config.database = ConvertDatavaseConfig(env, cfg.getdatabaseConfig(env, jconfig));
-    config.outstation.eventBufferConfig = ConvertEventBufferConfig(env, cfg.geteventBufferConfig(env, jconfig));
-    config.outstation.params = ConvertOutstationConfig(env, cfg.getoutstationConfig(env, jconfig));
+    config.link = Convert(env, cfg.getlinkConfig(env, jconfig));
+    config.database = Convert(env, cfg.getdatabaseConfig(env, jconfig));
+    config.outstation.eventBufferConfig = Convert(env, cfg.geteventBufferConfig(env, jconfig));
+    config.outstation.params = Convert(env, cfg.getoutstationConfig(env, jconfig));
             
     return config;
 }
 
-opendnp3::DatabaseConfig ConfigReader::ConvertDatavaseConfig(JNIEnv* env, jobject jdb)
+opendnp3::DatabaseConfig ConfigReader::Convert(JNIEnv* env, jni::JDatabaseConfig jdb)
 {
     auto& db = jni::JCache::DatabaseConfig;  
 	auto& map = jni::JCache::Map;
 
-	auto get_index = [env](const LocalRef<jobject>& entry) -> uint16_t
+	auto get_index = [env](jni::JEntry entry) -> uint16_t
     { 
-		const auto index = jni::JCache::Integer.intValue(env, jni::JCache::Entry.getKey(env, entry));
+		const auto index = jni::JCache::Integer.intValue(env, jni::JCache::Entry.getKey(env, entry).as<jni::JInteger>());
         return static_cast<uint16_t>(index);
 	};
 
-	auto get_value = [env](const LocalRef<jobject>& entry) -> LocalRef<jobject> {
+	auto get_value = [env](jni::JEntry entry) -> LocalRef<jni::JObject> {
         return jni::JCache::Entry.getValue(env, entry);        
     };
 	
 	opendnp3::DatabaseConfig config;
     
-    JNI::Iterate(env, map.entrySet(env, db.getbinary(env, jdb)), [&](LocalRef<jobject> entry) { 
-		config.binary_input[get_index(entry)] = ConvertBinaryConfig(env, get_value(entry));
+    JNI::Iterate<jni::JEntry>(env, map.entrySet(env, db.getbinary(env, jdb)).as<jni::JIterable>(), [&](jni::JEntry entry) {
+		config.binary_input[get_index(entry)] = Convert(env, get_value(entry).as<jni::JBinaryConfig>());
     });
 
-    JNI::Iterate(env, map.entrySet(env, db.getdoubleBinary(env, jdb)), [&](LocalRef<jobject> entry) {
-        config.double_binary[get_index(entry)] = ConvertDoubleBinaryConfig(env, get_value(entry));
+    JNI::Iterate<jni::JEntry>(env, map.entrySet(env, db.getdoubleBinary(env, jdb)).as<jni::JIterable>(), [&](jni::JEntry entry) {
+        config.double_binary[get_index(entry)] = Convert(env, get_value(entry).as<jni::JDoubleBinaryConfig>());
     });
 
-    JNI::Iterate(env, map.entrySet(env, db.getanalog(env, jdb)), [&](LocalRef<jobject> entry) {
-        config.analog_input[get_index(entry)] = ConvertAnalogConfig(env, get_value(entry));
+    JNI::Iterate<jni::JEntry>(env, map.entrySet(env, db.getanalog(env, jdb)).as<jni::JIterable>(), [&](jni::JEntry entry) {
+        config.analog_input[get_index(entry)] = Convert(env, get_value(entry).as<jni::JAnalogConfig>());
     });
     
-	JNI::Iterate(env, map.entrySet(env, db.getcounter(env, jdb)), [&](LocalRef<jobject> entry) {
-        config.counter[get_index(entry)] = ConvertCounterConfig(env, get_value(entry));
+	JNI::Iterate<jni::JEntry>(env, map.entrySet(env, db.getcounter(env, jdb)).as<jni::JIterable>(), [&](jni::JEntry entry) {
+        config.counter[get_index(entry)] = Convert(env, get_value(entry).as<jni::JCounterConfig>());
     });
     
-	JNI::Iterate(env, map.entrySet(env, db.getfrozenCounter(env, jdb)), [&](LocalRef<jobject> entry) {
-        config.frozen_counter[get_index(entry)] = ConvertFrozenCounterConfig(env, get_value(entry));
+	JNI::Iterate<jni::JEntry>(env, map.entrySet(env, db.getfrozenCounter(env, jdb)).as<jni::JIterable>(), [&](jni::JEntry entry) {
+        config.frozen_counter[get_index(entry)] = Convert(env, get_value(entry).as<jni::JFrozenCounterConfig>());
     });
     
-	JNI::Iterate(env, map.entrySet(env, db.getboStatus(env, jdb)), [&](LocalRef<jobject> entry) {
-        config.binary_output_status[get_index(entry)] = ConvertBOStatusConfig(env, get_value(entry));
+	JNI::Iterate<jni::JEntry>(env, map.entrySet(env, db.getboStatus(env, jdb)).as<jni::JIterable>(), [&](jni::JEntry entry) {
+        config.binary_output_status[get_index(entry)] = Convert(env, get_value(entry).as<jni::JBinaryOutputStatusConfig>());
     });
 
-    JNI::Iterate(env, map.entrySet(env, db.getaoStatus(env, jdb)), [&](LocalRef<jobject> entry) {
-        config.analog_output_status[get_index(entry)] = ConvertAOStatusConfig(env, get_value(entry));
+    JNI::Iterate<jni::JEntry>(env, map.entrySet(env, db.getaoStatus(env, jdb)).as<jni::JIterable>(), [&](jni::JEntry entry) {
+        config.analog_output_status[get_index(entry)] = Convert(env, get_value(entry).as<jni::JAnalogOutputStatusConfig>());
     });
 
 	return config;
 }
 
-opendnp3::ClassField ConfigReader::ConvertClassField(JNIEnv* env, jobject jclassmask)
+opendnp3::ClassField ConfigReader::Convert(JNIEnv* env, jni::JClassField jclassfield)
 {
-    jint value = jni::JCache::ClassField.getbitfield(env, jclassmask);
+    jint value = jni::JCache::ClassField.getbitfield(env, jclassfield);
     return ClassField(static_cast<uint8_t>(value));
 }
 
-opendnp3::EventBufferConfig ConfigReader::ConvertEventBufferConfig(JNIEnv* env, jobject jeventconfig)
+opendnp3::EventBufferConfig ConfigReader::Convert(JNIEnv* env, jni::JEventBufferConfig jeventconfig)
 {
     return opendnp3::EventBufferConfig(
         static_cast<uint16_t>(jni::JCache::EventBufferConfig.getmaxBinaryEvents(env, jeventconfig)),
@@ -160,17 +160,17 @@ opendnp3::EventBufferConfig ConfigReader::ConvertEventBufferConfig(JNIEnv* env, 
         static_cast<uint16_t>(jni::JCache::EventBufferConfig.getmaxAnalogOutputStatusEvents(env, jeventconfig)));
 }
 
-opendnp3::OutstationParams ConfigReader::ConvertOutstationConfig(JNIEnv* env, jobject jconfig)
+opendnp3::OutstationParams ConfigReader::Convert(JNIEnv* env, jni::JOutstationConfig jconfig)
 {
     opendnp3::OutstationParams config;
 
     auto& cfg = jni::JCache::OutstationConfig;
 
     config.maxControlsPerRequest = static_cast<uint8_t>(cfg.getmaxControlsPerRequest(env, jconfig));
-    config.selectTimeout = ConvertDuration(env, cfg.getselectTimeout(env, jconfig));
-    config.solConfirmTimeout = ConvertDuration(env, cfg.getsolConfirmTimeout(env, jconfig));
-    config.unsolConfirmTimeout = ConvertDuration(env, cfg.getunsolConfirmTimeout(env, jconfig));
-    config.numUnsolRetries = ConvertNumRetries(env, cfg.getnumUnsolRetries(env, jconfig));
+    config.selectTimeout = Convert(env, cfg.getselectTimeout(env, jconfig));
+    config.solConfirmTimeout = Convert(env, cfg.getsolConfirmTimeout(env, jconfig));
+    config.unsolConfirmTimeout = Convert(env, cfg.getunsolConfirmTimeout(env, jconfig));
+    config.numUnsolRetries = Convert(env, cfg.getnumUnsolRetries(env, jconfig));
     config.maxTxFragSize = cfg.getmaxTxFragSize(env, jconfig);
     config.maxRxFragSize = cfg.getmaxRxFragSize(env, jconfig);
     config.allowUnsolicited = !(cfg.getallowUnsolicited(env, jconfig) == 0u);
@@ -178,12 +178,12 @@ opendnp3::OutstationParams ConfigReader::ConvertOutstationConfig(JNIEnv* env, jo
     return config;
 }
 
-opendnp3::TimeDuration ConfigReader::ConvertDuration(JNIEnv* env, jobject jduration)
+opendnp3::TimeDuration ConfigReader::Convert(JNIEnv* env, jni::JDuration jduration)
 {
     return opendnp3::TimeDuration::Milliseconds(jni::JCache::Duration.toMillis(env, jduration));
 }
 
-opendnp3::NumRetries ConfigReader::ConvertNumRetries(JNIEnv* env, jobject jnumretries)
+opendnp3::NumRetries ConfigReader::Convert(JNIEnv* env, jni::JNumRetries jnumretries)
 {
     if(jni::JCache::NumRetries.getisInfinite(env, jnumretries))
     {
@@ -220,47 +220,47 @@ ConfigType ConvertDeadbandType(
 
 
 
-opendnp3::BinaryConfig ConfigReader::ConvertBinaryConfig(JNIEnv* env, jobject jconfig)
+opendnp3::BinaryConfig ConfigReader::Convert(JNIEnv* env, jni::JBinaryConfig jconfig)
 {
     return ConvertEventType<BinaryInfo, BinaryConfig>(env, jconfig, jni::JCache::BinaryConfig, jni::JCache::StaticBinaryVariation,
                                         jni::JCache::EventBinaryVariation);
 }
 
 
-opendnp3::DoubleBitBinaryConfig ConfigReader::ConvertDoubleBinaryConfig(JNIEnv* env, jobject jconfig)
+opendnp3::DoubleBitBinaryConfig ConfigReader::Convert(JNIEnv* env, jni::JDoubleBinaryConfig jconfig)
 {
     return ConvertEventType<DoubleBitBinaryInfo, DoubleBitBinaryConfig>(env, jconfig, jni::JCache::DoubleBinaryConfig,
                                                  jni::JCache::StaticDoubleBinaryVariation,
                                                  jni::JCache::EventDoubleBinaryVariation);
 }
 
-opendnp3::AnalogConfig ConfigReader::ConvertAnalogConfig(JNIEnv* env, jobject jconfig)
+opendnp3::AnalogConfig ConfigReader::Convert(JNIEnv* env, jni::JAnalogConfig jconfig)
 {
     return ConvertDeadbandType<AnalogInfo, AnalogConfig>(env, jconfig, jni::JCache::AnalogConfig, jni::JCache::StaticAnalogVariation,
                                            jni::JCache::EventAnalogVariation);
 }
 
-opendnp3::CounterConfig ConfigReader::ConvertCounterConfig(JNIEnv* env, jobject jconfig)
+opendnp3::CounterConfig ConfigReader::Convert(JNIEnv* env, jni::JCounterConfig jconfig)
 {
     return ConvertDeadbandType<CounterInfo, CounterConfig>(env, jconfig, jni::JCache::CounterConfig,
                                             jni::JCache::StaticCounterVariation, jni::JCache::EventCounterVariation);
 }
 
-opendnp3::FrozenCounterConfig ConfigReader::ConvertFrozenCounterConfig(JNIEnv* env, jobject jconfig)
+opendnp3::FrozenCounterConfig ConfigReader::Convert(JNIEnv* env, jni::JFrozenCounterConfig jconfig)
 {
     return ConvertDeadbandType<FrozenCounterInfo, FrozenCounterConfig>(env, jconfig, jni::JCache::FrozenCounterConfig,
                                                   jni::JCache::StaticFrozenCounterVariation,
                                                   jni::JCache::EventFrozenCounterVariation);
 }
 
-opendnp3::BOStatusConfig ConfigReader::ConvertBOStatusConfig(JNIEnv* env, jobject jconfig)
+opendnp3::BOStatusConfig ConfigReader::Convert(JNIEnv* env, jni::JBinaryOutputStatusConfig jconfig)
 {
     return ConvertEventType<BinaryOutputStatusInfo, BOStatusConfig>(env, jconfig, jni::JCache::BinaryOutputStatusConfig,
                                                     jni::JCache::StaticBinaryOutputStatusVariation,
                                                     jni::JCache::EventBinaryOutputStatusVariation);
 }
 
-opendnp3::AOStatusConfig ConfigReader::ConvertAOStatusConfig(JNIEnv* env, jobject jconfig)
+opendnp3::AOStatusConfig ConfigReader::Convert(JNIEnv* env, jni::JAnalogOutputStatusConfig jconfig)
 {
     return ConvertEventType<AnalogOutputStatusInfo, AOStatusConfig>(env, jconfig, jni::JCache::AnalogOutputStatusConfig,
                                                     jni::JCache::StaticAnalogOutputStatusVariation,

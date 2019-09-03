@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIGROUPVARIATION_H
 #define OPENDNP3JAVA_JNIGROUPVARIATION_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,16 +52,16 @@ namespace jni
             public:
 
             // methods
-            LocalRef<jobject> fromType(JNIEnv* env, jint arg0);
-            jint toType(JNIEnv* env, jobject instance);
+            LocalRef<JGroupVariation> fromType(JNIEnv* env, jint arg0);
+            jint toType(JNIEnv* env, JGroupVariation instance);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID fromTypeMethod = nullptr;
-            jmethodID toTypeMethod = nullptr;
+            jmethodID method0 = nullptr;
+            jmethodID method1 = nullptr;
         };
     }
 }

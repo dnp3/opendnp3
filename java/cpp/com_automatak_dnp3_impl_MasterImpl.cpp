@@ -43,7 +43,7 @@ JNIEXPORT jobject JNICALL Java_com_automatak_dnp3_impl_MasterImpl_get_1statistic
 {
     const auto master = (std::shared_ptr<opendnp3::IMaster>*)native;
     auto stats = (*master)->GetStackStatistics();
-    return env->NewGlobalRef(Conversions::ConvertStackStatistics(env, stats));
+    return env->NewGlobalRef(Conversions::ConvertStackStatistics(env, stats).get());
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_enable_1native(JNIEnv* /*env*/,
@@ -82,25 +82,24 @@ template<class Fun>
 void operate(JNIEnv* /*env*/, jlong native, jlong nativeCommandSet, jobject future, const Fun& operate)
 {
     auto& set = *(opendnp3::CommandSet*)nativeCommandSet;
-
-    auto sharedf = std::make_shared<GlobalRef>(future);
-    auto callback = [sharedf](const opendnp3::ICommandTaskResult& result) {
+   
+    auto callback = [jfuture = std::make_shared<GlobalRef<jni::JCompletableFuture>>(future)](const opendnp3::ICommandTaskResult& result) {
         const auto env = JNI::GetEnv();
         const auto jsummary = jni::JCache::TaskCompletion.fromType(env, static_cast<jint>(result.summary));
-        const auto jlist = jni::JCache::ArrayList.init1(env, static_cast<jint>(result.Count()));
+        const auto jlist = jni::JCache::ArrayList.construct(env, static_cast<jint>(result.Count()));
 
         auto addToJList = [&](const opendnp3::CommandPointResult& cpr) {
             const auto jstate = jni::JCache::CommandPointState.fromType(env, static_cast<jint>(cpr.state));
             const auto jstatus = jni::JCache::CommandStatus.fromType(env, static_cast<jint>(cpr.status));
-            const auto jres = jni::JCache::CommandPointResult.init4(env, cpr.headerIndex, cpr.index, jstate, jstatus);
-            jni::JCache::ArrayList.add(env, jlist, jres);
+            const auto jres = jni::JCache::CommandPointResult.construct(env, cpr.headerIndex, cpr.index, jstate, jstatus);
+            jni::JCache::ArrayList.add(env, jlist, jres.as<jni::JObject>());
         };
 
         result.ForeachItem(addToJList);
 
-        const auto jtaskresult = jni::JCache::CommandTaskResult.init2(env, jsummary, jlist);
+        const auto jtaskresult = jni::JCache::CommandTaskResult.construct(env, jsummary, jlist.as<jni::JIterable>());
 
-        jni::JCache::CompletableFuture.complete(env, *sharedf, jtaskresult); // invoke the future
+        jni::JCache::CompletableFuture.complete(env, *jfuture, jtaskresult.as<jni::JObject>()); // invoke the future
     };
 
     const auto master = (std::shared_ptr<opendnp3::IMaster>*)native;
@@ -129,7 +128,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_direct_1operate_1
     operate(env, native, nativeCommandSet, future, directOp);
 }
 
-bool ConvertJHeader(JNIEnv* env, jobject jheader, opendnp3::Header& header)
+bool ConvertJHeader(JNIEnv* env, jni::JHeader jheader, opendnp3::Header& header)
 {
     const auto group = jni::JCache::Header.getgroup(env, jheader);
     const auto var = jni::JCache::Header.getvariation(env, jheader);
@@ -170,7 +169,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_scan_1native(JNIE
 
     std::vector<opendnp3::Header> headers;
 
-    auto process = [&](LocalRef<jobject> jheader) {
+    auto process = [&](jni::JHeader jheader) {
         opendnp3::Header header;
         if (ConvertJHeader(env, jheader, header))
         {
@@ -178,7 +177,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_scan_1native(JNIE
         }
     };
 
-    JNI::Iterate(env, jheaders, process);
+    JNI::Iterate<jni::JHeader>(env, jni::JIterable(jheaders), process);
 
     (*master)->Scan(headers);
 }
@@ -190,7 +189,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_add_1periodic_1sc
 
     std::vector<opendnp3::Header> headers;
 
-    auto process = [&](LocalRef<jobject> jheader) {
+    auto process = [&](jni::JHeader jheader) {
         opendnp3::Header header;
         if (ConvertJHeader(env, jheader, header))
         {
@@ -198,7 +197,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_add_1periodic_1sc
         }
     };
 
-    JNI::Iterate(env, jheaders, process);
+    JNI::Iterate<jni::JHeader>(env, jni::JIterable(jheaders), process);
 
     auto period = opendnp3::TimeDuration::Milliseconds(jni::JCache::Duration.toMillis(env, jduration));
 

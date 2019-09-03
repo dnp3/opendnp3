@@ -33,7 +33,7 @@ opendnp3::UTCTimestamp MasterApplicationAdapter::Now()
 void MasterApplicationAdapter::OnReceiveIIN(const IINField& iin)
 {
     const auto env = JNI::GetEnv();
-    auto jiin = jni::JCache::IINField.init2(env, iin.LSB, iin.MSB);
+    auto jiin = jni::JCache::IINField.construct(env, iin.LSB, iin.MSB);
     jni::JCache::MasterApplication.onReceiveIIN(env, proxy, jiin);
 }
 
@@ -41,7 +41,7 @@ void MasterApplicationAdapter::OnTaskStart(MasterTaskType type, TaskId id)
 {
     const auto env = JNI::GetEnv();
     auto jtasktype = jni::JCache::MasterTaskType.fromType(env, static_cast<jint>(type));
-    auto jtaskid = jni::JCache::TaskId.init2(env, id.GetId(), static_cast<jboolean>(id.IsDefined()));
+    auto jtaskid = jni::JCache::TaskId.construct(env, id.GetId(), static_cast<jboolean>(id.IsDefined()));
     jni::JCache::MasterApplication.onTaskStart(env, proxy, jtasktype, jtaskid);
 }
 
@@ -50,9 +50,9 @@ void MasterApplicationAdapter::OnTaskComplete(const TaskInfo& info)
     const auto env = JNI::GetEnv();
     auto jtype = jni::JCache::MasterTaskType.fromType(env, static_cast<jint>(info.type));
     auto jresult = jni::JCache::TaskCompletion.fromType(env, static_cast<jint>(info.result));
-    auto jtaskid = jni::JCache::TaskId.init2(env, info.id.GetId(), static_cast<jboolean>(info.id.IsDefined()));
+    auto jtaskid = jni::JCache::TaskId.construct(env, info.id.GetId(), static_cast<jboolean>(info.id.IsDefined()));
 
-    auto jinfo = jni::JCache::TaskInfo.init3(env, jtype, jresult, jtaskid);
+    auto jinfo = jni::JCache::TaskInfo.construct(env, jtype, jresult, jtaskid);
     jni::JCache::MasterApplication.onTaskComplete(env, proxy, jinfo);
 }
 
@@ -76,11 +76,11 @@ bool MasterApplicationAdapter::AssignClassDuringStartup()
 
 void MasterApplicationAdapter::ConfigureAssignClassRequest(const WriteHeaderFunT& fun)
 {
-    const auto env = JNI::GetEnv();
+    auto env = JNI::GetEnv();
 
     auto jiterable = jni::JCache::MasterApplication.getClassAssignments(env, proxy);
 
-    auto write = [&](LocalRef<jobject> assigment) {
+    auto write = [&](jni::JClassAssignment assigment) {
         const auto clazz = static_cast<PointClass>(
             jni::JCache::PointClass.toType(env, jni::JCache::ClassAssignment.getclazz(env, assigment)));
         const auto jgroup = jni::JCache::ClassAssignment.getgroup(env, assigment);
@@ -104,5 +104,5 @@ void MasterApplicationAdapter::ConfigureAssignClassRequest(const WriteHeaderFunT
         }
     };
 
-    JNI::Iterate(env, jiterable, write);
+    JNI::Iterate<jni::JClassAssignment>(env, jiterable.get(), write);
 }

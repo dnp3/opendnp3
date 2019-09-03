@@ -54,6 +54,7 @@ namespace jni
     cache::ClassAssignment JCache::ClassAssignment;
     cache::ClassField JCache::ClassField;
     cache::CommandHandler JCache::CommandHandler;
+    cache::CommandHeaders JCache::CommandHeaders;
     cache::CommandPointResult JCache::CommandPointResult;
     cache::CommandPointState JCache::CommandPointState;
     cache::CommandProcessor JCache::CommandProcessor;
@@ -81,6 +82,7 @@ namespace jni
     cache::EventCounterVariation JCache::EventCounterVariation;
     cache::EventDoubleBinaryVariation JCache::EventDoubleBinaryVariation;
     cache::EventFrozenCounterVariation JCache::EventFrozenCounterVariation;
+    cache::EventMode JCache::EventMode;
     cache::FrozenCounter JCache::FrozenCounter;
     cache::FrozenCounterConfig JCache::FrozenCounterConfig;
     cache::GroupVariation JCache::GroupVariation;
@@ -106,6 +108,7 @@ namespace jni
     cache::MasterStackConfig JCache::MasterStackConfig;
     cache::MasterTaskType JCache::MasterTaskType;
     cache::NumRetries JCache::NumRetries;
+    cache::Object JCache::Object;
     cache::OperateType JCache::OperateType;
     cache::OutstationApplication JCache::OutstationApplication;
     cache::OutstationConfig JCache::OutstationConfig;
@@ -117,6 +120,7 @@ namespace jni
     cache::ResponseInfo JCache::ResponseInfo;
     cache::RestartMode JCache::RestartMode;
     cache::SOEHandler JCache::SOEHandler;
+    cache::Set JCache::Set;
     cache::Stack JCache::Stack;
     cache::StackStatistics JCache::StackStatistics;
     cache::StaticAnalogOutputStatusVariation JCache::StaticAnalogOutputStatusVariation;
@@ -157,6 +161,7 @@ namespace jni
         && ClassAssignment.init(env)
         && ClassField.init(env)
         && CommandHandler.init(env)
+        && CommandHeaders.init(env)
         && CommandPointResult.init(env)
         && CommandPointState.init(env)
         && CommandProcessor.init(env)
@@ -184,6 +189,7 @@ namespace jni
         && EventCounterVariation.init(env)
         && EventDoubleBinaryVariation.init(env)
         && EventFrozenCounterVariation.init(env)
+        && EventMode.init(env)
         && FrozenCounter.init(env)
         && FrozenCounterConfig.init(env)
         && GroupVariation.init(env)
@@ -209,6 +215,7 @@ namespace jni
         && MasterStackConfig.init(env)
         && MasterTaskType.init(env)
         && NumRetries.init(env)
+        && Object.init(env)
         && OperateType.init(env)
         && OutstationApplication.init(env)
         && OutstationConfig.init(env)
@@ -220,6 +227,7 @@ namespace jni
         && ResponseInfo.init(env)
         && RestartMode.init(env)
         && SOEHandler.init(env)
+        && Set.init(env)
         && Stack.init(env)
         && StackStatistics.init(env)
         && StaticAnalogOutputStatusVariation.init(env)
@@ -262,6 +270,7 @@ namespace jni
         ClassAssignment.cleanup(env);
         ClassField.cleanup(env);
         CommandHandler.cleanup(env);
+        CommandHeaders.cleanup(env);
         CommandPointResult.cleanup(env);
         CommandPointState.cleanup(env);
         CommandProcessor.cleanup(env);
@@ -289,6 +298,7 @@ namespace jni
         EventCounterVariation.cleanup(env);
         EventDoubleBinaryVariation.cleanup(env);
         EventFrozenCounterVariation.cleanup(env);
+        EventMode.cleanup(env);
         FrozenCounter.cleanup(env);
         FrozenCounterConfig.cleanup(env);
         GroupVariation.cleanup(env);
@@ -314,6 +324,7 @@ namespace jni
         MasterStackConfig.cleanup(env);
         MasterTaskType.cleanup(env);
         NumRetries.cleanup(env);
+        Object.cleanup(env);
         OperateType.cleanup(env);
         OutstationApplication.cleanup(env);
         OutstationConfig.cleanup(env);
@@ -325,6 +336,7 @@ namespace jni
         ResponseInfo.cleanup(env);
         RestartMode.cleanup(env);
         SOEHandler.cleanup(env);
+        Set.cleanup(env);
         Stack.cleanup(env);
         StackStatistics.cleanup(env);
         StaticAnalogOutputStatusVariation.cleanup(env);

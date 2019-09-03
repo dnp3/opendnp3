@@ -22,13 +22,14 @@
 
 #include "GlobalRef.h"
 #include "LocalRef.h"
+#include "../jni/JNIWrappers.h"
 
 #include <opendnp3/outstation/ICommandHandler.h>
 
 class CommandHandlerAdapter final : public opendnp3::ICommandHandler
 {
 public:
-    CommandHandlerAdapter(jobject proxy) : proxy(proxy) {}
+    CommandHandlerAdapter(jni::JCommandHandler proxy) : proxy(proxy) {}
 
     virtual void begin() override;
     virtual void end() override;
@@ -69,13 +70,13 @@ public:
                                     opendnp3::OperateType opType) override;
 
 private:
-    static LocalRef<jobject> Convert(JNIEnv * env, const opendnp3::ControlRelayOutputBlock& command);
-    static LocalRef<jobject> Convert(JNIEnv * env, const opendnp3::AnalogOutputInt16& command);
-    static LocalRef<jobject> Convert(JNIEnv * env, const opendnp3::AnalogOutputInt32& command);
-    static LocalRef<jobject> Convert(JNIEnv * env, const opendnp3::AnalogOutputFloat32& command);
-    static LocalRef<jobject> Convert(JNIEnv * env, const opendnp3::AnalogOutputDouble64& command);
+    static LocalRef<jni::JControlRelayOutputBlock> Convert(JNIEnv * env, const opendnp3::ControlRelayOutputBlock& command);
+    static LocalRef<jni::JAnalogOutputInt16> Convert(JNIEnv * env, const opendnp3::AnalogOutputInt16& command);
+    static LocalRef<jni::JAnalogOutputInt32> Convert(JNIEnv * env, const opendnp3::AnalogOutputInt32& command);
+    static LocalRef<jni::JAnalogOutputFloat32> Convert(JNIEnv * env, const opendnp3::AnalogOutputFloat32& command);
+    static LocalRef<jni::JAnalogOutputDouble64> Convert(JNIEnv * env, const opendnp3::AnalogOutputDouble64& command);
 
-    GlobalRef proxy;
+    GlobalRef<jni::JCommandHandler> proxy;
 };
 
 #endif

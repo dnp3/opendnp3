@@ -42,8 +42,8 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->toMillisMethod = env->GetMethodID(this->clazz, "toMillis", "()J");
-            if(!this->toMillisMethod) return false;
+            this->method0 = env->GetMethodID(this->clazz, "toMillis", "()J");
+            if(!this->method0) return false;
 
             return true;
         }
@@ -53,9 +53,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jlong Duration::toMillis(JNIEnv* env, jobject instance)
+        jlong Duration::toMillis(JNIEnv* env, JDuration instance)
         {
-            return env->CallLongMethod(instance, this->toMillisMethod);
+            return env->CallLongMethod(instance, this->method0);
         }
     }
 }

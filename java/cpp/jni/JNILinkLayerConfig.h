@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNILINKLAYERCONFIG_H
 #define OPENDNP3JAVA_JNILINKLAYERCONFIG_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,13 +52,13 @@ namespace jni
             public:
 
             // field getter methods
-            jboolean getisMaster(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getkeepAliveTimeout(JNIEnv* env, jobject instance);
-            jint getlocalAddr(JNIEnv* env, jobject instance);
-            jint getnumRetry(JNIEnv* env, jobject instance);
-            jint getremoteAddr(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getresponseTimeout(JNIEnv* env, jobject instance);
-            jboolean getuseConfirms(JNIEnv* env, jobject instance);
+            jboolean getisMaster(JNIEnv* env, JLinkLayerConfig instance);
+            LocalRef<JDuration> getkeepAliveTimeout(JNIEnv* env, JLinkLayerConfig instance);
+            jint getlocalAddr(JNIEnv* env, JLinkLayerConfig instance);
+            jint getnumRetry(JNIEnv* env, JLinkLayerConfig instance);
+            jint getremoteAddr(JNIEnv* env, JLinkLayerConfig instance);
+            LocalRef<JDuration> getresponseTimeout(JNIEnv* env, JLinkLayerConfig instance);
+            jboolean getuseConfirms(JNIEnv* env, JLinkLayerConfig instance);
 
             private:
 

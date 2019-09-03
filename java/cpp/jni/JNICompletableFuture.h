@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNICOMPLETABLEFUTURE_H
 #define OPENDNP3JAVA_JNICOMPLETABLEFUTURE_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,14 +52,14 @@ namespace jni
             public:
 
             // methods
-            jboolean complete(JNIEnv* env, jobject instance, jobject arg0);
+            jboolean complete(JNIEnv* env, JCompletableFuture instance, JObject arg0);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID completeMethod = nullptr;
+            jmethodID method0 = nullptr;
         };
     }
 }

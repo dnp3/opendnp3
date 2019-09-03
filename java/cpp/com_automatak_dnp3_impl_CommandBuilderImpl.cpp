@@ -47,16 +47,17 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandBuilderImpl_add_1crob
     const auto set = (CommandSet*)native;
 
     std::vector<Indexed<ControlRelayOutputBlock>> commands;
-    auto process = [&](LocalRef<jobject> indexed) {
+    auto process = [&](jni::JIndexedValue indexed) {
         const auto jindex = jni::JCache::IndexedValue.getindex(env, indexed);
         const auto jcommand = jni::JCache::IndexedValue.getvalue(env, indexed);
+        const auto crob = jcommand.as<jni::JControlRelayOutputBlock>();
 
         auto& ref = jni::JCache::ControlRelayOutputBlock;
-        const auto code = jni::JCache::ControlCode.toType(env, ref.getfunction(env, jcommand));
-        const auto count = ref.getcount(env, jcommand);
-        const auto onTime = ref.getonTimeMs(env, jcommand);
-        const auto offTime = ref.getoffTimeMs(env, jcommand);
-        const auto status = jni::JCache::CommandStatus.toType(env, ref.getstatus(env, jcommand));
+        const auto code = jni::JCache::ControlCode.toType(env, ref.getfunction(env, crob));
+        const auto count = ref.getcount(env, crob);
+        const auto onTime = ref.getonTimeMs(env, crob);
+        const auto offTime = ref.getoffTimeMs(env, crob);
+        const auto status = jni::JCache::CommandStatus.toType(env, ref.getstatus(env, crob));
 
         Indexed<ControlRelayOutputBlock> value(
             ControlRelayOutputBlock(static_cast<uint8_t>(code), static_cast<uint8_t>(count),
@@ -67,28 +68,28 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandBuilderImpl_add_1crob
         commands.push_back(value);
     };
 
-    JNI::Iterate(env, jcommands, process);
+    JNI::Iterate<jni::JIndexedValue>(env, jni::JIterable(jcommands), process);
     set->Add(commands);
 }
 
-template<class T, class Cache> void process_analogs(JNIEnv* env, jlong native, jobject jcommands, Cache& cache)
+template<class T, class J, class Cache> void process_analogs(JNIEnv* env, jlong native, jobject jcommands, Cache& cache)
 {
     const auto set = (CommandSet*)native;
 
     std::vector<Indexed<T>> commands;
-    auto process = [&](jobject indexed) {
+    auto process = [&](jni::JIndexedValue indexed) {
         const auto jindex = jni::JCache::IndexedValue.getindex(env, indexed);
         const auto jcommand = jni::JCache::IndexedValue.getvalue(env, indexed);
 
-        const auto avalue = cache.getvalue(env, jcommand);
-        const auto status = jni::JCache::CommandStatus.toType(env, cache.getstatus(env, jcommand));
+        const auto avalue = cache.getvalue(env, jcommand.as<J>());
+        const auto status = jni::JCache::CommandStatus.toType(env, cache.getstatus(env, jcommand.as<J>()));
 
         Indexed<T> value(T(avalue, CommandStatusSpec::from_type(static_cast<uint8_t>(status))), static_cast<uint16_t>(jindex));
 
         commands.push_back(value);
     };
 
-    JNI::Iterate(env, jcommands, process);
+    JNI::Iterate<jni::JIndexedValue>(env, jni::JIterable(jcommands), process);
     set->Add(commands);
 }
 
@@ -97,7 +98,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandBuilderImpl_add_1aoI1
                                                                                           jlong native,
                                                                                           jobject jcommands)
 {
-    process_analogs<AnalogOutputInt16>(env, native, jcommands, jni::JCache::AnalogOutputInt16);
+    process_analogs<AnalogOutputInt16, jni::JAnalogOutputInt16>(env, native, jcommands, jni::JCache::AnalogOutputInt16);
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandBuilderImpl_add_1aoI32_1native(JNIEnv* env,
@@ -105,7 +106,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandBuilderImpl_add_1aoI3
                                                                                           jlong native,
                                                                                           jobject jcommands)
 {
-    process_analogs<AnalogOutputInt32>(env, native, jcommands, jni::JCache::AnalogOutputInt32);
+    process_analogs<AnalogOutputInt32, jni::JAnalogOutputInt32>(env, native, jcommands, jni::JCache::AnalogOutputInt32);
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandBuilderImpl_add_1aoF32_1native(JNIEnv* env,
@@ -113,7 +114,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandBuilderImpl_add_1aoF3
                                                                                           jlong native,
                                                                                           jobject jcommands)
 {
-    process_analogs<AnalogOutputFloat32>(env, native, jcommands, jni::JCache::AnalogOutputFloat32);
+    process_analogs<AnalogOutputFloat32, jni::JAnalogOutputFloat32>(env, native, jcommands, jni::JCache::AnalogOutputFloat32);
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandBuilderImpl_add_1aoD64_1native(JNIEnv* env,
@@ -121,5 +122,5 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandBuilderImpl_add_1aoD6
                                                                                           jlong native,
                                                                                           jobject jcommands)
 {
-    process_analogs<AnalogOutputDouble64>(env, native, jcommands, jni::JCache::AnalogOutputDouble64);
+    process_analogs<AnalogOutputDouble64, jni::JAnalogOutputDouble64>(env, native, jcommands, jni::JCache::AnalogOutputDouble64);
 }
