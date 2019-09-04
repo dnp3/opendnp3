@@ -33,24 +33,22 @@ object JNIMethod {
 
   def getType(clazz: Class[_]): String = {
 
-    if (clazz.isPrimitive) {
-      clazz.getTypeName match {
-        case "void" => "void"
-        case "boolean" => "jboolean"
-        case "int" => "jint"
-        case "byte" => "jbyte"
-        case "long" => "jlong"
-        case "float" => "jfloat"
-        case "short" => "jshort"
-        case "double" => "jdouble"
-        case _ => throw new Exception("undefined primitive type: %s".format(clazz.getTypeName))
-      }
-    } else {
-      clazz.wrapperName
+    def getPrivitiveType : String = clazz.getTypeName match {
+      case "void" => "void"
+      case "boolean" => "jboolean"
+      case "int" => "jint"
+      case "byte" => "jbyte"
+      case "long" => "jlong"
+      case "float" => "jfloat"
+      case "short" => "jshort"
+      case "double" => "jdouble"
+      case _ => throw new Exception("undefined primitive type: %s".format(clazz.getTypeName))
     }
 
+    if (clazz.isPrimitive) getPrivitiveType else clazz.wrapperName
+
   }
-  
+
   def getFieldType(clazz: Class[_]): String = clazz match {
 
     case `classOfInt` => "I"
