@@ -25,6 +25,7 @@
 
 #include "LocalRef.h"
 #include "../jni/JNIWrappers.h"
+#include "../jni/JCache.h"
 
 #include <functional>
 

@@ -21,6 +21,7 @@
 #include "SOEHandlerAdapter.h"
 
 #include "../jni/JCache.h"
+#include "../jni/JNIWrappers.h"
 
 using namespace opendnp3;
 
@@ -49,9 +50,9 @@ void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info,
     auto jlist = jni::JCache::ArrayList.construct(env, static_cast<jint>(values.Count()));
 
     auto add = [&](const Indexed<T>& meas) {
-        auto jvalue = create_meas(env, meas.value);
-        auto jindexed = jni::JCache::IndexedValue.construct(env, jvalue.as<jni::JObject>(), meas.index);
-        jni::JCache::ArrayList.add(env, jlist, jindexed.as<jni::JObject>());
+        const auto jvalue = create_meas(env, meas.value);
+        const auto jindexed = jni::JCache::IndexedValue.construct(env, jvalue.template as<jni::JObject>(), meas.index);
+        jni::JCache::ArrayList.add(env, jlist, jindexed.template as<jni::JObject>());
     };
 
     values.ForeachItem(add);
