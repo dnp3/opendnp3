@@ -55,7 +55,7 @@ namespace jni
 
         LocalRef<JParserStatistics> ParserStatistics::construct(JNIEnv* env, jlong arg0, jlong arg1, jlong arg2, jlong arg3, jlong arg4, jlong arg5, jlong arg6)
         {
-            return LocalRef<JParserStatistics>(env, JParserStatistics(env->NewObject(this->clazz, this->constructor0)));
+            return LocalRef<JParserStatistics>(env, JParserStatistics(env->NewObject(this->clazz, this->constructor0, arg0, arg1, arg2, arg3, arg4, arg5, arg6)));
         }
     }
 }

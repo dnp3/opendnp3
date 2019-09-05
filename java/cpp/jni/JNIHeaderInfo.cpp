@@ -55,7 +55,7 @@ namespace jni
 
         LocalRef<JHeaderInfo> HeaderInfo::construct(JNIEnv* env, JGroupVariation arg0, JQualifierCode arg1, JTimestampQuality arg2, jboolean arg3, jboolean arg4, jint arg5)
         {
-            return LocalRef<JHeaderInfo>(env, JHeaderInfo(env->NewObject(this->clazz, this->constructor0)));
+            return LocalRef<JHeaderInfo>(env, JHeaderInfo(env->NewObject(this->clazz, this->constructor0, arg0, arg1, arg2, arg3, arg4, arg5)));
         }
     }
 }

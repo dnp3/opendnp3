@@ -55,7 +55,7 @@ namespace jni
 
         LocalRef<JLogEntry> LogEntry::construct(JNIEnv* env, jint arg0, JString arg1, JString arg2, JString arg3)
         {
-            return LocalRef<JLogEntry>(env, JLogEntry(env->NewObject(this->clazz, this->constructor0)));
+            return LocalRef<JLogEntry>(env, JLogEntry(env->NewObject(this->clazz, this->constructor0, arg0, arg1, arg2, arg3)));
         }
     }
 }

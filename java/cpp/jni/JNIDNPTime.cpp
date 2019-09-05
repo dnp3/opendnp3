@@ -55,7 +55,7 @@ namespace jni
 
         LocalRef<JDNPTime> DNPTime::construct(JNIEnv* env, jlong arg0)
         {
-            return LocalRef<JDNPTime>(env, JDNPTime(env->NewObject(this->clazz, this->constructor0)));
+            return LocalRef<JDNPTime>(env, JDNPTime(env->NewObject(this->clazz, this->constructor0, arg0)));
         }
     }
 }

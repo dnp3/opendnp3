@@ -55,7 +55,7 @@ namespace jni
 
         LocalRef<JTaskInfo> TaskInfo::construct(JNIEnv* env, JMasterTaskType arg0, JTaskCompletion arg1, JTaskId arg2)
         {
-            return LocalRef<JTaskInfo>(env, JTaskInfo(env->NewObject(this->clazz, this->constructor0)));
+            return LocalRef<JTaskInfo>(env, JTaskInfo(env->NewObject(this->clazz, this->constructor0, arg0, arg1, arg2)));
         }
     }
 }

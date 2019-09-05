@@ -55,7 +55,7 @@ namespace jni
 
         LocalRef<JResponseInfo> ResponseInfo::construct(JNIEnv* env, jboolean arg0, jboolean arg1, jboolean arg2)
         {
-            return LocalRef<JResponseInfo>(env, JResponseInfo(env->NewObject(this->clazz, this->constructor0)));
+            return LocalRef<JResponseInfo>(env, JResponseInfo(env->NewObject(this->clazz, this->constructor0, arg0, arg1, arg2)));
         }
     }
 }

@@ -55,7 +55,7 @@ namespace jni
 
         LocalRef<JBinaryInput> BinaryInput::construct(JNIEnv* env, jboolean arg0, jbyte arg1, jlong arg2)
         {
-            return LocalRef<JBinaryInput>(env, JBinaryInput(env->NewObject(this->clazz, this->constructor0)));
+            return LocalRef<JBinaryInput>(env, JBinaryInput(env->NewObject(this->clazz, this->constructor0, arg0, arg1, arg2)));
         }
     }
 }

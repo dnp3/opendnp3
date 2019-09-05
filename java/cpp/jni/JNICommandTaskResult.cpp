@@ -55,7 +55,7 @@ namespace jni
 
         LocalRef<JCommandTaskResult> CommandTaskResult::construct(JNIEnv* env, JTaskCompletion arg0, JIterable arg1)
         {
-            return LocalRef<JCommandTaskResult>(env, JCommandTaskResult(env->NewObject(this->clazz, this->constructor0)));
+            return LocalRef<JCommandTaskResult>(env, JCommandTaskResult(env->NewObject(this->clazz, this->constructor0, arg0, arg1)));
         }
     }
 }

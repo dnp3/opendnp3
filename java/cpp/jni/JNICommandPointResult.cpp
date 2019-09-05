@@ -55,7 +55,7 @@ namespace jni
 
         LocalRef<JCommandPointResult> CommandPointResult::construct(JNIEnv* env, jint arg0, jint arg1, JCommandPointState arg2, JCommandStatus arg3)
         {
-            return LocalRef<JCommandPointResult>(env, JCommandPointResult(env->NewObject(this->clazz, this->constructor0)));
+            return LocalRef<JCommandPointResult>(env, JCommandPointResult(env->NewObject(this->clazz, this->constructor0, arg0, arg1, arg2, arg3)));
         }
     }
 }

@@ -70,7 +70,7 @@ namespace jni
 
         LocalRef<JControlRelayOutputBlock> ControlRelayOutputBlock::construct(JNIEnv* env, JControlCode arg0, jshort arg1, jlong arg2, jlong arg3, JCommandStatus arg4)
         {
-            return LocalRef<JControlRelayOutputBlock>(env, JControlRelayOutputBlock(env->NewObject(this->clazz, this->constructor0)));
+            return LocalRef<JControlRelayOutputBlock>(env, JControlRelayOutputBlock(env->NewObject(this->clazz, this->constructor0, arg0, arg1, arg2, arg3, arg4)));
         }
 
         jshort ControlRelayOutputBlock::getcount(JNIEnv* env, JControlRelayOutputBlock instance)

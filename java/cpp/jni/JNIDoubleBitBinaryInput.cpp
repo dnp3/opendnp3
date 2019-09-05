@@ -55,7 +55,7 @@ namespace jni
 
         LocalRef<JDoubleBitBinaryInput> DoubleBitBinaryInput::construct(JNIEnv* env, JDoubleBit arg0, jbyte arg1, jlong arg2)
         {
-            return LocalRef<JDoubleBitBinaryInput>(env, JDoubleBitBinaryInput(env->NewObject(this->clazz, this->constructor0)));
+            return LocalRef<JDoubleBitBinaryInput>(env, JDoubleBitBinaryInput(env->NewObject(this->clazz, this->constructor0, arg0, arg1, arg2)));
         }
     }
 }

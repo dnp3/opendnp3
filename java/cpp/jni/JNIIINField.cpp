@@ -55,7 +55,7 @@ namespace jni
 
         LocalRef<JIINField> IINField::construct(JNIEnv* env, jbyte arg0, jbyte arg1)
         {
-            return LocalRef<JIINField>(env, JIINField(env->NewObject(this->clazz, this->constructor0)));
+            return LocalRef<JIINField>(env, JIINField(env->NewObject(this->clazz, this->constructor0, arg0, arg1)));
         }
     }
 }

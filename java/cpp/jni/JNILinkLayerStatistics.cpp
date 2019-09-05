@@ -55,7 +55,7 @@ namespace jni
 
         LocalRef<JLinkLayerStatistics> LinkLayerStatistics::construct(JNIEnv* env, jlong arg0, jlong arg1, jlong arg2, jlong arg3)
         {
-            return LocalRef<JLinkLayerStatistics>(env, JLinkLayerStatistics(env->NewObject(this->clazz, this->constructor0)));
+            return LocalRef<JLinkLayerStatistics>(env, JLinkLayerStatistics(env->NewObject(this->clazz, this->constructor0, arg0, arg1, arg2, arg3)));
         }
     }
 }

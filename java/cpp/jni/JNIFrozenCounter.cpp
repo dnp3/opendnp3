@@ -55,7 +55,7 @@ namespace jni
 
         LocalRef<JFrozenCounter> FrozenCounter::construct(JNIEnv* env, jlong arg0, jbyte arg1, jlong arg2)
         {
-            return LocalRef<JFrozenCounter>(env, JFrozenCounter(env->NewObject(this->clazz, this->constructor0)));
+            return LocalRef<JFrozenCounter>(env, JFrozenCounter(env->NewObject(this->clazz, this->constructor0, arg0, arg1, arg2)));
         }
     }
 }

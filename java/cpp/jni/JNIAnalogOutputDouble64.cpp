@@ -61,7 +61,7 @@ namespace jni
 
         LocalRef<JAnalogOutputDouble64> AnalogOutputDouble64::construct(JNIEnv* env, jdouble arg0, JCommandStatus arg1)
         {
-            return LocalRef<JAnalogOutputDouble64>(env, JAnalogOutputDouble64(env->NewObject(this->clazz, this->constructor0)));
+            return LocalRef<JAnalogOutputDouble64>(env, JAnalogOutputDouble64(env->NewObject(this->clazz, this->constructor0, arg0, arg1)));
         }
 
         LocalRef<JCommandStatus> AnalogOutputDouble64::getstatus(JNIEnv* env, JAnalogOutputDouble64 instance)

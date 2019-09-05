@@ -61,7 +61,7 @@ namespace jni
 
         LocalRef<JAnalogOutputInt32> AnalogOutputInt32::construct(JNIEnv* env, jint arg0, JCommandStatus arg1)
         {
-            return LocalRef<JAnalogOutputInt32>(env, JAnalogOutputInt32(env->NewObject(this->clazz, this->constructor0)));
+            return LocalRef<JAnalogOutputInt32>(env, JAnalogOutputInt32(env->NewObject(this->clazz, this->constructor0, arg0, arg1)));
         }
 
         LocalRef<JCommandStatus> AnalogOutputInt32::getstatus(JNIEnv* env, JAnalogOutputInt32 instance)

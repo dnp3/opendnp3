@@ -61,7 +61,7 @@ namespace jni
 
         LocalRef<JIndexedValue> IndexedValue::construct(JNIEnv* env, JObject arg0, jint arg1)
         {
-            return LocalRef<JIndexedValue>(env, JIndexedValue(env->NewObject(this->clazz, this->constructor0)));
+            return LocalRef<JIndexedValue>(env, JIndexedValue(env->NewObject(this->clazz, this->constructor0, arg0, arg1)));
         }
 
         jint IndexedValue::getindex(JNIEnv* env, JIndexedValue instance)

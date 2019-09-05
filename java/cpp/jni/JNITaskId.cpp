@@ -55,7 +55,7 @@ namespace jni
 
         LocalRef<JTaskId> TaskId::construct(JNIEnv* env, jint arg0, jboolean arg1)
         {
-            return LocalRef<JTaskId>(env, JTaskId(env->NewObject(this->clazz, this->constructor0)));
+            return LocalRef<JTaskId>(env, JTaskId(env->NewObject(this->clazz, this->constructor0, arg0, arg1)));
         }
     }
 }

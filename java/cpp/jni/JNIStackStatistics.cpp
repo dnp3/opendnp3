@@ -55,7 +55,7 @@ namespace jni
 
         LocalRef<JStackStatistics> StackStatistics::construct(JNIEnv* env, JLinkLayerStatistics arg0, JTransportStatistics arg1)
         {
-            return LocalRef<JStackStatistics>(env, JStackStatistics(env->NewObject(this->clazz, this->constructor0)));
+            return LocalRef<JStackStatistics>(env, JStackStatistics(env->NewObject(this->clazz, this->constructor0, arg0, arg1)));
         }
     }
 }

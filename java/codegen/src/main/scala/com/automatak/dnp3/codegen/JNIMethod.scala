@@ -208,11 +208,7 @@ object JNIMethod {
     val wrapperName = constructor.getDeclaringClass.wrapperName
 
     JNIMethod.getConstructorSignature(constructor, Some(constructor.getDeclaringClass.getSimpleName)).iter ++ bracket {
-      "return LocalRef<%s>(env, %s(env->NewObject(this->clazz, this->constructor%d)));".format(
-        wrapperName,
-        wrapperName,
-        id
-      ).iter
+      s"return LocalRef<$wrapperName>(env, $wrapperName(env->NewObject(this->clazz, this->constructor$id$args)));".iter
     }
 
   }

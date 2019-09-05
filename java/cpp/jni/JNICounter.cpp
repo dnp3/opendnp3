@@ -55,7 +55,7 @@ namespace jni
 
         LocalRef<JCounter> Counter::construct(JNIEnv* env, jlong arg0, jbyte arg1, jlong arg2)
         {
-            return LocalRef<JCounter>(env, JCounter(env->NewObject(this->clazz, this->constructor0)));
+            return LocalRef<JCounter>(env, JCounter(env->NewObject(this->clazz, this->constructor0, arg0, arg1, arg2)));
         }
     }
 }

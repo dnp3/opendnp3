@@ -55,7 +55,7 @@ namespace jni
 
         LocalRef<JAnalogOutputStatus> AnalogOutputStatus::construct(JNIEnv* env, jdouble arg0, jbyte arg1, jlong arg2)
         {
-            return LocalRef<JAnalogOutputStatus>(env, JAnalogOutputStatus(env->NewObject(this->clazz, this->constructor0)));
+            return LocalRef<JAnalogOutputStatus>(env, JAnalogOutputStatus(env->NewObject(this->clazz, this->constructor0, arg0, arg1, arg2)));
         }
     }
 }

@@ -63,7 +63,7 @@ namespace jni
 
         LocalRef<JArrayList> ArrayList::construct(JNIEnv* env, jint arg0)
         {
-            return LocalRef<JArrayList>(env, JArrayList(env->NewObject(this->clazz, this->constructor0)));
+            return LocalRef<JArrayList>(env, JArrayList(env->NewObject(this->clazz, this->constructor0, arg0)));
         }
     }
 }

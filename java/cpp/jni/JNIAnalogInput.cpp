@@ -55,7 +55,7 @@ namespace jni
 
         LocalRef<JAnalogInput> AnalogInput::construct(JNIEnv* env, jdouble arg0, jbyte arg1, jlong arg2)
         {
-            return LocalRef<JAnalogInput>(env, JAnalogInput(env->NewObject(this->clazz, this->constructor0)));
+            return LocalRef<JAnalogInput>(env, JAnalogInput(env->NewObject(this->clazz, this->constructor0, arg0, arg1, arg2)));
         }
     }
 }

@@ -55,7 +55,7 @@ namespace jni
 
         LocalRef<JLinkStatistics> LinkStatistics::construct(JNIEnv* env, JChannelStatistics arg0, JParserStatistics arg1)
         {
-            return LocalRef<JLinkStatistics>(env, JLinkStatistics(env->NewObject(this->clazz, this->constructor0)));
+            return LocalRef<JLinkStatistics>(env, JLinkStatistics(env->NewObject(this->clazz, this->constructor0, arg0, arg1)));
         }
     }
 }
