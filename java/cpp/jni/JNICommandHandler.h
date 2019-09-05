@@ -54,16 +54,16 @@ namespace jni
             // methods
             void begin(JNIEnv* env, JCommandHandler instance);
             void end(JNIEnv* env, JCommandHandler instance);
-            LocalRef<JCommandStatus> operateAOD64(JNIEnv* env, JCommandHandler instance, JAnalogOutputDouble64 arg0, jint arg1, JDatabase arg2, JOperateType arg3);
-            LocalRef<JCommandStatus> operateAOF32(JNIEnv* env, JCommandHandler instance, JAnalogOutputFloat32 arg0, jint arg1, JDatabase arg2, JOperateType arg3);
-            LocalRef<JCommandStatus> operateAOI16(JNIEnv* env, JCommandHandler instance, JAnalogOutputInt16 arg0, jint arg1, JDatabase arg2, JOperateType arg3);
-            LocalRef<JCommandStatus> operateAOI32(JNIEnv* env, JCommandHandler instance, JAnalogOutputInt32 arg0, jint arg1, JDatabase arg2, JOperateType arg3);
-            LocalRef<JCommandStatus> operateCROB(JNIEnv* env, JCommandHandler instance, JControlRelayOutputBlock arg0, jint arg1, JDatabase arg2, JOperateType arg3);
-            LocalRef<JCommandStatus> selectAOD64(JNIEnv* env, JCommandHandler instance, JAnalogOutputDouble64 arg0, jint arg1);
-            LocalRef<JCommandStatus> selectAOF32(JNIEnv* env, JCommandHandler instance, JAnalogOutputFloat32 arg0, jint arg1);
-            LocalRef<JCommandStatus> selectAOI16(JNIEnv* env, JCommandHandler instance, JAnalogOutputInt16 arg0, jint arg1);
-            LocalRef<JCommandStatus> selectAOI32(JNIEnv* env, JCommandHandler instance, JAnalogOutputInt32 arg0, jint arg1);
-            LocalRef<JCommandStatus> selectCROB(JNIEnv* env, JCommandHandler instance, JControlRelayOutputBlock arg0, jint arg1);
+            LocalRef<JCommandStatus> operate(JNIEnv* env, JCommandHandler instance, JAnalogOutputDouble64 arg0, jint arg1, JDatabase arg2, JOperateType arg3);
+            LocalRef<JCommandStatus> operate(JNIEnv* env, JCommandHandler instance, JAnalogOutputFloat32 arg0, jint arg1, JDatabase arg2, JOperateType arg3);
+            LocalRef<JCommandStatus> operate(JNIEnv* env, JCommandHandler instance, JAnalogOutputInt16 arg0, jint arg1, JDatabase arg2, JOperateType arg3);
+            LocalRef<JCommandStatus> operate(JNIEnv* env, JCommandHandler instance, JAnalogOutputInt32 arg0, jint arg1, JDatabase arg2, JOperateType arg3);
+            LocalRef<JCommandStatus> operate(JNIEnv* env, JCommandHandler instance, JControlRelayOutputBlock arg0, jint arg1, JDatabase arg2, JOperateType arg3);
+            LocalRef<JCommandStatus> select(JNIEnv* env, JCommandHandler instance, JAnalogOutputInt32 arg0, jint arg1);
+            LocalRef<JCommandStatus> select(JNIEnv* env, JCommandHandler instance, JAnalogOutputInt16 arg0, jint arg1);
+            LocalRef<JCommandStatus> select(JNIEnv* env, JCommandHandler instance, JAnalogOutputFloat32 arg0, jint arg1);
+            LocalRef<JCommandStatus> select(JNIEnv* env, JCommandHandler instance, JControlRelayOutputBlock arg0, jint arg1);
+            LocalRef<JCommandStatus> select(JNIEnv* env, JCommandHandler instance, JAnalogOutputDouble64 arg0, jint arg1);
 
             private:
 

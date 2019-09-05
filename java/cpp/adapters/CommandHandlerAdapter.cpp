@@ -41,7 +41,7 @@ CommandStatus CommandHandlerAdapter::Select(const ControlRelayOutputBlock& comma
 {
     const auto env = JNI::GetEnv();
     auto jcommand = Convert(env, command);
-    auto jstatus = JCache::CommandHandler.selectCROB(env, proxy, jcommand, index);
+    auto jstatus = JCache::CommandHandler.select(env, proxy, jcommand, index);
     return CommandStatusSpec::from_type(static_cast<uint8_t>(JCache::CommandStatus.toType(env, jstatus)));
 }
 
@@ -49,7 +49,7 @@ CommandStatus CommandHandlerAdapter::Select(const AnalogOutputInt16& command, ui
 {
     const auto env = JNI::GetEnv();
     auto jcommand = Convert(env, command);
-    auto jstatus = JCache::CommandHandler.selectAOI16(env, proxy, jcommand, index);
+    auto jstatus = JCache::CommandHandler.select(env, proxy, jcommand, index);
     return CommandStatusSpec::from_type(static_cast<uint8_t>(JCache::CommandStatus.toType(env, jstatus)));
 }
 
@@ -57,7 +57,7 @@ CommandStatus CommandHandlerAdapter::Select(const AnalogOutputInt32& command, ui
 {
     const auto env = JNI::GetEnv();
     auto jcommand = Convert(env, command);
-    auto jstatus = JCache::CommandHandler.selectAOI32(env, proxy, jcommand, index);
+    auto jstatus = JCache::CommandHandler.select(env, proxy, jcommand, index);
     return CommandStatusSpec::from_type(static_cast<uint8_t>(JCache::CommandStatus.toType(env, jstatus)));
 }
 
@@ -65,7 +65,7 @@ CommandStatus CommandHandlerAdapter::Select(const AnalogOutputFloat32& command, 
 {
     const auto env = JNI::GetEnv();
     auto jcommand = Convert(env, command);
-    auto jstatus = JCache::CommandHandler.selectAOF32(env, proxy, jcommand, index);
+    auto jstatus = JCache::CommandHandler.select(env, proxy, jcommand, index);
     return CommandStatusSpec::from_type(static_cast<uint8_t>(JCache::CommandStatus.toType(env, jstatus)));
 }
 
@@ -73,7 +73,7 @@ CommandStatus CommandHandlerAdapter::Select(const AnalogOutputDouble64& command,
 {
     const auto env = JNI::GetEnv();
     auto jcommand = Convert(env, command);
-    auto jstatus = JCache::CommandHandler.selectAOD64(env, proxy, jcommand, index);
+    auto jstatus = JCache::CommandHandler.select(env, proxy, jcommand, index);
     return CommandStatusSpec::from_type(static_cast<uint8_t>(JCache::CommandStatus.toType(env, jstatus)));
 }
 
