@@ -32,7 +32,7 @@ public class DatabaseImpl implements Database {
 
     private final long nativeDatabase;
 
-    DatabaseImpl(long nativeDatabase)
+    public DatabaseImpl(long nativeDatabase)
     {
         this.nativeDatabase = nativeDatabase;
     }

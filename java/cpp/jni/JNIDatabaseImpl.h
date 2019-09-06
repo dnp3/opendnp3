@@ -52,12 +52,14 @@ namespace jni
             public:
 
             // constructor methods
+            LocalRef<JDatabaseImpl> construct(JNIEnv* env, jlong arg0);
 
             private:
 
             jclass clazz = nullptr;
 
             // constructor method ids
+            jmethodID constructor0 = nullptr;
         };
     }
 }

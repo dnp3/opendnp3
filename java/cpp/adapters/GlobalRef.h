@@ -26,9 +26,8 @@
 #include <jni.h>
 
 // RAII class for JNI global refs
-template<class T>
-class GlobalRef
-{    
+template<class T> class GlobalRef
+{
     jobject ref = nullptr;
 
 public:
@@ -47,14 +46,18 @@ public:
         if (ref)
         {
             JNI::DeleteGlobalRef(ref);
-        }        
+        }
+    }
+
+    T get() const
+    {
+        return T(ref);
     }
 
     operator T() const
     {
         return T(ref);
     }
-   
 };
 
 #endif

@@ -42,12 +42,20 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
+            this->constructor0 = env->GetMethodID(this->clazz, "<init>", "(J)V");
+            if(!this->constructor0) return false;
+
             return true;
         }
 
         void DatabaseImpl::cleanup(JNIEnv* env)
         {
             env->DeleteGlobalRef(this->clazz);
+        }
+
+        LocalRef<JDatabaseImpl> DatabaseImpl::construct(JNIEnv* env, jlong arg0)
+        {
+            return LocalRef<JDatabaseImpl>(env, JDatabaseImpl(env->NewObject(this->clazz, this->constructor0, arg0)));
         }
     }
 }

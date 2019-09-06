@@ -70,6 +70,17 @@ public:
                                     opendnp3::OperateType opType) override;
 
 private:
+
+    template<class T>
+    opendnp3::CommandStatus SelectAny(const T& command, uint16_t index);
+
+    template<class T>
+    opendnp3::CommandStatus OperateAny(const T& command,
+                             uint16_t index,
+                             opendnp3::IUpdateHandler& database,
+                             opendnp3::OperateType opType);
+
+    
     static LocalRef<jni::JControlRelayOutputBlock> Convert(JNIEnv * env, const opendnp3::ControlRelayOutputBlock& command);
     static LocalRef<jni::JAnalogOutputInt16> Convert(JNIEnv * env, const opendnp3::AnalogOutputInt16& command);
     static LocalRef<jni::JAnalogOutputInt32> Convert(JNIEnv * env, const opendnp3::AnalogOutputInt32& command);
