@@ -2,13 +2,13 @@
   find_package(JNI REQUIRED)
 
 set(all_sources
-    
-	./cpp/com_automatak_dnp3_impl_ChangeSetImpl.cpp
-    ./cpp/com_automatak_dnp3_impl_ChangeSetImpl.h
+    	
     ./cpp/com_automatak_dnp3_impl_ChannelImpl.cpp
     ./cpp/com_automatak_dnp3_impl_ChannelImpl.h
     ./cpp/com_automatak_dnp3_impl_CommandBuilderImpl.cpp
     ./cpp/com_automatak_dnp3_impl_CommandBuilderImpl.h
+	./cpp/com_automatak_dnp3_impl_DatabaseImpl.cpp
+    ./cpp/com_automatak_dnp3_impl_DatabaseImpl.h
     ./cpp/com_automatak_dnp3_impl_DNP3ManagerFactory.h
     ./cpp/com_automatak_dnp3_impl_ManagerImpl.cpp
     ./cpp/com_automatak_dnp3_impl_ManagerImpl.h
