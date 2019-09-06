@@ -68,6 +68,7 @@ namespace jni
     cache::DNPTime JCache::DNPTime;
     cache::Database JCache::Database;
     cache::DatabaseConfig JCache::DatabaseConfig;
+    cache::DatabaseImpl JCache::DatabaseImpl;
     cache::DoubleBinaryConfig JCache::DoubleBinaryConfig;
     cache::DoubleBit JCache::DoubleBit;
     cache::DoubleBitBinaryInput JCache::DoubleBitBinaryInput;
@@ -175,6 +176,7 @@ namespace jni
         && DNPTime.init(env)
         && Database.init(env)
         && DatabaseConfig.init(env)
+        && DatabaseImpl.init(env)
         && DoubleBinaryConfig.init(env)
         && DoubleBit.init(env)
         && DoubleBitBinaryInput.init(env)
@@ -284,6 +286,7 @@ namespace jni
         DNPTime.cleanup(env);
         Database.cleanup(env);
         DatabaseConfig.cleanup(env);
+        DatabaseImpl.cleanup(env);
         DoubleBinaryConfig.cleanup(env);
         DoubleBit.cleanup(env);
         DoubleBitBinaryInput.cleanup(env);

@@ -107,6 +107,8 @@ set(all_sources
 	./cpp/jni/JNICounterConfig.h
 	./cpp/jni/JNIDatabase.cpp
 	./cpp/jni/JNIDatabase.h
+	./cpp/jni/JNIDatabaseImpl.cpp
+    ./cpp/jni/JNIDatabaseImpl.h    
 	./cpp/jni/JNIDatabaseConfig.cpp
 	./cpp/jni/JNIDatabaseConfig.h
 	./cpp/jni/JNIDNPTime.cpp

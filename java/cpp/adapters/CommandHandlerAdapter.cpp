@@ -85,9 +85,10 @@ CommandStatus CommandHandlerAdapter::Operate(const ControlRelayOutputBlock& comm
     const auto env = JNI::GetEnv();
     auto jcommand = Convert(env, command);
     auto jopType = JCache::OperateType.fromType(env, static_cast<jint>(opType));
-    // auto jstatus = JCache::CommandHandler.operateCROB(env, proxy, jcommand, index, jopType);
-    // return CommandStatusSpec::from_type(static_cast<uint8_t>(JCache::CommandStatus.toType(env, jstatus)));
-    return CommandStatus::HARDWARE_ERROR;
+
+    auto jdatabase = JCache::DatabaseImpl
+    auto jstatus = JCache::CommandHandler.operateCROB(env, proxy, jcommand, index, jopType);
+    return CommandStatusSpec::from_type(static_cast<uint8_t>(JCache::CommandStatus.toType(env, jstatus)));    
 }
 
 CommandStatus CommandHandlerAdapter::Operate(const AnalogOutputInt16& command,

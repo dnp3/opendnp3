@@ -69,6 +69,7 @@
 #include "JNIDNPTime.h"
 #include "JNIDatabase.h"
 #include "JNIDatabaseConfig.h"
+#include "JNIDatabaseImpl.h"
 #include "JNIDoubleBinaryConfig.h"
 #include "JNIDoubleBit.h"
 #include "JNIDoubleBitBinaryInput.h"
@@ -181,6 +182,7 @@ namespace jni
         static cache::DNPTime DNPTime;
         static cache::Database Database;
         static cache::DatabaseConfig DatabaseConfig;
+        static cache::DatabaseImpl DatabaseImpl;
         static cache::DoubleBinaryConfig DoubleBinaryConfig;
         static cache::DoubleBit DoubleBit;
         static cache::DoubleBitBinaryInput DoubleBitBinaryInput;

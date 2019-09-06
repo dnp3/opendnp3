@@ -23,7 +23,7 @@ package com.automatak.dnp3.impl;
 import com.automatak.dnp3.*;
 import com.automatak.dnp3.enums.EventMode;
 
-class DatabaseImpl implements Database {
+public class DatabaseImpl implements Database {
 
     // return a pointer to a native C++ ChangeSet (implements opendnp3::IDatabase)
     public static native long new_update_builder_native();

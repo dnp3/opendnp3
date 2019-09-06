@@ -75,7 +75,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DatabaseImpl_update_1double_
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DatabaseImpl_update_1analog_1native(
     JNIEnv*, jobject, jlong native, jdouble value, jbyte flags, jlong time, jint index, jint mode)
 {    
-    ((IUpdateHandler*)native) ->Update(Analog(value, Flags(flags), DNPTime(time)), static_cast<uint16_t>(index), static_cast<EventMode>(mode));
+    ((IUpdateHandler*)native)->Update(Analog(value, Flags(flags), DNPTime(time)), static_cast<uint16_t>(index), static_cast<EventMode>(mode));
 }
 
 /*

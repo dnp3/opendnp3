@@ -153,7 +153,8 @@ object Classes {
     ClassConfig(classOf[StackStatistics], Set(Features.Constructors)),
     ClassConfig(classOf[IPEndpoint], Set(Features.Fields)),
     ClassConfig(classOf[NumRetries], Set(Features.Fields)),
-    ClassConfig(classOf[CommandHeaders], Set.empty)
+    ClassConfig(classOf[CommandHeaders], Set.empty),
+    ClassConfig(classOf[impl.DatabaseImpl], Set(Features.Constructors))
   )
 
 

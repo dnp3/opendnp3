@@ -351,6 +351,15 @@ namespace jni
         jobject value;
     };
 
+    struct JDatabaseImpl
+    {
+        JDatabaseImpl(jobject value) : value(value) {}
+
+        operator jobject() const { return value; }
+
+        jobject value;
+    };
+
     struct JDoubleBinaryConfig
     {
         JDoubleBinaryConfig(jobject value) : value(value) {}
