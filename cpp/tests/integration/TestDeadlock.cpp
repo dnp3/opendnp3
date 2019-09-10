@@ -51,12 +51,13 @@ void start_outstation(DNP3Manager& manager)
 
 void start_master(DNP3Manager& manager)
 {
+    auto soeHandler = std::make_shared<CountingSOEHandler>();
     const auto channel
         = manager.AddTCPClient("client", FILTERS, ChannelRetry(TimeDuration::Seconds(0), TimeDuration::Seconds(0)),
                                { IPEndpoint("127.0.0.1", 20000) }, "127.0.0.1", nullptr);
-    const auto master = channel->AddMaster("master", std::make_shared<CountingSOEHandler>(),
+    const auto master = channel->AddMaster("master", soeHandler,
                                            DefaultMasterApplication::Create(), MasterStackConfig());
-    const auto scan = master->AddClassScan(ClassField::AllClasses(), TimeDuration::Milliseconds(1));
+    const auto scan = master->AddClassScan(soeHandler, ClassField::AllClasses(), TimeDuration::Milliseconds(1));
     master->Enable();
 }
 
@@ -105,8 +106,10 @@ TEST_CASE("TestDeadlock2")
         MasterStackConfig stackConfig;
         stackConfig.link.LocalAddr = 1;
         stackConfig.link.RemoteAddr = 10;
-        auto master = channel->AddMaster("master", std::make_shared<CountingSOEHandler>(), DefaultMasterApplication::Create(),stackConfig);
-        auto integrityScan = master->AddClassScan(ClassField::AllClasses(), TimeDuration::Milliseconds(1));
+
+        auto soeHandler = std::make_shared<CountingSOEHandler>();
+        auto master = channel->AddMaster("master", soeHandler, DefaultMasterApplication::Create(),stackConfig);
+        auto integrityScan = master->AddClassScan(soeHandler, ClassField::AllClasses(), TimeDuration::Milliseconds(1));
         master->Enable();
 
         std::this_thread::sleep_for(std::chrono::milliseconds(2));

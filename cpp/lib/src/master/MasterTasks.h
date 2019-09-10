@@ -38,7 +38,7 @@ public:
     MasterTasks(const MasterParams& params,
                 const log4cpp::Logger& logger,
                 IMasterApplication& application,
-                ISOEHandler& SOEHandler);
+                std::shared_ptr<ISOEHandler> SOEHandler);
 
     void Initialize(IMasterScheduler& scheduler, IMasterTaskRunner& runner);
 

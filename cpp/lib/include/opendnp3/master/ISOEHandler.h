@@ -48,7 +48,7 @@ class ISOEHandler
 public:
     virtual ~ISOEHandler() = default;
 
-	virtual void begin_fragment(const ResponseInfo& info) = 0;
+    virtual void begin_fragment(const ResponseInfo& info) = 0;
     virtual void end_fragment(const ResponseInfo& info) = 0;
 
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) = 0;
@@ -63,7 +63,7 @@ public:
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values) = 0;
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) = 0;
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values) = 0;
-    virtual void Process(const HeaderInfo& info, const ICollection<DNPTime>& values) = 0;    
+    virtual void Process(const HeaderInfo& info, const ICollection<DNPTime>& values) = 0;
 };
 
 } // namespace opendnp3

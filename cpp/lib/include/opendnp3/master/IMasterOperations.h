@@ -30,6 +30,7 @@
 #include "opendnp3/master/ICommandProcessor.h"
 #include "opendnp3/master/IMasterScan.h"
 #include "opendnp3/master/RestartOperationResult.h"
+#include "opendnp3/master/ISOEHandler.h"
 #include "opendnp3/master/TaskConfig.h"
 
 #include <log4cpp/LogLevels.h>
@@ -58,7 +59,8 @@ public:
      * Add a recurring user-defined scan from a vector of headers
      * @ return A proxy class used to manipulate the scan
      */
-    virtual std::shared_ptr<IMasterScan> AddScan(TimeDuration period,
+    virtual std::shared_ptr<IMasterScan> AddScan(std::shared_ptr<ISOEHandler> soe_handler,
+                                                 TimeDuration period,
                                                  const std::vector<Header>& headers,
                                                  const TaskConfig& config = TaskConfig::Default())
         = 0;
@@ -67,7 +69,8 @@ public:
      * Add a scan that requests all objects using qualifier code 0x06
      * @ return A proxy class used to manipulate the scan
      */
-    virtual std::shared_ptr<IMasterScan> AddAllObjectsScan(GroupVariationID gvId,
+    virtual std::shared_ptr<IMasterScan> AddAllObjectsScan(std::shared_ptr<ISOEHandler> soe_handler,
+                                                           GroupVariationID gvId,
                                                            TimeDuration period,
                                                            const TaskConfig& config = TaskConfig::Default())
         = 0;
@@ -76,7 +79,8 @@ public:
      * Add a class-based scan to the master
      * @return A proxy class used to manipulate the scan
      */
-    virtual std::shared_ptr<IMasterScan> AddClassScan(const ClassField& field,
+    virtual std::shared_ptr<IMasterScan> AddClassScan(std::shared_ptr<ISOEHandler> soe_handler,
+                                                      const ClassField& field,
                                                       TimeDuration period,
                                                       const TaskConfig& config = TaskConfig::Default())
         = 0;
@@ -85,7 +89,8 @@ public:
      * Add a start/stop (range) scan to the master
      * @return A proxy class used to manipulate the scan
      */
-    virtual std::shared_ptr<IMasterScan> AddRangeScan(GroupVariationID gvId,
+    virtual std::shared_ptr<IMasterScan> AddRangeScan(std::shared_ptr<ISOEHandler> soe_handler,
+                                                      GroupVariationID gvId,
                                                       uint16_t start,
                                                       uint16_t stop,
                                                       TimeDuration period,
@@ -95,21 +100,32 @@ public:
     /**
      * Initiate a single user defined scan via a vector of headers
      */
-    virtual void Scan(const std::vector<Header>& headers, const TaskConfig& config = TaskConfig::Default()) = 0;
+    virtual void Scan(std::shared_ptr<ISOEHandler> soe_handler,
+                      const std::vector<Header>& headers,
+                      const TaskConfig& config = TaskConfig::Default())
+        = 0;
 
     /**
      * Initiate a single scan that requests all objects (0x06 qualifier code) for a certain group and variation
      */
-    virtual void ScanAllObjects(GroupVariationID gvId, const TaskConfig& config = TaskConfig::Default()) = 0;
+    virtual void ScanAllObjects(std::shared_ptr<ISOEHandler> soe_handler,
+                                GroupVariationID gvId,
+                                const TaskConfig& config = TaskConfig::Default())
+        = 0;
 
     /**
      * Initiate a single class-based scan
      */
-    virtual void ScanClasses(const ClassField& field, const TaskConfig& config = TaskConfig::Default()) = 0;
+    virtual void ScanClasses(std::shared_ptr<ISOEHandler> soe_handler,
+                             const ClassField& field,
+                             const TaskConfig& config = TaskConfig::Default())
+        = 0;
+
     /**
      * Initiate a single start/stop (range) scan
      */
-    virtual void ScanRange(GroupVariationID gvId,
+    virtual void ScanRange(std::shared_ptr<ISOEHandler> soe_handler,
+                           GroupVariationID gvId,
                            uint16_t start,
                            uint16_t stop,
                            const TaskConfig& config = TaskConfig::Default())

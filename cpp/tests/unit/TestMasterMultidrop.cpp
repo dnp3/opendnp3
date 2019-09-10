@@ -137,9 +137,9 @@ TEST_CASE(SUITE("Scheduler still does integrity polls if exception scan set to h
     MasterTestFixture t1(NoStartupTasks(), Addresses(1, 10), "s1", log, executor, scheduler);
     MasterTestFixture t2(NoStartupTasks(), Addresses(1, 11), "s2", log, executor, scheduler);
 
-    auto integrity1 = t1.context->AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(10));
-    auto event2 = t2.context->AddClassScan(ClassField::AllEventClasses(), TimeDuration::Seconds(100000));
-    auto integrity2 = t2.context->AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(15));
+    auto integrity1 = t1.context->AddClassScan(t1.meas, ClassField::AllClasses(), TimeDuration::Seconds(10));
+    auto event2 = t2.context->AddClassScan(t2.meas, ClassField::AllEventClasses(), TimeDuration::Seconds(100000));
+    auto integrity2 = t2.context->AddClassScan(t2.meas, ClassField::AllClasses(), TimeDuration::Seconds(15));
 
     t1.context->OnLowerLayerUp();
     t2.context->OnLowerLayerUp();

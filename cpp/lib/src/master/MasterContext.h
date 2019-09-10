@@ -117,19 +117,23 @@ public:
 
     // -----  public methods used to add tasks -----
 
-    std::shared_ptr<IMasterTask> AddScan(TimeDuration period,
+    std::shared_ptr<IMasterTask> AddScan(std::shared_ptr<ISOEHandler> soe_handler,
+                                         TimeDuration period,
                                          const HeaderBuilderT& builder,
                                          TaskConfig config = TaskConfig::Default());
 
-    std::shared_ptr<IMasterTask> AddAllObjectsScan(GroupVariationID gvId,
+    std::shared_ptr<IMasterTask> AddAllObjectsScan(std::shared_ptr<ISOEHandler> soe_handler,
+                                                   GroupVariationID gvId,
                                                    TimeDuration period,
                                                    TaskConfig config = TaskConfig::Default());
 
-    std::shared_ptr<IMasterTask> AddClassScan(const ClassField& field,
+    std::shared_ptr<IMasterTask> AddClassScan(std::shared_ptr<ISOEHandler> soe_handler,
+                                              const ClassField& field,
                                               TimeDuration period,
                                               TaskConfig config = TaskConfig::Default());
 
-    std::shared_ptr<IMasterTask> AddRangeScan(GroupVariationID gvId,
+    std::shared_ptr<IMasterTask> AddRangeScan(std::shared_ptr<ISOEHandler> soe_handler,
+                                              GroupVariationID gvId,
                                               uint16_t start,
                                               uint16_t stop,
                                               TimeDuration period,
@@ -137,13 +141,23 @@ public:
 
     // ---- Single shot immediate scans ----
 
-    void Scan(const HeaderBuilderT& builder, TaskConfig config = TaskConfig::Default());
+    void Scan(std::shared_ptr<ISOEHandler> soe_handler,
+              const HeaderBuilderT& builder,
+              TaskConfig config = TaskConfig::Default());
 
-    void ScanAllObjects(GroupVariationID gvId, TaskConfig config = TaskConfig::Default());
+    void ScanAllObjects(std::shared_ptr<ISOEHandler> soe_handler,
+                        GroupVariationID gvId,
+                        TaskConfig config = TaskConfig::Default());
 
-    void ScanClasses(const ClassField& field, TaskConfig config = TaskConfig::Default());
+    void ScanClasses(std::shared_ptr<ISOEHandler> soe_handler,
+                     const ClassField& field,
+                     TaskConfig config = TaskConfig::Default());
 
-    void ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, TaskConfig config = TaskConfig::Default());
+    void ScanRange(std::shared_ptr<ISOEHandler> soe_handler,
+                   GroupVariationID gvId,
+                   uint16_t start,
+                   uint16_t stop,
+                   TaskConfig config = TaskConfig::Default());
 
     /// ---- Write tasks -----
 

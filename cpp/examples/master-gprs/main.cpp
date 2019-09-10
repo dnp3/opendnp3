@@ -22,6 +22,7 @@
 #include <opendnp3/ConsoleLogger.h>
 #include <opendnp3/DNP3Manager.h>
 #include <opendnp3/LogLevels.h>
+#include <opendnp3/master/PrintingSOEHandler.h>
 
 #include <functional>
 #include <iostream>
@@ -164,7 +165,7 @@ void init_handlers(command_handler_map_t& map)
         const auto session = callbacks.get_outstation_session(address);
         if (session)
         {
-            session->ScanClasses(ClassField::AllClasses());
+            session->ScanClasses(PrintingSOEHandler::Create(), ClassField::AllClasses());
         }
         else
         {

@@ -46,7 +46,7 @@ public:
                  const TaskBehavior& behavior,
                  bool recurring,
                  IMasterApplication& app,
-                 ISOEHandler& soeHandler,
+                 std::shared_ptr<ISOEHandler> soeHandler,
                  const log4cpp::Logger& logger,
                  TaskConfig config);
 

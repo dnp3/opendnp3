@@ -56,20 +56,22 @@ int main(int argc, char* argv[])
     stackConfig.link.LocalAddr = 1;
     stackConfig.link.RemoteAddr = 10;
 
+    auto soeHandler = PrintingSOEHandler::Create();
+
     // Create a new master on a previously declared port, with a
     // name, log level, command acceptor, and config info. This
     // returns a thread-safe interface used for sending commands.
     auto master = channel->AddMaster("master",                           // id for logging
-                                     PrintingSOEHandler::Create(),       // callback for data processing
+                                     soeHandler,                         // callback for data processing
                                      DefaultMasterApplication::Create(), // master application instance
                                      stackConfig                         // stack configuration
     );
 
     // do an integrity poll (Class 3/2/1/0) once per minute
-    auto integrityScan = master->AddClassScan(ClassField::AllClasses(), TimeDuration::Minutes(1));
+    auto integrityScan = master->AddClassScan(soeHandler, ClassField::AllClasses(), TimeDuration::Minutes(1));
 
     // do a Class 1 exception poll every 5 seconds
-    auto exceptionScan = master->AddClassScan(ClassField(ClassField::CLASS_1), TimeDuration::Seconds(2));
+    auto exceptionScan = master->AddClassScan(soeHandler, ClassField(ClassField::CLASS_1), TimeDuration::Seconds(2));
 
     // Enable the master. This will start communications.
     master->Enable();
@@ -95,7 +97,7 @@ int main(int argc, char* argv[])
         switch (cmd)
         {
         case ('a'):
-            master->ScanRange(GroupVariationID(1, 2), 0, 3);
+            master->ScanRange(soeHandler, GroupVariationID(1, 2), 0, 3);
             break;
         case ('d'):
             master->PerformFunction("disable unsol", FunctionCode::DISABLE_UNSOLICITED,
