@@ -30,28 +30,32 @@ public interface Master extends Stack, CommandProcessor {
     /**
      * Perform a one time scan with the supplied headers
      * @param headers The request headers for the READ
+     * @param soeHandler The handler of the response
      */
-    void scan(Iterable<Header> headers);
+    void scan(Iterable<Header> headers, SOEHandler soeHandler);
 
     /**
      * Add a periodic scan with the supplied headers
      * @param period The period at which to perform the scan
      * @param headers The request headers for the READ
+     * @param soeHandler The handler of the response
      */
-    void addPeriodicScan(Duration period, Iterable<Header> headers);
+    void addPeriodicScan(Duration period, Iterable<Header> headers, SOEHandler soeHandler);
 
 
     /**
      * Perform a one time scan with the supplied headers
      * @param header The request header for the READ
+     * @param soeHandler The handler of the response
      */
-    void scan(Header header);
+    void scan(Header header, SOEHandler soeHandler);
 
     /**
      * Add a periodic scan with the supplied headers
      * @param period The period at which to perform the scan
      * @param header The request header for the READ
+     * @param soeHandler The handler of the response
      */
-    void addPeriodicScan(Duration period, Header header);
+    void addPeriodicScan(Duration period, Header header, SOEHandler soeHandler);
 
 }

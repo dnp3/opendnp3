@@ -46,17 +46,19 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="group"></param>
         /// <param name="variation"></param>
-        /// <param name="period"></param>        
+        /// <param name="period"></param>
+        /// <param name="soehandler"></param>
         /// <returns>a new master scan interface</returns>
-        IMasterScan AddAllObjectsScan(byte group, byte variation, TimeSpan period, TaskConfig config);
+        IMasterScan AddAllObjectsScan(byte group, byte variation, TimeSpan period, ISOEHandler soeHandler, TaskConfig config);
 
         /// <summary>
         /// Adds a periodic class scan to the master
         /// </summary>
         /// <param name="field">bitfield of class values</param>
-        /// <param name="period">period, negative for non-periodic</param>                
+        /// <param name="period">period, negative for non-periodic</param>
+        /// <param name="soehandler"></param>
         /// <returns>a new master scan interface</returns>
-        IMasterScan AddClassScan(ClassField field, TimeSpan period, TaskConfig config);
+        IMasterScan AddClassScan(ClassField field, TimeSpan period, ISOEHandler soeHandler, TaskConfig config);
 
         /// <summary>        
         /// Adds a periodic range-based (start/stop) scan to the master
@@ -66,36 +68,38 @@ namespace Automatak.DNP3.Interface
         /// <param name="variation"></param>
         /// <param name="start"></param>
         /// <param name="stop"></param>
-        /// <param name="period"></param>        
+        /// <param name="period"></param>
+        /// <param name="soehandler"></param>
         /// <returns>a new master scan interface</returns>
-        IMasterScan AddRangeScan(byte group, byte variation, System.UInt16 start, System.UInt16 stop, TimeSpan period, TaskConfig config);
+        IMasterScan AddRangeScan(byte group, byte variation, System.UInt16 start, System.UInt16 stop, TimeSpan period, ISOEHandler soeHandler, TaskConfig config);
 
         /// <summary>
         /// Adds a custom scan to the master.
         /// </summary>                
-        IMasterScan AddScan(IEnumerable<Header> headers, TimeSpan period, TaskConfig config);
+        IMasterScan AddScan(IEnumerable<Header> headers, TimeSpan period, ISOEHandler soeHandler, TaskConfig config);
 
         /// <summary>
         /// Perform an immediate adhoc scan that uses the 0x06 qualifier
         /// </summary>
         /// <param name="group"></param>
-        /// <param name="variation"></param>                
-        Task<TaskCompletion> ScanAllObjects(byte group, byte variation, TaskConfig config);
+        /// <param name="variation"></param>
+        /// <param name="soehandler"></param>
+        Task<TaskCompletion> ScanAllObjects(byte group, byte variation, ISOEHandler soeHandler, TaskConfig config);
 
         /// <summary>
         /// Perform an immediate adhoc class scan
         /// </summary>                   
-        Task<TaskCompletion> ScanClasses(ClassField field, TaskConfig config);
+        Task<TaskCompletion> ScanClasses(ClassField field, ISOEHandler soeHandler, TaskConfig config);
 
         /// <summary>
         /// Perform an immediate adhoc range-based (start/stop) scan
         /// </summary>        
-        Task<TaskCompletion> ScanRange(byte group, byte variation, System.UInt16 start, System.UInt16 stop, TaskConfig config);
+        Task<TaskCompletion> ScanRange(byte group, byte variation, System.UInt16 start, System.UInt16 stop, ISOEHandler soeHandler, TaskConfig config);
 
         /// <summary>
         /// Perform an adhoc scan with the designated request headers
         /// </summary>        
-        Task<TaskCompletion> Scan(IEnumerable<Header> headers, TaskConfig config);
+        Task<TaskCompletion> Scan(IEnumerable<Header> headers, ISOEHandler soeHandler, TaskConfig config);
 
         /// <summary>
         /// Write a time and value object

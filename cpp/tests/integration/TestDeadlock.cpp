@@ -57,7 +57,7 @@ void start_master(DNP3Manager& manager)
                                { IPEndpoint("127.0.0.1", 20000) }, "127.0.0.1", nullptr);
     const auto master = channel->AddMaster("master", soeHandler,
                                            DefaultMasterApplication::Create(), MasterStackConfig());
-    const auto scan = master->AddClassScan(soeHandler, ClassField::AllClasses(), TimeDuration::Milliseconds(1));
+    const auto scan = master->AddClassScan(ClassField::AllClasses(), TimeDuration::Milliseconds(1), soeHandler);
     master->Enable();
 }
 
@@ -109,7 +109,7 @@ TEST_CASE("TestDeadlock2")
 
         auto soeHandler = std::make_shared<CountingSOEHandler>();
         auto master = channel->AddMaster("master", soeHandler, DefaultMasterApplication::Create(),stackConfig);
-        auto integrityScan = master->AddClassScan(soeHandler, ClassField::AllClasses(), TimeDuration::Milliseconds(1));
+        auto integrityScan = master->AddClassScan(ClassField::AllClasses(), TimeDuration::Milliseconds(1), soeHandler);
         master->Enable();
 
         std::this_thread::sleep_for(std::chrono::milliseconds(2));

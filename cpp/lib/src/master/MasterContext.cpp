@@ -294,9 +294,9 @@ void MContext::StartResponseTimer()
     this->responseTimer = this->executor->start(this->params.responseTimeout.value, timeout);
 }
 
-std::shared_ptr<IMasterTask> MContext::AddScan(std::shared_ptr<ISOEHandler> soe_handler,
-                                               TimeDuration period,
+std::shared_ptr<IMasterTask> MContext::AddScan(TimeDuration period,
                                                const HeaderBuilderT& builder,
+                                               std::shared_ptr<ISOEHandler> soe_handler,
                                                TaskConfig config)
 {
     auto task = std::make_shared<UserPollTask>(
@@ -307,39 +307,39 @@ std::shared_ptr<IMasterTask> MContext::AddScan(std::shared_ptr<ISOEHandler> soe_
     return task;
 }
 
-std::shared_ptr<IMasterTask> MContext::AddClassScan(std::shared_ptr<ISOEHandler> soe_handler,
-                                                    const ClassField& field,
+std::shared_ptr<IMasterTask> MContext::AddClassScan(const ClassField& field,
                                                     TimeDuration period,
+                                                    std::shared_ptr<ISOEHandler> soe_handler,
                                                     TaskConfig config)
 {
     auto build = [field](HeaderWriter& writer) -> bool { return build::WriteClassHeaders(writer, field); };
-    return this->AddScan(soe_handler, period, build, config);
+    return this->AddScan(period, build, soe_handler, config);
 }
 
-std::shared_ptr<IMasterTask> MContext::AddAllObjectsScan(std::shared_ptr<ISOEHandler> soe_handler,
-                                                         GroupVariationID gvId,
+std::shared_ptr<IMasterTask> MContext::AddAllObjectsScan(GroupVariationID gvId,
                                                          TimeDuration period,
+                                                         std::shared_ptr<ISOEHandler> soe_handler,
                                                          TaskConfig config)
 {
     auto build = [gvId](HeaderWriter& writer) -> bool { return writer.WriteHeader(gvId, QualifierCode::ALL_OBJECTS); };
-    return this->AddScan(soe_handler, period, build, config);
+    return this->AddScan(period, build, soe_handler, config);
 }
 
-std::shared_ptr<IMasterTask> MContext::AddRangeScan(std::shared_ptr<ISOEHandler> soe_handler,
-                                                    GroupVariationID gvId,
+std::shared_ptr<IMasterTask> MContext::AddRangeScan(GroupVariationID gvId,
                                                     uint16_t start,
                                                     uint16_t stop,
                                                     TimeDuration period,
+                                                    std::shared_ptr<ISOEHandler> soe_handler,
                                                     TaskConfig config)
 {
     auto build = [gvId, start, stop](HeaderWriter& writer) -> bool {
         return writer.WriteRangeHeader<ser4cpp::UInt16>(QualifierCode::UINT16_START_STOP, gvId, start, stop);
     };
-    return this->AddScan(soe_handler, period, build, config);
+    return this->AddScan(period, build, soe_handler, config);
 }
 
-void MContext::Scan(std::shared_ptr<ISOEHandler> soe_handler,
-                    const HeaderBuilderT& builder,
+void MContext::Scan(const HeaderBuilderT& builder,
+                    std::shared_ptr<ISOEHandler> soe_handler,
                     TaskConfig config)
 {
     const auto timeout = Timestamp(this->executor->get_time()) + params.taskStartTimeout;
@@ -351,33 +351,33 @@ void MContext::Scan(std::shared_ptr<ISOEHandler> soe_handler,
     this->ScheduleAdhocTask(task);
 }
 
-void MContext::ScanClasses(std::shared_ptr<ISOEHandler> soe_handler,
-                           const ClassField& field,
+void MContext::ScanClasses(const ClassField& field,
+                           std::shared_ptr<ISOEHandler> soe_handler,
                            TaskConfig config)
 {
     auto configure = [field](HeaderWriter& writer) -> bool { return build::WriteClassHeaders(writer, field); };
-    this->Scan(soe_handler, configure, config);
+    this->Scan(configure, soe_handler, config);
 }
 
-void MContext::ScanAllObjects(std::shared_ptr<ISOEHandler> soe_handler,
-                              GroupVariationID gvId,
+void MContext::ScanAllObjects(GroupVariationID gvId,
+                              std::shared_ptr<ISOEHandler> soe_handler,
                               TaskConfig config)
 {
     auto configure
         = [gvId](HeaderWriter& writer) -> bool { return writer.WriteHeader(gvId, QualifierCode::ALL_OBJECTS); };
-    this->Scan(soe_handler, configure, config);
+    this->Scan(configure, soe_handler, config);
 }
 
-void MContext::ScanRange(std::shared_ptr<ISOEHandler> soe_handler,
-                         GroupVariationID gvId,
+void MContext::ScanRange(GroupVariationID gvId,
                          uint16_t start,
                          uint16_t stop,
+                         std::shared_ptr<ISOEHandler> soe_handler,
                          TaskConfig config)
 {
     auto configure = [gvId, start, stop](HeaderWriter& writer) -> bool {
         return writer.WriteRangeHeader<ser4cpp::UInt16>(QualifierCode::UINT16_START_STOP, gvId, start, stop);
     };
-    this->Scan(soe_handler, configure, config);
+    this->Scan(configure, soe_handler, config);
 }
 
 void MContext::Write(const TimeAndInterval& value, uint16_t index, TaskConfig config)

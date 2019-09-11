@@ -143,7 +143,7 @@ TEST_CASE(SUITE("TimeoutDuringStartup"))
 TEST_CASE(SUITE("SolicitedResponseTimeout"))
 {
     MasterTestFixture t(NoStartupTasks());
-    auto scan = t.context->AddClassScan(t.meas, ClassField::AllClasses(), TimeDuration::Seconds(5));
+    auto scan = t.context->AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(5), t.meas);
     t.context->OnLowerLayerUp();
 
     t.exe->run_many();
@@ -204,7 +204,7 @@ TEST_CASE(SUITE("Retries use exponential backoff"))
 TEST_CASE(SUITE("AllObjectsScan"))
 {
     MasterTestFixture t(NoStartupTasks());
-    auto scan = t.context->AddAllObjectsScan(t.meas, GroupVariationID(110, 0), TimeDuration::Seconds(1));
+    auto scan = t.context->AddAllObjectsScan(GroupVariationID(110, 0), TimeDuration::Seconds(1), t.meas);
     t.context->OnLowerLayerUp();
 
     t.exe->run_many();
@@ -223,7 +223,7 @@ TEST_CASE(SUITE("ClassScanCanRepeat"))
 
     t.exe->run_many();
 
-    auto scan = t.context->AddClassScan(t.meas, ClassField::AllClasses(), TimeDuration::Seconds(10));
+    auto scan = t.context->AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(10), t.meas);
 
     REQUIRE(t.exe->run_many() > 0);
 
@@ -244,7 +244,7 @@ TEST_CASE(SUITE("ClassScanCanRepeat"))
 TEST_CASE(SUITE("SolicitedResponseLayerDown"))
 {
     MasterTestFixture t(NoStartupTasks());
-    auto scan = t.context->AddClassScan(t.meas, ClassField::AllClasses(), TimeDuration::Seconds(5));
+    auto scan = t.context->AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(5), t.meas);
     t.context->OnLowerLayerUp();
 
     t.exe->run_many();
@@ -286,9 +286,9 @@ TEST_CASE(SUITE("EventPoll"))
 {
     MasterTestFixture t(NoStartupTasks());
 
-    auto class12 = t.context->AddClassScan(t.meas, ClassField(ClassField::CLASS_1 | ClassField::CLASS_2),
-                                           TimeDuration::Milliseconds(10));
-    auto class3 = t.context->AddClassScan(t.meas, ClassField(ClassField::CLASS_3), TimeDuration::Milliseconds(20));
+    auto class12 = t.context->AddClassScan(ClassField(ClassField::CLASS_1 | ClassField::CLASS_2),
+                                           TimeDuration::Milliseconds(10), t.meas);
+    auto class3 = t.context->AddClassScan(ClassField(ClassField::CLASS_3), TimeDuration::Milliseconds(20), t.meas);
 
     t.context->OnLowerLayerUp();
 
@@ -327,7 +327,7 @@ TEST_CASE(SUITE("ParsesOctetStringResponseWithFiveCharacters"))
 TEST_CASE(SUITE("ParsesOctetStringResponseSizeOfOne"))
 {
     MasterTestFixture t(NoStartupTasks());
-    t.context->AddClassScan(t.meas, ClassField::AllClasses(), TimeDuration::Seconds(1));
+    t.context->AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(1), t.meas);
     t.context->OnLowerLayerUp();
 
     REQUIRE(t.exe->run_many() > 0);
@@ -603,7 +603,7 @@ TEST_CASE(SUITE("ReceiveIINinResponses"))
     MasterTestFixture t(params);
     t.context->OnLowerLayerUp();
 
-    auto scan = t.context->AddClassScan(t.meas, ClassField(~0), TimeDuration::Seconds(1));
+    auto scan = t.context->AddClassScan(ClassField(~0), TimeDuration::Seconds(1), t.meas);
     REQUIRE(t.exe->run_many() > 0);
     REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
     t.context->OnTxReady();
@@ -663,7 +663,7 @@ TEST_CASE(SUITE("AdhocScanWorksWithUnsolicitedDisabled"))
     MasterTestFixture t(params);
     t.context->OnLowerLayerUp();
 
-    t.context->ScanClasses(t.meas, ClassField::AllEventClasses());
+    t.context->ScanClasses(ClassField::AllEventClasses(), t.meas);
 
     REQUIRE(t.exe->run_many() > 0);
     REQUIRE(t.lower->PopWriteAsHex()
@@ -681,7 +681,7 @@ TEST_CASE(SUITE("AdhocScanFailsImmediatelyIfMasterOffline"))
     MasterTestFixture t(params);
 
     MockTaskCallback callback;
-    t.context->ScanClasses(t.meas, ClassField::AllEventClasses(), TaskConfig::With(callback));
+    t.context->ScanClasses(ClassField::AllEventClasses(), t.meas, TaskConfig::With(callback));
 
     REQUIRE(callback.numStart == 0);
     REQUIRE(callback.results.size() == 1);

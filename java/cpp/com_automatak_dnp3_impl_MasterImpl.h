@@ -74,18 +74,18 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_direct_1operate_1
 /*
  * Class:     com_automatak_dnp3_impl_MasterImpl
  * Method:    scan_native
- * Signature: (JLjava/lang/Iterable;)V
+ * Signature: (JLjava/lang/Iterable;Lcom/automatak/dnp3/SOEHandler;)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_scan_1native
-  (JNIEnv *, jobject, jlong, jobject);
+  (JNIEnv *, jobject, jlong, jobject, jobject);
 
 /*
  * Class:     com_automatak_dnp3_impl_MasterImpl
  * Method:    add_periodic_scan_native
- * Signature: (JLjava/time/Duration;Ljava/lang/Iterable;)V
+ * Signature: (JLjava/time/Duration;Ljava/lang/Iterable;Lcom/automatak/dnp3/SOEHandler;)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_add_1periodic_1scan_1native
-  (JNIEnv *, jobject, jlong, jobject, jobject);
+  (JNIEnv *, jobject, jlong, jobject, jobject, jobject);
 
 #ifdef __cplusplus
 }

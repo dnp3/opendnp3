@@ -165,7 +165,7 @@ void init_handlers(command_handler_map_t& map)
         const auto session = callbacks.get_outstation_session(address);
         if (session)
         {
-            session->ScanClasses(PrintingSOEHandler::Create(), ClassField::AllClasses());
+            session->ScanClasses(ClassField::AllClasses(), PrintingSOEHandler::Create());
         }
         else
         {
