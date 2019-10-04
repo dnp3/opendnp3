@@ -34,10 +34,10 @@ namespace opendnp3
 
 EventScanTask::EventScanTask(const std::shared_ptr<TaskContext>& context,
                              IMasterApplication& application,
-                             ISOEHandler& soeHandler,
+                             std::shared_ptr<ISOEHandler> soeHandler,
                              ClassField classes,
                              const log4cpp::Logger& logger)
-    : PollTaskBase(context, application, soeHandler, TaskBehavior::ReactsToIINOnly(), logger, TaskConfig::Default()),
+    : PollTaskBase(context, application, std::move(soeHandler), TaskBehavior::ReactsToIINOnly(), logger, TaskConfig::Default()),
       classes(classes.OnlyEventClasses())
 {
 }

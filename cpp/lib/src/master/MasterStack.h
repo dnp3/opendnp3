@@ -106,26 +106,43 @@ public:
 
     std::shared_ptr<IMasterScan> AddScan(TimeDuration period,
                                          const std::vector<Header>& headers,
+                                         std::shared_ptr<ISOEHandler> soe_handler,
                                          const TaskConfig& config) override;
 
     std::shared_ptr<IMasterScan> AddAllObjectsScan(GroupVariationID gvId,
                                                    TimeDuration period,
+                                                   std::shared_ptr<ISOEHandler> soe_handler,
                                                    const TaskConfig& config) override;
 
     std::shared_ptr<IMasterScan> AddClassScan(const ClassField& field,
                                               TimeDuration period,
+                                              std::shared_ptr<ISOEHandler> soe_handler,
                                               const TaskConfig& config) override;
 
-    std::shared_ptr<IMasterScan> AddRangeScan(
-        GroupVariationID gvId, uint16_t start, uint16_t stop, TimeDuration period, const TaskConfig& config) override;
+    std::shared_ptr<IMasterScan> AddRangeScan(GroupVariationID gvId,
+                                              uint16_t start,
+                                              uint16_t stop,
+                                              TimeDuration period,
+                                              std::shared_ptr<ISOEHandler> soe_handler,
+                                              const TaskConfig& config) override;
 
-    void Scan(const std::vector<Header>& headers, const TaskConfig& config) override;
+    void Scan(const std::vector<Header>& headers,
+              std::shared_ptr<ISOEHandler> soe_handler,
+              const TaskConfig& config) override;
 
-    void ScanAllObjects(GroupVariationID gvId, const TaskConfig& config) override;
+    void ScanAllObjects(GroupVariationID gvId,
+                        std::shared_ptr<ISOEHandler> soe_handler,
+                        const TaskConfig& config) override;
 
-    void ScanClasses(const ClassField& field, const TaskConfig& config) override;
+    void ScanClasses(const ClassField& field,
+                     std::shared_ptr<ISOEHandler> soe_handler,
+                     const TaskConfig& config) override;
 
-    void ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, const TaskConfig& config) override;
+    void ScanRange(GroupVariationID gvId,
+                   uint16_t start,
+                   uint16_t stop,
+                   std::shared_ptr<ISOEHandler> soe_handler,
+                   const TaskConfig& config) override;
 
     void Write(const TimeAndInterval& value, uint16_t index, const TaskConfig& config) override;
 

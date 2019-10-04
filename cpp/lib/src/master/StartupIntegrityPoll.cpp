@@ -33,11 +33,11 @@ namespace opendnp3
 
 StartupIntegrityPoll::StartupIntegrityPoll(const std::shared_ptr<TaskContext>& context,
                                            IMasterApplication& app,
-                                           ISOEHandler& soeHandler,
+                                           std::shared_ptr<ISOEHandler> soeHandler,
                                            ClassField classes,
                                            const TaskBehavior& behavior,
                                            const log4cpp::Logger& logger)
-    : PollTaskBase(context, app, soeHandler, behavior, logger, TaskConfig::Default()), classes(classes)
+    : PollTaskBase(context, app, std::move(soeHandler), behavior, logger, TaskConfig::Default()), classes(classes)
 {
 }
 

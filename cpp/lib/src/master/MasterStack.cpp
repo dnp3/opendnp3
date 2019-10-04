@@ -85,66 +85,83 @@ void MasterStack::SetLogFilters(const log4cpp::LogLevels& filters)
 
 std::shared_ptr<IMasterScan> MasterStack::AddScan(TimeDuration period,
                                                   const std::vector<Header>& headers,
+                                                  std::shared_ptr<ISOEHandler> soe_handler,
                                                   const TaskConfig& config)
 {
     auto builder = ConvertToLambda(headers);
     auto self = shared_from_this();
-    auto add = [self, builder, period, config]() { return self->mcontext.AddScan(period, builder, config); };
+    auto add = [self, soe_handler, builder, period, config]() { return self->mcontext.AddScan(period, builder, std::move(soe_handler), config); };
     return MasterScan::Create(executor->return_from<std::shared_ptr<IMasterTask>>(add), mcontext.scheduler);
 }
 
 std::shared_ptr<IMasterScan> MasterStack::AddAllObjectsScan(GroupVariationID gvId,
                                                             TimeDuration period,
+                                                            std::shared_ptr<ISOEHandler> soe_handler,
                                                             const TaskConfig& config)
 {
     auto self = shared_from_this();
-    auto add = [self, gvId, period, config]() { return self->mcontext.AddAllObjectsScan(gvId, period, config); };
+    auto add = [self, soe_handler, gvId, period, config]() { return self->mcontext.AddAllObjectsScan(gvId, period, std::move(soe_handler), config); };
     return MasterScan::Create(executor->return_from<std::shared_ptr<IMasterTask>>(add), mcontext.scheduler);
 }
 
 std::shared_ptr<IMasterScan> MasterStack::AddClassScan(const ClassField& field,
                                                        TimeDuration period,
+                                                       std::shared_ptr<ISOEHandler> soe_handler,
                                                        const TaskConfig& config)
 {
     auto self = shared_from_this();
-    auto add = [self, field, period, config]() { return self->mcontext.AddClassScan(field, period, config); };
+    auto add = [self, soe_handler, field, period, config]() { return self->mcontext.AddClassScan(field, period, std::move(soe_handler), config); };
     return MasterScan::Create(executor->return_from<std::shared_ptr<IMasterTask>>(add), mcontext.scheduler);
 }
 
-std::shared_ptr<IMasterScan> MasterStack::AddRangeScan(
-    GroupVariationID gvId, uint16_t start, uint16_t stop, TimeDuration period, const TaskConfig& config)
+std::shared_ptr<IMasterScan> MasterStack::AddRangeScan(GroupVariationID gvId,
+                                                       uint16_t start,
+                                                       uint16_t stop,
+                                                       TimeDuration period,
+                                                       std::shared_ptr<ISOEHandler> soe_handler,
+                                                       const TaskConfig& config)
 {
-    auto add = [self = this->shared_from_this(), gvId, start, stop, period, config]() {
-        return self->mcontext.AddRangeScan(gvId, start, stop, period, config);
+    auto add = [self = this->shared_from_this(), soe_handler, gvId, start, stop, period, config]() {
+        return self->mcontext.AddRangeScan(gvId, start, stop, period, std::move(soe_handler), config);
     };
     return MasterScan::Create(executor->return_from<std::shared_ptr<IMasterTask>>(add), mcontext.scheduler);
 }
 
-void MasterStack::Scan(const std::vector<Header>& headers, const TaskConfig& config)
+void MasterStack::Scan(const std::vector<Header>& headers,
+                       std::shared_ptr<ISOEHandler> soe_handler,
+                       const TaskConfig& config)
 {
-    auto add = [self = this->shared_from_this(), builder = ConvertToLambda(headers), config]() {
-        return self->mcontext.Scan(builder, config);
+    auto add = [self = this->shared_from_this(), soe_handler, builder = ConvertToLambda(headers), config]() {
+        return self->mcontext.Scan(builder, std::move(soe_handler), config);
     };
     return this->executor->post(add);
 }
 
-void MasterStack::ScanAllObjects(GroupVariationID gvId, const TaskConfig& config)
+void MasterStack::ScanAllObjects(GroupVariationID gvId,
+                                 std::shared_ptr<ISOEHandler> soe_handler,
+                                 const TaskConfig& config)
 {
     auto add
-        = [self = this->shared_from_this(), gvId, config]() { return self->mcontext.ScanAllObjects(gvId, config); };
+        = [self = this->shared_from_this(), soe_handler, gvId, config]() { return self->mcontext.ScanAllObjects(gvId, std::move(soe_handler), config); };
     return this->executor->post(add);
 }
 
-void MasterStack::ScanClasses(const ClassField& field, const TaskConfig& config)
+void MasterStack::ScanClasses(const ClassField& field,
+                              std::shared_ptr<ISOEHandler> soe_handler,
+                              const TaskConfig& config)
 {
-    auto add = [self = this->shared_from_this(), field, config]() { return self->mcontext.ScanClasses(field, config); };
+    auto add = [self = this->shared_from_this(), soe_handler, field, config]() { return self->mcontext.ScanClasses(field, std::move(soe_handler), config); };
     return this->executor->post(add);
 }
 
-void MasterStack::ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, const TaskConfig& config)
+void MasterStack::ScanRange(GroupVariationID gvId,
+                            uint16_t start,
+                            uint16_t stop,
+                            std::shared_ptr<ISOEHandler> soe_handler,
+                            const TaskConfig& config)
 {
-    auto add = [self = this->shared_from_this(), gvId, start, stop, config]() {
-        return self->mcontext.ScanRange(gvId, start, stop, config);
+    auto add = [self = this->shared_from_this(), soe_handler, gvId, start, stop, config]() {
+        return self->mcontext.ScanRange(gvId, start, stop, std::move(soe_handler), config);
     };
     return this->executor->post(add);
 }

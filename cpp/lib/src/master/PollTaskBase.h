@@ -22,6 +22,7 @@
 
 #include "master/IMasterTask.h"
 
+#include <memory>
 #include <string>
 
 namespace opendnp3
@@ -38,7 +39,7 @@ class PollTaskBase : public IMasterTask
 public:
     PollTaskBase(const std::shared_ptr<TaskContext>& context,
                  IMasterApplication& application,
-                 ISOEHandler& handler,
+                 std::shared_ptr<ISOEHandler> handler,
                  const TaskBehavior& behavior,
                  const log4cpp::Logger& logger,
                  TaskConfig config);
@@ -57,7 +58,7 @@ protected:
     virtual void Initialize() override final;
 
     uint32_t rxCount = 0;
-    ISOEHandler* const handler;
+    std::shared_ptr<ISOEHandler> handler;
 };
 
 } // namespace opendnp3

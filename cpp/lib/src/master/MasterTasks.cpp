@@ -34,7 +34,7 @@ namespace opendnp3
 MasterTasks::MasterTasks(const MasterParams& params,
                          const log4cpp::Logger& logger,
                          IMasterApplication& app,
-                         ISOEHandler& SOEHandler)
+                         std::shared_ptr<ISOEHandler> SOEHandler)
     : context(std::make_shared<TaskContext>()),
       clearRestart(std::make_shared<ClearRestartTask>(context, app, logger)),
       assignClass(std::make_shared<AssignClassTask>(context, app, RetryBehavior(params), logger)),

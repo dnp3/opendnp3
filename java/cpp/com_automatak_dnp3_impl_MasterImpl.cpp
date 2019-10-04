@@ -21,6 +21,7 @@
 
 #include "adapters/Conversions.h"
 #include "adapters/GlobalRef.h"
+#include "adapters/SOEHandlerAdapter.h"
 #include "jni/JCache.h"
 
 #include <opendnp3/master/CommandSet.h>
@@ -164,7 +165,8 @@ bool ConvertJHeader(JNIEnv* env, jobject jheader, opendnp3::Header& header)
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_scan_1native(JNIEnv* env,
                                                                             jobject /*unused*/,
                                                                             jlong native,
-                                                                            jobject jheaders)
+                                                                            jobject jheaders,
+                                                                            jobject jsoehandler)
 {
     const auto master = (std::shared_ptr<opendnp3::IMaster>*)native;
 
@@ -180,11 +182,13 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_scan_1native(JNIE
 
     JNI::Iterate(env, jheaders, process);
 
-    (*master)->Scan(headers);
+    auto soeAdapter = std::make_shared<SOEHandlerAdapter>(jsoehandler);
+
+    (*master)->Scan(headers, soeAdapter);
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_add_1periodic_1scan_1native(
-    JNIEnv* env, jobject /*unused*/, jlong native, jobject jduration, jobject jheaders)
+    JNIEnv* env, jobject /*unused*/, jlong native, jobject jduration, jobject jheaders, jobject jsoehandler)
 {
     const auto master = (std::shared_ptr<opendnp3::IMaster>*)native;
 
@@ -202,5 +206,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_add_1periodic_1sc
 
     auto period = opendnp3::TimeDuration::Milliseconds(jni::JCache::Duration.toMillis(env, jduration));
 
-    (*master)->AddScan(period, headers);
+    auto soeAdapter = std::make_shared<SOEHandlerAdapter>(jsoehandler);
+
+    (*master)->AddScan(period, headers, soeAdapter);
 }

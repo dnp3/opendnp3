@@ -78,7 +78,7 @@ public class MasterDemo {
         Master master = channel.addMaster("master", PrintingSOEHandler.getInstance(), DefaultMasterApplication.getInstance(), config);
 
         // do an integrity scan every 2 seconds
-        master.addPeriodicScan(Duration.ofSeconds(2), Header.getIntegrity());
+        master.addPeriodicScan(Duration.ofSeconds(2), Header.getIntegrity(), PrintingSOEHandler.getInstance());
 
         master.enable();
 
@@ -101,7 +101,7 @@ public class MasterDemo {
                     );
                     break;
                 case("scan"):
-                    master.scan(Header.getEventClasses());
+                    master.scan(Header.getEventClasses(), PrintingSOEHandler.getInstance());
                     break;
                 default:
                     System.out.println("Unknown command: " + line);
