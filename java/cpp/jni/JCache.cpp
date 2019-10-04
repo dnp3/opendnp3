@@ -104,6 +104,7 @@ namespace jni
     cache::MasterConfig JCache::MasterConfig;
     cache::MasterStackConfig JCache::MasterStackConfig;
     cache::MasterTaskType JCache::MasterTaskType;
+    cache::NumRetries JCache::NumRetries;
     cache::OperateType JCache::OperateType;
     cache::OutstationApplication JCache::OutstationApplication;
     cache::OutstationConfig JCache::OutstationConfig;
@@ -205,6 +206,7 @@ namespace jni
         && MasterConfig.init(env)
         && MasterStackConfig.init(env)
         && MasterTaskType.init(env)
+        && NumRetries.init(env)
         && OperateType.init(env)
         && OutstationApplication.init(env)
         && OutstationConfig.init(env)
@@ -308,6 +310,7 @@ namespace jni
         MasterConfig.cleanup(env);
         MasterStackConfig.cleanup(env);
         MasterTaskType.cleanup(env);
+        NumRetries.cleanup(env);
         OperateType.cleanup(env);
         OutstationApplication.cleanup(env);
         OutstationConfig.cleanup(env);

@@ -48,7 +48,7 @@ public class StackPair {
                 DatabaseConfig.allValues(numPointsPerType), EventBufferConfig.allTypes(eventBufferSize)
         );
 
-        config.outstationConfig.unsolRetryTimeout = Duration.ofSeconds(1);
+        config.outstationConfig.unsolConfirmTimeout = Duration.ofSeconds(1);
 
         config.outstationConfig.allowUnsolicited = true;
 

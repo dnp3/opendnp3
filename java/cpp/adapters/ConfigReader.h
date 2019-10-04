@@ -42,6 +42,7 @@ private:
     static opendnp3::OutstationParams ConvertOutstationConfig(JNIEnv* env, jobject jconfig);
     static opendnp3::DatabaseConfig ConvertDatavaseConfig(JNIEnv* env, jobject jdb);
     static opendnp3::TimeDuration ConvertDuration(JNIEnv* env, jobject jduration);
+    static opendnp3::NumRetries ConvertNumRetries(JNIEnv* env, jobject jnumretries);
     
 
     static opendnp3::BinaryConfig ConvertBinaryConfig(JNIEnv* env, jobject jconfig);

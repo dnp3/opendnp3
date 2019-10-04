@@ -81,7 +81,7 @@ public:
 
     /// --- Other public members ----
 
-    void CheckForTaskStart();
+    void HandleNewEvents();
 
     IUpdateHandler& GetUpdateHandler();    
 
@@ -120,17 +120,25 @@ private:
 
     void BeginRetransmitLastResponse(uint16_t destination);
 
+    void BeginRetransmitLastUnsolicitedResponse();
+
     void BeginUnsolTx(APDUResponse& response);
 
     void BeginTx(uint16_t destination, const ser4cpp::rseq_t& message);
 
+    void CheckForTaskStart();
+
     void CheckForDeferredRequest();
+
+    void CheckForUnsolicitedNull();
+
+    void CheckForUnsolicited();
 
     bool ProcessDeferredRequest(const ParsedRequest& request);
 
-    void RestartConfirmTimer();
+    void RestartSolConfirmTimer();
 
-    void CheckForUnsolicited();
+    void RestartUnsolConfirmTimer();
 
     bool CanTransmit() const;
 
@@ -201,6 +209,8 @@ private:
     // ------ Dynamic state related to solicited and unsolicited modes ------
     OutstationSolState sol;
     OutstationUnsolState unsol;
+    NumRetries unsolRetries;
+    bool shouldCheckForUnsolicited;
     OutstationState* state = &StateIdle::Inst();
 
     // ------ Dynamic state related to broadcast messages ------

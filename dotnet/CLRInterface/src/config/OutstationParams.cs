@@ -49,12 +49,12 @@ namespace Automatak.DNP3.Interface
         /// <summary>
         /// Timeout for unsolicited confirms
         /// </summary>
-        public TimeSpan unsolicitedConfirmTimeout = TimeSpan.FromSeconds(5);
+        public TimeSpan unsolConfirmTimeout = TimeSpan.FromSeconds(5);
 
         /// <summary>
-        /// Retry period for unsolicited failures
+        /// Number of unsolicited response retries
         /// </summary>
-        public TimeSpan unsolicitedRetryPeriod = TimeSpan.FromSeconds(5);
+        public NumRetries numUnsolRetries = NumRetries.Infinite();
 
         /// <summary>
         /// The maximum fragment size the outstation will use for fragments it sends
@@ -69,7 +69,7 @@ namespace Automatak.DNP3.Interface
         /// <summary>
         /// Global enabled / disable for unsolicted messages. If false, the NULL unsolicited message is not even sent
         /// </summary>
-        public bool allowUnsolicited = false;
+        public bool allowUnsolicited = true;
 
         /// <summary>
         /// Specifies which types are allowed in Class0 repsones. Defaults to all types.

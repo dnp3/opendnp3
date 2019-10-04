@@ -46,6 +46,7 @@ src/LinkHeader.cs
 src/LogLevels.cs
 src/MeasurementTypes.cs
 src/NamespaceDoc.cs
+src/NumRetries.cs
 src/PrintingSOEHandler.cs
 src/RestartResultType.cs
 src/SimpleCommandHandler.cs

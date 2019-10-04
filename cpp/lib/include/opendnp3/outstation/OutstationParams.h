@@ -23,6 +23,7 @@
 #include "opendnp3/util/TimeDuration.h"
 #include "opendnp3/app/AppConstants.h"
 #include "opendnp3/app/ClassField.h"
+#include "opendnp3/outstation/NumRetries.h"
 #include "opendnp3/outstation/StaticTypeBitfield.h"
 
 namespace opendnp3
@@ -45,8 +46,7 @@ struct OutstationParams
     /// Timeout for unsolicited confirms
     TimeDuration unsolConfirmTimeout = DEFAULT_APP_TIMEOUT;
 
-    /// Timeout for unsolicited retries
-    TimeDuration unsolRetryTimeout = DEFAULT_APP_TIMEOUT;
+    NumRetries numUnsolRetries = NumRetries::Infinite();
 
     /// The maximum fragment size the outstation will use for fragments it sends
     uint32_t maxTxFragSize = DEFAULT_MAX_APDU_SIZE;

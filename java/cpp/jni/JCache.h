@@ -105,6 +105,7 @@
 #include "JNIMasterConfig.h"
 #include "JNIMasterStackConfig.h"
 #include "JNIMasterTaskType.h"
+#include "JNINumRetries.h"
 #include "JNIOperateType.h"
 #include "JNIOutstationApplication.h"
 #include "JNIOutstationConfig.h"
@@ -211,6 +212,7 @@ namespace jni
         static cache::MasterConfig MasterConfig;
         static cache::MasterStackConfig MasterStackConfig;
         static cache::MasterTaskType MasterTaskType;
+        static cache::NumRetries NumRetries;
         static cache::OperateType OperateType;
         static cache::OutstationApplication OutstationApplication;
         static cache::OutstationConfig OutstationConfig;

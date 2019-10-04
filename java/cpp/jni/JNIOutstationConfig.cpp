@@ -54,8 +54,11 @@ namespace jni
             this->solConfirmTimeoutField = env->GetFieldID(this->clazz, "solConfirmTimeout", "Ljava/time/Duration;");
             if(!this->solConfirmTimeoutField) return false;
 
-            this->unsolRetryTimeoutField = env->GetFieldID(this->clazz, "unsolRetryTimeout", "Ljava/time/Duration;");
-            if(!this->unsolRetryTimeoutField) return false;
+            this->unsolConfirmTimeoutField = env->GetFieldID(this->clazz, "unsolConfirmTimeout", "Ljava/time/Duration;");
+            if(!this->unsolConfirmTimeoutField) return false;
+
+            this->numUnsolRetriesField = env->GetFieldID(this->clazz, "numUnsolRetries", "Lcom/automatak/dnp3/NumRetries;");
+            if(!this->numUnsolRetriesField) return false;
 
             this->maxTxFragSizeField = env->GetFieldID(this->clazz, "maxTxFragSize", "I");
             if(!this->maxTxFragSizeField) return false;
@@ -99,6 +102,11 @@ namespace jni
             return env->GetIntField(instance, this->maxTxFragSizeField);
         }
 
+        LocalRef<jobject> OutstationConfig::getnumUnsolRetries(JNIEnv* env, jobject instance)
+        {
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->numUnsolRetriesField));
+        }
+
         LocalRef<jobject> OutstationConfig::getselectTimeout(JNIEnv* env, jobject instance)
         {
             return LocalRef<jobject>(env, env->GetObjectField(instance, this->selectTimeoutField));
@@ -109,9 +117,9 @@ namespace jni
             return LocalRef<jobject>(env, env->GetObjectField(instance, this->solConfirmTimeoutField));
         }
 
-        LocalRef<jobject> OutstationConfig::getunsolRetryTimeout(JNIEnv* env, jobject instance)
+        LocalRef<jobject> OutstationConfig::getunsolConfirmTimeout(JNIEnv* env, jobject instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->unsolRetryTimeoutField));
+            return LocalRef<jobject>(env, env->GetObjectField(instance, this->unsolConfirmTimeoutField));
         }
     }
 }
