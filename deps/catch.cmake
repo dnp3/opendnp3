@@ -2,8 +2,8 @@ include(FetchContent)
 
 FetchContent_Declare(
     catch
-    URL                 https://github.com/catchorg/Catch2/releases/download/v2.8.0/catch.hpp
-    URL_HASH            SHA1=59AB886C80964220BAD88538B807156CE96DC895
+    URL                 https://github.com/catchorg/Catch2/releases/download/v2.9.2/catch.hpp
+    URL_HASH            SHA1=DD87ABE730D130DDF2B0EEF37F9D849DFAD9FCB2
     DOWNLOAD_NO_EXTRACT TRUE
     DOWNLOAD_DIR        ${CMAKE_CURRENT_BINARY_DIR}/catch-src
 )
