@@ -126,7 +126,6 @@ public class StackPair {
 
         for(int i = 0; i < this.EVENTS_PER_ITERATION; ++i)
         {
-
            ExpectedValue value = this.addRandomValue(set);
            this.sentValues.add(value);
         }
@@ -140,7 +139,7 @@ public class StackPair {
     {
         final int total = sentValues.size();
 
-        List<ExpectedValue> receivedValues = soeHandler.waitForValues(duration);
+        List<ExpectedValue> receivedValues = soeHandler.waitForValues(total, duration);
 
         if(receivedValues == null)
         {
@@ -227,7 +226,7 @@ public class StackPair {
     final BlockingChannelListener serverListener = new BlockingChannelListener();
     final QueuedSOEHandler soeHandler = new QueuedSOEHandler();
     final Queue<ExpectedValue> sentValues = new ArrayDeque<>();
-    final Random random = new Random(0);
+    final Random random = new Random();
 
     final Master master;
     final Outstation outstation;

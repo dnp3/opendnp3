@@ -44,7 +44,7 @@ endif()
 option(DNP3_EVERYTHING "Build all optional targets" OFF)
 option(DNP3_STATIC_LIBS "Build static libraries instead of shared libraries" ${DNP3_STATIC_LIBS_BY_DEFAULT})
 
-if(DNP3_EVERYTHING)    
+if(DNP3_EVERYTHING)
     set(DNP3_TLS ON)
     set(DNP3_TESTS ON)
     set(DNP3_EXAMPLES ON)

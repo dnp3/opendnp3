@@ -53,7 +53,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DatabaseImpl_delete_1update_
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DatabaseImpl_update_1binary_1native(
     JNIEnv*, jobject, jlong native, jboolean value, jbyte flags, jlong time, jint index, jint mode)
 {
-    ((IUpdateHandler*)native)->Update(Binary(value != 0, Flags(flags), DNPTime(time)), static_cast<uint16_t>(index));
+    ((IUpdateHandler*)native)->Update(Binary(value != 0, Flags(flags), DNPTime(time)), static_cast<uint16_t>(index), static_cast<EventMode>(mode));
 }
 
 /*

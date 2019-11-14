@@ -23,9 +23,7 @@ import com.automatak.dnp3.*;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
@@ -40,11 +38,24 @@ public class QueuedSOEHandler implements SOEHandler {
         values.forEach(v -> this.temp.add(convert.apply(v)));
     }
 
-    public List<ExpectedValue> waitForValues(Duration duration)
+    public List<ExpectedValue> waitForValues(int numEvents, Duration duration)
     {
+        List<ExpectedValue> result = new ArrayList<>();
+        long startTime = System.currentTimeMillis();
         try
         {
-            return items.poll(duration.toMillis(), TimeUnit.MILLISECONDS);
+            while(true) {
+                long remainingMillis = duration.toMillis() - (System.currentTimeMillis() - startTime);
+                if(remainingMillis < 0) return result;
+
+                List<ExpectedValue> retrievedItems = items.poll(remainingMillis, TimeUnit.MILLISECONDS);
+                if(retrievedItems != null) {
+                    result.addAll(retrievedItems);
+                    if(result.size() >= numEvents) {
+                        return result;
+                    }
+                }
+            }
         }
         catch(InterruptedException ex)
         {
