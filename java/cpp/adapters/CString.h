@@ -27,15 +27,17 @@
 
 #include <string>
 
+#include "../adapters/LocalRef.h"
+
 // RAII class for java <=> cstring
 class CString : private opendnp3::Uncopyable
 {
     JNIEnv* env;
-    jstring jstr;
+    JString jstr;
     const char* cstr;
 
 public:
-    CString(JNIEnv* env, jstring jstr) : env(env), jstr(jstr), cstr(env->GetStringUTFChars(jstr, nullptr)) {}
+    CString(JNIEnv* env, JString jstr) : env(env), jstr(jstr), cstr(env->GetStringUTFChars(jstr, nullptr)) {}
 
     ~CString()
     {

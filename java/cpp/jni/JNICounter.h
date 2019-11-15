@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNICOUNTER_H
 #define OPENDNP3JAVA_JNICOUNTER_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,14 +52,14 @@ namespace jni
             public:
 
             // constructor methods
-            LocalRef<jobject> init3(JNIEnv* env, jlong arg0, jbyte arg1, jlong arg2);
+            LocalRef<JCounter> construct(JNIEnv* env, jlong arg0, jbyte arg1, jlong arg2);
 
             private:
 
             jclass clazz = nullptr;
 
             // constructor method ids
-            jmethodID init3Constructor = nullptr;
+            jmethodID constructor0 = nullptr;
         };
     }
 }

@@ -39,15 +39,15 @@ namespace Automatak.DNP3.Interface
         /// <param name="numAnalogOutputStatus">numer of setpoint status values starting at index 0</param>
         /// <param name="numTimeAndInterval">numer of TimeAndInterval values starting at index 0</param>
         /// <param name="numOctetString">numer of OctetString values starting at index 0</param>
-        public DatabaseTemplate(  System.UInt16 numBinary,
-                                  System.UInt16 numDoubleBinary,
-                                  System.UInt16 numAnalog,
-                                  System.UInt16 numCounter,
-                                  System.UInt16 numFrozenCounter,
-                                  System.UInt16 numBinaryOutputStatus,
-                                  System.UInt16 numAnalogOutputStatus,
-                                  System.UInt16 numTimeAndInterval,
-                                  System.UInt16 numOctetString
+        public DatabaseTemplate(System.UInt16 numBinary,
+                                System.UInt16 numDoubleBinary,
+                                System.UInt16 numAnalog,
+                                System.UInt16 numCounter,
+                                System.UInt16 numFrozenCounter,
+                                System.UInt16 numBinaryOutputStatus,
+                                System.UInt16 numAnalogOutputStatus,
+                                System.UInt16 numTimeAndInterval,
+                                System.UInt16 numOctetString
             )
         {
             this.binaries = Enumerable.Range(0, numBinary).Select(i => new BinaryRecord(Convert.ToUInt16(i))).ToList();
@@ -81,92 +81,41 @@ namespace Automatak.DNP3.Interface
         public DatabaseTemplate() : this(0)
         { }
 
-        public IndexMode GetIndexMode()
-        {
-            var lists = new Tuple<IReadOnlyList<PointRecord>, string>[] {
-                CreateTuple(binaries, "binary"),
-                CreateTuple(doubleBinaries, "analog"),
-                CreateTuple(counters, "counter"),
-                CreateTuple(frozenCounters, "frozen counter"),
-                CreateTuple(analogs, "analog"),
-                CreateTuple(binaryOutputStatii, "binary output status"),
-                CreateTuple(analogOutputStatii, "analog output status"),
-                CreateTuple(timeAndIntervals, "time and interval"),
-                CreateTuple(octetStrings, "octet string")
-            };
-
-            // this can throw an exception if any of the sub lists have bad discontiguous indices
-            var allContiguous = lists.Aggregate(true, (sum, pair) => sum && IsContiguous(pair.Item1, pair.Item2));
-
-            return allContiguous ? IndexMode.Contiguous : IndexMode.Discontiguous;
-        }
-
         /// <summary>
         /// Modify individual binary configuration here
         /// </summary>
-        public IReadOnlyList<BinaryRecord> binaries;
+        public List<BinaryRecord> binaries;
         /// <summary>
         /// Modify individual double binary configuration here
         /// </summary>
-        public IReadOnlyList<DoubleBinaryRecord> doubleBinaries;
+        public List<DoubleBinaryRecord> doubleBinaries;
         /// <summary>
         /// Modify individual analog configuration here
         /// </summary>
-        public IReadOnlyList<CounterRecord> counters;
+        public List<CounterRecord> counters;
         /// <summary>
         /// Modify individual analog configuration here
         /// </summary>
-        public IReadOnlyList<FrozenCounterRecord> frozenCounters;
+        public List<FrozenCounterRecord> frozenCounters;
         /// <summary>
         /// Modify individual counter configuration here
         /// </summary>
-        public IReadOnlyList<AnalogRecord> analogs;
+        public List<AnalogRecord> analogs;
         /// <summary>
         /// Modify individual binary output status configuration here
         /// </summary>
-        public IReadOnlyList<BinaryOutputStatusRecord> binaryOutputStatii;
+        public List<BinaryOutputStatusRecord> binaryOutputStatii;
         /// <summary>
         /// Modify individual analog output status configuration here
         /// </summary>
-        public IReadOnlyList<AnalogOutputStatusRecord> analogOutputStatii;
+        public List<AnalogOutputStatusRecord> analogOutputStatii;
         /// <summary>
         ///  Modify individual time and interval configuration here
         /// </summary>
-        public IReadOnlyList<TimeAndIntervalRecord> timeAndIntervals;
+        public List<TimeAndIntervalRecord> timeAndIntervals;
         /// <summary>
         ///  Modify individual OctetStrings configuration here
         /// </summary>
-        public IReadOnlyList<OctetStringRecord> octetStrings;
-
-        private Tuple<IReadOnlyList<PointRecord>, string> CreateTuple(IReadOnlyList<PointRecord> list, string name)
-        {
-            return Tuple.Create(list, name);
-        }
-
-        private static bool IsContiguous(IReadOnlyList<PointRecord> records, string name)
-        {                       
-            int lastIndex = -1;             // will always detect non-zero based indices (even if contiguous)
-            bool contiguous = true;         // empty collections will always be contiguous
-            System.UInt16 rawIndex = 0;
-            
-            foreach (var rec in records)
-            {
-                // this condition must not be violated for either mode
-                if (rec.index <= lastIndex)
-                {
-                    throw new ArgumentException(String.Format("Non-increasing index {0} found at raw index {1} for type {2}", rec.index, rawIndex, name));
-                }
-                                
-                if(rec.index != (lastIndex + 1))
-                {
-                    contiguous = false;
-                }                        
-
-                lastIndex = rec.index;
-                ++rawIndex;
-            }
-
-            return contiguous;
-        }
+        public List<OctetStringRecord> octetStrings;
     };    
 }

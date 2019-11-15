@@ -37,7 +37,7 @@ case class JNIClassGenerator(cfg: ClassConfig) {
     }
 
     def methodsMembers: Iterator[String] = cfg.ifEnabled(Features.Methods) {
-      space ++ "// method ids".iter ++ cfg.methods.map(m => "jmethodID %sMethod = nullptr;".format(m.getName)).toIterator
+      space ++ "// method ids".iter ++ cfg.methods.zipWithIndex.map { case(_, id) => s"jmethodID method$id = nullptr;" }.toIterator
     }
 
     def constructorSignatures: Iterator[String] = cfg.ifEnabled(Features.Constructors) {
@@ -45,7 +45,7 @@ case class JNIClassGenerator(cfg: ClassConfig) {
     }
 
     def constructorMembers: Iterator[String] = cfg.ifEnabled(Features.Constructors) {
-      space ++ "// constructor method ids".iter ++ cfg.constructors.map(c => "jmethodID init%dConstructor = nullptr;".format(c.getParameterCount)).toIterator
+      space ++ "// constructor method ids".iter ++ cfg.constructors.zipWithIndex.map(c => "jmethodID constructor%d = nullptr;".format(c._2)).toIterator
     }
 
     def fieldMembers: Iterator[String] = cfg.ifEnabled(Features.Fields) {
@@ -54,10 +54,16 @@ case class JNIClassGenerator(cfg: ClassConfig) {
 
     def fieldGetters: Iterator[String] = cfg.ifEnabled(Features.Fields) {
 
-      def returnType(f: Field) : String = {
-        if(f.getType.isPrimitive) JNIMethod.getType(f.getType) else "LocalRef<%s>".format(JNIMethod.getType(f.getType))
+      def impl(field : Field) : Iterator[String] = {
+        if(field.getType.isPrimitive) {
+          s"${JNIMethod.getType(field.getType)} get${field.getName}(JNIEnv* env, ${field.getDeclaringClass.wrapperName} instance);".iter
+        } else {
+          s"LocalRef<${JNIMethod.getType(field.getType)}> get${field.getName}(JNIEnv* env, ${field.getDeclaringClass.wrapperName} instance);".iter
+        }
+
       }
-      space ++ "// field getter methods".iter ++ cfg.fields.map(f => "%s get%s(JNIEnv* env, jobject instance);".format(returnType(f), f.getName)).toIterator
+
+      space ++ "// field getter methods".iter ++ cfg.fields.flatMap(impl)
     }
 
     def initSignature: Iterator[String] = "bool init(JNIEnv* env);".iter
@@ -66,8 +72,8 @@ case class JNIClassGenerator(cfg: ClassConfig) {
 
     commented(LicenseHeader()) ++ space ++
       includeGuards("JNI%s".format(cfg.clazz.getSimpleName)) {
-        "#include <jni.h>".iter ++ space ++
         """#include "../adapters/LocalRef.h"""".iter ++ space ++
+        """#include "JNIWrappers.h"""".iter ++ space ++
         namespace("jni") {
           "struct JCache;".iter ++ space ++
           namespace("cache") {
@@ -96,27 +102,27 @@ case class JNIClassGenerator(cfg: ClassConfig) {
 
       def constructorInit : Iterator[String] = cfg.ifEnabled(Features.Constructors) {
 
-        def lines(c : Constructor[_]) : Iterator[String] = {
-          setAndCheckReturn("this->init%dConstructor".format(c.getParameterCount)) {
+        def lines(c : Constructor[_], id: Int) : Iterator[String] = {
+          setAndCheckReturn(s"this->constructor$id") {
             "env->GetMethodID(this->clazz, \"<init>\", \"%s\")".format(c.jniSignature)
           }
         }
 
-        cfg.constructors.toIterator.flatMap(lines)
+        cfg.constructors.toIterator.zipWithIndex.flatMap { case(c, id) => lines(c, id) }
       }
 
       def methodInit : Iterator[String] = cfg.ifEnabled(Features.Methods) {
 
-        def lines(m : Method) : Iterator[String] = {
+        def lines(id: Int, m : Method) : Iterator[String] = {
 
           def typ = if(m.isStatic) "Static" else ""
 
-          setAndCheckReturn("this->%sMethod".format(m.getName)) {
+          setAndCheckReturn(s"this->method$id") {
               "env->Get%sMethodID(this->clazz, \"%s\", \"%s\")".format(typ, m.getName, m.jniSignature)
           }
         }
 
-        cfg.methods.toIterator.flatMap(lines)
+        cfg.methods.toIterator.zipWithIndex.flatMap{ case(m, id) => lines(id, m) }
       }
 
       def fieldInit : Iterator[String] = cfg.ifEnabled(Features.Fields) {
@@ -148,14 +154,14 @@ case class JNIClassGenerator(cfg: ClassConfig) {
     }
 
     def methodsImpls : Iterator[String] = cfg.ifEnabled(Features.Methods) {
-      cfg.methods.toIterator.flatMap { m =>
-        space ++ JNIMethod.getImpl(m)
+      cfg.methods.toIterator.zipWithIndex.flatMap { case(m, id) =>
+        space ++ JNIMethod.getImpl(id, m)
       }
     }
 
     def constructorImpls : Iterator[String] = cfg.ifEnabled(Features.Constructors) {
-      cfg.constructors.toIterator.flatMap { c =>
-        space ++ JNIMethod.getConstructorImpl(c)
+      cfg.constructors.zipWithIndex.toIterator.flatMap { case(c, id) =>
+        space ++ JNIMethod.getConstructorImpl(id, c)
       }
     }
 

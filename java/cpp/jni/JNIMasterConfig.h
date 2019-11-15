@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIMASTERCONFIG_H
 #define OPENDNP3JAVA_JNIMASTERCONFIG_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,19 +52,19 @@ namespace jni
             public:
 
             // field getter methods
-            LocalRef<jobject> getcontrolQualifierMode(JNIEnv* env, jobject instance);
-            jboolean getdisableUnsolOnStartup(JNIEnv* env, jobject instance);
-            LocalRef<jobject> geteventScanOnEventsAvailableClassMask(JNIEnv* env, jobject instance);
-            jboolean getignoreRestartIIN(JNIEnv* env, jobject instance);
-            jboolean getintegrityOnEventOverflowIIN(JNIEnv* env, jobject instance);
-            jint getmaxRxFragSize(JNIEnv* env, jobject instance);
-            jint getmaxTxFragSize(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getresponseTimeout(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getstartupIntegrityClassMask(JNIEnv* env, jobject instance);
-            LocalRef<jobject> gettaskRetryPeriod(JNIEnv* env, jobject instance);
-            LocalRef<jobject> gettaskStartTimeout(JNIEnv* env, jobject instance);
-            LocalRef<jobject> gettimeSyncMode(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getunsolClassMask(JNIEnv* env, jobject instance);
+            LocalRef<JIndexQualifierMode> getcontrolQualifierMode(JNIEnv* env, JMasterConfig instance);
+            jboolean getdisableUnsolOnStartup(JNIEnv* env, JMasterConfig instance);
+            LocalRef<JClassField> geteventScanOnEventsAvailableClassMask(JNIEnv* env, JMasterConfig instance);
+            jboolean getignoreRestartIIN(JNIEnv* env, JMasterConfig instance);
+            jboolean getintegrityOnEventOverflowIIN(JNIEnv* env, JMasterConfig instance);
+            jint getmaxRxFragSize(JNIEnv* env, JMasterConfig instance);
+            jint getmaxTxFragSize(JNIEnv* env, JMasterConfig instance);
+            LocalRef<JDuration> getresponseTimeout(JNIEnv* env, JMasterConfig instance);
+            LocalRef<JClassField> getstartupIntegrityClassMask(JNIEnv* env, JMasterConfig instance);
+            LocalRef<JDuration> gettaskRetryPeriod(JNIEnv* env, JMasterConfig instance);
+            LocalRef<JDuration> gettaskStartTimeout(JNIEnv* env, JMasterConfig instance);
+            LocalRef<JTimeSyncMode> gettimeSyncMode(JNIEnv* env, JMasterConfig instance);
+            LocalRef<JClassField> getunsolClassMask(JNIEnv* env, JMasterConfig instance);
 
             private:
 

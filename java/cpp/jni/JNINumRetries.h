@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNINUMRETRIES_H
 #define OPENDNP3JAVA_JNINUMRETRIES_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,8 +52,8 @@ namespace jni
             public:
 
             // field getter methods
-            jboolean getisInfinite(JNIEnv* env, jobject instance);
-            jint getmaxNumRetries(JNIEnv* env, jobject instance);
+            jboolean getisInfinite(JNIEnv* env, JNumRetries instance);
+            jint getmaxNumRetries(JNIEnv* env, JNumRetries instance);
 
             private:
 

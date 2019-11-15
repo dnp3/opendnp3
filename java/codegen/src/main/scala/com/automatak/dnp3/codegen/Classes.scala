@@ -33,6 +33,7 @@ object Classes {
   private def listConstructors = ConstructorFilter.withParamTypes(List("int"))
 
   private def enumerations : List[ClassConfig] = List(
+    classOf[EventMode],
     classOf[GroupVariation],
     classOf[QualifierCode],
     classOf[TimestampQuality],
@@ -81,7 +82,7 @@ object Classes {
     classOf[Stack],
     classOf[ChannelListener],
     classOf[CommandHandler],
-    classOf[IndexMode]
+    classOf[Database]
   ).map(c => ClassConfig(c, Set(Features.Methods)))
 
   private def javaTypes : List[ClassConfig] = List(
@@ -92,6 +93,8 @@ object Classes {
     ClassConfig(classOf[java.util.Iterator[_]], Set(Features.Methods), MethodFilter.equalsAny("hasNext", "next")),
     ClassConfig(classOf[java.util.Map[_, _]], Set(Features.Methods), MethodFilter.equalsAny("entrySet")),
     ClassConfig(classOf[java.util.Map.Entry[_, _]], Set(Features.Methods), MethodFilter.equalsAny("getKey", "getValue")),
+    ClassConfig(classOf[java.util.Set[_]], Set.empty),
+    ClassConfig(classOf[Object], Set.empty),
     ClassConfig(classOf[Integer], Set(Features.Methods), MethodFilter.equalsAny("intValue"))
   )
 
@@ -148,7 +151,9 @@ object Classes {
     ClassConfig(classOf[TransportStatistics], Set(Features.Constructors)),
     ClassConfig(classOf[StackStatistics], Set(Features.Constructors)),
     ClassConfig(classOf[IPEndpoint], Set(Features.Fields)),
-    ClassConfig(classOf[NumRetries], Set(Features.Fields))
+    ClassConfig(classOf[NumRetries], Set(Features.Fields)),
+    ClassConfig(classOf[CommandHeaders], Set.empty),
+    ClassConfig(classOf[impl.DatabaseImpl], Set(Features.Constructors))
   )
 
 

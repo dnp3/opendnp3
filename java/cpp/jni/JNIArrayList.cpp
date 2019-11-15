@@ -42,11 +42,11 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->init1Constructor = env->GetMethodID(this->clazz, "<init>", "(I)V");
-            if(!this->init1Constructor) return false;
+            this->constructor0 = env->GetMethodID(this->clazz, "<init>", "(I)V");
+            if(!this->constructor0) return false;
 
-            this->addMethod = env->GetMethodID(this->clazz, "add", "(Ljava/lang/Object;)Z");
-            if(!this->addMethod) return false;
+            this->method0 = env->GetMethodID(this->clazz, "add", "(Ljava/lang/Object;)Z");
+            if(!this->method0) return false;
 
             return true;
         }
@@ -56,14 +56,14 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jboolean ArrayList::add(JNIEnv* env, jobject instance, jobject arg0)
+        jboolean ArrayList::add(JNIEnv* env, JArrayList instance, JObject arg0)
         {
-            return env->CallBooleanMethod(instance, this->addMethod, arg0);
+            return env->CallBooleanMethod(instance, this->method0, arg0);
         }
 
-        LocalRef<jobject> ArrayList::init1(JNIEnv* env, jint arg0)
+        LocalRef<JArrayList> ArrayList::construct(JNIEnv* env, jint arg0)
         {
-            return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init1Constructor, arg0));
+            return LocalRef<JArrayList>(env, JArrayList(env->NewObject(this->clazz, this->constructor0, arg0)));
         }
     }
 }

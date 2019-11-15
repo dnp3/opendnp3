@@ -42,8 +42,8 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->completeMethod = env->GetMethodID(this->clazz, "complete", "(Ljava/lang/Object;)Z");
-            if(!this->completeMethod) return false;
+            this->method0 = env->GetMethodID(this->clazz, "complete", "(Ljava/lang/Object;)Z");
+            if(!this->method0) return false;
 
             return true;
         }
@@ -53,9 +53,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jboolean CompletableFuture::complete(JNIEnv* env, jobject instance, jobject arg0)
+        jboolean CompletableFuture::complete(JNIEnv* env, JCompletableFuture instance, JObject arg0)
         {
-            return env->CallBooleanMethod(instance, this->completeMethod, arg0);
+            return env->CallBooleanMethod(instance, this->method0, arg0);
         }
     }
 }

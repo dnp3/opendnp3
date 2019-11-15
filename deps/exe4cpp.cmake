@@ -2,9 +2,8 @@ include(FetchContent)
 
 FetchContent_Declare(
     exe4cpp
-    GIT_REPOSITORY https://github.com/automatak/exe4cpp.git
-    GIT_TAG        asio-1-12-2
-    GIT_SHALLOW    ON
+    URL      https://github.com/automatak/exe4cpp/archive/fb878a4de598ba9d6e4338afebf83f96e03af1b8.zip
+    URL_HASH SHA1=18B141E8CF09DC8D28CC62DD5FA2920670D501BD
 )
 
 FetchContent_GetProperties(exe4cpp)

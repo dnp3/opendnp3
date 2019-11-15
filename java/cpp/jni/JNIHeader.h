@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIHEADER_H
 #define OPENDNP3JAVA_JNIHEADER_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,12 +52,12 @@ namespace jni
             public:
 
             // field getter methods
-            jint getcount(JNIEnv* env, jobject instance);
-            jbyte getgroup(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getqualifier(JNIEnv* env, jobject instance);
-            jint getstart(JNIEnv* env, jobject instance);
-            jint getstop(JNIEnv* env, jobject instance);
-            jbyte getvariation(JNIEnv* env, jobject instance);
+            jint getcount(JNIEnv* env, JHeader instance);
+            jbyte getgroup(JNIEnv* env, JHeader instance);
+            LocalRef<JQualifierCode> getqualifier(JNIEnv* env, JHeader instance);
+            jint getstart(JNIEnv* env, JHeader instance);
+            jint getstop(JNIEnv* env, JHeader instance);
+            jbyte getvariation(JNIEnv* env, JHeader instance);
 
             private:
 

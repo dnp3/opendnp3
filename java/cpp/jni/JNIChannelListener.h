@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNICHANNELLISTENER_H
 #define OPENDNP3JAVA_JNICHANNELLISTENER_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,14 +52,14 @@ namespace jni
             public:
 
             // methods
-            void onStateChange(JNIEnv* env, jobject instance, jobject arg0);
+            void onStateChange(JNIEnv* env, JChannelListener instance, JChannelState arg0);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID onStateChangeMethod = nullptr;
+            jmethodID method0 = nullptr;
         };
     }
 }

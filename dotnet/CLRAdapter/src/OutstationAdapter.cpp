@@ -19,7 +19,7 @@
  */
 #include "OutstationAdapter.h"
 
-#include "ChangeSetAdapter.h"
+#include "UpdateAdapter.h"
 #include "Conversions.h"
 
 namespace Automatak
@@ -45,7 +45,7 @@ namespace Automatak
 
 			void OutstationAdapter::Load(IChangeSet^ changes)
 			{
-				auto adapter = gcnew ChangeSetAdapter();
+                auto adapter = gcnew UpdateAdapter();
 				changes->Apply(adapter);
 				adapter->Apply(**outstation);
 				delete adapter;

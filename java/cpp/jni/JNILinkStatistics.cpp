@@ -42,8 +42,8 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->init2Constructor = env->GetMethodID(this->clazz, "<init>", "(Lcom/automatak/dnp3/ChannelStatistics;Lcom/automatak/dnp3/ParserStatistics;)V");
-            if(!this->init2Constructor) return false;
+            this->constructor0 = env->GetMethodID(this->clazz, "<init>", "(Lcom/automatak/dnp3/ChannelStatistics;Lcom/automatak/dnp3/ParserStatistics;)V");
+            if(!this->constructor0) return false;
 
             return true;
         }
@@ -53,9 +53,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> LinkStatistics::init2(JNIEnv* env, jobject arg0, jobject arg1)
+        LocalRef<JLinkStatistics> LinkStatistics::construct(JNIEnv* env, JChannelStatistics arg0, JParserStatistics arg1)
         {
-            return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init2Constructor, arg0, arg1));
+            return LocalRef<JLinkStatistics>(env, JLinkStatistics(env->NewObject(this->clazz, this->constructor0, arg0, arg1)));
         }
     }
 }

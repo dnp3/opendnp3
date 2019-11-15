@@ -42,11 +42,11 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->fromTypeMethod = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/StaticFrozenCounterVariation;");
-            if(!this->fromTypeMethod) return false;
+            this->method0 = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/StaticFrozenCounterVariation;");
+            if(!this->method0) return false;
 
-            this->toTypeMethod = env->GetMethodID(this->clazz, "toType", "()I");
-            if(!this->toTypeMethod) return false;
+            this->method1 = env->GetMethodID(this->clazz, "toType", "()I");
+            if(!this->method1) return false;
 
             return true;
         }
@@ -56,14 +56,14 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> StaticFrozenCounterVariation::fromType(JNIEnv* env, jint arg0)
+        LocalRef<JStaticFrozenCounterVariation> StaticFrozenCounterVariation::fromType(JNIEnv* env, jint arg0)
         {
-            return LocalRef<jobject>(env, env->CallStaticObjectMethod(this->clazz, this->fromTypeMethod, arg0));
+            return LocalRef<JStaticFrozenCounterVariation>(env, env->CallStaticObjectMethod(this->clazz, this->method0, arg0));
         }
 
-        jint StaticFrozenCounterVariation::toType(JNIEnv* env, jobject instance)
+        jint StaticFrozenCounterVariation::toType(JNIEnv* env, JStaticFrozenCounterVariation instance)
         {
-            return env->CallIntMethod(instance, this->toTypeMethod);
+            return env->CallIntMethod(instance, this->method1);
         }
     }
 }

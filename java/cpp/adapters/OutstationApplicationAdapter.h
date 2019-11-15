@@ -20,14 +20,16 @@
 #ifndef OPENDNP3_OUTSTATIONAPPLICATIONADAPTER_H
 #define OPENDNP3_OUTSTATIONAPPLICATIONADAPTER_H
 
-#include "GlobalRef.h"
 
 #include <opendnp3/outstation/IOutstationApplication.h>
+
+#include "GlobalRef.h"
+#include "../jni/JNIWrappers.h"
 
 class OutstationApplicationAdapter : public opendnp3::IOutstationApplication
 {
 public:
-    OutstationApplicationAdapter(jobject proxy) : proxy(proxy) {}
+    OutstationApplicationAdapter(jni::JOutstationApplication proxy) : proxy(proxy) {}
 
     bool SupportsWriteAbsoluteTime() override;
 
@@ -51,7 +53,7 @@ public:
     uint16_t WarmRestart() override;
 
 private:
-    GlobalRef proxy;
+    GlobalRef<jni::JOutstationApplication> proxy;
 };
 
 #endif

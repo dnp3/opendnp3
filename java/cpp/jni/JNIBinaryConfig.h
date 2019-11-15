@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIBINARYCONFIG_H
 #define OPENDNP3JAVA_JNIBINARYCONFIG_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,8 +52,8 @@ namespace jni
             public:
 
             // field getter methods
-            LocalRef<jobject> geteventVariation(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getstaticVariation(JNIEnv* env, jobject instance);
+            LocalRef<JEventBinaryVariation> geteventVariation(JNIEnv* env, JBinaryConfig instance);
+            LocalRef<JStaticBinaryVariation> getstaticVariation(JNIEnv* env, JBinaryConfig instance);
 
             private:
 

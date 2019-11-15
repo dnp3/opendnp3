@@ -29,43 +29,25 @@
 // limitations under the License.
 //
 
-package com.automatak.dnp3.enums;
-/**
-* Select contiguous or dis-contiguous index mode
-*/
-public enum IndexMode
+#include "JNIObject.h"
+
+namespace jni
 {
-  /**
-  * Indices are contiguous. Most efficient as direct indexing is used.
-  */
-  Contiguous(0x0),
-  /**
-  * Indices are dis-contiguous. Resorts to binary search to find raw index.
-  */
-  Discontiguous(0x1);
-
-  private final int id;
-
-  public int toType()
-  {
-    return id;
-  }
-
-  IndexMode(int id)
-  {
-    this.id = id;
-  }
-
-  public static IndexMode fromType(int arg)
-  {
-    switch(arg)
+    namespace cache
     {
-      case(0x0):
-        return Contiguous;
-      case(0x1):
-        return Discontiguous;
-      default:
-        return Contiguous;
+        bool Object::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Ljava/lang/Object;");
+            if(!clazzTemp) return false;
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
+
+            return true;
+        }
+
+        void Object::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
     }
-  }
 }

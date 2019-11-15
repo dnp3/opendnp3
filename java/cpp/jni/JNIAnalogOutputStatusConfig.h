@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIANALOGOUTPUTSTATUSCONFIG_H
 #define OPENDNP3JAVA_JNIANALOGOUTPUTSTATUSCONFIG_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,9 +52,9 @@ namespace jni
             public:
 
             // field getter methods
-            jdouble getdeadband(JNIEnv* env, jobject instance);
-            LocalRef<jobject> geteventVariation(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getstaticVariation(JNIEnv* env, jobject instance);
+            jdouble getdeadband(JNIEnv* env, JAnalogOutputStatusConfig instance);
+            LocalRef<JEventAnalogOutputStatusVariation> geteventVariation(JNIEnv* env, JAnalogOutputStatusConfig instance);
+            LocalRef<JStaticAnalogOutputStatusVariation> getstaticVariation(JNIEnv* env, JAnalogOutputStatusConfig instance);
 
             private:
 

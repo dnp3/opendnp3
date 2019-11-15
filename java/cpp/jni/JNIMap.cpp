@@ -42,8 +42,8 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->entrySetMethod = env->GetMethodID(this->clazz, "entrySet", "()Ljava/util/Set;");
-            if(!this->entrySetMethod) return false;
+            this->method0 = env->GetMethodID(this->clazz, "entrySet", "()Ljava/util/Set;");
+            if(!this->method0) return false;
 
             return true;
         }
@@ -53,9 +53,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> Map::entrySet(JNIEnv* env, jobject instance)
+        LocalRef<JSet> Map::entrySet(JNIEnv* env, JMap instance)
         {
-            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->entrySetMethod));
+            return LocalRef<JSet>(env, env->CallObjectMethod(instance, this->method0));
         }
     }
 }

@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNICOMMANDTASKRESULT_H
 #define OPENDNP3JAVA_JNICOMMANDTASKRESULT_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,14 +52,14 @@ namespace jni
             public:
 
             // constructor methods
-            LocalRef<jobject> init2(JNIEnv* env, jobject arg0, jobject arg1);
+            LocalRef<JCommandTaskResult> construct(JNIEnv* env, JTaskCompletion arg0, JIterable arg1);
 
             private:
 
             jclass clazz = nullptr;
 
             // constructor method ids
-            jmethodID init2Constructor = nullptr;
+            jmethodID constructor0 = nullptr;
         };
     }
 }

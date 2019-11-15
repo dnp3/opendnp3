@@ -89,69 +89,69 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> MasterConfig::getcontrolQualifierMode(JNIEnv* env, jobject instance)
+        LocalRef<JIndexQualifierMode> MasterConfig::getcontrolQualifierMode(JNIEnv* env, JMasterConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->controlQualifierModeField));
+            return LocalRef<JIndexQualifierMode>(env, env->GetObjectField(instance, this->controlQualifierModeField));
         }
 
-        jboolean MasterConfig::getdisableUnsolOnStartup(JNIEnv* env, jobject instance)
+        jboolean MasterConfig::getdisableUnsolOnStartup(JNIEnv* env, JMasterConfig instance)
         {
             return env->GetBooleanField(instance, this->disableUnsolOnStartupField);
         }
 
-        LocalRef<jobject> MasterConfig::geteventScanOnEventsAvailableClassMask(JNIEnv* env, jobject instance)
+        LocalRef<JClassField> MasterConfig::geteventScanOnEventsAvailableClassMask(JNIEnv* env, JMasterConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->eventScanOnEventsAvailableClassMaskField));
+            return LocalRef<JClassField>(env, env->GetObjectField(instance, this->eventScanOnEventsAvailableClassMaskField));
         }
 
-        jboolean MasterConfig::getignoreRestartIIN(JNIEnv* env, jobject instance)
+        jboolean MasterConfig::getignoreRestartIIN(JNIEnv* env, JMasterConfig instance)
         {
             return env->GetBooleanField(instance, this->ignoreRestartIINField);
         }
 
-        jboolean MasterConfig::getintegrityOnEventOverflowIIN(JNIEnv* env, jobject instance)
+        jboolean MasterConfig::getintegrityOnEventOverflowIIN(JNIEnv* env, JMasterConfig instance)
         {
             return env->GetBooleanField(instance, this->integrityOnEventOverflowIINField);
         }
 
-        jint MasterConfig::getmaxRxFragSize(JNIEnv* env, jobject instance)
+        jint MasterConfig::getmaxRxFragSize(JNIEnv* env, JMasterConfig instance)
         {
             return env->GetIntField(instance, this->maxRxFragSizeField);
         }
 
-        jint MasterConfig::getmaxTxFragSize(JNIEnv* env, jobject instance)
+        jint MasterConfig::getmaxTxFragSize(JNIEnv* env, JMasterConfig instance)
         {
             return env->GetIntField(instance, this->maxTxFragSizeField);
         }
 
-        LocalRef<jobject> MasterConfig::getresponseTimeout(JNIEnv* env, jobject instance)
+        LocalRef<JDuration> MasterConfig::getresponseTimeout(JNIEnv* env, JMasterConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->responseTimeoutField));
+            return LocalRef<JDuration>(env, env->GetObjectField(instance, this->responseTimeoutField));
         }
 
-        LocalRef<jobject> MasterConfig::getstartupIntegrityClassMask(JNIEnv* env, jobject instance)
+        LocalRef<JClassField> MasterConfig::getstartupIntegrityClassMask(JNIEnv* env, JMasterConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->startupIntegrityClassMaskField));
+            return LocalRef<JClassField>(env, env->GetObjectField(instance, this->startupIntegrityClassMaskField));
         }
 
-        LocalRef<jobject> MasterConfig::gettaskRetryPeriod(JNIEnv* env, jobject instance)
+        LocalRef<JDuration> MasterConfig::gettaskRetryPeriod(JNIEnv* env, JMasterConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->taskRetryPeriodField));
+            return LocalRef<JDuration>(env, env->GetObjectField(instance, this->taskRetryPeriodField));
         }
 
-        LocalRef<jobject> MasterConfig::gettaskStartTimeout(JNIEnv* env, jobject instance)
+        LocalRef<JDuration> MasterConfig::gettaskStartTimeout(JNIEnv* env, JMasterConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->taskStartTimeoutField));
+            return LocalRef<JDuration>(env, env->GetObjectField(instance, this->taskStartTimeoutField));
         }
 
-        LocalRef<jobject> MasterConfig::gettimeSyncMode(JNIEnv* env, jobject instance)
+        LocalRef<JTimeSyncMode> MasterConfig::gettimeSyncMode(JNIEnv* env, JMasterConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->timeSyncModeField));
+            return LocalRef<JTimeSyncMode>(env, env->GetObjectField(instance, this->timeSyncModeField));
         }
 
-        LocalRef<jobject> MasterConfig::getunsolClassMask(JNIEnv* env, jobject instance)
+        LocalRef<JClassField> MasterConfig::getunsolClassMask(JNIEnv* env, JMasterConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->unsolClassMaskField));
+            return LocalRef<JClassField>(env, env->GetObjectField(instance, this->unsolClassMaskField));
         }
     }
 }

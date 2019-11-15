@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIRESPONSEINFO_H
 #define OPENDNP3JAVA_JNIRESPONSEINFO_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,14 +52,14 @@ namespace jni
             public:
 
             // constructor methods
-            LocalRef<jobject> init3(JNIEnv* env, jboolean arg0, jboolean arg1, jboolean arg2);
+            LocalRef<JResponseInfo> construct(JNIEnv* env, jboolean arg0, jboolean arg1, jboolean arg2);
 
             private:
 
             jclass clazz = nullptr;
 
             // constructor method ids
-            jmethodID init3Constructor = nullptr;
+            jmethodID constructor0 = nullptr;
         };
     }
 }

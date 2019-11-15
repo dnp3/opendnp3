@@ -74,44 +74,44 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jboolean TLSConfig::getallowTLSv10(JNIEnv* env, jobject instance)
+        jboolean TLSConfig::getallowTLSv10(JNIEnv* env, JTLSConfig instance)
         {
             return env->GetBooleanField(instance, this->allowTLSv10Field);
         }
 
-        jboolean TLSConfig::getallowTLSv11(JNIEnv* env, jobject instance)
+        jboolean TLSConfig::getallowTLSv11(JNIEnv* env, JTLSConfig instance)
         {
             return env->GetBooleanField(instance, this->allowTLSv11Field);
         }
 
-        jboolean TLSConfig::getallowTLSv12(JNIEnv* env, jobject instance)
+        jboolean TLSConfig::getallowTLSv12(JNIEnv* env, JTLSConfig instance)
         {
             return env->GetBooleanField(instance, this->allowTLSv12Field);
         }
 
-        LocalRef<jstring> TLSConfig::getcipherList(JNIEnv* env, jobject instance)
+        LocalRef<JString> TLSConfig::getcipherList(JNIEnv* env, JTLSConfig instance)
         {
-            return LocalRef<jstring>(env, (jstring) env->GetObjectField(instance, this->cipherListField));
+            return LocalRef<JString>(env, (jstring) env->GetObjectField(instance, this->cipherListField));
         }
 
-        LocalRef<jstring> TLSConfig::getlocalCertFilePath(JNIEnv* env, jobject instance)
+        LocalRef<JString> TLSConfig::getlocalCertFilePath(JNIEnv* env, JTLSConfig instance)
         {
-            return LocalRef<jstring>(env, (jstring) env->GetObjectField(instance, this->localCertFilePathField));
+            return LocalRef<JString>(env, (jstring) env->GetObjectField(instance, this->localCertFilePathField));
         }
 
-        jint TLSConfig::getmaxVerifyDepth(JNIEnv* env, jobject instance)
+        jint TLSConfig::getmaxVerifyDepth(JNIEnv* env, JTLSConfig instance)
         {
             return env->GetIntField(instance, this->maxVerifyDepthField);
         }
 
-        LocalRef<jstring> TLSConfig::getpeerCertFilePath(JNIEnv* env, jobject instance)
+        LocalRef<JString> TLSConfig::getpeerCertFilePath(JNIEnv* env, JTLSConfig instance)
         {
-            return LocalRef<jstring>(env, (jstring) env->GetObjectField(instance, this->peerCertFilePathField));
+            return LocalRef<JString>(env, (jstring) env->GetObjectField(instance, this->peerCertFilePathField));
         }
 
-        LocalRef<jstring> TLSConfig::getprivateKeyFilePath(JNIEnv* env, jobject instance)
+        LocalRef<JString> TLSConfig::getprivateKeyFilePath(JNIEnv* env, JTLSConfig instance)
         {
-            return LocalRef<jstring>(env, (jstring) env->GetObjectField(instance, this->privateKeyFilePathField));
+            return LocalRef<JString>(env, (jstring) env->GetObjectField(instance, this->privateKeyFilePathField));
         }
     }
 }

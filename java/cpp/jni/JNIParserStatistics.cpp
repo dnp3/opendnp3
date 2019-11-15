@@ -42,8 +42,8 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->init7Constructor = env->GetMethodID(this->clazz, "<init>", "(JJJJJJJ)V");
-            if(!this->init7Constructor) return false;
+            this->constructor0 = env->GetMethodID(this->clazz, "<init>", "(JJJJJJJ)V");
+            if(!this->constructor0) return false;
 
             return true;
         }
@@ -53,9 +53,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> ParserStatistics::init7(JNIEnv* env, jlong arg0, jlong arg1, jlong arg2, jlong arg3, jlong arg4, jlong arg5, jlong arg6)
+        LocalRef<JParserStatistics> ParserStatistics::construct(JNIEnv* env, jlong arg0, jlong arg1, jlong arg2, jlong arg3, jlong arg4, jlong arg5, jlong arg6)
         {
-            return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init7Constructor, arg0, arg1, arg2, arg3, arg4, arg5, arg6));
+            return LocalRef<JParserStatistics>(env, JParserStatistics(env->NewObject(this->clazz, this->constructor0, arg0, arg1, arg2, arg3, arg4, arg5, arg6)));
         }
     }
 }

@@ -42,11 +42,11 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->hasNextMethod = env->GetMethodID(this->clazz, "hasNext", "()Z");
-            if(!this->hasNextMethod) return false;
+            this->method0 = env->GetMethodID(this->clazz, "hasNext", "()Z");
+            if(!this->method0) return false;
 
-            this->nextMethod = env->GetMethodID(this->clazz, "next", "()Ljava/lang/Object;");
-            if(!this->nextMethod) return false;
+            this->method1 = env->GetMethodID(this->clazz, "next", "()Ljava/lang/Object;");
+            if(!this->method1) return false;
 
             return true;
         }
@@ -56,14 +56,14 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jboolean Iterator::hasNext(JNIEnv* env, jobject instance)
+        jboolean Iterator::hasNext(JNIEnv* env, JIterator instance)
         {
-            return env->CallBooleanMethod(instance, this->hasNextMethod);
+            return env->CallBooleanMethod(instance, this->method0);
         }
 
-        LocalRef<jobject> Iterator::next(JNIEnv* env, jobject instance)
+        LocalRef<JObject> Iterator::next(JNIEnv* env, JIterator instance)
         {
-            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->nextMethod));
+            return LocalRef<JObject>(env, env->CallObjectMethod(instance, this->method1));
         }
     }
 }

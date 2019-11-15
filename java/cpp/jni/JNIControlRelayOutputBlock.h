@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNICONTROLRELAYOUTPUTBLOCK_H
 #define OPENDNP3JAVA_JNICONTROLRELAYOUTPUTBLOCK_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,21 +52,21 @@ namespace jni
             public:
 
             // constructor methods
-            LocalRef<jobject> init5(JNIEnv* env, jobject arg0, jshort arg1, jlong arg2, jlong arg3, jobject arg4);
+            LocalRef<JControlRelayOutputBlock> construct(JNIEnv* env, JControlCode arg0, jshort arg1, jlong arg2, jlong arg3, JCommandStatus arg4);
 
             // field getter methods
-            jshort getcount(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getfunction(JNIEnv* env, jobject instance);
-            jlong getoffTimeMs(JNIEnv* env, jobject instance);
-            jlong getonTimeMs(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getstatus(JNIEnv* env, jobject instance);
+            jshort getcount(JNIEnv* env, JControlRelayOutputBlock instance);
+            LocalRef<JControlCode> getfunction(JNIEnv* env, JControlRelayOutputBlock instance);
+            jlong getoffTimeMs(JNIEnv* env, JControlRelayOutputBlock instance);
+            jlong getonTimeMs(JNIEnv* env, JControlRelayOutputBlock instance);
+            LocalRef<JCommandStatus> getstatus(JNIEnv* env, JControlRelayOutputBlock instance);
 
             private:
 
             jclass clazz = nullptr;
 
             // constructor method ids
-            jmethodID init5Constructor = nullptr;
+            jmethodID constructor0 = nullptr;
 
             // field ids
             jfieldID functionField = nullptr;

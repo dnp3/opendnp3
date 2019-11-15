@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIIPENDPOINT_H
 #define OPENDNP3JAVA_JNIIPENDPOINT_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,8 +52,8 @@ namespace jni
             public:
 
             // field getter methods
-            LocalRef<jstring> getaddress(JNIEnv* env, jobject instance);
-            jint getport(JNIEnv* env, jobject instance);
+            LocalRef<JString> getaddress(JNIEnv* env, JIPEndpoint instance);
+            jint getport(JNIEnv* env, JIPEndpoint instance);
 
             private:
 

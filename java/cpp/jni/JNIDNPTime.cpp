@@ -42,8 +42,8 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->init1Constructor = env->GetMethodID(this->clazz, "<init>", "(J)V");
-            if(!this->init1Constructor) return false;
+            this->constructor0 = env->GetMethodID(this->clazz, "<init>", "(J)V");
+            if(!this->constructor0) return false;
 
             return true;
         }
@@ -53,9 +53,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> DNPTime::init1(JNIEnv* env, jlong arg0)
+        LocalRef<JDNPTime> DNPTime::construct(JNIEnv* env, jlong arg0)
         {
-            return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init1Constructor, arg0));
+            return LocalRef<JDNPTime>(env, JDNPTime(env->NewObject(this->clazz, this->constructor0, arg0)));
         }
     }
 }

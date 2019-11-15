@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNITASKID_H
 #define OPENDNP3JAVA_JNITASKID_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,14 +52,14 @@ namespace jni
             public:
 
             // constructor methods
-            LocalRef<jobject> init2(JNIEnv* env, jint arg0, jboolean arg1);
+            LocalRef<JTaskId> construct(JNIEnv* env, jint arg0, jboolean arg1);
 
             private:
 
             jclass clazz = nullptr;
 
             // constructor method ids
-            jmethodID init2Constructor = nullptr;
+            jmethodID constructor0 = nullptr;
         };
     }
 }

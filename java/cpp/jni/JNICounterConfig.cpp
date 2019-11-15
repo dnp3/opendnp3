@@ -62,19 +62,19 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jint CounterConfig::getdeadband(JNIEnv* env, jobject instance)
+        jint CounterConfig::getdeadband(JNIEnv* env, JCounterConfig instance)
         {
             return env->GetIntField(instance, this->deadbandField);
         }
 
-        LocalRef<jobject> CounterConfig::geteventVariation(JNIEnv* env, jobject instance)
+        LocalRef<JEventCounterVariation> CounterConfig::geteventVariation(JNIEnv* env, JCounterConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->eventVariationField));
+            return LocalRef<JEventCounterVariation>(env, env->GetObjectField(instance, this->eventVariationField));
         }
 
-        LocalRef<jobject> CounterConfig::getstaticVariation(JNIEnv* env, jobject instance)
+        LocalRef<JStaticCounterVariation> CounterConfig::getstaticVariation(JNIEnv* env, JCounterConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->staticVariationField));
+            return LocalRef<JStaticCounterVariation>(env, env->GetObjectField(instance, this->staticVariationField));
         }
     }
 }

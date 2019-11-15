@@ -29,45 +29,25 @@
 // limitations under the License.
 //
 
-#ifndef OPENDNP3JAVA_JNIINDEXMODE_H
-#define OPENDNP3JAVA_JNIINDEXMODE_H
-
-#include <jni.h>
-
-#include "../adapters/LocalRef.h"
+#include "JNICommandHeaders.h"
 
 namespace jni
 {
-    struct JCache;
-
     namespace cache
     {
-        class IndexMode
+        bool CommandHeaders::init(JNIEnv* env)
         {
-            friend struct jni::JCache;
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/CommandHeaders;");
+            if(!clazzTemp) return false;
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-            bool init(JNIEnv* env);
-            void cleanup(JNIEnv* env);
+            return true;
+        }
 
-            public:
-
-            // methods
-            LocalRef<jobject> fromType(JNIEnv* env, jint arg0);
-            jint toType(JNIEnv* env, jobject instance);
-            LocalRef<jobject> valueOf(JNIEnv* env, jstring arg0);
-            LocalRef<jobject> values(JNIEnv* env);
-
-            private:
-
-            jclass clazz = nullptr;
-
-            // method ids
-            jmethodID fromTypeMethod = nullptr;
-            jmethodID toTypeMethod = nullptr;
-            jmethodID valueOfMethod = nullptr;
-            jmethodID valuesMethod = nullptr;
-        };
+        void CommandHeaders::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
     }
 }
-
-#endif

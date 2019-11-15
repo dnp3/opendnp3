@@ -27,7 +27,7 @@ class OutstationImpl implements Outstation {
 
     private long nativePointer;
 
-    public OutstationImpl(long nativePointer) {
+    OutstationImpl(long nativePointer) {
         this.nativePointer = nativePointer;
     }
 
@@ -67,9 +67,17 @@ class OutstationImpl implements Outstation {
     @Override
     public void apply(ChangeSet changeSet) {
 
-        ChangeSetImpl impl = new ChangeSetImpl();
-        changeSet.apply(impl);
-        this.apply_native(this.nativePointer, impl.nativePointer);
+        final long nativeUpdateBuilder = DatabaseImpl.new_update_builder_native();
+
+        try {
+            final DatabaseImpl impl = new DatabaseImpl(nativeUpdateBuilder);
+            changeSet.apply(impl);
+            this.apply_native(this.nativePointer, nativeUpdateBuilder);
+        }
+        finally {
+            DatabaseImpl.delete_update_builder_native(nativeUpdateBuilder);
+        }
+
     }
 
     private native void set_log_level_native(long nativePointer, int levels);

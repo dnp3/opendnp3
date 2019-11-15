@@ -42,20 +42,20 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->disableMethod = env->GetMethodID(this->clazz, "disable", "()V");
-            if(!this->disableMethod) return false;
+            this->method0 = env->GetMethodID(this->clazz, "disable", "()V");
+            if(!this->method0) return false;
 
-            this->enableMethod = env->GetMethodID(this->clazz, "enable", "()V");
-            if(!this->enableMethod) return false;
+            this->method1 = env->GetMethodID(this->clazz, "enable", "()V");
+            if(!this->method1) return false;
 
-            this->getStatisticsMethod = env->GetMethodID(this->clazz, "getStatistics", "()Lcom/automatak/dnp3/StackStatistics;");
-            if(!this->getStatisticsMethod) return false;
+            this->method2 = env->GetMethodID(this->clazz, "getStatistics", "()Lcom/automatak/dnp3/StackStatistics;");
+            if(!this->method2) return false;
 
-            this->setLogLevelMethod = env->GetMethodID(this->clazz, "setLogLevel", "(I)V");
-            if(!this->setLogLevelMethod) return false;
+            this->method3 = env->GetMethodID(this->clazz, "setLogLevel", "(I)V");
+            if(!this->method3) return false;
 
-            this->shutdownMethod = env->GetMethodID(this->clazz, "shutdown", "()V");
-            if(!this->shutdownMethod) return false;
+            this->method4 = env->GetMethodID(this->clazz, "shutdown", "()V");
+            if(!this->method4) return false;
 
             return true;
         }
@@ -65,29 +65,29 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        void Stack::disable(JNIEnv* env, jobject instance)
+        void Stack::disable(JNIEnv* env, JStack instance)
         {
-            env->CallVoidMethod(instance, this->disableMethod);
+            env->CallVoidMethod(instance, this->method0);
         }
 
-        void Stack::enable(JNIEnv* env, jobject instance)
+        void Stack::enable(JNIEnv* env, JStack instance)
         {
-            env->CallVoidMethod(instance, this->enableMethod);
+            env->CallVoidMethod(instance, this->method1);
         }
 
-        LocalRef<jobject> Stack::getStatistics(JNIEnv* env, jobject instance)
+        LocalRef<JStackStatistics> Stack::getStatistics(JNIEnv* env, JStack instance)
         {
-            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->getStatisticsMethod));
+            return LocalRef<JStackStatistics>(env, env->CallObjectMethod(instance, this->method2));
         }
 
-        void Stack::setLogLevel(JNIEnv* env, jobject instance, jint arg0)
+        void Stack::setLogLevel(JNIEnv* env, JStack instance, jint arg0)
         {
-            env->CallVoidMethod(instance, this->setLogLevelMethod, arg0);
+            env->CallVoidMethod(instance, this->method3, arg0);
         }
 
-        void Stack::shutdown(JNIEnv* env, jobject instance)
+        void Stack::shutdown(JNIEnv* env, JStack instance)
         {
-            env->CallVoidMethod(instance, this->shutdownMethod);
+            env->CallVoidMethod(instance, this->method4);
         }
     }
 }

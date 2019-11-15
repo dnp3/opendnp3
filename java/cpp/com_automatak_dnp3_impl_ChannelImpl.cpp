@@ -49,15 +49,15 @@ JNIEXPORT jobject JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1statisti
     const auto channel = (std::shared_ptr<IChannel>*)native;
     auto stats = (*channel)->GetStatistics();
 
-    auto parserStats = jni::JCache::ParserStatistics.init7(
+    auto parserStats = jni::JCache::ParserStatistics.construct(
         env, stats.parser.numHeaderCrcError, stats.parser.numBodyCrcError, stats.parser.numLinkFrameRx,
         stats.parser.numBadLength, stats.parser.numBadFunctionCode, stats.parser.numBadFCV, stats.parser.numBadFCV);
 
-    auto channelStats = jni::JCache::ChannelStatistics.init6(env, stats.channel.numOpen, stats.channel.numOpenFail,
+    auto channelStats = jni::JCache::ChannelStatistics.construct(env, stats.channel.numOpen, stats.channel.numOpenFail,
                                                              stats.channel.numClose, stats.channel.numBytesRx,
                                                              stats.channel.numBytesTx, stats.channel.numLinkFrameTx);
 
-    return env->NewGlobalRef(jni::JCache::LinkStatistics.init2(env, channelStats, parserStats));
+    return env->NewGlobalRef(jni::JCache::LinkStatistics.construct(env, channelStats, parserStats).get());
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_shutdown_1native(JNIEnv* /*env*/,
@@ -81,7 +81,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1ma
 {
     const auto channel = (std::shared_ptr<IChannel>*)native;
 
-    auto config = ConfigReader::ConvertMasterStackConfig(env, jconfig);
+    auto config = ConfigReader::Convert(env, jni::JMasterStackConfig(jconfig));
     auto soeAdapter = std::make_shared<SOEHandlerAdapter>(handler);
     auto appAdapter = std::make_shared<MasterApplicationAdapter>(application);
 
@@ -102,7 +102,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1ou
 {
     const auto channel = (std::shared_ptr<IChannel>*)native;
 
-    auto config = ConfigReader::ConvertOutstationStackConfig(env, jconfig);
+    auto config = ConfigReader::Convert(env, jni::JOutstationStackConfig(jconfig));
     auto commandHandlerAdapter = std::make_shared<CommandHandlerAdapter>(commandHandler);
     auto applicationAdapter = std::make_shared<OutstationApplicationAdapter>(application);
 

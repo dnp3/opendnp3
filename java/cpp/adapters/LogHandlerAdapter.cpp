@@ -24,7 +24,7 @@
 
 using namespace jni;
 
-LogHandlerAdapter::LogHandlerAdapter(jobject proxy) : proxy(proxy) {}
+LogHandlerAdapter::LogHandlerAdapter(jni::JLogHandler proxy) : proxy(proxy) {}
 
 void LogHandlerAdapter::log(log4cpp::ModuleId module,
                                      const char* id,
@@ -38,7 +38,7 @@ void LogHandlerAdapter::log(log4cpp::ModuleId module,
     LocalJString jlocation(env, location);
     LocalJString jmessage(env, message);
 
-    auto jentry = JCache::LogEntry.init4(env, level.value, jid, jlocation, jmessage);
+    auto jentry = JCache::LogEntry.construct(env, level.value, jid.get(), jlocation.get(), jmessage.get());
 
     JCache::LogHandler.log(env, proxy, jentry);
 }

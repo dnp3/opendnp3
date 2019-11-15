@@ -62,19 +62,19 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jdouble AnalogOutputStatusConfig::getdeadband(JNIEnv* env, jobject instance)
+        jdouble AnalogOutputStatusConfig::getdeadband(JNIEnv* env, JAnalogOutputStatusConfig instance)
         {
             return env->GetDoubleField(instance, this->deadbandField);
         }
 
-        LocalRef<jobject> AnalogOutputStatusConfig::geteventVariation(JNIEnv* env, jobject instance)
+        LocalRef<JEventAnalogOutputStatusVariation> AnalogOutputStatusConfig::geteventVariation(JNIEnv* env, JAnalogOutputStatusConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->eventVariationField));
+            return LocalRef<JEventAnalogOutputStatusVariation>(env, env->GetObjectField(instance, this->eventVariationField));
         }
 
-        LocalRef<jobject> AnalogOutputStatusConfig::getstaticVariation(JNIEnv* env, jobject instance)
+        LocalRef<JStaticAnalogOutputStatusVariation> AnalogOutputStatusConfig::getstaticVariation(JNIEnv* env, JAnalogOutputStatusConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->staticVariationField));
+            return LocalRef<JStaticAnalogOutputStatusVariation>(env, env->GetObjectField(instance, this->staticVariationField));
         }
     }
 }
