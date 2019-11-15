@@ -28,12 +28,6 @@ import java.time.Duration;
  */
 public class OutstationConfig {
 
-
-    /**
-     * Controls the index mode
-     */
-    public IndexMode indexMode = IndexMode.Contiguous;
-
     /**
      * The maximum number of controls the outstation will attempt to process from a single APDU
      */

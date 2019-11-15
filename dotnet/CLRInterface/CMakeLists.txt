@@ -98,7 +98,6 @@ src/gen/FunctionCode.cs
 src/gen/GroupVariation.cs
 src/gen/IINField.cs
 src/gen/ILinkStatusListener.cs
-src/gen/IndexMode.cs
 src/gen/IndexQualifierMode.cs
 src/gen/IntervalUnits.cs
 src/gen/KeyChangeMethod.cs

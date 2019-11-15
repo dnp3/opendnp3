@@ -558,15 +558,6 @@ namespace jni
         jobject value;
     };
 
-    struct JIndexMode
-    {
-        JIndexMode(jobject value) : value(value) {}
-
-        operator jobject() const { return value; }
-
-        jobject value;
-    };
-
     struct JIndexQualifierMode
     {
         JIndexQualifierMode(jobject value) : value(value) {}

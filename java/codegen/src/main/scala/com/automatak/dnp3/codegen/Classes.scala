@@ -33,7 +33,6 @@ object Classes {
   private def listConstructors = ConstructorFilter.withParamTypes(List("int"))
 
   private def enumerations : List[ClassConfig] = List(
-    classOf[IndexMode],
     classOf[EventMode],
     classOf[GroupVariation],
     classOf[QualifierCode],

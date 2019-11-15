@@ -53,7 +53,6 @@ namespace jni
 
             // field getter methods
             jboolean getallowUnsolicited(JNIEnv* env, JOutstationConfig instance);
-            LocalRef<JIndexMode> getindexMode(JNIEnv* env, JOutstationConfig instance);
             jshort getmaxControlsPerRequest(JNIEnv* env, JOutstationConfig instance);
             jint getmaxRxFragSize(JNIEnv* env, JOutstationConfig instance);
             jint getmaxTxFragSize(JNIEnv* env, JOutstationConfig instance);
@@ -67,7 +66,6 @@ namespace jni
             jclass clazz = nullptr;
 
             // field ids
-            jfieldID indexModeField = nullptr;
             jfieldID maxControlsPerRequestField = nullptr;
             jfieldID selectTimeoutField = nullptr;
             jfieldID solConfirmTimeoutField = nullptr;

@@ -42,9 +42,6 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->indexModeField = env->GetFieldID(this->clazz, "indexMode", "Lcom/automatak/dnp3/enums/IndexMode;");
-            if(!this->indexModeField) return false;
-
             this->maxControlsPerRequestField = env->GetFieldID(this->clazz, "maxControlsPerRequest", "S");
             if(!this->maxControlsPerRequestField) return false;
 
@@ -80,11 +77,6 @@ namespace jni
         jboolean OutstationConfig::getallowUnsolicited(JNIEnv* env, JOutstationConfig instance)
         {
             return env->GetBooleanField(instance, this->allowUnsolicitedField);
-        }
-
-        LocalRef<JIndexMode> OutstationConfig::getindexMode(JNIEnv* env, JOutstationConfig instance)
-        {
-            return LocalRef<JIndexMode>(env, env->GetObjectField(instance, this->indexModeField));
         }
 
         jshort OutstationConfig::getmaxControlsPerRequest(JNIEnv* env, JOutstationConfig instance)
