@@ -73,7 +73,7 @@ struct JString {
 
     jstring value;
 
-    operator const jstring() const
+    operator jstring() const
     {
         return value;
     }
