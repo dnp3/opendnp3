@@ -29,7 +29,6 @@ commands:
             if [ "<< parameters.compiler >>" = "gcc" ]; then c_compiler="gcc" && cxx_compiler="g++"; else c_compiler="clang" && cxx_compiler="clang++"; fi &&
             cmake
             -DDNP3_EVERYTHING=ON
-            -DDNP3_COVERAGE=ON
             -DCMAKE_BUILD_TYPE=<< parameters.build_type >>
             -DCMAKE_C_COMPILER="${c_compiler}"
             -DCMAKE_CXX_COMPILER="${cxx_compiler}"
@@ -46,6 +45,7 @@ commands:
             name: Code coverage
             working_directory: build
             command: >
+              cmake -DDNP3_COVERAGE=ON . &&
               cmake --build . --target coverage &&
               bash <(curl -s https://codecov.io/bash) -f coverage.info.cleaned
   test:
