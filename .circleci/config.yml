@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  win: circleci/windows@1.0.0
 commands:
   install_system_deps:
     description: Install system dependencies
@@ -68,7 +70,7 @@ commands:
             export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::") &&
             mvn verify
 jobs:
-  build-gcc-debug:
+  gcc-debug:
     docker:
       - image: debian:buster
     steps:
@@ -79,7 +81,7 @@ jobs:
           build_type: Debug
           coverage: "ON"
       - coverage
-  build-gcc-release:
+  gcc-release:
     docker:
       - image: debian:buster
     steps:
@@ -89,7 +91,7 @@ jobs:
           compiler: gcc
           build_type: Release
       - test
-  build-clang-debug:
+  clang-debug:
     docker:
       - image: debian:buster
     steps:
@@ -99,7 +101,7 @@ jobs:
           compiler: clang
           build_type: Debug
       - test
-  build-clang-release:
+  clang-release:
     docker:
       - image: debian:buster
     steps:
@@ -109,11 +111,41 @@ jobs:
           compiler: clang
           build_type: Release
       - test
+  windows:
+    executor:
+      name: win/vs2019
+      shell: powershell.exe
+    steps:
+      - run:
+          name: Install system dependencies
+          command: choco install cmake openssl openjdk maven; refreshenv
+      - checkout
+      - run:
+          name: CMake configure
+          working_directory: build
+          command: >
+            cmake
+            -DDNP3_EVERYTHING=ON
+            -DCMAKE_BUILD_TYPE=Release
+            ..
+      - run:
+          name: CMake build
+          working_directory: build
+          command: cmake --build . --config Release --parallel 4
+      - run:
+          name: Run the C++ unit tests
+          working_directory: build
+          command: ctest -VV
+      - run:
+          name: Run the Java unit tests
+          working_directory: java
+          command: mvn verify
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - build-gcc-debug
-      - build-gcc-release
-      - build-clang-debug
-      - build-clang-release
+      #- gcc-debug
+      #- gcc-release
+      #- clang-debug
+      #- clang-release
+      - windows
