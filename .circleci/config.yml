@@ -19,6 +19,11 @@ commands:
         description: The compiler to use
         type: enum
         enum: ["gcc", "clang"]
+      coverage:
+        description: Build with coverage support
+        type: enum
+        enum: ["ON", "OFF"]
+        default: "OFF"
     steps:
       - run:
           name: CMake configure
@@ -29,6 +34,7 @@ commands:
             if [ "<< parameters.compiler >>" = "gcc" ]; then c_compiler="gcc" && cxx_compiler="g++"; else c_compiler="clang" && cxx_compiler="clang++"; fi &&
             cmake
             -DDNP3_EVERYTHING=ON
+            -DDNP3_COVERAGE=<< parameters.coverage >>
             -DCMAKE_BUILD_TYPE=<< parameters.build_type >>
             -DCMAKE_C_COMPILER="${c_compiler}"
             -DCMAKE_CXX_COMPILER="${cxx_compiler}"
@@ -37,17 +43,16 @@ commands:
       - run:
           name: CMake build
           working_directory: build
-          command: cmake --build . --parallel 4
+          command: >
+            if [ "<< parameters.coverage >>" = "ON" ]; then target="coverage"; else target="all"; fi &&
+            cmake --build . --target ${target} --parallel 4
   coverage:
       description: Code coverage
       steps:
         - run:
             name: Code coverage
             working_directory: build
-            command: >
-              cmake -DDNP3_COVERAGE=ON . &&
-              cmake --build . --target coverage &&
-              bash <(curl -s https://codecov.io/bash) -f coverage.info.cleaned
+            command: bash <(curl -s https://codecov.io/bash) -f coverage.info.cleaned
   test:
     description: Run the unit tests
     steps:
@@ -72,8 +77,8 @@ jobs:
       - build:
           compiler: gcc
           build_type: Debug
+          coverage: "ON"
       - coverage
-      - test
   build-gcc-release:
     docker:
       - image: debian:buster
