@@ -33,13 +33,13 @@ namespace Automatak.DNP3.Interface
         /// </summary>        
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-        public MeasurementBase(byte quality, DateTime time)
+        public MeasurementBase(Flags quality, DateTime time)
         {
             this.quality = quality;
             this.time = time;            
         }
 
-        public MeasurementBase(byte quality)
+        public MeasurementBase(Flags quality)
         {
             this.quality = quality;
             this.time = DateTime.MinValue;
@@ -47,11 +47,11 @@ namespace Automatak.DNP3.Interface
 
         public MeasurementBase()
         {
-            this.quality = 0;
+            this.quality = new Flags();
             this.time = DateTime.MinValue;
         }
 
-        public byte Quality
+        public Flags Quality
         {
             get
             {
@@ -77,10 +77,10 @@ namespace Automatak.DNP3.Interface
 
         public override string ToString()
         {            
-            return "quality: " + quality.ToString("X") + " time: " + time.ToString();
+            return "quality: " + quality.Value.ToString("X") + " time: " + time.ToString();
         }
 
-        byte quality;
+        Flags quality;
         DateTime time;        
     }
 
@@ -95,12 +95,12 @@ namespace Automatak.DNP3.Interface
         /// </summary>        
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-        public TypedMeasurementBase(T value, byte quality, DateTime time) :  base(quality, time)
+        public TypedMeasurementBase(T value, Flags quality, DateTime time) :  base(quality, time)
         {
             this.value = value;         
         }
 
-        public TypedMeasurementBase(T value, byte quality) :  base(quality)            
+        public TypedMeasurementBase(T value, Flags quality) :  base(quality)            
         {
             this.value = value;
         }

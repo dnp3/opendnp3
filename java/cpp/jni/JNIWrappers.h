@@ -495,6 +495,15 @@ namespace jni
         jobject value;
     };
 
+    struct JFlags
+    {
+        JFlags(jobject value) : value(value) {}
+
+        operator jobject() const { return value; }
+
+        jobject value;
+    };
+
     struct JFrozenCounter
     {
         JFrozenCounter(jobject value) : value(value) {}

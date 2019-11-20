@@ -142,6 +142,8 @@ set(all_sources
     ./cpp/jni/JNIEventFrozenCounterVariation.h
     ./cpp/jni/JNIEventMode.h
     ./cpp/jni/JNIEventMode.cpp
+    ./cpp/jni/JNIFlags.cpp
+    ./cpp/jni/JNIFlags.h
     ./cpp/jni/JNIFrozenCounter.cpp
     ./cpp/jni/JNIFrozenCounter.h
     ./cpp/jni/JNIFrozenCounterConfig.cpp

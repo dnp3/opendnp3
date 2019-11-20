@@ -29,39 +29,41 @@
 // limitations under the License.
 //
 
-#ifndef OPENDNP3JAVA_JNICOUNTER_H
-#define OPENDNP3JAVA_JNICOUNTER_H
-
-#include "../adapters/LocalRef.h"
-
-#include "JNIWrappers.h"
+#include "JNIFlags.h"
 
 namespace jni
 {
-    struct JCache;
-
     namespace cache
     {
-        class Counter
+        bool Flags::init(JNIEnv* env)
         {
-            friend struct jni::JCache;
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/Flags;");
+            if(!clazzTemp) return false;
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-            bool init(JNIEnv* env);
-            void cleanup(JNIEnv* env);
+            this->constructor0 = env->GetMethodID(this->clazz, "<init>", "()V");
+            if(!this->constructor0) return false;
 
-            public:
+            this->constructor1 = env->GetMethodID(this->clazz, "<init>", "(B)V");
+            if(!this->constructor1) return false;
 
-            // constructor methods
-            LocalRef<JCounter> construct(JNIEnv* env, jlong arg0, JFlags arg1, jlong arg2);
+            return true;
+        }
 
-            private:
+        void Flags::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
 
-            jclass clazz = nullptr;
+        LocalRef<JFlags> Flags::construct(JNIEnv* env)
+        {
+            return LocalRef<JFlags>(env, JFlags(env->NewObject(this->clazz, this->constructor0)));
+        }
 
-            // constructor method ids
-            jmethodID constructor0 = nullptr;
-        };
+        LocalRef<JFlags> Flags::construct(JNIEnv* env, jbyte arg0)
+        {
+            return LocalRef<JFlags>(env, JFlags(env->NewObject(this->clazz, this->constructor1, arg0)));
+        }
     }
 }
-
-#endif

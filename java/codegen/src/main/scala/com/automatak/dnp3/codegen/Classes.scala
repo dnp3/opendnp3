@@ -110,6 +110,7 @@ object Classes {
     ClassConfig(classOf[HeaderInfo], Set(Features.Constructors)),
     ClassConfig(classOf[ResponseInfo], Set(Features.Constructors)),
     ClassConfig(classOf[IndexedValue[_]], Set(Features.Constructors, Features.Fields)),
+    ClassConfig(classOf[Flags], Set(Features.Constructors)),
     ClassConfig(classOf[BinaryInput], Set(Features.Constructors)),
     ClassConfig(classOf[DoubleBitBinaryInput], Set(Features.Constructors)),
     ClassConfig(classOf[AnalogInput], Set(Features.Constructors)),

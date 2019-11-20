@@ -29,7 +29,7 @@ public class DoubleBitBinaryInput extends Measurement
 {
     public final DoubleBit value;
 
-    public DoubleBitBinaryInput(DoubleBit value, byte quality, long timestamp)
+    public DoubleBitBinaryInput(DoubleBit value, Flags quality, long timestamp)
     {
         super(quality, timestamp);
         this.value = value;

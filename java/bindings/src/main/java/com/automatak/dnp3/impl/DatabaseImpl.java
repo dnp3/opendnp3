@@ -83,25 +83,25 @@ public class DatabaseImpl implements Database {
     @Override
     public void update(BinaryInput value, int index, EventMode mode)
     {
-        this.update_binary_native(this.nativeDatabase, value.value, value.quality, value.timestamp, index, mode.toType());
+        this.update_binary_native(this.nativeDatabase, value.value, value.quality.getValue(), value.timestamp, index, mode.toType());
     }
 
     @Override
     public void update(DoubleBitBinaryInput value, int index, EventMode mode)
     {
-        this.update_double_binary_native(this.nativeDatabase, value.value.toType(), value.quality, value.timestamp, index, mode.toType());
+        this.update_double_binary_native(this.nativeDatabase, value.value.toType(), value.quality.getValue(), value.timestamp, index, mode.toType());
     }
 
     @Override
     public void update(AnalogInput value, int index, EventMode mode)
     {
-        this.update_analog_native(this.nativeDatabase, value.value, value.quality, value.timestamp, index, mode.toType());
+        this.update_analog_native(this.nativeDatabase, value.value, value.quality.getValue(), value.timestamp, index, mode.toType());
     }
 
     @Override
     public void update(Counter value, int index, EventMode mode)
     {
-        this.update_counter_native(this.nativeDatabase, value.value, value.quality, value.timestamp, index, mode.toType());
+        this.update_counter_native(this.nativeDatabase, value.value, value.quality.getValue(), value.timestamp, index, mode.toType());
     }
 
     @Override
@@ -113,13 +113,13 @@ public class DatabaseImpl implements Database {
     @Override
     public void update(BinaryOutputStatus value, int index, EventMode mode)
     {
-        this.update_bo_status_native(this.nativeDatabase, value.value, value.quality, value.timestamp, index, mode.toType());
+        this.update_bo_status_native(this.nativeDatabase, value.value, value.quality.getValue(), value.timestamp, index, mode.toType());
     }
 
     @Override
     public void update(AnalogOutputStatus value, int index, EventMode mode)
     {
-        this.update_ao_status_native(this.nativeDatabase, value.value, value.quality, value.timestamp, index, mode.toType());
+        this.update_ao_status_native(this.nativeDatabase, value.value, value.quality.getValue(), value.timestamp, index, mode.toType());
     }
 
     private native void update_binary_native(long nativePointer, boolean value, byte flags, long time, int index, int mode);
