@@ -27,9 +27,10 @@ set(unittests_src
     ./TestCollectionTransform.cpp
     ./TestCRC.cpp
     ./TestEventStorage.cpp
+    ./TestFlags.cpp
     ./TestGroup120Var1.cpp
     ./TestGroup120Var2.cpp
-    ./TestGroup120Var5.cpp    
+    ./TestGroup120Var5.cpp
     ./TestIPEndpointsList.cpp
     ./TestLinkAddresses.cpp
     ./TestLinkFrame.cpp
@@ -59,7 +60,7 @@ set(unittests_src
     ./TestTransportLayer.cpp
     ./TestTypedCommandHeader.cpp
     ./TestUpdateBuilder.cpp
-    ./TestWriteConversions.cpp   	
+    ./TestWriteConversions.cpp
 
     ./utils/APDUHelpers.cpp
     ./utils/APDUHexBuilders.cpp

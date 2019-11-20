@@ -39,6 +39,10 @@ public:
     {
         return IsSetAny(flag);
     }
+    inline bool IsSet(DoubleBitBinaryQuality flag) const
+    {
+        return IsSetAny(flag);
+    }
     inline bool IsSet(AnalogQuality flag) const
     {
         return IsSetAny(flag);
@@ -61,6 +65,10 @@ public:
     }
 
     inline void Set(BinaryQuality flag)
+    {
+        SetAny(flag);
+    }
+    inline void Set(DoubleBitBinaryQuality flag)
     {
         SetAny(flag);
     }
