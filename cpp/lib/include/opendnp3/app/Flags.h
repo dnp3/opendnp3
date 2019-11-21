@@ -20,7 +20,13 @@
 #ifndef OPENDNP3_FLAGS_H
 #define OPENDNP3_FLAGS_H
 
-#include "opendnp3/app/QualityMasks.h"
+#include "opendnp3/gen/AnalogOutputStatusQuality.h"
+#include "opendnp3/gen/AnalogQuality.h"
+#include "opendnp3/gen/BinaryOutputStatusQuality.h"
+#include "opendnp3/gen/BinaryQuality.h"
+#include "opendnp3/gen/CounterQuality.h"
+#include "opendnp3/gen/DoubleBitBinaryQuality.h"
+#include "opendnp3/gen/FrozenCounterQuality.h"
 
 namespace opendnp3
 {

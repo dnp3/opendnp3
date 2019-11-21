@@ -52,7 +52,7 @@ namespace jni
             public:
 
             // constructor methods
-            LocalRef<JAnalogOutputStatus> construct(JNIEnv* env, jdouble arg0, jbyte arg1, jlong arg2);
+            LocalRef<JAnalogOutputStatus> construct(JNIEnv* env, jdouble arg0, JFlags arg1, jlong arg2);
 
             private:
 

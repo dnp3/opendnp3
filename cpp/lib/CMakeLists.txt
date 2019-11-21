@@ -27,7 +27,6 @@ set(opendnp3_public_headers
     ./include/opendnp3/app/MeasurementTypes.h
     ./include/opendnp3/app/OctetData.h
     ./include/opendnp3/app/OctetString.h
-    ./include/opendnp3/app/QualityMasks.h
     ./include/opendnp3/app/SecurityStat.h
 
     ./include/opendnp3/app/parsing/ICollection.h

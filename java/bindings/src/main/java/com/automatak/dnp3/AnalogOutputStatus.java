@@ -27,7 +27,7 @@ public class AnalogOutputStatus extends Measurement
 {
     public final double value;
 
-    public AnalogOutputStatus(double value, byte quality, long timestamp)
+    public AnalogOutputStatus(double value, Flags quality, long timestamp)
     {
         super(quality, timestamp);
         this.value = value;

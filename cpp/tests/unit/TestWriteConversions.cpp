@@ -17,7 +17,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <opendnp3/app/QualityMasks.h>
+#include <opendnp3/gen/AnalogQuality.h>
 #include <app/WriteConversions.h>
 
 #include <catch.hpp>
@@ -31,8 +31,8 @@ TEST_CASE(SUITE("Group30Var2ConvertsWithinRange"))
     Analog a(12);
     auto gv = ConvertGroup30Var2::Apply(a);
 
-    REQUIRE(gv.value == 12);
-    REQUIRE(gv.flags == ToUnderlying(AnalogQuality::ONLINE));
+    CHECK(gv.value == 12);
+    CHECK(gv.flags == AnalogQualitySpec::to_type(AnalogQuality::ONLINE));
 }
 
 TEST_CASE(SUITE("Group30Var2ConvertsOverrange"))
@@ -40,8 +40,8 @@ TEST_CASE(SUITE("Group30Var2ConvertsOverrange"))
     Analog a(32768);
     auto gv = ConvertGroup30Var2::Apply(a);
 
-    REQUIRE(gv.value == 32767);
-    REQUIRE(gv.flags == (ToUnderlying(AnalogQuality::ONLINE) | ToUnderlying(AnalogQuality::OVERRANGE)));
+    CHECK(gv.value == 32767);
+    CHECK(gv.flags == (AnalogQualitySpec::to_type(AnalogQuality::ONLINE) | AnalogQualitySpec::to_type(AnalogQuality::OVERRANGE)));
 }
 
 TEST_CASE(SUITE("Group30Var2ConvertsUnderrange"))
@@ -49,6 +49,6 @@ TEST_CASE(SUITE("Group30Var2ConvertsUnderrange"))
     Analog a(-32769);
     auto gv = ConvertGroup30Var2::Apply(a);
 
-    REQUIRE(gv.value == -32768);
-    REQUIRE(gv.flags == (ToUnderlying(AnalogQuality::ONLINE) | ToUnderlying(AnalogQuality::OVERRANGE)));
+    CHECK(gv.value == -32768);
+    CHECK(gv.flags == (AnalogQualitySpec::to_type(AnalogQuality::ONLINE) | AnalogQualitySpec::to_type(AnalogQuality::OVERRANGE)));
 }

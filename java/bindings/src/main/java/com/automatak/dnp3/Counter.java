@@ -27,7 +27,7 @@ public class Counter extends Measurement
 {
     public final long value;
 
-    public Counter(long value, byte quality, long timestamp)
+    public Counter(long value, Flags quality, long timestamp)
     {
         super(quality, timestamp);
         this.value = value;

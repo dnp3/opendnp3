@@ -52,7 +52,7 @@ namespace jni
             public:
 
             // constructor methods
-            LocalRef<JDoubleBitBinaryInput> construct(JNIEnv* env, JDoubleBit arg0, jbyte arg1, jlong arg2);
+            LocalRef<JDoubleBitBinaryInput> construct(JNIEnv* env, JDoubleBit arg0, JFlags arg1, jlong arg2);
 
             private:
 

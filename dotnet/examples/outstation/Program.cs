@@ -66,8 +66,16 @@ namespace DotNetOutstationDemo
 
                             // create a changeset and load it 
                             var changeset = new ChangeSet();
-                            changeset.Update(new Binary(binaryValue, 1, DateTime.Now), 0);
-                            changeset.Update(new Analog(analogValue, 1, DateTime.Now), 0);
+
+                            var binaryFlags = new Flags();
+                            binaryFlags.Set(BinaryQuality.ONLINE);
+
+                            var analogFlags = new Flags();
+                            analogFlags.Set(AnalogQuality.ONLINE);
+
+
+                            changeset.Update(new Binary(binaryValue, binaryFlags, DateTime.Now), 0);
+                            changeset.Update(new Analog(analogValue, analogFlags, DateTime.Now), 0);
                             outstation.Load(changeset);
                         }
                         break;

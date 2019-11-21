@@ -29,8 +29,8 @@
 // limitations under the License.
 //
 
-#ifndef OPENDNP3JAVA_JNICOUNTER_H
-#define OPENDNP3JAVA_JNICOUNTER_H
+#ifndef OPENDNP3JAVA_JNIFLAGS_H
+#define OPENDNP3JAVA_JNIFLAGS_H
 
 #include "../adapters/LocalRef.h"
 
@@ -42,7 +42,7 @@ namespace jni
 
     namespace cache
     {
-        class Counter
+        class Flags
         {
             friend struct jni::JCache;
 
@@ -52,7 +52,8 @@ namespace jni
             public:
 
             // constructor methods
-            LocalRef<JCounter> construct(JNIEnv* env, jlong arg0, JFlags arg1, jlong arg2);
+            LocalRef<JFlags> construct(JNIEnv* env);
+            LocalRef<JFlags> construct(JNIEnv* env, jbyte arg0);
 
             private:
 
@@ -60,6 +61,7 @@ namespace jni
 
             // constructor method ids
             jmethodID constructor0 = nullptr;
+            jmethodID constructor1 = nullptr;
         };
     }
 }

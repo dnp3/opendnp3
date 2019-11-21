@@ -85,6 +85,7 @@
 #include "JNIEventDoubleBinaryVariation.h"
 #include "JNIEventFrozenCounterVariation.h"
 #include "JNIEventMode.h"
+#include "JNIFlags.h"
 #include "JNIFrozenCounter.h"
 #include "JNIFrozenCounterConfig.h"
 #include "JNIGroupVariation.h"
@@ -197,6 +198,7 @@ namespace jni
         static cache::EventDoubleBinaryVariation EventDoubleBinaryVariation;
         static cache::EventFrozenCounterVariation EventFrozenCounterVariation;
         static cache::EventMode EventMode;
+        static cache::Flags Flags;
         static cache::FrozenCounter FrozenCounter;
         static cache::FrozenCounterConfig FrozenCounterConfig;
         static cache::GroupVariation GroupVariation;

@@ -84,6 +84,7 @@ namespace jni
     cache::EventDoubleBinaryVariation JCache::EventDoubleBinaryVariation;
     cache::EventFrozenCounterVariation JCache::EventFrozenCounterVariation;
     cache::EventMode JCache::EventMode;
+    cache::Flags JCache::Flags;
     cache::FrozenCounter JCache::FrozenCounter;
     cache::FrozenCounterConfig JCache::FrozenCounterConfig;
     cache::GroupVariation JCache::GroupVariation;
@@ -191,6 +192,7 @@ namespace jni
         && EventDoubleBinaryVariation.init(env)
         && EventFrozenCounterVariation.init(env)
         && EventMode.init(env)
+        && Flags.init(env)
         && FrozenCounter.init(env)
         && FrozenCounterConfig.init(env)
         && GroupVariation.init(env)
@@ -300,6 +302,7 @@ namespace jni
         EventDoubleBinaryVariation.cleanup(env);
         EventFrozenCounterVariation.cleanup(env);
         EventMode.cleanup(env);
+        Flags.cleanup(env);
         FrozenCounter.cleanup(env);
         FrozenCounterConfig.cleanup(env);
         GroupVariation.cleanup(env);

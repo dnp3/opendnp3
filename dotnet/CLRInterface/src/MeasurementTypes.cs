@@ -23,46 +23,6 @@ using System.Text;
 
 namespace Automatak.DNP3.Interface
 {
-    public static class Flags
-    {
-        public const byte ONLINE = 0x01;
-        public const byte RESTART = 0x02;
-
-        const byte DoubleValueMask = 0xC0;
-        const byte DoubleQualityMask = 0x3F;
-
-        public static byte FromBinaryValue(bool value, byte quality)
-        {
-            if (value)
-            {
-                return (byte) (quality | ((byte) BinaryQuality.STATE));
-            }
-            else
-            { 
-                return (byte) (quality & ~((byte) BinaryQuality.STATE));
-            }
-        }
-
-        public static bool ToBinaryValue(byte quality)
-        {
-            return (quality & ((byte)BinaryQuality.STATE)) != 0;
-        }
-
-        public static byte FromDoubleBitValue(byte quality, DoubleBit state)
-        {
-	        byte value = (byte) (((byte)(state)) << 6);
-            return (byte) ((DoubleQualityMask & quality) | value);
-        }
-
-        public static DoubleBit ToDoubleBitValue(byte quality)
-        {
-	        // the value is the top 2 bits, so downshift 6
-	        byte value = (byte) ((quality >> 6) & 0xFF);
-	        return (DoubleBit) value;
-        }
-      
-    }
-
     /// <summary>
     /// A boolean measurement type (i.e. whether a switch is open/closed)
     /// </summary>
@@ -74,8 +34,8 @@ namespace Automatak.DNP3.Interface
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-	    public Binary(bool value, byte quality, DateTime time) :
-            base(value, Flags.FromBinaryValue(value, quality), time)
+	    public Binary(bool value, Flags quality, DateTime time) :
+            base(value, quality, time)
 	    {}
 
         /// <summary>
@@ -83,15 +43,15 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
-        public Binary(bool value, byte quality) :
-            base(value, Flags.FromBinaryValue(value, quality))
+        public Binary(bool value, Flags quality) :
+            base(value, quality)
         {}
 
         /// <summary>
         /// Constructor with only quality
         /// </summary>
         /// <param name="quality"></param>
-        public Binary(byte quality) : base(Flags.ToBinaryValue(quality), quality)
+        public Binary(Flags quality) : base(quality.ToBinaryValue(), quality)
         { }       
     }
 
@@ -106,8 +66,8 @@ namespace Automatak.DNP3.Interface
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-	    public DoubleBitBinary(DoubleBit value, byte quality, DateTime time) : 
-            base(value, Flags.FromDoubleBitValue(quality, value), time)
+	    public DoubleBitBinary(DoubleBit value, Flags quality, DateTime time) : 
+            base(value, quality, time)
 	    {}
 
         /// <summary>
@@ -115,8 +75,8 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
-        public DoubleBitBinary(DoubleBit value, byte quality) :
-            base(value, Flags.FromDoubleBitValue(quality, value))
+        public DoubleBitBinary(DoubleBit value, Flags quality) :
+            base(value, quality)
         {}
 
         /// <summary>
@@ -125,8 +85,8 @@ namespace Automatak.DNP3.Interface
         /// <param name="value"></param>
         /// <param name="quality"></param>
         /// <param name="time"></param>
-        public DoubleBitBinary(byte quality)
-            : base(Flags.ToDoubleBitValue(quality), quality)
+        public DoubleBitBinary(Flags quality)
+            : base(quality.ToDoubleBitValue(), quality)
         { }
     }
 
@@ -141,7 +101,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-        public Analog(double value, byte quality, DateTime time)
+        public Analog(double value, Flags quality, DateTime time)
             : base(value, quality, time)
 	    {}
 
@@ -150,14 +110,14 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
-        public Analog(double value, byte quality) : base(value, quality)
+        public Analog(double value, Flags quality) : base(value, quality)
         {}
 
         /// <summary>
         /// Constructor with only quality
         /// </summary>
         /// <param name="quality"></param>
-        public Analog(byte quality) : base(0.0, quality)
+        public Analog(Flags quality) : base(0.0, quality)
         { }
     }
 
@@ -173,7 +133,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-        public Counter(System.UInt32 value, byte quality, DateTime time): base(value, quality, time)
+        public Counter(System.UInt32 value, Flags quality, DateTime time): base(value, quality, time)
 	    {}
 
         /// <summary>
@@ -181,14 +141,14 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
-        public Counter(System.UInt32 value, byte quality) : base(value, quality)
+        public Counter(System.UInt32 value, Flags quality) : base(value, quality)
         {}
 
         /// <summary>
         /// Constructor with only quality
         /// </summary>
         /// <param name="quality"></param>
-        public Counter(byte quality) : base(0, quality)
+        public Counter(Flags quality) : base(0, quality)
         { }
     }
 
@@ -204,7 +164,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-        public FrozenCounter(System.UInt32 value, byte quality, DateTime time): base(value, quality, time)
+        public FrozenCounter(System.UInt32 value, Flags quality, DateTime time): base(value, quality, time)
 	    {}
 
         /// <summary>
@@ -212,14 +172,14 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
-        public FrozenCounter(System.UInt32 value, byte quality) : base(value, quality)
+        public FrozenCounter(System.UInt32 value, Flags quality) : base(value, quality)
         {}
 
         /// <summary>
         /// Constructor with only quality
         /// </summary>
         /// <param name="quality"></param>
-        public FrozenCounter(byte quality) : base(0, quality)
+        public FrozenCounter(Flags quality) : base(0, quality)
         { }
     }
 
@@ -235,8 +195,8 @@ namespace Automatak.DNP3.Interface
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-	    public BinaryOutputStatus(bool value, byte quality, DateTime time) :
-            base(value, Flags.FromBinaryValue(value, quality), time)
+	    public BinaryOutputStatus(bool value, Flags quality, DateTime time) :
+            base(value, quality, time)
 	    {}
 
         /// <summary>
@@ -244,16 +204,16 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
-        public BinaryOutputStatus(bool value, byte quality) :
-            base(value, Flags.FromBinaryValue(value, quality))
+        public BinaryOutputStatus(bool value, Flags quality) :
+            base(value, quality)
         {}
 
         /// <summary>
         /// Constructor with only quality
         /// </summary>
         /// <param name="quality"></param>
-        public BinaryOutputStatus(byte quality)
-            : base(Flags.ToBinaryValue(quality), quality)
+        public BinaryOutputStatus(Flags quality)
+            : base(quality.ToBinaryValue(), quality)
         { }
     };
 
@@ -269,7 +229,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-        public AnalogOutputStatus(double value, byte quality, DateTime time) : base(value, quality, time)
+        public AnalogOutputStatus(double value, Flags quality, DateTime time) : base(value, quality, time)
 	    {}
 
         /// <summary>
@@ -277,14 +237,14 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
-        public AnalogOutputStatus(double value, byte quality): base(value, quality)
+        public AnalogOutputStatus(double value, Flags quality): base(value, quality)
         {}
 
          /// <summary>
         /// Constructor with only quality
         /// </summary>
         /// <param name="quality"></param>
-        public AnalogOutputStatus(byte quality) : base(0.0, quality)
+        public AnalogOutputStatus(Flags quality) : base(0.0, quality)
         { }
     }
 
@@ -365,7 +325,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-        public SecurityStat(uint value, ushort assocId, byte quality, DateTime time)
+        public SecurityStat(uint value, ushort assocId, Flags quality, DateTime time)
             : base(value, quality, time)
         {
             this.assocId = assocId;

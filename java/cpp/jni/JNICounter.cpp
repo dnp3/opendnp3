@@ -42,7 +42,7 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->constructor0 = env->GetMethodID(this->clazz, "<init>", "(JBJ)V");
+            this->constructor0 = env->GetMethodID(this->clazz, "<init>", "(JLcom/automatak/dnp3/Flags;J)V");
             if(!this->constructor0) return false;
 
             return true;
@@ -53,7 +53,7 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<JCounter> Counter::construct(JNIEnv* env, jlong arg0, jbyte arg1, jlong arg2)
+        LocalRef<JCounter> Counter::construct(JNIEnv* env, jlong arg0, JFlags arg1, jlong arg2)
         {
             return LocalRef<JCounter>(env, JCounter(env->NewObject(this->clazz, this->constructor0, arg0, arg1, arg2)));
         }

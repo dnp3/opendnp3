@@ -32,7 +32,7 @@ public class AnalogInput extends Measurement
      * @param quality       bit-field representing quality values
      * @param timestamp     milliseconds since unix epoch UTC
      */
-    public AnalogInput(double value, byte quality, long timestamp)
+    public AnalogInput(double value, Flags quality, long timestamp)
     {
         super(quality, timestamp);
         this.value = value;
