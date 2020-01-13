@@ -165,9 +165,9 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      #- gcc-debug
-      #- gcc-release
-      #- clang-debug
-      #- clang-release
+      - gcc-debug
+      - gcc-release
+      - clang-debug
+      - clang-release
       - windows-x86
       - windows-x64
