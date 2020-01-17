@@ -288,15 +288,6 @@ namespace jni
         jobject value;
     };
 
-    struct JControlCode
-    {
-        JControlCode(jobject value) : value(value) {}
-
-        operator jobject() const { return value; }
-
-        jobject value;
-    };
-
     struct JControlRelayOutputBlock
     {
         JControlRelayOutputBlock(jobject value) : value(value) {}
@@ -738,6 +729,15 @@ namespace jni
         jobject value;
     };
 
+    struct JOperationType
+    {
+        JOperationType(jobject value) : value(value) {}
+
+        operator jobject() const { return value; }
+
+        jobject value;
+    };
+
     struct JOutstationApplication
     {
         JOutstationApplication(jobject value) : value(value) {}
@@ -984,6 +984,15 @@ namespace jni
     struct JTransportStatistics
     {
         JTransportStatistics(jobject value) : value(value) {}
+
+        operator jobject() const { return value; }
+
+        jobject value;
+    };
+
+    struct JTripCloseCode
+    {
+        JTripCloseCode(jobject value) : value(value) {}
 
         operator jobject() const { return value; }
 

@@ -29,41 +29,41 @@
 // limitations under the License.
 //
 
-#include "JNIControlCode.h"
+#ifndef OPENDNP3JAVA_JNITRIPCLOSECODE_H
+#define OPENDNP3JAVA_JNITRIPCLOSECODE_H
+
+#include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
+    struct JCache;
+
     namespace cache
     {
-        bool ControlCode::init(JNIEnv* env)
+        class TripCloseCode
         {
-            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/enums/ControlCode;");
-            if(!clazzTemp) return false;
-            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
-            env->DeleteLocalRef(clazzTemp);
+            friend struct jni::JCache;
 
-            this->method0 = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/ControlCode;");
-            if(!this->method0) return false;
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
 
-            this->method1 = env->GetMethodID(this->clazz, "toType", "()I");
-            if(!this->method1) return false;
+            public:
 
-            return true;
-        }
+            // methods
+            LocalRef<JTripCloseCode> fromType(JNIEnv* env, jint arg0);
+            jint toType(JNIEnv* env, JTripCloseCode instance);
 
-        void ControlCode::cleanup(JNIEnv* env)
-        {
-            env->DeleteGlobalRef(this->clazz);
-        }
+            private:
 
-        LocalRef<JControlCode> ControlCode::fromType(JNIEnv* env, jint arg0)
-        {
-            return LocalRef<JControlCode>(env, env->CallStaticObjectMethod(this->clazz, this->method0, arg0));
-        }
+            jclass clazz = nullptr;
 
-        jint ControlCode::toType(JNIEnv* env, JControlCode instance)
-        {
-            return env->CallIntMethod(instance, this->method1);
-        }
+            // method ids
+            jmethodID method0 = nullptr;
+            jmethodID method1 = nullptr;
+        };
     }
 }
+
+#endif

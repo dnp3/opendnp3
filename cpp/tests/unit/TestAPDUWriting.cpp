@@ -176,7 +176,7 @@ TEST_CASE(SUITE("PrefixWriteIteratorWithSingleCROB"))
         auto iter = writer.IterateOverCountWithPrefix<UInt8, ControlRelayOutputBlock>(
             QualifierCode::UINT8_CNT_UINT8_INDEX, Group12Var1::Inst());
         REQUIRE(iter.IsValid());
-        ControlRelayOutputBlock crob(ControlCode::LATCH_ON, 0x1F, 0x10, 0xAA, CommandStatus::LOCAL);
+        ControlRelayOutputBlock crob(OperationType::LATCH_ON, TripCloseCode::NUL, false, 0x1F, 0x10, 0xAA, CommandStatus::LOCAL);
         REQUIRE(iter.Write(crob, 0x21));
     }
 
@@ -245,7 +245,7 @@ TEST_CASE(SUITE("SingleValueWithIndexCROBLatchOn"))
     APDURequest request(APDUHelpers::Request(FunctionCode::SELECT));
     auto writer = request.GetWriter();
 
-    ControlRelayOutputBlock crob(ControlCode::LATCH_ON, 0x1F, 0x10, 0xAA, CommandStatus::LOCAL);
+    ControlRelayOutputBlock crob(OperationType::LATCH_ON, TripCloseCode::NUL, false, 0x1F, 0x10, 0xAA, CommandStatus::LOCAL);
 
     REQUIRE(writer.WriteSingleIndexedValue<UInt16>(QualifierCode::UINT16_CNT, Group12Var1::Inst(), crob, 0x21));
 
@@ -257,7 +257,7 @@ TEST_CASE(SUITE("SingleValueWithIndexCROBLatchOff"))
     APDURequest request(APDUHelpers::Request(FunctionCode::SELECT));
     auto writer = request.GetWriter();
 
-    ControlRelayOutputBlock crob(ControlCode::LATCH_OFF, 0x1F, 0x10, 0xAA, CommandStatus::LOCAL);
+    ControlRelayOutputBlock crob(OperationType::LATCH_OFF, TripCloseCode::NUL, false, 0x1F, 0x10, 0xAA, CommandStatus::LOCAL);
 
     REQUIRE(writer.WriteSingleIndexedValue<UInt16>(QualifierCode::UINT16_CNT, Group12Var1::Inst(), crob, 0x21));
 

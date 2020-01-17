@@ -29,41 +29,66 @@
 // limitations under the License.
 //
 
-#ifndef OPENDNP3JAVA_JNICONTROLCODE_H
-#define OPENDNP3JAVA_JNICONTROLCODE_H
-
-#include "../adapters/LocalRef.h"
-
-#include "JNIWrappers.h"
-
-namespace jni
+package com.automatak.dnp3.enums;
+/**
+* Used in conjunction with Trip Close Code in a CROB to describe what action to perform
+* Refer to section A.8.1 of IEEE 1815-2012 for a full description
+*/
+public enum OperationType
 {
-    struct JCache;
+  /**
+  * Do nothing.
+  */
+  NUL(0x0),
+  /**
+  * Set output to active for the duration of the On-time.
+  */
+  PULSE_ON(0x1),
+  /**
+  * Non-interoperable code. Do not use for new applications.
+  */
+  PULSE_OFF(0x2),
+  /**
+  * Set output to active.
+  */
+  LATCH_ON(0x3),
+  /**
+  * Set the output to inactive.
+  */
+  LATCH_OFF(0x4),
+  /**
+  * Undefined.
+  */
+  Undefined(0xFF);
 
-    namespace cache
+  private final int id;
+
+  public int toType()
+  {
+    return id;
+  }
+
+  OperationType(int id)
+  {
+    this.id = id;
+  }
+
+  public static OperationType fromType(int arg)
+  {
+    switch(arg)
     {
-        class ControlCode
-        {
-            friend struct jni::JCache;
-
-            bool init(JNIEnv* env);
-            void cleanup(JNIEnv* env);
-
-            public:
-
-            // methods
-            LocalRef<JControlCode> fromType(JNIEnv* env, jint arg0);
-            jint toType(JNIEnv* env, JControlCode instance);
-
-            private:
-
-            jclass clazz = nullptr;
-
-            // method ids
-            jmethodID method0 = nullptr;
-            jmethodID method1 = nullptr;
-        };
+      case(0x0):
+        return NUL;
+      case(0x1):
+        return PULSE_ON;
+      case(0x2):
+        return PULSE_OFF;
+      case(0x3):
+        return LATCH_ON;
+      case(0x4):
+        return LATCH_OFF;
+      default:
+        return Undefined;
     }
+  }
 }
-
-#endif

@@ -33,19 +33,25 @@ namespace Automatak.DNP3.Interface
         /// <summary>
         /// Primary constructor
         /// </summary>
-        /// <param name="code">Enumeration that controls that behavior of the command</param>
+        /// <param name="opType">Enumeration that controls the behavior of the command</param>
+        /// <param name="tcc">Enumeration that controls the behavior of the command</param>
+        /// <param name="clear">Boolean that controls the behavior of the command</param>
         /// <param name="count">How many times to repeat the operation</param>
         /// <param name="onTime">How long to set the output active></param>
         /// <param name="offTime">How long to set the output inactive></param>
-        public ControlRelayOutputBlock(ControlCode code, byte count, System.UInt32 onTime, System.UInt32 offTime)
+        public ControlRelayOutputBlock(OperationType opType, TripCloseCode tcc, bool clear, byte count, System.UInt32 onTime, System.UInt32 offTime)
         {
-            this.code = code;
+            this.opType = opType;
+            this.tcc = tcc;
+            this.clear = clear;
             this.count = count;
             this.onTime = onTime;
             this.offTime = offTime;
         }
     
-        public readonly ControlCode code;
+        public readonly OperationType opType;
+        public readonly TripCloseCode tcc;
+        public readonly bool clear;
         public readonly byte count;
         public readonly System.UInt32 onTime;
         public readonly System.UInt32 offTime;

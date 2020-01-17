@@ -6,7 +6,7 @@ set(opendnp3_public_headers
     ./include/opendnp3/IResource.h
     ./include/opendnp3/IStack.h
     ./include/opendnp3/LogLevels.h
-    ./include/opendnp3/StackStatistics.h    
+    ./include/opendnp3/StackStatistics.h
 
     ./include/opendnp3/app/AnalogCommandEvent.h
     ./include/opendnp3/app/AnalogOutput.h
@@ -22,7 +22,7 @@ set(opendnp3_public_headers
     ./include/opendnp3/app/Flags.h
     ./include/opendnp3/app/GroupVariationID.h
     ./include/opendnp3/app/IINField.h
-    ./include/opendnp3/app/Indexed.h    
+    ./include/opendnp3/app/Indexed.h
     ./include/opendnp3/app/MeasurementInfo.h
     ./include/opendnp3/app/MeasurementTypes.h
     ./include/opendnp3/app/OctetData.h
@@ -57,7 +57,6 @@ set(opendnp3_public_headers
     ./include/opendnp3/gen/CommandPointState.h
     ./include/opendnp3/gen/CommandStatus.h
     ./include/opendnp3/gen/ConfigAuthMode.h
-    ./include/opendnp3/gen/ControlCode.h
     ./include/opendnp3/gen/CounterQuality.h
     ./include/opendnp3/gen/DoubleBit.h
     ./include/opendnp3/gen/DoubleBitBinaryQuality.h
@@ -86,6 +85,7 @@ set(opendnp3_public_headers
     ./include/opendnp3/gen/LinkStatus.h
     ./include/opendnp3/gen/MasterTaskType.h
     ./include/opendnp3/gen/OperateType.h
+    ./include/opendnp3/gen/OperationType.h
     ./include/opendnp3/gen/Parity.h
     ./include/opendnp3/gen/PointClass.h
     ./include/opendnp3/gen/QualifierCode.h
@@ -108,6 +108,7 @@ set(opendnp3_public_headers
     ./include/opendnp3/gen/TaskCompletion.h
     ./include/opendnp3/gen/TimestampQuality.h
     ./include/opendnp3/gen/TimeSyncMode.h
+    ./include/opendnp3/gen/TripCloseCode.h
     ./include/opendnp3/gen/UserOperation.h
     ./include/opendnp3/gen/UserRole.h
 
@@ -257,7 +258,6 @@ set(opendnp3_private_headers
     ./src/gen/CertificateTypeSerialization.h
     ./src/gen/ChallengeReasonSerialization.h
     ./src/gen/CommandStatusSerialization.h
-    ./src/gen/ControlCodeSerialization.h
     ./src/gen/DoubleBitSerialization.h
     ./src/gen/FlagsTypeSerialization.h
     ./src/gen/FlowControlSerialization.h
@@ -500,7 +500,6 @@ set(opendnp3_src
     ./src/gen/CommandPointState.cpp
     ./src/gen/CommandStatus.cpp
     ./src/gen/ConfigAuthMode.cpp
-    ./src/gen/ControlCode.cpp
     ./src/gen/CounterQuality.cpp
     ./src/gen/DoubleBit.cpp
     ./src/gen/DoubleBitBinaryQuality.cpp
@@ -529,6 +528,7 @@ set(opendnp3_src
     ./src/gen/LinkStatus.cpp
     ./src/gen/MasterTaskType.cpp
     ./src/gen/OperateType.cpp
+    ./src/gen/OperationType.cpp
     ./src/gen/Parity.cpp
     ./src/gen/PointClass.cpp
     ./src/gen/QualifierCode.cpp
@@ -551,6 +551,7 @@ set(opendnp3_src
     ./src/gen/TaskCompletion.cpp
     ./src/gen/TimestampQuality.cpp
     ./src/gen/TimeSyncMode.cpp
+    ./src/gen/TripCloseCode.cpp
     ./src/gen/UserOperation.cpp
     ./src/gen/UserRole.cpp
 

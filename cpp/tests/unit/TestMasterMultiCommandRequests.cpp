@@ -37,7 +37,7 @@ TEST_CASE(SUITE("command set ignores empty headers"))
     MasterTestFixture t(NoStartupTasks());
     t.context->OnLowerLayerUp();
 
-    ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
+    ControlRelayOutputBlock crob(OperationType::PULSE_ON);
 
     CommandSet commands;
     commands.Add<ControlRelayOutputBlock>({});
@@ -61,7 +61,7 @@ TEST_CASE(SUITE("DirectOperateTwoCROB"))
     MasterTestFixture t(NoStartupTasks());
     t.context->OnLowerLayerUp();
 
-    ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
+    ControlRelayOutputBlock crob(OperationType::PULSE_ON);
 
     CommandSet commands;
     commands.Add<ControlRelayOutputBlock>({WithIndex(crob, 1), WithIndex(crob, 7)});
@@ -95,7 +95,7 @@ TEST_CASE(SUITE("SelectAndOperateTwoCROBSOneAO"))
     MasterTestFixture t(NoStartupTasks());
     t.context->OnLowerLayerUp();
 
-    ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
+    ControlRelayOutputBlock crob(OperationType::PULSE_ON);
     AnalogOutputInt16 ao(0x1234);
 
     CommandSet commands;

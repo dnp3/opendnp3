@@ -129,10 +129,11 @@ CommandStatus CommandHandlerAdapter::OperateAny(const T& command,
 LocalRef<jni::JControlRelayOutputBlock> CommandHandlerAdapter::Convert(JNIEnv* env,
                                                                        const ControlRelayOutputBlock& command)
 {
-    auto jcontrolcode = JCache::ControlCode.fromType(env, command.rawCode);
+    auto joperationtype = JCache::OperationType.fromType(env, static_cast<jint>(command.opType));
+    auto jtcc = JCache::TripCloseCode.fromType(env, static_cast<jint>(command.tcc));
     auto jcommandstatus = JCache::CommandStatus.fromType(env, CommandStatusSpec::to_type(command.status));
-    return JCache::ControlRelayOutputBlock.construct(env, jcontrolcode, command.count, command.onTimeMS,
-                                                     command.offTimeMS, jcommandstatus);
+    return JCache::ControlRelayOutputBlock.construct(env, joperationtype, jtcc, command.clear, command.count,
+                                                     command.onTimeMS, command.offTimeMS, jcommandstatus);
 }
 
 LocalRef<jni::JAnalogOutputInt16> CommandHandlerAdapter::Convert(JNIEnv* env, const AnalogOutputInt16& command)

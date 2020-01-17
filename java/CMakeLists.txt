@@ -96,8 +96,6 @@ set(all_sources
     ./cpp/jni/JNICommandTaskResult.h
     ./cpp/jni/JNICompletableFuture.cpp
     ./cpp/jni/JNICompletableFuture.h
-    ./cpp/jni/JNIControlCode.cpp
-    ./cpp/jni/JNIControlCode.h
     ./cpp/jni/JNIControlRelayOutputBlock.cpp
     ./cpp/jni/JNIControlRelayOutputBlock.h
     ./cpp/jni/JNICounter.cpp
@@ -196,6 +194,8 @@ set(all_sources
     ./cpp/jni/JNIObject.h
     ./cpp/jni/JNIOperateType.cpp
     ./cpp/jni/JNIOperateType.h
+    ./cpp/jni/JNIOperationType.cpp
+    ./cpp/jni/JNIOperationType.h
     ./cpp/jni/JNIOutstationApplication.cpp
     ./cpp/jni/JNIOutstationApplication.h
     ./cpp/jni/JNIOutstationConfig.cpp
@@ -254,6 +254,8 @@ set(all_sources
     ./cpp/jni/JNITLSConfig.h
     ./cpp/jni/JNITransportStatistics.cpp
     ./cpp/jni/JNITransportStatistics.h
+    ./cpp/jni/JNITripCloseCode.cpp
+    ./cpp/jni/JNITripCloseCode.h
 )
 
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${all_sources})

@@ -25,6 +25,7 @@ set(unittests_src
     ./TestAPDUWriting.cpp
     ./TestAuthRequestParser.cpp
     ./TestCollectionTransform.cpp
+    ./TestControlRelayOutputBlock.cpp
     ./TestCRC.cpp
     ./TestEventStorage.cpp
     ./TestFlags.cpp

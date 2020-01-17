@@ -31,7 +31,7 @@ namespace DotNetMasterDemo
         // demonstrates how to build a set of command headers for a complex command request
         static ICommandHeaders GetCommandHeaders()
         {
-            var crob = new ControlRelayOutputBlock(ControlCode.PULSE_ON, 1, 100, 100);
+            var crob = new ControlRelayOutputBlock(OperationType.PULSE_ON, TripCloseCode.NUL, false, 1, 100, 100);
             var ao = new AnalogOutputDouble64(1.37);
             
             return CommandSet.From(
@@ -93,7 +93,7 @@ namespace DotNetMasterDemo
                         task.ContinueWith((result) => Console.WriteLine("Result: " + result.Result));
                         break;                        
                     case "o":
-                        var crob = new ControlRelayOutputBlock(ControlCode.PULSE_ON, 1, 100, 100);
+                        var crob = new ControlRelayOutputBlock(OperationType.PULSE_ON, TripCloseCode.NUL, false, 1, 100, 100);
                         var single = master.SelectAndOperate(crob, 1, TaskConfig.Default);
                         single.ContinueWith((result) => Console.WriteLine("Result: " + result.Result));
                         break;

@@ -21,10 +21,7 @@ package com.automatak.dnp3.impl.mocks;
 
 
 import com.automatak.dnp3.*;
-import com.automatak.dnp3.enums.ChannelState;
-import com.automatak.dnp3.enums.DoubleBit;
-import com.automatak.dnp3.enums.EventMode;
-import com.automatak.dnp3.enums.ServerAcceptMode;
+import com.automatak.dnp3.enums.*;
 import com.automatak.dnp3.mock.DefaultMasterApplication;
 import com.automatak.dnp3.mock.DefaultOutstationApplication;
 import com.automatak.dnp3.mock.SuccessCommandHandler;
@@ -100,7 +97,7 @@ public class StackPair {
 
             this.outstation = server.addOutstation(
                     String.format("outstation:%d", port),
-                    SuccessCommandHandler.getInstance(),
+                    this.commandHandler,
                     DefaultOutstationApplication.getInstance(),
                     getOutstationConfig(numPointsPerType, 2*eventsPerIteration));
         }
@@ -217,6 +214,107 @@ public class StackPair {
 
     }
 
+    public int sendRandomCommands() {
+        for(int i = 0; i < this.EVENTS_PER_ITERATION; ++i)
+        {
+            ExpectedCommand command = this.addRandomCommand();
+            this.sentCommands.add(command);
+        }
+
+        return this.EVENTS_PER_ITERATION;
+    }
+
+    public void awaitSentCommands(Duration duration)
+    {
+        final int total = sentCommands.size();
+
+        List<ExpectedCommand> receivedCommands = commandHandler.waitForCommands(total, duration);
+
+        if(receivedCommands == null)
+        {
+            throw new RuntimeException("No values received within timeout");
+        }
+
+        if(receivedCommands.size() != sentCommands.size())
+        {
+            throw new RuntimeException(String.format("# sent (%d) != # received (%d)", total, receivedCommands.size()));
+        }
+
+        int numValidated = 0;
+
+        for(ExpectedCommand received : receivedCommands)
+        {
+            ExpectedCommand expected = sentCommands.poll();
+
+            if(!expected.equals(received))
+            {
+                throw new RuntimeException(String.format("received %s != expected %s w/ num validated %d", received, expected, numValidated));
+            }
+
+            ++numValidated;
+        }
+
+    }
+
+    public ExpectedCommand addRandomCommand()
+    {
+        final int index = random.nextInt(NUM_POINTS_PER_TYPE);
+
+        final ExpectedCommand.Type type = getRandomElement(ExpectedCommand.ALL_TYPES);
+
+        switch(type)
+        {
+            case Crob: {
+                ControlRelayOutputBlock crob = new ControlRelayOutputBlock(
+                    getRandomElement(new OperationType[] {OperationType.NUL, OperationType.PULSE_ON, OperationType.PULSE_OFF, OperationType.LATCH_ON, OperationType.LATCH_OFF}),
+                    getRandomElement(new TripCloseCode[] {TripCloseCode.NUL, TripCloseCode.CLOSE, TripCloseCode.TRIP}),
+                    random.nextBoolean(),
+                    (short)random.nextInt(255),
+                    Math.abs(random.nextLong()) % 4294967295L,
+                    Math.abs(random.nextLong()) % 4294967295L,
+                    getRandomElement(CommandStatus.values())
+                );
+                this.master.directOperateCROB(crob, index);
+                return ExpectedCommand.build(crob, index);
+            }
+            case AoInt16: {
+                AnalogOutputInt16 ao = new AnalogOutputInt16(
+                        (short)random.nextInt(65535),
+                        getRandomElement(CommandStatus.values())
+                );
+                this.master.directOperateAOInt16(ao, index);
+                return ExpectedCommand.build(ao, index);
+            }
+            case AoInt32: {
+                AnalogOutputInt32 ao = new AnalogOutputInt32(
+                        (short)random.nextInt(),
+                        getRandomElement(CommandStatus.values())
+                );
+                this.master.directOperateAOInt32(ao, index);
+                return ExpectedCommand.build(ao, index);
+            }
+            case AoFloat32: {
+                AnalogOutputFloat32 ao = new AnalogOutputFloat32(
+                        (short)random.nextFloat(),
+                        getRandomElement(CommandStatus.values())
+                );
+                this.master.directOperateAOFloat32(ao, index);
+                return ExpectedCommand.build(ao, index);
+            }
+            case AoDouble64: {
+                AnalogOutputDouble64 ao = new AnalogOutputDouble64(
+                        (short)random.nextDouble(),
+                        getRandomElement(CommandStatus.values())
+                );
+                this.master.directOperateAODouble64(ao, index);
+                return ExpectedCommand.build(ao, index);
+            }
+            default:
+                throw new RuntimeException("unknown random type: " + type);
+        }
+
+    }
+
     public <T> T getRandomElement(T[] items)
     {
         return items[random.nextInt(items.length)];
@@ -226,6 +324,8 @@ public class StackPair {
     final BlockingChannelListener serverListener = new BlockingChannelListener();
     final QueuedSOEHandler soeHandler = new QueuedSOEHandler();
     final Queue<ExpectedValue> sentValues = new ArrayDeque<>();
+    final QueuedCommandHandler commandHandler = new QueuedCommandHandler();
+    final Queue<ExpectedCommand> sentCommands = new ArrayDeque<>();
     final Random random = new Random();
 
     final Master master;

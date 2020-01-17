@@ -98,10 +98,6 @@ namespace Automatak
 
 				//functions for Converting binary outputs
 
-				static ControlCode ConvertControlCode(opendnp3::ControlCode code);
-				static opendnp3::ControlCode Conversions::ConvertControlCode(ControlCode code);
-
-
 				static ControlRelayOutputBlock^ ConvertCommand(const opendnp3::ControlRelayOutputBlock& bo);
 				static opendnp3::ControlRelayOutputBlock ConvertCommand(ControlRelayOutputBlock^ bo);
 

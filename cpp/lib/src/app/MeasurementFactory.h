@@ -205,10 +205,10 @@ template<class Target, class ValueType> struct AnalogOutputFactory : private Sta
     }
 };
 
-typedef AnalogOutputFactory<AnalogOutputInt32, int32_t> AnalogOutputInt32Factory;
-typedef AnalogOutputFactory<AnalogOutputInt16, int16_t> AnalogOutputInt16Factory;
-typedef AnalogOutputFactory<AnalogOutputFloat32, float> AnalogOutputFloat32Factory;
-typedef AnalogOutputFactory<AnalogOutputDouble64, double> AnalogOutputDouble64Factory;
+using AnalogOutputInt32Factory = AnalogOutputFactory<AnalogOutputInt32, int32_t>;
+using AnalogOutputInt16Factory = AnalogOutputFactory<AnalogOutputInt16, int16_t>;
+using AnalogOutputFloat32Factory = AnalogOutputFactory<AnalogOutputFloat32, float>;
+using AnalogOutputDouble64Factory = AnalogOutputFactory<AnalogOutputDouble64, double>;
 
 } // namespace opendnp3
 

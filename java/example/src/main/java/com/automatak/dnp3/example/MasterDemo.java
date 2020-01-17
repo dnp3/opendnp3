@@ -21,7 +21,8 @@ package com.automatak.dnp3.example;
 
 import com.automatak.dnp3.*;
 import com.automatak.dnp3.enums.CommandStatus;
-import com.automatak.dnp3.enums.ControlCode;
+import com.automatak.dnp3.enums.OperationType;
+import com.automatak.dnp3.enums.TripCloseCode;
 import com.automatak.dnp3.impl.DNP3ManagerFactory;
 import com.automatak.dnp3.mock.DefaultMasterApplication;
 import com.automatak.dnp3.mock.PrintingChannelListener;
@@ -31,9 +32,7 @@ import com.automatak.dnp3.mock.PrintingSOEHandler;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Example master than can be run against the example outstation
@@ -94,7 +93,15 @@ public class MasterDemo {
                 case("quit"):
                     return;
                 case("crob"):
-                    ControlRelayOutputBlock crob = new ControlRelayOutputBlock(ControlCode.LATCH_ON, (short) 1, 100, 100, CommandStatus.SUCCESS);
+                    ControlRelayOutputBlock crob = new ControlRelayOutputBlock(
+                            OperationType.LATCH_ON,
+                            TripCloseCode.NUL,
+                            false,
+                            (short) 1,
+                            100,
+                            100,
+                            CommandStatus.SUCCESS);
+
                     master.selectAndOperateCROB(crob, 0).thenAccept(
                             //asynchronously print the result of the command operation
                             (CommandTaskResult result) -> System.out.println(result)

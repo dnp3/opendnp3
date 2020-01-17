@@ -301,7 +301,7 @@ TEST_CASE(SUITE("Group12Var1WithIndexSizesLatchOn"))
 
     auto validator = [&](MockApduHeaderHandler& mock) {
         REQUIRE(1 == mock.crobRequests.size());
-        ControlRelayOutputBlock crob(ControlCode::LATCH_ON, 1, 100, 200);
+        ControlRelayOutputBlock crob(OperationType::LATCH_ON, TripCloseCode::NUL, false, 1, 100, 200);
         Indexed<ControlRelayOutputBlock> value(crob, 9);
         REQUIRE((value == mock.crobRequests[0]));
 
@@ -317,7 +317,7 @@ TEST_CASE(SUITE("Group12Var1WithIndexSizesLatchOff"))
 
     auto validator = [&](MockApduHeaderHandler& mock) {
         REQUIRE(1 == mock.crobRequests.size());
-        ControlRelayOutputBlock crob(ControlCode::LATCH_OFF, 1, 100, 200);
+        ControlRelayOutputBlock crob(OperationType::LATCH_OFF, TripCloseCode::NUL, false, 1, 100, 200);
         Indexed<ControlRelayOutputBlock> value(crob, 9);
         REQUIRE((value == mock.crobRequests[0]));
 

@@ -53,14 +53,16 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandBuilderImpl_add_1crob
         const auto crob = jcommand.as<jni::JControlRelayOutputBlock>();
 
         auto& ref = jni::JCache::ControlRelayOutputBlock;
-        const auto code = jni::JCache::ControlCode.toType(env, ref.getfunction(env, crob));
+        const auto opType = OperationTypeSpec::from_type(static_cast<uint8_t>(jni::JCache::OperationType.toType(env, ref.getopType(env, crob))));
+        const auto tcc = TripCloseCodeSpec::from_type(static_cast<uint8_t>(jni::JCache::TripCloseCode.toType(env, ref.gettcc(env, crob))));
+        const auto clear = ref.getclear(env, crob);
         const auto count = ref.getcount(env, crob);
         const auto onTime = ref.getonTimeMs(env, crob);
         const auto offTime = ref.getoffTimeMs(env, crob);
         const auto status = jni::JCache::CommandStatus.toType(env, ref.getstatus(env, crob));
 
         Indexed<ControlRelayOutputBlock> value(
-            ControlRelayOutputBlock(static_cast<uint8_t>(code), static_cast<uint8_t>(count),
+            ControlRelayOutputBlock(opType, tcc, clear, static_cast<uint8_t>(count),
                                     static_cast<uint32_t>(onTime), static_cast<uint32_t>(offTime),
                                     CommandStatusSpec::from_type(static_cast<uint8_t>(status))),
             static_cast<uint16_t>(jindex));

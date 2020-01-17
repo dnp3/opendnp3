@@ -29,26 +29,41 @@
 // limitations under the License.
 //
 
-#include "opendnp3/gen/ControlCode.h"
-#include <ser4cpp/serialization/LittleEndian.h>
+#include "JNITripCloseCode.h"
 
-namespace ser4cpp
+namespace jni
 {
-  namespace serializers
-  {
-    template<>
-    inline bool write_one(wseq_t& dest, const opendnp3::ControlCode& value)
+    namespace cache
     {
-      return UInt8::write_to(dest, opendnp3::ControlCodeSpec::to_type(value));
-    }
+        bool TripCloseCode::init(JNIEnv* env)
+        {
+            auto clazzTemp = env->FindClass("Lcom/automatak/dnp3/enums/TripCloseCode;");
+            if(!clazzTemp) return false;
+            this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
+            env->DeleteLocalRef(clazzTemp);
 
-    template<>
-    inline bool read_one(rseq_t& input, opendnp3::ControlCode& out)
-    {
-      uint8_t tempControlCode;
-      bool result = UInt8::read_from(input, tempControlCode);
-      out = opendnp3::ControlCodeSpec::from_type(tempControlCode);
-      return result;
+            this->method0 = env->GetStaticMethodID(this->clazz, "fromType", "(I)Lcom/automatak/dnp3/enums/TripCloseCode;");
+            if(!this->method0) return false;
+
+            this->method1 = env->GetMethodID(this->clazz, "toType", "()I");
+            if(!this->method1) return false;
+
+            return true;
+        }
+
+        void TripCloseCode::cleanup(JNIEnv* env)
+        {
+            env->DeleteGlobalRef(this->clazz);
+        }
+
+        LocalRef<JTripCloseCode> TripCloseCode::fromType(JNIEnv* env, jint arg0)
+        {
+            return LocalRef<JTripCloseCode>(env, env->CallStaticObjectMethod(this->clazz, this->method0, arg0));
+        }
+
+        jint TripCloseCode::toType(JNIEnv* env, JTripCloseCode instance)
+        {
+            return env->CallIntMethod(instance, this->method1);
+        }
     }
-  }
 }

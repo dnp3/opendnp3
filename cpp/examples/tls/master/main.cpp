@@ -146,7 +146,7 @@ int main(int argc, char* argv[])
             break;
         case ('c'):
         {
-            ControlRelayOutputBlock crob(ControlCode::LATCH_ON);
+            ControlRelayOutputBlock crob(OperationType::LATCH_ON);
             master->SelectAndOperate(crob, 0, PrintingCommandResultCallback::Get());
             break;
         }

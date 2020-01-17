@@ -82,4 +82,36 @@ public class DNP3ManagerIntegrationTest extends TestCase {
         });
 
     }
+
+    @Test
+    public void testCommandOrdering() {
+
+        List<StackPair> stacks = new ArrayList<>();
+
+        withManager(NUM_THREADS_IN_POOL, manager ->  {
+
+            for(int i = 0; i < NUM_STACKS; ++i) {
+                StackPair pair = new StackPair(manager, START_PORT+i, NUM_POINTS_PER_EVENT_TYPE, EVENTS_PER_ITERATION);
+                stacks.add(pair);
+            }
+
+            final long start = System.currentTimeMillis();
+
+            stacks.forEach(pair -> pair.waitForChannelsOpen(TIMEOUT));
+
+            for(int i = 0; i < NUM_ITERATIONS; ++i) {
+
+                stacks.forEach(pair -> pair.sendRandomCommands());
+                stacks.forEach(pair -> pair.awaitSentCommands(TIMEOUT));
+            }
+
+            final long ELASPED_MS = System.currentTimeMillis() - start;
+            final long TOTAL_EVENTS = NUM_STACKS*NUM_ITERATIONS*EVENTS_PER_ITERATION;
+            final long RATE = (TOTAL_EVENTS * 1000)/ ELASPED_MS;
+
+            System.out.println(String.format("%d commands in %d ms == %d commands/sec", TOTAL_EVENTS, ELASPED_MS, RATE));
+        });
+
+    }
+
 }
