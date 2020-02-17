@@ -1,5 +1,8 @@
-### 2.3.2 ###
+### 2.3.3 ###
 * :beetle: Fix C# exception on time conversion upon restart command not supported. See issue [#350](https://github.com/dnp3/opendnp3/issues/350).
+
+### 2.3.2 ###
+* :beetle: Fix C# issue where `EventConfig::clazz` was never set. See issue [#291](https://github.com/dnp3/opendnp3/issues/291).
 
 ### 2.3.1 ###
 * :beetle: Fix final case for issue [#216](https://github.com/dnp3/opendnp3/issues/216#issuecomment-500637263). See [PR #310](https://github.com/dnp3/opendnp3/pull/310).
