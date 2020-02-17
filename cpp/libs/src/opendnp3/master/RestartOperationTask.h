@@ -72,7 +72,7 @@ private:
 
     const FunctionCode function;
     RestartOperationCallbackT callback;
-    openpal::TimeDuration duration = openpal::TimeDuration::Min();
+    openpal::TimeDuration duration = openpal::TimeDuration::Zero();
 
     IMasterTask::ResponseResult ProcessResponse(const opendnp3::APDUResponseHeader& header,
                                                 const openpal::RSlice& objects) override;
