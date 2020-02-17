@@ -3,7 +3,7 @@
 
     <groupId>com.automatak.dnp3</groupId>
     <artifactId>opendnp3-parent</artifactId>
-    <version>2.3.3-SNAPSHOT</version>
+    <version>2.3.3</version>
     <packaging>pom</packaging>
 
     <name>opendnp3</name>
@@ -36,7 +36,7 @@
     <scm>
         <url>https://github.com/automatak/dnp3.git</url>
         <developerConnection>scm:git:git@github.com:dnp3/opendnp3.git</developerConnection>
-      <tag>2.3.0</tag>
+      <tag>2.3.3</tag>
   </scm>
 
     <developers>
