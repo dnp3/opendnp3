@@ -1,3 +1,6 @@
+### 2.3.2 ###
+* :beetle: Fix C# exception on time conversion upon restart command not supported. See issue [#350](https://github.com/dnp3/opendnp3/issues/350).
+
 ### 2.3.1 ###
 * :beetle: Fix final case for issue [#216](https://github.com/dnp3/opendnp3/issues/216#issuecomment-500637263). See [PR #310](https://github.com/dnp3/opendnp3/pull/310).
 * :beetle: Add missing include for usage with `ASIO_DYN_LINK` (see [PR #311](https://github.com/dnp3/opendnp3/pull/311))
