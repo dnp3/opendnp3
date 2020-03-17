@@ -775,6 +775,10 @@ IINField OContext::HandleOperate(const ser4cpp::rseq_t& objects, HeaderWriter& w
         this->shouldCheckForUnsolicited = true;
         return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
     }
+    else
+    {
+        this->control.Unselect();
+    }
 
     return this->HandleCommandWithConstant(objects, writer, result);
 }
