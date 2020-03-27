@@ -27,7 +27,7 @@ public class AnalogOutputStatus extends Measurement
 {
     public final double value;
 
-    public AnalogOutputStatus(double value, Flags quality, long timestamp)
+    public AnalogOutputStatus(double value, Flags quality, DNPTime timestamp)
     {
         super(quality, timestamp);
         this.value = value;
@@ -35,6 +35,6 @@ public class AnalogOutputStatus extends Measurement
 
     @Override
     public String toString() {
-        return String.format("AnalogOutputStatus(%f, 0x%x, %d)", value, quality, timestamp);
+        return String.format("AnalogOutputStatus(%f, 0x%x, %d)", value, quality.getValue(), timestamp.msSinceEpoch);
     }
 }

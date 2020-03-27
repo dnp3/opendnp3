@@ -52,7 +52,7 @@ namespace jni
             public:
 
             // constructor methods
-            LocalRef<JCounter> construct(JNIEnv* env, jlong arg0, JFlags arg1, jlong arg2);
+            LocalRef<JCounter> construct(JNIEnv* env, jlong arg0, JFlags arg1, JDNPTime arg2);
 
             private:
 

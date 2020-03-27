@@ -55,6 +55,7 @@ namespace jni
             jint coldRestart(JNIEnv* env, JOutstationApplication instance);
             LocalRef<JRestartMode> coldRestartSupport(JNIEnv* env, JOutstationApplication instance);
             LocalRef<JApplicationIIN> getApplicationIIN(JNIEnv* env, JOutstationApplication instance);
+            LocalRef<JDNPTime> now(JNIEnv* env, JOutstationApplication instance);
             void recordClassAssignment(JNIEnv* env, JOutstationApplication instance, JAssignClassType arg0, JPointClass arg1, jint arg2, jint arg3);
             jboolean supportsAssignClass(JNIEnv* env, JOutstationApplication instance);
             jboolean supportsWriteAbsoluteTime(JNIEnv* env, JOutstationApplication instance);
@@ -76,6 +77,7 @@ namespace jni
             jmethodID method6 = nullptr;
             jmethodID method7 = nullptr;
             jmethodID method8 = nullptr;
+            jmethodID method9 = nullptr;
         };
     }
 }

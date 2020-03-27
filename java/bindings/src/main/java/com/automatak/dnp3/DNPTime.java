@@ -19,6 +19,8 @@
  */
 package com.automatak.dnp3;
 
+import com.automatak.dnp3.enums.TimestampQuality;
+
 /**
  * Maps to g50v1
  */
@@ -26,10 +28,17 @@ public class DNPTime {
 
     public DNPTime(long msSinceEpoch)
     {
+        this(msSinceEpoch, TimestampQuality.INVALID);
+    }
+
+    public DNPTime(long msSinceEpoch, TimestampQuality quality)
+    {
         this.msSinceEpoch = msSinceEpoch;
+        this.quality = quality;
     }
 
     public final long msSinceEpoch;
+    public final TimestampQuality quality;
 
     @Override
     public String toString()

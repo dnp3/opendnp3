@@ -133,6 +133,8 @@ namespace Automatak
 				static AnalogCommandEvent^ Conversions::ConvertMeas(const opendnp3::AnalogCommandEvent& meas);
 				static SecurityStat^ Conversions::ConvertMeas(const opendnp3::SecurityStat& meas);
 
+				static opendnp3::DNPTime ConvertTime(DNPTime^ time);
+                static DNPTime^ ConvertTime(opendnp3::DNPTime time);
 
 				static opendnp3::Binary ConvertMeas(Binary^ meas);
 				static opendnp3::DoubleBitBinary ConvertMeas(DoubleBitBinary^ meas);

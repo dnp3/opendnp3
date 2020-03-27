@@ -90,4 +90,10 @@ public class DefaultOutstationApplication implements OutstationApplication
     public int warmRestart() {
         return 65535;
     }
+
+    @Override
+    public DNPTime now()
+    {
+        return new DNPTime(0, TimestampQuality.INVALID);
+    }
 }

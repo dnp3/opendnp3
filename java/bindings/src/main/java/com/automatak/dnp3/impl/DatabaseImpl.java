@@ -122,11 +122,11 @@ public class DatabaseImpl implements Database {
         this.update_ao_status_native(this.nativeDatabase, value.value, value.quality.getValue(), value.timestamp, index, mode.toType());
     }
 
-    private native void update_binary_native(long nativePointer, boolean value, byte flags, long time, int index, int mode);
-    private native void update_double_binary_native(long nativePointer, int value, byte flags, long time, int index, int mode);
-    private native void update_analog_native(long nativePointer, double value, byte flags, long time, int index, int mode);
-    private native void update_counter_native(long nativePointer, long value, byte flags, long time, int index, int mode);
+    private native void update_binary_native(long nativePointer, boolean value, byte flags, DNPTime time, int index, int mode);
+    private native void update_double_binary_native(long nativePointer, int value, byte flags, DNPTime time, int index, int mode);
+    private native void update_analog_native(long nativePointer, double value, byte flags, DNPTime time, int index, int mode);
+    private native void update_counter_native(long nativePointer, long value, byte flags, DNPTime time, int index, int mode);
     private native void freeze_counter_native(long nativePointer, int index, boolean clear, int mode);
-    private native void update_bo_status_native(long nativePointer, boolean value, byte flags, long time, int index, int mode);
-    private native void update_ao_status_native(long nativePointer, double value, byte flags, long time, int index, int mode);
+    private native void update_bo_status_native(long nativePointer, boolean value, byte flags, DNPTime time, int index, int mode);
+    private native void update_ao_status_native(long nativePointer, double value, byte flags, DNPTime time, int index, int mode);
 }

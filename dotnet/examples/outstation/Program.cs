@@ -74,8 +74,8 @@ namespace DotNetOutstationDemo
                             analogFlags.Set(AnalogQuality.ONLINE);
 
 
-                            changeset.Update(new Binary(binaryValue, binaryFlags, DateTime.Now), 0);
-                            changeset.Update(new Analog(analogValue, analogFlags, DateTime.Now), 0);
+                            changeset.Update(new Binary(binaryValue, binaryFlags, DNPTime.Now), 0);
+                            changeset.Update(new Analog(analogValue, analogFlags, DNPTime.Now), 0);
                             outstation.Load(changeset);
                         }
                         break;

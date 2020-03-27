@@ -29,7 +29,7 @@ public class DoubleBitBinaryInput extends Measurement
 {
     public final DoubleBit value;
 
-    public DoubleBitBinaryInput(DoubleBit value, Flags quality, long timestamp)
+    public DoubleBitBinaryInput(DoubleBit value, Flags quality, DNPTime timestamp)
     {
         super(quality, timestamp);
         this.value = value;
@@ -37,6 +37,6 @@ public class DoubleBitBinaryInput extends Measurement
 
     @Override
     public String toString() {
-        return String.format("DoubleBitBinaryInput(%s, 0x%x, %d)", value, quality, timestamp);
+        return String.format("DoubleBitBinaryInput(%s, 0x%x, %d)", value, quality.getValue(), timestamp.msSinceEpoch);
     }
 }

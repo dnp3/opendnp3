@@ -42,7 +42,7 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->constructor0 = env->GetMethodID(this->clazz, "<init>", "(Lcom/automatak/dnp3/enums/DoubleBit;Lcom/automatak/dnp3/Flags;J)V");
+            this->constructor0 = env->GetMethodID(this->clazz, "<init>", "(Lcom/automatak/dnp3/enums/DoubleBit;Lcom/automatak/dnp3/Flags;Lcom/automatak/dnp3/DNPTime;)V");
             if(!this->constructor0) return false;
 
             return true;
@@ -53,7 +53,7 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<JDoubleBitBinaryInput> DoubleBitBinaryInput::construct(JNIEnv* env, JDoubleBit arg0, JFlags arg1, jlong arg2)
+        LocalRef<JDoubleBitBinaryInput> DoubleBitBinaryInput::construct(JNIEnv* env, JDoubleBit arg0, JFlags arg1, JDNPTime arg2)
         {
             return LocalRef<JDoubleBitBinaryInput>(env, JDoubleBitBinaryInput(env->NewObject(this->clazz, this->constructor0, arg0, arg1, arg2)));
         }
