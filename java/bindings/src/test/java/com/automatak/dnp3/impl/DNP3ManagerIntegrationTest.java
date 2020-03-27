@@ -36,7 +36,7 @@ public class DNP3ManagerIntegrationTest extends TestCase {
     static final int NUM_POINTS_PER_EVENT_TYPE = 50;
     static final int NUM_ITERATIONS = 10;
     static final int EVENTS_PER_ITERATION = 50;
-    static final int START_PORT = 20000;
+    static final int START_PORT = 20010;
 
     static final int NUM_THREADS_IN_POOL = 4;
     static final Duration TIMEOUT = Duration.ofSeconds(10);
