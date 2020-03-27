@@ -54,7 +54,17 @@ class ManagerImpl implements DNP3Manager {
             throw new DNP3Exception("Manager has been shutdown");
         }
 
-        long ptr = get_native_channel_tcp_client(this.pointer, id, levels, retry.minRetryDelay.toMillis(), retry.maxRetryDelay.toMillis(), remotes, adapter, listener);
+        long ptr = get_native_channel_tcp_client(
+                this.pointer,
+                id,
+                levels,
+                retry.minRetryDelay.toMillis(),
+                retry.maxRetryDelay.toMillis(),
+                retry.reconnectDelay.toMillis(),
+                remotes,
+                adapter,
+                listener
+        );
 
         if(ptr == 0) {
             throw new DNP3Exception("Unable to create channel");
@@ -94,7 +104,18 @@ class ManagerImpl implements DNP3Manager {
             throw new DNP3Exception("Manager has been shutdown");
         }
 
-        long ptr = get_native_channel_tls_client(this.pointer, id, levels, retry.minRetryDelay.toMillis(), retry.maxRetryDelay.toMillis(), remotes, adapter, config, listener);
+        long ptr = get_native_channel_tls_client(
+                this.pointer,
+                id,
+                levels,
+                retry.minRetryDelay.toMillis(),
+                retry.maxRetryDelay.toMillis(),
+                retry.reconnectDelay.toMillis(),
+                remotes,
+                adapter,
+                config,
+                listener
+        );
 
         if(ptr == 0) {
             throw new DNP3Exception("Unable to create TLS client. Did you compile opendnp3 w/ TLS support?");
@@ -134,6 +155,7 @@ class ManagerImpl implements DNP3Manager {
                 levels,
                 retry.minRetryDelay.toMillis(),
                 retry.maxRetryDelay.toMillis(),
+                retry.reconnectDelay.toMillis(),
                 settings.port,
                 settings.baudRate,
                 settings.dataBits,
@@ -163,11 +185,11 @@ class ManagerImpl implements DNP3Manager {
     private native long create_native_manager(int concurrency, LogHandler handler);
     private native void shutdown_native_manager(long nativePointer);
 
-    private native long get_native_channel_tcp_client(long nativePointer, String id, int level, long minRetryMs, long maxRetryMs, List<IPEndpoint> remotes, String adapter, ChannelListener listener);
+    private native long get_native_channel_tcp_client(long nativePointer, String id, int level, long minRetryMs, long maxRetryMs, long reconnectDelayMs, List<IPEndpoint> remotes, String adapter, ChannelListener listener);
     private native long get_native_channel_tcp_server(long nativePointer, String id, int level, int acceptMode, String endpoint, int port, ChannelListener listener);
-    private native long get_native_channel_tls_client(long nativePointer, String id, int level, long minRetryMs, long maxRetryMs, List<IPEndpoint> remotes, String adapter, TLSConfig config, ChannelListener listener);
+    private native long get_native_channel_tls_client(long nativePointer, String id, int level, long minRetryMs, long maxRetryMs, long reconnectDelayMs, List<IPEndpoint> remotes, String adapter, TLSConfig config, ChannelListener listener);
     private native long get_native_channel_tls_server(long nativePointer, String id, int level, int acceptMode, String endpoint, int port, TLSConfig config, ChannelListener listener);
-    private native long get_native_channel_serial(long nativePointer, String id, int level, long minRetryMs, long maxRetryMs, String port, int baudRate, int dataBits, int parity, int stopBits, int flowControl, ChannelListener listener);
+    private native long get_native_channel_serial(long nativePointer, String id, int level, long minRetryMs, long maxRetryMs, long reconnectDelayMs, String port, int baudRate, int dataBits, int parity, int stopBits, int flowControl, ChannelListener listener);
 
 
 }

@@ -31,11 +31,13 @@ public class ChannelRetry
      * Construct a channel retry class
      * @param minRetryDelay minimum retry delay
      * @param maxRetryDelay maximum retry delay
+     * @param reconnectDelay delay between reconnections when a read/write fails
      */
-    public ChannelRetry(Duration minRetryDelay, Duration maxRetryDelay)
+    public ChannelRetry(Duration minRetryDelay, Duration maxRetryDelay, Duration reconnectDelay)
     {
         this.minRetryDelay = minRetryDelay;
         this.maxRetryDelay = maxRetryDelay;
+        this.reconnectDelay = reconnectDelay;
     }
 
     /// <summary>
@@ -43,9 +45,10 @@ public class ChannelRetry
     /// </summary>
     public static ChannelRetry getDefault()
     {
-        return new ChannelRetry(Duration.ofSeconds(1), Duration.ofMinutes(1));
+        return new ChannelRetry(Duration.ofSeconds(1), Duration.ofMinutes(1), Duration.ofSeconds(0));
     }
 
     public final Duration minRetryDelay;
     public final Duration maxRetryDelay;
+    public final Duration reconnectDelay;
 }

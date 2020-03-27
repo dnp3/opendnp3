@@ -47,7 +47,7 @@ namespace DotNetMasterDemo
             var channel = mgr.AddTCPClient(
                 "client",
                 LogLevels.NORMAL | LogLevels.APP_COMMS,
-                ChannelRetry.Default,
+                new ChannelRetry(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(5)),
                 new List<IPEndpoint> { new IPEndpoint("127.0.0.1", 20000) },
                 ChannelListener.Print()
             );

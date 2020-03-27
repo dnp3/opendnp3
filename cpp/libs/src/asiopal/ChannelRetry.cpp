@@ -27,8 +27,9 @@ namespace asiopal
 
 ChannelRetry::ChannelRetry(openpal::TimeDuration minOpenRetry_,
                            openpal::TimeDuration maxOpenRetry_,
+                           openpal::TimeDuration reconnectDelay_,
                            IOpenDelayStrategy& strategy_)
-    : minOpenRetry(minOpenRetry_), maxOpenRetry(maxOpenRetry_), strategy(strategy_)
+    : minOpenRetry(minOpenRetry_), maxOpenRetry(maxOpenRetry_), reconnectDelay(reconnectDelay_), strategy(strategy_)
 {
 }
 

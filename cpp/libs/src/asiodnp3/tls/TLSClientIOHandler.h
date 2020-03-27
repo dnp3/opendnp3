@@ -64,7 +64,7 @@ protected:
     virtual void OnChannelShutdown() override;
 
 private:
-    void StartConnect(const std::shared_ptr<asiopal::TLSClient>& client, const openpal::TimeDuration& delay);
+    void StartConnect(const openpal::TimeDuration& delay);
 
     void ResetState();
 
