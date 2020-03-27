@@ -25,9 +25,9 @@ package com.automatak.dnp3;
 public abstract class Measurement {
 
     public final Flags quality;
-    public final long timestamp;
+    public final DNPTime timestamp;
 
-    public Measurement(Flags quality, long timestamp)
+    public Measurement(Flags quality, DNPTime timestamp)
     {
         this.quality = quality;
         this.timestamp = timestamp;

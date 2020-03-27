@@ -34,7 +34,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-	    public Binary(bool value, Flags quality, DateTime time) :
+	    public Binary(bool value, Flags quality, DNPTime time) :
             base(value, quality, time)
 	    {}
 
@@ -66,7 +66,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-	    public DoubleBitBinary(DoubleBit value, Flags quality, DateTime time) : 
+	    public DoubleBitBinary(DoubleBit value, Flags quality, DNPTime time) : 
             base(value, quality, time)
 	    {}
 
@@ -101,7 +101,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-        public Analog(double value, Flags quality, DateTime time)
+        public Analog(double value, Flags quality, DNPTime time)
             : base(value, quality, time)
 	    {}
 
@@ -133,7 +133,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-        public Counter(System.UInt32 value, Flags quality, DateTime time): base(value, quality, time)
+        public Counter(System.UInt32 value, Flags quality, DNPTime time): base(value, quality, time)
 	    {}
 
         /// <summary>
@@ -164,7 +164,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-        public FrozenCounter(System.UInt32 value, Flags quality, DateTime time): base(value, quality, time)
+        public FrozenCounter(System.UInt32 value, Flags quality, DNPTime time): base(value, quality, time)
 	    {}
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-	    public BinaryOutputStatus(bool value, Flags quality, DateTime time) :
+	    public BinaryOutputStatus(bool value, Flags quality, DNPTime time) :
             base(value, quality, time)
 	    {}
 
@@ -229,7 +229,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-        public AnalogOutputStatus(double value, Flags quality, DateTime time) : base(value, quality, time)
+        public AnalogOutputStatus(double value, Flags quality, DNPTime time) : base(value, quality, time)
 	    {}
 
         /// <summary>
@@ -325,7 +325,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-        public SecurityStat(uint value, ushort assocId, Flags quality, DateTime time)
+        public SecurityStat(uint value, ushort assocId, Flags quality, DNPTime time)
             : base(value, quality, time)
         {
             this.assocId = assocId;
@@ -346,7 +346,7 @@ namespace Automatak.DNP3.Interface
 
     public class BinaryCommandEvent
     {
-        public BinaryCommandEvent(bool value, CommandStatus status, DateTime time)
+        public BinaryCommandEvent(bool value, CommandStatus status, DNPTime time)
         {
             this.value = value;
             this.status = status;
@@ -360,16 +360,16 @@ namespace Automatak.DNP3.Interface
 
         private readonly bool value;
         private readonly CommandStatus status;
-        private readonly DateTime time;
+        private readonly DNPTime time;
 
         public bool Value { get { return this.value; } }
         public CommandStatus Status { get { return this.status; } }
-        public DateTime Timestamp { get { return this.time; } }
+        public DNPTime Timestamp { get { return this.time; } }
     }
 
     public class AnalogCommandEvent
     {
-        public AnalogCommandEvent(double value, CommandStatus status, DateTime time)
+        public AnalogCommandEvent(double value, CommandStatus status, DNPTime time)
         {
             this.value = value;
             this.status = status;
@@ -383,10 +383,10 @@ namespace Automatak.DNP3.Interface
 
         private readonly double value;
         private readonly CommandStatus status;
-        private readonly DateTime time;
+        private readonly DNPTime time;
 
         public double Value { get { return this.value; } }
         public CommandStatus Status { get { return this.status; } }
-        public DateTime Timestamp { get { return this.time; } }
+        public DNPTime Timestamp { get { return this.time; } }
     }
 }

@@ -16,6 +16,7 @@ add_library(DNP3CLRInterface SHARED
     ./src/CommandSet.cs
     ./src/CommandTypes.cs
     ./src/DefaultListenCallbacks.cs
+    ./src/DNPTime.cs
     ./src/Extensions.cs
     ./src/Flags.cs
     ./src/Header.cs
@@ -25,6 +26,7 @@ add_library(DNP3CLRInterface SHARED
     ./src/ICommandHandler.cs
     ./src/ICommandProcessor.cs
     ./src/IDNP3Manager.cs
+    ./src/IDnpTimeSource.cs
     ./src/IDatabase.cs
     ./src/ILinkListener.cs
     ./src/IListenCallbacks.cs
@@ -58,7 +60,7 @@ add_library(DNP3CLRInterface SHARED
     ./src/TaskConfig.cs
     ./src/TaskId.cs
     ./src/TaskInfo.cs
-    ./src/Timestamp.cs
+    #./src/Timestamp.cs
     ./src/X509Info.cs
 
     ./src/config/DatabaseTemplate.cs

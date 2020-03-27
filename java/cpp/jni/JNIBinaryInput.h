@@ -52,7 +52,7 @@ namespace jni
             public:
 
             // constructor methods
-            LocalRef<JBinaryInput> construct(JNIEnv* env, jboolean arg0, JFlags arg1, jlong arg2);
+            LocalRef<JBinaryInput> construct(JNIEnv* env, jboolean arg0, JFlags arg1, JDNPTime arg2);
 
             private:
 

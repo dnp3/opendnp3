@@ -27,7 +27,7 @@ public class Counter extends Measurement
 {
     public final long value;
 
-    public Counter(long value, Flags quality, long timestamp)
+    public Counter(long value, Flags quality, DNPTime timestamp)
     {
         super(quality, timestamp);
         this.value = value;
@@ -35,6 +35,6 @@ public class Counter extends Measurement
 
     @Override
     public String toString() {
-        return String.format("Counter(%d, 0x%x, %d)", value, quality, timestamp);
+        return String.format("Counter(%d, 0x%x, %d)", value, quality.getValue(), timestamp.msSinceEpoch);
     }
 }

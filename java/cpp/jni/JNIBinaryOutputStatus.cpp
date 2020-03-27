@@ -42,7 +42,7 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->constructor0 = env->GetMethodID(this->clazz, "<init>", "(ZLcom/automatak/dnp3/Flags;J)V");
+            this->constructor0 = env->GetMethodID(this->clazz, "<init>", "(ZLcom/automatak/dnp3/Flags;Lcom/automatak/dnp3/DNPTime;)V");
             if(!this->constructor0) return false;
 
             return true;
@@ -53,7 +53,7 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<JBinaryOutputStatus> BinaryOutputStatus::construct(JNIEnv* env, jboolean arg0, JFlags arg1, jlong arg2)
+        LocalRef<JBinaryOutputStatus> BinaryOutputStatus::construct(JNIEnv* env, jboolean arg0, JFlags arg1, JDNPTime arg2)
         {
             return LocalRef<JBinaryOutputStatus>(env, JBinaryOutputStatus(env->NewObject(this->clazz, this->constructor0, arg0, arg1, arg2)));
         }

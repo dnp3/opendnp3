@@ -164,40 +164,38 @@ namespace DNP3
 
         Binary ^ Conversions::ConvertMeas(opendnp3::Binary meas)
         {
-            return gcnew Binary(meas.value, gcnew Flags(meas.flags.value), TimeStamp::Convert(meas.time.value));
+            return gcnew Binary(meas.value, gcnew Flags(meas.flags.value), ConvertTime(meas.time));
         }
 
         DoubleBitBinary ^ Conversions::ConvertMeas(opendnp3::DoubleBitBinary meas)
         {
             return gcnew DoubleBitBinary(static_cast<DoubleBit>(meas.value), gcnew Flags(meas.flags.value),
-                                         TimeStamp::Convert(meas.time.value));
+                                         ConvertTime(meas.time));
         }
 
         Analog ^ Conversions::ConvertMeas(opendnp3::Analog meas)
         {
-            return gcnew Analog(meas.value, gcnew Flags(meas.flags.value), TimeStamp::Convert(meas.time.value));
+            return gcnew Analog(meas.value, gcnew Flags(meas.flags.value), ConvertTime(meas.time));
         }
 
         Counter ^ Conversions::ConvertMeas(opendnp3::Counter meas)
         {
-            return gcnew Counter(meas.value, gcnew Flags(meas.flags.value), TimeStamp::Convert(meas.time.value));
+            return gcnew Counter(meas.value, gcnew Flags(meas.flags.value), ConvertTime(meas.time));
         }
 
         FrozenCounter ^ Conversions::ConvertMeas(opendnp3::FrozenCounter meas)
         {
-            return gcnew FrozenCounter(meas.value, gcnew Flags(meas.flags.value), TimeStamp::Convert(meas.time.value));
+            return gcnew FrozenCounter(meas.value, gcnew Flags(meas.flags.value), ConvertTime(meas.time));
         }
 
         AnalogOutputStatus ^ Conversions::ConvertMeas(opendnp3::AnalogOutputStatus meas)
         {
-            return gcnew AnalogOutputStatus(meas.value, gcnew Flags(meas.flags.value),
-                                            TimeStamp::Convert(meas.time.value));
+            return gcnew AnalogOutputStatus(meas.value, gcnew Flags(meas.flags.value), ConvertTime(meas.time));
         }
 
         BinaryOutputStatus ^ Conversions::ConvertMeas(opendnp3::BinaryOutputStatus meas)
         {
-            return gcnew BinaryOutputStatus(meas.value, gcnew Flags(meas.flags.value),
-                                            TimeStamp::Convert(meas.time.value));
+            return gcnew BinaryOutputStatus(meas.value, gcnew Flags(meas.flags.value), ConvertTime(meas.time));
         }
 
         OctetString ^ Conversions::ConvertMeas(const opendnp3::OctetString& meas)
@@ -212,61 +210,63 @@ namespace DNP3
 
         BinaryCommandEvent ^ Conversions::ConvertMeas(const opendnp3::BinaryCommandEvent& meas)
         {
-            return gcnew BinaryCommandEvent(meas.value, ConvertCommandStatus(meas.status),
-                                            TimeStamp::Convert(meas.time.value));
+            return gcnew BinaryCommandEvent(meas.value, ConvertCommandStatus(meas.status), ConvertTime(meas.time));
         }
 
         AnalogCommandEvent ^ Conversions::ConvertMeas(const opendnp3::AnalogCommandEvent& meas)
         {
-            return gcnew AnalogCommandEvent(meas.value, ConvertCommandStatus(meas.status),
-                                            TimeStamp::Convert(meas.time.value));
+            return gcnew AnalogCommandEvent(meas.value, ConvertCommandStatus(meas.status), ConvertTime(meas.time));
         }
 
         SecurityStat ^ Conversions::ConvertMeas(const opendnp3::SecurityStat& meas)
         {
             return gcnew SecurityStat(meas.value.count, meas.value.assocId, gcnew Flags(meas.quality),
-                                      TimeStamp::Convert(meas.time.value));
+                                      ConvertTime(meas.time));
+        }
+
+        opendnp3::DNPTime Conversions::ConvertTime(DNPTime^ time)
+        {
+            return opendnp3::DNPTime(time->ToEpoch(), (opendnp3::TimestampQuality)time->Quality);
+        }
+
+        DNPTime^ Conversions::ConvertTime(opendnp3::DNPTime time)
+        {
+            return DNPTime::FromEpoch(time.value, (TimestampQuality)time.quality);
         }
 
         opendnp3::Binary Conversions::ConvertMeas(Binary ^ meas)
         {
-            return opendnp3::Binary(meas->Value, opendnp3::Flags(meas->Quality->Value), opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
+            return opendnp3::Binary(meas->Value, opendnp3::Flags(meas->Quality->Value), ConvertTime(meas->Timestamp));
         }
 
         opendnp3::DoubleBitBinary Conversions::ConvertMeas(DoubleBitBinary ^ meas)
         {
-            return opendnp3::DoubleBitBinary((opendnp3::DoubleBit)meas->Value, opendnp3::Flags(meas->Quality->Value),
-                                             opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
+            return opendnp3::DoubleBitBinary((opendnp3::DoubleBit)meas->Value, opendnp3::Flags(meas->Quality->Value), ConvertTime(meas->Timestamp));
         }
 
         opendnp3::Analog Conversions::ConvertMeas(Analog ^ meas)
         {
-            return opendnp3::Analog(meas->Value, opendnp3::Flags(meas->Quality->Value),
-                                    opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
+            return opendnp3::Analog(meas->Value, opendnp3::Flags(meas->Quality->Value), ConvertTime(meas->Timestamp));
         }
 
         opendnp3::Counter Conversions::ConvertMeas(Counter ^ meas)
         {
-            return opendnp3::Counter(meas->Value, opendnp3::Flags(meas->Quality->Value),
-                                     opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
+            return opendnp3::Counter(meas->Value, opendnp3::Flags(meas->Quality->Value), ConvertTime(meas->Timestamp));
         }
 
         opendnp3::FrozenCounter Conversions::ConvertMeas(FrozenCounter ^ meas)
         {
-            return opendnp3::FrozenCounter(meas->Value, opendnp3::Flags(meas->Quality->Value),
-                                           opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
+            return opendnp3::FrozenCounter(meas->Value, opendnp3::Flags(meas->Quality->Value), ConvertTime(meas->Timestamp));
         }
 
         opendnp3::BinaryOutputStatus Conversions::ConvertMeas(BinaryOutputStatus ^ meas)
         {
-            return opendnp3::BinaryOutputStatus(meas->Value, opendnp3::Flags(meas->Quality->Value),
-                                                opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
+            return opendnp3::BinaryOutputStatus(meas->Value, opendnp3::Flags(meas->Quality->Value), ConvertTime(meas->Timestamp));
         }
 
         opendnp3::AnalogOutputStatus Conversions::ConvertMeas(AnalogOutputStatus ^ meas)
         {
-            return opendnp3::AnalogOutputStatus(meas->Value, opendnp3::Flags(meas->Quality->Value),
-                                                opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
+            return opendnp3::AnalogOutputStatus(meas->Value, opendnp3::Flags(meas->Quality->Value), ConvertTime(meas->Timestamp));
         }
 
         opendnp3::OctetString Conversions::ConvertMeas(OctetString ^ meas)
@@ -290,14 +290,12 @@ namespace DNP3
 
         opendnp3::BinaryCommandEvent Conversions::ConvertMeas(BinaryCommandEvent ^ meas)
         {
-            return opendnp3::BinaryCommandEvent(meas->Value, ConvertCommandStatus(meas->Status),
-                                                opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
+            return opendnp3::BinaryCommandEvent(meas->Value, ConvertCommandStatus(meas->Status), ConvertTime(meas->Timestamp));
         }
 
         opendnp3::AnalogCommandEvent Conversions::ConvertMeas(AnalogCommandEvent ^ meas)
         {
-            return opendnp3::AnalogCommandEvent(meas->Value, ConvertCommandStatus(meas->Status),
-                                                opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
+            return opendnp3::AnalogCommandEvent(meas->Value, ConvertCommandStatus(meas->Status), ConvertTime(meas->Timestamp));
         }
 
         LinkHeader ^ Conversions::Convert(const opendnp3::LinkHeaderFields& fields)

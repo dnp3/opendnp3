@@ -82,6 +82,7 @@ private:
                  const CallProxy& callProxy);
 
     static LocalRef<jni::JHeaderInfo> Convert(JNIEnv* env, const opendnp3::HeaderInfo& info);
+    static LocalRef<jni::JDNPTime> Convert(JNIEnv* env, const opendnp3::DNPTime& time);
 
     GlobalRef<jni::JSOEHandler> proxy;
 };

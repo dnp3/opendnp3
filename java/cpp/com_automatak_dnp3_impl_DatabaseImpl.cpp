@@ -21,7 +21,17 @@
 
 #include "opendnp3/outstation/UpdateBuilder.h"
 
+#include "jni/JCache.h"
+
 using namespace opendnp3;
+
+DNPTime convertDnpTime(JNIEnv* env, jobject jtime)
+{
+    const auto time = jni::JCache::DNPTime.getmsSinceEpoch(env, jtime);
+    const auto jquality = jni::JCache::DNPTime.getquality(env, jtime);
+    const auto quality = static_cast<TimestampQuality>(jni::JCache::TimestampQuality.toType(env, jquality));
+    return DNPTime(time, quality);
+}
 
 /*
  * Class:     com_automatak_dnp3_impl_DatabaseImpl
@@ -48,45 +58,45 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DatabaseImpl_delete_1update_
 /*
  * Class:     com_automatak_dnp3_impl_DatabaseImpl
  * Method:    update_binary_native
- * Signature: (JZBJII)V
+ * Signature: (JZBLcom/automatak/dnp3/DNPTime;II)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DatabaseImpl_update_1binary_1native(
-    JNIEnv*, jobject, jlong native, jboolean value, jbyte flags, jlong time, jint index, jint mode)
+    JNIEnv* env, jobject, jlong native, jboolean value, jbyte flags, jobject time, jint index, jint mode)
 {
-    ((IUpdateHandler*)native)->Update(Binary(value != 0, Flags(flags), DNPTime(time)), static_cast<uint16_t>(index), static_cast<EventMode>(mode));
+    ((IUpdateHandler*)native)->Update(Binary(value != 0, Flags(flags), convertDnpTime(env, time)), static_cast<uint16_t>(index), static_cast<EventMode>(mode));
 }
 
 /*
  * Class:     com_automatak_dnp3_impl_DatabaseImpl
  * Method:    update_double_binary_native
- * Signature: (JIBJII)V
+ * Signature: (JIBLcom/automatak/dnp3/DNPTime;II)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DatabaseImpl_update_1double_1binary_1native(
-    JNIEnv*, jobject, jlong native, jint value, jbyte flags, jlong time, jint index, jint mode)
+    JNIEnv* env, jobject, jlong native, jint value, jbyte flags, jobject time, jint index, jint mode)
 {
-    ((IUpdateHandler*)native)->Update(DoubleBitBinary(static_cast<DoubleBit>(value), Flags(flags), DNPTime(time)), static_cast<uint16_t>(index), static_cast<EventMode>(mode));
+    ((IUpdateHandler*)native)->Update(DoubleBitBinary(static_cast<DoubleBit>(value), Flags(flags), convertDnpTime(env, time)), static_cast<uint16_t>(index), static_cast<EventMode>(mode));
 }
 
 /*
  * Class:     com_automatak_dnp3_impl_DatabaseImpl
  * Method:    update_analog_native
- * Signature: (JDBJII)V
+ * Signature: (JDBLcom/automatak/dnp3/DNPTime;II)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DatabaseImpl_update_1analog_1native(
-    JNIEnv*, jobject, jlong native, jdouble value, jbyte flags, jlong time, jint index, jint mode)
+    JNIEnv* env, jobject, jlong native, jdouble value, jbyte flags, jobject time, jint index, jint mode)
 {    
-    ((IUpdateHandler*)native)->Update(Analog(value, Flags(flags), DNPTime(time)), static_cast<uint16_t>(index), static_cast<EventMode>(mode));
+    ((IUpdateHandler*)native)->Update(Analog(value, Flags(flags), convertDnpTime(env, time)), static_cast<uint16_t>(index), static_cast<EventMode>(mode));
 }
 
 /*
  * Class:     com_automatak_dnp3_impl_DatabaseImpl
  * Method:    update_counter_native
- * Signature: (JJBJII)V
+ * Signature: (JJBLcom/automatak/dnp3/DNPTime;II)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DatabaseImpl_update_1counter_1native(
-    JNIEnv*, jobject, jlong native, jlong value, jbyte flags, jlong time, jint index, jint mode)
+    JNIEnv* env, jobject, jlong native, jlong value, jbyte flags, jobject time, jint index, jint mode)
 {
-    ((IUpdateHandler*)native)->Update(Counter(static_cast<uint32_t>(value), Flags(flags), DNPTime(time)), static_cast<uint16_t>(index), static_cast<EventMode>(mode));
+    ((IUpdateHandler*)native)->Update(Counter(static_cast<uint32_t>(value), Flags(flags), convertDnpTime(env, time)), static_cast<uint16_t>(index), static_cast<EventMode>(mode));
 }
 
 /*
@@ -102,21 +112,22 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DatabaseImpl_freeze_1counter
 /*
  * Class:     com_automatak_dnp3_impl_DatabaseImpl
  * Method:    update_bo_status_native
- * Signature: (JZBJII)V
+ * Signature: (JZBLcom/automatak/dnp3/DNPTime;II)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DatabaseImpl_update_1bo_1status_1native(
-    JNIEnv*, jobject, jlong native, jboolean value, jbyte flags, jlong time, jint index, jint mode)
+    JNIEnv* env, jobject, jlong native, jboolean value, jbyte flags, jobject time, jint index, jint mode)
 {    
-    ((IUpdateHandler*)native)->Update(BinaryOutputStatus(!(value == 0u), Flags(flags), DNPTime(time)), static_cast<uint16_t>(index), static_cast<EventMode>(mode));
+    ((IUpdateHandler*)native)->Update(BinaryOutputStatus(!(value == 0u), Flags(flags), convertDnpTime(env, time)), static_cast<uint16_t>(index), static_cast<EventMode>(mode));
 }
 
 /*
  * Class:     com_automatak_dnp3_impl_DatabaseImpl
  * Method:    update_ao_status_native
- * Signature: (JDBJII)V
+ * Signature: (JDBLcom/automatak/dnp3/DNPTime;II)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DatabaseImpl_update_1ao_1status_1native(
-    JNIEnv*, jobject, jlong native, jdouble value, jbyte flags, jlong time, jint index, jint mode)
-{    
-    ((IUpdateHandler*)native)->Update(AnalogOutputStatus(value, Flags(flags), DNPTime(time)), static_cast<uint16_t>(index), static_cast<EventMode>(mode));
+    JNIEnv* env, jobject, jlong native, jdouble value, jbyte flags, jobject time, jint index, jint mode)
+{
+    
+    ((IUpdateHandler*)native)->Update(AnalogOutputStatus(value, Flags(flags), convertDnpTime(env, time)), static_cast<uint16_t>(index), static_cast<EventMode>(mode));
 }

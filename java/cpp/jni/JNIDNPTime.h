@@ -53,6 +53,11 @@ namespace jni
 
             // constructor methods
             LocalRef<JDNPTime> construct(JNIEnv* env, jlong arg0);
+            LocalRef<JDNPTime> construct(JNIEnv* env, jlong arg0, JTimestampQuality arg1);
+
+            // field getter methods
+            jlong getmsSinceEpoch(JNIEnv* env, JDNPTime instance);
+            LocalRef<JTimestampQuality> getquality(JNIEnv* env, JDNPTime instance);
 
             private:
 
@@ -60,6 +65,11 @@ namespace jni
 
             // constructor method ids
             jmethodID constructor0 = nullptr;
+            jmethodID constructor1 = nullptr;
+
+            // field ids
+            jfieldID msSinceEpochField = nullptr;
+            jfieldID qualityField = nullptr;
         };
     }
 }

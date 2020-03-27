@@ -52,6 +52,8 @@ public:
 
     uint16_t WarmRestart() override;
 
+    opendnp3::DNPTime Now() override;
+
 private:
     GlobalRef<jni::JOutstationApplication> proxy;
 };

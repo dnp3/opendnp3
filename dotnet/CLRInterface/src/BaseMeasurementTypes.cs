@@ -33,7 +33,7 @@ namespace Automatak.DNP3.Interface
         /// </summary>        
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-        public MeasurementBase(Flags quality, DateTime time)
+        public MeasurementBase(Flags quality, DNPTime time)
         {
             this.quality = quality;
             this.time = time;            
@@ -42,13 +42,13 @@ namespace Automatak.DNP3.Interface
         public MeasurementBase(Flags quality)
         {
             this.quality = quality;
-            this.time = DateTime.MinValue;
+            this.time = DNPTime.Unset;
         }
 
         public MeasurementBase()
         {
             this.quality = new Flags();
-            this.time = DateTime.MinValue;
+            this.time = DNPTime.Unset;
         }
 
         public Flags Quality
@@ -63,7 +63,7 @@ namespace Automatak.DNP3.Interface
             }
         }
 
-        public DateTime Timestamp
+        public DNPTime Timestamp
         {
             get
             {
@@ -73,7 +73,7 @@ namespace Automatak.DNP3.Interface
             {
                 time = value;
             }
-        }        
+        }
 
         public override string ToString()
         {            
@@ -81,7 +81,7 @@ namespace Automatak.DNP3.Interface
         }
 
         Flags quality;
-        DateTime time;        
+        DNPTime time;        
     }
 
     /// <summary>
@@ -95,7 +95,7 @@ namespace Automatak.DNP3.Interface
         /// </summary>        
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-        public TypedMeasurementBase(T value, Flags quality, DateTime time) :  base(quality, time)
+        public TypedMeasurementBase(T value, Flags quality, DNPTime time) :  base(quality, time)
         {
             this.value = value;         
         }

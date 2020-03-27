@@ -26,34 +26,34 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DatabaseImpl_delete_1update_
 /*
  * Class:     com_automatak_dnp3_impl_DatabaseImpl
  * Method:    update_binary_native
- * Signature: (JZBJII)V
+ * Signature: (JZBLcom/automatak/dnp3/DNPTime;II)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DatabaseImpl_update_1binary_1native
-  (JNIEnv *, jobject, jlong, jboolean, jbyte, jlong, jint, jint);
+  (JNIEnv *, jobject, jlong, jboolean, jbyte, jobject, jint, jint);
 
 /*
  * Class:     com_automatak_dnp3_impl_DatabaseImpl
  * Method:    update_double_binary_native
- * Signature: (JIBJII)V
+ * Signature: (JIBLcom/automatak/dnp3/DNPTime;II)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DatabaseImpl_update_1double_1binary_1native
-  (JNIEnv *, jobject, jlong, jint, jbyte, jlong, jint, jint);
+  (JNIEnv *, jobject, jlong, jint, jbyte, jobject, jint, jint);
 
 /*
  * Class:     com_automatak_dnp3_impl_DatabaseImpl
  * Method:    update_analog_native
- * Signature: (JDBJII)V
+ * Signature: (JDBLcom/automatak/dnp3/DNPTime;II)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DatabaseImpl_update_1analog_1native
-  (JNIEnv *, jobject, jlong, jdouble, jbyte, jlong, jint, jint);
+  (JNIEnv *, jobject, jlong, jdouble, jbyte, jobject, jint, jint);
 
 /*
  * Class:     com_automatak_dnp3_impl_DatabaseImpl
  * Method:    update_counter_native
- * Signature: (JJBJII)V
+ * Signature: (JJBLcom/automatak/dnp3/DNPTime;II)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DatabaseImpl_update_1counter_1native
-  (JNIEnv *, jobject, jlong, jlong, jbyte, jlong, jint, jint);
+  (JNIEnv *, jobject, jlong, jlong, jbyte, jobject, jint, jint);
 
 /*
  * Class:     com_automatak_dnp3_impl_DatabaseImpl
@@ -66,18 +66,18 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DatabaseImpl_freeze_1counter
 /*
  * Class:     com_automatak_dnp3_impl_DatabaseImpl
  * Method:    update_bo_status_native
- * Signature: (JZBJII)V
+ * Signature: (JZBLcom/automatak/dnp3/DNPTime;II)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DatabaseImpl_update_1bo_1status_1native
-  (JNIEnv *, jobject, jlong, jboolean, jbyte, jlong, jint, jint);
+  (JNIEnv *, jobject, jlong, jboolean, jbyte, jobject, jint, jint);
 
 /*
  * Class:     com_automatak_dnp3_impl_DatabaseImpl
  * Method:    update_ao_status_native
- * Signature: (JDBJII)V
+ * Signature: (JDBLcom/automatak/dnp3/DNPTime;II)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DatabaseImpl_update_1ao_1status_1native
-  (JNIEnv *, jobject, jlong, jdouble, jbyte, jlong, jint, jint);
+  (JNIEnv *, jobject, jlong, jdouble, jbyte, jobject, jint, jint);
 
 #ifdef __cplusplus
 }

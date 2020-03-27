@@ -95,7 +95,7 @@ public class OutstationDemo {
                 OutstationChangeSet set = new OutstationChangeSet();
                 Flags flags = new Flags();
                 flags.set(CounterQuality.ONLINE);
-                set.update(new Counter(i, flags, 0), 0);
+                set.update(new Counter(i, flags, new DNPTime(0)), 0);
                 outstation.apply(set);
                 ++i;
             }
