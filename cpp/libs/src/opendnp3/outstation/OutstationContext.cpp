@@ -605,6 +605,10 @@ IINField OContext::HandleOperate(const openpal::RSlice& objects, HeaderWriter& w
         auto result = APDUParser::Parse(objects, handler, &this->logger);
         return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
     }
+    else
+    {
+        this->control.Unselect();
+    }
 
     return this->HandleCommandWithConstant(objects, writer, result);
 }

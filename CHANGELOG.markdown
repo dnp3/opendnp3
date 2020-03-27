@@ -1,3 +1,7 @@
+### 2.3.4 ###
+* :beetle: Fix conformance issue with data-link confirmations. See PR [#359](https://github.com/dnp3/opendnp3/pull/359).
+* :beetle: Fix conformance issue select & operate behaviour. See PR [#359](https://github.com/dnp3/opendnp3/pull/359).
+
 ### 2.3.3 ###
 * :beetle: Fix C# exception on time conversion upon restart command not supported. See issue [#350](https://github.com/dnp3/opendnp3/issues/350).
 

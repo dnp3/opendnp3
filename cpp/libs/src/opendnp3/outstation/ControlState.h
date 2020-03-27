@@ -43,7 +43,7 @@ public:
                                     const openpal::TimeDuration& timeout,
                                     const openpal::RSlice& objects) const
     {
-        if (expectedSeq.Equals(seq))
+        if (selected && expectedSeq.Equals(seq))
         {
             if (selectTime.milliseconds <= now.milliseconds)
             {
@@ -77,13 +77,20 @@ public:
 
     void Select(const AppSeqNum& currentSeqN, const openpal::MonotonicTimestamp& now, const openpal::RSlice& objects)
     {
+        selected = true;
         selectTime = now;
         expectedSeq = currentSeqN.Next();
         digest = CRC::CalcCrc(objects);
         length = objects.Size();
     }
 
+    void Unselect()
+    {
+        selected = false;
+    }
+
 private:
+    bool selected = false;
     AppSeqNum expectedSeq;
     openpal::MonotonicTimestamp selectTime;
     uint16_t digest;

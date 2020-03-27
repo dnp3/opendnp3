@@ -150,12 +150,21 @@ TEST_CASE(SUITE("SelectOperateGapInSequenceNumber"))
     t.SendToOutstation("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
     REQUIRE(t.lower->PopWriteAsHex()
             == "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
+    REQUIRE(1 == t.cmdHandler->NumInvocations());
     t.OnTxReady();
 
     // operate
     t.SendToOutstation("C2 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
     REQUIRE(t.lower->PopWriteAsHex()
             == "C2 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 02"); // 0x02 no select
+    REQUIRE(1 == t.cmdHandler->NumInvocations());
+    t.OnTxReady();
+
+    // Proper operate should not be accepted
+    t.SendToOutstation("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
+    REQUIRE(t.lower->PopWriteAsHex()
+            == "C1 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 02"); // 0x02 no select
+    REQUIRE(1 == t.cmdHandler->NumInvocations());
     t.OnTxReady();
 }
 
