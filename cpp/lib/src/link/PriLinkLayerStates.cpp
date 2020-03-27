@@ -265,6 +265,7 @@ PriStateBase& PLLS_ConfDataWait::OnNack(LinkContext& ctx, bool rxBuffFull)
 
 PriStateBase& PLLS_ConfDataWait::Failure(LinkContext& ctx)
 {
+    ctx.isRemoteReset = false;
     ctx.CancelTimer();
     ctx.CompleteSendOperation();
     return PLLS_Idle::Instance();
@@ -284,8 +285,7 @@ PriStateBase& PLLS_ConfDataWait::OnTimeout(LinkContext& ctx)
 
     SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Confirmed data final timeout, no retries remain");
     ctx.listener->OnStateChange(LinkStatus::UNRESET);
-    ctx.CompleteSendOperation();
-    return PLLS_Idle::Instance();
+    return Failure(ctx);
 }
 
 ////////////////////////////////////////////////////////
