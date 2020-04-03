@@ -67,4 +67,9 @@ public class OutstationConfig {
      * Global enabled / disable for unsolicited messages. If false, the NULL unsolicited message is not even sent
      */
     public boolean allowUnsolicited = true;
+
+    /**
+     * A bitmask type that specifies the types allowed in a class 0 reponse
+     */
+    public StaticTypeBitField typesAllowedInClass0 = StaticTypeBitField.all();
 }

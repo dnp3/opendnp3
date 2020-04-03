@@ -132,6 +132,7 @@
 #include "JNIStaticCounterVariation.h"
 #include "JNIStaticDoubleBinaryVariation.h"
 #include "JNIStaticFrozenCounterVariation.h"
+#include "JNIStaticTypeBitField.h"
 #include "JNITLSConfig.h"
 #include "JNITaskCompletion.h"
 #include "JNITaskId.h"
@@ -245,6 +246,7 @@ namespace jni
         static cache::StaticCounterVariation StaticCounterVariation;
         static cache::StaticDoubleBinaryVariation StaticDoubleBinaryVariation;
         static cache::StaticFrozenCounterVariation StaticFrozenCounterVariation;
+        static cache::StaticTypeBitField StaticTypeBitField;
         static cache::TLSConfig TLSConfig;
         static cache::TaskCompletion TaskCompletion;
         static cache::TaskId TaskId;

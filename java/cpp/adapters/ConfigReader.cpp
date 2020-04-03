@@ -148,6 +148,12 @@ opendnp3::ClassField ConfigReader::Convert(JNIEnv* env, jni::JClassField jclassf
     return ClassField(static_cast<uint8_t>(value));
 }
 
+opendnp3::StaticTypeBitField ConfigReader::Convert(JNIEnv* env, jni::JStaticTypeBitField jbitfield)
+{
+    jint value = jni::JCache::StaticTypeBitField.getbitfield(env, jbitfield);
+    return opendnp3::StaticTypeBitField(static_cast<uint8_t>(value));
+}
+
 opendnp3::EventBufferConfig ConfigReader::Convert(JNIEnv* env, jni::JEventBufferConfig jeventconfig)
 {
     return opendnp3::EventBufferConfig(
@@ -174,6 +180,7 @@ opendnp3::OutstationParams ConfigReader::Convert(JNIEnv* env, jni::JOutstationCo
     config.maxTxFragSize = cfg.getmaxTxFragSize(env, jconfig);
     config.maxRxFragSize = cfg.getmaxRxFragSize(env, jconfig);
     config.allowUnsolicited = !(cfg.getallowUnsolicited(env, jconfig) == 0u);
+    config.typesAllowedInClass0 = Convert(env, cfg.gettypesAllowedInClass0(env, jconfig));
 
     return config;
 }

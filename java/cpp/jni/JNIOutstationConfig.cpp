@@ -66,6 +66,9 @@ namespace jni
             this->allowUnsolicitedField = env->GetFieldID(this->clazz, "allowUnsolicited", "Z");
             if(!this->allowUnsolicitedField) return false;
 
+            this->typesAllowedInClass0Field = env->GetFieldID(this->clazz, "typesAllowedInClass0", "Lcom/automatak/dnp3/StaticTypeBitField;");
+            if(!this->typesAllowedInClass0Field) return false;
+
             return true;
         }
 
@@ -107,6 +110,11 @@ namespace jni
         LocalRef<JDuration> OutstationConfig::getsolConfirmTimeout(JNIEnv* env, JOutstationConfig instance)
         {
             return LocalRef<JDuration>(env, env->GetObjectField(instance, this->solConfirmTimeoutField));
+        }
+
+        LocalRef<JStaticTypeBitField> OutstationConfig::gettypesAllowedInClass0(JNIEnv* env, JOutstationConfig instance)
+        {
+            return LocalRef<JStaticTypeBitField>(env, env->GetObjectField(instance, this->typesAllowedInClass0Field));
         }
 
         LocalRef<JDuration> OutstationConfig::getunsolConfirmTimeout(JNIEnv* env, JOutstationConfig instance)
