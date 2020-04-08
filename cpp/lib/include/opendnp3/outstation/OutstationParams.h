@@ -50,8 +50,8 @@ struct OutstationParams
     NumRetries numUnsolRetries = NumRetries::Infinite();
 
     /// Workaround for test procedure 8.11.2.1. Will respond immediatly to READ requests
-    /// when waiting for unsolicited NULL responses. Will threat any valid request
-    /// as a confirmation to the unsolicited NULL response.
+    /// when waiting for unsolicited NULL responses.
+    ///
     /// @warning This is NOT compliant to IEEE-1815-2012.
     bool noDefferedReadDuringUnsolicitedNullResponse = false;
 

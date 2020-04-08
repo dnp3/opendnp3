@@ -402,6 +402,7 @@ namespace DNP3
             params.unsolConfirmTimeout = ConvertTimespan(config->unsolConfirmTimeout);
             params.numUnsolRetries = ConvertNumRetries(config->numUnsolRetries);
             params.respondToAnyMaster = config->respondToAnyMaster;
+            params.noDefferedReadDuringUnsolicitedNullResponse = config->noDefferedReadDuringUnsolicitedNullResponse;
 
             return params;
         }

@@ -56,6 +56,7 @@ namespace jni
             jshort getmaxControlsPerRequest(JNIEnv* env, JOutstationConfig instance);
             jint getmaxRxFragSize(JNIEnv* env, JOutstationConfig instance);
             jint getmaxTxFragSize(JNIEnv* env, JOutstationConfig instance);
+            jboolean getnoDefferedReadDuringUnsolicitedNullResponse(JNIEnv* env, JOutstationConfig instance);
             LocalRef<JNumRetries> getnumUnsolRetries(JNIEnv* env, JOutstationConfig instance);
             LocalRef<JDuration> getselectTimeout(JNIEnv* env, JOutstationConfig instance);
             LocalRef<JDuration> getsolConfirmTimeout(JNIEnv* env, JOutstationConfig instance);
@@ -76,6 +77,7 @@ namespace jni
             jfieldID maxRxFragSizeField = nullptr;
             jfieldID allowUnsolicitedField = nullptr;
             jfieldID typesAllowedInClass0Field = nullptr;
+            jfieldID noDefferedReadDuringUnsolicitedNullResponseField = nullptr;
         };
     }
 }

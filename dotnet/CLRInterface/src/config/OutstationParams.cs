@@ -76,7 +76,14 @@ namespace Automatak.DNP3.Interface
         /// Use this field to disable some types for compatibility reasons.
         /// </summary>
         public StaticTypeBitField typesAllowedInClass0 = StaticTypeBitField.AllTypes();
-       
+
+        /// <summary>
+        /// Workaround for test procedure 8.11.2.1. Will respond immediatly to READ requests
+        /// when waiting for unsolicited NULL responses.
+        /// This is NOT compliant to IEEE 1815-2012.
+        /// </summary>
+        public bool noDefferedReadDuringUnsolicitedNullResponse = false;
+
         /// <summary>
         /// Class mask for unsolicted, default to 0 as unsolicited has to be enabled by master
         /// </summary>
