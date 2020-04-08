@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIINDEXEDVALUE_H
 #define OPENDNP3JAVA_JNIINDEXEDVALUE_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,18 +52,18 @@ namespace jni
             public:
 
             // constructor methods
-            LocalRef<jobject> init2(JNIEnv* env, jobject arg0, jint arg1);
+            LocalRef<JIndexedValue> construct(JNIEnv* env, JObject arg0, jint arg1);
 
             // field getter methods
-            jint getindex(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getvalue(JNIEnv* env, jobject instance);
+            jint getindex(JNIEnv* env, JIndexedValue instance);
+            LocalRef<JObject> getvalue(JNIEnv* env, JIndexedValue instance);
 
             private:
 
             jclass clazz = nullptr;
 
             // constructor method ids
-            jmethodID init2Constructor = nullptr;
+            jmethodID constructor0 = nullptr;
 
             // field ids
             jfieldID valueField = nullptr;

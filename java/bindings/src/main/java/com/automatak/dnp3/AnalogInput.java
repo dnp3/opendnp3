@@ -32,7 +32,7 @@ public class AnalogInput extends Measurement
      * @param quality       bit-field representing quality values
      * @param timestamp     milliseconds since unix epoch UTC
      */
-    public AnalogInput(double value, byte quality, long timestamp)
+    public AnalogInput(double value, Flags quality, DNPTime timestamp)
     {
         super(quality, timestamp);
         this.value = value;
@@ -40,6 +40,6 @@ public class AnalogInput extends Measurement
 
     @Override
     public String toString() {
-        return String.format("Analog(%f, 0x%x, %d)", value, quality, timestamp);
+        return String.format("Analog(%f, 0x%x, %d)", value, quality.getValue(), timestamp.msSinceEpoch);
     }
 }

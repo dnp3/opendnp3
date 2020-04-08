@@ -17,16 +17,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.automatak.dnp3;
+#ifndef OPENDNP3CLR_UPDATE_ADAPTER_H
+#define OPENDNP3CLR_UPDATE_ADAPTER_H
 
-/**
- * All quality enumeration fields can be converted to a byte bit-mask
- */
-public interface QualityField {
+#include "DatabaseAdapter.h"
+#include "opendnp3/outstation/UpdateBuilder.h"
+#include "opendnp3/outstation/IOutstation.h"
 
-    /**
-     * @return The value of the quality enumeration as a byte
-     */
-    byte toByte();
+#include <vcclr.h>
 
+using namespace Automatak::DNP3::Interface;
+
+namespace Automatak
+{
+	namespace DNP3
+	{
+		namespace Adapter
+		{
+
+			private ref class UpdateAdapter : public DatabaseAdapter<opendnp3::UpdateBuilder>
+            {
+			public:
+
+				UpdateAdapter();
+
+				~UpdateAdapter();
+                !UpdateAdapter();				
+
+				void Apply(opendnp3::IOutstation& proxy);					
+                		                               
+			};
+
+		}
+	}
 }
+
+#endif

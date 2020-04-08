@@ -43,7 +43,7 @@ public:
                                     const TimeDuration& timeout,
                                     const ser4cpp::rseq_t& objects) const
     {
-        if (expectedSeq.Equals(seq))
+        if (selected && expectedSeq.Equals(seq))
         {
             if (selectTime <= now)
             {
@@ -77,13 +77,20 @@ public:
 
     void Select(const AppSeqNum& currentSeqN, const Timestamp& now, const ser4cpp::rseq_t& objects)
     {
+        selected = true;
         selectTime = now;
         expectedSeq = currentSeqN.Next();
         digest = CRC::CalcCrc(objects);
         length = objects.length();
     }
 
+    void Unselect()
+    {
+        selected = false;
+    }
+
 private:
+    bool selected = false;
     AppSeqNum expectedSeq;
     Timestamp selectTime;
     uint16_t digest = 0;

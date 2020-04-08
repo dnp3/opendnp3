@@ -33,25 +33,25 @@ namespace Automatak.DNP3.Interface
         /// </summary>        
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-        public MeasurementBase(byte quality, DateTime time)
+        public MeasurementBase(Flags quality, DNPTime time)
         {
             this.quality = quality;
             this.time = time;            
         }
 
-        public MeasurementBase(byte quality)
+        public MeasurementBase(Flags quality)
         {
             this.quality = quality;
-            this.time = DateTime.MinValue;
+            this.time = DNPTime.Unset;
         }
 
         public MeasurementBase()
         {
-            this.quality = 0;
-            this.time = DateTime.MinValue;
+            this.quality = new Flags();
+            this.time = DNPTime.Unset;
         }
 
-        public byte Quality
+        public Flags Quality
         {
             get
             {
@@ -63,7 +63,7 @@ namespace Automatak.DNP3.Interface
             }
         }
 
-        public DateTime Timestamp
+        public DNPTime Timestamp
         {
             get
             {
@@ -73,15 +73,15 @@ namespace Automatak.DNP3.Interface
             {
                 time = value;
             }
-        }        
+        }
 
         public override string ToString()
         {            
-            return "quality: " + quality.ToString("X") + " time: " + time.ToString();
+            return "quality: " + quality.Value.ToString("X") + " time: " + time.ToString();
         }
 
-        byte quality;
-        DateTime time;        
+        Flags quality;
+        DNPTime time;        
     }
 
     /// <summary>
@@ -95,12 +95,12 @@ namespace Automatak.DNP3.Interface
         /// </summary>        
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-        public TypedMeasurementBase(T value, byte quality, DateTime time) :  base(quality, time)
+        public TypedMeasurementBase(T value, Flags quality, DNPTime time) :  base(quality, time)
         {
             this.value = value;         
         }
 
-        public TypedMeasurementBase(T value, byte quality) :  base(quality)            
+        public TypedMeasurementBase(T value, Flags quality) :  base(quality)            
         {
             this.value = value;
         }

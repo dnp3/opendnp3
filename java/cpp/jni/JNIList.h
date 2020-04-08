@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNILIST_H
 #define OPENDNP3JAVA_JNILIST_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,14 +52,14 @@ namespace jni
             public:
 
             // methods
-            jint size(JNIEnv* env, jobject instance);
+            jint size(JNIEnv* env, JList instance);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID sizeMethod = nullptr;
+            jmethodID method0 = nullptr;
         };
     }
 }

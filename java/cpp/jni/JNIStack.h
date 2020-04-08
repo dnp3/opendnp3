@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNISTACK_H
 #define OPENDNP3JAVA_JNISTACK_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,22 +52,22 @@ namespace jni
             public:
 
             // methods
-            void disable(JNIEnv* env, jobject instance);
-            void enable(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getStatistics(JNIEnv* env, jobject instance);
-            void setLogLevel(JNIEnv* env, jobject instance, jint arg0);
-            void shutdown(JNIEnv* env, jobject instance);
+            void disable(JNIEnv* env, JStack instance);
+            void enable(JNIEnv* env, JStack instance);
+            LocalRef<JStackStatistics> getStatistics(JNIEnv* env, JStack instance);
+            void setLogLevel(JNIEnv* env, JStack instance, jint arg0);
+            void shutdown(JNIEnv* env, JStack instance);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID disableMethod = nullptr;
-            jmethodID enableMethod = nullptr;
-            jmethodID getStatisticsMethod = nullptr;
-            jmethodID setLogLevelMethod = nullptr;
-            jmethodID shutdownMethod = nullptr;
+            jmethodID method0 = nullptr;
+            jmethodID method1 = nullptr;
+            jmethodID method2 = nullptr;
+            jmethodID method3 = nullptr;
+            jmethodID method4 = nullptr;
         };
     }
 }

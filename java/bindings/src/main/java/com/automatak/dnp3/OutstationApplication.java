@@ -80,10 +80,18 @@ public interface OutstationApplication extends LinkStatusListener {
 
     /**
      * The outstation should perform a partial restart of only the DNP3 application.
-     * See the DNP3 specification for a complete descripton of normal behavior
+     * See the DNP3 specification for a complete description of normal behavior
      *
      * @return number of seconds or milliseconds until restart is complete. The value
      * is interpreted based on the Restart Mode returned from ColdRestartSupport()
      */
     int warmRestart();
+
+    /**
+     * Return the current time and the synchronization status.
+     * This value is used when freezing counters
+     *
+     * @return Current time and timesync status
+     */
+    DNPTime now();
 }

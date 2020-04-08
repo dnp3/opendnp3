@@ -42,8 +42,8 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->isDefinedMethod = env->GetMethodID(this->clazz, "isDefined", "()Z");
-            if(!this->isDefinedMethod) return false;
+            this->method0 = env->GetMethodID(this->clazz, "isDefined", "()Z");
+            if(!this->method0) return false;
 
             this->startField = env->GetFieldID(this->clazz, "start", "I");
             if(!this->startField) return false;
@@ -59,17 +59,17 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jboolean Range::isDefined(JNIEnv* env, jobject instance)
+        jboolean Range::isDefined(JNIEnv* env, JRange instance)
         {
-            return env->CallBooleanMethod(instance, this->isDefinedMethod);
+            return env->CallBooleanMethod(instance, this->method0);
         }
 
-        jint Range::getstart(JNIEnv* env, jobject instance)
+        jint Range::getstart(JNIEnv* env, JRange instance)
         {
             return env->GetIntField(instance, this->startField);
         }
 
-        jint Range::getstop(JNIEnv* env, jobject instance)
+        jint Range::getstop(JNIEnv* env, JRange instance)
         {
             return env->GetIntField(instance, this->stopField);
         }

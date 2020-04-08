@@ -17,8 +17,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3CLR_CHANGESET_ADAPTER_H
-#define OPENDNP3CLR_CHANGESET_ADAPTER_H
+#ifndef OPENDNP3CLR_DATABASE_ADAPTER_H
+#define OPENDNP3CLR_DATABASE_ADAPTER_H
 
 #include <opendnp3/outstation/IOutstation.h>
 #include <opendnp3/outstation/UpdateBuilder.h>
@@ -34,14 +34,14 @@ namespace Automatak
 		namespace Adapter
 		{
 
-			private ref class ChangeSetAdapter : public Automatak::DNP3::Interface::IDatabase
+			private ref class DatabaseAdapter : public Automatak::DNP3::Interface::IDatabase
 			{
 			public:
 
-				ChangeSetAdapter();
+				DatabaseAdapter();
 
-				~ChangeSetAdapter();
-				!ChangeSetAdapter();
+				~DatabaseAdapter();
+                !DatabaseAdapter();
 				
 				virtual void Update(Binary^ update, System::UInt16 index, EventMode mode);
 				virtual void Update(DoubleBitBinary^ update, System::UInt16 index, EventMode mode);				

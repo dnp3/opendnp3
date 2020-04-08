@@ -20,14 +20,15 @@
 #ifndef OPENDNP3_LOG_HANDLER_ADAPTER_H
 #define OPENDNP3_LOG_HANDLER_ADAPTER_H
 
-#include "GlobalRef.h"
-
 #include <log4cpp/ILogHandler.h>
+
+#include "GlobalRef.h"
+#include "../jni/JNIWrappers.h"
 
 class LogHandlerAdapter final : public log4cpp::ILogHandler
 {
 public:
-    LogHandlerAdapter(jobject proxy);
+    LogHandlerAdapter(jni::JLogHandler);
 
     void log(log4cpp::ModuleId module,
              const char* id,
@@ -36,7 +37,7 @@ public:
              char const* message) override;
 
 private:
-    GlobalRef proxy;
+    GlobalRef<jni::JLogHandler> proxy;
 };
 
 #endif

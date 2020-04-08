@@ -33,6 +33,7 @@ object Classes {
   private def listConstructors = ConstructorFilter.withParamTypes(List("int"))
 
   private def enumerations : List[ClassConfig] = List(
+    classOf[EventMode],
     classOf[GroupVariation],
     classOf[QualifierCode],
     classOf[TimestampQuality],
@@ -81,7 +82,7 @@ object Classes {
     classOf[Stack],
     classOf[ChannelListener],
     classOf[CommandHandler],
-    classOf[IndexMode]
+    classOf[Database]
   ).map(c => ClassConfig(c, Set(Features.Methods)))
 
   private def javaTypes : List[ClassConfig] = List(
@@ -92,6 +93,8 @@ object Classes {
     ClassConfig(classOf[java.util.Iterator[_]], Set(Features.Methods), MethodFilter.equalsAny("hasNext", "next")),
     ClassConfig(classOf[java.util.Map[_, _]], Set(Features.Methods), MethodFilter.equalsAny("entrySet")),
     ClassConfig(classOf[java.util.Map.Entry[_, _]], Set(Features.Methods), MethodFilter.equalsAny("getKey", "getValue")),
+    ClassConfig(classOf[java.util.Set[_]], Set.empty),
+    ClassConfig(classOf[Object], Set.empty),
     ClassConfig(classOf[Integer], Set(Features.Methods), MethodFilter.equalsAny("intValue"))
   )
 
@@ -104,9 +107,11 @@ object Classes {
     ClassConfig(classOf[LinkLayerConfig], Set(Features.Fields)),
     ClassConfig(classOf[LogEntry], Set(Features.Constructors)),
     ClassConfig(classOf[ClassField], Set(Features.Fields)),
+    ClassConfig(classOf[StaticTypeBitField], Set(Features.Fields)),
     ClassConfig(classOf[HeaderInfo], Set(Features.Constructors)),
     ClassConfig(classOf[ResponseInfo], Set(Features.Constructors)),
     ClassConfig(classOf[IndexedValue[_]], Set(Features.Constructors, Features.Fields)),
+    ClassConfig(classOf[Flags], Set(Features.Constructors)),
     ClassConfig(classOf[BinaryInput], Set(Features.Constructors)),
     ClassConfig(classOf[DoubleBitBinaryInput], Set(Features.Constructors)),
     ClassConfig(classOf[AnalogInput], Set(Features.Constructors)),
@@ -140,7 +145,7 @@ object Classes {
     ClassConfig(classOf[BinaryOutputStatusConfig], Set(Features.Fields)),
     ClassConfig(classOf[AnalogOutputStatusConfig], Set(Features.Fields)),
     ClassConfig(classOf[TLSConfig], Set(Features.Fields)),
-    ClassConfig(classOf[DNPTime], Set(Features.Constructors)),
+    ClassConfig(classOf[DNPTime], Set(Features.Fields, Features.Constructors)),
     ClassConfig(classOf[ParserStatistics], Set(Features.Constructors)),
     ClassConfig(classOf[ChannelStatistics], Set(Features.Constructors)),
     ClassConfig(classOf[LinkStatistics], Set(Features.Constructors)),
@@ -148,7 +153,9 @@ object Classes {
     ClassConfig(classOf[TransportStatistics], Set(Features.Constructors)),
     ClassConfig(classOf[StackStatistics], Set(Features.Constructors)),
     ClassConfig(classOf[IPEndpoint], Set(Features.Fields)),
-    ClassConfig(classOf[NumRetries], Set(Features.Fields))
+    ClassConfig(classOf[NumRetries], Set(Features.Fields)),
+    ClassConfig(classOf[CommandHeaders], Set.empty),
+    ClassConfig(classOf[impl.DatabaseImpl], Set(Features.Constructors))
   )
 
 

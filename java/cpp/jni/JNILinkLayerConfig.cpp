@@ -71,37 +71,37 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jboolean LinkLayerConfig::getisMaster(JNIEnv* env, jobject instance)
+        jboolean LinkLayerConfig::getisMaster(JNIEnv* env, JLinkLayerConfig instance)
         {
             return env->GetBooleanField(instance, this->isMasterField);
         }
 
-        LocalRef<jobject> LinkLayerConfig::getkeepAliveTimeout(JNIEnv* env, jobject instance)
+        LocalRef<JDuration> LinkLayerConfig::getkeepAliveTimeout(JNIEnv* env, JLinkLayerConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->keepAliveTimeoutField));
+            return LocalRef<JDuration>(env, env->GetObjectField(instance, this->keepAliveTimeoutField));
         }
 
-        jint LinkLayerConfig::getlocalAddr(JNIEnv* env, jobject instance)
+        jint LinkLayerConfig::getlocalAddr(JNIEnv* env, JLinkLayerConfig instance)
         {
             return env->GetIntField(instance, this->localAddrField);
         }
 
-        jint LinkLayerConfig::getnumRetry(JNIEnv* env, jobject instance)
+        jint LinkLayerConfig::getnumRetry(JNIEnv* env, JLinkLayerConfig instance)
         {
             return env->GetIntField(instance, this->numRetryField);
         }
 
-        jint LinkLayerConfig::getremoteAddr(JNIEnv* env, jobject instance)
+        jint LinkLayerConfig::getremoteAddr(JNIEnv* env, JLinkLayerConfig instance)
         {
             return env->GetIntField(instance, this->remoteAddrField);
         }
 
-        LocalRef<jobject> LinkLayerConfig::getresponseTimeout(JNIEnv* env, jobject instance)
+        LocalRef<JDuration> LinkLayerConfig::getresponseTimeout(JNIEnv* env, JLinkLayerConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->responseTimeoutField));
+            return LocalRef<JDuration>(env, env->GetObjectField(instance, this->responseTimeoutField));
         }
 
-        jboolean LinkLayerConfig::getuseConfirms(JNIEnv* env, jobject instance)
+        jboolean LinkLayerConfig::getuseConfirms(JNIEnv* env, JLinkLayerConfig instance)
         {
             return env->GetBooleanField(instance, this->useConfirmsField);
         }

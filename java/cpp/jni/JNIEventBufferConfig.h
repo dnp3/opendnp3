@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIEVENTBUFFERCONFIG_H
 #define OPENDNP3JAVA_JNIEVENTBUFFERCONFIG_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,13 +52,13 @@ namespace jni
             public:
 
             // field getter methods
-            jint getmaxAnalogEvents(JNIEnv* env, jobject instance);
-            jint getmaxAnalogOutputStatusEvents(JNIEnv* env, jobject instance);
-            jint getmaxBinaryEvents(JNIEnv* env, jobject instance);
-            jint getmaxBinaryOutputStatusEvents(JNIEnv* env, jobject instance);
-            jint getmaxCounterEvents(JNIEnv* env, jobject instance);
-            jint getmaxDoubleBinaryEvents(JNIEnv* env, jobject instance);
-            jint getmaxFrozenCounterEvents(JNIEnv* env, jobject instance);
+            jint getmaxAnalogEvents(JNIEnv* env, JEventBufferConfig instance);
+            jint getmaxAnalogOutputStatusEvents(JNIEnv* env, JEventBufferConfig instance);
+            jint getmaxBinaryEvents(JNIEnv* env, JEventBufferConfig instance);
+            jint getmaxBinaryOutputStatusEvents(JNIEnv* env, JEventBufferConfig instance);
+            jint getmaxCounterEvents(JNIEnv* env, JEventBufferConfig instance);
+            jint getmaxDoubleBinaryEvents(JNIEnv* env, JEventBufferConfig instance);
+            jint getmaxFrozenCounterEvents(JNIEnv* env, JEventBufferConfig instance);
 
             private:
 

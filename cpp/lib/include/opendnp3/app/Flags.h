@@ -20,7 +20,13 @@
 #ifndef OPENDNP3_FLAGS_H
 #define OPENDNP3_FLAGS_H
 
-#include "opendnp3/app/QualityMasks.h"
+#include "opendnp3/gen/AnalogOutputStatusQuality.h"
+#include "opendnp3/gen/AnalogQuality.h"
+#include "opendnp3/gen/BinaryOutputStatusQuality.h"
+#include "opendnp3/gen/BinaryQuality.h"
+#include "opendnp3/gen/CounterQuality.h"
+#include "opendnp3/gen/DoubleBitBinaryQuality.h"
+#include "opendnp3/gen/FrozenCounterQuality.h"
 
 namespace opendnp3
 {
@@ -36,6 +42,10 @@ public:
     explicit Flags(uint8_t value) : value(value) {}
 
     inline bool IsSet(BinaryQuality flag) const
+    {
+        return IsSetAny(flag);
+    }
+    inline bool IsSet(DoubleBitBinaryQuality flag) const
     {
         return IsSetAny(flag);
     }
@@ -61,6 +71,10 @@ public:
     }
 
     inline void Set(BinaryQuality flag)
+    {
+        SetAny(flag);
+    }
+    inline void Set(DoubleBitBinaryQuality flag)
     {
         SetAny(flag);
     }

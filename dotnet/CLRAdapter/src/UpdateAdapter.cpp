@@ -17,25 +17,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef OPENDNP3_QUALITYMASKS_H
-#define OPENDNP3_QUALITYMASKS_H
+#include "UpdateAdapter.h"
 
-#include "opendnp3/gen/AnalogOutputStatusQuality.h"
-#include "opendnp3/gen/AnalogQuality.h"
-#include "opendnp3/gen/BinaryOutputStatusQuality.h"
-#include "opendnp3/gen/BinaryQuality.h"
-#include "opendnp3/gen/CounterQuality.h"
-#include "opendnp3/gen/DoubleBitBinaryQuality.h"
-#include "opendnp3/gen/FrozenCounterQuality.h"
+#include "Conversions.h"
 
-namespace opendnp3
+namespace Automatak
 {
-
-template<class T> inline uint8_t ToUnderlying(T flag)
+namespace DNP3
 {
-    return static_cast<uint8_t>(flag);
-}
+    namespace Adapter
+    {
 
-} // namespace opendnp3
+        UpdateAdapter::UpdateAdapter() : DatabaseAdapter(new opendnp3::UpdateBuilder())           
+        {}
 
-#endif
+        UpdateAdapter::~UpdateAdapter()
+        {
+            this->!UpdateAdapter();
+        }
+
+        UpdateAdapter::!UpdateAdapter()
+        {
+            delete this->handler;
+        }
+
+        void UpdateAdapter::Apply(opendnp3::IOutstation& proxy)
+        {
+            proxy.Apply(handler->Build());
+        }
+
+    } // namespace Adapter
+} // namespace DNP3
+} // namespace Automatak

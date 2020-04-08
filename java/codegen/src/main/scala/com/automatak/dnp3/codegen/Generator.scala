@@ -42,6 +42,10 @@ object Generator {
     writeTo(javaJNIPath.resolve(staticClass.headerFileName))(staticClass.header)
     writeTo(javaJNIPath.resolve(staticClass.implFileName))(staticClass.impl)
 
+
+    val wrappers = JNIWrapperGenerator(Classes.all.map(_.clazz))
+    writeTo(javaJNIPath.resolve(wrappers.headerFileName))(wrappers.header)
+
   }
 
 

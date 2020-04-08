@@ -56,12 +56,12 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jstring> IPEndpoint::getaddress(JNIEnv* env, jobject instance)
+        LocalRef<JString> IPEndpoint::getaddress(JNIEnv* env, JIPEndpoint instance)
         {
-            return LocalRef<jstring>(env, (jstring) env->GetObjectField(instance, this->addressField));
+            return LocalRef<JString>(env, (jstring) env->GetObjectField(instance, this->addressField));
         }
 
-        jint IPEndpoint::getport(JNIEnv* env, jobject instance)
+        jint IPEndpoint::getport(JNIEnv* env, JIPEndpoint instance)
         {
             return env->GetIntField(instance, this->portField);
         }

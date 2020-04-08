@@ -30,6 +30,7 @@
 #include "opendnp3/master/ICommandProcessor.h"
 #include "opendnp3/master/IMasterScan.h"
 #include "opendnp3/master/RestartOperationResult.h"
+#include "opendnp3/master/ISOEHandler.h"
 #include "opendnp3/master/TaskConfig.h"
 
 #include <log4cpp/LogLevels.h>
@@ -60,6 +61,7 @@ public:
      */
     virtual std::shared_ptr<IMasterScan> AddScan(TimeDuration period,
                                                  const std::vector<Header>& headers,
+                                                 std::shared_ptr<ISOEHandler> soe_handler,
                                                  const TaskConfig& config = TaskConfig::Default())
         = 0;
 
@@ -69,6 +71,7 @@ public:
      */
     virtual std::shared_ptr<IMasterScan> AddAllObjectsScan(GroupVariationID gvId,
                                                            TimeDuration period,
+                                                           std::shared_ptr<ISOEHandler> soe_handler,
                                                            const TaskConfig& config = TaskConfig::Default())
         = 0;
 
@@ -78,6 +81,7 @@ public:
      */
     virtual std::shared_ptr<IMasterScan> AddClassScan(const ClassField& field,
                                                       TimeDuration period,
+                                                      std::shared_ptr<ISOEHandler> soe_handler,
                                                       const TaskConfig& config = TaskConfig::Default())
         = 0;
 
@@ -89,29 +93,41 @@ public:
                                                       uint16_t start,
                                                       uint16_t stop,
                                                       TimeDuration period,
+                                                      std::shared_ptr<ISOEHandler> soe_handler,
                                                       const TaskConfig& config = TaskConfig::Default())
         = 0;
 
     /**
      * Initiate a single user defined scan via a vector of headers
      */
-    virtual void Scan(const std::vector<Header>& headers, const TaskConfig& config = TaskConfig::Default()) = 0;
+    virtual void Scan(const std::vector<Header>& headers,
+                      std::shared_ptr<ISOEHandler> soe_handler,
+                      const TaskConfig& config = TaskConfig::Default())
+        = 0;
 
     /**
      * Initiate a single scan that requests all objects (0x06 qualifier code) for a certain group and variation
      */
-    virtual void ScanAllObjects(GroupVariationID gvId, const TaskConfig& config = TaskConfig::Default()) = 0;
+    virtual void ScanAllObjects(GroupVariationID gvId,
+                                std::shared_ptr<ISOEHandler> soe_handler,
+                                const TaskConfig& config = TaskConfig::Default())
+        = 0;
 
     /**
      * Initiate a single class-based scan
      */
-    virtual void ScanClasses(const ClassField& field, const TaskConfig& config = TaskConfig::Default()) = 0;
+    virtual void ScanClasses(const ClassField& field,
+                             std::shared_ptr<ISOEHandler> soe_handler,
+                             const TaskConfig& config = TaskConfig::Default())
+        = 0;
+
     /**
      * Initiate a single start/stop (range) scan
      */
     virtual void ScanRange(GroupVariationID gvId,
                            uint16_t start,
                            uint16_t stop,
+                           std::shared_ptr<ISOEHandler> soe_handler,
                            const TaskConfig& config = TaskConfig::Default())
         = 0;
 

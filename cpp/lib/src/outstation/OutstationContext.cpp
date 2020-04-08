@@ -720,9 +720,10 @@ IINField OContext::HandleDirectOperate(const ser4cpp::rseq_t& objects, OperateTy
         return IINField(IINBit::PARAM_ERROR);
     }
 
-    CommandActionAdapter adapter(*this->commandHandler, false, opType);
+    CommandActionAdapter adapter(*this->commandHandler, false, this->database, opType);
     CommandResponseHandler handler(this->params.maxControlsPerRequest, &adapter, pWriter);
     auto result = APDUParser::Parse(objects, handler, &this->logger);
+    this->shouldCheckForUnsolicited = true;
     return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
 }
 
@@ -737,7 +738,7 @@ IINField OContext::HandleSelect(const ser4cpp::rseq_t& objects, HeaderWriter& wr
     }
 
     // the 'OperateType' is just ignored  since it's a select
-    CommandActionAdapter adapter(*this->commandHandler, true, OperateType::DirectOperate);
+    CommandActionAdapter adapter(*this->commandHandler, true, this->database, OperateType::DirectOperate);
     CommandResponseHandler handler(this->params.maxControlsPerRequest, &adapter, &writer);
     auto result = APDUParser::Parse(objects, handler, &this->logger);
     if (result == ParseResult::OK)
@@ -768,10 +769,15 @@ IINField OContext::HandleOperate(const ser4cpp::rseq_t& objects, HeaderWriter& w
 
     if (result == CommandStatus::SUCCESS)
     {
-        CommandActionAdapter adapter(*this->commandHandler, false, OperateType::SelectBeforeOperate);
+        CommandActionAdapter adapter(*this->commandHandler, false, this->database, OperateType::SelectBeforeOperate);
         CommandResponseHandler handler(this->params.maxControlsPerRequest, &adapter, &writer);
         auto result = APDUParser::Parse(objects, handler, &this->logger);
+        this->shouldCheckForUnsolicited = true;
         return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
+    }
+    else
+    {
+        this->control.Unselect();
     }
 
     return this->HandleCommandWithConstant(objects, writer, result);
@@ -865,7 +871,7 @@ IINField OContext::HandleEnableUnsolicited(const ser4cpp::rseq_t& objects, Heade
     if (result == ParseResult::OK)
     {
         this->params.unsolClassMask.Set(handler.GetClassField());
-        shouldCheckForUnsolicited = true;
+        this->shouldCheckForUnsolicited = true;
         return handler.Errors();
     }
 

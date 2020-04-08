@@ -95,3 +95,12 @@ uint16_t OutstationApplicationAdapter::WarmRestart()
     const auto env = JNI::GetEnv();
     return static_cast<uint16_t>(JCache::OutstationApplication.warmRestart(env, proxy));
 }
+
+DNPTime OutstationApplicationAdapter::Now()
+{
+    const auto env = JNI::GetEnv();
+    const auto dnp_time = JCache::OutstationApplication.now(env, proxy);
+    const auto time = JCache::DNPTime.getmsSinceEpoch(env, dnp_time);
+    const auto quality = JCache::DNPTime.getquality(env, dnp_time);
+    return DNPTime(time, static_cast<TimestampQuality>(JCache::TimestampQuality.toType(env, quality)));
+}

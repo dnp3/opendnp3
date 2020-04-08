@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIENTRY_H
 #define OPENDNP3JAVA_JNIENTRY_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,16 +52,16 @@ namespace jni
             public:
 
             // methods
-            LocalRef<jobject> getKey(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getValue(JNIEnv* env, jobject instance);
+            LocalRef<JObject> getKey(JNIEnv* env, JEntry instance);
+            LocalRef<JObject> getValue(JNIEnv* env, JEntry instance);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID getKeyMethod = nullptr;
-            jmethodID getValueMethod = nullptr;
+            jmethodID method0 = nullptr;
+            jmethodID method1 = nullptr;
         };
     }
 }

@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNICOMMANDHANDLER_H
 #define OPENDNP3JAVA_JNICOMMANDHANDLER_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,36 +52,36 @@ namespace jni
             public:
 
             // methods
-            void begin(JNIEnv* env, jobject instance);
-            void end(JNIEnv* env, jobject instance);
-            LocalRef<jobject> operateAOD64(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
-            LocalRef<jobject> operateAOF32(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
-            LocalRef<jobject> operateAOI16(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
-            LocalRef<jobject> operateAOI32(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
-            LocalRef<jobject> operateCROB(JNIEnv* env, jobject instance, jobject arg0, jint arg1, jobject arg2);
-            LocalRef<jobject> selectAOD64(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
-            LocalRef<jobject> selectAOF32(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
-            LocalRef<jobject> selectAOI16(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
-            LocalRef<jobject> selectAOI32(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
-            LocalRef<jobject> selectCROB(JNIEnv* env, jobject instance, jobject arg0, jint arg1);
+            void begin(JNIEnv* env, JCommandHandler instance);
+            void end(JNIEnv* env, JCommandHandler instance);
+            LocalRef<JCommandStatus> operate(JNIEnv* env, JCommandHandler instance, JAnalogOutputDouble64 arg0, jint arg1, JDatabase arg2, JOperateType arg3);
+            LocalRef<JCommandStatus> operate(JNIEnv* env, JCommandHandler instance, JAnalogOutputFloat32 arg0, jint arg1, JDatabase arg2, JOperateType arg3);
+            LocalRef<JCommandStatus> operate(JNIEnv* env, JCommandHandler instance, JAnalogOutputInt16 arg0, jint arg1, JDatabase arg2, JOperateType arg3);
+            LocalRef<JCommandStatus> operate(JNIEnv* env, JCommandHandler instance, JAnalogOutputInt32 arg0, jint arg1, JDatabase arg2, JOperateType arg3);
+            LocalRef<JCommandStatus> operate(JNIEnv* env, JCommandHandler instance, JControlRelayOutputBlock arg0, jint arg1, JDatabase arg2, JOperateType arg3);
+            LocalRef<JCommandStatus> select(JNIEnv* env, JCommandHandler instance, JAnalogOutputInt32 arg0, jint arg1);
+            LocalRef<JCommandStatus> select(JNIEnv* env, JCommandHandler instance, JAnalogOutputInt16 arg0, jint arg1);
+            LocalRef<JCommandStatus> select(JNIEnv* env, JCommandHandler instance, JAnalogOutputFloat32 arg0, jint arg1);
+            LocalRef<JCommandStatus> select(JNIEnv* env, JCommandHandler instance, JControlRelayOutputBlock arg0, jint arg1);
+            LocalRef<JCommandStatus> select(JNIEnv* env, JCommandHandler instance, JAnalogOutputDouble64 arg0, jint arg1);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID beginMethod = nullptr;
-            jmethodID endMethod = nullptr;
-            jmethodID operateAOD64Method = nullptr;
-            jmethodID operateAOF32Method = nullptr;
-            jmethodID operateAOI16Method = nullptr;
-            jmethodID operateAOI32Method = nullptr;
-            jmethodID operateCROBMethod = nullptr;
-            jmethodID selectAOD64Method = nullptr;
-            jmethodID selectAOF32Method = nullptr;
-            jmethodID selectAOI16Method = nullptr;
-            jmethodID selectAOI32Method = nullptr;
-            jmethodID selectCROBMethod = nullptr;
+            jmethodID method0 = nullptr;
+            jmethodID method1 = nullptr;
+            jmethodID method2 = nullptr;
+            jmethodID method3 = nullptr;
+            jmethodID method4 = nullptr;
+            jmethodID method5 = nullptr;
+            jmethodID method6 = nullptr;
+            jmethodID method7 = nullptr;
+            jmethodID method8 = nullptr;
+            jmethodID method9 = nullptr;
+            jmethodID method10 = nullptr;
+            jmethodID method11 = nullptr;
         };
     }
 }

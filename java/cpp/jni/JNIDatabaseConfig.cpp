@@ -71,39 +71,39 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> DatabaseConfig::getanalog(JNIEnv* env, jobject instance)
+        LocalRef<JMap> DatabaseConfig::getanalog(JNIEnv* env, JDatabaseConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->analogField));
+            return LocalRef<JMap>(env, env->GetObjectField(instance, this->analogField));
         }
 
-        LocalRef<jobject> DatabaseConfig::getaoStatus(JNIEnv* env, jobject instance)
+        LocalRef<JMap> DatabaseConfig::getaoStatus(JNIEnv* env, JDatabaseConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->aoStatusField));
+            return LocalRef<JMap>(env, env->GetObjectField(instance, this->aoStatusField));
         }
 
-        LocalRef<jobject> DatabaseConfig::getbinary(JNIEnv* env, jobject instance)
+        LocalRef<JMap> DatabaseConfig::getbinary(JNIEnv* env, JDatabaseConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->binaryField));
+            return LocalRef<JMap>(env, env->GetObjectField(instance, this->binaryField));
         }
 
-        LocalRef<jobject> DatabaseConfig::getboStatus(JNIEnv* env, jobject instance)
+        LocalRef<JMap> DatabaseConfig::getboStatus(JNIEnv* env, JDatabaseConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->boStatusField));
+            return LocalRef<JMap>(env, env->GetObjectField(instance, this->boStatusField));
         }
 
-        LocalRef<jobject> DatabaseConfig::getcounter(JNIEnv* env, jobject instance)
+        LocalRef<JMap> DatabaseConfig::getcounter(JNIEnv* env, JDatabaseConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->counterField));
+            return LocalRef<JMap>(env, env->GetObjectField(instance, this->counterField));
         }
 
-        LocalRef<jobject> DatabaseConfig::getdoubleBinary(JNIEnv* env, jobject instance)
+        LocalRef<JMap> DatabaseConfig::getdoubleBinary(JNIEnv* env, JDatabaseConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->doubleBinaryField));
+            return LocalRef<JMap>(env, env->GetObjectField(instance, this->doubleBinaryField));
         }
 
-        LocalRef<jobject> DatabaseConfig::getfrozenCounter(JNIEnv* env, jobject instance)
+        LocalRef<JMap> DatabaseConfig::getfrozenCounter(JNIEnv* env, JDatabaseConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->frozenCounterField));
+            return LocalRef<JMap>(env, env->GetObjectField(instance, this->frozenCounterField));
         }
     }
 }

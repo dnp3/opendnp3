@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIDNPTIME_H
 #define OPENDNP3JAVA_JNIDNPTIME_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,14 +52,24 @@ namespace jni
             public:
 
             // constructor methods
-            LocalRef<jobject> init1(JNIEnv* env, jlong arg0);
+            LocalRef<JDNPTime> construct(JNIEnv* env, jlong arg0);
+            LocalRef<JDNPTime> construct(JNIEnv* env, jlong arg0, JTimestampQuality arg1);
+
+            // field getter methods
+            jlong getmsSinceEpoch(JNIEnv* env, JDNPTime instance);
+            LocalRef<JTimestampQuality> getquality(JNIEnv* env, JDNPTime instance);
 
             private:
 
             jclass clazz = nullptr;
 
             // constructor method ids
-            jmethodID init1Constructor = nullptr;
+            jmethodID constructor0 = nullptr;
+            jmethodID constructor1 = nullptr;
+
+            // field ids
+            jfieldID msSinceEpochField = nullptr;
+            jfieldID qualityField = nullptr;
         };
     }
 }

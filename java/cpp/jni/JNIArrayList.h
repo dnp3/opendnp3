@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIARRAYLIST_H
 #define OPENDNP3JAVA_JNIARRAYLIST_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,20 +52,20 @@ namespace jni
             public:
 
             // constructor methods
-            LocalRef<jobject> init1(JNIEnv* env, jint arg0);
+            LocalRef<JArrayList> construct(JNIEnv* env, jint arg0);
 
             // methods
-            jboolean add(JNIEnv* env, jobject instance, jobject arg0);
+            jboolean add(JNIEnv* env, JArrayList instance, JObject arg0);
 
             private:
 
             jclass clazz = nullptr;
 
             // constructor method ids
-            jmethodID init1Constructor = nullptr;
+            jmethodID constructor0 = nullptr;
 
             // method ids
-            jmethodID addMethod = nullptr;
+            jmethodID method0 = nullptr;
         };
     }
 }

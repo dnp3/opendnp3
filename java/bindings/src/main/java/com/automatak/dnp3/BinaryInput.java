@@ -27,7 +27,7 @@ public class BinaryInput extends Measurement
 {
     public final boolean value;
 
-    public BinaryInput(boolean value, byte quality, long timestamp)
+    public BinaryInput(boolean value, Flags quality, DNPTime timestamp)
     {
         super(quality, timestamp);
         this.value = value;
@@ -35,7 +35,7 @@ public class BinaryInput extends Measurement
 
     @Override
     public String toString() {
-        return String.format("BinaryInput(%b, 0x%x, %d)", value, quality, timestamp);
+        return String.format("BinaryInput(%b, 0x%x, %d)", value, quality.getValue(), timestamp.msSinceEpoch);
     }
 
 }

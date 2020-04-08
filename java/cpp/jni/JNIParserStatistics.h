@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIPARSERSTATISTICS_H
 #define OPENDNP3JAVA_JNIPARSERSTATISTICS_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,14 +52,14 @@ namespace jni
             public:
 
             // constructor methods
-            LocalRef<jobject> init7(JNIEnv* env, jlong arg0, jlong arg1, jlong arg2, jlong arg3, jlong arg4, jlong arg5, jlong arg6);
+            LocalRef<JParserStatistics> construct(JNIEnv* env, jlong arg0, jlong arg1, jlong arg2, jlong arg3, jlong arg4, jlong arg5, jlong arg6);
 
             private:
 
             jclass clazz = nullptr;
 
             // constructor method ids
-            jmethodID init7Constructor = nullptr;
+            jmethodID constructor0 = nullptr;
         };
     }
 }

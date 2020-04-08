@@ -23,28 +23,41 @@
 
 #include "JNI.h"
 
-#include <opendnp3/util/Uncopyable.h>
-
 #include <jni.h>
 
 // RAII class for JNI global refs
-class GlobalRef : private opendnp3::Uncopyable
+template<class T> class GlobalRef
 {
-    jobject reference;
+    jobject ref = nullptr;
 
 public:
-    GlobalRef(jobject reference) : reference(JNI::CreateGlobalRef(reference)) {}
+    GlobalRef(T ref) : ref(JNI::CreateGlobalRef(ref.value)) {}
+
+    GlobalRef(const GlobalRef&) = delete;
+
+    GlobalRef(GlobalRef&& other)
+    {
+        this->ref = other.ref;
+        other.ref = nullptr;
+    }
 
     ~GlobalRef()
     {
-        JNI::DeleteGlobalRef(reference);
+        if (ref)
+        {
+            JNI::DeleteGlobalRef(ref);
+        }
     }
 
-    operator const jobject&() const
+    T get() const
     {
-        return reference;
+        return T(ref);
     }
-   
+
+    operator T() const
+    {
+        return T(ref);
+    }
 };
 
 #endif

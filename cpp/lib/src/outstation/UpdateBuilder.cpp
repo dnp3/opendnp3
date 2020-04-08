@@ -28,66 +28,63 @@ Updates UpdateBuilder::Build()
     return Updates(std::move(this->updates));
 }
 
-UpdateBuilder& UpdateBuilder::Update(const Binary& meas, uint16_t index, EventMode mode)
+bool UpdateBuilder::Update(const Binary& meas, uint16_t index, EventMode mode)
 {
     return this->AddMeas(meas, index, mode);
 }
 
-UpdateBuilder& UpdateBuilder::Update(const DoubleBitBinary& meas, uint16_t index, EventMode mode)
+bool UpdateBuilder::Update(const DoubleBitBinary& meas, uint16_t index, EventMode mode)
 {
     return this->AddMeas(meas, index, mode);
 }
 
-UpdateBuilder& UpdateBuilder::Update(const Analog& meas, uint16_t index, EventMode mode)
+bool UpdateBuilder::Update(const Analog& meas, uint16_t index, EventMode mode)
 {
     return this->AddMeas(meas, index, mode);
 }
 
-UpdateBuilder& UpdateBuilder::Update(const Counter& meas, uint16_t index, EventMode mode)
+bool UpdateBuilder::Update(const Counter& meas, uint16_t index, EventMode mode)
 {
     return this->AddMeas(meas, index, mode);
 }
 
-UpdateBuilder& UpdateBuilder::FreezeCounter(uint16_t index, bool clear, EventMode mode)
+bool UpdateBuilder::FreezeCounter(uint16_t index, bool clear, EventMode mode)
 {
     this->Add([=](IUpdateHandler& handler) { handler.FreezeCounter(index, clear, mode); });
-    return *this;
+    return true;
 }
 
-UpdateBuilder& UpdateBuilder::Update(const BinaryOutputStatus& meas, uint16_t index, EventMode mode)
+bool UpdateBuilder::Update(const BinaryOutputStatus& meas, uint16_t index, EventMode mode)
 {
     return this->AddMeas(meas, index, mode);
 }
 
-UpdateBuilder& UpdateBuilder::Update(const AnalogOutputStatus& meas, uint16_t index, EventMode mode)
+bool UpdateBuilder::Update(const AnalogOutputStatus& meas, uint16_t index, EventMode mode)
 {
     return this->AddMeas(meas, index, mode);
 }
 
-UpdateBuilder& UpdateBuilder::Update(const OctetString& meas, uint16_t index, EventMode mode)
+bool UpdateBuilder::Update(const OctetString& meas, uint16_t index, EventMode mode)
 {
     return this->AddMeas(meas, index, mode);
 }
 
-UpdateBuilder& UpdateBuilder::Update(const TimeAndInterval& meas, uint16_t index)
+bool UpdateBuilder::Update(const TimeAndInterval& meas, uint16_t index)
 {
-    this->Add([=](IUpdateHandler& handler) { handler.Update(meas, index); });
-    return *this;
+    return this->Add([=](IUpdateHandler& handler) { handler.Update(meas, index); });    
 }
 
-UpdateBuilder& UpdateBuilder::Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t flags)
+bool UpdateBuilder::Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t flags)
 {
-    this->Add([=](IUpdateHandler& handler) { handler.Modify(type, start, stop, flags); });
-    return *this;
+    return this->Add([=](IUpdateHandler& handler) { handler.Modify(type, start, stop, flags); });    
 }
 
-template<class T> UpdateBuilder& UpdateBuilder::AddMeas(const T& meas, uint16_t index, EventMode mode)
+template<class T> bool UpdateBuilder::AddMeas(const T& meas, uint16_t index, EventMode mode)
 {
-    this->Add([=](IUpdateHandler& handler) { handler.Update(meas, index, mode); });
-    return *this;
+    return this->Add([=](IUpdateHandler& handler) { handler.Update(meas, index, mode); });    
 }
 
-void UpdateBuilder::Add(const update_func_t& fun)
+bool UpdateBuilder::Add(const update_func_t& fun)
 {
     if (!this->updates)
     {
@@ -95,6 +92,8 @@ void UpdateBuilder::Add(const update_func_t& fun)
     }
 
     updates->push_back(fun);
+
+    return true;
 }
 
 } // namespace opendnp3

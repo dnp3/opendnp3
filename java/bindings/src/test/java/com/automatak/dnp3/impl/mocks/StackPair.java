@@ -126,7 +126,6 @@ public class StackPair {
 
         for(int i = 0; i < this.EVENTS_PER_ITERATION; ++i)
         {
-
            ExpectedValue value = this.addRandomValue(set);
            this.sentValues.add(value);
         }
@@ -140,7 +139,7 @@ public class StackPair {
     {
         final int total = sentValues.size();
 
-        List<ExpectedValue> receivedValues = soeHandler.waitForValues(duration);
+        List<ExpectedValue> receivedValues = soeHandler.waitForValues(total, duration);
 
         if(receivedValues == null)
         {
@@ -179,17 +178,17 @@ public class StackPair {
         switch(type)
         {
             case BinaryType: {
-                BinaryInput v = new BinaryInput(random.nextBoolean(), (byte) 0x01, 0);
+                BinaryInput v = new BinaryInput(random.nextBoolean(), new Flags((byte)0x01), new DNPTime(0));
                 set.update(v, index, EventMode.Force);
                 return new ExpectedValue(v, index);
             }
             case DoubleBinaryType: {
-                DoubleBitBinaryInput v = new DoubleBitBinaryInput(getRandomElement(DoubleBit.values()), (byte) 0x01, 0);
+                DoubleBitBinaryInput v = new DoubleBitBinaryInput(getRandomElement(DoubleBit.values()), new Flags((byte)0x01), new DNPTime(0));
                 set.update(v, index, EventMode.Force);
                 return new ExpectedValue(v, index);
             }
             case CounterType: {
-                Counter v = new Counter(random.nextInt(65535), (byte) 0x01, 0);
+                Counter v = new Counter(random.nextInt(65535), new Flags((byte)0x01), new DNPTime(0));
                 set.update(v, index, EventMode.Force);
                 return new ExpectedValue(v, index);
             }
@@ -198,17 +197,17 @@ public class StackPair {
                 return new ExpectedValue(index, FrozenCounterType);
             }
             case AnalogType: {
-                AnalogInput v = new AnalogInput(random.nextInt(65535), (byte) 0x01, 0);
+                AnalogInput v = new AnalogInput(random.nextInt(65535), new Flags((byte)0x01), new DNPTime(0));
                 set.update(v, index, EventMode.Force);
                 return new ExpectedValue(v, index);
             }
             case BOStatusType: {
-                BinaryOutputStatus v = new BinaryOutputStatus(random.nextBoolean(), (byte) 0x01, 0);
+                BinaryOutputStatus v = new BinaryOutputStatus(random.nextBoolean(), new Flags((byte)0x01), new DNPTime(0));
                 set.update(v, index, EventMode.Force);
                 return new ExpectedValue(v, index);
             }
             case AOStatusType: {
-                AnalogOutputStatus v = new AnalogOutputStatus(random.nextInt(65535), (byte) 0x01, 0);
+                AnalogOutputStatus v = new AnalogOutputStatus(random.nextInt(65535), new Flags((byte)0x01), new DNPTime(0));
                 set.update(v, index, EventMode.Force);
                 return new ExpectedValue(v, index);
             }
@@ -227,7 +226,7 @@ public class StackPair {
     final BlockingChannelListener serverListener = new BlockingChannelListener();
     final QueuedSOEHandler soeHandler = new QueuedSOEHandler();
     final Queue<ExpectedValue> sentValues = new ArrayDeque<>();
-    final Random random = new Random(0);
+    final Random random = new Random();
 
     final Master master;
     final Outstation outstation;

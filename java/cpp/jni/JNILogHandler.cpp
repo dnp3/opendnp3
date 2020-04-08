@@ -42,8 +42,8 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->logMethod = env->GetMethodID(this->clazz, "log", "(Lcom/automatak/dnp3/LogEntry;)V");
-            if(!this->logMethod) return false;
+            this->method0 = env->GetMethodID(this->clazz, "log", "(Lcom/automatak/dnp3/LogEntry;)V");
+            if(!this->method0) return false;
 
             return true;
         }
@@ -53,9 +53,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        void LogHandler::log(JNIEnv* env, jobject instance, jobject arg0)
+        void LogHandler::log(JNIEnv* env, JLogHandler instance, JLogEntry arg0)
         {
-            env->CallVoidMethod(instance, this->logMethod, arg0);
+            env->CallVoidMethod(instance, this->method0, arg0);
         }
     }
 }

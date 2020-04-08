@@ -29,6 +29,26 @@
 using namespace std;
 using namespace opendnp3;
 
+class TestSOEHandler : public ISOEHandler
+{
+    virtual void begin_fragment(const ResponseInfo& info) {};
+    virtual void end_fragment(const ResponseInfo& info) {};
+
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) {};
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values) {};
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Analog>>& values) {};
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Counter>>& values) {};
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<FrozenCounter>>& values) {};
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryOutputStatus>>& values) {};
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputStatus>>& values) {};
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values) {};
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<TimeAndInterval>>& values) {};
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values) {};
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) {};
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values) {};
+    virtual void Process(const HeaderInfo& info, const ICollection<DNPTime>& values) {};
+};
+
 int main(int argc, char* argv[])
 {
     // Specify what log levels to use. NORMAL is warning and above
@@ -65,11 +85,13 @@ int main(int argc, char* argv[])
                                      stackConfig                         // stack configuration
     );
 
+    auto test_soe_handler = std::make_shared<TestSOEHandler>();
+
     // do an integrity poll (Class 3/2/1/0) once per minute
-    auto integrityScan = master->AddClassScan(ClassField::AllClasses(), TimeDuration::Minutes(1));
+    auto integrityScan = master->AddClassScan(ClassField::AllClasses(), TimeDuration::Minutes(1), test_soe_handler);
 
     // do a Class 1 exception poll every 5 seconds
-    auto exceptionScan = master->AddClassScan(ClassField(ClassField::CLASS_1), TimeDuration::Seconds(2));
+    auto exceptionScan = master->AddClassScan(ClassField(ClassField::CLASS_1), TimeDuration::Seconds(2), test_soe_handler);
 
     // Enable the master. This will start communications.
     master->Enable();
@@ -95,7 +117,7 @@ int main(int argc, char* argv[])
         switch (cmd)
         {
         case ('a'):
-            master->ScanRange(GroupVariationID(1, 2), 0, 3);
+            master->ScanRange(GroupVariationID(1, 2), 0, 3, test_soe_handler);
             break;
         case ('d'):
             master->PerformFunction("disable unsol", FunctionCode::DISABLE_UNSOLICITED,

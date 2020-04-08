@@ -1,128 +1,173 @@
-version: 2
-aliases:
-  - run: &install_deps_gcc
-      name: Install dependencies
-      command: apt-get update && apt-get install -y git cmake g++ libssl-dev lcov curl #default-jdk maven
-  - run: &install_deps_clang
-      name: Install dependencies
-      command: apt-get update && apt-get install -y git cmake clang libc++-dev libc++abi-dev libssl-dev lcov curl #default-jdk maven
-  - run: &print_versions_gcc
-      name: Print versions
-      command: g++ -v && cmake -version && openssl version #&& java --version
-  - run: &print_versions_clang
-      name: Print versions
-      command: clang --version && cmake -version && openssl version #&& java --version
-  - run: &init_submodules
-      name: Initialize submodules
-      command: git submodule update --init
-  - run: &build
-      name: Build
-      command: cmake --build .
-      working_directory: build
-  - run: &test
-      name: Test
-      command: ctest -VV .
-      working_directory: build
-  - run: &coverage
-      name: Code coverage
-      command: cmake --build . --target coverage && bash <(curl -s https://codecov.io/bash) -f coverage.info.cleaned
-      working_directory: build
-  - run: &build_java
-      # I was not able to set java.library.path to the build directory, so we just
-      # install the target to a system directory.
-      name: Prepare Java bindings
-      command: cmake -DCMAKE_INSTALL_PREFIX="/usr" . && cmake --build . --target install
-      working_directory: build
-  - run: &test_java
-      # The javadocs fails for some obscure reasons, but it looks like a bug
-      # from upstream, not us.
-      name: Test Java bindings
-      command: mvn verify -Dmaven.javadoc.skip=true
-      working_directory: java
-  - run: &package
-      name: Package
-      command: cpack -G ZIP -D CPACK_PACKAGE_FILE_NAME="opendnp3"
-      working_directory: build
-  - store_artifacts: &store_artifacts
-      path: build/opendnp3.zip
+version: 2.1
+orbs:
+  win: circleci/windows@1.0.0
+commands:
+  install_system_deps:
+    description: Install system dependencies
+    steps:
+      - run:
+          name: Install system dependencies
+          command: >
+            apt-get update &&
+            apt-get install -y build-essential clang cmake curl git libssl-dev lcov default-jdk maven
+  build:
+    description: Build the library
+    parameters:
+      build_type:
+        description: Build type
+        type: enum
+        enum: ["Debug", "Release"]
+      compiler:
+        description: The compiler to use
+        type: enum
+        enum: ["gcc", "clang"]
+      coverage:
+        description: Build with coverage support
+        type: enum
+        enum: ["ON", "OFF"]
+        default: "OFF"
+    steps:
+      - run:
+          name: CMake configure
+          working_directory: build
+          command: >
+            flags="-Wall -Wextra -Wno-unused-parameter" &&
+            if [ "<< parameters.compiler >>" = "gcc" ]; then flags="${flags} -Wno-format-truncation"; fi &&
+            if [ "<< parameters.compiler >>" = "gcc" ]; then c_compiler="gcc" && cxx_compiler="g++"; else c_compiler="clang" && cxx_compiler="clang++"; fi &&
+            cmake
+            -DDNP3_EVERYTHING=ON
+            -DDNP3_COVERAGE=<< parameters.coverage >>
+            -DCMAKE_BUILD_TYPE=<< parameters.build_type >>
+            -DCMAKE_C_COMPILER="${c_compiler}"
+            -DCMAKE_CXX_COMPILER="${cxx_compiler}"
+            -DCMAKE_CXX_FLAGS="${flags}"
+            ..
+      - run:
+          name: CMake build
+          working_directory: build
+          command: >
+            if [ "<< parameters.coverage >>" = "ON" ]; then target="coverage"; else target="all"; fi &&
+            cmake --build . --target ${target} --parallel 4
+  coverage:
+      description: Code coverage
+      steps:
+        - run:
+            name: Code coverage
+            working_directory: build
+            command: bash <(curl -s https://codecov.io/bash) -f coverage.info.cleaned
+  test:
+    description: Run the unit tests
+    steps:
+      - run:
+          name: Run the C++ unit tests
+          working_directory: build
+          command: ctest -VV
+      - run:
+          name: Run the Java unit tests
+          working_directory: java
+          command: >
+            export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/project/build/java &&
+            export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::") &&
+            mvn verify
+  windows_steps:
+    description: Windows build
+    parameters:
+      architecture:
+        description: Architecture to build for
+        type: enum
+        enum: ["Win32", "x64"]
+    steps:
+      - run:
+          name: Install system dependencies
+          command: >
+            if("<< parameters.architecture >>" -eq "Win32") { $flag = "--x86" } else { $flag = "" };
+            choco install "$flag" cmake.portable openssl jdk8 maven; refreshenv
+      - checkout
+      - run:
+          name: CMake configure
+          working_directory: build
+          command: >
+            cmake -A << parameters.architecture >>
+            -DDNP3_EVERYTHING=ON
+            -DCMAKE_BUILD_TYPE=Release
+            ..
+      - run:
+          name: CMake build
+          working_directory: build
+          command: cmake --build . --config Release --parallel 4
+      - run:
+          name: Run the C++ unit tests
+          working_directory: build
+          command: ctest -VV -C Release
+      - run:
+          name: Run the Java unit tests
+          working_directory: java
+          command: >
+            $env:Path += ";C:\Users\circleci\project\build\java\Release";
+            mvn verify
 jobs:
-  build-gcc-debug:
+  gcc-debug:
     docker:
-      - image: ubuntu:19.04
+      - image: debian:buster
     steps:
+      - install_system_deps
       - checkout
-      - run: *install_deps_gcc
-      - run: *print_versions_gcc
-      #- run: *init_submodules
-      - run:
-          name: Configure
-          command: cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror -Wno-unused-parameter -Wno-format-truncation" -DDNP3_TLS=ON -DDNP3_TESTS=ON -DDNP3_EXAMPLES=ON -DDNP3_COVERAGE=ON ..
-          working_directory: build
-      - run: *build
-      - run: *test
-      #- run: *build_java
-      #- run: *test_java
-      #- run: *package
-      #- store_artifacts: *store_artifacts
-  build-gcc-release:
+      - build:
+          compiler: gcc
+          build_type: Debug
+          coverage: "ON"
+      - coverage
+  gcc-release:
     docker:
-      - image: ubuntu:19.04
+      - image: debian:buster
     steps:
+      - install_system_deps
       - checkout
-      - run: *install_deps_gcc
-      - run: *print_versions_gcc
-      #- run: *init_submodules
-      - run:
-          name: Configure
-          command: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror -Wno-unused-parameter -Wno-format-truncation" -DDNP3_TLS=ON -DDNP3_TESTS=ON -DDNP3_EXAMPLES=ON ..
-          working_directory: build
-      - run: *build
-      - run: *test
-      #- run: *build_java
-      #- run: *test_java
-      #- run: *package
-      #- store_artifacts: *store_artifacts
-  build-clang-debug:
+      - build:
+          compiler: gcc
+          build_type: Release
+      - test
+  clang-debug:
     docker:
-      - image: ubuntu:19.04
+      - image: debian:buster
     steps:
+      - install_system_deps
       - checkout
-      - run: *install_deps_clang
-      - run: *print_versions_clang
-      #- run: *init_submodules
-      - run:
-          name: Configure
-          command: cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wno-unused-parameter -Werror" -DDNP3_TLS=ON -DDNP3_TESTS=ON -DDNP3_EXAMPLES=ON ..
-          working_directory: build
-      - run: *build
-      - run: *test
-      #- run: *build_java
-      #- run: *test_java
-      #- run: *package
-      #- store_artifacts: *store_artifacts
-  build-clang-release:
+      - build:
+          compiler: clang
+          build_type: Debug
+      - test
+  clang-release:
     docker:
-      - image: ubuntu:19.04
+      - image: debian:buster
     steps:
+      - install_system_deps
       - checkout
-      - run: *install_deps_clang
-      - run: *print_versions_clang
-      #- run: *init_submodules
-      - run:
-          name: Configure
-          command: cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wno-unused-parameter -Werror" -DDNP3_TLS=ON -DDNP3_TESTS=ON -DDNP3_EXAMPLES=ON ..
-          working_directory: build
-      - run: *build
-      - run: *test
-      #- run: *build_java
-      #- run: *test_java
-      #- run: *package
-      #- store_artifacts: *store_artifacts
+      - build:
+          compiler: clang
+          build_type: Release
+      - test
+  windows-x86:
+    executor:
+      name: win/vs2019
+      shell: powershell.exe
+    steps:
+      - windows_steps:
+          architecture: "Win32"
+  windows-x64:
+    executor:
+      name: win/vs2019
+      shell: powershell.exe
+    steps:
+      - windows_steps:
+          architecture: "x64"
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - build-gcc-debug
-      - build-gcc-release
-      - build-clang-debug
-      - build-clang-release
+      - gcc-debug
+      - gcc-release
+      - clang-debug
+      - clang-release
+      - windows-x86
+      - windows-x64

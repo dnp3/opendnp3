@@ -29,20 +29,33 @@
 // limitations under the License.
 //
 
-namespace Automatak.DNP3.Interface
+#ifndef OPENDNP3JAVA_JNIOBJECT_H
+#define OPENDNP3JAVA_JNIOBJECT_H
+
+#include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
+
+namespace jni
 {
-  /// <summary>
-  /// Select contiguous or dis-contiguous index mode
-  /// </summary>
-  public enum IndexMode : byte
-  {
-    /// <summary>
-    /// Indices are contiguous. Most efficient as direct indexing is used.
-    /// </summary>
-    Contiguous = 0x0,
-    /// <summary>
-    /// Indices are dis-contiguous. Resorts to binary search to find raw index.
-    /// </summary>
-    Discontiguous = 0x1
-  }
+    struct JCache;
+
+    namespace cache
+    {
+        class Object
+        {
+            friend struct jni::JCache;
+
+            bool init(JNIEnv* env);
+            void cleanup(JNIEnv* env);
+
+            public:
+
+            private:
+
+            jclass clazz = nullptr;
+        };
+    }
 }
+
+#endif

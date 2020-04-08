@@ -39,7 +39,7 @@ class StartupIntegrityPoll final : public PollTaskBase
 public:
     StartupIntegrityPoll(const std::shared_ptr<TaskContext>& context,
                          IMasterApplication& app,
-                         ISOEHandler& soeHandler,
+                         std::shared_ptr<ISOEHandler> soeHandler,
                          ClassField classes,
                          const TaskBehavior& behavior,
                          const log4cpp::Logger& logger);

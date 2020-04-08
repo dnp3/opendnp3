@@ -59,14 +59,14 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> BinaryConfig::geteventVariation(JNIEnv* env, jobject instance)
+        LocalRef<JEventBinaryVariation> BinaryConfig::geteventVariation(JNIEnv* env, JBinaryConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->eventVariationField));
+            return LocalRef<JEventBinaryVariation>(env, env->GetObjectField(instance, this->eventVariationField));
         }
 
-        LocalRef<jobject> BinaryConfig::getstaticVariation(JNIEnv* env, jobject instance)
+        LocalRef<JStaticBinaryVariation> BinaryConfig::getstaticVariation(JNIEnv* env, JBinaryConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->staticVariationField));
+            return LocalRef<JStaticBinaryVariation>(env, env->GetObjectField(instance, this->staticVariationField));
         }
     }
 }

@@ -84,27 +84,27 @@ namespace Automatak.DNP3.Interface
             return status();
         }
 
-        CommandStatus ICommandHandler.Operate(ControlRelayOutputBlock command, ushort index, OperateType opType)
+        CommandStatus ICommandHandler.Operate(ControlRelayOutputBlock command, ushort index, IDatabase database, OperateType opType)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Operate(AnalogOutputInt32 command, ushort index, OperateType opType)
+        CommandStatus ICommandHandler.Operate(AnalogOutputInt32 command, ushort index, IDatabase database, OperateType opType)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Operate(AnalogOutputInt16 command, ushort index, OperateType opType)
+        CommandStatus ICommandHandler.Operate(AnalogOutputInt16 command, ushort index, IDatabase database, OperateType opType)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Operate(AnalogOutputFloat32 command, ushort index, OperateType opType)
+        CommandStatus ICommandHandler.Operate(AnalogOutputFloat32 command, ushort index, IDatabase database, OperateType opType)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Operate(AnalogOutputDouble64 command, ushort index, OperateType opType)
+        CommandStatus ICommandHandler.Operate(AnalogOutputDouble64 command, ushort index, IDatabase database, OperateType opType)
         {
             return status();
         }

@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNILINKSTATISTICS_H
 #define OPENDNP3JAVA_JNILINKSTATISTICS_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,14 +52,14 @@ namespace jni
             public:
 
             // constructor methods
-            LocalRef<jobject> init2(JNIEnv* env, jobject arg0, jobject arg1);
+            LocalRef<JLinkStatistics> construct(JNIEnv* env, JChannelStatistics arg0, JParserStatistics arg1);
 
             private:
 
             jclass clazz = nullptr;
 
             // constructor method ids
-            jmethodID init2Constructor = nullptr;
+            jmethodID constructor0 = nullptr;
         };
     }
 }

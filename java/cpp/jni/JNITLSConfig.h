@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNITLSCONFIG_H
 #define OPENDNP3JAVA_JNITLSCONFIG_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,14 +52,14 @@ namespace jni
             public:
 
             // field getter methods
-            jboolean getallowTLSv10(JNIEnv* env, jobject instance);
-            jboolean getallowTLSv11(JNIEnv* env, jobject instance);
-            jboolean getallowTLSv12(JNIEnv* env, jobject instance);
-            LocalRef<jstring> getcipherList(JNIEnv* env, jobject instance);
-            LocalRef<jstring> getlocalCertFilePath(JNIEnv* env, jobject instance);
-            jint getmaxVerifyDepth(JNIEnv* env, jobject instance);
-            LocalRef<jstring> getpeerCertFilePath(JNIEnv* env, jobject instance);
-            LocalRef<jstring> getprivateKeyFilePath(JNIEnv* env, jobject instance);
+            jboolean getallowTLSv10(JNIEnv* env, JTLSConfig instance);
+            jboolean getallowTLSv11(JNIEnv* env, JTLSConfig instance);
+            jboolean getallowTLSv12(JNIEnv* env, JTLSConfig instance);
+            LocalRef<JString> getcipherList(JNIEnv* env, JTLSConfig instance);
+            LocalRef<JString> getlocalCertFilePath(JNIEnv* env, JTLSConfig instance);
+            jint getmaxVerifyDepth(JNIEnv* env, JTLSConfig instance);
+            LocalRef<JString> getpeerCertFilePath(JNIEnv* env, JTLSConfig instance);
+            LocalRef<JString> getprivateKeyFilePath(JNIEnv* env, JTLSConfig instance);
 
             private:
 

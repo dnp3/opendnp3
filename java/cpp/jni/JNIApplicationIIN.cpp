@@ -62,22 +62,22 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jboolean ApplicationIIN::getconfigCorrupt(JNIEnv* env, jobject instance)
+        jboolean ApplicationIIN::getconfigCorrupt(JNIEnv* env, JApplicationIIN instance)
         {
             return env->GetBooleanField(instance, this->configCorruptField);
         }
 
-        jboolean ApplicationIIN::getdeviceTrouble(JNIEnv* env, jobject instance)
+        jboolean ApplicationIIN::getdeviceTrouble(JNIEnv* env, JApplicationIIN instance)
         {
             return env->GetBooleanField(instance, this->deviceTroubleField);
         }
 
-        jboolean ApplicationIIN::getlocalControl(JNIEnv* env, jobject instance)
+        jboolean ApplicationIIN::getlocalControl(JNIEnv* env, JApplicationIIN instance)
         {
             return env->GetBooleanField(instance, this->localControlField);
         }
 
-        jboolean ApplicationIIN::getneedTime(JNIEnv* env, jobject instance)
+        jboolean ApplicationIIN::getneedTime(JNIEnv* env, JApplicationIIN instance)
         {
             return env->GetBooleanField(instance, this->needTimeField);
         }

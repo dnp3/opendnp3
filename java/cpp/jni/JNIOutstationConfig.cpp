@@ -42,9 +42,6 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->indexModeField = env->GetFieldID(this->clazz, "indexMode", "Lcom/automatak/dnp3/enums/IndexMode;");
-            if(!this->indexModeField) return false;
-
             this->maxControlsPerRequestField = env->GetFieldID(this->clazz, "maxControlsPerRequest", "S");
             if(!this->maxControlsPerRequestField) return false;
 
@@ -69,6 +66,9 @@ namespace jni
             this->allowUnsolicitedField = env->GetFieldID(this->clazz, "allowUnsolicited", "Z");
             if(!this->allowUnsolicitedField) return false;
 
+            this->typesAllowedInClass0Field = env->GetFieldID(this->clazz, "typesAllowedInClass0", "Lcom/automatak/dnp3/StaticTypeBitField;");
+            if(!this->typesAllowedInClass0Field) return false;
+
             return true;
         }
 
@@ -77,49 +77,49 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jboolean OutstationConfig::getallowUnsolicited(JNIEnv* env, jobject instance)
+        jboolean OutstationConfig::getallowUnsolicited(JNIEnv* env, JOutstationConfig instance)
         {
             return env->GetBooleanField(instance, this->allowUnsolicitedField);
         }
 
-        LocalRef<jobject> OutstationConfig::getindexMode(JNIEnv* env, jobject instance)
-        {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->indexModeField));
-        }
-
-        jshort OutstationConfig::getmaxControlsPerRequest(JNIEnv* env, jobject instance)
+        jshort OutstationConfig::getmaxControlsPerRequest(JNIEnv* env, JOutstationConfig instance)
         {
             return env->GetShortField(instance, this->maxControlsPerRequestField);
         }
 
-        jint OutstationConfig::getmaxRxFragSize(JNIEnv* env, jobject instance)
+        jint OutstationConfig::getmaxRxFragSize(JNIEnv* env, JOutstationConfig instance)
         {
             return env->GetIntField(instance, this->maxRxFragSizeField);
         }
 
-        jint OutstationConfig::getmaxTxFragSize(JNIEnv* env, jobject instance)
+        jint OutstationConfig::getmaxTxFragSize(JNIEnv* env, JOutstationConfig instance)
         {
             return env->GetIntField(instance, this->maxTxFragSizeField);
         }
 
-        LocalRef<jobject> OutstationConfig::getnumUnsolRetries(JNIEnv* env, jobject instance)
+        LocalRef<JNumRetries> OutstationConfig::getnumUnsolRetries(JNIEnv* env, JOutstationConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->numUnsolRetriesField));
+            return LocalRef<JNumRetries>(env, env->GetObjectField(instance, this->numUnsolRetriesField));
         }
 
-        LocalRef<jobject> OutstationConfig::getselectTimeout(JNIEnv* env, jobject instance)
+        LocalRef<JDuration> OutstationConfig::getselectTimeout(JNIEnv* env, JOutstationConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->selectTimeoutField));
+            return LocalRef<JDuration>(env, env->GetObjectField(instance, this->selectTimeoutField));
         }
 
-        LocalRef<jobject> OutstationConfig::getsolConfirmTimeout(JNIEnv* env, jobject instance)
+        LocalRef<JDuration> OutstationConfig::getsolConfirmTimeout(JNIEnv* env, JOutstationConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->solConfirmTimeoutField));
+            return LocalRef<JDuration>(env, env->GetObjectField(instance, this->solConfirmTimeoutField));
         }
 
-        LocalRef<jobject> OutstationConfig::getunsolConfirmTimeout(JNIEnv* env, jobject instance)
+        LocalRef<JStaticTypeBitField> OutstationConfig::gettypesAllowedInClass0(JNIEnv* env, JOutstationConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->unsolConfirmTimeoutField));
+            return LocalRef<JStaticTypeBitField>(env, env->GetObjectField(instance, this->typesAllowedInClass0Field));
+        }
+
+        LocalRef<JDuration> OutstationConfig::getunsolConfirmTimeout(JNIEnv* env, JOutstationConfig instance)
+        {
+            return LocalRef<JDuration>(env, env->GetObjectField(instance, this->unsolConfirmTimeoutField));
         }
     }
 }

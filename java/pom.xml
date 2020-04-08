@@ -102,6 +102,7 @@
                 <version>${maven-javadoc-plugin.version}</version>
                 <configuration>
                     <!-- Default configuration for all reports -->
+                    <source>8</source>
                 </configuration>
                 <executions>
                     <execution>

@@ -75,24 +75,4 @@ void JNI::DeleteGlobalRef(jobject ref)
     GetEnv()->DeleteGlobalRef(ref);
 }
 
-void JNI::Iterate(JNIEnv* env, jobject iterable, const std::function<void(LocalRef<jobject>)>& callback)
-{
-    auto iterator = jni::JCache::Iterable.iterator(env, iterable);
 
-    while (jni::JCache::Iterator.hasNext(env, iterator) != 0u)
-    {
-        callback(jni::JCache::Iterator.next(env, iterator));
-    }
-}
-
-void JNI::IterateWithIndex(JNIEnv* env, jobject iterable, const std::function<void(LocalRef<jobject>, int)>& callback)
-{
-    auto iterator = jni::JCache::Iterable.iterator(env, iterable);
-
-    int i = 0;
-    while (jni::JCache::Iterator.hasNext(env, iterator) != 0u)
-    {
-        callback(jni::JCache::Iterator.next(env, iterator), i);
-        ++i;
-    }
-}

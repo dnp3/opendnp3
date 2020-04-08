@@ -68,27 +68,27 @@ class MasterImpl implements Master {
     }
 
     @Override
-    public void scan(Iterable<Header> headers)
+    public void scan(Iterable<Header> headers, SOEHandler soeHandler)
     {
-        this.scan_native(this.nativePointer, headers);
+        this.scan_native(this.nativePointer, headers, soeHandler);
     }
 
     @Override
-    public void addPeriodicScan(Duration period, Header header)
+    public void addPeriodicScan(Duration period, Header header, SOEHandler soeHandler)
     {
-        this.add_periodic_scan_native(this.nativePointer, period, Arrays.asList(header));
+        this.add_periodic_scan_native(this.nativePointer, period, Arrays.asList(header), soeHandler);
     }
 
     @Override
-    public void scan(Header header)
+    public void scan(Header header, SOEHandler soeHandler)
     {
-        this.scan_native(this.nativePointer, Arrays.asList(header));
+        this.scan_native(this.nativePointer, Arrays.asList(header), soeHandler);
     }
 
     @Override
-    public void addPeriodicScan(Duration period, Iterable<Header> headers)
+    public void addPeriodicScan(Duration period, Iterable<Header> headers, SOEHandler soeHandler)
     {
-        this.add_periodic_scan_native(this.nativePointer, period, headers);
+        this.add_periodic_scan_native(this.nativePointer, period, headers, soeHandler);
     }
 
     @Override
@@ -181,6 +181,6 @@ class MasterImpl implements Master {
     private native void select_and_operate_native(long nativePointer, long nativeCommandSetPointer, CompletableFuture<CommandTaskResult> future);
     private native void direct_operate_native(long nativePointer, long nativeCommandSetPointer, CompletableFuture<CommandTaskResult> future);
 
-    private native void scan_native(long nativePointer, Iterable<Header> headers);
-    private native void add_periodic_scan_native(long nativePointer, Duration period, Iterable<Header> headers);
+    private native void scan_native(long nativePointer, Iterable<Header> headers, SOEHandler soeHandler);
+    private native void add_periodic_scan_native(long nativePointer, Duration period, Iterable<Header> headers, SOEHandler soeHandler);
 }

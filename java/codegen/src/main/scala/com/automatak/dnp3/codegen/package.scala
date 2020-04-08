@@ -25,8 +25,13 @@ import java.nio.file.{Files, Path, StandardOpenOption}
 
 package object codegen {
 
-  implicit class RichClass(c: Class[_]) {
-    def fqcn : String = "L%s;".format(c.getCanonicalName.replace('.','/'))
+  implicit class RichClass(clazz: Class[_]) {
+    def fqcn : String = "L%s;".format(clazz.getCanonicalName.replace('.','/'))
+
+    def wrapperName : String = s"J${clazz.getSimpleName}"
+
+    def localRef : String = s"LocalRef<${this.wrapperName}>"
+
   }
 
   implicit class RichMethod(m: Method) {
@@ -35,7 +40,7 @@ package object codegen {
 
     def isStatic : Boolean = Modifier.isStatic(m.getModifiers)
 
-    def isVoid : Boolean = m.getReturnType().equals(Void.TYPE)
+    def isVoid : Boolean = m.getReturnType.equals(Void.TYPE)
 
     def returnsObject : Boolean = m.getReturnType.isAssignableFrom(classOf[Object])
 

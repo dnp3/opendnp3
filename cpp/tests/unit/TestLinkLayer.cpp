@@ -487,6 +487,46 @@ TEST_CASE(SUITE("ConfirmedDataRetry"))
     REQUIRE(t.upper->GetCounters().numTxReady == 1);
 }
 
+TEST_CASE(SUITE("ConfirmedDataFailureResetsLink"))
+{
+    LinkConfig cfg = LinkLayerTest::DefaultConfig();
+    cfg.NumRetry = 1;
+    cfg.UseConfirms = true;
+
+    LinkLayerTest t(cfg);
+    t.link.OnLowerLayerUp();
+
+    MockTransportSegment segments(250, HexConversions::increment_hex(0, 250), cfg.GetAddresses());
+    t.link.Send(segments);
+    t.link.OnTxReady();
+    REQUIRE(t.NumTotalWrites() == 1); // Should now be waiting for an ACK with active timer
+
+    t.OnFrame(LinkFunction::SEC_ACK, false, false, false, 1, 1024);
+    REQUIRE(t.NumTotalWrites() == 2);
+
+    REQUIRE(t.PopLastWriteAsHex() == LinkHex::ConfirmedUserData(true, true, 1024, 1, HexConversions::increment_hex(0x00, 250)));
+    t.link.OnTxReady();
+
+    // Timeout original transmission
+    t.exe->advance_time(cfg.Timeout.value);
+    REQUIRE(t.exe->run_many() > 0);
+    REQUIRE(t.NumTotalWrites() == 3);
+
+    REQUIRE(t.PopLastWriteAsHex() == LinkHex::ConfirmedUserData(true, true, 1024, 1, HexConversions::increment_hex(0x00, 250)));
+    t.link.OnTxReady();
+
+    // Timeout retransmission, no more retransmission
+    t.exe->advance_time(cfg.Timeout.value);
+    REQUIRE(t.exe->run_many() > 0);
+    REQUIRE(t.NumTotalWrites() == 3);
+
+    // When sending something else, then reset link state
+    t.link.Send(segments);
+    t.link.OnTxReady();
+    REQUIRE(t.NumTotalWrites() == 4); // Should now be waiting for an ACK with active timer
+    REQUIRE(t.PopLastWriteAsHex() == LinkHex::ResetLinkStates(true, 1024, 1));
+}
+
 TEST_CASE(SUITE("ResetLinkRetries"))
 {
     LinkConfig cfg = LinkLayerTest::DefaultConfig();

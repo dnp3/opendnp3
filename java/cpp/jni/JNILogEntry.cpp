@@ -42,8 +42,8 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->init4Constructor = env->GetMethodID(this->clazz, "<init>", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
-            if(!this->init4Constructor) return false;
+            this->constructor0 = env->GetMethodID(this->clazz, "<init>", "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
+            if(!this->constructor0) return false;
 
             return true;
         }
@@ -53,9 +53,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> LogEntry::init4(JNIEnv* env, jint arg0, jstring arg1, jstring arg2, jstring arg3)
+        LocalRef<JLogEntry> LogEntry::construct(JNIEnv* env, jint arg0, JString arg1, JString arg2, JString arg3)
         {
-            return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init4Constructor, arg0, arg1, arg2, arg3));
+            return LocalRef<JLogEntry>(env, JLogEntry(env->NewObject(this->clazz, this->constructor0, arg0, arg1, arg2, arg3)));
         }
     }
 }

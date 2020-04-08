@@ -62,22 +62,22 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> ClassAssignment::getclazz(JNIEnv* env, jobject instance)
+        LocalRef<JPointClass> ClassAssignment::getclazz(JNIEnv* env, JClassAssignment instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->clazzField));
+            return LocalRef<JPointClass>(env, env->GetObjectField(instance, this->clazzField));
         }
 
-        jbyte ClassAssignment::getgroup(JNIEnv* env, jobject instance)
+        jbyte ClassAssignment::getgroup(JNIEnv* env, JClassAssignment instance)
         {
             return env->GetByteField(instance, this->groupField);
         }
 
-        LocalRef<jobject> ClassAssignment::getrange(JNIEnv* env, jobject instance)
+        LocalRef<JRange> ClassAssignment::getrange(JNIEnv* env, JClassAssignment instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->rangeField));
+            return LocalRef<JRange>(env, env->GetObjectField(instance, this->rangeField));
         }
 
-        jbyte ClassAssignment::getvariation(JNIEnv* env, jobject instance)
+        jbyte ClassAssignment::getvariation(JNIEnv* env, JClassAssignment instance)
         {
             return env->GetByteField(instance, this->variationField);
         }

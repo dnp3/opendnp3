@@ -62,24 +62,24 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> OutstationStackConfig::getdatabaseConfig(JNIEnv* env, jobject instance)
+        LocalRef<JDatabaseConfig> OutstationStackConfig::getdatabaseConfig(JNIEnv* env, JOutstationStackConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->databaseConfigField));
+            return LocalRef<JDatabaseConfig>(env, env->GetObjectField(instance, this->databaseConfigField));
         }
 
-        LocalRef<jobject> OutstationStackConfig::geteventBufferConfig(JNIEnv* env, jobject instance)
+        LocalRef<JEventBufferConfig> OutstationStackConfig::geteventBufferConfig(JNIEnv* env, JOutstationStackConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->eventBufferConfigField));
+            return LocalRef<JEventBufferConfig>(env, env->GetObjectField(instance, this->eventBufferConfigField));
         }
 
-        LocalRef<jobject> OutstationStackConfig::getlinkConfig(JNIEnv* env, jobject instance)
+        LocalRef<JLinkLayerConfig> OutstationStackConfig::getlinkConfig(JNIEnv* env, JOutstationStackConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->linkConfigField));
+            return LocalRef<JLinkLayerConfig>(env, env->GetObjectField(instance, this->linkConfigField));
         }
 
-        LocalRef<jobject> OutstationStackConfig::getoutstationConfig(JNIEnv* env, jobject instance)
+        LocalRef<JOutstationConfig> OutstationStackConfig::getoutstationConfig(JNIEnv* env, JOutstationStackConfig instance)
         {
-            return LocalRef<jobject>(env, env->GetObjectField(instance, this->outstationConfigField));
+            return LocalRef<JOutstationConfig>(env, env->GetObjectField(instance, this->outstationConfigField));
         }
     }
 }

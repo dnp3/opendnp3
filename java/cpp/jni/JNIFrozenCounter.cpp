@@ -42,8 +42,8 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->init3Constructor = env->GetMethodID(this->clazz, "<init>", "(JBJ)V");
-            if(!this->init3Constructor) return false;
+            this->constructor0 = env->GetMethodID(this->clazz, "<init>", "(JLcom/automatak/dnp3/Flags;Lcom/automatak/dnp3/DNPTime;)V");
+            if(!this->constructor0) return false;
 
             return true;
         }
@@ -53,9 +53,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> FrozenCounter::init3(JNIEnv* env, jlong arg0, jbyte arg1, jlong arg2)
+        LocalRef<JFrozenCounter> FrozenCounter::construct(JNIEnv* env, jlong arg0, JFlags arg1, JDNPTime arg2)
         {
-            return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init3Constructor, arg0, arg1, arg2));
+            return LocalRef<JFrozenCounter>(env, JFrozenCounter(env->NewObject(this->clazz, this->constructor0, arg0, arg1, arg2)));
         }
     }
 }

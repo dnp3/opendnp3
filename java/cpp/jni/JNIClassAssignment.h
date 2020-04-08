@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNICLASSASSIGNMENT_H
 #define OPENDNP3JAVA_JNICLASSASSIGNMENT_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,10 +52,10 @@ namespace jni
             public:
 
             // field getter methods
-            LocalRef<jobject> getclazz(JNIEnv* env, jobject instance);
-            jbyte getgroup(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getrange(JNIEnv* env, jobject instance);
-            jbyte getvariation(JNIEnv* env, jobject instance);
+            LocalRef<JPointClass> getclazz(JNIEnv* env, JClassAssignment instance);
+            jbyte getgroup(JNIEnv* env, JClassAssignment instance);
+            LocalRef<JRange> getrange(JNIEnv* env, JClassAssignment instance);
+            jbyte getvariation(JNIEnv* env, JClassAssignment instance);
 
             private:
 

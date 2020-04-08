@@ -1,5 +1,11 @@
 cmake_minimum_required (VERSION 3.11)
 
+# Check if we are the root project
+set(is_root OFF)
+if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
+    set(is_root ON)
+endif()
+
 # Project declaration
 set(OPENDNP3_MAJOR_VERSION 3)
 set(OPENDNP3_MINOR_VERSION 0)
@@ -38,7 +44,7 @@ endif()
 option(DNP3_EVERYTHING "Build all optional targets" OFF)
 option(DNP3_STATIC_LIBS "Build static libraries instead of shared libraries" ${DNP3_STATIC_LIBS_BY_DEFAULT})
 
-if(DNP3_EVERYTHING)    
+if(DNP3_EVERYTHING)
     set(DNP3_TLS ON)
     set(DNP3_TESTS ON)
     set(DNP3_EXAMPLES ON)
@@ -150,8 +156,10 @@ if(WIN32 AND DNP3_DOTNET)
 endif()
 
 # Define utility targets
-define_clang_format()
-define_clang_tidy()
+if(is_root)
+    define_clang_format()
+    define_clang_tidy()
+endif()
 
 # Packaging
 set(CPACK_PACKAGE_VERSION_MAJOR ${OPENDNP3_MAJOR_VERSION})

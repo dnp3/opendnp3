@@ -38,7 +38,7 @@ class EventScanTask final : public PollTaskBase
 public:
     EventScanTask(const std::shared_ptr<TaskContext>& context,
                   IMasterApplication& application,
-                  ISOEHandler& soeHandler,
+                  std::shared_ptr<ISOEHandler> soeHandler,
                   ClassField classes,
                   const log4cpp::Logger& logger);
 

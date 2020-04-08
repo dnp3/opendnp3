@@ -42,8 +42,8 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->sizeMethod = env->GetMethodID(this->clazz, "size", "()I");
-            if(!this->sizeMethod) return false;
+            this->method0 = env->GetMethodID(this->clazz, "size", "()I");
+            if(!this->method0) return false;
 
             return true;
         }
@@ -53,9 +53,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jint List::size(JNIEnv* env, jobject instance)
+        jint List::size(JNIEnv* env, JList instance)
         {
-            return env->CallIntMethod(instance, this->sizeMethod);
+            return env->CallIntMethod(instance, this->method0);
         }
     }
 }

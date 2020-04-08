@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIOUTSTATIONAPPLICATION_H
 #define OPENDNP3JAVA_JNIOUTSTATIONAPPLICATION_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,30 +52,32 @@ namespace jni
             public:
 
             // methods
-            jint coldRestart(JNIEnv* env, jobject instance);
-            LocalRef<jobject> coldRestartSupport(JNIEnv* env, jobject instance);
-            LocalRef<jobject> getApplicationIIN(JNIEnv* env, jobject instance);
-            void recordClassAssignment(JNIEnv* env, jobject instance, jobject arg0, jobject arg1, jint arg2, jint arg3);
-            jboolean supportsAssignClass(JNIEnv* env, jobject instance);
-            jboolean supportsWriteAbsoluteTime(JNIEnv* env, jobject instance);
-            jint warmRestart(JNIEnv* env, jobject instance);
-            LocalRef<jobject> warmRestartSupport(JNIEnv* env, jobject instance);
-            jboolean writeAbsoluteTime(JNIEnv* env, jobject instance, jlong arg0);
+            jint coldRestart(JNIEnv* env, JOutstationApplication instance);
+            LocalRef<JRestartMode> coldRestartSupport(JNIEnv* env, JOutstationApplication instance);
+            LocalRef<JApplicationIIN> getApplicationIIN(JNIEnv* env, JOutstationApplication instance);
+            LocalRef<JDNPTime> now(JNIEnv* env, JOutstationApplication instance);
+            void recordClassAssignment(JNIEnv* env, JOutstationApplication instance, JAssignClassType arg0, JPointClass arg1, jint arg2, jint arg3);
+            jboolean supportsAssignClass(JNIEnv* env, JOutstationApplication instance);
+            jboolean supportsWriteAbsoluteTime(JNIEnv* env, JOutstationApplication instance);
+            jint warmRestart(JNIEnv* env, JOutstationApplication instance);
+            LocalRef<JRestartMode> warmRestartSupport(JNIEnv* env, JOutstationApplication instance);
+            jboolean writeAbsoluteTime(JNIEnv* env, JOutstationApplication instance, jlong arg0);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID coldRestartMethod = nullptr;
-            jmethodID coldRestartSupportMethod = nullptr;
-            jmethodID getApplicationIINMethod = nullptr;
-            jmethodID recordClassAssignmentMethod = nullptr;
-            jmethodID supportsAssignClassMethod = nullptr;
-            jmethodID supportsWriteAbsoluteTimeMethod = nullptr;
-            jmethodID warmRestartMethod = nullptr;
-            jmethodID warmRestartSupportMethod = nullptr;
-            jmethodID writeAbsoluteTimeMethod = nullptr;
+            jmethodID method0 = nullptr;
+            jmethodID method1 = nullptr;
+            jmethodID method2 = nullptr;
+            jmethodID method3 = nullptr;
+            jmethodID method4 = nullptr;
+            jmethodID method5 = nullptr;
+            jmethodID method6 = nullptr;
+            jmethodID method7 = nullptr;
+            jmethodID method8 = nullptr;
+            jmethodID method9 = nullptr;
         };
     }
 }

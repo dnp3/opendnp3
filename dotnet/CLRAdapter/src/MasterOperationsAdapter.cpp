@@ -20,6 +20,7 @@
 #include "MasterOperationsAdapter.h"
 
 #include "Conversions.h"
+#include "SOEHandlerAdapter.h"
 
 namespace Automatak
 {
@@ -36,33 +37,37 @@ namespace Automatak
 				operations->SetLogFilters(log4cpp::LogLevel(flags.Flags));
 			}
 			
-			Task<TaskCompletion>^ MasterOperationsAdapter::Scan(IEnumerable<Header^>^ headers, TaskConfig^ config)
+			Task<TaskCompletion>^ MasterOperationsAdapter::Scan(IEnumerable<Header^>^ headers, ISOEHandler^ soeHandler, TaskConfig^ config)
 			{
 				auto proxy = gcnew TaskCompletionProxy(config->callback);
 				auto vec = MasterConversions::ConvertToVectorOfHeaders(headers);
-				operations->Scan(vec, MasterConversions::Convert(config, proxy));
+                auto soeAdapter = std::make_shared<SOEHandlerAdapter>(soeHandler);
+				operations->Scan(vec, soeAdapter, MasterConversions::Convert(config, proxy));
 				return proxy->CompletionTask;
 			}
 
-			Task<TaskCompletion>^ MasterOperationsAdapter::ScanAllObjects(System::Byte group, System::Byte variation, TaskConfig^ config)
+			Task<TaskCompletion>^ MasterOperationsAdapter::ScanAllObjects(System::Byte group, System::Byte variation, ISOEHandler^ soeHandler, TaskConfig^ config)
 			{
 				auto proxy = gcnew TaskCompletionProxy(config->callback);
-				operations->ScanAllObjects(opendnp3::GroupVariationID(group, variation), MasterConversions::Convert(config, proxy));
+                auto soeAdapter = std::make_shared<SOEHandlerAdapter>(soeHandler);
+				operations->ScanAllObjects(opendnp3::GroupVariationID(group, variation), soeAdapter, MasterConversions::Convert(config, proxy));
 				return proxy->CompletionTask;
 			}
 
-			Task<TaskCompletion>^ MasterOperationsAdapter::ScanClasses(ClassField field, TaskConfig^ config)
+			Task<TaskCompletion>^ MasterOperationsAdapter::ScanClasses(ClassField field, ISOEHandler^ soeHandler, TaskConfig^ config)
 			{
 				auto proxy = gcnew TaskCompletionProxy(config->callback);
-				operations->ScanClasses(Conversions::ConvertClassField(field), MasterConversions::Convert(config, proxy));
+                auto soeAdapter = std::make_shared<SOEHandlerAdapter>(soeHandler);
+				operations->ScanClasses(Conversions::ConvertClassField(field), soeAdapter, MasterConversions::Convert(config, proxy));
 				return proxy->CompletionTask;
 			}
 				
-			Task<TaskCompletion>^ MasterOperationsAdapter::ScanRange(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, TaskConfig^ config)
+			Task<TaskCompletion>^ MasterOperationsAdapter::ScanRange(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, ISOEHandler^ soeHandler, TaskConfig^ config)
 			{
 				opendnp3::GroupVariationID gvid(group, variation);
 				auto proxy = gcnew TaskCompletionProxy(config->callback);
-				operations->ScanRange(gvid, start, stop, MasterConversions::Convert(config, proxy));
+                auto soeAdapter = std::make_shared<SOEHandlerAdapter>(soeHandler);
+				operations->ScanRange(gvid, start, stop, soeAdapter, MasterConversions::Convert(config, proxy));
 				return proxy->CompletionTask;
 			}
 
@@ -91,30 +96,34 @@ namespace Automatak
 				return proxy->CompletionTask;
 			}
 
-			IMasterScan^ MasterOperationsAdapter::AddScan(IEnumerable<Header^>^ headers, System::TimeSpan period, TaskConfig^ config)
+			IMasterScan^ MasterOperationsAdapter::AddScan(IEnumerable<Header^>^ headers, System::TimeSpan period, ISOEHandler^ soeHandler, TaskConfig^ config)
 			{
 				auto vec = MasterConversions::ConvertToVectorOfHeaders(headers);
-				auto scan = operations->AddScan(Conversions::ConvertTimespan(period), vec, MasterConversions::Convert(config));
+                auto soeAdapter = std::make_shared<SOEHandlerAdapter>(soeHandler);
+				auto scan = operations->AddScan(Conversions::ConvertTimespan(period), vec, soeAdapter, MasterConversions::Convert(config));
 				return gcnew MasterScanAdapter(scan);
 			}
 
-			IMasterScan^ MasterOperationsAdapter::AddAllObjectsScan(System::Byte group, System::Byte variation, System::TimeSpan period, TaskConfig^ config)
+			IMasterScan^ MasterOperationsAdapter::AddAllObjectsScan(System::Byte group, System::Byte variation, System::TimeSpan period, ISOEHandler^ soeHandler, TaskConfig^ config)
 			{
 				opendnp3::GroupVariationID gvid(group, variation);
-				auto scan = operations->AddAllObjectsScan(gvid, Conversions::ConvertTimespan(period), MasterConversions::Convert(config));
+                auto soeAdapter = std::make_shared<SOEHandlerAdapter>(soeHandler);
+				auto scan = operations->AddAllObjectsScan(gvid, Conversions::ConvertTimespan(period), soeAdapter, MasterConversions::Convert(config));
 				return gcnew MasterScanAdapter(scan);
 			}
 
-			IMasterScan^ MasterOperationsAdapter::AddClassScan(ClassField field, System::TimeSpan period, TaskConfig^ config)
+			IMasterScan^ MasterOperationsAdapter::AddClassScan(ClassField field, System::TimeSpan period, ISOEHandler^ soeHandler, TaskConfig^ config)
 			{
-				auto scan = operations->AddClassScan(Conversions::ConvertClassField(field), Conversions::ConvertTimespan(period), MasterConversions::Convert(config));
+                auto soeAdapter = std::make_shared<SOEHandlerAdapter>(soeHandler);
+				auto scan = operations->AddClassScan(Conversions::ConvertClassField(field), Conversions::ConvertTimespan(period), soeAdapter, MasterConversions::Convert(config));
 				return gcnew MasterScanAdapter(scan);
 			}
 
-			IMasterScan^ MasterOperationsAdapter::AddRangeScan(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, System::TimeSpan period, TaskConfig^ config)
+			IMasterScan^ MasterOperationsAdapter::AddRangeScan(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, System::TimeSpan period, ISOEHandler^ soeHandler, TaskConfig^ config)
 			{
 				opendnp3::GroupVariationID gvid(group, variation);
-				auto scan = operations->AddRangeScan(gvid, start, stop, Conversions::ConvertTimespan(period), MasterConversions::Convert(config));
+                auto soeAdapter = std::make_shared<SOEHandlerAdapter>(soeHandler);
+				auto scan = operations->AddRangeScan(gvid, start, stop, Conversions::ConvertTimespan(period), soeAdapter, MasterConversions::Convert(config));
 				return gcnew MasterScanAdapter(scan);
 			}
 

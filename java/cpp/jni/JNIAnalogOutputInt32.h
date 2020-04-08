@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIANALOGOUTPUTINT32_H
 #define OPENDNP3JAVA_JNIANALOGOUTPUTINT32_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,18 +52,18 @@ namespace jni
             public:
 
             // constructor methods
-            LocalRef<jobject> init2(JNIEnv* env, jint arg0, jobject arg1);
+            LocalRef<JAnalogOutputInt32> construct(JNIEnv* env, jint arg0, JCommandStatus arg1);
 
             // field getter methods
-            LocalRef<jobject> getstatus(JNIEnv* env, jobject instance);
-            jint getvalue(JNIEnv* env, jobject instance);
+            LocalRef<JCommandStatus> getstatus(JNIEnv* env, JAnalogOutputInt32 instance);
+            jint getvalue(JNIEnv* env, JAnalogOutputInt32 instance);
 
             private:
 
             jclass clazz = nullptr;
 
             // constructor method ids
-            jmethodID init2Constructor = nullptr;
+            jmethodID constructor0 = nullptr;
 
             // field ids
             jfieldID valueField = nullptr;

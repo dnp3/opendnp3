@@ -39,7 +39,7 @@ public:
 
     ~LocalRef()
     {
-        if (ref)
+        if (this->ref.value)
         {
             env->DeleteLocalRef(ref);
         }
@@ -47,20 +47,44 @@ public:
 
     LocalRef(LocalRef&& other) : env(other.env), ref(other.ref)
     {
-        other.ref = nullptr;
+        other.ref.value = nullptr;
     }
 
-    inline operator const T&() const
+    T get() const
     {
         return ref;
     }
+
+    operator T() const
+    {
+        return ref;
+    }
+
+    template <class U>
+    U as() const
+    {
+        return U(ref.value);
+    }
 };
 
-class LocalJString : public LocalRef<jstring>
-{
+struct JString {
 
-public:
-    LocalJString(JNIEnv* env, const char* cstring) : LocalRef<jstring>(env, env->NewStringUTF(cstring)) {}
+    JString(jstring value) : value(value) {}
+
+    jstring value;
+
+    operator jstring() const
+    {
+        return value;
+    }
+};
+
+
+class LocalJString : public LocalRef<JString>
+{   
+public: 
+    LocalJString(JNIEnv* env, const char* cstring) : 
+        LocalRef<JString>(env, env->NewStringUTF(cstring)) {}
 };
 
 #endif

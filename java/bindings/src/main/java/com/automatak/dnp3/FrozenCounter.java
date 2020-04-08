@@ -27,7 +27,7 @@ public class FrozenCounter extends Measurement
 {
     public final long value;
 
-    public FrozenCounter(long value, byte quality, long timestamp)
+    public FrozenCounter(long value, Flags quality, DNPTime timestamp)
     {
         super(quality, timestamp);
         this.value = value;

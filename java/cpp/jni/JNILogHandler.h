@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNILOGHANDLER_H
 #define OPENDNP3JAVA_JNILOGHANDLER_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,14 +52,14 @@ namespace jni
             public:
 
             // methods
-            void log(JNIEnv* env, jobject instance, jobject arg0);
+            void log(JNIEnv* env, JLogHandler instance, JLogEntry arg0);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID logMethod = nullptr;
+            jmethodID method0 = nullptr;
         };
     }
 }

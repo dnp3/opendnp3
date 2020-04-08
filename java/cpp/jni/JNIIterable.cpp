@@ -42,8 +42,8 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->iteratorMethod = env->GetMethodID(this->clazz, "iterator", "()Ljava/util/Iterator;");
-            if(!this->iteratorMethod) return false;
+            this->method0 = env->GetMethodID(this->clazz, "iterator", "()Ljava/util/Iterator;");
+            if(!this->method0) return false;
 
             return true;
         }
@@ -53,9 +53,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> Iterable::iterator(JNIEnv* env, jobject instance)
+        LocalRef<JIterator> Iterable::iterator(JNIEnv* env, JIterable instance)
         {
-            return LocalRef<jobject>(env, env->CallObjectMethod(instance, this->iteratorMethod));
+            return LocalRef<JIterator>(env, env->CallObjectMethod(instance, this->method0));
         }
     }
 }

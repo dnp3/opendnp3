@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNICLASSFIELD_H
 #define OPENDNP3JAVA_JNICLASSFIELD_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,7 +52,7 @@ namespace jni
             public:
 
             // field getter methods
-            jint getbitfield(JNIEnv* env, jobject instance);
+            jint getbitfield(JNIEnv* env, JClassField instance);
 
             private:
 

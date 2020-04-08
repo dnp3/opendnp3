@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIAPPLICATIONIIN_H
 #define OPENDNP3JAVA_JNIAPPLICATIONIIN_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,10 +52,10 @@ namespace jni
             public:
 
             // field getter methods
-            jboolean getconfigCorrupt(JNIEnv* env, jobject instance);
-            jboolean getdeviceTrouble(JNIEnv* env, jobject instance);
-            jboolean getlocalControl(JNIEnv* env, jobject instance);
-            jboolean getneedTime(JNIEnv* env, jobject instance);
+            jboolean getconfigCorrupt(JNIEnv* env, JApplicationIIN instance);
+            jboolean getdeviceTrouble(JNIEnv* env, JApplicationIIN instance);
+            jboolean getlocalControl(JNIEnv* env, JApplicationIIN instance);
+            jboolean getneedTime(JNIEnv* env, JApplicationIIN instance);
 
             private:
 

@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNIINTEGER_H
 #define OPENDNP3JAVA_JNIINTEGER_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,14 +52,14 @@ namespace jni
             public:
 
             // methods
-            jint intValue(JNIEnv* env, jobject instance);
+            jint intValue(JNIEnv* env, JInteger instance);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID intValueMethod = nullptr;
+            jmethodID method0 = nullptr;
         };
     }
 }

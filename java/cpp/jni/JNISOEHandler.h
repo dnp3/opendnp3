@@ -32,9 +32,9 @@
 #ifndef OPENDNP3JAVA_JNISOEHANDLER_H
 #define OPENDNP3JAVA_JNISOEHANDLER_H
 
-#include <jni.h>
-
 #include "../adapters/LocalRef.h"
+
+#include "JNIWrappers.h"
 
 namespace jni
 {
@@ -52,32 +52,32 @@ namespace jni
             public:
 
             // methods
-            void beginFragment(JNIEnv* env, jobject instance, jobject arg0);
-            void endFragment(JNIEnv* env, jobject instance, jobject arg0);
-            void processAI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-            void processAOS(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-            void processBI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-            void processBOS(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-            void processC(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-            void processDBI(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-            void processDNPTime(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
-            void processFC(JNIEnv* env, jobject instance, jobject arg0, jobject arg1);
+            void beginFragment(JNIEnv* env, JSOEHandler instance, JResponseInfo arg0);
+            void endFragment(JNIEnv* env, JSOEHandler instance, JResponseInfo arg0);
+            void processAI(JNIEnv* env, JSOEHandler instance, JHeaderInfo arg0, JIterable arg1);
+            void processAOS(JNIEnv* env, JSOEHandler instance, JHeaderInfo arg0, JIterable arg1);
+            void processBI(JNIEnv* env, JSOEHandler instance, JHeaderInfo arg0, JIterable arg1);
+            void processBOS(JNIEnv* env, JSOEHandler instance, JHeaderInfo arg0, JIterable arg1);
+            void processC(JNIEnv* env, JSOEHandler instance, JHeaderInfo arg0, JIterable arg1);
+            void processDBI(JNIEnv* env, JSOEHandler instance, JHeaderInfo arg0, JIterable arg1);
+            void processDNPTime(JNIEnv* env, JSOEHandler instance, JHeaderInfo arg0, JIterable arg1);
+            void processFC(JNIEnv* env, JSOEHandler instance, JHeaderInfo arg0, JIterable arg1);
 
             private:
 
             jclass clazz = nullptr;
 
             // method ids
-            jmethodID beginFragmentMethod = nullptr;
-            jmethodID endFragmentMethod = nullptr;
-            jmethodID processAIMethod = nullptr;
-            jmethodID processAOSMethod = nullptr;
-            jmethodID processBIMethod = nullptr;
-            jmethodID processBOSMethod = nullptr;
-            jmethodID processCMethod = nullptr;
-            jmethodID processDBIMethod = nullptr;
-            jmethodID processDNPTimeMethod = nullptr;
-            jmethodID processFCMethod = nullptr;
+            jmethodID method0 = nullptr;
+            jmethodID method1 = nullptr;
+            jmethodID method2 = nullptr;
+            jmethodID method3 = nullptr;
+            jmethodID method4 = nullptr;
+            jmethodID method5 = nullptr;
+            jmethodID method6 = nullptr;
+            jmethodID method7 = nullptr;
+            jmethodID method8 = nullptr;
+            jmethodID method9 = nullptr;
         };
     }
 }

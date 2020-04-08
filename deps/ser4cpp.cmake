@@ -2,9 +2,8 @@ include(FetchContent)
 
 FetchContent_Declare(
     ser4cpp
-    GIT_REPOSITORY https://github.com/automatak/ser4cpp.git
-    GIT_TAG        master
-    GIT_SHALLOW    ON
+    URL      https://github.com/automatak/ser4cpp/archive/3c449734dc530a8f465eb0982de29165cc4e23d5.zip
+    URL_HASH SHA1=937B759B7CC80180DA26B47037E796B59798A672
 )
 
 FetchContent_GetProperties(ser4cpp)

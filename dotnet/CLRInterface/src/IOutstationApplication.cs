@@ -26,7 +26,7 @@ namespace Automatak.DNP3.Interface
     /// <summary>
     /// Outstation application code implements this interface to interface with the stack
     /// </summary>
-    public interface IOutstationApplication : ILinkStatusListener
+    public interface IOutstationApplication : ILinkStatusListener, IDnpTimeSource
     {
         /// <summary>
         /// true of the outstation should allow absolute time to be written
@@ -175,6 +175,11 @@ namespace Automatak.DNP3.Interface
         ushort IOutstationApplication.WarmRestart()
         {
             return UInt16.MaxValue;
+        }
+
+        DNPTime IDnpTimeSource.Now()
+        {
+            return DNPTime.Unset;
         }
     }
 }

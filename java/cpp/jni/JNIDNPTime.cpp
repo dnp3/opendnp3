@@ -42,8 +42,17 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->init1Constructor = env->GetMethodID(this->clazz, "<init>", "(J)V");
-            if(!this->init1Constructor) return false;
+            this->constructor0 = env->GetMethodID(this->clazz, "<init>", "(J)V");
+            if(!this->constructor0) return false;
+
+            this->constructor1 = env->GetMethodID(this->clazz, "<init>", "(JLcom/automatak/dnp3/enums/TimestampQuality;)V");
+            if(!this->constructor1) return false;
+
+            this->msSinceEpochField = env->GetFieldID(this->clazz, "msSinceEpoch", "J");
+            if(!this->msSinceEpochField) return false;
+
+            this->qualityField = env->GetFieldID(this->clazz, "quality", "Lcom/automatak/dnp3/enums/TimestampQuality;");
+            if(!this->qualityField) return false;
 
             return true;
         }
@@ -53,9 +62,24 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<jobject> DNPTime::init1(JNIEnv* env, jlong arg0)
+        LocalRef<JDNPTime> DNPTime::construct(JNIEnv* env, jlong arg0)
         {
-            return LocalRef<jobject>(env, env->NewObject(this->clazz, this->init1Constructor, arg0));
+            return LocalRef<JDNPTime>(env, JDNPTime(env->NewObject(this->clazz, this->constructor0, arg0)));
+        }
+
+        LocalRef<JDNPTime> DNPTime::construct(JNIEnv* env, jlong arg0, JTimestampQuality arg1)
+        {
+            return LocalRef<JDNPTime>(env, JDNPTime(env->NewObject(this->clazz, this->constructor1, arg0, arg1)));
+        }
+
+        jlong DNPTime::getmsSinceEpoch(JNIEnv* env, JDNPTime instance)
+        {
+            return env->GetLongField(instance, this->msSinceEpochField);
+        }
+
+        LocalRef<JTimestampQuality> DNPTime::getquality(JNIEnv* env, JDNPTime instance)
+        {
+            return LocalRef<JTimestampQuality>(env, env->GetObjectField(instance, this->qualityField));
         }
     }
 }

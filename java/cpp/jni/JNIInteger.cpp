@@ -42,8 +42,8 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->intValueMethod = env->GetMethodID(this->clazz, "intValue", "()I");
-            if(!this->intValueMethod) return false;
+            this->method0 = env->GetMethodID(this->clazz, "intValue", "()I");
+            if(!this->method0) return false;
 
             return true;
         }
@@ -53,9 +53,9 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        jint Integer::intValue(JNIEnv* env, jobject instance)
+        jint Integer::intValue(JNIEnv* env, JInteger instance)
         {
-            return env->CallIntMethod(instance, this->intValueMethod);
+            return env->CallIntMethod(instance, this->method0);
         }
     }
 }

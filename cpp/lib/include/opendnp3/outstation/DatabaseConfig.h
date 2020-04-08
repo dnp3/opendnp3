@@ -28,10 +28,10 @@ namespace opendnp3
 {
 
 struct DatabaseConfig
-{   
-	DatabaseConfig() = default;
+{
+    DatabaseConfig() = default;
 
-	DatabaseConfig(uint16_t all_types);
+    DatabaseConfig(uint16_t all_types);
 
     std::map<uint16_t, BinaryConfig> binary_input;
     std::map<uint16_t, DoubleBitBinaryConfig> double_binary;

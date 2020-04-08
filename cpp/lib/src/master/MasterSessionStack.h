@@ -68,19 +68,36 @@ public:
     StackStatistics GetStackStatistics() final;
     std::shared_ptr<IMasterScan> AddScan(TimeDuration period,
                                          const std::vector<Header>& headers,
+                                         std::shared_ptr<ISOEHandler> soe_handler,
                                          const TaskConfig& config) final;
     std::shared_ptr<IMasterScan> AddAllObjectsScan(GroupVariationID gvId,
                                                    TimeDuration period,
+                                                   std::shared_ptr<ISOEHandler> soe_handler,
                                                    const TaskConfig& config) final;
     std::shared_ptr<IMasterScan> AddClassScan(const ClassField& field,
                                               TimeDuration period,
+                                              std::shared_ptr<ISOEHandler> soe_handler,
                                               const TaskConfig& config) final;
-    std::shared_ptr<IMasterScan> AddRangeScan(
-        GroupVariationID gvId, uint16_t start, uint16_t stop, TimeDuration period, const TaskConfig& config) final;
-    void Scan(const std::vector<Header>& headers, const TaskConfig& config) final;
-    void ScanAllObjects(GroupVariationID gvId, const TaskConfig& config) final;
-    void ScanClasses(const ClassField& field, const TaskConfig& config) final;
-    void ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, const TaskConfig& config) final;
+    std::shared_ptr<IMasterScan> AddRangeScan(GroupVariationID gvId,
+                                              uint16_t start,
+                                              uint16_t stop,
+                                              TimeDuration period,
+                                              std::shared_ptr<ISOEHandler> soe_handler,
+                                              const TaskConfig& config) final;
+    void Scan(const std::vector<Header>& headers,
+              std::shared_ptr<ISOEHandler> soe_handler,
+              const TaskConfig& config) final;
+    void ScanAllObjects(GroupVariationID gvId,
+                        std::shared_ptr<ISOEHandler> soe_handler,
+                        const TaskConfig& config) final;
+    void ScanClasses(const ClassField& field,
+                     std::shared_ptr<ISOEHandler> soe_handler,
+                     const TaskConfig& config) final;
+    void ScanRange(GroupVariationID gvId,
+                   uint16_t start,
+                   uint16_t stop,
+                   std::shared_ptr<ISOEHandler> soe_handler,
+                   const TaskConfig& config) final;
     void Write(const TimeAndInterval& value, uint16_t index, const TaskConfig& config) final;
     void Restart(RestartType op, const RestartOperationCallbackT& callback, TaskConfig config) final;
     void PerformFunction(const std::string& name,

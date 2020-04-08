@@ -20,6 +20,7 @@
 package com.automatak.dnp3.example;
 
 import com.automatak.dnp3.*;
+import com.automatak.dnp3.enums.CounterQuality;
 import com.automatak.dnp3.enums.ServerAcceptMode;
 import com.automatak.dnp3.impl.DNP3ManagerFactory;
 import com.automatak.dnp3.mock.DefaultOutstationApplication;
@@ -92,7 +93,9 @@ public class OutstationDemo {
             if(line.equals("quit")) break;
             else {
                 OutstationChangeSet set = new OutstationChangeSet();
-                set.update(new Counter(i,(byte) 0x01, 0), 0);
+                Flags flags = new Flags();
+                flags.set(CounterQuality.ONLINE);
+                set.update(new Counter(i, flags, new DNPTime(0)), 0);
                 outstation.apply(set);
                 ++i;
             }
