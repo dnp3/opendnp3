@@ -131,6 +131,7 @@ namespace jni
     cache::StaticCounterVariation JCache::StaticCounterVariation;
     cache::StaticDoubleBinaryVariation JCache::StaticDoubleBinaryVariation;
     cache::StaticFrozenCounterVariation JCache::StaticFrozenCounterVariation;
+    cache::StaticTypeBitField JCache::StaticTypeBitField;
     cache::TLSConfig JCache::TLSConfig;
     cache::TaskCompletion JCache::TaskCompletion;
     cache::TaskId JCache::TaskId;
@@ -239,6 +240,7 @@ namespace jni
         && StaticCounterVariation.init(env)
         && StaticDoubleBinaryVariation.init(env)
         && StaticFrozenCounterVariation.init(env)
+        && StaticTypeBitField.init(env)
         && TLSConfig.init(env)
         && TaskCompletion.init(env)
         && TaskId.init(env)
@@ -349,6 +351,7 @@ namespace jni
         StaticCounterVariation.cleanup(env);
         StaticDoubleBinaryVariation.cleanup(env);
         StaticFrozenCounterVariation.cleanup(env);
+        StaticTypeBitField.cleanup(env);
         TLSConfig.cleanup(env);
         TaskCompletion.cleanup(env);
         TaskId.cleanup(env);

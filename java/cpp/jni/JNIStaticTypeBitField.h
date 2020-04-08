@@ -29,8 +29,8 @@
 // limitations under the License.
 //
 
-#ifndef OPENDNP3JAVA_JNIOUTSTATIONCONFIG_H
-#define OPENDNP3JAVA_JNIOUTSTATIONCONFIG_H
+#ifndef OPENDNP3JAVA_JNISTATICTYPEBITFIELD_H
+#define OPENDNP3JAVA_JNISTATICTYPEBITFIELD_H
 
 #include "../adapters/LocalRef.h"
 
@@ -42,7 +42,7 @@ namespace jni
 
     namespace cache
     {
-        class OutstationConfig
+        class StaticTypeBitField
         {
             friend struct jni::JCache;
 
@@ -52,30 +52,14 @@ namespace jni
             public:
 
             // field getter methods
-            jboolean getallowUnsolicited(JNIEnv* env, JOutstationConfig instance);
-            jshort getmaxControlsPerRequest(JNIEnv* env, JOutstationConfig instance);
-            jint getmaxRxFragSize(JNIEnv* env, JOutstationConfig instance);
-            jint getmaxTxFragSize(JNIEnv* env, JOutstationConfig instance);
-            LocalRef<JNumRetries> getnumUnsolRetries(JNIEnv* env, JOutstationConfig instance);
-            LocalRef<JDuration> getselectTimeout(JNIEnv* env, JOutstationConfig instance);
-            LocalRef<JDuration> getsolConfirmTimeout(JNIEnv* env, JOutstationConfig instance);
-            LocalRef<JStaticTypeBitField> gettypesAllowedInClass0(JNIEnv* env, JOutstationConfig instance);
-            LocalRef<JDuration> getunsolConfirmTimeout(JNIEnv* env, JOutstationConfig instance);
+            jint getbitfield(JNIEnv* env, JStaticTypeBitField instance);
 
             private:
 
             jclass clazz = nullptr;
 
             // field ids
-            jfieldID maxControlsPerRequestField = nullptr;
-            jfieldID selectTimeoutField = nullptr;
-            jfieldID solConfirmTimeoutField = nullptr;
-            jfieldID unsolConfirmTimeoutField = nullptr;
-            jfieldID numUnsolRetriesField = nullptr;
-            jfieldID maxTxFragSizeField = nullptr;
-            jfieldID maxRxFragSizeField = nullptr;
-            jfieldID allowUnsolicitedField = nullptr;
-            jfieldID typesAllowedInClass0Field = nullptr;
+            jfieldID bitfieldField = nullptr;
         };
     }
 }

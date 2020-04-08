@@ -918,6 +918,15 @@ namespace jni
         jobject value;
     };
 
+    struct JStaticTypeBitField
+    {
+        JStaticTypeBitField(jobject value) : value(value) {}
+
+        operator jobject() const { return value; }
+
+        jobject value;
+    };
+
     struct JTLSConfig
     {
         JTLSConfig(jobject value) : value(value) {}

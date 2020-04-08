@@ -38,6 +38,7 @@ private:
     static opendnp3::MasterParams Convert(JNIEnv* apEnv, jni::JMasterConfig jcfg);
 
     static opendnp3::ClassField Convert(JNIEnv* env, jni::JClassField jclassmask);
+    static opendnp3::StaticTypeBitField Convert(JNIEnv* env, jni::JStaticTypeBitField jbitfield);
     static opendnp3::EventBufferConfig Convert(JNIEnv* env, jni::JEventBufferConfig jeventconfig);
     static opendnp3::OutstationParams Convert(JNIEnv* env, jni::JOutstationConfig jconfig);
     static opendnp3::DatabaseConfig Convert(JNIEnv* env, jni::JDatabaseConfig jdb);

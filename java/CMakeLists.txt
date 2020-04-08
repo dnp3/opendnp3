@@ -236,6 +236,8 @@ set(all_sources
     ./cpp/jni/JNIStaticDoubleBinaryVariation.h
     ./cpp/jni/JNIStaticFrozenCounterVariation.cpp
     ./cpp/jni/JNIStaticFrozenCounterVariation.h
+    ./cpp/jni/JNIStaticTypeBitField.cpp
+    ./cpp/jni/JNIStaticTypeBitField.h
     ./cpp/jni/JNITaskCompletion.cpp
     ./cpp/jni/JNITaskCompletion.h
     ./cpp/jni/JNITaskConfig.cpp
