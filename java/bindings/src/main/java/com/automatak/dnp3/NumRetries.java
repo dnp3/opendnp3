@@ -38,7 +38,7 @@ public class NumRetries {
      */
     static public NumRetries Infinite()
     {
-        return new NumRetries(0, false);
+        return new NumRetries(0, true);
     }
 
     private NumRetries(int maxNumRetries, boolean isInfinite)
