@@ -1,0 +1,182 @@
+on: push
+name: CI
+jobs:
+  ci-linux:
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler: [gcc, clang]
+        build-type: [Debug, Release]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install system dependencies
+        run: >
+          sudo apt-get update &&
+          sudo apt-get install build-essential clang cmake git libssl-dev default-jdk maven &&
+          mkdir build
+      - name: CMake configure
+        working-directory: build
+        run: >
+          flags="-Wall -Wextra -Wno-unused-parameter" &&
+          if [ "${{ matrix.compiler }}" = "gcc" ]; then flags="${flags} -Wno-format-truncation"; fi &&
+          if [ "${{ matrix.compiler }}" = "gcc" ]; then c_compiler="gcc" && cxx_compiler="g++"; else c_compiler="clang" && cxx_compiler="clang++"; fi &&
+          cmake
+          -DDNP3_EVERYTHING=ON
+          -DDNP3_STATIC_LIBS=ON
+          -DDNP3_COVERAGE=OFF
+          -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
+          -DCMAKE_C_COMPILER="${c_compiler}"
+          -DCMAKE_CXX_COMPILER="${cxx_compiler}"
+          -DCMAKE_CXX_FLAGS="${flags}"
+          -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/build/opendnp3-package
+          ..
+      - name: CMake build
+        working-directory: build
+        run: cmake --build . --parallel 4
+      - name: Run C++ tests
+        working-directory: build
+        run: ctest -VV
+      - name: Package build
+        working-directory: build
+        run: cmake --build . --config ${{ matrix.build-type }} --target install
+      - name: Upload package
+        uses: actions/upload-artifact@v1
+        with:
+          name: opendnp3-linux-x64-${{ matrix.compiler }}-${{ matrix.build-type }}-${{ github.sha }}
+          path: build/opendnp3-package
+      - name: Build and test Java bindings
+        working-directory: java
+        run: >
+          export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${{ github.workspace }}/build/java &&
+          export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::") &&
+          mvn --batch-mode verify
+      - name: Upload Java bindings
+        if: ${{ matrix.compiler == 'gcc' && matrix.build-type == 'Release' }}
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: opendnp3-java-bindings-${{ github.sha }}
+          path: java/bindings/target/opendnp3-bindings-*-SNAPSHOT.jar
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install system dependencies
+        run: >
+          sudo apt-get update &&
+          sudo apt-get install build-essential cmake curl git libssl-dev lcov &&
+          mkdir build
+      - name: CMake configure
+        working-directory: build
+        run: >
+          cmake
+          -DDNP3_TLS=ON
+          -DDNP3_TESTS=ON
+          -DDNP3_COVERAGE=ON
+          -DCMAKE_BUILD_TYPE=DEBUG
+          ..
+      - name: Build and run tests with code coverage
+        if: ${{ matrix.coverage }} == "ON"
+        working-directory: build
+        run: cmake --build . --target coverage --parallel 4
+      - name: Upload code coverage results
+        working-directory: build
+        run: bash <(curl -s https://codecov.io/bash) -f coverage.info.cleaned
+  ci-windows:
+    strategy:
+      fail-fast: false
+      matrix:
+        build-type: [Debug, Release]
+        architecture: [x86, x64]
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install system dependencies
+        run: >
+          if("${{ matrix.architecture }}" -eq "x86") { $flag = "--x86" } else { $flag = "" };
+          choco install --no-progress "$flag" openssl; mkdir build
+      - name: Install Java
+        uses: emgre/setup-java@master
+        with:
+          java-version: 8
+          java-package: jdk
+          architecture: ${{ matrix.architecture }}
+      - name: CMake configure
+        working-directory: build
+        run: >
+          if("${{ matrix.architecture }}" -eq "x86") { $arch = "Win32" } else { $arch = "x64" };
+          cmake -A "$arch"
+          -DDNP3_EVERYTHING=ON
+          -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
+          -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/build/opendnp3-package
+          ..
+      - name: CMake build
+        working-directory: build
+        run: cmake --build . --config ${{ matrix.build-type }} --parallel 4
+      - name: Run C++ tests
+        working-directory: build
+        run: ctest -VV -C ${{ matrix.build-type }}
+      - name: Package build
+        working-directory: build
+        run: cmake --build . --config ${{ matrix.build-type }} --target install
+      - name: Upload package
+        uses: actions/upload-artifact@v1
+        with:
+          name: opendnp3-win-${{ matrix.architecture }}-msvc-${{ matrix.build-type }}-${{ github.sha }}
+          path: build/opendnp3-package
+      - name: Build and test Java bindings
+        working-directory: java
+        run: >
+          refreshenv;
+          $env:Path += ";${{ github.workspace }}\build\java\${{ matrix.build-type }}";
+          mvn --batch-mode verify
+  conformance:
+    needs: ci-linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download pre-compiled OpenDNP3
+        uses: actions/download-artifact@v2-preview
+        with:
+          name: opendnp3-linux-x64-gcc-Release-${{ github.sha }}
+          path: opendnp3
+      - name: Download pre-built OpenDNP3 Java bindings
+        uses: actions/download-artifact@v2-preview
+        with:
+          name: opendnp3-java-bindings-${{ github.sha }}
+          path: opendnp3-java
+      - name: Install OpenDNP3 Java bindings
+        run: >
+          jarfile=( opendnp3-java/*.jar ) &&
+          sudo mvn --batch-mode org.apache.maven.plugins:maven-install-plugin:3.0.0-M1:install-file -Dfile=$jarfile
+      - name: Checkout dnp4s
+        uses: actions/checkout@v2
+        with:
+          repository: grid-io/dnp4s
+          ssh-key: ${{ secrets.DNP4S_SSH_KEY }}
+          ref: develop
+          path: dnp4s
+      - name: Checkout OpenDNP3 test runner
+        uses: actions/checkout@v2
+        with:
+          repository: dnp3/opendnp3-dnp4s-driver
+          path: opendnp3-dnp4s-driver
+      - name: Build dnp4s
+        working-directory: dnp4s
+        run: sudo mvn --batch-mode install
+      - name: Build OpenDNP3-dnp4s driver
+        working-directory: opendnp3-dnp4s-driver
+        run: sudo mvn --batch-mode compile
+      - name: Run the conformance tests
+        working-directory: opendnp3-dnp4s-driver
+        run: >
+          sudo LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${{ github.workspace }}/opendnp3/lib
+          mvn --batch-mode exec:exec
+      - name: Upload conformance test results
+        if: always()
+        uses: actions/upload-artifact@v1
+        with:
+          name: conformance-results-${{ github.sha }}
+          path: opendnp3-dnp4s-driver/results
