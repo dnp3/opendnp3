@@ -238,4 +238,14 @@ OutstationState& StateUnsolicitedConfirmWait::OnBroadcastMessage(OContext& ctx, 
     return StateIdle::Inst();
 }
 
+// ------------- StateUnsolicitedConfirmWait ----------------
+
+StateNullUnsolicitedConfirmWait StateNullUnsolicitedConfirmWait::instance;
+
+OutstationState& StateNullUnsolicitedConfirmWait::OnNewReadRequest(OContext& ctx, const ParsedRequest& request)
+{
+    ctx.confirmTimer.cancel();
+    return ctx.RespondToReadRequest(request);
+}
+
 } // namespace opendnp3

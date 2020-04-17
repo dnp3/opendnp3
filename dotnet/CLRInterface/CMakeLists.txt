@@ -60,7 +60,6 @@ add_library(DNP3CLRInterface SHARED
     ./src/TaskConfig.cs
     ./src/TaskId.cs
     ./src/TaskInfo.cs
-    #./src/Timestamp.cs
     ./src/X509Info.cs
 
     ./src/config/DatabaseTemplate.cs

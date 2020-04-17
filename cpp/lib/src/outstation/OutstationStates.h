@@ -136,7 +136,44 @@ private:
 /*
  * waiting for a confirm to an unsolicited read response
  */
-class StateUnsolicitedConfirmWait final : public OutstationState
+class StateUnsolicitedConfirmWait : public OutstationState
+{
+
+public:
+    inline static OutstationState& Inst()
+    {
+        return instance;
+    }
+
+    virtual const char* Name() override
+    {
+        return "UnsolicitedConfirmWait";
+    }
+
+    virtual OutstationState& OnConfirm(OContext&, const ParsedRequest& request) override;
+
+    virtual OutstationState& OnConfirmTimeout(OContext&) override;
+
+    virtual OutstationState& OnNewReadRequest(OContext&, const ParsedRequest& request) override;
+
+    virtual OutstationState& OnNewNonReadRequest(OContext&, const ParsedRequest& request) override;
+
+    virtual OutstationState& OnRepeatNonReadRequest(OContext&, const ParsedRequest& request) override;
+
+    virtual OutstationState& OnRepeatReadRequest(OContext&, const ParsedRequest& request) override;
+
+    virtual OutstationState& OnBroadcastMessage(OContext&, const ParsedRequest& request) override;
+
+protected:
+    static StateUnsolicitedConfirmWait instance;
+
+    StateUnsolicitedConfirmWait() {}
+};
+
+/*
+ * waiting for a confirm for an unsolicited NULL response (only used in the workaround)
+ */
+class StateNullUnsolicitedConfirmWait final : public StateUnsolicitedConfirmWait
 {
 
 public:
@@ -147,27 +184,15 @@ public:
 
     const char* Name() final
     {
-        return "UnsolicitedConfirmWait";
+        return "NullUnsolicitedConfirmWait";
     }
-
-    OutstationState& OnConfirm(OContext&, const ParsedRequest& request) final;
-
-    OutstationState& OnConfirmTimeout(OContext&) final;
 
     OutstationState& OnNewReadRequest(OContext&, const ParsedRequest& request) final;
 
-    OutstationState& OnNewNonReadRequest(OContext&, const ParsedRequest& request) final;
-
-    OutstationState& OnRepeatNonReadRequest(OContext&, const ParsedRequest& request) final;
-
-    OutstationState& OnRepeatReadRequest(OContext&, const ParsedRequest& request) final;
-
-    OutstationState& OnBroadcastMessage(OContext&, const ParsedRequest& request) final;
-
 private:
-    static StateUnsolicitedConfirmWait instance;
+    static StateNullUnsolicitedConfirmWait instance;
 
-    StateUnsolicitedConfirmWait() {}
+    StateNullUnsolicitedConfirmWait() {}
 };
 
 } // namespace opendnp3

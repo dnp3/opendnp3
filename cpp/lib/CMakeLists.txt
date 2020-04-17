@@ -706,8 +706,16 @@ target_link_libraries(opendnp3
     PRIVATE ser4cpp exe4cpp asio
 )
 target_include_directories(opendnp3
-    PUBLIC ./include
-    PRIVATE ./src
+    PUBLIC
+        $<INSTALL_INTERFACE:include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
+)
+target_include_directories(opendnp3
+    PUBLIC
+        $<INSTALL_INTERFACE:include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 set_target_properties(opendnp3 PROPERTIES FOLDER cpp/lib)
 
@@ -715,6 +723,16 @@ if(DNP3_TLS)
     target_link_libraries(opendnp3 PRIVATE OpenSSL::SSL)
     target_compile_definitions(opendnp3 PRIVATE OPENDNP3_USE_TLS)
 endif()
+
+install(TARGETS opendnp3
+    EXPORT opendnp3-export
+    RUNTIME DESTINATION bin
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
+    DESTINATION include
+)
 
 clang_format(opendnp3 EXCLUDES .*/gen/.*)
 clang_tidy(opendnp3)

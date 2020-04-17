@@ -181,6 +181,7 @@ opendnp3::OutstationParams ConfigReader::Convert(JNIEnv* env, jni::JOutstationCo
     config.maxRxFragSize = cfg.getmaxRxFragSize(env, jconfig);
     config.allowUnsolicited = !(cfg.getallowUnsolicited(env, jconfig) == 0u);
     config.typesAllowedInClass0 = Convert(env, cfg.gettypesAllowedInClass0(env, jconfig));
+    config.noDefferedReadDuringUnsolicitedNullResponse = !(cfg.getnoDefferedReadDuringUnsolicitedNullResponse(env, jconfig) == 0u);
 
     return config;
 }

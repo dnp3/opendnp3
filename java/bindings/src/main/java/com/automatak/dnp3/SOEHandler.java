@@ -28,11 +28,13 @@ public interface SOEHandler {
 
     /**
      * Start a processing an ASDU
+     * @param info Information about the incoming ASDU
      */
     void beginFragment(ResponseInfo info);
 
     /**
      * End a processing an ASDU
+     * @param info Information about the incoming ASDU
      */
     void endFragment(ResponseInfo info);
 

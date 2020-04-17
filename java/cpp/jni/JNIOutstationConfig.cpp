@@ -69,6 +69,9 @@ namespace jni
             this->typesAllowedInClass0Field = env->GetFieldID(this->clazz, "typesAllowedInClass0", "Lcom/automatak/dnp3/StaticTypeBitField;");
             if(!this->typesAllowedInClass0Field) return false;
 
+            this->noDefferedReadDuringUnsolicitedNullResponseField = env->GetFieldID(this->clazz, "noDefferedReadDuringUnsolicitedNullResponse", "Z");
+            if(!this->noDefferedReadDuringUnsolicitedNullResponseField) return false;
+
             return true;
         }
 
@@ -95,6 +98,11 @@ namespace jni
         jint OutstationConfig::getmaxTxFragSize(JNIEnv* env, JOutstationConfig instance)
         {
             return env->GetIntField(instance, this->maxTxFragSizeField);
+        }
+
+        jboolean OutstationConfig::getnoDefferedReadDuringUnsolicitedNullResponse(JNIEnv* env, JOutstationConfig instance)
+        {
+            return env->GetBooleanField(instance, this->noDefferedReadDuringUnsolicitedNullResponseField);
         }
 
         LocalRef<JNumRetries> OutstationConfig::getnumUnsolRetries(JNIEnv* env, JOutstationConfig instance)

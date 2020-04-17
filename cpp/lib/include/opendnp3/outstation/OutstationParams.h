@@ -33,7 +33,7 @@ namespace opendnp3
  *	Static configuration parameters for an outstation session
  */
 struct OutstationParams
-{    
+{
     /// The maximum number of controls the outstation will attempt to process from a single APDU
     uint8_t maxControlsPerRequest = 16;
 
@@ -46,7 +46,14 @@ struct OutstationParams
     /// Timeout for unsolicited confirms
     TimeDuration unsolConfirmTimeout = DEFAULT_APP_TIMEOUT;
 
+    /// Number of unsolicited non-regenerated retries
     NumRetries numUnsolRetries = NumRetries::Infinite();
+
+    /// Workaround for test procedure 8.11.2.1. Will respond immediatly to READ requests
+    /// when waiting for unsolicited NULL responses.
+    ///
+    /// @warning This is NOT compliant to IEEE-1815-2012.
+    bool noDefferedReadDuringUnsolicitedNullResponse = false;
 
     /// The maximum fragment size the outstation will use for fragments it sends
     uint32_t maxTxFragSize = DEFAULT_MAX_APDU_SIZE;

@@ -27,6 +27,7 @@ public class NumRetries {
     /**
      * Create a fixed number of maximum unsolicited response retries
      * @param maxNumRetries Maximum number of retries
+     * @return Fixed number of retries
      */
     static public NumRetries Fixed(int maxNumRetries)
     {
@@ -35,10 +36,11 @@ public class NumRetries {
 
     /**
      * Create an infinite number of unsolicited response retries
+     * @return Infinite number of retries
      */
     static public NumRetries Infinite()
     {
-        return new NumRetries(0, false);
+        return new NumRetries(0, true);
     }
 
     private NumRetries(int maxNumRetries, boolean isInfinite)

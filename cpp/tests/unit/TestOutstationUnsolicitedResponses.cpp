@@ -40,10 +40,12 @@ TEST_CASE(SUITE("sends null unsol on startup"))
     REQUIRE(t.NumPendingTimers() == 1);
 }
 
-TEST_CASE(SUITE("Non-read during null unsol"))
+TEST_CASE(SUITE("Non-read during null unsol without workaround"))
 {
     OutstationConfig cfg;
     cfg.params.allowUnsolicited = true;
+    cfg.params.unsolConfirmTimeout = TimeDuration::Seconds(5);
+    cfg.params.noDefferedReadDuringUnsolicitedNullResponse = false;
     OutstationTestObject t(cfg);
     t.LowerLayerUp();
 
@@ -54,6 +56,90 @@ TEST_CASE(SUITE("Non-read during null unsol"))
     // send any non-read message
     t.SendToOutstation(hex::ClearRestartIIN(0));
     REQUIRE(t.lower->PopWriteAsHex() == hex::EmptyResponse(0));
+    t.OnTxReady();
+
+    // Continue sending unsolicited NULL responses
+    t.AdvanceTime(TimeDuration::Seconds(5));
+    REQUIRE(t.lower->PopWriteAsHex() == hex::NullUnsolicited(1, IINField()));
+    REQUIRE(t.NumPendingTimers() == 1);
+}
+
+TEST_CASE(SUITE("Non-read during null unsol with workaround"))
+{
+    OutstationConfig cfg;
+    cfg.params.allowUnsolicited = true;
+    cfg.params.unsolConfirmTimeout = TimeDuration::Seconds(5);
+    cfg.params.noDefferedReadDuringUnsolicitedNullResponse = true;
+    OutstationTestObject t(cfg);
+    t.LowerLayerUp();
+
+    REQUIRE(t.lower->PopWriteAsHex() == hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
+    t.OnTxReady();
+    REQUIRE(t.lower->NumWrites() == 0);
+
+    // send any non-read message
+    t.SendToOutstation(hex::ClearRestartIIN(0));
+    REQUIRE(t.lower->PopWriteAsHex() == hex::EmptyResponse(0));
+    t.OnTxReady();
+
+    // Continue sending unsolicited NULL responses
+    t.AdvanceTime(TimeDuration::Seconds(5));
+    REQUIRE(t.lower->PopWriteAsHex() == hex::NullUnsolicited(1, IINField()));
+    REQUIRE(t.NumPendingTimers() == 1);
+}
+
+TEST_CASE(SUITE("Read during null unsol without workaround"))
+{
+    OutstationConfig cfg;
+    cfg.params.allowUnsolicited = true;
+    cfg.params.unsolConfirmTimeout = TimeDuration::Seconds(5);
+    cfg.params.noDefferedReadDuringUnsolicitedNullResponse = false;
+    OutstationTestObject t(cfg);
+    t.LowerLayerUp();
+
+    REQUIRE(t.lower->PopWriteAsHex() == hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
+    t.OnTxReady();
+    REQUIRE(t.lower->NumWrites() == 0);
+
+    // send a read message
+    t.SendToOutstation(hex::ClassPoll(0, PointClass::Class1));
+
+    // Should not respond
+    REQUIRE(t.lower->PopWriteAsHex().empty());
+    REQUIRE(t.NumPendingTimers() == 1);
+
+    // When timeout is reached, should respond to READ request
+    t.AdvanceTime(TimeDuration::Seconds(5));
+    REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00");
+    t.OnTxReady();
+
+    // Then continue sending unsolicited NULL responses
+    REQUIRE(t.lower->PopWriteAsHex() == hex::NullUnsolicited(1, IINField(IINBit::DEVICE_RESTART)));
+    REQUIRE(t.NumPendingTimers() == 1);
+}
+
+TEST_CASE(SUITE("Read during null unsol with workaround"))
+{
+    OutstationConfig cfg;
+    cfg.params.allowUnsolicited = true;
+    cfg.params.unsolConfirmTimeout = TimeDuration::Seconds(5);
+    cfg.params.noDefferedReadDuringUnsolicitedNullResponse = true;
+    OutstationTestObject t(cfg);
+    t.LowerLayerUp();
+
+    REQUIRE(t.lower->PopWriteAsHex() == hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
+    t.OnTxReady();
+    REQUIRE(t.lower->NumWrites() == 0);
+
+    // send a read message
+    t.SendToOutstation(hex::ClassPoll(0, PointClass::Class1));
+
+    // Should respond immediatly
+    REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00");
+    t.OnTxReady();
+
+    // Then continue sending unsolicited NULL responses
+    REQUIRE(t.lower->PopWriteAsHex() == hex::NullUnsolicited(1, IINField(IINBit::DEVICE_RESTART)));
     REQUIRE(t.NumPendingTimers() == 1);
 }
 
