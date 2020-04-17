@@ -24,6 +24,7 @@ jobs:
           cmake
           -DDNP3_ALL=ON
           -DDNP3_TLS=ON
+          -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
           -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/build/opendnp3-package
           ..
       - name: CMake build
