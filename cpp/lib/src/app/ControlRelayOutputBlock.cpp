@@ -23,24 +23,33 @@ namespace opendnp3
 {
 
 ControlRelayOutputBlock::ControlRelayOutputBlock(
-    ControlCode code_, uint8_t count_, uint32_t onTime_, uint32_t offTime_, CommandStatus status_)
-    : functionCode(code_),
-      rawCode(ControlCodeSpec::to_type(code_)),
+    OperationType opType_, TripCloseCode tcc_, bool clear_,
+    uint8_t count_, uint32_t onTime_, uint32_t offTime_, CommandStatus status_)
+    : opType(opType_),
+      tcc(tcc_),
+      clear(clear_),
       count(count_),
       onTimeMS(onTime_),
       offTimeMS(offTime_),
-      status(status_)
+      status(status_),
+      rawCode(
+        ((TripCloseCodeSpec::to_type(tcc) << 6) & 0xC0) |
+        ((static_cast<uint8_t>(clear) << 5) & 0x20) |
+        (OperationTypeSpec::to_type(opType) & 0x0F)
+      )
 {
 }
 
 ControlRelayOutputBlock::ControlRelayOutputBlock(
     uint8_t rawCode_, uint8_t count_, uint32_t onTime_, uint32_t offTime_, CommandStatus status_)
-    : functionCode(ControlCodeSpec::from_type((rawCode_))),
-      rawCode(rawCode_),
+    : opType(OperationTypeSpec::from_type(rawCode_ & 0x0F)),
+      tcc(TripCloseCodeSpec::from_type((rawCode_ >> 6) & 0x3)),
+      clear(rawCode_ & 0x20),
       count(count_),
       onTimeMS(onTime_),
       offTimeMS(offTime_),
-      status(status_)
+      status(status_),
+      rawCode(rawCode_)
 {
 }
 

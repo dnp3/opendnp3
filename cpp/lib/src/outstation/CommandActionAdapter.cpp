@@ -49,6 +49,10 @@ void CommandActionAdapter::CheckStart()
 
 CommandStatus CommandActionAdapter::Action(const ControlRelayOutputBlock& command, uint16_t index)
 {
+    if(command.IsQUFlagSet()) {
+        return CommandStatus::NOT_SUPPORTED;
+    }
+
     return this->ActionT(command, index);
 }
 

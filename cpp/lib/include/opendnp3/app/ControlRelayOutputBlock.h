@@ -21,7 +21,8 @@
 #define OPENDNP3_CONTROLRELAYOUTPUTBLOCK_H
 
 #include "opendnp3/gen/CommandStatus.h"
-#include "opendnp3/gen/ControlCode.h"
+#include "opendnp3/gen/OperationType.h"
+#include "opendnp3/gen/TripCloseCode.h"
 
 namespace opendnp3
 {
@@ -29,15 +30,17 @@ namespace opendnp3
 /**
  * Describes an incoming control request from the master. It is the
  * applications responsibility to handle the request and return an
- * approiate status code.The PULSE_CLOSE and PULSE_TRIP ControlCodes
+ * approiate status code. The PULSE_CLOSE and PULSE_TRIP OperationType
  * require setting the mOnTimeMS, mOffTimeMS and mCount variables, otherwise
  * just use the defaults.
  */
 class ControlRelayOutputBlock
 {
 public:
-    // primary constructor where the control code is set by enumeration
-    ControlRelayOutputBlock(ControlCode code = ControlCode::LATCH_ON,
+    // primary constructor where the control code is split by its components
+    ControlRelayOutputBlock(OperationType opType = OperationType::LATCH_ON,
+                            TripCloseCode tcc = TripCloseCode::NUL,
+                            bool clear = false,
                             uint8_t count = 1,
                             uint32_t onTime = 100,
                             uint32_t offTime = 100,
@@ -50,10 +53,12 @@ public:
                             uint32_t offTime = 100,
                             CommandStatus status = CommandStatus::SUCCESS);
 
-    /// allows matching of exact code
-    ControlCode functionCode;
-    /// The raw code in bytes
-    uint8_t rawCode;
+    /// operation type
+    OperationType opType;
+    // trip-close code
+    TripCloseCode tcc;
+    // clear bit
+    bool clear;
     /// the number of times to repeat the operation
     uint8_t count;
     /// the 'on' time for the pulse train
@@ -62,11 +67,17 @@ public:
     uint32_t offTimeMS;
     /// status of the resulting operation
     CommandStatus status;
+    /// The raw code in bytes
+    uint8_t rawCode;
+
+    bool IsQUFlagSet() const {
+        return (rawCode & 0x10) != 0;
+    }
 
     bool ValuesEqual(const ControlRelayOutputBlock& lhs) const
     {
-        return (functionCode == lhs.functionCode) && (count == lhs.count) && (onTimeMS == lhs.onTimeMS)
-            && (offTimeMS == lhs.offTimeMS);
+        return (opType == lhs.opType) && (tcc == lhs.tcc) && (clear == lhs.clear)
+               && (count == lhs.count) && (onTimeMS == lhs.onTimeMS) && (offTimeMS == lhs.offTimeMS);
     }
 
     bool operator==(const ControlRelayOutputBlock& lhs) const

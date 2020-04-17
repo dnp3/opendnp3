@@ -29,8 +29,8 @@
 // limitations under the License.
 //
 
-#ifndef OPENDNP3JAVA_JNICONTROLRELAYOUTPUTBLOCK_H
-#define OPENDNP3JAVA_JNICONTROLRELAYOUTPUTBLOCK_H
+#ifndef OPENDNP3JAVA_JNIOPERATIONTYPE_H
+#define OPENDNP3JAVA_JNIOPERATIONTYPE_H
 
 #include "../adapters/LocalRef.h"
 
@@ -42,7 +42,7 @@ namespace jni
 
     namespace cache
     {
-        class ControlRelayOutputBlock
+        class OperationType
         {
             friend struct jni::JCache;
 
@@ -51,33 +51,17 @@ namespace jni
 
             public:
 
-            // constructor methods
-            LocalRef<JControlRelayOutputBlock> construct(JNIEnv* env, JOperationType arg0, JTripCloseCode arg1, jboolean arg2, jshort arg3, jlong arg4, jlong arg5, JCommandStatus arg6);
-
-            // field getter methods
-            jboolean getclear(JNIEnv* env, JControlRelayOutputBlock instance);
-            jshort getcount(JNIEnv* env, JControlRelayOutputBlock instance);
-            jlong getoffTimeMs(JNIEnv* env, JControlRelayOutputBlock instance);
-            jlong getonTimeMs(JNIEnv* env, JControlRelayOutputBlock instance);
-            LocalRef<JOperationType> getopType(JNIEnv* env, JControlRelayOutputBlock instance);
-            LocalRef<JCommandStatus> getstatus(JNIEnv* env, JControlRelayOutputBlock instance);
-            LocalRef<JTripCloseCode> gettcc(JNIEnv* env, JControlRelayOutputBlock instance);
+            // methods
+            LocalRef<JOperationType> fromType(JNIEnv* env, jint arg0);
+            jint toType(JNIEnv* env, JOperationType instance);
 
             private:
 
             jclass clazz = nullptr;
 
-            // constructor method ids
-            jmethodID constructor0 = nullptr;
-
-            // field ids
-            jfieldID opTypeField = nullptr;
-            jfieldID tccField = nullptr;
-            jfieldID clearField = nullptr;
-            jfieldID countField = nullptr;
-            jfieldID onTimeMsField = nullptr;
-            jfieldID offTimeMsField = nullptr;
-            jfieldID statusField = nullptr;
+            // method ids
+            jmethodID method0 = nullptr;
+            jmethodID method1 = nullptr;
         };
     }
 }

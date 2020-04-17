@@ -42,11 +42,17 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->constructor0 = env->GetMethodID(this->clazz, "<init>", "(Lcom/automatak/dnp3/enums/ControlCode;SJJLcom/automatak/dnp3/enums/CommandStatus;)V");
+            this->constructor0 = env->GetMethodID(this->clazz, "<init>", "(Lcom/automatak/dnp3/enums/OperationType;Lcom/automatak/dnp3/enums/TripCloseCode;ZSJJLcom/automatak/dnp3/enums/CommandStatus;)V");
             if(!this->constructor0) return false;
 
-            this->functionField = env->GetFieldID(this->clazz, "function", "Lcom/automatak/dnp3/enums/ControlCode;");
-            if(!this->functionField) return false;
+            this->opTypeField = env->GetFieldID(this->clazz, "opType", "Lcom/automatak/dnp3/enums/OperationType;");
+            if(!this->opTypeField) return false;
+
+            this->tccField = env->GetFieldID(this->clazz, "tcc", "Lcom/automatak/dnp3/enums/TripCloseCode;");
+            if(!this->tccField) return false;
+
+            this->clearField = env->GetFieldID(this->clazz, "clear", "Z");
+            if(!this->clearField) return false;
 
             this->countField = env->GetFieldID(this->clazz, "count", "S");
             if(!this->countField) return false;
@@ -68,19 +74,19 @@ namespace jni
             env->DeleteGlobalRef(this->clazz);
         }
 
-        LocalRef<JControlRelayOutputBlock> ControlRelayOutputBlock::construct(JNIEnv* env, JControlCode arg0, jshort arg1, jlong arg2, jlong arg3, JCommandStatus arg4)
+        LocalRef<JControlRelayOutputBlock> ControlRelayOutputBlock::construct(JNIEnv* env, JOperationType arg0, JTripCloseCode arg1, jboolean arg2, jshort arg3, jlong arg4, jlong arg5, JCommandStatus arg6)
         {
-            return LocalRef<JControlRelayOutputBlock>(env, JControlRelayOutputBlock(env->NewObject(this->clazz, this->constructor0, arg0, arg1, arg2, arg3, arg4)));
+            return LocalRef<JControlRelayOutputBlock>(env, JControlRelayOutputBlock(env->NewObject(this->clazz, this->constructor0, arg0, arg1, arg2, arg3, arg4, arg5, arg6)));
+        }
+
+        jboolean ControlRelayOutputBlock::getclear(JNIEnv* env, JControlRelayOutputBlock instance)
+        {
+            return env->GetBooleanField(instance, this->clearField);
         }
 
         jshort ControlRelayOutputBlock::getcount(JNIEnv* env, JControlRelayOutputBlock instance)
         {
             return env->GetShortField(instance, this->countField);
-        }
-
-        LocalRef<JControlCode> ControlRelayOutputBlock::getfunction(JNIEnv* env, JControlRelayOutputBlock instance)
-        {
-            return LocalRef<JControlCode>(env, env->GetObjectField(instance, this->functionField));
         }
 
         jlong ControlRelayOutputBlock::getoffTimeMs(JNIEnv* env, JControlRelayOutputBlock instance)
@@ -93,9 +99,19 @@ namespace jni
             return env->GetLongField(instance, this->onTimeMsField);
         }
 
+        LocalRef<JOperationType> ControlRelayOutputBlock::getopType(JNIEnv* env, JControlRelayOutputBlock instance)
+        {
+            return LocalRef<JOperationType>(env, env->GetObjectField(instance, this->opTypeField));
+        }
+
         LocalRef<JCommandStatus> ControlRelayOutputBlock::getstatus(JNIEnv* env, JControlRelayOutputBlock instance)
         {
             return LocalRef<JCommandStatus>(env, env->GetObjectField(instance, this->statusField));
+        }
+
+        LocalRef<JTripCloseCode> ControlRelayOutputBlock::gettcc(JNIEnv* env, JControlRelayOutputBlock instance)
+        {
+            return LocalRef<JTripCloseCode>(env, env->GetObjectField(instance, this->tccField));
         }
     }
 }

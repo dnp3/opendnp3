@@ -101,25 +101,28 @@ namespace DNP3
             return (opendnp3::CommandStatus)status;
         }
 
-        ControlCode Conversions::ConvertControlCode(opendnp3::ControlCode code)
-        {
-            return (ControlCode)opendnp3::ControlCodeSpec::to_type(code);
-        }
-
-        opendnp3::ControlCode Conversions::ConvertControlCode(ControlCode code)
-        {
-            return (opendnp3::ControlCode)code;
-        }
-
         ControlRelayOutputBlock ^ Conversions::ConvertCommand(const opendnp3::ControlRelayOutputBlock& bo)
         {
-            return gcnew ControlRelayOutputBlock(ConvertControlCode(bo.functionCode), bo.count, bo.onTimeMS,
-                                                 bo.offTimeMS);
+            return gcnew ControlRelayOutputBlock(
+                (OperationType)opendnp3::OperationTypeSpec::to_type(bo.opType),
+                (TripCloseCode)opendnp3::TripCloseCodeSpec::to_type(bo.tcc),
+                bo.clear,
+                bo.count,
+                bo.onTimeMS,
+                bo.offTimeMS
+            );
         }
 
         opendnp3::ControlRelayOutputBlock Conversions::ConvertCommand(ControlRelayOutputBlock ^ bo)
         {
-            return opendnp3::ControlRelayOutputBlock(ConvertControlCode(bo->code), bo->count, bo->onTime, bo->offTime);
+            return opendnp3::ControlRelayOutputBlock(
+                opendnp3::OperationTypeSpec::from_type((uint8_t)bo->opType),
+                opendnp3::TripCloseCodeSpec::from_type((uint8_t)bo->tcc),
+                bo->clear,
+                bo->count,
+                bo->onTime,
+                bo->offTime
+            );
         }
 
         opendnp3::AnalogOutputInt32 Conversions::ConvertCommand(AnalogOutputInt32 ^ sp)

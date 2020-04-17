@@ -76,7 +76,7 @@ IINField LoggingHandler::PrintCrob(const ICollection<Indexed<ControlRelayOutputB
     auto logItem = [this](const Indexed<ControlRelayOutputBlock>& item) {
         std::ostringstream oss;
         oss << "[" << item.index << "] - code: 0x" << ToHex(item.value.rawCode) << " ("
-            << ControlCodeSpec::to_human_string(item.value.functionCode) << ")";
+            << "op type: " << OperationTypeSpec::to_human_string(item.value.opType) << ", tcc: " << TripCloseCodeSpec::to_human_string(item.value.tcc) << ", cr: " << item.value.clear << ")";
         oss << " count: " << static_cast<size_t>(item.value.count);
         oss << " on-time: " << static_cast<size_t>(item.value.onTimeMS);
         oss << " off-time: " << static_cast<size_t>(item.value.offTimeMS);

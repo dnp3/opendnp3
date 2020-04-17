@@ -20,14 +20,17 @@
 package com.automatak.dnp3;
 
 import com.automatak.dnp3.enums.CommandStatus;
-import com.automatak.dnp3.enums.ControlCode;
+import com.automatak.dnp3.enums.OperationType;
+import com.automatak.dnp3.enums.TripCloseCode;
 
 /**
  * Command request for control a relay output
  */
 public class ControlRelayOutputBlock {
 
-    public final ControlCode function;
+    public final OperationType opType;
+    public final TripCloseCode tcc;
+    public final boolean clear;
     public final short count;
     public final long onTimeMs;
     public final long offTimeMs;
@@ -35,15 +38,19 @@ public class ControlRelayOutputBlock {
 
     /**
      * Primary constructor
-     * @param function Enumeration that controls that behavior of the command
+     * @param opType Enumeration that controls the behavior of the command
+     * @param tcc Enumeration that controls the behavior of the command
+     * @param clear Boolean that controls the behavior of the command
      * @param count How many times to repeat the operation
      * @param onTimeMs How long to set the output active
      * @param offTimeMs How long to set the output inactive
      * @param status Status code received from an outstation
      */
-    public ControlRelayOutputBlock(ControlCode function, short count, long onTimeMs, long offTimeMs, CommandStatus status)
+    public ControlRelayOutputBlock(OperationType opType, TripCloseCode tcc, boolean clear, short count, long onTimeMs, long offTimeMs, CommandStatus status)
     {
-        this.function = function;
+        this.opType = opType;
+        this.tcc = tcc;
+        this.clear = clear;
         this.count = count;
         this.onTimeMs = onTimeMs;
         this.offTimeMs = offTimeMs;

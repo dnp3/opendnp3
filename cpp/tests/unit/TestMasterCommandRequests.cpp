@@ -45,7 +45,7 @@ TEST_CASE(SUITE("ControlExecutionClosedState"))
     MasterParams params;
     MasterTestFixture t(params);
 
-    ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
+    ControlRelayOutputBlock crob(OperationType::PULSE_ON);
     CommandCallbackQueue queue;
 
     for (int i = 0; i < 10; ++i)
@@ -85,7 +85,7 @@ TEST_CASE(SUITE("Controls timeout after start period elapses"))
 
     for (int i = 0; i < 5; ++i)
     {
-        CommandSet commands({WithIndex(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1)});
+        CommandSet commands({WithIndex(ControlRelayOutputBlock(OperationType::PULSE_ON), 1)});
         t.context->SelectAndOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
 
         REQUIRE(t.exe->run_many() > 0);
@@ -116,7 +116,7 @@ TEST_CASE(SUITE("Layer down while still scheduled"))
     // while we're waiting for a reponse, submit a control
     CommandCallbackQueue queue;
 
-    CommandSet commands({WithIndex(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1)});
+    CommandSet commands({WithIndex(ControlRelayOutputBlock(OperationType::PULSE_ON), 1)});
     t.context->SelectAndOperate(std::move(commands), queue.Callback(), TaskConfig::Default());
     REQUIRE(t.exe->run_many() > 0);
     REQUIRE(queue.values.empty());
@@ -132,7 +132,7 @@ TEST_CASE(SUITE("SelectAndOperate"))
     MasterTestFixture t(NoStartupTasks());
     t.context->OnLowerLayerUp();
 
-    ControlRelayOutputBlock command(ControlCode::PULSE_ON);
+    ControlRelayOutputBlock command(OperationType::PULSE_ON);
 
     CommandCallbackQueue queue;
     t.context->SelectAndOperate(CommandSet({WithIndex(command, 1)}), queue.Callback(), TaskConfig::Default());
@@ -167,7 +167,7 @@ TEST_CASE(SUITE("SelectAndOperateWithConfirmResponse"))
     MasterTestFixture t(NoStartupTasks());
     t.context->OnLowerLayerUp();
 
-    ControlRelayOutputBlock bo(ControlCode::PULSE_ON);
+    ControlRelayOutputBlock bo(OperationType::PULSE_ON);
 
     CommandCallbackQueue queue;
     t.context->SelectAndOperate(CommandSet({WithIndex(bo, 1)}), queue.Callback(), TaskConfig::Default());
@@ -206,7 +206,7 @@ TEST_CASE(SUITE("can select and operate with one byte qualifier optimization ena
     MasterTestFixture t(params);
     t.context->OnLowerLayerUp();
 
-    ControlRelayOutputBlock crob(ControlCode::PULSE_ON);
+    ControlRelayOutputBlock crob(OperationType::PULSE_ON);
 
     CommandCallbackQueue queue;
     t.context->SelectAndOperate(CommandSet({WithIndex(crob, 7)}), queue.Callback(), TaskConfig::Default());
@@ -239,7 +239,7 @@ TEST_CASE(SUITE("ControlExecutionSelectResponseTimeout"))
     t.context->OnLowerLayerUp();
 
     CommandCallbackQueue queue;
-    t.context->SelectAndOperate(CommandSet({WithIndex(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1)}),
+    t.context->SelectAndOperate(CommandSet({WithIndex(ControlRelayOutputBlock(OperationType::PULSE_ON), 1)}),
                                 queue.Callback(), TaskConfig::Default());
 
     t.exe->run_many();
@@ -262,7 +262,7 @@ TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
     t.context->OnLowerLayerUp();
 
     CommandCallbackQueue queue;
-    t.context->SelectAndOperate(CommandSet({WithIndex(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1)}),
+    t.context->SelectAndOperate(CommandSet({WithIndex(ControlRelayOutputBlock(OperationType::PULSE_ON), 1)}),
                                 queue.Callback(), TaskConfig::Default());
 
     t.exe->run_many();
@@ -284,7 +284,7 @@ TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
     t.context->OnLowerLayerUp();
 
     CommandCallbackQueue queue;
-    t.context->SelectAndOperate(CommandSet({WithIndex(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1)}),
+    t.context->SelectAndOperate(CommandSet({WithIndex(ControlRelayOutputBlock(OperationType::PULSE_ON), 1)}),
                                 queue.Callback(), TaskConfig::Default());
 
     t.exe->run_many();
@@ -308,7 +308,7 @@ TEST_CASE(SUITE("ControlExecutionSelectBadFIRFIN"))
 
     CommandCallbackQueue queue;
 
-    t.context->SelectAndOperate(CommandSet({WithIndex(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1)}),
+    t.context->SelectAndOperate(CommandSet({WithIndex(ControlRelayOutputBlock(OperationType::PULSE_ON), 1)}),
                                 queue.Callback(), TaskConfig::Default());
 
     t.exe->run_many();
@@ -342,7 +342,7 @@ TEST_CASE(SUITE("DeferredControlExecution"))
     // issue a command while the master is waiting for a response from the outstation
 
     CommandCallbackQueue queue;
-    t.context->SelectAndOperate(CommandSet({WithIndex(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1)}),
+    t.context->SelectAndOperate(CommandSet({WithIndex(ControlRelayOutputBlock(OperationType::PULSE_ON), 1)}),
                                 queue.Callback(), TaskConfig::Default());
 
     t.SendToMaster("C0 81 00 00"); // now master gets response to integrity

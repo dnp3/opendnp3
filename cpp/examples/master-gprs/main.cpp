@@ -143,7 +143,7 @@ void init_handlers(command_handler_map_t& map)
         const auto session = callbacks.get_outstation_session(address);
         if (session)
         {
-            session->DirectOperate(ControlRelayOutputBlock(ControlCode::LATCH_ON), index,
+            session->DirectOperate(ControlRelayOutputBlock(OperationType::LATCH_ON), index,
                                    [](const ICommandTaskResult&) {}
                                    // normally you would handle the result in some fashion
             );
