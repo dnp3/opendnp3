@@ -2,8 +2,8 @@ include(FetchContent)
 
 FetchContent_Declare(
     asio
-    URL      https://github.com/chriskohlhoff/asio/archive/asio-1-12-2.zip
-    URL_HASH SHA1=23F74B271D984A7B2BF00640DE856F5BBA410A50
+    URL      https://github.com/chriskohlhoff/asio/archive/asio-1-16-0.zip
+    URL_HASH SHA1=6BDD33522D5B95B36445ABB2072A481F7CE15402
 )
 
 FetchContent_GetProperties(asio)
