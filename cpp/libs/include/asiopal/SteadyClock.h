@@ -26,7 +26,7 @@
 namespace asiopal
 {
 
-#if (defined WIN32 && (_MSC_VER < 1900)) // Windows with VS eariler than 2015, e.g. 2013
+#if (defined WIN32 && defined _MSC_VER && (_MSC_VER < 1900)) // Windows with VS eariler than 2015, e.g. 2013
 
 #include <Windows.h>
 
