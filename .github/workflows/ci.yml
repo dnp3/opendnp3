@@ -40,7 +40,7 @@ jobs:
         run: ctest -VV
       - name: Package build
         working-directory: build
-        run: cmake --build . --config ${{ matrix.build-type }} --target install
+        run: cmake --build . --target install
       - name: Upload package
         uses: actions/upload-artifact@v1
         with:
