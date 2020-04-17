@@ -9,10 +9,10 @@ sessions or huge device simulations. It also embeds with a small footprint on Li
 Build status
 ============
 
-| Branch       | Ubuntu 18.04 | Windows |
-| ------------ | ------------ | ------- |
-| release-2.x  | [![CircleCI](https://circleci.com/gh/dnp3/opendnp3/tree/release-2.x.svg?style=svg)](https://circleci.com/gh/dnp3/opendnp3/tree/release-2.x) | [![AppVeyor](https://ci.appveyor.com/api/projects/status/971s9e53c9uoge4k/branch/release-2.x?svg=true)](https://ci.appveyor.com/project/dnp3/dnp3?branch=release-2.x) |
-| develop      | [![CircleCI](https://circleci.com/gh/dnp3/opendnp3/tree/develop.svg?style=svg)](https://circleci.com/gh/dnp3/opendnp3/tree/develop) | [![AppVeyor](https://ci.appveyor.com/api/projects/status/971s9e53c9uoge4k/branch/develop?svg=true)](https://ci.appveyor.com/project/dnp3/dnp3?branch=develop) |
+| Branch       | Build | Code coverage | Quality |
+| ------------ | ----- | ------------- | ------- |
+| release-2.x  | [![CI 2.x](https://github.com/dnp3/opendnp3/workflows/CI/badge.svg?branch=release-2.x)](https://github.com/dnp3/opendnp3/actions?query=branch%3Arelease-2.x) | [![Codecov](https://codecov.io/gh/dnp3/opendnp3/branch/release-2.x/graph/badge.svg)](https://codecov.io/gh/dnp3/opendnp3/branch/release-2.x) | - |
+| develop      | [![CI 2.x](https://github.com/dnp3/opendnp3/workflows/CI/badge.svg?branch=develop)](https://github.com/dnp3/opendnp3/actions?query=branch%3Adevelop) | [![Codecov](https://codecov.io/gh/dnp3/opendnp3/branch/develop/graph/badge.svg)](https://codecov.io/gh/dnp3/opendnp3/branch/develop) | [![Language grade: C/C++](https://img.shields.io/lgtm/grade/cpp/g/dnp3/opendnp3.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/dnp3/opendnp3/context:cpp) |
 
 
 Documentation

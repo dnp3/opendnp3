@@ -1,0 +1,101 @@
+on: push
+name: CI
+jobs:
+  ci-linux:
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler: [gcc, clang]
+        build-type: [Debug, Release]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Install system dependencies
+        run: >
+          sudo apt-get update &&
+          sudo apt-get install build-essential clang cmake git libssl-dev default-jdk maven &&
+          mkdir build
+      - name: CMake configure
+        working-directory: build
+        run: >
+          cmake
+          -DDNP3_ALL=ON
+          -DDNP3_TLS=ON
+          -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
+          -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/build/opendnp3-package
+          ..
+      - name: CMake build
+        working-directory: build
+        run: cmake --build .
+      - name: Run C++ tests
+        working-directory: build
+        run: ctest -VV
+      - name: Package build
+        working-directory: build
+        run: cmake --build . --target install
+      - name: Upload package
+        uses: actions/upload-artifact@v1
+        with:
+          name: opendnp3-linux-x64-${{ matrix.compiler }}-${{ matrix.build-type }}-${{ github.sha }}
+          path: build/opendnp3-package
+      - name: Build and test Java bindings
+        working-directory: java
+        run: >
+          export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${{ github.workspace }}/build &&
+          export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::") &&
+          mvn --batch-mode verify
+  ci-windows:
+    strategy:
+      fail-fast: false
+      matrix:
+        build-type: [Debug, Release]
+        architecture: [x86, x64]
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Install system dependencies
+        run: >
+          if("${{ matrix.architecture }}" -eq "x86") { $flag = "--x86" } else { $flag = "" };
+          choco install --no-progress "$flag" openssl; mkdir build
+      - name: Install Java
+        uses: emgre/setup-java@master
+        with:
+          java-version: 8
+          java-package: jdk
+          architecture: ${{ matrix.architecture }}
+      - name: CMake configure
+        working-directory: build
+        run: >
+          if("${{ matrix.architecture }}" -eq "x86") { $arch = "Win32" } else { $arch = "x64" };
+          cmake -A "$arch"
+          -DDNP3_ALL=ON
+          -DDNP3_TLS=ON
+          -DCMAKE_BUILD_TYPE=${{ matrix.build-type }}
+          -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/build/opendnp3-package
+          ..
+      - name: CMake build
+        working-directory: build
+        run: cmake --build . --config ${{ matrix.build-type }}
+      - name: Run C++ tests
+        working-directory: build
+        run: ctest -VV -C ${{ matrix.build-type }}
+      - name: Package build
+        working-directory: build
+        run: cmake --build . --config ${{ matrix.build-type }} --target install
+      - name: Upload package
+        uses: actions/upload-artifact@v1
+        with:
+          name: opendnp3-win-${{ matrix.architecture }}-msvc-${{ matrix.build-type }}-${{ github.sha }}
+          path: build/opendnp3-package
+      - name: Build and test Java bindings
+        working-directory: java
+        run: >
+          refreshenv;
+          $env:Path += ";${{ github.workspace }}\build\${{ matrix.build-type }}";
+          mvn --batch-mode verify
