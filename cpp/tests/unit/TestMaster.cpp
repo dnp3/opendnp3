@@ -684,13 +684,13 @@ TEST_CASE(SUITE("AdhocScanFailsImmediatelyIfMasterOffline"))
     MasterParams params = NoStartupTasks();
     MasterTestFixture t(params);
 
-    MockTaskCallback callback;
+    auto callback = std::make_shared<MockTaskCallback>();
     t.context->ScanClasses(ClassField::AllEventClasses(), t.meas, TaskConfig::With(callback));
 
-    REQUIRE(callback.numStart == 0);
-    REQUIRE(callback.results.size() == 1);
-    REQUIRE(callback.results[0] == TaskCompletion::FAILURE_NO_COMMS);
-    REQUIRE(callback.numDestroyed == 1);
+    REQUIRE(callback->numStart == 0);
+    REQUIRE(callback->results.size() == 1);
+    REQUIRE(callback->results[0] == TaskCompletion::FAILURE_NO_COMMS);
+    REQUIRE(callback->numDestroyed == 1);
 }
 
 TEST_CASE(SUITE("MasterWritesTimeAndInterval"))
@@ -699,7 +699,7 @@ TEST_CASE(SUITE("MasterWritesTimeAndInterval"))
     MasterTestFixture t(params);
     t.context->OnLowerLayerUp();
 
-    MockTaskCallback callback;
+    auto callback = std::make_shared<MockTaskCallback>();
 
     t.context->Write(TimeAndInterval(DNPTime(3), 4, IntervalUnits::Days), 7, TaskConfig::With(callback));
     REQUIRE(t.exe->run_many() > 0);
@@ -708,9 +708,9 @@ TEST_CASE(SUITE("MasterWritesTimeAndInterval"))
     t.SendToMaster("C0 81 00 00");
     REQUIRE(t.lower->PopWriteAsHex().empty());
 
-    REQUIRE(callback.numStart == 1);
-    REQUIRE(callback.results.size() == 1);
-    REQUIRE(callback.results[0] == TaskCompletion::SUCCESS);
+    REQUIRE(callback->numStart == 1);
+    REQUIRE(callback->results.size() == 1);
+    REQUIRE(callback->results[0] == TaskCompletion::SUCCESS);
 }
 
 TEST_CASE(SUITE("Cold restart fails with empty response"))

@@ -23,6 +23,8 @@
 #include "opendnp3/master/ITaskCallback.h"
 #include "opendnp3/master/TaskId.h"
 
+#include <memory>
+
 namespace opendnp3
 {
 
@@ -32,7 +34,7 @@ namespace opendnp3
 class TaskConfig
 {
 public:
-    TaskConfig(TaskId taskId, ITaskCallback* pCallback) : taskId(taskId), pCallback(pCallback) {}
+    TaskConfig(TaskId taskId, std::shared_ptr<ITaskCallback> pCallback) : taskId(taskId), pCallback(pCallback) {}
 
     static TaskConfig Default()
     {
@@ -41,16 +43,16 @@ public:
 
     ///  --- syntax sugar for building configs -----
 
-    static TaskConfig With(ITaskCallback& callback)
+    static TaskConfig With(std::shared_ptr<ITaskCallback> callback)
     {
-        return TaskConfig(TaskId::Undefined(), &callback);
+        return TaskConfig(TaskId::Undefined(), callback);
     }
 
     TaskConfig() = delete;
 
 public:
     TaskId taskId;
-    ITaskCallback* pCallback;
+    std::shared_ptr<ITaskCallback> pCallback;
 };
 
 } // namespace opendnp3

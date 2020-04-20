@@ -42,10 +42,12 @@ namespace Automatak
 			{
 			public:
 
-				static opendnp3::ITaskCallback* Create(Automatak::DNP3::Interface::ITaskCallback^ proxy)
+				static std::shared_ptr<opendnp3::ITaskCallback> Create(Automatak::DNP3::Interface::ITaskCallback^ proxy)
 				{
-					return new TaskCallbackAdapter(proxy);
+					return std::make_shared<TaskCallbackAdapter>(proxy);
 				}
+
+                TaskCallbackAdapter(Automatak::DNP3::Interface::ITaskCallback ^ proxy) : root(proxy) {}
 
 				virtual void OnStart() sealed
 				{
@@ -65,11 +67,6 @@ namespace Automatak
 
 			private:
 
-				TaskCallbackAdapter();
-
-				TaskCallbackAdapter(Automatak::DNP3::Interface::ITaskCallback^ proxy) : root(proxy)
-				{}
-				
 				gcroot < Automatak::DNP3::Interface::ITaskCallback^ > root;
 			};
 		

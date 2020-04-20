@@ -170,7 +170,7 @@ namespace Automatak
 				return gcnew TaskInfo((MasterTaskType)info.type, (TaskCompletion)info.result, MasterConversions::Convert(info.id));
 			}
 
-			opendnp3::ITaskCallback* MasterConversions::CreateTaskCallback(ITaskCallback^ callback)
+			std::shared_ptr<opendnp3::ITaskCallback> MasterConversions::CreateTaskCallback(ITaskCallback^ callback)
 			{
                 return callback ? TaskCallbackAdapter::Create(callback) : nullptr;
 			}
