@@ -39,6 +39,7 @@ public:
      */
     ChannelRetry(TimeDuration minOpenRetry,
                  TimeDuration maxOpenRetry,
+                 TimeDuration reconnectDelay = TimeDuration::Zero(),
                  IOpenDelayStrategy& strategy = ExponentialBackoffStrategy::Instance());
 
     /// Return the default configuration of exponential backoff from 1 sec to 1 minute
@@ -48,6 +49,8 @@ public:
     TimeDuration minOpenRetry;
     /// maximum connection retry interval on failure
     TimeDuration maxOpenRetry;
+    /// reconnect delay (defaults to zero)
+    TimeDuration reconnectDelay;
 
     TimeDuration NextDelay(const TimeDuration& current) const
     {

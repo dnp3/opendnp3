@@ -64,7 +64,7 @@ protected:
     virtual void OnChannelShutdown() override;
 
 private:
-    void StartConnect(const std::shared_ptr<TLSClient>& client, const TimeDuration& delay);
+    void StartConnect(const TimeDuration& delay);
 
     void ResetState();
 

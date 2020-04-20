@@ -217,7 +217,8 @@ namespace Automatak
 			opendnp3::ChannelRetry DNP3ManagerAdapter::Convert(Interface::ChannelRetry ^ retry)
 			{
                 return opendnp3::ChannelRetry(Conversions::ConvertTimespan(retry->minRetryDelay),
-                                              Conversions::ConvertTimespan(retry->maxRetryDelay));
+                                              Conversions::ConvertTimespan(retry->maxRetryDelay),
+                                              Conversions::ConvertTimespan(retry->reconnectDelay));
 			}
 		}
 	}

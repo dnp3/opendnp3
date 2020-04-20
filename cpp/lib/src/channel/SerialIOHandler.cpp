@@ -55,7 +55,9 @@ void SerialIOHandler::SuspendChannelAccept()
 
 void SerialIOHandler::OnChannelShutdown()
 {
-    this->BeginChannelAccept();
+    this->retrytimer = this->executor->start(this->retry.reconnectDelay.value, [this, self = shared_from_this()]() {
+        this->BeginChannelAccept();
+    });
 }
 
 void SerialIOHandler::TryOpen(const TimeDuration& timeout)
@@ -71,7 +73,7 @@ void SerialIOHandler::TryOpen(const TimeDuration& timeout)
 
         ++this->statistics.numOpenFail;
 
-        auto callback = [this, timeout]() { this->TryOpen(this->retry.NextDelay(timeout)); };
+        auto callback = [this, timeout, self = shared_from_this()]() { this->TryOpen(this->retry.NextDelay(timeout)); };
 
         this->retrytimer = this->executor->start(timeout.value, callback);
     }

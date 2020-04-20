@@ -33,10 +33,12 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="minRetryDelay">the minimum (first) retry delay</param>
         /// <param name="maxRetryDelay">the maximum delay</param>
-        public ChannelRetry(TimeSpan minRetryDelay, TimeSpan maxRetryDelay)
+        /// <param name="reconnectDelay">delay between reconnections when a read/write fails</param>
+        public ChannelRetry(TimeSpan minRetryDelay, TimeSpan maxRetryDelay, TimeSpan reconnectDelay)
         {
             this.minRetryDelay = minRetryDelay;
             this.maxRetryDelay = maxRetryDelay;
+            this.reconnectDelay = reconnectDelay;
         }
 
         /// <summary>
@@ -46,11 +48,12 @@ namespace Automatak.DNP3.Interface
         {
             get
             {
-                return new ChannelRetry(TimeSpan.FromSeconds(1), TimeSpan.FromMinutes(1));
+                return new ChannelRetry(TimeSpan.FromSeconds(1), TimeSpan.FromMinutes(1), TimeSpan.Zero);
             }
         }
 
         public readonly TimeSpan minRetryDelay;
         public readonly TimeSpan maxRetryDelay;
+        public readonly TimeSpan reconnectDelay;
     }
 }
