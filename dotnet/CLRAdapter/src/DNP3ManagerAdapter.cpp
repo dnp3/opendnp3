@@ -216,7 +216,7 @@ namespace Automatak
 
 			asiopal::ChannelRetry DNP3ManagerAdapter::Convert(Interface::ChannelRetry^ retry)
 			{
-				return asiopal::ChannelRetry(Conversions::ConvertTimespan(retry->minRetryDelay), Conversions::ConvertTimespan(retry->maxRetryDelay));
+				return asiopal::ChannelRetry(Conversions::ConvertTimespan(retry->minRetryDelay), Conversions::ConvertTimespan(retry->maxRetryDelay), Conversions::ConvertTimespan(retry->reconnectDelay));
 			}
 		}
 	}

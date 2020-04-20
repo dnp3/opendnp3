@@ -40,6 +40,7 @@ public:
      */
     ChannelRetry(openpal::TimeDuration minOpenRetry,
                  openpal::TimeDuration maxOpenRetry,
+                 openpal::TimeDuration reconnectDelay = openpal::TimeDuration::Zero(),
                  IOpenDelayStrategy& strategy = ExponentialBackoffStrategy::Instance());
 
     /// Return the default configuration of exponential backoff from 1 sec to 1 minute
@@ -49,6 +50,8 @@ public:
     openpal::TimeDuration minOpenRetry;
     /// maximum connection retry interval on failure
     openpal::TimeDuration maxOpenRetry;
+    /// reconnect delay (defaults to zero)
+    openpal::TimeDuration reconnectDelay;
 
     openpal::TimeDuration NextDelay(const openpal::TimeDuration& current) const
     {

@@ -62,7 +62,12 @@ void TCPClientIOHandler::SuspendChannelAccept()
 
 void TCPClientIOHandler::OnChannelShutdown()
 {
-    this->BeginChannelAccept();
+    if (!client) return;
+
+    this->retrytimer.Start(this->retry.reconnectDelay, [this, self = shared_from_this()]() {
+        if (!client) return;
+        this->BeginChannelAccept();
+    });
 }
 
 bool TCPClientIOHandler::StartConnect(const openpal::TimeDuration& delay)

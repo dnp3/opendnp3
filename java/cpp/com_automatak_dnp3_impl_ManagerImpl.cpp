@@ -73,6 +73,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
                                                                                                    jint jlevels,
                                                                                                    jlong jminRetry,
                                                                                                    jlong jmaxRetry,
+                                                                                                   jlong jreconnectDelay,
                                                                                                    jobject jremotes,
                                                                                                    jstring jadapter,
                                                                                                    jobject jlistener)
@@ -81,7 +82,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
     CString id(env, jid);
     CString adapter(env, jadapter);
-    ChannelRetry retry(TimeDuration::Milliseconds(jminRetry), TimeDuration::Milliseconds(jmaxRetry));
+    ChannelRetry retry(TimeDuration::Milliseconds(jminRetry), TimeDuration::Milliseconds(jmaxRetry), TimeDuration::Milliseconds(jreconnectDelay));
     auto listener = jlistener != nullptr ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
 
     // Convert endpoints
@@ -130,6 +131,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
                                                                                                    jint jlevels,
                                                                                                    jlong jminRetry,
                                                                                                    jlong jmaxRetry,
+                                                                                                   jlong jreconnectDelay,
                                                                                                    jobject jremotes,
                                                                                                    jstring jadapter,
                                                                                                    jobject jtlsconfig,
@@ -139,7 +141,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
     CString id(env, jid);
     CString adapter(env, jadapter);
-    ChannelRetry retry(TimeDuration::Milliseconds(jminRetry), TimeDuration::Milliseconds(jmaxRetry));
+    ChannelRetry retry(TimeDuration::Milliseconds(jminRetry), TimeDuration::Milliseconds(jmaxRetry), TimeDuration::Milliseconds(jreconnectDelay));
     auto tlsconf = ConvertTLSConfig(env, jtlsconfig);
     auto listener = jlistener != nullptr ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
 
@@ -196,6 +198,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
                                                                                               jint jlevels,
                                                                                               jlong jminRetry,
                                                                                               jlong jmaxRetry,
+                                                                                              jlong jreconnectDelay,
                                                                                               jstring jsdevice,
                                                                                               jint jbaudRate,
                                                                                               jint jdatabits,
@@ -207,7 +210,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
     const auto manager = (DNP3Manager*)native;
 
     CString id(env, jid);
-    ChannelRetry retry(TimeDuration::Milliseconds(jminRetry), TimeDuration::Milliseconds(jmaxRetry));
+    ChannelRetry retry(TimeDuration::Milliseconds(jminRetry), TimeDuration::Milliseconds(jmaxRetry), TimeDuration::Milliseconds(jreconnectDelay));
     CString sdevice(env, jsdevice);
 
     asiopal::SerialSettings settings;
