@@ -61,7 +61,7 @@ ParseResult CountParser::ParseHeader(ser4cpp::rseq_t& buffer,
     auto result = numParser.ParseCount(buffer, count, pLogger);
     if (result == ParseResult::OK)
     {
-        FORMAT_LOGGER_BLOCK(pLogger, settings.LogLevel(), "%03u,%03u %s, %s [%u]", record.group, record.variation,
+        FORMAT_LOGGER_BLOCK(pLogger, settings.LoggingLevel(), "%03u,%03u %s, %s [%u]", record.group, record.variation,
                             GroupVariationSpec::to_human_string(record.enumeration),
                             QualifierCodeSpec::to_human_string(record.GetQualifierCode()), count);
 

@@ -48,19 +48,19 @@ public:
         return expectContents;
     }
 
-    inline LogLevel LogLevel() const
+    inline LogLevel LoggingLevel() const
     {
         return logLevel;
     }
 
 private:
-    ParserSettings(bool expectContents_ = true, opendnp3::LogLevel logLevel_ = flags::APP_OBJECT_RX)
+    ParserSettings(bool expectContents_ = true, LogLevel logLevel_ = flags::APP_OBJECT_RX)
         : expectContents(expectContents_), logLevel(logLevel_)
     {
     }
 
     const bool expectContents;
-    const opendnp3::LogLevel logLevel;
+    const LogLevel logLevel;
 };
 } // namespace opendnp3
 

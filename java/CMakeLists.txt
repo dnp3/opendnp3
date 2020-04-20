@@ -266,4 +266,7 @@ target_compile_features(opendnp3java PUBLIC cxx_std_14)
 target_link_libraries(opendnp3java PUBLIC opendnp3)
 target_include_directories(opendnp3java PRIVATE ${JNI_INCLUDE_DIRS})
 set_target_properties(opendnp3java PROPERTIES FOLDER java)
-install(TARGETS opendnp3java)
+install(TARGETS opendnp3java
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+)

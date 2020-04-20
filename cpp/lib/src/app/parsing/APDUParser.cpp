@@ -155,7 +155,7 @@ ParseResult APDUParser::HandleAllObjectsHeader(Logger* pLogger,
                                                const ParserSettings& settings,
                                                IAPDUHandler* pHandler)
 {
-    FORMAT_LOGGER_BLOCK(pLogger, settings.LogLevel(), "%03u,%03u - %s - %s", record.group, record.variation,
+    FORMAT_LOGGER_BLOCK(pLogger, settings.LoggingLevel(), "%03u,%03u - %s - %s", record.group, record.variation,
                         GroupVariationSpec::to_human_string(record.enumeration),
                         QualifierCodeSpec::to_human_string(QualifierCode::ALL_OBJECTS));
 

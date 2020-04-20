@@ -48,7 +48,7 @@ ParseResult FreeFormatParser::ParseHeader(ser4cpp::rseq_t& buffer,
     uint16_t freeFormatSize;
     ser4cpp::UInt16::read_from(buffer, freeFormatSize);
 
-    FORMAT_LOGGER_BLOCK(pLogger, settings.LogLevel(), "%03u,%03u %s, %s, count: %u size: %u", record.group,
+    FORMAT_LOGGER_BLOCK(pLogger, settings.LoggingLevel(), "%03u,%03u %s, %s, count: %u size: %u", record.group,
                         record.variation, GroupVariationSpec::to_human_string(record.enumeration),
                         QualifierCodeSpec::to_human_string(record.GetQualifierCode()), freeFormatCount, freeFormatSize);
 

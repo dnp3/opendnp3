@@ -68,11 +68,6 @@ public:
         return Logger(this->backend, std::make_shared<Settings>(this->settings->module, id, this->settings->levels));
     }
 
-    template<typename... Args> Logger detach_and_append(Args... args) const
-    {
-        return detach(Strings::concatenate(this->settings->id, args...));
-    }
-
     Logger detach(const std::string& id, LogLevels levels) const
     {
         return Logger(this->backend, std::make_shared<Settings>(this->settings->module, id, levels));
