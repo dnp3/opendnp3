@@ -22,8 +22,8 @@
 
 #include "channel/LoggingConnectionCondition.h"
 
-#include "opendnp3/util/Uncopyable.h"
 #include "opendnp3/channel/IPEndpoint.h"
+#include "opendnp3/util/Uncopyable.h"
 
 #include <exe4cpp/asio/StrandExecutor.h>
 
@@ -45,9 +45,7 @@ public:
         return std::make_shared<TCPClient>(logger, executor, adapter);
     }
 
-    TCPClient(const Logger& logger,
-              const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
-              std::string adapter);
+    TCPClient(const Logger& logger, const std::shared_ptr<exe4cpp::StrandExecutor>& executor, std::string adapter);
 
     bool Cancel();
 

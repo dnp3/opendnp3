@@ -20,15 +20,16 @@
 #ifndef OPENDNP3_UNITTESTS_LINK_PARSER_TEST_H
 #define OPENDNP3_UNITTESTS_LINK_PARSER_TEST_H
 
-#include <opendnp3/logging/LogLevels.h>
-#include <link/LinkLayerParser.h>
-
 #include "utils/BufferHelpers.h"
+
+#include <opendnp3/logging/LogLevels.h>
+
 #include "dnp3mocks/MockFrameSink.h"
 #include "dnp3mocks/MockLogHandler.h"
 
-#include <cassert>
+#include <link/LinkLayerParser.h>
 
+#include <cassert>
 #include <cstring>
 
 class LinkParserTest

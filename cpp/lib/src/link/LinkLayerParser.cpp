@@ -21,10 +21,9 @@
 
 #include "link/CRC.h"
 #include "link/IFrameSink.h"
+#include "logging/LogMacros.h"
 
 #include "opendnp3/logging/LogLevels.h"
-
-#include "logging/LogMacros.h"
 
 namespace opendnp3
 {
@@ -216,7 +215,8 @@ bool LinkLayerParser::ValidateHeaderParameters()
     if (should_have_payload && !has_payload)
     {
         ++statistics.numBadLength;
-        FORMAT_LOG_BLOCK(logger, flags::ERR, "User data with no payload. FUNCTION: %s", LinkFunctionSpec::to_human_string(func));
+        FORMAT_LOG_BLOCK(logger, flags::ERR, "User data with no payload. FUNCTION: %s",
+                         LinkFunctionSpec::to_human_string(func));
         return false;
     }
 

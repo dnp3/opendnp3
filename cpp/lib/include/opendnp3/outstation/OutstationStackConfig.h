@@ -36,7 +36,7 @@ struct OutstationStackConfig
 {
     OutstationStackConfig() : link(false, false) {}
 
-    OutstationStackConfig(const DatabaseConfig& database) : database(database), link(false, false) {}    
+    OutstationStackConfig(const DatabaseConfig& database) : database(database), link(false, false) {}
 
     // Configuration of the database
     DatabaseConfig database;

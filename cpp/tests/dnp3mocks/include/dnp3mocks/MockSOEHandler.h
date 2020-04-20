@@ -45,7 +45,7 @@ public:
     };
 
     MockSOEHandler() : soeCount(0) {}
-	
+
     void begin_fragment(const opendnp3::ResponseInfo& info) override {}
 
     void end_fragment(const opendnp3::ResponseInfo& info) override {}
@@ -55,62 +55,74 @@ public:
         return soeCount;
     }
 
-    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Binary>>& values) final
+    void Process(const opendnp3::HeaderInfo& info,
+                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Binary>>& values) final
     {
         this->RecordAny(info, values, this->binarySOE);
     }
 
-    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::DoubleBitBinary>>& values) final
+    void Process(const opendnp3::HeaderInfo& info,
+                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::DoubleBitBinary>>& values) final
     {
         this->RecordAny(info, values, this->doubleBinarySOE);
     }
 
-    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Analog>>& values) final
+    void Process(const opendnp3::HeaderInfo& info,
+                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Analog>>& values) final
     {
         this->RecordAny(info, values, this->analogSOE);
     }
 
-    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Counter>>& values) final
+    void Process(const opendnp3::HeaderInfo& info,
+                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Counter>>& values) final
     {
         this->RecordAny(info, values, this->counterSOE);
     }
 
-    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::FrozenCounter>>& values) final
+    void Process(const opendnp3::HeaderInfo& info,
+                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::FrozenCounter>>& values) final
     {
         this->RecordAny(info, values, this->frozenCounterSOE);
     }
 
-    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryOutputStatus>>& values) final
+    void Process(const opendnp3::HeaderInfo& info,
+                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryOutputStatus>>& values) final
     {
         this->RecordAny(info, values, this->binaryOutputStatusSOE);
     }
 
-    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogOutputStatus>>& values) final
+    void Process(const opendnp3::HeaderInfo& info,
+                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogOutputStatus>>& values) final
     {
         this->RecordAny(info, values, this->analogOutputStatusSOE);
     }
 
-    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::OctetString>>& values) final
+    void Process(const opendnp3::HeaderInfo& info,
+                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::OctetString>>& values) final
     {
         this->RecordAny(info, values, this->octetStringSOE);
     }
 
-    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::TimeAndInterval>>& values) final
+    void Process(const opendnp3::HeaderInfo& info,
+                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::TimeAndInterval>>& values) final
     {
         this->RecordAny(info, values, this->timeAndIntervalSOE);
     }
 
-    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryCommandEvent>>& values) final
+    void Process(const opendnp3::HeaderInfo& info,
+                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryCommandEvent>>& values) final
     {
         this->RecordAny(info, values, this->binaryCommandEventSOE);
     }
 
-    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogCommandEvent>>& values) final
+    void Process(const opendnp3::HeaderInfo& info,
+                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogCommandEvent>>& values) final
     {
         this->RecordAny(info, values, this->analogCommandEventSOE);
     }
 
-    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::SecurityStat>>& values) final
+    void Process(const opendnp3::HeaderInfo& info,
+                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::SecurityStat>>& values) final
     {
         this->RecordAny(info, values, this->securityStatSOE);
     }

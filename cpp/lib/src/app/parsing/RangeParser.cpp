@@ -53,8 +53,8 @@ ParseResult RangeParser::ParseHeader(ser4cpp::rseq_t& buffer,
     }
 
     FORMAT_LOGGER_BLOCK(pLogger, settings.LogLevel(), "%03u,%03u %s, %s [%u, %u]", record.group, record.variation,
-                        GroupVariationSpec::to_human_string(record.enumeration), QualifierCodeSpec::to_human_string(record.GetQualifierCode()),
-                        range.start, range.stop);
+                        GroupVariationSpec::to_human_string(record.enumeration),
+                        QualifierCodeSpec::to_human_string(record.GetQualifierCode()), range.start, range.stop);
 
     if (settings.ExpectsContents())
     {
@@ -91,11 +91,8 @@ ParseResult RangeParser::Process(const HeaderRecord& record,
     case (GroupVariation::descriptor):                                                                                 \
         return RangeParser::FromFixedSize<descriptor>(range).Process(record, buffer, pHandler, pLogger);
 
-ParseResult RangeParser::ParseRangeOfObjects(ser4cpp::rseq_t& buffer,
-                                             const HeaderRecord& record,
-                                             const Range& range,
-                                             Logger* pLogger,
-                                             IAPDUHandler* pHandler)
+ParseResult RangeParser::ParseRangeOfObjects(
+    ser4cpp::rseq_t& buffer, const HeaderRecord& record, const Range& range, Logger* pLogger, IAPDUHandler* pHandler)
 {
     switch (record.enumeration)
     {
@@ -149,17 +146,15 @@ ParseResult RangeParser::ParseRangeOfObjects(ser4cpp::rseq_t& buffer,
 
     default:
         FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unsupported qualifier/object - %s - %i / %i",
-                            QualifierCodeSpec::to_human_string(record.GetQualifierCode()), record.group, record.variation);
+                            QualifierCodeSpec::to_human_string(record.GetQualifierCode()), record.group,
+                            record.variation);
 
         return ParseResult::INVALID_OBJECT_QUALIFIER;
     }
 }
 
-ParseResult RangeParser::ParseRangeOfOctetData(ser4cpp::rseq_t& buffer,
-                                               const HeaderRecord& record,
-                                               const Range& range,
-                                               Logger* pLogger,
-                                               IAPDUHandler* pHandler)
+ParseResult RangeParser::ParseRangeOfOctetData(
+    ser4cpp::rseq_t& buffer, const HeaderRecord& record, const Range& range, Logger* pLogger, IAPDUHandler* pHandler)
 {
     if (record.variation > 0)
     {

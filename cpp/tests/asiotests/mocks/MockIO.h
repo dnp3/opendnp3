@@ -56,8 +56,8 @@ public:
                            std::chrono::steady_clock::duration timeout = std::chrono::seconds(1));
 
     void CompleteInMaxXIterations(size_t iterations,
-                               const std::function<bool()>& condition,
-                               std::chrono::steady_clock::duration timeout = std::chrono::seconds(1));
+                                  const std::function<bool()>& condition,
+                                  std::chrono::steady_clock::duration timeout = std::chrono::seconds(1));
 
     size_t RunUntilOutOfWork();
 

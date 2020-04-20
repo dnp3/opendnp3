@@ -29,31 +29,29 @@ namespace by_count_of
 {
     opendnp3::DatabaseConfig all_types(uint16_t num);
     opendnp3::DatabaseConfig binary_input(uint16_t num);
-    opendnp3::DatabaseConfig counter(uint16_t num, bool with_frozen=false);
+    opendnp3::DatabaseConfig counter(uint16_t num, bool with_frozen = false);
     opendnp3::DatabaseConfig binary_output_status(uint16_t num);
-    opendnp3::DatabaseConfig analog_input(uint16_t num);    
-	opendnp3::DatabaseConfig analog_output_status(uint16_t num);
+    opendnp3::DatabaseConfig analog_input(uint16_t num);
+    opendnp3::DatabaseConfig analog_output_status(uint16_t num);
     opendnp3::DatabaseConfig time_and_interval(uint16_t num);
     opendnp3::DatabaseConfig octet_string(uint16_t num);
-    
-}
 
+} // namespace by_count_of
 
 opendnp3::DatabaseConfig from(std::map<uint16_t, opendnp3::AnalogConfig> map);
 opendnp3::DatabaseConfig from(std::map<uint16_t, opendnp3::BinaryConfig> map);
 
-
 opendnp3::AnalogConfig analog(opendnp3::StaticAnalogVariation variation);
 
 opendnp3::DatabaseConfig database_by_sizes(uint16_t num_binary,
-                                              uint16_t num_double_binary,
-                                              uint16_t num_analog,
-                                              uint16_t num_counter,
-                                              uint16_t num_frozen_counter,
-                                              uint16_t num_binary_output_status,
-                                              uint16_t num_analog_output_status,
-                                              uint16_t num_time_and_interval,
-                                              uint16_t num_octet_string);
+                                           uint16_t num_double_binary,
+                                           uint16_t num_analog,
+                                           uint16_t num_counter,
+                                           uint16_t num_frozen_counter,
+                                           uint16_t num_binary_output_status,
+                                           uint16_t num_analog_output_status,
+                                           uint16_t num_time_and_interval,
+                                           uint16_t num_octet_string);
 
 } // namespace configure
 

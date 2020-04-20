@@ -17,15 +17,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <opendnp3/app/AppConstants.h>
-#include <transport/TransportConstants.h>
-
-#include "utils/TransportTestObject.h"
 #include "utils/ProtocolUtil.h"
+#include "utils/TransportTestObject.h"
+
+#include <opendnp3/app/AppConstants.h>
 
 #include "dnp3mocks/MockLogHandler.h"
 
 #include <catch.hpp>
+#include <transport/TransportConstants.h>
 
 using namespace opendnp3;
 using namespace ser4cpp;

@@ -21,10 +21,9 @@
 #include "channel/tls/TLSServerIOHandler.h"
 
 #include "channel/tls/TLSStreamChannel.h"
+#include "logging/LogMacros.h"
 
 #include "opendnp3/logging/LogLevels.h"
-
-#include "logging/LogMacros.h"
 
 #include <utility>
 

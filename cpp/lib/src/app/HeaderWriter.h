@@ -233,7 +233,8 @@ template<class PrefixType, class WriteType>
 PrefixedWriteIterator<PrefixType, WriteType> HeaderWriter::IterateOverCountWithPrefix(
     QualifierCode qc, const DNP3Serializer<WriteType>& serializer)
 {
-    const auto reserve_size = 2 * PrefixType::size + serializer.get_size(); // enough space for the count, 1 prefix + object
+    const auto reserve_size
+        = 2 * PrefixType::size + serializer.get_size(); // enough space for the count, 1 prefix + object
     if (this->WriteHeaderWithReserve(serializer.ID(), qc, reserve_size))
     {
         return PrefixedWriteIterator<PrefixType, WriteType>(serializer, *position);

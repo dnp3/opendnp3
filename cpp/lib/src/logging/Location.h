@@ -29,4 +29,4 @@
 #define LOCATION ""
 #endif
 
-#endif //OPENDNP3_LOCATION_H
+#endif // OPENDNP3_LOCATION_H

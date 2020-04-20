@@ -33,16 +33,16 @@ template<class Spec> bool load_type(StaticDataMap<Spec>& map, HeaderWriter& writ
 
         if (iter == map.end())
         {
-			// there is no data left to write
+            // there is no data left to write
             return true;
         }
 
         if (!StaticWriters::get((*iter).second.variation)(map, writer))
         {
-			// the APDU is full
+            // the APDU is full
             return false;
         }
-    }    
+    }
 }
 
 Database::Database(const DatabaseConfig& config,
@@ -327,16 +327,11 @@ bool Database::HasAnySelection() const
 
 bool Database::Load(HeaderWriter& writer)
 {
-    return 
-		load_type(this->binary_input, writer) &&
-		load_type(this->double_binary, writer) &&
-		load_type(this->analog_input, writer) &&
-		load_type(this->counter, writer) &&
-		load_type(this->frozen_counter, writer) &&
-		load_type(this->binary_output_status, writer) &&
-		load_type(this->analog_output_status, writer) &&
-		load_type(this->time_and_interval, writer) &&
-		load_type(this->octet_string, writer);
+    return load_type(this->binary_input, writer) && load_type(this->double_binary, writer)
+        && load_type(this->analog_input, writer) && load_type(this->counter, writer)
+        && load_type(this->frozen_counter, writer) && load_type(this->binary_output_status, writer)
+        && load_type(this->analog_output_status, writer) && load_type(this->time_and_interval, writer)
+        && load_type(this->octet_string, writer);
 }
 
 bool Database::Update(const Binary& meas, uint16_t index, EventMode mode)
@@ -412,12 +407,12 @@ bool Database::Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t fla
 
 bool Database::FreezeSelectedCounters(bool clear, EventMode mode)
 {
-    for(auto c : this->counter)
+    for (auto c : this->counter)
     {
         FrozenCounter new_value(c.second.value.value, c.second.value.flags, time_source.Now());
         this->frozen_counter.update(new_value, c.first, mode, this->event_receiver);
 
-        if(clear)
+        if (clear)
         {
             c.second.value.value = 0;
             c.second.value.time = time_source.Now();

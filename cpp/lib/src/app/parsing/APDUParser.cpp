@@ -31,7 +31,6 @@
 #include "opendnp3/gen/QualifierCode.h"
 #include "opendnp3/logging/LogLevels.h"
 
-
 namespace opendnp3
 {
 
@@ -157,7 +156,8 @@ ParseResult APDUParser::HandleAllObjectsHeader(Logger* pLogger,
                                                IAPDUHandler* pHandler)
 {
     FORMAT_LOGGER_BLOCK(pLogger, settings.LogLevel(), "%03u,%03u - %s - %s", record.group, record.variation,
-                        GroupVariationSpec::to_human_string(record.enumeration), QualifierCodeSpec::to_human_string(QualifierCode::ALL_OBJECTS));
+                        GroupVariationSpec::to_human_string(record.enumeration),
+                        QualifierCodeSpec::to_human_string(QualifierCode::ALL_OBJECTS));
 
     if (pHandler)
     {

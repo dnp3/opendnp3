@@ -43,8 +43,8 @@ TEST_CASE(SUITE("BinaryQuality"))
 
     flags.Set(BinaryQuality::LOCAL_FORCED);
     CHECK(flags.IsSet(BinaryQuality::LOCAL_FORCED));
-    
-    flags.Set(BinaryQuality::CHATTER_FILTER );
+
+    flags.Set(BinaryQuality::CHATTER_FILTER);
     CHECK(flags.IsSet(BinaryQuality::CHATTER_FILTER));
 
     flags.Set(BinaryQuality::RESERVED);

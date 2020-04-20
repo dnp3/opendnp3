@@ -47,21 +47,47 @@ public:
     virtual DNPTime Now() override;
 
     // IOutstationApplication
-    virtual bool SupportsWriteAbsoluteTime() override { return true; }
+    virtual bool SupportsWriteAbsoluteTime() override
+    {
+        return true;
+    }
     virtual bool WriteAbsoluteTime(const UTCTimestamp& timestamp) override;
 
-    virtual bool SupportsWriteTimeAndInterval() override { return false; }
-    virtual bool WriteTimeAndInterval(const ICollection<Indexed<TimeAndInterval>>& values) override { return false; }
+    virtual bool SupportsWriteTimeAndInterval() override
+    {
+        return false;
+    }
+    virtual bool WriteTimeAndInterval(const ICollection<Indexed<TimeAndInterval>>& values) override
+    {
+        return false;
+    }
 
-    virtual bool SupportsAssignClass() override { return true; }
-    virtual void RecordClassAssignment(AssignClassType type, PointClass clazz, uint16_t start, uint16_t stop) override {}
+    virtual bool SupportsAssignClass() override
+    {
+        return true;
+    }
+    virtual void RecordClassAssignment(AssignClassType type, PointClass clazz, uint16_t start, uint16_t stop) override
+    {
+    }
 
     virtual ApplicationIIN GetApplicationIIN() const override;
 
-    virtual RestartMode ColdRestartSupport() const override { return RestartMode::UNSUPPORTED; }
-    virtual RestartMode WarmRestartSupport() const override { return RestartMode::UNSUPPORTED; }
-    virtual uint16_t ColdRestart() override { return 65535; }
-    virtual uint16_t WarmRestart() override { return 65535; }
+    virtual RestartMode ColdRestartSupport() const override
+    {
+        return RestartMode::UNSUPPORTED;
+    }
+    virtual RestartMode WarmRestartSupport() const override
+    {
+        return RestartMode::UNSUPPORTED;
+    }
+    virtual uint16_t ColdRestart() override
+    {
+        return 65535;
+    }
+    virtual uint16_t WarmRestart() override
+    {
+        return 65535;
+    }
 
 private:
     bool IsTimeValid() const;
@@ -69,7 +95,8 @@ private:
 
     TimeDuration refresh_rate;
     UTCTimestamp last_timestamp = UTCTimestamp();
-    std::chrono::system_clock::time_point last_update = std::chrono::system_clock::time_point(std::chrono::milliseconds(0));
+    std::chrono::system_clock::time_point last_update
+        = std::chrono::system_clock::time_point(std::chrono::milliseconds(0));
 };
 
 } // namespace opendnp3

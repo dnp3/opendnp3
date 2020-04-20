@@ -52,12 +52,13 @@ private:
     template<class T> CommandStatus ActionT(const T& command, uint16_t index)
     {
         this->CheckStart();
-        return is_select ? this->handler.Select(command, index) : this->handler.Operate(command, index, this->updates, this->op_type);
+        return is_select ? this->handler.Select(command, index)
+                         : this->handler.Operate(command, index, this->updates, this->op_type);
     }
 
     void CheckStart();
 
-	bool is_started = false;
+    bool is_started = false;
 
     ICommandHandler& handler;
     bool is_select;

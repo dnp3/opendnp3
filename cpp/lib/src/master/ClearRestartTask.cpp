@@ -20,11 +20,10 @@
 #include "ClearRestartTask.h"
 
 #include "app/APDUBuilders.h"
+#include "logging/LogMacros.h"
 #include "master/MasterTasks.h"
 
 #include "opendnp3/logging/LogLevels.h"
-
-#include "logging/LogMacros.h"
 
 namespace opendnp3
 {

@@ -22,10 +22,10 @@
 
 #include "app/Range.h"
 
-#include "opendnp3/util/Uncopyable.h"
 #include "opendnp3/gen/GroupVariation.h"
 #include "opendnp3/gen/QualifierCode.h"
 #include "opendnp3/gen/TimestampQuality.h"
+#include "opendnp3/util/Uncopyable.h"
 
 #include <cstdint>
 

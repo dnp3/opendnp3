@@ -170,7 +170,9 @@ void MasterSessionStack::Scan(const std::vector<Header>& headers,
                               const TaskConfig& config)
 {
     auto builder = ConvertToLambda(headers);
-    auto action = [self = shared_from_this(), soe_handler, builder, config]() -> void { self->context.Scan(builder, std::move(soe_handler), config); };
+    auto action = [self = shared_from_this(), soe_handler, builder, config]() -> void {
+        self->context.Scan(builder, std::move(soe_handler), config);
+    };
     return executor->post(action);
 }
 
@@ -178,7 +180,9 @@ void MasterSessionStack::ScanAllObjects(GroupVariationID gvId,
                                         std::shared_ptr<ISOEHandler> soe_handler,
                                         const TaskConfig& config)
 {
-    auto action = [self = shared_from_this(), soe_handler, gvId, config]() -> void { self->context.ScanAllObjects(gvId, std::move(soe_handler), config); };
+    auto action = [self = shared_from_this(), soe_handler, gvId, config]() -> void {
+        self->context.ScanAllObjects(gvId, std::move(soe_handler), config);
+    };
     return executor->post(action);
 }
 
@@ -186,7 +190,9 @@ void MasterSessionStack::ScanClasses(const ClassField& field,
                                      std::shared_ptr<ISOEHandler> soe_handler,
                                      const TaskConfig& config)
 {
-    auto action = [self = shared_from_this(), soe_handler, field, config]() -> void { self->context.ScanClasses(field, std::move(soe_handler), config); };
+    auto action = [self = shared_from_this(), soe_handler, field, config]() -> void {
+        self->context.ScanClasses(field, std::move(soe_handler), config);
+    };
     return executor->post(action);
 }
 

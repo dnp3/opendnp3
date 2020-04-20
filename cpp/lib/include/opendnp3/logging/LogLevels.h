@@ -30,8 +30,7 @@ struct ModuleId
 public:
     ModuleId() = default;
 
-    explicit ModuleId(int32_t level) : value(level)
-    {}
+    explicit ModuleId(int32_t level) : value(level) {}
 
     int32_t value = 0;
 };
@@ -41,8 +40,7 @@ struct LogLevel
 public:
     LogLevel() = default;
 
-    explicit LogLevel(int32_t level) : value(level)
-    {}
+    explicit LogLevel(int32_t level) : value(level) {}
 
     LogLevel next() const
     {
@@ -65,11 +63,9 @@ class LogLevels
 public:
     LogLevels() = default;
 
-    explicit LogLevels(int32_t levels) : levels(levels)
-    {}
+    explicit LogLevels(int32_t levels) : levels(levels) {}
 
-    LogLevels(LogLevel level) : levels(level.value)
-    {}
+    LogLevels(LogLevel level) : levels(level.value) {}
 
     static LogLevels none()
     {
@@ -159,14 +155,14 @@ namespace levels
     const LogLevels NOTHING = LogLevels::none();
     const LogLevels ALL = LogLevels::everything();
     const LogLevels NORMAL = NOTHING | flags::EVENT | flags::ERR | flags::WARN | flags::INFO;
-    const LogLevels ALL_APP_COMMS = NOTHING | flags::APP_HEADER_RX | flags::APP_HEADER_TX
-        | flags::APP_OBJECT_RX | flags::APP_OBJECT_TX | flags::APP_HEX_RX | flags::APP_HEX_TX;
+    const LogLevels ALL_APP_COMMS = NOTHING | flags::APP_HEADER_RX | flags::APP_HEADER_TX | flags::APP_OBJECT_RX
+        | flags::APP_OBJECT_TX | flags::APP_HEX_RX | flags::APP_HEX_TX;
     const LogLevels ALL_COMMS
         = ALL_APP_COMMS | flags::LINK_RX | flags::LINK_TX | flags::TRANSPORT_RX | flags::TRANSPORT_TX;
 } // namespace levels
 
 const char* LogFlagToString(const LogLevel& flag);
 
-} //namespace opendnp3
+} // namespace opendnp3
 
-#endif //OPENDNP3_LOGLEVELS_H
+#endif // OPENDNP3_LOGLEVELS_H

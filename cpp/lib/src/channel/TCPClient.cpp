@@ -22,8 +22,8 @@
 
 #include "channel/SocketHelpers.h"
 
-#include <utility>
 #include <sstream>
+#include <utility>
 
 namespace opendnp3
 {

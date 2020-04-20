@@ -40,7 +40,8 @@ namespace logging
     {
         FORMAT_LOG_BLOCK(logger, flags, "FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
                          header.control.FIR, header.control.FIN, header.control.CON, header.control.UNS,
-                         header.control.SEQ, FunctionCodeSpec::to_human_string(header.function), header.IIN.LSB, header.IIN.MSB);
+                         header.control.SEQ, FunctionCodeSpec::to_human_string(header.function), header.IIN.LSB,
+                         header.IIN.MSB);
     }
 
     void ParseAndLogRequestTx(Logger& logger, const ser4cpp::rseq_t& apdu)

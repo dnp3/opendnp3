@@ -30,13 +30,17 @@ const BinaryInfo::static_variation_t BinaryInfo::DefaultStaticVariation = Static
 
 const EventType DoubleBitBinaryInfo::EventTypeEnum = EventType::DoubleBitBinary;
 const StaticTypeBitmask DoubleBitBinaryInfo::StaticTypeEnum = StaticTypeBitmask::DoubleBinaryInput;
-const DoubleBitBinaryInfo::event_variation_t DoubleBitBinaryInfo::DefaultEventVariation = EventDoubleBinaryVariation::Group4Var1;
-const DoubleBitBinaryInfo::static_variation_t DoubleBitBinaryInfo::DefaultStaticVariation = StaticDoubleBinaryVariation::Group3Var2;
+const DoubleBitBinaryInfo::event_variation_t DoubleBitBinaryInfo::DefaultEventVariation
+    = EventDoubleBinaryVariation::Group4Var1;
+const DoubleBitBinaryInfo::static_variation_t DoubleBitBinaryInfo::DefaultStaticVariation
+    = StaticDoubleBinaryVariation::Group3Var2;
 
 const EventType BinaryOutputStatusInfo::EventTypeEnum = EventType::BinaryOutputStatus;
 const StaticTypeBitmask BinaryOutputStatusInfo::StaticTypeEnum = StaticTypeBitmask::BinaryOutputStatus;
-const BinaryOutputStatusInfo::event_variation_t BinaryOutputStatusInfo::DefaultEventVariation = EventBinaryOutputStatusVariation::Group11Var1;
-const BinaryOutputStatusInfo::static_variation_t BinaryOutputStatusInfo::DefaultStaticVariation = StaticBinaryOutputStatusVariation::Group10Var2;
+const BinaryOutputStatusInfo::event_variation_t BinaryOutputStatusInfo::DefaultEventVariation
+    = EventBinaryOutputStatusVariation::Group11Var1;
+const BinaryOutputStatusInfo::static_variation_t BinaryOutputStatusInfo::DefaultStaticVariation
+    = StaticBinaryOutputStatusVariation::Group10Var2;
 
 const EventType AnalogInfo::EventTypeEnum = EventType::Analog;
 const StaticTypeBitmask AnalogInfo::StaticTypeEnum = StaticTypeBitmask::AnalogInput;
@@ -50,25 +54,32 @@ const CounterInfo::static_variation_t CounterInfo::DefaultStaticVariation = Stat
 
 const EventType FrozenCounterInfo::EventTypeEnum = EventType::FrozenCounter;
 const StaticTypeBitmask FrozenCounterInfo::StaticTypeEnum = StaticTypeBitmask::FrozenCounter;
-const FrozenCounterInfo::event_variation_t FrozenCounterInfo::DefaultEventVariation = EventFrozenCounterVariation::Group23Var1;
-const FrozenCounterInfo::static_variation_t FrozenCounterInfo::DefaultStaticVariation = StaticFrozenCounterVariation::Group21Var1;
+const FrozenCounterInfo::event_variation_t FrozenCounterInfo::DefaultEventVariation
+    = EventFrozenCounterVariation::Group23Var1;
+const FrozenCounterInfo::static_variation_t FrozenCounterInfo::DefaultStaticVariation
+    = StaticFrozenCounterVariation::Group21Var1;
 
 const EventType AnalogOutputStatusInfo::EventTypeEnum = EventType::AnalogOutputStatus;
 const StaticTypeBitmask AnalogOutputStatusInfo::StaticTypeEnum = StaticTypeBitmask::AnalogOutputStatus;
-const AnalogOutputStatusInfo::event_variation_t AnalogOutputStatusInfo::DefaultEventVariation = EventAnalogOutputStatusVariation::Group42Var1;
-const AnalogOutputStatusInfo::static_variation_t AnalogOutputStatusInfo::DefaultStaticVariation = StaticAnalogOutputStatusVariation::Group40Var1;
+const AnalogOutputStatusInfo::event_variation_t AnalogOutputStatusInfo::DefaultEventVariation
+    = EventAnalogOutputStatusVariation::Group42Var1;
+const AnalogOutputStatusInfo::static_variation_t AnalogOutputStatusInfo::DefaultStaticVariation
+    = StaticAnalogOutputStatusVariation::Group40Var1;
 
 const EventType OctetStringInfo::EventTypeEnum = EventType::OctetString;
 const StaticTypeBitmask OctetStringInfo::StaticTypeEnum = StaticTypeBitmask::OctetString;
-const OctetStringInfo::event_variation_t OctetStringInfo::DefaultEventVariation = EventOctetStringVariation::Group111Var0;
-const OctetStringInfo::static_variation_t OctetStringInfo::DefaultStaticVariation = StaticOctetStringVariation::Group110Var0;
+const OctetStringInfo::event_variation_t OctetStringInfo::DefaultEventVariation
+    = EventOctetStringVariation::Group111Var0;
+const OctetStringInfo::static_variation_t OctetStringInfo::DefaultStaticVariation
+    = StaticOctetStringVariation::Group110Var0;
 
 const StaticTypeBitmask TimeAndIntervalInfo::StaticTypeEnum = StaticTypeBitmask::TimeAndInterval;
-const StaticTimeAndIntervalVariation TimeAndIntervalInfo::DefaultStaticVariation = StaticTimeAndIntervalVariation::Group50Var4;
+const StaticTimeAndIntervalVariation TimeAndIntervalInfo::DefaultStaticVariation
+    = StaticTimeAndIntervalVariation::Group50Var4;
 
-const SecurityStatInfo::event_variation_t SecurityStatInfo::DefaultEventVariation = EventSecurityStatVariation::Group122Var1;
-const SecurityStatInfo::static_variation_t SecurityStatInfo::DefaultStaticVariation = StaticSecurityStatVariation::Group121Var1;
+const SecurityStatInfo::event_variation_t SecurityStatInfo::DefaultEventVariation
+    = EventSecurityStatVariation::Group122Var1;
+const SecurityStatInfo::static_variation_t SecurityStatInfo::DefaultStaticVariation
+    = StaticSecurityStatVariation::Group121Var1;
 
 } // namespace opendnp3
-
-

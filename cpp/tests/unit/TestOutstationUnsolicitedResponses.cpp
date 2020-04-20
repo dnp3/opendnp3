@@ -18,8 +18,8 @@
  * limitations under the License.
  */
 
-#include "utils/OutstationTestObject.h"
 #include "utils/APDUHexBuilders.h"
+#include "utils/OutstationTestObject.h"
 
 #include <dnp3mocks/DatabaseHelpers.h>
 
@@ -185,7 +185,7 @@ TEST_CASE(SUITE("UnsolNumRetries"))
     t.Transaction([](IUpdateHandler& db) { db.Update(Binary(true), 0); });
 
     // Check original unsolicited response, followed by the 3 retries
-    for(unsigned int i = 0; i <= 3; ++i)
+    for (unsigned int i = 0; i <= 3; ++i)
     {
         REQUIRE(t.NumPendingTimers() == 1); // confirm timer
         REQUIRE(t.AdvanceTime(TimeDuration::Seconds(5)));
@@ -201,7 +201,7 @@ TEST_CASE(SUITE("UnsolNumRetries"))
     t.Transaction([](IUpdateHandler& db) { db.Update(Binary(false), 0); });
 
     // Check seq number increment and 3 retries
-    for(unsigned int i = 0; i <= 3; ++i)
+    for (unsigned int i = 0; i <= 3; ++i)
     {
         REQUIRE(t.NumPendingTimers() == 1); // confirm timer
         REQUIRE(t.AdvanceTime(TimeDuration::Seconds(5)));
@@ -236,7 +236,7 @@ TEST_CASE(SUITE("UnsolInfiniteRetries"))
     t.Transaction([](IUpdateHandler& db) { db.Update(Binary(true), 0); });
 
     // Check that it keeps repeating the unsolicited response
-    for(unsigned int i = 0; i < 1000; ++i)
+    for (unsigned int i = 0; i < 1000; ++i)
     {
         REQUIRE(t.NumPendingTimers() == 1); // confirm timer
         REQUIRE(t.AdvanceTime(TimeDuration::Seconds(5)));
@@ -248,7 +248,7 @@ TEST_CASE(SUITE("UnsolInfiniteRetries"))
     t.Transaction([](IUpdateHandler& db) { db.Update(Binary(false), 0); });
 
     // Check that it keeps repeating the same non-regenerated unsolicited response
-    for(unsigned int i = 0; i < 1000; ++i)
+    for (unsigned int i = 0; i < 1000; ++i)
     {
         REQUIRE(t.NumPendingTimers() == 1); // confirm timer
         REQUIRE(t.AdvanceTime(TimeDuration::Seconds(5)));
@@ -264,7 +264,7 @@ TEST_CASE(SUITE("UnsolData"))
     cfg.params.unsolClassMask = ClassField::AllEventClasses(); // allows us to skip the "enable unsol" step
     cfg.eventBufferConfig = EventBufferConfig::AllTypes(5);
 
-	auto database = configure::by_count_of::binary_input(3);
+    auto database = configure::by_count_of::binary_input(3);
     database.binary_input[0].clazz = PointClass::Class1;
     database.binary_input[1].clazz = PointClass::Class2;
     database.binary_input[2].clazz = PointClass::Class3;

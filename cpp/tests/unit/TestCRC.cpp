@@ -17,11 +17,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <link/CRC.h>
-
 #include "utils/BufferHelpers.h"
 
 #include <catch.hpp>
+#include <link/CRC.h>
 
 #include <iostream>
 #include <sstream>

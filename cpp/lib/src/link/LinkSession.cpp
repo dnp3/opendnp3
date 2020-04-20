@@ -20,11 +20,10 @@
 
 #include "link/LinkSession.h"
 
+#include "logging/LogMacros.h"
 #include "master/MasterSchedulerBackend.h"
 
 #include "opendnp3/logging/LogLevels.h"
-
-#include "logging/LogMacros.h"
 
 #include <utility>
 

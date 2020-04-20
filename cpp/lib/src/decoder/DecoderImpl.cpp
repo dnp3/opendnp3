@@ -25,7 +25,6 @@
 #include "app/parsing/APDUParser.h"
 #include "decoder/Indent.h"
 #include "decoder/LoggingHandler.h"
-
 #include "logging/LogMacros.h"
 
 namespace opendnp3

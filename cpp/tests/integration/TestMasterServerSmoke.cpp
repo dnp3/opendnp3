@@ -18,6 +18,8 @@
  * limitations under the License.
  */
 
+#include "mocks/NullSOEHandler.h"
+
 #include <opendnp3/ConsoleLogger.h>
 #include <opendnp3/DNP3Manager.h>
 #include <opendnp3/logging/LogLevels.h>
@@ -27,8 +29,6 @@
 #include <opendnp3/master/PrintingSOEHandler.h>
 #include <opendnp3/outstation/DefaultOutstationApplication.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
-
-#include "mocks/NullSOEHandler.h"
 
 #include <dnp3mocks/DatabaseHelpers.h>
 
@@ -49,7 +49,8 @@ struct TestComponents
     {
         for (int i = 0; i < numOutstations; ++i)
         {
-            auto channel = manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(), { IPEndpoint("127.0.0.1", 20000) }, "0.0.0.0", nullptr);
+            auto channel = manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(),
+                                                {IPEndpoint("127.0.0.1", 20000)}, "0.0.0.0", nullptr);
             auto outstation = channel->AddOutstation("outstation", SuccessCommandHandler::Create(),
                                                      DefaultOutstationApplication::Create(), GetConfig());
 
@@ -157,8 +158,8 @@ TEST_CASE(SUITE("Double BeginShutdown"))
     // Outstation
     OutstationStackConfig outstationConfig(configure::by_count_of::all_types(0));
     outstationConfig.outstation.params.allowUnsolicited = true;
-    auto channel
-        = manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(), {IPEndpoint("127.0.0.1", 20000) }, "", nullptr);
+    auto channel = manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(),
+                                        {IPEndpoint("127.0.0.1", 20000)}, "", nullptr);
     auto outstation = channel->AddOutstation("outstation", SuccessCommandHandler::Create(),
                                              DefaultOutstationApplication::Create(), outstationConfig);
 

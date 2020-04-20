@@ -33,7 +33,6 @@
 namespace opendnp3
 {
 
-
 /**
  * An interface for Sequence-Of-Events (SOE) callbacks from a master stack to
  * the application layer.
@@ -43,8 +42,8 @@ namespace opendnp3
  *
  */
 class ISOEHandler
-{    
-   
+{
+
 public:
     virtual ~ISOEHandler() = default;
 

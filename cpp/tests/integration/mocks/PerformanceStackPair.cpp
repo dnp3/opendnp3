@@ -141,8 +141,8 @@ std::shared_ptr<IMaster> PerformanceStackPair::CreateMaster(LogLevels levels,
                                                             std::shared_ptr<ISOEHandler> soehandler,
                                                             std::shared_ptr<IChannelListener> listener)
 {
-    auto channel = manager.AddTCPClient(GetId("client", port), levels, ChannelRetry::Default(), { IPEndpoint("127.0.0.1", port) },
-                                        "127.0.0.1", std::move(listener));
+    auto channel = manager.AddTCPClient(GetId("client", port), levels, ChannelRetry::Default(),
+                                        {IPEndpoint("127.0.0.1", port)}, "127.0.0.1", std::move(listener));
 
     return channel->AddMaster(GetId("master", port), std::move(soehandler), DefaultMasterApplication::Create(),
                               GetMasterStackConfig(timeout));
@@ -156,7 +156,8 @@ std::shared_ptr<IOutstation> PerformanceStackPair::CreateOutstation(LogLevels le
                                                                     uint16_t eventBufferSize,
                                                                     std::shared_ptr<IChannelListener> listener)
 {
-    auto channel = manager.AddTCPServer(GetId("server", port), levels, ServerAcceptMode::CloseExisting, IPEndpoint("127.0.0.1", port), std::move(listener));
+    auto channel = manager.AddTCPServer(GetId("server", port), levels, ServerAcceptMode::CloseExisting,
+                                        IPEndpoint("127.0.0.1", port), std::move(listener));
 
     return channel->AddOutstation(GetId("outstation", port), SuccessCommandHandler::Create(),
                                   DefaultOutstationApplication::Create(),

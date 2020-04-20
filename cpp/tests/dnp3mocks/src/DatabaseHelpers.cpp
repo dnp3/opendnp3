@@ -52,9 +52,9 @@ namespace by_count_of
     }
 
     opendnp3::DatabaseConfig analog_output_status(uint16_t num)
-	{
+    {
         return database_by_sizes(0, 0, 0, 0, 0, 0, num, 0, 0);
-	}
+    }
 
     opendnp3::DatabaseConfig time_and_interval(uint16_t num)
     {
@@ -90,14 +90,14 @@ opendnp3::AnalogConfig analog(opendnp3::StaticAnalogVariation variation)
 }
 
 opendnp3::DatabaseConfig database_by_sizes(uint16_t num_binary,
-                                              uint16_t num_double_binary,
-                                              uint16_t num_analog,
-                                              uint16_t num_counter,
-                                              uint16_t num_frozen_counter,
-                                              uint16_t num_binary_output_status,
-                                              uint16_t num_analog_output_status,
-                                              uint16_t num_time_and_interval,
-                                              uint16_t num_octet_string)
+                                           uint16_t num_double_binary,
+                                           uint16_t num_analog,
+                                           uint16_t num_counter,
+                                           uint16_t num_frozen_counter,
+                                           uint16_t num_binary_output_status,
+                                           uint16_t num_analog_output_status,
+                                           uint16_t num_time_and_interval,
+                                           uint16_t num_octet_string)
 {
     opendnp3::DatabaseConfig config;
 

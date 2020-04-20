@@ -21,15 +21,13 @@
 
 #include "app/parsing/IAPDUHandler.h"
 
-#include "opendnp3/outstation/IOutstationApplication.h"
-
 #include "opendnp3/logging/Logger.h"
+#include "opendnp3/outstation/IOutstationApplication.h"
 
 namespace opendnp3
 {
 
-AssignClassHandler::AssignClassHandler(IOutstationApplication& application,
-                                       IClassAssigner& assigner)
+AssignClassHandler::AssignClassHandler(IOutstationApplication& application, IClassAssigner& assigner)
     : classHeader(-1), clazz(PointClass::Class0), pApplication(&application), pAssigner(&assigner)
 {
 }

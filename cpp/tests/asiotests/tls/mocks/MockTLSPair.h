@@ -21,12 +21,12 @@
 #ifndef OPENDNP3_ASIOTESTS_MOCKTLSPAIR_H
 #define OPENDNP3_ASIOTESTS_MOCKTLSPAIR_H
 
+#include "channel/tls/TLSClient.h"
 #include "mocks/MockIO.h"
 #include "tls/mocks/MockTLSClientHandler.h"
 #include "tls/mocks/MockTLSServer.h"
-#include <dnp3mocks/MockLogHandler.h>
 
-#include "channel/tls/TLSClient.h"
+#include <dnp3mocks/MockLogHandler.h>
 
 class MockTLSPair
 {

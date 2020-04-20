@@ -20,7 +20,6 @@
 #ifndef OPENDNP3_MEASUREMENTINFO_H
 #define OPENDNP3_MEASUREMENTINFO_H
 
-#include "opendnp3/util/StaticOnly.h"
 #include "opendnp3/app/EventType.h"
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/OctetString.h"
@@ -46,6 +45,7 @@
 #include "opendnp3/gen/StaticSecurityStatVariation.h"
 #include "opendnp3/gen/StaticTimeAndIntervalVariation.h"
 #include "opendnp3/gen/StaticTypeBitmask.h"
+#include "opendnp3/util/StaticOnly.h"
 
 namespace opendnp3
 {

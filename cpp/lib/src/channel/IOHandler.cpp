@@ -20,9 +20,9 @@
 
 #include "channel/IOHandler.h"
 
-#include "opendnp3/logging/LogLevels.h"
-
 #include "logging/LogMacros.h"
+
+#include "opendnp3/logging/LogLevels.h"
 
 #include <utility>
 
@@ -244,7 +244,8 @@ bool IOHandler::OnFrame(const LinkHeaderFields& header, const ser4cpp::rseq_t& u
         return true;
     }
 
-    FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Frame w/ unknown route, source: %i, dest %i", header.addresses.source, header.addresses.destination);
+    FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Frame w/ unknown route, source: %i, dest %i", header.addresses.source,
+                     header.addresses.destination);
     return false;
 }
 

@@ -20,19 +20,18 @@
 #ifndef OPENDNP3_DATABASE_H
 #define OPENDNP3_DATABASE_H
 
+#include "app/MeasurementTypeSpecs.h"
+#include "outstation/IClassAssigner.h"
+#include "outstation/IEventReceiver.h"
+#include "outstation/IResponseLoader.h"
+#include "outstation/IStaticSelector.h"
+#include "outstation/StaticDataMap.h"
+
+#include "opendnp3/gen/FlagsType.h"
 #include "opendnp3/outstation/DatabaseConfig.h"
 #include "opendnp3/outstation/IDnpTimeSource.h"
 #include "opendnp3/outstation/IUpdateHandler.h"
 #include "opendnp3/outstation/StaticTypeBitfield.h"
-#include "opendnp3/gen/FlagsType.h"
-
-#include "app/MeasurementTypeSpecs.h"
-#include "outstation/StaticDataMap.h"
-#include "outstation/IStaticSelector.h"
-#include "outstation/IClassAssigner.h"
-#include "outstation/IResponseLoader.h"
-#include "outstation/IEventReceiver.h"
-
 
 namespace opendnp3
 {
@@ -40,26 +39,25 @@ namespace opendnp3
 class Database final : public IStaticSelector, public IClassAssigner, public IResponseLoader, public IUpdateHandler
 {
 public:
-
-	Database(const DatabaseConfig& config,
-                   IEventReceiver& event_receiver,
-                   IDnpTimeSource& time_source,
-		           StaticTypeBitField allowed_class_zero_types);
+    Database(const DatabaseConfig& config,
+             IEventReceiver& event_receiver,
+             IDnpTimeSource& time_source,
+             StaticTypeBitField allowed_class_zero_types);
 
     // ------- IStaticSelector -------------
     IINField SelectAll(GroupVariation gv) override;
     IINField SelectRange(GroupVariation gv, const Range& range) override;
     void Unselect() override;
 
-	// ------- IClassAssigner -------------
+    // ------- IClassAssigner -------------
     Range AssignClassToAll(AssignClassType type, PointClass clazz) override;
     Range AssignClassToRange(AssignClassType type, PointClass clazz, const Range& range) override;
 
-	// ------- IResponseLoader -------------
+    // ------- IResponseLoader -------------
     bool HasAnySelection() const override;
     bool Load(HeaderWriter& writer) override;
 
-	// ------- IUpdateHandler ---------------
+    // ------- IUpdateHandler ---------------
     bool Update(const Binary& meas, uint16_t index, EventMode mode) override;
     bool Update(const DoubleBitBinary& meas, uint16_t index, EventMode mode) override;
     bool Update(const Analog& meas, uint16_t index, EventMode mode) override;
@@ -74,7 +72,6 @@ public:
     bool FreezeSelectedCounters(bool clear, EventMode mode = EventMode::Detect);
 
 private:
-
     IEventReceiver& event_receiver;
     IDnpTimeSource& time_source;
     StaticTypeBitField allowed_class_zero_types;
@@ -89,26 +86,22 @@ private:
     StaticDataMap<TimeAndIntervalSpec> time_and_interval;
     StaticDataMap<OctetStringSpec> octet_string;
 
-	// ----- helper methods ------ 	
+    // ----- helper methods ------
 
-	template<class Spec>
-	void select_all_class_zero(StaticDataMap<Spec>& map);
+    template<class Spec> void select_all_class_zero(StaticDataMap<Spec>& map);
 
-	template<class Spec> 
-	static IINField select_all(StaticDataMap<Spec>& map);
+    template<class Spec> static IINField select_all(StaticDataMap<Spec>& map);
 
-	template<class Spec> IINField 
-	static select_all(StaticDataMap<Spec>& map, typename Spec::static_variation_t variation);
+    template<class Spec>
+    IINField static select_all(StaticDataMap<Spec>& map, typename Spec::static_variation_t variation);
 
-	template<class Spec>
-    static IINField select_range(StaticDataMap<Spec>& map, const Range& range);
+    template<class Spec> static IINField select_range(StaticDataMap<Spec>& map, const Range& range);
 
-	template<class Spec>
+    template<class Spec>
     static IINField select_range(StaticDataMap<Spec>& map,
-                                const Range& range,
-                                typename Spec::static_variation_t variation);	
+                                 const Range& range,
+                                 typename Spec::static_variation_t variation);
 };
-    
 
 } // namespace opendnp3
 

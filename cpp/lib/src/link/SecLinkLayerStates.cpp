@@ -20,10 +20,9 @@
 #include "SecLinkLayerStates.h"
 
 #include "link/LinkLayer.h"
+#include "logging/LogMacros.h"
 
 #include "opendnp3/logging/LogLevels.h"
-
-#include "logging/LogMacros.h"
 
 namespace opendnp3
 {
@@ -50,11 +49,8 @@ SecStateBase& SLLS_NotReset::OnTestLinkStatus(LinkContext& ctx, uint16_t /*sourc
     return *this;
 }
 
-SecStateBase& SLLS_NotReset::OnConfirmedUserData(LinkContext& ctx,
-                                                 uint16_t /*source*/,
-                                                 bool /*fcb*/,
-                                                 bool /*isBroadcast*/,
-                                                 const Message& /*message*/)
+SecStateBase& SLLS_NotReset::OnConfirmedUserData(
+    LinkContext& ctx, uint16_t /*source*/, bool /*fcb*/, bool /*isBroadcast*/, const Message& /*message*/)
 {
     ++ctx.statistics.numUnexpectedFrame;
     SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "ConfirmedUserData ignored: secondary not reset");
@@ -95,9 +91,10 @@ SecStateBase& SLLS_Reset::OnTestLinkStatus(LinkContext& ctx, uint16_t source, bo
     return *this;
 }
 
-SecStateBase& SLLS_Reset::OnConfirmedUserData(LinkContext& ctx, uint16_t source, bool fcb, bool isBroadcast, const Message& message)
+SecStateBase& SLLS_Reset::OnConfirmedUserData(
+    LinkContext& ctx, uint16_t source, bool fcb, bool isBroadcast, const Message& message)
 {
-    if(!isBroadcast)
+    if (!isBroadcast)
     {
         ctx.QueueAck(source);
     }

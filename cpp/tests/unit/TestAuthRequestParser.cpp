@@ -17,15 +17,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "dnp3mocks/MockAPDUHeaderHandler.h"
 #include "utils/BufferHelpers.h"
-
-#include <ser4cpp/util/HexConversions.h>
 
 #include <opendnp3/ConsoleLogger.h>
 #include <opendnp3/logging/LogLevels.h>
-#include <app/parsing/APDUParser.h>
 
+#include <ser4cpp/util/HexConversions.h>
+
+#include "dnp3mocks/MockAPDUHeaderHandler.h"
+
+#include <app/parsing/APDUParser.h>
 #include <catch.hpp>
 
 #include <functional>

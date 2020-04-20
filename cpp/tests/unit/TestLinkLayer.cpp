@@ -17,10 +17,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "utils/MockTransportSegment.h"
-
 #include "utils/LinkHex.h"
 #include "utils/LinkLayerTest.h"
+#include "utils/MockTransportSegment.h"
 
 #include <ser4cpp/util/HexConversions.h>
 
@@ -109,7 +108,8 @@ TEST_CASE(SUITE("UnconfirmedBroadcastDataPassedUpFromIdleUnreset"))
     LinkLayerTest t;
     t.link.OnLowerLayerUp();
     ByteStr bs(250, 0);
-    t.OnFrame(LinkFunction::PRI_UNCONFIRMED_USER_DATA, false, false, false, LinkBroadcastAddress::ShallConfirm, 1024, bs.ToRSeq());
+    t.OnFrame(LinkFunction::PRI_UNCONFIRMED_USER_DATA, false, false, false, LinkBroadcastAddress::ShallConfirm, 1024,
+              bs.ToRSeq());
     REQUIRE(t.upper->receivedQueue.size() == 1);
     REQUIRE(t.upper->receivedQueue.front() == bs.ToHex());
 }
@@ -177,7 +177,8 @@ TEST_CASE(SUITE("BroadcastConfirmedDataWithoutResetDoesntForward"))
     t.link.OnLowerLayerUp();
 
     ByteStr b(250, 0);
-    t.OnFrame(LinkFunction::PRI_CONFIRMED_USER_DATA, false, false, false, LinkBroadcastAddress::ShallConfirm, 1024, b.ToRSeq());
+    t.OnFrame(LinkFunction::PRI_CONFIRMED_USER_DATA, false, false, false, LinkBroadcastAddress::ShallConfirm, 1024,
+              b.ToRSeq());
     t.link.OnTxReady();
     REQUIRE(t.upper->receivedQueue.empty());
 }
@@ -195,7 +196,8 @@ TEST_CASE(SUITE("BroadcastConfirmedDataFlipNFCBAndDoesntRespond"))
     t.link.OnTxReady();
 
     ByteStr b(250, 0);
-    t.OnFrame(LinkFunction::PRI_CONFIRMED_USER_DATA, false, true, false, LinkBroadcastAddress::ShallConfirm, 1024, b.ToRSeq());
+    t.OnFrame(LinkFunction::PRI_CONFIRMED_USER_DATA, false, true, false, LinkBroadcastAddress::ShallConfirm, 1024,
+              b.ToRSeq());
     t.link.OnTxReady();
     REQUIRE(t.upper->receivedQueue.size() == 1);
     REQUIRE(t.upper->receivedQueue.front() == b.ToHex());
@@ -203,7 +205,8 @@ TEST_CASE(SUITE("BroadcastConfirmedDataFlipNFCBAndDoesntRespond"))
     REQUIRE(t.NumTotalWrites() == 1);
 
     // Wrong FCB shouldn't be forwarded
-    t.OnFrame(LinkFunction::PRI_CONFIRMED_USER_DATA, false, true, false, LinkBroadcastAddress::ShallConfirm, 1024, b.ToRSeq());
+    t.OnFrame(LinkFunction::PRI_CONFIRMED_USER_DATA, false, true, false, LinkBroadcastAddress::ShallConfirm, 1024,
+              b.ToRSeq());
     t.link.OnTxReady();
     REQUIRE(t.upper->receivedQueue.size() == 1);
     REQUIRE(t.NumTotalWrites() == 1);
@@ -244,7 +247,7 @@ TEST_CASE(SUITE("SecondaryResetConfirmedUserData"))
     t.upper->receivedQueue.clear();
 
     t.OnFrame(LinkFunction::PRI_CONFIRMED_USER_DATA, false, true, false, 1, 1024,
-              bytes.ToRSeq());             // send with wrong FCB
+              bytes.ToRSeq());               // send with wrong FCB
     REQUIRE(t.NumTotalWrites() == 3);        // should still get an ACK
     REQUIRE(t.upper->receivedQueue.empty()); // but no data
 }
@@ -274,8 +277,7 @@ TEST_CASE(SUITE("BroadcastRequestStatusOfLink"))
 {
     LinkLayerTest t;
     t.link.OnLowerLayerUp();
-    t.OnFrame(LinkFunction::PRI_REQUEST_LINK_STATUS, false, false, false, LinkBroadcastAddress::ShallConfirm,
-              1024);
+    t.OnFrame(LinkFunction::PRI_REQUEST_LINK_STATUS, false, false, false, LinkBroadcastAddress::ShallConfirm, 1024);
     REQUIRE(t.NumTotalWrites() == 0);
     REQUIRE(t.link.GetStatistics().numUnexpectedFrame == 1);
 }
@@ -388,9 +390,9 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetry"))
 
     t.OnFrame(LinkFunction::SEC_ACK, false, false, false, 1, 1024); // this time Ack it
     REQUIRE(t.NumTotalWrites() == 3);
-    REQUIRE(
-        t.PopLastWriteAsHex()
-        == LinkHex::ConfirmedUserData(true, true, 1024, 1, HexConversions::increment_hex(0x00, 250))); // check that the data got sent
+    REQUIRE(t.PopLastWriteAsHex()
+            == LinkHex::ConfirmedUserData(true, true, 1024, 1,
+                                          HexConversions::increment_hex(0x00, 250))); // check that the data got sent
 
     t.link.OnTxReady();
 
@@ -478,7 +480,8 @@ TEST_CASE(SUITE("ConfirmedDataRetry"))
     REQUIRE(t.exe->run_many() > 0); // timeout the ConfData, check that it retransmits
     REQUIRE(t.NumTotalWrites() == 3);
 
-    REQUIRE(t.PopLastWriteAsHex() == LinkHex::ConfirmedUserData(true, true, 1024, 1, HexConversions::increment_hex(0x00, 250)));
+    REQUIRE(t.PopLastWriteAsHex()
+            == LinkHex::ConfirmedUserData(true, true, 1024, 1, HexConversions::increment_hex(0x00, 250)));
     t.link.OnTxReady();
 
     t.OnFrame(LinkFunction::SEC_ACK, false, false, false, 1, 1024);
@@ -504,7 +507,8 @@ TEST_CASE(SUITE("ConfirmedDataFailureResetsLink"))
     t.OnFrame(LinkFunction::SEC_ACK, false, false, false, 1, 1024);
     REQUIRE(t.NumTotalWrites() == 2);
 
-    REQUIRE(t.PopLastWriteAsHex() == LinkHex::ConfirmedUserData(true, true, 1024, 1, HexConversions::increment_hex(0x00, 250)));
+    REQUIRE(t.PopLastWriteAsHex()
+            == LinkHex::ConfirmedUserData(true, true, 1024, 1, HexConversions::increment_hex(0x00, 250)));
     t.link.OnTxReady();
 
     // Timeout original transmission
@@ -512,7 +516,8 @@ TEST_CASE(SUITE("ConfirmedDataFailureResetsLink"))
     REQUIRE(t.exe->run_many() > 0);
     REQUIRE(t.NumTotalWrites() == 3);
 
-    REQUIRE(t.PopLastWriteAsHex() == LinkHex::ConfirmedUserData(true, true, 1024, 1, HexConversions::increment_hex(0x00, 250)));
+    REQUIRE(t.PopLastWriteAsHex()
+            == LinkHex::ConfirmedUserData(true, true, 1024, 1, HexConversions::increment_hex(0x00, 250)));
     t.link.OnTxReady();
 
     // Timeout retransmission, no more retransmission
@@ -595,7 +600,8 @@ TEST_CASE(SUITE("SendDataTimerExpiration"))
 
     REQUIRE(t.NumTotalWrites() == 2);
     REQUIRE(t.PopLastWriteAsHex()
-            == LinkHex::ConfirmedUserData(true, true, 1024, 1, HexConversions::increment_hex(0x00, 250))); // check that data was sent
+            == LinkHex::ConfirmedUserData(true, true, 1024, 1,
+                                          HexConversions::increment_hex(0x00, 250))); // check that data was sent
     t.link.OnTxReady();
 
     t.exe->advance_time(cfg.Timeout.value);
@@ -624,5 +630,6 @@ TEST_CASE(SUITE("SendDataSuccess"))
     t.link.Send(segments); // now we should be directly sending w/o having to reset, and the FCB should flip
 
     REQUIRE(t.NumTotalWrites() == 3);
-    REQUIRE(t.PopLastWriteAsHex() == LinkHex::ConfirmedUserData(true, false, 1024, 1, HexConversions::increment_hex(0x00, 250)));
+    REQUIRE(t.PopLastWriteAsHex()
+            == LinkHex::ConfirmedUserData(true, false, 1024, 1, HexConversions::increment_hex(0x00, 250)));
 }

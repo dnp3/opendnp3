@@ -72,7 +72,9 @@ public:
     uint16_t index;
     ValueType type;
 
-    ExpectedValue(const opendnp3::Binary& value, uint16_t index) : ExpectedValue(value.value, index, ValueType::Binary) {}
+    ExpectedValue(const opendnp3::Binary& value, uint16_t index) : ExpectedValue(value.value, index, ValueType::Binary)
+    {
+    }
     ExpectedValue(const opendnp3::DoubleBitBinary& value, uint16_t index)
         : ExpectedValue(static_cast<int64_t>(value.value), index, ValueType::DoubleBitBinary)
     {
@@ -81,7 +83,10 @@ public:
         : ExpectedValue(static_cast<int64_t>(value.value), index, ValueType::Analog)
     {
     }
-    ExpectedValue(const opendnp3::Counter& value, uint16_t index) : ExpectedValue(value.value, index, ValueType::Counter) {}
+    ExpectedValue(const opendnp3::Counter& value, uint16_t index)
+        : ExpectedValue(value.value, index, ValueType::Counter)
+    {
+    }
     ExpectedValue(const opendnp3::FrozenCounter& value, uint16_t index)
         : ExpectedValue(value.value, index, ValueType::FrozenCounter)
     {

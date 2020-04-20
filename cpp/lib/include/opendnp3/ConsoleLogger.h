@@ -20,8 +20,8 @@
 #ifndef OPENDNP3_CONSOLELOGGER_H
 #define OPENDNP3_CONSOLELOGGER_H
 
-#include "opendnp3/util/Uncopyable.h"
 #include "opendnp3/logging/ILogHandler.h"
+#include "opendnp3/util/Uncopyable.h"
 
 #include <memory>
 #include <mutex>

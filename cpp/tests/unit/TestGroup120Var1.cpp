@@ -17,14 +17,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "utils/BufferHelpers.h"
+
 #include <ser4cpp/container/Buffer.h>
 #include <ser4cpp/util/HexConversions.h>
 
-#include <gen/objects/Group120.h>
-
-#include "utils/BufferHelpers.h"
-
 #include <catch.hpp>
+#include <gen/objects/Group120.h>
 
 using namespace opendnp3;
 using namespace ser4cpp;

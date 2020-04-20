@@ -20,8 +20,8 @@
 #ifndef OPENDNP3_UPDATEBUILDER_H
 #define OPENDNP3_UPDATEBUILDER_H
 
-#include "opendnp3/outstation/Updates.h"
 #include "opendnp3/outstation/IUpdateHandler.h"
+#include "opendnp3/outstation/Updates.h"
 
 namespace opendnp3
 {

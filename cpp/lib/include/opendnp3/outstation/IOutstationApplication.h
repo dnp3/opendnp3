@@ -20,7 +20,6 @@
 #ifndef OPENDNP3_IOUTSTATIONAPPLICATION_H
 #define OPENDNP3_IOUTSTATIONAPPLICATION_H
 
-#include "opendnp3/util/UTCTimestamp.h"
 #include "opendnp3/app/Indexed.h"
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/parsing/ICollection.h"
@@ -30,6 +29,7 @@
 #include "opendnp3/link/ILinkListener.h"
 #include "opendnp3/outstation/ApplicationIIN.h"
 #include "opendnp3/outstation/IDnpTimeSource.h"
+#include "opendnp3/util/UTCTimestamp.h"
 
 #include <memory>
 

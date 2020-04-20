@@ -59,11 +59,8 @@ private:
     // Create a count handler from a fixed size descriptor
     template<class Descriptor> static CountParser From(uint16_t count);
 
-    static ParseResult ParseCountOfObjects(ser4cpp::rseq_t& buffer,
-                                           const HeaderRecord& record,
-                                           uint16_t count,
-                                           Logger* pLogger,
-                                           IAPDUHandler* pHandler);
+    static ParseResult ParseCountOfObjects(
+        ser4cpp::rseq_t& buffer, const HeaderRecord& record, uint16_t count, Logger* pLogger, IAPDUHandler* pHandler);
 
     template<class Descriptor>
     static void InvokeCountOf(const HeaderRecord& record,

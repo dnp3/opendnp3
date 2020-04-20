@@ -24,8 +24,8 @@
 #include <algorithm>
 #include <cassert>
 #include <exception>
-#include <sstream>
 #include <memory>
+#include <sstream>
 
 using namespace std;
 using namespace opendnp3;

@@ -20,11 +20,10 @@
 
 #include "outstation/OutstationStates.h"
 
+#include "logging/LogMacros.h"
 #include "outstation/OutstationContext.h"
 
 #include "opendnp3/logging/LogLevels.h"
-
-#include "logging/LogMacros.h"
 
 namespace opendnp3
 {
@@ -192,7 +191,7 @@ OutstationState& StateUnsolicitedConfirmWait::OnConfirmTimeout(OContext& ctx)
     if (ctx.unsol.completedNull)
     {
         auto shouldRetry = ctx.unsolRetries.Retry();
-        if(shouldRetry && !ctx.deferred.IsSet())
+        if (shouldRetry && !ctx.deferred.IsSet())
         {
             ctx.RestartUnsolConfirmTimer();
             ctx.BeginRetransmitLastUnsolicitedResponse();

@@ -18,15 +18,16 @@
  * limitations under the License.
  */
 #include <opendnp3/logging/LogLevels.h>
-#include <outstation/Database.h>
-#include <outstation/OutstationContext.h>
+
+#include <exe4cpp/MockExecutor.h>
 
 #include <dnp3mocks/MockCommandHandler.h>
 #include <dnp3mocks/MockLogHandler.h>
 #include <dnp3mocks/MockLowerLayer.h>
 #include <dnp3mocks/MockOutstationApplication.h>
 
-#include <exe4cpp/MockExecutor.h>
+#include <outstation/Database.h>
+#include <outstation/OutstationContext.h>
 
 #include <functional>
 

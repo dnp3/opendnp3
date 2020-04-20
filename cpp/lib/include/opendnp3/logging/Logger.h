@@ -38,18 +38,17 @@ class Logger
 public:
     struct Settings
     {
-        Settings(ModuleId module, const std::string& id, LogLevels levels) : module(module), id(id), levels(levels)
-        {}
+        Settings(ModuleId module, const std::string& id, LogLevels levels) : module(module), id(id), levels(levels) {}
 
         ModuleId module;
         std::string id;
         LogLevels levels;
     };
 
-    Logger(const std::shared_ptr<ILogHandler>& backend, ModuleId moduleid, const std::string& id, LogLevels levels) :
-        backend(backend),
-        settings(std::make_shared<Settings>(moduleid, id, levels))
-    {}
+    Logger(const std::shared_ptr<ILogHandler>& backend, ModuleId moduleid, const std::string& id, LogLevels levels)
+        : backend(backend), settings(std::make_shared<Settings>(moduleid, id, levels))
+    {
+    }
 
     static Logger empty()
     {
@@ -60,13 +59,7 @@ public:
     {
         if (backend)
         {
-            backend->log(
-                    this->settings->module,
-                    this->settings->id.c_str(),
-                    level,
-                    location,
-                    message
-            );
+            backend->log(this->settings->module, this->settings->id.c_str(), level, location, message);
         }
     }
 
@@ -75,8 +68,7 @@ public:
         return Logger(this->backend, std::make_shared<Settings>(this->settings->module, id, this->settings->levels));
     }
 
-    template <typename... Args>
-    Logger detach_and_append(Args... args) const
+    template<typename... Args> Logger detach_and_append(Args... args) const
     {
         return detach(Strings::concatenate(this->settings->id, args...));
     }
@@ -112,10 +104,10 @@ public:
     }
 
 private:
-    Logger(const std::shared_ptr<ILogHandler>& backend, const std::shared_ptr<Settings>& settings):
-        backend(backend),
-        settings(settings)
-    {}
+    Logger(const std::shared_ptr<ILogHandler>& backend, const std::shared_ptr<Settings>& settings)
+        : backend(backend), settings(settings)
+    {
+    }
 
     Logger() = delete;
     Logger& operator=(const Logger&) = delete;
@@ -124,6 +116,6 @@ private:
     const std::shared_ptr<Settings> settings;
 };
 
-} //namespace opendnp3
+} // namespace opendnp3
 
-#endif //OPENDNP3_LOGGER_H
+#endif // OPENDNP3_LOGGER_H

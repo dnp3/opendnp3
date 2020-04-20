@@ -32,7 +32,6 @@
 
 #include <ser4cpp/container/SequenceTypes.h>
 
-
 namespace opendnp3
 {
 

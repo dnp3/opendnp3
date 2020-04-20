@@ -23,7 +23,6 @@
 
 #include "ResourceManager.h"
 
-#include "opendnp3/util/Uncopyable.h"
 #include "opendnp3/channel/ChannelRetry.h"
 #include "opendnp3/channel/IChannel.h"
 #include "opendnp3/channel/IChannelListener.h"
@@ -34,9 +33,9 @@
 #include "opendnp3/gen/ServerAcceptMode.h"
 #include "opendnp3/logging/Logger.h"
 #include "opendnp3/master/IListenCallbacks.h"
+#include "opendnp3/util/Uncopyable.h"
 
 #include <exe4cpp/asio/ThreadPool.h>
-
 
 namespace opendnp3
 {

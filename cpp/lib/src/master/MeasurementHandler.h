@@ -24,13 +24,12 @@
 #include "app/parsing/Collections.h"
 #include "app/parsing/IAPDUHandler.h"
 #include "app/parsing/ParseResult.h"
-
-#include "opendnp3/logging/LogLevels.h"
-#include "opendnp3/gen/Attributes.h"
-#include "opendnp3/master/ISOEHandler.h"
-
 #include "logging/LogMacros.h"
+
+#include "opendnp3/gen/Attributes.h"
+#include "opendnp3/logging/LogLevels.h"
 #include "opendnp3/logging/Logger.h"
+#include "opendnp3/master/ISOEHandler.h"
 
 namespace opendnp3
 {
@@ -45,7 +44,8 @@ public:
     /**
      * Static helper function for interpreting a response as a measurement response
      */
-    static ParseResult ProcessMeasurements(ResponseInfo info, const ser4cpp::rseq_t& objects,
+    static ParseResult ProcessMeasurements(ResponseInfo info,
+                                           const ser4cpp::rseq_t& objects,
                                            Logger& logger,
                                            ISOEHandler* pHandler);
 

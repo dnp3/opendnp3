@@ -20,7 +20,6 @@
 #include "CountIndexParser.h"
 
 #include "app/parsing/BufferedCollection.h"
-#include "logging/LogMacros.h"
 #include "gen/objects/Group11.h"
 #include "gen/objects/Group12.h"
 #include "gen/objects/Group13.h"
@@ -32,14 +31,12 @@
 #include "gen/objects/Group41.h"
 #include "gen/objects/Group42.h"
 #include "gen/objects/Group43.h"
+#include "logging/LogMacros.h"
 
 namespace opendnp3
 {
 
-CountIndexParser::CountIndexParser(uint16_t count,
-                                   size_t requiredSize,
-                                   const NumParser& numparser,
-                                   HandleFun handler)
+CountIndexParser::CountIndexParser(uint16_t count, size_t requiredSize, const NumParser& numparser, HandleFun handler)
     : count(count), requiredSize(requiredSize), numparser(numparser), handler(handler)
 {
 }
@@ -210,7 +207,8 @@ ParseResult CountIndexParser::ParseCountOfObjects(ser4cpp::rseq_t& buffer,
     default:
 
         FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unsupported qualifier/object - %s - %i / %i",
-                            QualifierCodeSpec::to_human_string(record.GetQualifierCode()), record.group, record.variation);
+                            QualifierCodeSpec::to_human_string(record.GetQualifierCode()), record.group,
+                            record.variation);
 
         return ParseResult::INVALID_OBJECT_QUALIFIER;
     }

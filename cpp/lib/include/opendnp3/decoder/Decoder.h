@@ -20,9 +20,9 @@
 #ifndef OPENDNP3_DECODER_H
 #define OPENDNP3_DECODER_H
 
-#include "opendnp3/util/Buffer.h"
 #include "opendnp3/decoder/IDecoderCallbacks.h"
 #include "opendnp3/logging/Logger.h"
+#include "opendnp3/util/Buffer.h"
 
 namespace opendnp3
 {

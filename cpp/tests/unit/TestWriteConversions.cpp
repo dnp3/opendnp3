@@ -18,8 +18,8 @@
  * limitations under the License.
  */
 #include <opendnp3/gen/AnalogQuality.h>
-#include <app/WriteConversions.h>
 
+#include <app/WriteConversions.h>
 #include <catch.hpp>
 
 using namespace opendnp3;
@@ -41,7 +41,9 @@ TEST_CASE(SUITE("Group30Var2ConvertsOverrange"))
     auto gv = ConvertGroup30Var2::Apply(a);
 
     CHECK(gv.value == 32767);
-    CHECK(gv.flags == (AnalogQualitySpec::to_type(AnalogQuality::ONLINE) | AnalogQualitySpec::to_type(AnalogQuality::OVERRANGE)));
+    CHECK(
+        gv.flags
+        == (AnalogQualitySpec::to_type(AnalogQuality::ONLINE) | AnalogQualitySpec::to_type(AnalogQuality::OVERRANGE)));
 }
 
 TEST_CASE(SUITE("Group30Var2ConvertsUnderrange"))
@@ -50,5 +52,7 @@ TEST_CASE(SUITE("Group30Var2ConvertsUnderrange"))
     auto gv = ConvertGroup30Var2::Apply(a);
 
     CHECK(gv.value == -32768);
-    CHECK(gv.flags == (AnalogQualitySpec::to_type(AnalogQuality::ONLINE) | AnalogQualitySpec::to_type(AnalogQuality::OVERRANGE)));
+    CHECK(
+        gv.flags
+        == (AnalogQualitySpec::to_type(AnalogQuality::ONLINE) | AnalogQualitySpec::to_type(AnalogQuality::OVERRANGE)));
 }

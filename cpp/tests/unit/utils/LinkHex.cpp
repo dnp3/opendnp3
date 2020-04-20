@@ -19,12 +19,12 @@
  */
 #include "utils/LinkHex.h"
 
+#include "utils/BufferHelpers.h"
+
 #include <ser4cpp/container/StaticBuffer.h>
 #include <ser4cpp/util/HexConversions.h>
 
 #include <link/LinkFrame.h>
-
-#include "utils/BufferHelpers.h"
 
 using namespace opendnp3;
 using namespace ser4cpp;

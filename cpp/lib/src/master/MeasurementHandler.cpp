@@ -20,13 +20,13 @@
 #include "MeasurementHandler.h"
 
 #include "app/parsing/APDUParser.h"
-
 #include "logging/LogMacros.h"
 
 namespace opendnp3
 {
 
-ParseResult MeasurementHandler::ProcessMeasurements(ResponseInfo info, const ser4cpp::rseq_t& objects,
+ParseResult MeasurementHandler::ProcessMeasurements(ResponseInfo info,
+                                                    const ser4cpp::rseq_t& objects,
                                                     Logger& logger,
                                                     ISOEHandler* pHandler)
 {
@@ -36,7 +36,7 @@ ParseResult MeasurementHandler::ProcessMeasurements(ResponseInfo info, const ser
 
 MeasurementHandler::MeasurementHandler(ResponseInfo info, const Logger& logger, ISOEHandler* pSOEHandler)
     : info(info),
-	  logger(logger),
+      logger(logger),
       txInitiated(false),
       pSOEHandler(pSOEHandler),
       commonTimeOccurence(0, TimestampQuality::INVALID)
@@ -47,7 +47,7 @@ MeasurementHandler::~MeasurementHandler()
 {
     if (txInitiated && pSOEHandler)
     {
-        this->pSOEHandler->end_fragment(this->info);        
+        this->pSOEHandler->end_fragment(this->info);
     }
 }
 
@@ -61,7 +61,7 @@ void MeasurementHandler::CheckForTxStart()
     if (!txInitiated && pSOEHandler)
     {
         txInitiated = true;
-        this->pSOEHandler->begin_fragment(this->info);        
+        this->pSOEHandler->begin_fragment(this->info);
     }
 }
 

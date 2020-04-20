@@ -75,7 +75,7 @@ bool LoadWithBitfieldIterator(StaticDataMap<Spec>& map,
     {
         if (elem.second.variation != variation)
         {
-			// the variation has changed
+            // the variation has changed
             return true;
         }
 
@@ -249,14 +249,12 @@ static_write_func_t<TimeAndIntervalSpec> StaticWriters::get(StaticTimeAndInterva
     return &WriteWithSerializer<TimeAndIntervalSpec, Group50Var4>;
 }
 
-
-template<class Writer>
-bool write_some_octet_strings(StaticDataMap<OctetStringSpec>& map, Writer& writer)
+template<class Writer> bool write_some_octet_strings(StaticDataMap<OctetStringSpec>& map, Writer& writer)
 {
     auto next_index = map.get_selected_range().start;
 
     for (const auto& elem : map)
-    {       
+    {
         if (elem.first != next_index)
         {
             // we've loaded all we can with a contiguous range
@@ -271,21 +269,20 @@ bool write_some_octet_strings(StaticDataMap<OctetStringSpec>& map, Writer& write
         ++next_index;
     }
 
-    return true;	
+    return true;
 }
-
-
 
 bool write_octet_strings(StaticDataMap<OctetStringSpec>& map, HeaderWriter& writer)
 {
     const auto range = map.get_selected_range();
 
-	const uint8_t starting_size = (*map.begin()).second.value.Size();
+    const uint8_t starting_size = (*map.begin()).second.value.Size();
     const OctetStringSerializer serializer(false, starting_size);
 
     if (range.IsOneByte())
     {
-        auto iter = writer.IterateOverRange<ser4cpp::UInt8>(QualifierCode::UINT8_START_STOP, serializer, static_cast<uint8_t>(range.start));
+        auto iter = writer.IterateOverRange<ser4cpp::UInt8>(QualifierCode::UINT8_START_STOP, serializer,
+                                                            static_cast<uint8_t>(range.start));
         return write_some_octet_strings(map, iter);
     }
 

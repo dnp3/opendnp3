@@ -26,31 +26,29 @@ namespace opendnp3
 {
 
 /**
-* String manipulation
-*/
+ * String manipulation
+ */
 class Strings
 {
 public:
-	// Append anything together that can be used w/ ostringstream
-	template <typename... Args>
-	static std::string concatenate(Args... args)
-	{
-		std::ostringstream oss;
-		append(oss, args...);
-		return oss.str();
-	}
-	
+    // Append anything together that can be used w/ ostringstream
+    template<typename... Args> static std::string concatenate(Args... args)
+    {
+        std::ostringstream oss;
+        append(oss, args...);
+        return oss.str();
+    }
+
 private:
-	template <typename T, typename... Args>
-	static void append(std::ostringstream& oss, const T& first, Args... args)
-	{
-		oss << first;
-		append(oss, args...);			
-	}
-	
-	static void append(std::ostringstream& oss) {}
+    template<typename T, typename... Args> static void append(std::ostringstream& oss, const T& first, Args... args)
+    {
+        oss << first;
+        append(oss, args...);
+    }
+
+    static void append(std::ostringstream& oss) {}
 };
 
-} //namespace opendnp3
+} // namespace opendnp3
 
-#endif //OPENDNP3_STRINGS_H
+#endif // OPENDNP3_STRINGS_H

@@ -21,12 +21,11 @@
 #include <ser4cpp/util/HexConversions.h>
 
 #include <app/APDURequest.h>
-#include <master/CommandSetOps.h>
-#include <master/TypedCommandHeader.h>
+#include <catch.hpp>
 #include <gen/objects/Group12.h>
 #include <gen/objects/Group41.h>
-
-#include <catch.hpp>
+#include <master/CommandSetOps.h>
+#include <master/TypedCommandHeader.h>
 
 using namespace opendnp3;
 using namespace ser4cpp;

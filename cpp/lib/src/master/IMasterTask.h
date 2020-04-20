@@ -25,13 +25,12 @@
 #include "master/TaskBehavior.h"
 #include "master/TaskContext.h"
 
+#include "opendnp3/logging/Logger.h"
 #include "opendnp3/master/IMasterApplication.h"
 #include "opendnp3/master/TaskConfig.h"
 
 #include <exe4cpp/IExecutor.h>
 #include <exe4cpp/Typedefs.h>
-
-#include "opendnp3/logging/Logger.h"
 
 namespace opendnp3
 {

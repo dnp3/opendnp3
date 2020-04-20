@@ -20,11 +20,11 @@
 #ifndef OPENDNP3_UNITTESTS_MOCK_LINK_LAYER_H
 #define OPENDNP3_UNITTESTS_MOCK_LINK_LAYER_H
 
+#include "utils/BufferHelpers.h"
+
 #include <ser4cpp/util/HexConversions.h>
 
 #include <link/ILinkLayer.h>
-
-#include "utils/BufferHelpers.h"
 
 #include <vector>
 

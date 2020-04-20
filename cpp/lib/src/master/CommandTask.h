@@ -25,11 +25,10 @@
 
 #include "opendnp3/gen/FunctionCode.h"
 #include "opendnp3/gen/IndexQualifierMode.h"
+#include "opendnp3/logging/Logger.h"
 #include "opendnp3/master/CommandSet.h"
 #include "opendnp3/master/ICommandProcessor.h"
 #include "opendnp3/master/ITaskCallback.h"
-
-#include "opendnp3/logging/Logger.h"
 
 #include <assert.h>
 

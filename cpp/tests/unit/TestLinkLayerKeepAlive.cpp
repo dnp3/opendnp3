@@ -17,16 +17,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "utils/MockTransportSegment.h"
 #include "utils/LinkHex.h"
 #include "utils/LinkLayerTest.h"
+#include "utils/MockTransportSegment.h"
 
 #include <ser4cpp/container/Buffer.h>
 #include <ser4cpp/util/HexConversions.h>
 
-#include <link/LinkFrame.h>
-
 #include <catch.hpp>
+#include <link/LinkFrame.h>
 
 #include <iostream>
 

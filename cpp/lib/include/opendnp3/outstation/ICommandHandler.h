@@ -20,11 +20,11 @@
 #ifndef OPENDNP3_ICOMMANDHANDLER_H
 #define OPENDNP3_ICOMMANDHANDLER_H
 
+#include "IUpdateHandler.h"
+
 #include "opendnp3/app/AnalogOutput.h"
 #include "opendnp3/app/ControlRelayOutputBlock.h"
 #include "opendnp3/gen/OperateType.h"
-
-#include "IUpdateHandler.h"
 
 namespace opendnp3
 {
@@ -40,15 +40,15 @@ class ICommandHandler
 public:
     virtual ~ICommandHandler() = default;
 
-	/**
-	* called when a command APDU begins processing
-	*/
-	virtual void begin() = 0;
+    /**
+     * called when a command APDU begins processing
+     */
+    virtual void begin() = 0;
 
-	/**
+    /**
      * called when a command APDU ends processing
      */
-	virtual void end() = 0;
+    virtual void end() = 0;
 
     /**
      * Ask if the application supports a ControlRelayOutputBlock - group 12 variation 1
@@ -71,7 +71,8 @@ public:
     virtual CommandStatus Operate(const ControlRelayOutputBlock& command,
                                   uint16_t index,
                                   IUpdateHandler& handler,
-                                  OperateType opType) = 0;
+                                  OperateType opType)
+        = 0;
 
     /**
      * Ask if the application supports a 16 bit analog output - group 41 variation 2
@@ -94,7 +95,8 @@ public:
     virtual CommandStatus Operate(const AnalogOutputInt16& command,
                                   uint16_t index,
                                   IUpdateHandler& handler,
-                                  OperateType opType) = 0;
+                                  OperateType opType)
+        = 0;
 
     /**
      * Ask if the application supports a 32 bit analog output - group 41 variation 1
@@ -117,7 +119,8 @@ public:
     virtual CommandStatus Operate(const AnalogOutputInt32& command,
                                   uint16_t index,
                                   IUpdateHandler& handler,
-                                  OperateType opType) = 0;
+                                  OperateType opType)
+        = 0;
 
     /**
      * Ask if the application supports a single precision, floating point analog output - group 41 variation 3
@@ -140,7 +143,8 @@ public:
     virtual CommandStatus Operate(const AnalogOutputFloat32& command,
                                   uint16_t index,
                                   IUpdateHandler& handler,
-                                  OperateType opType) = 0;
+                                  OperateType opType)
+        = 0;
 
     /**
      * Ask if the application supports a double precision, floating point analog output - group 41 variation 4
@@ -163,7 +167,8 @@ public:
     virtual CommandStatus Operate(const AnalogOutputDouble64& command,
                                   uint16_t index,
                                   IUpdateHandler& handler,
-                                  OperateType opType) = 0;
+                                  OperateType opType)
+        = 0;
 };
 
 } // namespace opendnp3

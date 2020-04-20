@@ -27,16 +27,15 @@
 
 #include <ser4cpp/container/SequenceTypes.h>
 
-
 namespace opendnp3
 {
 
-APDUHeaderParser::Result<APDUHeader> APDUHeaderParser::ParseRequest(const ser4cpp::rseq_t& apdu,
-                                                                    Logger* logger)
+APDUHeaderParser::Result<APDUHeader> APDUHeaderParser::ParseRequest(const ser4cpp::rseq_t& apdu, Logger* logger)
 {
     if (apdu.length() < APDUHeader::REQUEST_SIZE)
     {
-        FORMAT_LOGGER_BLOCK(logger, flags::WARN, "Request fragment  with insufficient size of %zu bytes", apdu.length());
+        FORMAT_LOGGER_BLOCK(logger, flags::WARN, "Request fragment  with insufficient size of %zu bytes",
+                            apdu.length());
         return Result<APDUHeader>::Error();
     }
 
@@ -49,7 +48,8 @@ APDUHeaderParser::Result<APDUResponseHeader> APDUHeaderParser::ParseResponse(con
 {
     if (apdu.length() < APDUHeader::RESPONSE_SIZE)
     {
-        FORMAT_LOGGER_BLOCK(logger, flags::WARN, "Response fragment  with insufficient size of %zu bytes", apdu.length());
+        FORMAT_LOGGER_BLOCK(logger, flags::WARN, "Response fragment  with insufficient size of %zu bytes",
+                            apdu.length());
         return Result<APDUResponseHeader>::Error();
     }
 

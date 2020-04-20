@@ -22,8 +22,8 @@
 #define OPENDNP3_ASIOTESTS_MOCKTCPSERVER_H
 
 #include "channel/IAsyncChannel.h"
-#include "channel/TCPSocketChannel.h"
 #include "channel/TCPServer.h"
+#include "channel/TCPSocketChannel.h"
 
 #include <deque>
 

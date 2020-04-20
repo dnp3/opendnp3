@@ -22,10 +22,9 @@
 
 #include "channel/TCPSocketChannel.h"
 #include "link/LinkSession.h"
+#include "logging/LogMacros.h"
 
 #include "opendnp3/logging/LogLevels.h"
-
-#include "logging/LogMacros.h"
 
 #include <sstream>
 #include <utility>

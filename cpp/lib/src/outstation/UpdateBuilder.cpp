@@ -71,17 +71,17 @@ bool UpdateBuilder::Update(const OctetString& meas, uint16_t index, EventMode mo
 
 bool UpdateBuilder::Update(const TimeAndInterval& meas, uint16_t index)
 {
-    return this->Add([=](IUpdateHandler& handler) { handler.Update(meas, index); });    
+    return this->Add([=](IUpdateHandler& handler) { handler.Update(meas, index); });
 }
 
 bool UpdateBuilder::Modify(FlagsType type, uint16_t start, uint16_t stop, uint8_t flags)
 {
-    return this->Add([=](IUpdateHandler& handler) { handler.Modify(type, start, stop, flags); });    
+    return this->Add([=](IUpdateHandler& handler) { handler.Modify(type, start, stop, flags); });
 }
 
 template<class T> bool UpdateBuilder::AddMeas(const T& meas, uint16_t index, EventMode mode)
 {
-    return this->Add([=](IUpdateHandler& handler) { handler.Update(meas, index, mode); });    
+    return this->Add([=](IUpdateHandler& handler) { handler.Update(meas, index, mode); });
 }
 
 bool UpdateBuilder::Add(const update_func_t& fun)

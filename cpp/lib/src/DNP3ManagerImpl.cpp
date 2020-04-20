@@ -179,8 +179,7 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSServer(const std::string& id,
         std::error_code ec;
         auto clogger = this->logger.detach(id, levels);
         auto executor = exe4cpp::StrandExecutor::create(this->io);
-        auto iohandler
-            = TLSServerIOHandler::Create(clogger, mode, listener, executor, endpoint, config, ec);
+        auto iohandler = TLSServerIOHandler::Create(clogger, mode, listener, executor, endpoint, config, ec);
         return ec ? nullptr : DNP3Channel::Create(clogger, executor, iohandler, this->resources);
     };
 

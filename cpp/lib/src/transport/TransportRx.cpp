@@ -21,12 +21,11 @@
 
 #include "TransportConstants.h"
 #include "TransportHeader.h"
+#include "logging/LogMacros.h"
 
 #include "opendnp3/logging/LogLevels.h"
 
 #include <ser4cpp/util/HexConversions.h>
-
-#include "logging/LogMacros.h"
 
 #include <cstring>
 
@@ -68,8 +67,8 @@ Message TransportRx::ProcessReceive(const Message& segment)
 
     const auto payload = segment.payload.skip(1);
 
-    FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_RX, "FIR: %d FIN: %d SEQ: %u LEN: %zu", header.fir, header.fin, header.seq,
-                     payload.length());
+    FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_RX, "FIR: %d FIN: %d SEQ: %u LEN: %zu", header.fir, header.fin,
+                     header.seq, payload.length());
 
     if (header.fir && this->numBytesRead > 0)
     {

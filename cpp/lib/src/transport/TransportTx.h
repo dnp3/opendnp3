@@ -26,11 +26,10 @@
 #include "transport/TransportSeqNum.h"
 
 #include "opendnp3/StackStatistics.h"
+#include "opendnp3/logging/Logger.h"
 
 #include <ser4cpp/container/Settable.h>
 #include <ser4cpp/container/StaticBuffer.h>
-
-#include "opendnp3/logging/Logger.h"
 
 namespace opendnp3
 {

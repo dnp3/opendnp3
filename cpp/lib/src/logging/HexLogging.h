@@ -20,12 +20,13 @@
 #ifndef OPENDNP3_HEXLOGGING_H
 #define OPENDNP3_HEXLOGGING_H
 
+#include "logging/Location.h"
+
+#include "opendnp3/logging/Logger.h"
+
 #include <ser4cpp/container/SequenceTypes.h>
 #include <ser4cpp/util/HexConversions.h>
 #include <ser4cpp/util/Uncopyable.h>
-
-#include "logging/Location.h"
-#include "opendnp3/logging/Logger.h"
 
 namespace opendnp3
 {
@@ -35,14 +36,12 @@ class HexLogging : private ser4cpp::StaticOnly
     static const uint32_t max_hex_per_line = max_log_entry_size / 3;
 
 public:
-    static void log(
-        Logger& logger,
-        LogLevel level,
-        const ser4cpp::rseq_t& source,
-        char separator = ' ',
-        uint32_t first_row_size = max_hex_per_line,
-        uint32_t other_row_size = max_hex_per_line
-    )
+    static void log(Logger& logger,
+                    LogLevel level,
+                    const ser4cpp::rseq_t& source,
+                    char separator = ' ',
+                    uint32_t first_row_size = max_hex_per_line,
+                    uint32_t other_row_size = max_hex_per_line)
     {
         ser4cpp::rseq_t copy(source);
         uint32_t row = 0;
@@ -60,12 +59,7 @@ public:
 
 private:
     static ser4cpp::rseq_t log_line(
-        Logger& logger,
-        LogLevel level,
-        const ser4cpp::rseq_t& data,
-        char separator,
-        uint32_t max_row_size
-    )
+        Logger& logger, LogLevel level, const ser4cpp::rseq_t& data, char separator, uint32_t max_row_size)
     {
         char buffer[max_log_entry_size];
 
@@ -88,6 +82,6 @@ private:
     }
 };
 
-} //namespace opendnp3
+} // namespace opendnp3
 
-#endif //OPENDNP3_HEXLOGGING_H
+#endif // OPENDNP3_HEXLOGGING_H

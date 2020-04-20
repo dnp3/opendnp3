@@ -23,7 +23,8 @@
 namespace opendnp3
 {
 
-TCPSocketChannel::TCPSocketChannel(const std::shared_ptr<exe4cpp::StrandExecutor>& executor, asio::ip::tcp::socket socket)
+TCPSocketChannel::TCPSocketChannel(const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
+                                   asio::ip::tcp::socket socket)
     : IAsyncChannel(executor), socket(std::move(socket))
 {
 }

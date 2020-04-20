@@ -22,11 +22,10 @@
 #include "MasterTasks.h"
 #include "app/APDUBuilders.h"
 #include "app/parsing/APDUParser.h"
+#include "logging/LogMacros.h"
 #include "master/MeasurementHandler.h"
 
 #include "opendnp3/logging/LogLevels.h"
-
-#include "logging/LogMacros.h"
 
 namespace opendnp3
 {

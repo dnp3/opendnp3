@@ -19,9 +19,8 @@
  */
 #include "dnp3mocks/MockEventWriteHandler.h"
 
-#include <outstation/event/EventStorage.h>
-
 #include <catch.hpp>
+#include <outstation/event/EventStorage.h>
 
 using namespace opendnp3;
 

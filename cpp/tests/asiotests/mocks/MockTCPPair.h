@@ -21,12 +21,12 @@
 #ifndef OPENDNP3_ASIOTESTS_MOCKTCPPAIR_H
 #define OPENDNP3_ASIOTESTS_MOCKTCPPAIR_H
 
+#include "channel/TCPClient.h"
 #include "mocks/MockIO.h"
 #include "mocks/MockTCPClientHandler.h"
 #include "mocks/MockTCPServer.h"
-#include <dnp3mocks/MockLogHandler.h>
 
-#include "channel/TCPClient.h"
+#include <dnp3mocks/MockLogHandler.h>
 
 class MockTCPPair
 {

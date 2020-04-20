@@ -45,6 +45,6 @@ public:
     virtual void log(ModuleId module, const char* id, LogLevel level, char const* location, char const* message) = 0;
 };
 
-} //namespace opendnp3
+} // namespace opendnp3
 
-#endif //OPENDNP3_ILOGHANDLER_H
+#endif // OPENDNP3_ILOGHANDLER_H

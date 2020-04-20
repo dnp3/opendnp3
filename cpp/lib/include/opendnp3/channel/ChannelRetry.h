@@ -20,8 +20,8 @@
 #ifndef OPENDNP3_CHANNEL_RETRY_H
 #define OPENDNP3_CHANNEL_RETRY_H
 
-#include "opendnp3/util/TimeDuration.h"
 #include "opendnp3/channel/IOpenDelayStrategy.h"
+#include "opendnp3/util/TimeDuration.h"
 
 namespace opendnp3
 {

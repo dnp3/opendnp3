@@ -30,11 +30,10 @@ using namespace opendnp3;
 
 std::string QueryDiscontiguousBinary(const std::string& request)
 {
-    OutstationTestObject t(OutstationConfig(), 
-		configure::from({{2, BinaryConfig{}}, {4, BinaryConfig{}}, {5, BinaryConfig{}}
+    OutstationTestObject t(OutstationConfig(),
+                           configure::from({{2, BinaryConfig{}}, {4, BinaryConfig{}}, {5, BinaryConfig{}}
 
-		})
-	);    
+                           }));
 
     t.LowerLayerUp();
 

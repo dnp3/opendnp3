@@ -25,9 +25,8 @@
 
 #include "opendnp3/channel/IPEndpoint.h"
 #include "opendnp3/channel/TLSConfig.h"
-#include "opendnp3/master/IListenCallbacks.h"
-
 #include "opendnp3/logging/Logger.h"
+#include "opendnp3/master/IListenCallbacks.h"
 
 namespace opendnp3
 {

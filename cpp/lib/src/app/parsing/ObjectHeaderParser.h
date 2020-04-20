@@ -22,9 +22,9 @@
 
 #include "app/parsing/ParseResult.h"
 
-#include "opendnp3/util/StaticOnly.h"
 #include "opendnp3/gen/GroupVariation.h"
 #include "opendnp3/logging/Logger.h"
+#include "opendnp3/util/StaticOnly.h"
 
 #include <ser4cpp/container/SequenceTypes.h>
 

@@ -26,10 +26,9 @@
 #include "link/ILinkLayer.h"
 
 #include "opendnp3/StackStatistics.h"
+#include "opendnp3/logging/Logger.h"
 
 #include <exe4cpp/IExecutor.h>
-
-#include "opendnp3/logging/Logger.h"
 
 namespace opendnp3
 {

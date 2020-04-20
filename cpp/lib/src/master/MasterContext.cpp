@@ -337,9 +337,7 @@ std::shared_ptr<IMasterTask> MContext::AddRangeScan(GroupVariationID gvId,
     return this->AddScan(period, build, soe_handler, config);
 }
 
-void MContext::Scan(const HeaderBuilderT& builder,
-                    std::shared_ptr<ISOEHandler> soe_handler,
-                    TaskConfig config)
+void MContext::Scan(const HeaderBuilderT& builder, std::shared_ptr<ISOEHandler> soe_handler, TaskConfig config)
 {
     const auto timeout = Timestamp(this->executor->get_time()) + params.taskStartTimeout;
 
@@ -350,28 +348,21 @@ void MContext::Scan(const HeaderBuilderT& builder,
     this->ScheduleAdhocTask(task);
 }
 
-void MContext::ScanClasses(const ClassField& field,
-                           std::shared_ptr<ISOEHandler> soe_handler,
-                           TaskConfig config)
+void MContext::ScanClasses(const ClassField& field, std::shared_ptr<ISOEHandler> soe_handler, TaskConfig config)
 {
     auto configure = [field](HeaderWriter& writer) -> bool { return build::WriteClassHeaders(writer, field); };
     this->Scan(configure, soe_handler, config);
 }
 
-void MContext::ScanAllObjects(GroupVariationID gvId,
-                              std::shared_ptr<ISOEHandler> soe_handler,
-                              TaskConfig config)
+void MContext::ScanAllObjects(GroupVariationID gvId, std::shared_ptr<ISOEHandler> soe_handler, TaskConfig config)
 {
     auto configure
         = [gvId](HeaderWriter& writer) -> bool { return writer.WriteHeader(gvId, QualifierCode::ALL_OBJECTS); };
     this->Scan(configure, soe_handler, config);
 }
 
-void MContext::ScanRange(GroupVariationID gvId,
-                         uint16_t start,
-                         uint16_t stop,
-                         std::shared_ptr<ISOEHandler> soe_handler,
-                         TaskConfig config)
+void MContext::ScanRange(
+    GroupVariationID gvId, uint16_t start, uint16_t stop, std::shared_ptr<ISOEHandler> soe_handler, TaskConfig config)
 {
     auto configure = [gvId, start, stop](HeaderWriter& writer) -> bool {
         return writer.WriteRangeHeader<ser4cpp::UInt16>(QualifierCode::UINT16_START_STOP, gvId, start, stop);

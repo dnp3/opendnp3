@@ -26,15 +26,12 @@
 
 #include <ser4cpp/serialization/LittleEndian.h>
 
-
 namespace opendnp3
 {
 
 ObjectHeader::ObjectHeader() : group(0), variation(0), qualifier(0) {}
 
-ParseResult ObjectHeaderParser::ParseObjectHeader(ObjectHeader& header,
-                                                  ser4cpp::rseq_t& buffer,
-                                                  Logger* pLogger)
+ParseResult ObjectHeaderParser::ParseObjectHeader(ObjectHeader& header, ser4cpp::rseq_t& buffer, Logger* pLogger)
 {
     if (buffer.length() < 3)
     {

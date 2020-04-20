@@ -20,12 +20,11 @@
 #include "CommandTask.h"
 
 #include "app/parsing/APDUParser.h"
+#include "logging/LogMacros.h"
 #include "master/CommandSetOps.h"
 #include "master/ICommandHeader.h"
 
 #include "opendnp3/logging/LogLevels.h"
-
-#include "logging/LogMacros.h"
 
 #include <utility>
 

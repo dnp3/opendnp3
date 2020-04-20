@@ -17,6 +17,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "mocks/NullSOEHandler.h"
+
 #include <opendnp3/ConsoleLogger.h>
 #include <opendnp3/DNP3Manager.h>
 #include <opendnp3/logging/LogLevels.h>
@@ -24,8 +26,6 @@
 #include <opendnp3/master/ISOEHandler.h>
 #include <opendnp3/outstation/DefaultOutstationApplication.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
-
-#include "mocks/NullSOEHandler.h"
 
 #include <dnp3mocks/DatabaseHelpers.h>
 
@@ -43,9 +43,10 @@ const int ITERATIONS = 100;
 struct Channels
 {
     explicit Channels(DNP3Manager& manager)
-        : client(manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(), { opendnp3::IPEndpoint("127.0.0.1", 20000) }, "", nullptr)),
-          server(
-              manager.AddTCPServer("server", levels::ALL, ServerAcceptMode::CloseExisting, IPEndpoint("0.0.0.0", 20000), nullptr))
+        : client(manager.AddTCPClient(
+              "client", levels::ALL, ChannelRetry::Default(), {opendnp3::IPEndpoint("127.0.0.1", 20000)}, "", nullptr)),
+          server(manager.AddTCPServer(
+              "server", levels::ALL, ServerAcceptMode::CloseExisting, IPEndpoint("0.0.0.0", 20000), nullptr))
     {
     }
 

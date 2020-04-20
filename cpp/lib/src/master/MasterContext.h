@@ -28,6 +28,7 @@
 
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/gen/RestartType.h"
+#include "opendnp3/logging/Logger.h"
 #include "opendnp3/master/CommandResultCallbackT.h"
 #include "opendnp3/master/CommandSet.h"
 #include "opendnp3/master/IMasterApplication.h"
@@ -37,8 +38,6 @@
 
 #include <exe4cpp/Timer.h>
 #include <exe4cpp/asio/StrandExecutor.h>
-
-#include "opendnp3/logging/Logger.h"
 
 #include <deque>
 

@@ -20,8 +20,8 @@
 #ifndef OPENDNP3_LINKCONFIG_H
 #define OPENDNP3_LINKCONFIG_H
 
-#include "opendnp3/util/TimeDuration.h"
 #include "opendnp3/link/Addresses.h"
+#include "opendnp3/util/TimeDuration.h"
 
 namespace opendnp3
 {

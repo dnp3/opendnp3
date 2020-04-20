@@ -90,9 +90,7 @@ public:
     void ScanAllObjects(GroupVariationID gvId,
                         std::shared_ptr<ISOEHandler> soe_handler,
                         const TaskConfig& config) final;
-    void ScanClasses(const ClassField& field,
-                     std::shared_ptr<ISOEHandler> soe_handler,
-                     const TaskConfig& config) final;
+    void ScanClasses(const ClassField& field, std::shared_ptr<ISOEHandler> soe_handler, const TaskConfig& config) final;
     void ScanRange(GroupVariationID gvId,
                    uint16_t start,
                    uint16_t stop,

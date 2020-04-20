@@ -37,170 +37,188 @@ public:
         records.push_back(record);
     }
 
-    opendnp3::IINField ProcessHeader(const opendnp3::CountHeader& header, const opendnp3::ICollection<opendnp3::Group120Var4>& values) final
+    opendnp3::IINField ProcessHeader(const opendnp3::CountHeader& header,
+                                     const opendnp3::ICollection<opendnp3::Group120Var4>& values) final
     {
         return ProcessAny(header, values, authStatusRequests);
     }
 
     opendnp3::IINField ProcessHeader(const opendnp3::RangeHeader& header,
-                                   const opendnp3::ICollection<opendnp3::Indexed<opendnp3::IINValue>>& values) final
+                                     const opendnp3::ICollection<opendnp3::Indexed<opendnp3::IINValue>>& values) final
     {
         return ProcessAny(header, values, iinBits);
     }
 
-    opendnp3::IINField ProcessHeader(const opendnp3::RangeHeader& header, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Binary>>& values) final
+    opendnp3::IINField ProcessHeader(const opendnp3::RangeHeader& header,
+                                     const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Binary>>& values) final
     {
         return ProcessAny(header, values, staticBinaries);
     }
 
-    opendnp3::IINField ProcessHeader(const opendnp3::RangeHeader& header,
-                                   const opendnp3::ICollection<opendnp3::Indexed<opendnp3::DoubleBitBinary>>& values) final
+    opendnp3::IINField ProcessHeader(
+        const opendnp3::RangeHeader& header,
+        const opendnp3::ICollection<opendnp3::Indexed<opendnp3::DoubleBitBinary>>& values) final
     {
         return ProcessAny(header, values, staticDoubleBinaries);
     }
 
-    opendnp3::IINField ProcessHeader(const opendnp3::RangeHeader& header,
-                                   const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryOutputStatus>>& values) final
+    opendnp3::IINField ProcessHeader(
+        const opendnp3::RangeHeader& header,
+        const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryOutputStatus>>& values) final
     {
         return ProcessAny(header, values, staticControlStatii);
     }
 
     opendnp3::IINField ProcessHeader(const opendnp3::RangeHeader& header,
-                                   const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Counter>>& values) final
+                                     const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Counter>>& values) final
     {
         return ProcessAny(header, values, staticCounters);
     }
 
-    opendnp3::IINField ProcessHeader(const opendnp3::RangeHeader& header,
-                                   const opendnp3::ICollection<opendnp3::Indexed<opendnp3::FrozenCounter>>& values) final
+    opendnp3::IINField ProcessHeader(
+        const opendnp3::RangeHeader& header,
+        const opendnp3::ICollection<opendnp3::Indexed<opendnp3::FrozenCounter>>& values) final
     {
         return ProcessAny(header, values, staticFrozenCounters);
     }
 
-    opendnp3::IINField ProcessHeader(const opendnp3::RangeHeader& header, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Analog>>& values) final
+    opendnp3::IINField ProcessHeader(const opendnp3::RangeHeader& header,
+                                     const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Analog>>& values) final
     {
         return ProcessAny(header, values, eventAnalogs);
     }
 
-    opendnp3::IINField ProcessHeader(const opendnp3::RangeHeader& header,
-                                   const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogOutputStatus>>& values) final
+    opendnp3::IINField ProcessHeader(
+        const opendnp3::RangeHeader& header,
+        const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogOutputStatus>>& values) final
     {
         return ProcessAny(header, values, staticSetpointStatii);
     }
 
-    opendnp3::IINField ProcessHeader(const opendnp3::RangeHeader& header,
-                                   const opendnp3::ICollection<opendnp3::Indexed<opendnp3::OctetString>>& values) final
+    opendnp3::IINField ProcessHeader(
+        const opendnp3::RangeHeader& header,
+        const opendnp3::ICollection<opendnp3::Indexed<opendnp3::OctetString>>& values) final
     {
         return ProcessAny(header, values, rangedOctets);
     }
 
     opendnp3::IINField ProcessHeader(const opendnp3::PrefixHeader& header,
-                                   const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Binary>>& values) final
+                                     const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Binary>>& values) final
     {
         return this->ProcessAny(header, values, eventBinaries);
     }
 
-    opendnp3::IINField ProcessHeader(const opendnp3::PrefixHeader& header,
-                                   const opendnp3::ICollection<opendnp3::Indexed<opendnp3::DoubleBitBinary>>& values) final
+    opendnp3::IINField ProcessHeader(
+        const opendnp3::PrefixHeader& header,
+        const opendnp3::ICollection<opendnp3::Indexed<opendnp3::DoubleBitBinary>>& values) final
     {
         return this->ProcessAny(header, values, eventDoubleBinaries);
     }
 
     opendnp3::IINField ProcessHeader(const opendnp3::PrefixHeader& header,
-                                   const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Counter>>& values) final
+                                     const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Counter>>& values) final
     {
         return this->ProcessAny(header, values, eventCounters);
     }
 
-    opendnp3::IINField ProcessHeader(const opendnp3::PrefixHeader& header,
-                                   const opendnp3::ICollection<opendnp3::Indexed<opendnp3::FrozenCounter>>& values) final
+    opendnp3::IINField ProcessHeader(
+        const opendnp3::PrefixHeader& header,
+        const opendnp3::ICollection<opendnp3::Indexed<opendnp3::FrozenCounter>>& values) final
     {
         return this->ProcessAny(header, values, eventFrozenCounters);
     }
 
     opendnp3::IINField ProcessHeader(const opendnp3::PrefixHeader& header,
-                                   const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Analog>>& values) final
+                                     const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Analog>>& values) final
     {
         return this->ProcessAny(header, values, eventAnalogs);
     }
 
-    opendnp3::IINField ProcessHeader(const opendnp3::PrefixHeader& header,
-                                   const opendnp3::ICollection<opendnp3::Indexed<opendnp3::OctetString>>& values) final
+    opendnp3::IINField ProcessHeader(
+        const opendnp3::PrefixHeader& header,
+        const opendnp3::ICollection<opendnp3::Indexed<opendnp3::OctetString>>& values) final
     {
         return this->ProcessAny(header, values, indexPrefixedOctets);
     }
 
-    opendnp3::IINField ProcessHeader(const opendnp3::PrefixHeader& header,
-                                   const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryCommandEvent>>& values) final
+    opendnp3::IINField ProcessHeader(
+        const opendnp3::PrefixHeader& header,
+        const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryCommandEvent>>& values) final
     {
         return this->ProcessAny(header, values, binaryCommandEvents);
     }
 
-    opendnp3::IINField ProcessHeader(const opendnp3::PrefixHeader& header,
-                                   const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogCommandEvent>>& values) final
+    opendnp3::IINField ProcessHeader(
+        const opendnp3::PrefixHeader& header,
+        const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogCommandEvent>>& values) final
     {
         return this->ProcessAny(header, values, analogCommandEvents);
     }
 
     /// --- controls ----
 
-    opendnp3::IINField ProcessHeader(const opendnp3::PrefixHeader& header,
-                                   const opendnp3::ICollection<opendnp3::Indexed<opendnp3::ControlRelayOutputBlock>>& meas) final
+    opendnp3::IINField ProcessHeader(
+        const opendnp3::PrefixHeader& header,
+        const opendnp3::ICollection<opendnp3::Indexed<opendnp3::ControlRelayOutputBlock>>& meas) final
     {
         return this->ProcessAny(header, meas, crobRequests);
     }
 
-    opendnp3::IINField ProcessHeader(const opendnp3::PrefixHeader& header,
-                                   const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogOutputInt16>>& meas) final
+    opendnp3::IINField ProcessHeader(
+        const opendnp3::PrefixHeader& header,
+        const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogOutputInt16>>& meas) final
     {
         return this->ProcessAny(header, meas, aoInt16Requests);
     }
 
-    opendnp3::IINField ProcessHeader(const opendnp3::PrefixHeader& header,
-                                   const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogOutputInt32>>& meas) final
+    opendnp3::IINField ProcessHeader(
+        const opendnp3::PrefixHeader& header,
+        const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogOutputInt32>>& meas) final
     {
         return this->ProcessAny(header, meas, aoInt32Requests);
     }
 
-    opendnp3::IINField ProcessHeader(const opendnp3::PrefixHeader& header,
-                                   const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogOutputFloat32>>& meas) final
+    opendnp3::IINField ProcessHeader(
+        const opendnp3::PrefixHeader& header,
+        const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogOutputFloat32>>& meas) final
     {
         return this->ProcessAny(header, meas, aoFloat32Requests);
     }
 
-    opendnp3::IINField ProcessHeader(const opendnp3::PrefixHeader& header,
-                                   const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogOutputDouble64>>& meas) final
+    opendnp3::IINField ProcessHeader(
+        const opendnp3::PrefixHeader& header,
+        const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogOutputDouble64>>& meas) final
     {
         return this->ProcessAny(header, meas, aoDouble64Requests);
     }
 
     opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header,
-                                   const opendnp3::Group120Var1& value,
-                                   const ser4cpp::rseq_t& object) final
+                                     const opendnp3::Group120Var1& value,
+                                     const ser4cpp::rseq_t& object) final
     {
         authChallenges.push_back(value);
         return opendnp3::IINField::Empty();
     }
 
     opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header,
-                                   const opendnp3::Group120Var2& value,
-                                   const ser4cpp::rseq_t& object) final
+                                     const opendnp3::Group120Var2& value,
+                                     const ser4cpp::rseq_t& object) final
     {
         authReplys.push_back(value);
         return opendnp3::IINField::Empty();
     }
 
     opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header,
-                                   const opendnp3::Group120Var5& value,
-                                   const ser4cpp::rseq_t& object) final
+                                     const opendnp3::Group120Var5& value,
+                                     const ser4cpp::rseq_t& object) final
     {
         authKeyStatusResponses.push_back(value);
         return opendnp3::IINField::Empty();
     }
 
     opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header,
-                                   const opendnp3::Group120Var6& value,
-                                   const ser4cpp::rseq_t& object) final
+                                     const opendnp3::Group120Var6& value,
+                                     const ser4cpp::rseq_t& object) final
     {
         authChanges.push_back(value);
         return opendnp3::IINField::Empty();
@@ -250,7 +268,10 @@ public:
     std::vector<opendnp3::Indexed<opendnp3::AnalogCommandEvent>> analogCommandEvents;
 
 private:
-    template<class T> opendnp3::IINField ProcessAny(const opendnp3::HeaderRecord& record, const opendnp3::ICollection<T>& meas, std::vector<T>& items)
+    template<class T>
+    opendnp3::IINField ProcessAny(const opendnp3::HeaderRecord& record,
+                                  const opendnp3::ICollection<T>& meas,
+                                  std::vector<T>& items)
     {
         auto add = [&items](const T& v) { items.push_back(v); };
         meas.ForeachItem(add);

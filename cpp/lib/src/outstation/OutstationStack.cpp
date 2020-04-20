@@ -38,7 +38,7 @@ OutstationStack::OutstationStack(const Logger& logger,
                 manager,
                 config.outstation.params.maxRxFragSize,
                 LinkLayerConfig(config.link, config.outstation.params.respondToAnyMaster)),
-               ocontext(Addresses(config.link.LocalAddr, config.link.RemoteAddr),
+      ocontext(Addresses(config.link.LocalAddr, config.link.RemoteAddr),
                config.outstation,
                config.database,
                logger,
@@ -47,7 +47,7 @@ OutstationStack::OutstationStack(const Logger& logger,
                commandHandler,
                application)
 {
-    this->tstack.transport->SetAppLayer(ocontext);    
+    this->tstack.transport->SetAppLayer(ocontext);
 }
 
 bool OutstationStack::Enable()

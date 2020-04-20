@@ -27,16 +27,15 @@
 #include "link/LinkLayerConstants.h"
 
 #include "opendnp3/StackStatistics.h"
-#include "opendnp3/util/Timestamp.h"
 #include "opendnp3/gen/LinkStatus.h"
 #include "opendnp3/link/ILinkListener.h"
+#include "opendnp3/logging/Logger.h"
+#include "opendnp3/util/Timestamp.h"
 
 #include <ser4cpp/container/Settable.h>
 #include <ser4cpp/container/StaticBuffer.h>
 
 #include <exe4cpp/IExecutor.h>
-
-#include "opendnp3/logging/Logger.h"
 
 namespace opendnp3
 {

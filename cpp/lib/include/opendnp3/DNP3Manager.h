@@ -20,7 +20,6 @@
 #ifndef OPENDNP3_DNP3MANAGER_H
 #define OPENDNP3_DNP3MANAGER_H
 
-#include "opendnp3/util/TimeDuration.h"
 #include "opendnp3/channel/ChannelRetry.h"
 #include "opendnp3/channel/IChannel.h"
 #include "opendnp3/channel/IChannelListener.h"
@@ -33,6 +32,7 @@
 #include "opendnp3/logging/ILogHandler.h"
 #include "opendnp3/logging/LogLevels.h"
 #include "opendnp3/master/IListenCallbacks.h"
+#include "opendnp3/util/TimeDuration.h"
 
 #include <memory>
 #include <system_error>

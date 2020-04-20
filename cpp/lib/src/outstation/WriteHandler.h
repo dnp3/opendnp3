@@ -23,11 +23,10 @@
 #include "app/parsing/IAPDUHandler.h"
 #include "outstation/TimeSyncState.h"
 
-#include "opendnp3/util/Timestamp.h"
 #include "opendnp3/app/IINField.h"
-#include "opendnp3/outstation/IOutstationApplication.h"
-
 #include "opendnp3/logging/Logger.h"
+#include "opendnp3/outstation/IOutstationApplication.h"
+#include "opendnp3/util/Timestamp.h"
 
 namespace opendnp3
 {

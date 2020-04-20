@@ -22,6 +22,7 @@
 #define OPENDNP3_APDULOGGING_H
 
 #include "app/APDUHeader.h"
+
 #include "opendnp3/logging/Logger.h"
 
 #include <ser4cpp/container/SequenceTypes.h>

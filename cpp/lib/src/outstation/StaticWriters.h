@@ -24,7 +24,6 @@
 #include "app/MeasurementTypeSpecs.h"
 #include "outstation/StaticDataMap.h"
 
-#include "opendnp3/util/StaticOnly.h"
 #include "opendnp3/gen/StaticAnalogOutputStatusVariation.h"
 #include "opendnp3/gen/StaticAnalogVariation.h"
 #include "opendnp3/gen/StaticBinaryOutputStatusVariation.h"
@@ -32,13 +31,12 @@
 #include "opendnp3/gen/StaticCounterVariation.h"
 #include "opendnp3/gen/StaticDoubleBinaryVariation.h"
 #include "opendnp3/gen/StaticFrozenCounterVariation.h"
-
+#include "opendnp3/util/StaticOnly.h"
 
 namespace opendnp3
 {
 
-template <class Spec>
-using static_write_func_t = bool (*)(StaticDataMap<Spec>& map, HeaderWriter& writer);
+template<class Spec> using static_write_func_t = bool (*)(StaticDataMap<Spec>& map, HeaderWriter& writer);
 
 struct StaticWriters : private StaticOnly
 {

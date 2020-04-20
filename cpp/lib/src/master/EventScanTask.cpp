@@ -23,11 +23,10 @@
 #include "MasterTasks.h"
 #include "app/APDUBuilders.h"
 #include "app/parsing/APDUParser.h"
+#include "logging/LogMacros.h"
 #include "master/MeasurementHandler.h"
 
 #include "opendnp3/logging/LogLevels.h"
-
-#include "logging/LogMacros.h"
 
 namespace opendnp3
 {
@@ -37,7 +36,8 @@ EventScanTask::EventScanTask(const std::shared_ptr<TaskContext>& context,
                              std::shared_ptr<ISOEHandler> soeHandler,
                              ClassField classes,
                              const Logger& logger)
-    : PollTaskBase(context, application, std::move(soeHandler), TaskBehavior::ReactsToIINOnly(), logger, TaskConfig::Default()),
+    : PollTaskBase(
+          context, application, std::move(soeHandler), TaskBehavior::ReactsToIINOnly(), logger, TaskConfig::Default()),
       classes(classes.OnlyEventClasses())
 {
 }

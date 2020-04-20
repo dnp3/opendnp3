@@ -36,6 +36,7 @@
 
 #include "opendnp3/gen/SecurityStatIndex.h"
 #include "opendnp3/link/Addresses.h"
+#include "opendnp3/logging/Logger.h"
 #include "opendnp3/outstation/ICommandHandler.h"
 #include "opendnp3/outstation/IOutstationApplication.h"
 #include "opendnp3/outstation/OutstationConfig.h"
@@ -44,8 +45,6 @@
 #include <ser4cpp/container/Settable.h>
 
 #include <exe4cpp/IExecutor.h>
-
-#include "opendnp3/logging/Logger.h"
 
 namespace opendnp3
 {
@@ -84,7 +83,7 @@ public:
 
     void HandleNewEvents();
 
-    IUpdateHandler& GetUpdateHandler();    
+    IUpdateHandler& GetUpdateHandler();
 
     void SetRestartIIN();
 

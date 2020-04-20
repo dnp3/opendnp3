@@ -43,7 +43,7 @@ public:
         return std::make_shared<PrintingSOEHandler>();
     }
 
-	void begin_fragment(const ResponseInfo& info) override;
+    void begin_fragment(const ResponseInfo& info) override;
     void end_fragment(const ResponseInfo& info) override;
 
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) override;

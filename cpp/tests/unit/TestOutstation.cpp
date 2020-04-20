@@ -540,12 +540,7 @@ TEST_CASE(SUITE("ReadGrp1Var1"))
     OutstationTestObject t(cfg, std::move(database));
 
     // set all the values to ONLINE so that they don't get promoted
-    t.Transaction(
-		[](IUpdateHandler& handler)
-		{ 
-			handler.Modify(FlagsType::BinaryInput, 0, 9, 0x01);
-		}
-	);
+    t.Transaction([](IUpdateHandler& handler) { handler.Modify(FlagsType::BinaryInput, 0, 9, 0x01); });
 
     t.LowerLayerUp();
 

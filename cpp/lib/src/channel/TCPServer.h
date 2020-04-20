@@ -20,13 +20,12 @@
 #ifndef OPENDNP3_TCPSERVER_H
 #define OPENDNP3_TCPSERVER_H
 
-#include "opendnp3/util/Uncopyable.h"
 #include "opendnp3/channel/IListener.h"
 #include "opendnp3/channel/IPEndpoint.h"
+#include "opendnp3/logging/Logger.h"
+#include "opendnp3/util/Uncopyable.h"
 
 #include <exe4cpp/asio/StrandExecutor.h>
-
-#include "opendnp3/logging/Logger.h"
 
 #include <memory>
 

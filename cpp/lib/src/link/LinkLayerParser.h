@@ -26,10 +26,9 @@
 #include "link/ShiftableBuffer.h"
 
 #include "opendnp3/link/LinkStatistics.h"
+#include "opendnp3/logging/Logger.h"
 
 #include <ser4cpp/container/SequenceTypes.h>
-
-#include "opendnp3/logging/Logger.h"
 
 namespace opendnp3
 {

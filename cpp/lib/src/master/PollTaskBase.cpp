@@ -19,11 +19,10 @@
  */
 #include "PollTaskBase.h"
 
+#include "logging/LogMacros.h"
 #include "master/MeasurementHandler.h"
 
 #include "opendnp3/logging/LogLevels.h"
-
-#include "logging/LogMacros.h"
 
 namespace opendnp3
 {
@@ -73,7 +72,8 @@ IMasterTask::ResponseResult PollTaskBase::ProcessMeasurements(const APDUResponse
 {
     ++rxCount;
 
-    if (MeasurementHandler::ProcessMeasurements(header.as_response_info(), objects, logger, handler.get()) == ParseResult::OK)
+    if (MeasurementHandler::ProcessMeasurements(header.as_response_info(), objects, logger, handler.get())
+        == ParseResult::OK)
     {
         return header.control.FIN ? ResponseResult::OK_FINAL : ResponseResult::OK_CONTINUE;
     }

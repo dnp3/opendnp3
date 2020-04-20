@@ -46,10 +46,13 @@ public:
         size_t max_id_size = 10;
     };
 
-    explicit ConsolePrettyPrinter(const Settings& settings = Settings()) : settings(settings)
-    {}
+    explicit ConsolePrettyPrinter(const Settings& settings = Settings()) : settings(settings) {}
 
-    void log(opendnp3::ModuleId module, const char* id, opendnp3::LogLevel level, char const* location, char const* message) override
+    void log(opendnp3::ModuleId module,
+             const char* id,
+             opendnp3::LogLevel level,
+             char const* location,
+             char const* message) override
     {
         const auto now = std::chrono::high_resolution_clock::now();
         const auto millis = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
@@ -76,7 +79,6 @@ public:
 
         oss << get_prefix(level.value) << message;
 
-
         std::cout << oss.str() << std::endl;
     }
 
@@ -87,19 +89,19 @@ private:
     {
         switch (level)
         {
-        case(1 << 0):
+        case (1 << 0):
             return "event   ";
-        case(1 << 1):
+        case (1 << 1):
             return "error   ";
-        case(1 << 2):
+        case (1 << 2):
             return "warn    ";
-        case(1 << 3):
+        case (1 << 3):
             return "info    ";
-        case(1 << 4):
+        case (1 << 4):
             return "debug   ";
-        case(1 << 5):
+        case (1 << 5):
             return "<--     ";
-        case(1 << 6):
+        case (1 << 6):
             return "-->     ";
         default:
             return "            ";
@@ -107,6 +109,6 @@ private:
     }
 };
 
-} //namespace opendnp3
+} // namespace opendnp3
 
-#endif //OPENDNP3_CONSOLEPRETTYPRINTER_H
+#endif // OPENDNP3_CONSOLEPRETTYPRINTER_H

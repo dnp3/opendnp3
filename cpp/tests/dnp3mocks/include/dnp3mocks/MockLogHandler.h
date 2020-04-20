@@ -31,7 +31,8 @@ class LogRecord
 {
 public:
     LogRecord() = default;
-    LogRecord(opendnp3::ModuleId module, const char* id, opendnp3::LogLevel level, char const* location, char const* message);
+    LogRecord(
+        opendnp3::ModuleId module, const char* id, opendnp3::LogLevel level, char const* location, char const* message);
 
     opendnp3::ModuleId module;
     std::string id;
@@ -42,7 +43,11 @@ public:
 
 struct MockLogHandlerImpl : public opendnp3::ILogHandler
 {
-    virtual void log(opendnp3::ModuleId module, const char* id, opendnp3::LogLevel level, char const* location, char const* message) override;
+    virtual void log(opendnp3::ModuleId module,
+                     const char* id,
+                     opendnp3::LogLevel level,
+                     char const* location,
+                     char const* message) override;
 
     std::mutex mutex;
     bool outputToStdIO = false;
@@ -53,7 +58,11 @@ class MockLogHandler
 {
 
 public:
-    MockLogHandler() : impl(std::make_shared<MockLogHandlerImpl>()), logger(impl, opendnp3::ModuleId(), "test", opendnp3::LogLevels::everything()) {}
+    MockLogHandler()
+        : impl(std::make_shared<MockLogHandlerImpl>()),
+          logger(impl, opendnp3::ModuleId(), "test", opendnp3::LogLevels::everything())
+    {
+    }
 
     void WriteToStdIo();
 

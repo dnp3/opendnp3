@@ -25,10 +25,9 @@
 #include "transport/TransportRx.h"
 
 #include "opendnp3/decoder/IDecoderCallbacks.h"
+#include "opendnp3/logging/Logger.h"
 
 #include <ser4cpp/container/SequenceTypes.h>
-
-#include "opendnp3/logging/Logger.h"
 
 namespace opendnp3
 {

@@ -26,7 +26,6 @@
 
 #include "opendnp3/channel/IChannelListener.h"
 #include "opendnp3/link/Addresses.h"
-
 #include "opendnp3/logging/Logger.h"
 
 #include <deque>

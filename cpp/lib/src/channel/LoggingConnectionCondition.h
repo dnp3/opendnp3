@@ -20,9 +20,9 @@
 #ifndef OPENDNP3_LOGGING_CONNECTION_CONDITION_H
 #define OPENDNP3_LOGGING_CONNECTION_CONDITION_H
 
-#include "opendnp3/logging/LogLevels.h"
-
 #include "logging/LogMacros.h"
+
+#include "opendnp3/logging/LogLevels.h"
 #include "opendnp3/logging/Logger.h"
 
 namespace opendnp3

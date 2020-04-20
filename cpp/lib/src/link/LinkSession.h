@@ -28,11 +28,10 @@
 #include "master/MasterSessionStack.h"
 
 #include "opendnp3/link/LinkStatistics.h"
+#include "opendnp3/logging/Logger.h"
 #include "opendnp3/master/IListenCallbacks.h"
 
 #include <exe4cpp/Timer.h>
-
-#include "opendnp3/logging/Logger.h"
 
 namespace opendnp3
 {

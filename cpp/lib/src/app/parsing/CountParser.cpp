@@ -20,8 +20,8 @@
 #include "CountParser.h"
 
 #include "logging/LogMacros.h"
-#include "opendnp3/logging/LogLevels.h"
 
+#include "opendnp3/logging/LogLevels.h"
 
 namespace opendnp3
 {
@@ -83,11 +83,8 @@ ParseResult CountParser::ParseHeader(ser4cpp::rseq_t& buffer,
     }
 }
 
-ParseResult CountParser::ParseCountOfObjects(ser4cpp::rseq_t& buffer,
-                                             const HeaderRecord& record,
-                                             uint16_t count,
-                                             Logger* pLogger,
-                                             IAPDUHandler* pHandler)
+ParseResult CountParser::ParseCountOfObjects(
+    ser4cpp::rseq_t& buffer, const HeaderRecord& record, uint16_t count, Logger* pLogger, IAPDUHandler* pHandler)
 {
     switch (record.enumeration)
     {
@@ -117,7 +114,8 @@ ParseResult CountParser::ParseCountOfObjects(ser4cpp::rseq_t& buffer,
 
     default:
         FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unsupported qualifier/object - %s - %i / %i",
-                            QualifierCodeSpec::to_human_string(record.GetQualifierCode()), record.group, record.variation);
+                            QualifierCodeSpec::to_human_string(record.GetQualifierCode()), record.group,
+                            record.variation);
 
         return ParseResult::INVALID_OBJECT_QUALIFIER;
     }

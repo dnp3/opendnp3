@@ -25,12 +25,14 @@ namespace opendnp3
 DefaultOutstationApplication::DefaultOutstationApplication(TimeDuration timeSyncRefreshRate)
     : refresh_rate(timeSyncRefreshRate)
 {
-
 }
 
 DNPTime DefaultOutstationApplication::Now()
 {
-    auto result = DNPTime(last_timestamp.msSinceEpoch + std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - last_update).count());
+    auto result = DNPTime(
+        last_timestamp.msSinceEpoch
+        + std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - last_update)
+              .count());
     result.quality = IsTimeValid() ? TimestampQuality::SYNCHRONIZED : TimestampQuality::UNSYNCHRONIZED;
     return result;
 }

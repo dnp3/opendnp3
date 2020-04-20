@@ -25,8 +25,8 @@
 #include "TypedEventRecord.h"
 #include "app/MeasurementTypeSpecs.h"
 
-#include "opendnp3/util/Uncopyable.h"
 #include "opendnp3/outstation/EventBufferConfig.h"
+#include "opendnp3/util/Uncopyable.h"
 
 namespace opendnp3
 {

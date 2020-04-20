@@ -19,14 +19,13 @@
  */
 #include "utils/DNPHelpers.h"
 
-#include <ser4cpp/util/HexConversions.h>
-
-#include <link/CRC.h>
-#include <link/LinkFrame.h>
-
 #include "utils/BufferHelpers.h"
 
+#include <ser4cpp/util/HexConversions.h>
+
 #include <catch.hpp>
+#include <link/CRC.h>
+#include <link/LinkFrame.h>
 
 using namespace opendnp3;
 using namespace ser4cpp;

@@ -18,17 +18,17 @@
  * limitations under the License.
  */
 #include <opendnp3/logging/LogLevels.h>
-#include <master/MasterContext.h>
-#include <master/MasterSchedulerBackend.h>
-
 #include <opendnp3/master/DefaultMasterApplication.h>
+
+#include <exe4cpp/MockExecutor.h>
 
 #include <dnp3mocks/MockLogHandler.h>
 #include <dnp3mocks/MockLowerLayer.h>
 #include <dnp3mocks/MockMasterApplication.h>
 #include <dnp3mocks/MockSOEHandler.h>
 
-#include <exe4cpp/MockExecutor.h>
+#include <master/MasterContext.h>
+#include <master/MasterSchedulerBackend.h>
 
 class MasterTestObject
 {

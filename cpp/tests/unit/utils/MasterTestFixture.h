@@ -21,16 +21,16 @@
 #define OPENDNP3_UNITTESTS_MASTERTESTFIXTURE_H
 
 #include <opendnp3/logging/LogLevels.h>
-#include <master/MasterContext.h>
-#include <master/MasterSchedulerBackend.h>
-
-#include "dnp3mocks/MockLowerLayer.h"
-#include "dnp3mocks/MockMasterApplication.h"
-#include "dnp3mocks/MockSOEHandler.h"
 
 #include <exe4cpp/MockExecutor.h>
 
 #include "dnp3mocks/MockLogHandler.h"
+#include "dnp3mocks/MockLowerLayer.h"
+#include "dnp3mocks/MockMasterApplication.h"
+#include "dnp3mocks/MockSOEHandler.h"
+
+#include <master/MasterContext.h>
+#include <master/MasterSchedulerBackend.h>
 
 opendnp3::MasterParams NoStartupTasks();
 

@@ -22,12 +22,11 @@
 
 #include "app/parsing/IAPDUHandler.h"
 #include "decoder/Indent.h"
+#include "logging/LogMacros.h"
 
-#include "opendnp3/logging/LogLevels.h"
 #include "opendnp3/decoder/IDecoderCallbacks.h"
 #include "opendnp3/gen/Attributes.h"
-
-#include "logging/LogMacros.h"
+#include "opendnp3/logging/LogLevels.h"
 #include "opendnp3/logging/Logger.h"
 
 #include <cstdint>

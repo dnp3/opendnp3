@@ -21,13 +21,13 @@
 #include "utils/CallbackQueue.h"
 #include "utils/MasterTestFixture.h"
 #include "utils/MeasurementComparisons.h"
+
+#include <ser4cpp/util/HexConversions.h>
+
 #include "dnp3mocks/MockTaskCallback.h"
 
 #include <app/APDUBuilders.h>
 #include <app/APDUResponse.h>
-
-#include <ser4cpp/util/HexConversions.h>
-
 #include <catch.hpp>
 
 using namespace opendnp3;
@@ -195,7 +195,8 @@ TEST_CASE(SUITE("Retries use exponential backoff"))
 
     // advance to the retry
     REQUIRE(t.exe->advance_to_next_timer());
-    REQUIRE(t.exe->get_time() - startTime == std::chrono::milliseconds(25000)); // this time the retry doubles to 10 seconds
+    REQUIRE(t.exe->get_time() - startTime
+            == std::chrono::milliseconds(25000)); // this time the retry doubles to 10 seconds
     REQUIRE(t.exe->run_many() > 0);
     REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(2));
     t.context->OnTxReady();
@@ -388,7 +389,8 @@ TEST_CASE(SUITE("ParsesGroup2Var3TimeQualityCorrectly"))
     // g51v1, t = 3,
     // g2v3, index 7, t = 2, Synchronized, true/online
     // g2v3, index 8, t = 3, Unsychronized, true/online
-    t.SendToMaster("C0 81 00 00 33 01 07 01 03 00 00 00 00 00 02 03 17 01 07 81 02 00 33 02 07 01 03 00 00 00 00 00 02 03 17 01 08 81 03 00");
+    t.SendToMaster("C0 81 00 00 33 01 07 01 03 00 00 00 00 00 02 03 17 01 07 81 02 00 33 02 07 01 03 00 00 00 00 00 02 "
+                   "03 17 01 08 81 03 00");
 
     REQUIRE(t.meas->binarySOE.size() == 2);
     {
@@ -576,7 +578,8 @@ TEST_CASE(SUITE("ReceiveCTOSynchronized"))
 
     REQUIRE(t.meas->TotalReceived() == 1);
     auto record = t.meas->binarySOE[7];
-    bool equal = record.meas == Binary(true, Flags(0x01), DNPTime(0x04, TimestampQuality::SYNCHRONIZED)); // timestamp is 4
+    bool equal
+        = record.meas == Binary(true, Flags(0x01), DNPTime(0x04, TimestampQuality::SYNCHRONIZED)); // timestamp is 4
     REQUIRE(equal);
     REQUIRE(record.info.tsquality == TimestampQuality::SYNCHRONIZED);
 }
@@ -592,7 +595,8 @@ TEST_CASE(SUITE("ReceiveCTOUnsynchronized"))
 
     REQUIRE(t.meas->TotalReceived() == 1);
     auto record = t.meas->binarySOE[7];
-    bool equal = record.meas == Binary(true, Flags(0x01), DNPTime(0x04, TimestampQuality::UNSYNCHRONIZED)); // timestamp is 4
+    bool equal
+        = record.meas == Binary(true, Flags(0x01), DNPTime(0x04, TimestampQuality::UNSYNCHRONIZED)); // timestamp is 4
     REQUIRE(equal);
     REQUIRE(record.info.tsquality == TimestampQuality::UNSYNCHRONIZED);
 }

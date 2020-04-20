@@ -21,12 +21,11 @@
 
 #include "link/CRC.h"
 #include "link/LinkHeader.h"
+#include "logging/LogMacros.h"
 
 #include "opendnp3/logging/LogLevels.h"
 
 #include <ser4cpp/serialization/LittleEndian.h>
-
-#include "logging/LogMacros.h"
 
 namespace opendnp3
 {
@@ -92,43 +91,27 @@ size_t LinkFrame::CalcUserDataSize(size_t dataLength)
 //
 ////////////////////////////////////////////////
 
-ser4cpp::rseq_t LinkFrame::FormatAck(ser4cpp::wseq_t& buffer,
-                                     bool aIsMaster,
-                                     bool aIsRcvBuffFull,
-                                     uint16_t aDest,
-                                     uint16_t aSrc,
-                                     Logger* pLogger)
+ser4cpp::rseq_t LinkFrame::FormatAck(
+    ser4cpp::wseq_t& buffer, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, Logger* pLogger)
 {
     return FormatHeader(buffer, 0, aIsMaster, false, aIsRcvBuffFull, LinkFunction::SEC_ACK, aDest, aSrc, pLogger);
 }
 
-ser4cpp::rseq_t LinkFrame::FormatNack(ser4cpp::wseq_t& buffer,
-                                      bool aIsMaster,
-                                      bool aIsRcvBuffFull,
-                                      uint16_t aDest,
-                                      uint16_t aSrc,
-                                      Logger* pLogger)
+ser4cpp::rseq_t LinkFrame::FormatNack(
+    ser4cpp::wseq_t& buffer, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, Logger* pLogger)
 {
     return FormatHeader(buffer, 0, aIsMaster, false, aIsRcvBuffFull, LinkFunction::SEC_NACK, aDest, aSrc, pLogger);
 }
 
-ser4cpp::rseq_t LinkFrame::FormatLinkStatus(ser4cpp::wseq_t& buffer,
-                                            bool aIsMaster,
-                                            bool aIsRcvBuffFull,
-                                            uint16_t aDest,
-                                            uint16_t aSrc,
-                                            Logger* pLogger)
+ser4cpp::rseq_t LinkFrame::FormatLinkStatus(
+    ser4cpp::wseq_t& buffer, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, Logger* pLogger)
 {
     return FormatHeader(buffer, 0, aIsMaster, false, aIsRcvBuffFull, LinkFunction::SEC_LINK_STATUS, aDest, aSrc,
                         pLogger);
 }
 
-ser4cpp::rseq_t LinkFrame::FormatNotSupported(ser4cpp::wseq_t& buffer,
-                                              bool aIsMaster,
-                                              bool aIsRcvBuffFull,
-                                              uint16_t aDest,
-                                              uint16_t aSrc,
-                                              Logger* pLogger)
+ser4cpp::rseq_t LinkFrame::FormatNotSupported(
+    ser4cpp::wseq_t& buffer, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, Logger* pLogger)
 {
     return FormatHeader(buffer, 0, aIsMaster, false, aIsRcvBuffFull, LinkFunction::SEC_NOT_SUPPORTED, aDest, aSrc,
                         pLogger);
@@ -174,18 +157,15 @@ ser4cpp::rseq_t LinkFrame::FormatConfirmedUserData(ser4cpp::wseq_t& buffer,
 
     auto userDataSize = CalcUserDataSize(user_data.length());
     auto ret = buffer.readonly().take(userDataSize + LPDU_HEADER_SIZE);
-    FormatHeader(buffer, static_cast<uint8_t>(user_data.length()), aIsMaster, aFcb, true, LinkFunction::PRI_CONFIRMED_USER_DATA, aDest, aSrc, pLogger);
+    FormatHeader(buffer, static_cast<uint8_t>(user_data.length()), aIsMaster, aFcb, true,
+                 LinkFunction::PRI_CONFIRMED_USER_DATA, aDest, aSrc, pLogger);
     WriteUserData(user_data, buffer, user_data.length());
     buffer.advance(userDataSize);
     return ret;
 }
 
-ser4cpp::rseq_t LinkFrame::FormatUnconfirmedUserData(ser4cpp::wseq_t& buffer,
-                                                     bool aIsMaster,
-                                                     uint16_t aDest,
-                                                     uint16_t aSrc,
-                                                     ser4cpp::rseq_t user_data,
-                                                     Logger* pLogger)
+ser4cpp::rseq_t LinkFrame::FormatUnconfirmedUserData(
+    ser4cpp::wseq_t& buffer, bool aIsMaster, uint16_t aDest, uint16_t aSrc, ser4cpp::rseq_t user_data, Logger* pLogger)
 {
     if (user_data.length() > LPDU_MAX_USER_DATA_SIZE)
     {
@@ -194,7 +174,8 @@ ser4cpp::rseq_t LinkFrame::FormatUnconfirmedUserData(ser4cpp::wseq_t& buffer,
 
     auto userDataSize = CalcUserDataSize(user_data.length());
     auto ret = buffer.readonly().take(userDataSize + LPDU_HEADER_SIZE);
-    FormatHeader(buffer, static_cast<uint8_t>(user_data.length()), aIsMaster, false, false, LinkFunction::PRI_UNCONFIRMED_USER_DATA, aDest, aSrc, pLogger);
+    FormatHeader(buffer, static_cast<uint8_t>(user_data.length()), aIsMaster, false, false,
+                 LinkFunction::PRI_UNCONFIRMED_USER_DATA, aDest, aSrc, pLogger);
     WriteUserData(user_data, buffer, user_data.length());
     buffer.advance(userDataSize);
     return ret;
@@ -209,7 +190,7 @@ ser4cpp::rseq_t LinkFrame::FormatHeader(ser4cpp::wseq_t& buffer,
                                         uint16_t aDest,
                                         uint16_t aSrc,
                                         Logger* pLogger)
-{    
+{
     if (buffer.length() < LPDU_HEADER_SIZE)
     {
         return ser4cpp::rseq_t::empty();
