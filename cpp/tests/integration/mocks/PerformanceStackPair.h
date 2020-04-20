@@ -24,7 +24,7 @@
 #include "mocks/CountingSOEHandler.h"
 #include "mocks/QueuedChannelListener.h"
 
-#include <opendnp3/LogLevels.h>
+#include <opendnp3/logging/LogLevels.h>
 #include <opendnp3/DNP3Manager.h>
 #include <opendnp3/outstation/UpdateBuilder.h>
 
@@ -50,13 +50,13 @@ class PerformanceStackPair final : opendnp3::Uncopyable
                                                           opendnp3::TimeDuration timeout);
     static opendnp3::MasterStackConfig GetMasterStackConfig(opendnp3::TimeDuration timeout);
 
-    static std::shared_ptr<opendnp3::IMaster> CreateMaster(log4cpp::LogLevels levels,
+    static std::shared_ptr<opendnp3::IMaster> CreateMaster(opendnp3::LogLevels levels,
                                                  opendnp3::TimeDuration timeout,
                                                  opendnp3::DNP3Manager& manager,
                                                  uint16_t port,
                                                  std::shared_ptr<opendnp3::ISOEHandler>,
                                                  std::shared_ptr<opendnp3::IChannelListener> listener);
-    static std::shared_ptr<opendnp3::IOutstation> CreateOutstation(log4cpp::LogLevels levels,
+    static std::shared_ptr<opendnp3::IOutstation> CreateOutstation(opendnp3::LogLevels levels,
                                                          opendnp3::TimeDuration timeout,
                                                          opendnp3::DNP3Manager& manager,
                                                          uint16_t port,
@@ -68,7 +68,7 @@ class PerformanceStackPair final : opendnp3::Uncopyable
     void AddValue(uint32_t i, opendnp3::UpdateBuilder& builder);
 
 public:
-    PerformanceStackPair(log4cpp::LogLevels levels,
+    PerformanceStackPair(opendnp3::LogLevels levels,
                          opendnp3::TimeDuration timeout,
                          opendnp3::DNP3Manager& manager,
                          uint16_t port,

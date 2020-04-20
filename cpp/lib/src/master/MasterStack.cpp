@@ -26,7 +26,7 @@
 namespace opendnp3
 {
 
-MasterStack::MasterStack(const log4cpp::Logger& logger,
+MasterStack::MasterStack(const Logger& logger,
                          const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                          const std::shared_ptr<ISOEHandler>& SOEHandler,
                          const std::shared_ptr<IMasterApplication>& application,
@@ -76,7 +76,7 @@ StackStatistics MasterStack::GetStackStatistics()
     return this->executor->return_from<StackStatistics>(get);
 }
 
-void MasterStack::SetLogFilters(const log4cpp::LogLevels& filters)
+void MasterStack::SetLogFilters(const LogLevels& filters)
 {
     auto set = [self = this->shared_from_this(), filters]() { self->logger.set_levels(filters); };
 

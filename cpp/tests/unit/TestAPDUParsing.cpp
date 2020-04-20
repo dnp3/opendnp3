@@ -24,7 +24,7 @@
 
 #include <ser4cpp/util/HexConversions.h>
 
-#include <opendnp3/LogLevels.h>
+#include <opendnp3/logging/LogLevels.h>
 #include <opendnp3/app/ControlRelayOutputBlock.h>
 #include <opendnp3/app/Indexed.h>
 #include <app/parsing/APDUHeaderParser.h>

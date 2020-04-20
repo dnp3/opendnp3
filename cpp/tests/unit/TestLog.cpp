@@ -17,9 +17,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <log4cpp/LogMacros.h>
+#include "logging/LogMacros.h"
 
-#include <opendnp3/LogLevels.h>
+#include <opendnp3/logging/LogLevels.h>
 
 #include "dnp3mocks/MockLogHandler.h"
 

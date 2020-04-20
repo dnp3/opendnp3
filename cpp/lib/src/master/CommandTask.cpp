@@ -23,9 +23,9 @@
 #include "master/CommandSetOps.h"
 #include "master/ICommandHeader.h"
 
-#include "opendnp3/LogLevels.h"
+#include "opendnp3/logging/LogLevels.h"
 
-#include <log4cpp/LogMacros.h>
+#include "logging/LogMacros.h"
 
 #include <utility>
 
@@ -39,7 +39,7 @@ std::shared_ptr<IMasterTask> CommandTask::CreateDirectOperate(const std::shared_
                                                               const CommandResultCallbackT& callback,
                                                               const Timestamp& startExpiration,
                                                               const TaskConfig& config,
-                                                              log4cpp::Logger logger)
+                                                              Logger logger)
 {
     auto task
         = std::make_shared<CommandTask>(context, std::move(set), mode, app, callback, startExpiration, config, logger);
@@ -54,7 +54,7 @@ std::shared_ptr<IMasterTask> CommandTask::CreateSelectAndOperate(const std::shar
                                                                  const CommandResultCallbackT& callback,
                                                                  const Timestamp& startExpiration,
                                                                  const TaskConfig& config,
-                                                                 log4cpp::Logger logger)
+                                                                 Logger logger)
 {
     auto task
         = std::make_shared<CommandTask>(context, std::move(set), mode, app, callback, startExpiration, config, logger);
@@ -69,7 +69,7 @@ CommandTask::CommandTask(const std::shared_ptr<TaskContext>& context,
                          CommandResultCallbackT callback,
                          const Timestamp& startExpiration,
                          const TaskConfig& config,
-                         const log4cpp::Logger& logger)
+                         const Logger& logger)
     : IMasterTask(context, app, TaskBehavior::SingleExecutionNoRetry(startExpiration), logger, config),
       statusResult(CommandStatus::UNDEFINED),
       commandCallback(std::move(callback)),

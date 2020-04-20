@@ -35,7 +35,7 @@ class UDPClientIOHandler final : public IOHandler
 {
 
 public:
-    static std::shared_ptr<UDPClientIOHandler> Create(const log4cpp::Logger& logger,
+    static std::shared_ptr<UDPClientIOHandler> Create(const Logger& logger,
                                                       const std::shared_ptr<IChannelListener>& listener,
                                                       const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                                       const ChannelRetry& retry,
@@ -45,7 +45,7 @@ public:
         return std::make_shared<UDPClientIOHandler>(logger, listener, executor, retry, localEndpoint, remoteEndpoint);
     }
 
-    UDPClientIOHandler(const log4cpp::Logger& logger,
+    UDPClientIOHandler(const Logger& logger,
                        const std::shared_ptr<IChannelListener>& listener,
                        const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                        const ChannelRetry& retry,

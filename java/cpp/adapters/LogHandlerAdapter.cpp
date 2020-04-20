@@ -26,11 +26,11 @@ using namespace jni;
 
 LogHandlerAdapter::LogHandlerAdapter(jni::JLogHandler proxy) : proxy(proxy) {}
 
-void LogHandlerAdapter::log(log4cpp::ModuleId module,
-                                     const char* id,
-                                     log4cpp::LogLevel level,
-                                     char const* location,
-                                     char const* message)
+void LogHandlerAdapter::log(opendnp3::ModuleId module,
+                            const char* id,
+                            opendnp3::LogLevel level,
+                            char const* location,
+                            char const* message)
 {
     const auto env = JNI::GetEnv();    
 

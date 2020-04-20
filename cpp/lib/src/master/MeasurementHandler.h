@@ -25,12 +25,12 @@
 #include "app/parsing/IAPDUHandler.h"
 #include "app/parsing/ParseResult.h"
 
-#include "opendnp3/LogLevels.h"
+#include "opendnp3/logging/LogLevels.h"
 #include "opendnp3/gen/Attributes.h"
 #include "opendnp3/master/ISOEHandler.h"
 
-#include <log4cpp/LogMacros.h>
-#include <log4cpp/Logger.h>
+#include "logging/LogMacros.h"
+#include "opendnp3/logging/Logger.h"
 
 namespace opendnp3
 {
@@ -46,7 +46,7 @@ public:
      * Static helper function for interpreting a response as a measurement response
      */
     static ParseResult ProcessMeasurements(ResponseInfo info, const ser4cpp::rseq_t& objects,
-                                           log4cpp::Logger& logger,
+                                           Logger& logger,
                                            ISOEHandler* pHandler);
 
     // TODO
@@ -60,13 +60,13 @@ public:
      *
      * @param logger	the Logger that the loader should use for message reporting
      */
-    MeasurementHandler(ResponseInfo info, const log4cpp::Logger& logger, ISOEHandler* pSOEHandler);
+    MeasurementHandler(ResponseInfo info, const Logger& logger, ISOEHandler* pSOEHandler);
 
     ~MeasurementHandler();
 
 private:
     ResponseInfo info;
-    log4cpp::Logger logger;
+    Logger logger;
 
     static TimestampQuality ModeFromType(GroupVariation gv);
 

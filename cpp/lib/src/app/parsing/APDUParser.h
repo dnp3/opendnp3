@@ -37,20 +37,20 @@ class APDUParser : private StaticOnly
 public:
     static ParseResult Parse(const ser4cpp::rseq_t& buffer,
                              IAPDUHandler& handler,
-                             log4cpp::Logger& logger,
+                             Logger& logger,
                              ParserSettings settings = ParserSettings::Default());
 
     static ParseResult Parse(const ser4cpp::rseq_t& buffer,
                              IAPDUHandler& handler,
-                             log4cpp::Logger* pLogger,
+                             Logger* pLogger,
                              ParserSettings settings = ParserSettings::Default());
 
     static ParseResult ParseAndLogAll(const ser4cpp::rseq_t& buffer,
-                                      log4cpp::Logger* pLogger,
+                                      Logger* pLogger,
                                       ParserSettings settings = ParserSettings::Default());
 
     static ParseResult ParseSinglePass(const ser4cpp::rseq_t& buffer,
-                                       log4cpp::Logger* pLogger,
+                                       Logger* pLogger,
                                        IAPDUHandler* pHandler,
                                        IWhiteList* pWhiteList,
                                        const ParserSettings& settings);
@@ -62,24 +62,24 @@ private:
     }
 
     static ParseResult ParseHeaders(const ser4cpp::rseq_t& buffer,
-                                    log4cpp::Logger* pLogger,
+                                    Logger* pLogger,
                                     const ParserSettings& settings,
                                     IAPDUHandler* pHandler);
 
     static ParseResult ParseHeader(ser4cpp::rseq_t& buffer,
-                                   log4cpp::Logger* pLogger,
+                                   Logger* pLogger,
                                    uint32_t count,
                                    const ParserSettings& settings,
                                    IAPDUHandler* pHandler,
                                    IWhiteList* pWhiteList);
 
     static ParseResult ParseQualifier(ser4cpp::rseq_t& buffer,
-                                      log4cpp::Logger* pLogger,
+                                      Logger* pLogger,
                                       const HeaderRecord& record,
                                       const ParserSettings& settings,
                                       IAPDUHandler* pHandler);
 
-    static ParseResult HandleAllObjectsHeader(log4cpp::Logger* pLogger,
+    static ParseResult HandleAllObjectsHeader(Logger* pLogger,
                                               const HeaderRecord& record,
                                               const ParserSettings& settings,
                                               IAPDUHandler* pHandler);

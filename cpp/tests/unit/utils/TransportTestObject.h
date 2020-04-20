@@ -21,7 +21,7 @@
 #define OPENDNP3_UNITTESTS_TRANSPORT_TEST_OBJECT_H
 
 
-#include <opendnp3/LogLevels.h>
+#include <opendnp3/logging/LogLevels.h>
 #include <opendnp3/app/AppConstants.h>
 #include <transport/TransportLayer.h>
 

@@ -19,9 +19,9 @@
  */
 #include "CountParser.h"
 
-#include "opendnp3/LogLevels.h"
+#include "logging/LogMacros.h"
+#include "opendnp3/logging/LogLevels.h"
 
-#include <log4cpp/LogMacros.h>
 
 namespace opendnp3
 {
@@ -34,7 +34,7 @@ CountParser::CountParser(uint16_t count, size_t required_size, HandleFun handler
 ParseResult CountParser::Process(const HeaderRecord& record,
                                  ser4cpp::rseq_t& buffer,
                                  IAPDUHandler* pHandler,
-                                 log4cpp::Logger* pLogger) const
+                                 Logger* pLogger) const
 {
     if (buffer.length() < required_size)
     {
@@ -54,7 +54,7 @@ ParseResult CountParser::ParseHeader(ser4cpp::rseq_t& buffer,
                                      const NumParser& numParser,
                                      const ParserSettings& settings,
                                      const HeaderRecord& record,
-                                     log4cpp::Logger* pLogger,
+                                     Logger* pLogger,
                                      IAPDUHandler* pHandler)
 {
     uint16_t count;
@@ -86,7 +86,7 @@ ParseResult CountParser::ParseHeader(ser4cpp::rseq_t& buffer,
 ParseResult CountParser::ParseCountOfObjects(ser4cpp::rseq_t& buffer,
                                              const HeaderRecord& record,
                                              uint16_t count,
-                                             log4cpp::Logger* pLogger,
+                                             Logger* pLogger,
                                              IAPDUHandler* pHandler)
 {
     switch (record.enumeration)

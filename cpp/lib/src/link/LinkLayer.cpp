@@ -22,7 +22,7 @@
 namespace opendnp3
 {
 
-LinkLayer::LinkLayer(const log4cpp::Logger& logger,
+LinkLayer::LinkLayer(const Logger& logger,
                      const std::shared_ptr<exe4cpp::IExecutor>& executor,
                      const std::shared_ptr<IUpperLayer>& upper,
                      const std::shared_ptr<ILinkListener>& listener,

@@ -34,7 +34,7 @@ source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}
 add_library(dnp3mocks
     ${dnp3mocks_public_headers} ${dnp3mocks_src}
 )
-target_link_libraries(dnp3mocks PUBLIC opendnp3 log4cpp ser4cpp exe4cpp asio)
+target_link_libraries(dnp3mocks PUBLIC opendnp3 ser4cpp exe4cpp asio)
 target_include_directories(dnp3mocks PUBLIC ./include ../../lib/src)
 set_target_properties(dnp3mocks PROPERTIES FOLDER cpp/tests)
 

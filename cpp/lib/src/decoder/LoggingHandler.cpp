@@ -26,7 +26,7 @@
 namespace opendnp3
 {
 
-LoggingHandler::LoggingHandler(const log4cpp::Logger& logger_, IDecoderCallbacks& callbacks_)
+LoggingHandler::LoggingHandler(const Logger& logger_, IDecoderCallbacks& callbacks_)
     : logger(logger_), callbacks(&callbacks_)
 {
 }

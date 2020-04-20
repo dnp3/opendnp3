@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_UNITTESTS_OUTSTATION_TEST_OBJECT_H
 #define OPENDNP3_UNITTESTS_OUTSTATION_TEST_OBJECT_H
 
-#include <opendnp3/LogLevels.h>
+#include <opendnp3/logging/LogLevels.h>
 #include <link/LinkLayerConstants.h>
 #include <outstation/Database.h>
 #include <outstation/OutstationContext.h>

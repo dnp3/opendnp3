@@ -27,7 +27,7 @@
 namespace opendnp3
 {
 
-LinkContext::LinkContext(const log4cpp::Logger& logger,
+LinkContext::LinkContext(const Logger& logger,
                          const std::shared_ptr<exe4cpp::IExecutor>& executor,
                          std::shared_ptr<IUpperLayer> upper,
                          std::shared_ptr<ILinkListener> listener,

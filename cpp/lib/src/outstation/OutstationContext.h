@@ -45,7 +45,7 @@
 
 #include <exe4cpp/IExecutor.h>
 
-#include <log4cpp/Logger.h>
+#include "opendnp3/logging/Logger.h"
 
 namespace opendnp3
 {
@@ -64,7 +64,7 @@ public:
     OContext(const Addresses& addresses,
              const OutstationConfig& config,
              const DatabaseConfig& db_config,
-             const log4cpp::Logger& logger,
+             const Logger& logger,
              const std::shared_ptr<exe4cpp::IExecutor>& executor,
              std::shared_ptr<ILowerLayer> lower,
              std::shared_ptr<ICommandHandler> commandHandler,
@@ -179,7 +179,7 @@ private:
 
     // ------ resources --------
     const Addresses addresses;
-    log4cpp::Logger logger;
+    Logger logger;
     const std::shared_ptr<exe4cpp::IExecutor> executor;
     const std::shared_ptr<ILowerLayer> lower;
     const std::shared_ptr<ICommandHandler> commandHandler;

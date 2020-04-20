@@ -17,7 +17,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <opendnp3/LogLevels.h>
+#include <opendnp3/logging/LogLevels.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
 
 #include <opendnp3/ConsoleLogger.h>

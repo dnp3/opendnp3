@@ -30,7 +30,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_set_1log_1lev
                                                                                            jint levels)
 {
     auto outstation = (std::shared_ptr<opendnp3::IOutstation>*)native;
-    (*outstation)->SetLogFilters(log4cpp::LogLevel(levels));
+    (*outstation)->SetLogFilters(opendnp3::LogLevel(levels));
 }
 
 JNIEXPORT jobject JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_get_1statistics_1native(JNIEnv* env,

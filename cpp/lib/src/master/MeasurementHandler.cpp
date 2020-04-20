@@ -21,20 +21,20 @@
 
 #include "app/parsing/APDUParser.h"
 
-#include <log4cpp/LogMacros.h>
+#include "logging/LogMacros.h"
 
 namespace opendnp3
 {
 
 ParseResult MeasurementHandler::ProcessMeasurements(ResponseInfo info, const ser4cpp::rseq_t& objects,
-                                                    log4cpp::Logger& logger,
+                                                    Logger& logger,
                                                     ISOEHandler* pHandler)
 {
     MeasurementHandler handler(info, logger, pHandler);
     return APDUParser::Parse(objects, handler, &logger);
 }
 
-MeasurementHandler::MeasurementHandler(ResponseInfo info, const log4cpp::Logger& logger, ISOEHandler* pSOEHandler)
+MeasurementHandler::MeasurementHandler(ResponseInfo info, const Logger& logger, ISOEHandler* pSOEHandler)
     : info(info),
 	  logger(logger),
       txInitiated(false),

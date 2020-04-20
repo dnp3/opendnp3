@@ -20,13 +20,13 @@
 
 #include "channel/tls/SSLContext.h"
 
-#include "opendnp3/LogLevels.h"
+#include "opendnp3/logging/LogLevels.h"
 
-#include <log4cpp/LogMacros.h>
+#include "logging/LogMacros.h"
 
 namespace opendnp3
 {
-SSLContext::SSLContext(const log4cpp::Logger& logger, bool server, const TLSConfig& config, std::error_code& ec)
+SSLContext::SSLContext(const Logger& logger, bool server, const TLSConfig& config, std::error_code& ec)
     : value(server ? asio::ssl::context_base::sslv23_server : asio::ssl::context_base::sslv23_client), logger(logger)
 {
     this->ApplyConfig(config, server, ec);

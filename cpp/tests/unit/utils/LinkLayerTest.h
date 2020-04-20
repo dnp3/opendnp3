@@ -26,7 +26,7 @@
 
 #include <exe4cpp/MockExecutor.h>
 
-#include <opendnp3/LogLevels.h>
+#include <opendnp3/logging/LogLevels.h>
 #include <link/ILinkTx.h>
 #include <link/LinkLayer.h>
 

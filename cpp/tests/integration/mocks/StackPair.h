@@ -24,7 +24,7 @@
 #include "mocks/QueuedChannelListener.h"
 #include "mocks/QueuingSOEHandler.h"
 
-#include <opendnp3/LogLevels.h>
+#include <opendnp3/logging/LogLevels.h>
 #include <opendnp3/DNP3Manager.h>
 #include <opendnp3/outstation/UpdateBuilder.h>
 
@@ -58,13 +58,13 @@ class StackPair final : opendnp3::Uncopyable
                                                           opendnp3::TimeDuration timeout);
     static opendnp3::MasterStackConfig GetMasterStackConfig(opendnp3::TimeDuration timeout);
 
-    static std::shared_ptr<opendnp3::IMaster> CreateMaster(log4cpp::LogLevels levels,
+    static std::shared_ptr<opendnp3::IMaster> CreateMaster(opendnp3::LogLevels levels,
                                                  opendnp3::TimeDuration timeout,
                                                  opendnp3::DNP3Manager& manager,
                                                  uint16_t port,
                                                  std::shared_ptr<opendnp3::ISOEHandler>,
                                                  std::shared_ptr<opendnp3::IChannelListener> listener);
-    static std::shared_ptr<opendnp3::IOutstation> CreateOutstation(log4cpp::LogLevels levels,
+    static std::shared_ptr<opendnp3::IOutstation> CreateOutstation(opendnp3::LogLevels levels,
                                                          opendnp3::TimeDuration timeout,
                                                          opendnp3::DNP3Manager& manager,
                                                          uint16_t port,
@@ -77,7 +77,7 @@ class StackPair final : opendnp3::Uncopyable
     ExpectedValue AddRandomValue(opendnp3::UpdateBuilder& builder);
 
 public:
-    StackPair(log4cpp::LogLevels levels,
+    StackPair(opendnp3::LogLevels levels,
               opendnp3::TimeDuration timeout,
               opendnp3::DNP3Manager& manager,
               uint16_t port,

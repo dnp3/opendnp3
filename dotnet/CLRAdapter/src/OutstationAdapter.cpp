@@ -40,7 +40,7 @@ namespace Automatak
 
 			void OutstationAdapter::SetLogFilters(LogFilter filters)
 			{
-				(*outstation)->SetLogFilters(log4cpp::LogLevel(filters.Flags));
+                (*outstation)->SetLogFilters(opendnp3::LogLevel(filters.Flags));
 			}
 
 			void OutstationAdapter::Load(IChangeSet^ changes)

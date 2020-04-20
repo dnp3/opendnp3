@@ -39,7 +39,7 @@ class LANTimeSyncTask : public IMasterTask
 public:
     LANTimeSyncTask(const std::shared_ptr<TaskContext>& context,
                     IMasterApplication& app,
-                    const log4cpp::Logger& logger);
+                    const Logger& logger);
 
     virtual char const* Name() const override final
     {

@@ -39,7 +39,7 @@ public:
                       FunctionCode func,
                       HeaderBuilderT format,
                       Timestamp startExpiration,
-                      const log4cpp::Logger& logger,
+                      const Logger& logger,
                       const TaskConfig& config);
 
     bool BuildRequest(APDURequest& request, uint8_t seq) override;

@@ -29,7 +29,7 @@
 
 #include <exe4cpp/asio/StrandExecutor.h>
 
-#include <log4cpp/Logger.h>
+#include "opendnp3/logging/Logger.h"
 
 namespace opendnp3
 {
@@ -42,7 +42,7 @@ class TLSServer : public IListener, public std::enable_shared_from_this<TLSServe
 {
 
 public:
-    TLSServer(const log4cpp::Logger& logger,
+    TLSServer(const Logger& logger,
               const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
               const IPEndpoint& endpoint,
               const TLSConfig& config,
@@ -64,7 +64,7 @@ protected:
 
     void StartAccept(std::error_code& ec);
 
-    log4cpp::Logger logger;
+    Logger logger;
     std::shared_ptr<exe4cpp::StrandExecutor> executor;
 
 private:

@@ -20,16 +20,16 @@
 
 #include "channel/SerialIOHandler.h"
 
-#include "opendnp3/LogLevels.h"
+#include "opendnp3/logging/LogLevels.h"
 
-#include <log4cpp/LogMacros.h>
+#include "logging/LogMacros.h"
 
 #include <utility>
 
 namespace opendnp3
 {
 
-SerialIOHandler::SerialIOHandler(const log4cpp::Logger& logger,
+SerialIOHandler::SerialIOHandler(const Logger& logger,
                                  const std::shared_ptr<IChannelListener>& listener,
                                  const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                  const ChannelRetry& retry,

@@ -17,7 +17,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <opendnp3/LogLevels.h>
+#include <opendnp3/logging/LogLevels.h>
 
 #include <opendnp3/ConsoleLogger.h>
 
@@ -28,7 +28,7 @@ using namespace opendnp3;
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t* Data, size_t Size)
 {
     Buffer buffer(Data, Size);
-    log4cpp::Logger logger(ConsoleLogger::Create(), log4cpp::ModuleId(), "decoder", levels::NOTHING);
+    Logger logger(ConsoleLogger::Create(), ModuleId(), "decoder", levels::NOTHING);
     IDecoderCallbacks callback;
     Decoder decoder(callback, logger);
 

@@ -37,7 +37,7 @@ class MasterStack : public IMaster,
                     public StackBase
 {
 public:
-    MasterStack(const log4cpp::Logger& logger,
+    MasterStack(const Logger& logger,
                 const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                 const std::shared_ptr<ISOEHandler>& SOEHandler,
                 const std::shared_ptr<IMasterApplication>& application,
@@ -46,7 +46,7 @@ public:
                 const std::shared_ptr<IResourceManager>& manager,
                 const MasterStackConfig& config);
 
-    static std::shared_ptr<MasterStack> Create(const log4cpp::Logger& logger,
+    static std::shared_ptr<MasterStack> Create(const Logger& logger,
                                                const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                                const std::shared_ptr<ISOEHandler>& SOEHandler,
                                                const std::shared_ptr<IMasterApplication>& application,
@@ -102,7 +102,7 @@ public:
 
     // --------- Implement IMasterOperations ---------
 
-    void SetLogFilters(const log4cpp::LogLevels& filters) override;
+    void SetLogFilters(const opendnp3::LogLevels& filters) override;
 
     std::shared_ptr<IMasterScan> AddScan(TimeDuration period,
                                          const std::vector<Header>& headers,

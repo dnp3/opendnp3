@@ -27,7 +27,7 @@ MockTLSPair::MockTLSPair(const std::shared_ptr<MockIO>& io,
                          const TLSConfig& client,
                          const TLSConfig& server,
                          std::error_code ec)
-    : log("test"),
+    : log(),
       io(io),
       port(port),
       chandler(std::make_shared<MockTLSClientHandler>()),

@@ -41,7 +41,7 @@ class TCPServerIOHandler final : public IOHandler
         typedef std::function<void(const std::shared_ptr<exe4cpp::StrandExecutor>& executor, asio::ip::tcp::socket)>
             callback_t;
 
-        Server(const log4cpp::Logger& logger,
+        Server(const Logger& logger,
                const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                const IPEndpoint& endpoint,
                std::error_code& ec)
@@ -66,7 +66,7 @@ class TCPServerIOHandler final : public IOHandler
     };
 
 public:
-    static std::shared_ptr<TCPServerIOHandler> Create(const log4cpp::Logger& logger,
+    static std::shared_ptr<TCPServerIOHandler> Create(const Logger& logger,
                                                       ServerAcceptMode accept_mode,
                                                       const std::shared_ptr<IChannelListener>& listener,
                                                       const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
@@ -76,7 +76,7 @@ public:
         return std::make_shared<TCPServerIOHandler>(logger, accept_mode, listener, executor, endpoint, ec);
     }
 
-    TCPServerIOHandler(const log4cpp::Logger& logger,
+    TCPServerIOHandler(const Logger& logger,
                        ServerAcceptMode accept_mode,
                        const std::shared_ptr<IChannelListener>& listener,
                        std::shared_ptr<exe4cpp::StrandExecutor> executor,

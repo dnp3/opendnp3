@@ -24,9 +24,9 @@
 #include "app/parsing/APDUParser.h"
 #include "master/MeasurementHandler.h"
 
-#include "opendnp3/LogLevels.h"
+#include "opendnp3/logging/LogLevels.h"
 
-#include <log4cpp/LogMacros.h>
+#include "logging/LogMacros.h"
 
 namespace opendnp3
 {
@@ -36,7 +36,7 @@ StartupIntegrityPoll::StartupIntegrityPoll(const std::shared_ptr<TaskContext>& c
                                            std::shared_ptr<ISOEHandler> soeHandler,
                                            ClassField classes,
                                            const TaskBehavior& behavior,
-                                           const log4cpp::Logger& logger)
+                                           const Logger& logger)
     : PollTaskBase(context, app, std::move(soeHandler), behavior, logger, TaskConfig::Default()), classes(classes)
 {
 }

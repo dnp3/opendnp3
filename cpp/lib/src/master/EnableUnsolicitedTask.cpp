@@ -31,7 +31,7 @@ EnableUnsolicitedTask::EnableUnsolicitedTask(const std::shared_ptr<TaskContext>&
                                              IMasterApplication& app,
                                              const TaskBehavior& behavior,
                                              ClassField enabledClasses,
-                                             const log4cpp::Logger& logger)
+                                             const Logger& logger)
     : IMasterTask(context, app, behavior, logger, TaskConfig::Default()), enabledClasses(enabledClasses)
 {
 }

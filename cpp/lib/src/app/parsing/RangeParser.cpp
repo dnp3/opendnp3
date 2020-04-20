@@ -28,8 +28,7 @@
 #include "gen/objects/Group30.h"
 #include "gen/objects/Group40.h"
 #include "gen/objects/Group50.h"
-
-#include <log4cpp/LogMacros.h>
+#include "logging/LogMacros.h"
 
 namespace opendnp3
 {
@@ -43,7 +42,7 @@ ParseResult RangeParser::ParseHeader(ser4cpp::rseq_t& buffer,
                                      const NumParser& numparser,
                                      const ParserSettings& settings,
                                      const HeaderRecord& record,
-                                     log4cpp::Logger* pLogger,
+                                     Logger* pLogger,
                                      IAPDUHandler* pHandler)
 {
     Range range;
@@ -72,7 +71,7 @@ ParseResult RangeParser::ParseHeader(ser4cpp::rseq_t& buffer,
 ParseResult RangeParser::Process(const HeaderRecord& record,
                                  ser4cpp::rseq_t& buffer,
                                  IAPDUHandler* pHandler,
-                                 log4cpp::Logger* pLogger) const
+                                 Logger* pLogger) const
 {
     if (buffer.length() < requiredSize)
     {
@@ -95,7 +94,7 @@ ParseResult RangeParser::Process(const HeaderRecord& record,
 ParseResult RangeParser::ParseRangeOfObjects(ser4cpp::rseq_t& buffer,
                                              const HeaderRecord& record,
                                              const Range& range,
-                                             log4cpp::Logger* pLogger,
+                                             Logger* pLogger,
                                              IAPDUHandler* pHandler)
 {
     switch (record.enumeration)
@@ -159,7 +158,7 @@ ParseResult RangeParser::ParseRangeOfObjects(ser4cpp::rseq_t& buffer,
 ParseResult RangeParser::ParseRangeOfOctetData(ser4cpp::rseq_t& buffer,
                                                const HeaderRecord& record,
                                                const Range& range,
-                                               log4cpp::Logger* pLogger,
+                                               Logger* pLogger,
                                                IAPDUHandler* pHandler)
 {
     if (record.variation > 0)

@@ -20,16 +20,16 @@
 
 #include "channel/IOHandler.h"
 
-#include "opendnp3/LogLevels.h"
+#include "opendnp3/logging/LogLevels.h"
 
-#include <log4cpp/LogMacros.h>
+#include "logging/LogMacros.h"
 
 #include <utility>
 
 namespace opendnp3
 {
 
-IOHandler::IOHandler(const log4cpp::Logger& logger, bool close_existing, std::shared_ptr<IChannelListener> listener)
+IOHandler::IOHandler(const Logger& logger, bool close_existing, std::shared_ptr<IChannelListener> listener)
     : close_existing(close_existing), logger(logger), listener(std::move(listener)), parser(logger)
 {
 }

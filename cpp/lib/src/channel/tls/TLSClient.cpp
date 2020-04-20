@@ -22,14 +22,14 @@
 
 #include "channel/SocketHelpers.h"
 
-#include "opendnp3/LogLevels.h"
+#include "opendnp3/logging/LogLevels.h"
 
 #include <utility>
 
 namespace opendnp3
 {
 
-TLSClient::TLSClient(const log4cpp::Logger& logger,
+TLSClient::TLSClient(const Logger& logger,
                      const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                      std::string adapter,
                      const TLSConfig& config,

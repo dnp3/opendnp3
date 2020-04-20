@@ -41,7 +41,7 @@ add_executable(asiotests
     ${all_sources}
 )
 target_compile_features(asiotests PRIVATE cxx_std_14)
-target_link_libraries(asiotests PRIVATE catch opendnp3 log4cpp ser4cpp exe4cpp asio)
+target_link_libraries(asiotests PRIVATE catch dnp3mocks opendnp3 ser4cpp exe4cpp asio)
 target_include_directories(asiotests PRIVATE ./ ../../lib/src)
 set_target_properties(asiotests PROPERTIES FOLDER cpp/tests)
 add_test(NAME asiotests COMMAND asiotests)

@@ -38,7 +38,7 @@
 #include <exe4cpp/Timer.h>
 #include <exe4cpp/asio/StrandExecutor.h>
 
-#include <log4cpp/Logger.h>
+#include "opendnp3/logging/Logger.h"
 
 #include <deque>
 
@@ -59,7 +59,7 @@ public:
     };
 
     MContext(const Addresses& addresses,
-             const log4cpp::Logger& logger,
+             const Logger& logger,
              const std::shared_ptr<exe4cpp::IExecutor>& executor,
              std::shared_ptr<ILowerLayer> lower,
              const std::shared_ptr<ISOEHandler>& SOEHandler,
@@ -67,7 +67,7 @@ public:
              std::shared_ptr<IMasterScheduler> scheduler,
              const MasterParams& params);
 
-    log4cpp::Logger logger;
+    Logger logger;
     const std::shared_ptr<exe4cpp::IExecutor> executor;
     const std::shared_ptr<ILowerLayer> lower;
 

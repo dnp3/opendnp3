@@ -23,9 +23,9 @@
 #include "link/LinkContext.h"
 #include "link/Singleton.h"
 
-#include "opendnp3/LogLevels.h"
+#include "opendnp3/logging/LogLevels.h"
 
-#include <log4cpp/LogMacros.h>
+#include "logging/LogMacros.h"
 
 namespace opendnp3
 {

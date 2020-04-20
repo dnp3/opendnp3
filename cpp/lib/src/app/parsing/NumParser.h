@@ -23,9 +23,9 @@
 #include "app/Range.h"
 #include "app/parsing/ParseResult.h"
 
-#include <ser4cpp/container/SequenceTypes.h>
+#include "opendnp3/logging/Logger.h"
 
-#include <log4cpp/Logger.h>
+#include <ser4cpp/container/SequenceTypes.h>
 
 namespace opendnp3
 {
@@ -39,8 +39,8 @@ class NumParser
 public:
     uint8_t NumBytes() const;
 
-    ParseResult ParseCount(ser4cpp::rseq_t& buffer, uint16_t& count, log4cpp::Logger* pLogger) const;
-    ParseResult ParseRange(ser4cpp::rseq_t& buffer, Range& range, log4cpp::Logger* pLogger) const;
+    ParseResult ParseCount(ser4cpp::rseq_t& buffer, uint16_t& count, Logger* pLogger) const;
+    ParseResult ParseRange(ser4cpp::rseq_t& buffer, Range& range, Logger* pLogger) const;
 
     uint16_t ReadNum(ser4cpp::rseq_t& buffer) const;
 

@@ -24,10 +24,9 @@
 
 #include "opendnp3/util/StaticOnly.h"
 #include "opendnp3/gen/GroupVariation.h"
+#include "opendnp3/logging/Logger.h"
 
 #include <ser4cpp/container/SequenceTypes.h>
-
-#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {
@@ -45,7 +44,7 @@ public:
 class ObjectHeaderParser : private StaticOnly
 {
 public:
-    static ParseResult ParseObjectHeader(ObjectHeader& header, ser4cpp::rseq_t& buffer, log4cpp::Logger* pLogger);
+    static ParseResult ParseObjectHeader(ObjectHeader& header, ser4cpp::rseq_t& buffer, Logger* pLogger);
 
     // Provides stateless inspection of the first object header, provided that it exists
     // return false on failure (e.g. < 3 bytes)

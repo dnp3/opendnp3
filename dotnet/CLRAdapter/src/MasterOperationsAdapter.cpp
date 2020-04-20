@@ -34,7 +34,7 @@ namespace Automatak
 			
 			void MasterOperationsAdapter::SetLogFilters(LogFilter flags)
 			{
-				operations->SetLogFilters(log4cpp::LogLevel(flags.Flags));
+                operations->SetLogFilters(opendnp3::LogLevel(flags.Flags));
 			}
 			
 			Task<TaskCompletion>^ MasterOperationsAdapter::Scan(IEnumerable<Header^>^ headers, ISOEHandler^ soeHandler, TaskConfig^ config)

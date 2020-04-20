@@ -17,25 +17,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <opendnp3/LogLevels.h>
+#include <opendnp3/logging/LogLevels.h>
 #include <master/MasterContext.h>
 #include <master/MasterSchedulerBackend.h>
 
 #include <opendnp3/master/DefaultMasterApplication.h>
 
+#include <dnp3mocks/MockLogHandler.h>
 #include <dnp3mocks/MockLowerLayer.h>
 #include <dnp3mocks/MockMasterApplication.h>
 #include <dnp3mocks/MockSOEHandler.h>
 
 #include <exe4cpp/MockExecutor.h>
-#include <log4cpp/MockLogHandler.h>
 
 class MasterTestObject
 {
 public:
     MasterTestObject(const opendnp3::MasterParams& params)
         : addresses(),
-          log("test"),
+          log(),
           exe(std::make_shared<exe4cpp::MockExecutor>()),
           meas(std::make_shared<MockSOEHandler>()),
           lower(std::make_shared<MockLowerLayer>()),
@@ -66,7 +66,7 @@ public:
 private:
     const opendnp3::Addresses addresses;
 
-    log4cpp::MockLogHandler log;
+    MockLogHandler log;
     const std::shared_ptr<exe4cpp::MockExecutor> exe;
     const std::shared_ptr<MockSOEHandler> meas;
     const std::shared_ptr<MockLowerLayer> lower;

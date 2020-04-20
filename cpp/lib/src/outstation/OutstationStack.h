@@ -43,7 +43,7 @@ class OutstationStack final : public IOutstation,
                               public StackBase
 {
 public:
-    OutstationStack(const log4cpp::Logger& logger,
+    OutstationStack(const Logger& logger,
                     const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                     const std::shared_ptr<ICommandHandler>& commandHandler,
                     const std::shared_ptr<IOutstationApplication>& application,
@@ -51,7 +51,7 @@ public:
                     const std::shared_ptr<IResourceManager>& manager,
                     const OutstationStackConfig& config);
 
-    static std::shared_ptr<OutstationStack> Create(const log4cpp::Logger& logger,
+    static std::shared_ptr<OutstationStack> Create(const Logger& logger,
                                                    const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                                    const std::shared_ptr<ICommandHandler>& commandHandler,
                                                    const std::shared_ptr<IOutstationApplication>& application,
@@ -106,7 +106,7 @@ public:
 
     // --------- Implement IOutstation ---------
 
-    void SetLogFilters(const log4cpp::LogLevels& filters) final;
+    void SetLogFilters(const opendnp3::LogLevels& filters) final;
 
     void SetRestartIIN() final;
 

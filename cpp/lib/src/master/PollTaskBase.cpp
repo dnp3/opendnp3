@@ -21,9 +21,9 @@
 
 #include "master/MeasurementHandler.h"
 
-#include "opendnp3/LogLevels.h"
+#include "opendnp3/logging/LogLevels.h"
 
-#include <log4cpp/LogMacros.h>
+#include "logging/LogMacros.h"
 
 namespace opendnp3
 {
@@ -32,7 +32,7 @@ PollTaskBase::PollTaskBase(const std::shared_ptr<TaskContext>& context,
                            IMasterApplication& application,
                            std::shared_ptr<ISOEHandler> handler,
                            const TaskBehavior& behavior,
-                           const log4cpp::Logger& logger,
+                           const Logger& logger,
                            TaskConfig config)
     : IMasterTask(context, application, behavior, logger, config), handler(std::move(handler))
 {

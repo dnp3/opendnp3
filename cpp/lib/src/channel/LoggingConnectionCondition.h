@@ -20,10 +20,10 @@
 #ifndef OPENDNP3_LOGGING_CONNECTION_CONDITION_H
 #define OPENDNP3_LOGGING_CONNECTION_CONDITION_H
 
-#include "opendnp3/LogLevels.h"
+#include "opendnp3/logging/LogLevels.h"
 
-#include <log4cpp/LogMacros.h>
-#include <log4cpp/Logger.h>
+#include "logging/LogMacros.h"
+#include "opendnp3/logging/Logger.h"
 
 namespace opendnp3
 {
@@ -32,7 +32,7 @@ class LoggingConnectionCondition
 {
 
 public:
-    LoggingConnectionCondition(log4cpp::Logger logger) : logger(logger) {}
+    LoggingConnectionCondition(Logger logger) : logger(logger) {}
 
     template<typename Iterator> Iterator operator()(const std::error_code& ec, Iterator next)
     {
@@ -45,7 +45,7 @@ public:
     }
 
 private:
-    log4cpp::Logger logger;
+    Logger logger;
 };
 
 } // namespace opendnp3

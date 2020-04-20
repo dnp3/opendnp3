@@ -26,7 +26,7 @@
 
 #include <exe4cpp/asio/StrandExecutor.h>
 
-#include <log4cpp/Logger.h>
+#include "opendnp3/logging/Logger.h"
 
 #include <memory>
 
@@ -42,7 +42,7 @@ class TCPServer : public std::enable_shared_from_this<TCPServer>, public IListen
 {
 
 public:
-    TCPServer(const log4cpp::Logger& logger,
+    TCPServer(const Logger& logger,
               const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
               const IPEndpoint& endpoint,
               std::error_code& ec);
@@ -63,7 +63,7 @@ protected:
     /// Start asynchronously accepting connections on the strand
     void StartAccept();
 
-    log4cpp::Logger logger;
+    Logger logger;
     std::shared_ptr<exe4cpp::StrandExecutor> executor;
 
 private:

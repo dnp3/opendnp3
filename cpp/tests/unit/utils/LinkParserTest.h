@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_UNITTESTS_LINK_PARSER_TEST_H
 #define OPENDNP3_UNITTESTS_LINK_PARSER_TEST_H
 
-#include <opendnp3/LogLevels.h>
+#include <opendnp3/logging/LogLevels.h>
 #include <link/LinkLayerParser.h>
 
 #include "utils/BufferHelpers.h"

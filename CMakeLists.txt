@@ -72,7 +72,6 @@ endif()
 # External dependencies
 include(./deps/asio.cmake)
 include(./deps/exe4cpp.cmake)
-include(./deps/log4cpp.cmake)
 include(./deps/ser4cpp.cmake)
 
 if(DNP3_TLS)

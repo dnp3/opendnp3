@@ -20,6 +20,7 @@
 #include "CountIndexParser.h"
 
 #include "app/parsing/BufferedCollection.h"
+#include "logging/LogMacros.h"
 #include "gen/objects/Group11.h"
 #include "gen/objects/Group12.h"
 #include "gen/objects/Group13.h"
@@ -31,8 +32,6 @@
 #include "gen/objects/Group41.h"
 #include "gen/objects/Group42.h"
 #include "gen/objects/Group43.h"
-
-#include <log4cpp/LogMacros.h>
 
 namespace opendnp3
 {
@@ -49,7 +48,7 @@ ParseResult CountIndexParser::ParseHeader(ser4cpp::rseq_t& buffer,
                                           const NumParser& numparser,
                                           const ParserSettings& settings,
                                           const HeaderRecord& record,
-                                          log4cpp::Logger* pLogger,
+                                          Logger* pLogger,
                                           IAPDUHandler* pHandler)
 {
     uint16_t count;
@@ -69,7 +68,7 @@ ParseResult CountIndexParser::ParseHeader(ser4cpp::rseq_t& buffer,
 ParseResult CountIndexParser::Process(const HeaderRecord& record,
                                       ser4cpp::rseq_t& buffer,
                                       IAPDUHandler* pHandler,
-                                      log4cpp::Logger* pLogger) const
+                                      Logger* pLogger) const
 {
     if (buffer.length() < requiredSize)
     {
@@ -89,7 +88,7 @@ ParseResult CountIndexParser::ParseCountOfObjects(ser4cpp::rseq_t& buffer,
                                                   const HeaderRecord& record,
                                                   const NumParser& numparser,
                                                   uint16_t count,
-                                                  log4cpp::Logger* pLogger,
+                                                  Logger* pLogger,
                                                   IAPDUHandler* pHandler)
 {
     switch (record.enumeration)
@@ -221,7 +220,7 @@ ParseResult CountIndexParser::ParseIndexPrefixedOctetData(ser4cpp::rseq_t& buffe
                                                           const HeaderRecord& record,
                                                           const NumParser& numparser,
                                                           uint32_t count,
-                                                          log4cpp::Logger* pLogger,
+                                                          Logger* pLogger,
                                                           IAPDUHandler* pHandler)
 {
     if (record.variation == 0)

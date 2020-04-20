@@ -32,7 +32,7 @@ namespace opendnp3
 {
 
 MasterTasks::MasterTasks(const MasterParams& params,
-                         const log4cpp::Logger& logger,
+                         const Logger& logger,
                          IMasterApplication& app,
                          std::shared_ptr<ISOEHandler> SOEHandler)
     : context(std::make_shared<TaskContext>()),
@@ -94,7 +94,7 @@ void MasterTasks::OnRestartDetected()
 
 std::shared_ptr<IMasterTask> MasterTasks::GetTimeSyncTask(const std::shared_ptr<TaskContext>& context,
                                                           TimeSyncMode mode,
-                                                          const log4cpp::Logger& logger,
+                                                          const Logger& logger,
                                                           IMasterApplication& application)
 {
     switch (mode)
@@ -110,7 +110,7 @@ std::shared_ptr<IMasterTask> MasterTasks::GetTimeSyncTask(const std::shared_ptr<
 
 std::shared_ptr<IMasterTask> MasterTasks::GetEnableUnsolTask(const std::shared_ptr<TaskContext>& context,
                                                              const MasterParams& params,
-                                                             const log4cpp::Logger& logger,
+                                                             const Logger& logger,
                                                              IMasterApplication& application)
 {
     return params.unsolClassMask.HasEventClass()
@@ -121,7 +121,7 @@ std::shared_ptr<IMasterTask> MasterTasks::GetEnableUnsolTask(const std::shared_p
 
 std::shared_ptr<IMasterTask> MasterTasks::GetDisableUnsolTask(const std::shared_ptr<TaskContext>& context,
                                                               const MasterParams& params,
-                                                              const log4cpp::Logger& logger,
+                                                              const Logger& logger,
                                                               IMasterApplication& application)
 {
     return params.disableUnsolOnStartup

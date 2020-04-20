@@ -32,7 +32,7 @@
 
 #include <exe4cpp/Timer.h>
 
-#include <log4cpp/Logger.h>
+#include "opendnp3/logging/Logger.h"
 
 namespace opendnp3
 {
@@ -46,7 +46,7 @@ class LinkSession final : public ILinkTx,
                           private Uncopyable
 {
 public:
-    static std::shared_ptr<LinkSession> Create(const log4cpp::Logger& logger,
+    static std::shared_ptr<LinkSession> Create(const Logger& logger,
                                                uint64_t sessionid,
                                                const std::shared_ptr<IResourceManager>& manager,
                                                const std::shared_ptr<IListenCallbacks>& callbacks,
@@ -59,7 +59,7 @@ public:
         return session;
     }
 
-    LinkSession(const log4cpp::Logger& logger,
+    LinkSession(const Logger& logger,
                 uint64_t sessionid,
                 std::shared_ptr<IResourceManager> manager,
                 std::shared_ptr<IListenCallbacks> callbacks,
@@ -68,7 +68,7 @@ public:
     // override IResource
     void Shutdown() final;
 
-    void SetLogFilters(const log4cpp::LogLevels& filters);
+    void SetLogFilters(const opendnp3::LogLevels& filters);
 
 private:
     void ShutdownImpl();
@@ -95,7 +95,7 @@ private:
     void BeginReceive();
 
     bool is_shutdown = false;
-    log4cpp::Logger logger;
+    Logger logger;
     const uint64_t session_id;
 
     const std::shared_ptr<IResourceManager> manager;

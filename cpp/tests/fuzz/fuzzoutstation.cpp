@@ -17,16 +17,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <opendnp3/LogLevels.h>
+#include <opendnp3/logging/LogLevels.h>
 #include <outstation/Database.h>
 #include <outstation/OutstationContext.h>
 
 #include <dnp3mocks/MockCommandHandler.h>
+#include <dnp3mocks/MockLogHandler.h>
 #include <dnp3mocks/MockLowerLayer.h>
 #include <dnp3mocks/MockOutstationApplication.h>
 
 #include <exe4cpp/MockExecutor.h>
-#include <log4cpp/MockLogHandler.h>
 
 #include <functional>
 
@@ -35,7 +35,7 @@ class OutstationTestObject
 public:
     OutstationTestObject(const opendnp3::OutstationConfig& config,
                          const opendnp3::DatabaseConfig& database = opendnp3::DatabaseConfig(10))
-        : log("test"),
+        : log(),
           exe(std::make_shared<exe4cpp::MockExecutor>()),
           lower(std::make_shared<MockLowerLayer>()),
           cmdHandler(std::make_shared<MockCommandHandler>(opendnp3::CommandStatus::SUCCESS)),
@@ -58,7 +58,7 @@ public:
     }
 
 private:
-    log4cpp::MockLogHandler log;
+    MockLogHandler log;
     const std::shared_ptr<exe4cpp::MockExecutor> exe;
     const std::shared_ptr<MockLowerLayer> lower;
     const std::shared_ptr<MockCommandHandler> cmdHandler;

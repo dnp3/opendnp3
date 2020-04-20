@@ -19,7 +19,7 @@
  */
 #include <opendnp3/ConsoleLogger.h>
 #include <opendnp3/DNP3Manager.h>
-#include <opendnp3/LogLevels.h>
+#include <opendnp3/logging/LogLevels.h>
 #include <opendnp3/master/DefaultMasterApplication.h>
 #include <opendnp3/master/ISOEHandler.h>
 #include <opendnp3/outstation/DefaultOutstationApplication.h>

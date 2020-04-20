@@ -20,16 +20,16 @@
 
 #include "channel/TCPServer.h"
 
-#include "opendnp3/LogLevels.h"
+#include "opendnp3/logging/LogLevels.h"
 
-#include <log4cpp/LogMacros.h>
+#include "logging/LogMacros.h"
 
 #include <sstream>
 
 namespace opendnp3
 {
 
-TCPServer::TCPServer(const log4cpp::Logger& logger,
+TCPServer::TCPServer(const Logger& logger,
                      const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                      const IPEndpoint& endpoint,
                      std::error_code& ec)

@@ -20,7 +20,7 @@
 #include <exe4cpp/asio/StrandExecutor.h>
 #include <exe4cpp/asio/ThreadPool.h>
 
-#include <opendnp3/LogLevels.h>
+#include <opendnp3/logging/LogLevels.h>
 
 #include <catch.hpp>
 

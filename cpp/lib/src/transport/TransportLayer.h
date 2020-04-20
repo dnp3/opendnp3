@@ -29,7 +29,7 @@
 
 #include <exe4cpp/IExecutor.h>
 
-#include <log4cpp/Logger.h>
+#include "opendnp3/logging/Logger.h"
 
 namespace opendnp3
 {
@@ -41,7 +41,7 @@ class TransportLayer final : public IUpperLayer, public ILowerLayer
 {
 
 public:
-    TransportLayer(const log4cpp::Logger& logger, uint32_t maxRxFragSize);
+    TransportLayer(const Logger& logger, uint32_t maxRxFragSize);
 
     // ------ ILowerLayer ------
 
@@ -61,7 +61,7 @@ public:
     StackStatistics::Transport GetStatistics() const;
 
 private:
-    log4cpp::Logger logger;
+    Logger logger;
 
     IUpperLayer* upper = nullptr;
     ILinkLayer* lower = nullptr;

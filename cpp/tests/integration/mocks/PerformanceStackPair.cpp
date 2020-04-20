@@ -33,7 +33,7 @@
 
 using namespace opendnp3;
 
-PerformanceStackPair::PerformanceStackPair(log4cpp::LogLevels levels,
+PerformanceStackPair::PerformanceStackPair(LogLevels levels,
                                            TimeDuration timeout,
                                            DNP3Manager& manager,
                                            uint16_t port,
@@ -134,7 +134,7 @@ MasterStackConfig PerformanceStackPair::GetMasterStackConfig(TimeDuration timeou
     return config;
 }
 
-std::shared_ptr<IMaster> PerformanceStackPair::CreateMaster(log4cpp::LogLevels levels,
+std::shared_ptr<IMaster> PerformanceStackPair::CreateMaster(LogLevels levels,
                                                             TimeDuration timeout,
                                                             DNP3Manager& manager,
                                                             uint16_t port,
@@ -148,7 +148,7 @@ std::shared_ptr<IMaster> PerformanceStackPair::CreateMaster(log4cpp::LogLevels l
                               GetMasterStackConfig(timeout));
 }
 
-std::shared_ptr<IOutstation> PerformanceStackPair::CreateOutstation(log4cpp::LogLevels levels,
+std::shared_ptr<IOutstation> PerformanceStackPair::CreateOutstation(LogLevels levels,
                                                                     TimeDuration timeout,
                                                                     DNP3Manager& manager,
                                                                     uint16_t port,

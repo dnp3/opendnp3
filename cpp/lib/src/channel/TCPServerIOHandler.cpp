@@ -22,9 +22,9 @@
 
 #include "channel/TCPSocketChannel.h"
 
-#include "opendnp3/LogLevels.h"
+#include "opendnp3/logging/LogLevels.h"
 
-#include <log4cpp/LogMacros.h>
+#include "logging/LogMacros.h"
 
 #include <utility>
 
@@ -38,7 +38,7 @@ void TCPServerIOHandler::Server::AcceptConnection(uint64_t /*sessionid*/,
     this->callback(executor, std::move(socket));
 }
 
-TCPServerIOHandler::TCPServerIOHandler(const log4cpp::Logger& logger,
+TCPServerIOHandler::TCPServerIOHandler(const Logger& logger,
                                        ServerAcceptMode mode,
                                        const std::shared_ptr<IChannelListener>& listener,
                                        std::shared_ptr<exe4cpp::StrandExecutor> executor,

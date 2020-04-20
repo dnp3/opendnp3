@@ -40,7 +40,7 @@ class TLSServerIOHandler final : public IOHandler
     public:
         typedef std::function<void(const std::shared_ptr<IAsyncChannel>&)> callback_t;
 
-        Server(const log4cpp::Logger& logger,
+        Server(const Logger& logger,
                const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                const IPEndpoint& endpoint,
                const TLSConfig& config,
@@ -74,7 +74,7 @@ class TLSServerIOHandler final : public IOHandler
     };
 
 public:
-    static std::shared_ptr<TLSServerIOHandler> Create(const log4cpp::Logger& logger,
+    static std::shared_ptr<TLSServerIOHandler> Create(const Logger& logger,
                                                       ServerAcceptMode mode,
                                                       const std::shared_ptr<IChannelListener>& listener,
                                                       const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
@@ -85,7 +85,7 @@ public:
         return std::make_shared<TLSServerIOHandler>(logger, mode, listener, executor, endpoint, config, ec);
     }
 
-    TLSServerIOHandler(const log4cpp::Logger& logger,
+    TLSServerIOHandler(const Logger& logger,
                        ServerAcceptMode mode,
                        const std::shared_ptr<IChannelListener>& listener,
                        std::shared_ptr<exe4cpp::StrandExecutor> executor,

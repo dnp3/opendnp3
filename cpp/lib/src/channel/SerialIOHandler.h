@@ -36,7 +36,7 @@ class SerialIOHandler final : public IOHandler
 {
 
 public:
-    static std::shared_ptr<SerialIOHandler> Create(const log4cpp::Logger& logger,
+    static std::shared_ptr<SerialIOHandler> Create(const Logger& logger,
                                                    const std::shared_ptr<IChannelListener>& listener,
                                                    const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                                    const ChannelRetry& retry,
@@ -45,7 +45,7 @@ public:
         return std::make_shared<SerialIOHandler>(logger, listener, executor, retry, settings);
     }
 
-    SerialIOHandler(const log4cpp::Logger& logger,
+    SerialIOHandler(const Logger& logger,
                     const std::shared_ptr<IChannelListener>& listener,
                     const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                     const ChannelRetry& retry,

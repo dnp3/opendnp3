@@ -34,9 +34,9 @@
 #include "outstation/ReadHandler.h"
 #include "outstation/WriteHandler.h"
 
-#include "opendnp3/LogLevels.h"
+#include "opendnp3/logging/LogLevels.h"
 
-#include <log4cpp/LogMacros.h>
+#include "logging/LogMacros.h"
 
 #include <utility>
 
@@ -46,7 +46,7 @@ namespace opendnp3
 OContext::OContext(const Addresses& addresses,
                    const OutstationConfig& config,
                    const DatabaseConfig& db_config,
-                   const log4cpp::Logger& logger,
+                   const Logger& logger,
                    const std::shared_ptr<exe4cpp::IExecutor>& executor,
                    std::shared_ptr<ILowerLayer> lower,
                    std::shared_ptr<ICommandHandler> commandHandler,

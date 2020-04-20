@@ -23,7 +23,7 @@
 #include "opendnp3/util/Uncopyable.h"
 #include "opendnp3/channel/TLSConfig.h"
 
-#include <log4cpp/Logger.h>
+#include "opendnp3/logging/Logger.h"
 
 #include <asio/ssl.hpp>
 
@@ -36,12 +36,12 @@ class SSLContext : private Uncopyable
 {
 
 public:
-    SSLContext(const log4cpp::Logger& logger, bool server, const TLSConfig& config, std::error_code&);
+    SSLContext(const Logger& logger, bool server, const TLSConfig& config, std::error_code&);
 
     asio::ssl::context value;
 
 private:
-    log4cpp::Logger logger;
+    Logger logger;
 
     static int GetVerifyMode(bool server);
 

@@ -27,7 +27,7 @@
 
 namespace opendnp3
 {
-std::shared_ptr<MasterSessionStack> MasterSessionStack::Create(const log4cpp::Logger& logger,
+std::shared_ptr<MasterSessionStack> MasterSessionStack::Create(const Logger& logger,
                                                                const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                                                const std::shared_ptr<ISOEHandler>& SOEHandler,
                                                                const std::shared_ptr<IMasterApplication>& application,
@@ -40,7 +40,7 @@ std::shared_ptr<MasterSessionStack> MasterSessionStack::Create(const log4cpp::Lo
                                                 config);
 }
 
-MasterSessionStack::MasterSessionStack(const log4cpp::Logger& logger,
+MasterSessionStack::MasterSessionStack(const Logger& logger,
                                        const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                        const std::shared_ptr<ISOEHandler>& SOEHandler,
                                        const std::shared_ptr<IMasterApplication>& application,
@@ -85,7 +85,7 @@ void MasterSessionStack::OnTxReady()
     this->stack.link->OnTxReady();
 }
 
-void MasterSessionStack::SetLogFilters(const log4cpp::LogLevels& filters)
+void MasterSessionStack::SetLogFilters(const LogLevels& filters)
 {
     auto set = [this, filters]() { this->session->SetLogFilters(filters); };
 

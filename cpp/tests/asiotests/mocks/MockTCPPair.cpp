@@ -23,7 +23,7 @@
 using namespace opendnp3;
 
 MockTCPPair::MockTCPPair(std::shared_ptr<MockIO> io, uint16_t port, std::error_code ec)
-    : log("test"),
+    : log(),
       io(io),
       port(port),
       chandler(std::make_shared<MockTCPClientHandler>()),

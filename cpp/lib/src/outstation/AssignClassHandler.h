@@ -28,7 +28,7 @@
 
 #include <exe4cpp/IExecutor.h>
 
-#include <log4cpp/Logger.h>
+#include "opendnp3/logging/Logger.h"
 
 namespace opendnp3
 {

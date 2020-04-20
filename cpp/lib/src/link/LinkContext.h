@@ -36,7 +36,7 @@
 
 #include <exe4cpp/IExecutor.h>
 
-#include <log4cpp/Logger.h>
+#include "opendnp3/logging/Logger.h"
 
 namespace opendnp3
 {
@@ -56,7 +56,7 @@ class LinkContext
 {
 
 public:
-    LinkContext(const log4cpp::Logger& logger,
+    LinkContext(const Logger& logger,
                 const std::shared_ptr<exe4cpp::IExecutor>&,
                 std::shared_ptr<IUpperLayer>,
                 std::shared_ptr<ILinkListener>,
@@ -124,7 +124,7 @@ public:
     ser4cpp::Settable<ser4cpp::rseq_t> pendingPriTx;
     ser4cpp::Settable<ser4cpp::rseq_t> pendingSecTx;
 
-    log4cpp::Logger logger;
+    Logger logger;
     const LinkLayerConfig config;
     ITransportSegment* pSegments;
     LinkTransmitMode txMode;

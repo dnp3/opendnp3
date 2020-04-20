@@ -30,7 +30,7 @@ UserPollTask::UserPollTask(const std::shared_ptr<TaskContext>& context,
                            bool recurring,
                            IMasterApplication& app,
                            std::shared_ptr<ISOEHandler> soeHandler,
-                           const log4cpp::Logger& logger,
+                           const Logger& logger,
                            TaskConfig config)
     : PollTaskBase(context, app, std::move(soeHandler), behavior, logger, config),
       builder(std::move(builder)),

@@ -22,12 +22,11 @@
 
 #include "app/GroupVariationRecord.h"
 #include "app/parsing/ObjectHeaderParser.h"
+#include "logging/LogMacros.h"
 
-#include "opendnp3/LogLevels.h"
+#include "opendnp3/logging/LogLevels.h"
 
 #include <ser4cpp/serialization/LittleEndian.h>
-
-#include <log4cpp/LogMacros.h>
 
 namespace opendnp3
 {
@@ -35,7 +34,7 @@ namespace opendnp3
 ParseResult FreeFormatParser::ParseHeader(ser4cpp::rseq_t& buffer,
                                           const ParserSettings& settings,
                                           const HeaderRecord& record,
-                                          log4cpp::Logger* pLogger,
+                                          Logger* pLogger,
                                           IAPDUHandler* pHandler)
 {
     if (buffer.length() < 3)
@@ -125,7 +124,7 @@ ParseResult FreeFormatParser::ParseFreeFormat(FreeFormatHandler parser,
                                               uint16_t /*size*/,
                                               ser4cpp::rseq_t& objects,
                                               IAPDUHandler* pHandler,
-                                              log4cpp::Logger* pLogger)
+                                              Logger* pLogger)
 {
     if (parser(header, objects, pHandler))
     {

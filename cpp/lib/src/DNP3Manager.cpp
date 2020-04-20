@@ -27,7 +27,7 @@ namespace opendnp3
 {
 
 DNP3Manager::DNP3Manager(uint32_t concurrencyHint,
-                         std::shared_ptr<log4cpp::ILogHandler> handler,
+                         std::shared_ptr<ILogHandler> handler,
                          std::function<void(uint32_t)> onThreadStart,
                          std::function<void(uint32_t)> onThreadExit)
     : impl(std::make_unique<DNP3ManagerImpl>(concurrencyHint, handler, onThreadStart, onThreadExit))
@@ -42,7 +42,7 @@ void DNP3Manager::Shutdown()
 }
 
 std::shared_ptr<IChannel> DNP3Manager::AddTCPClient(const std::string& id,
-                                                    const log4cpp::LogLevels& levels,
+                                                    const LogLevels& levels,
                                                     const ChannelRetry& retry,
                                                     const std::vector<IPEndpoint>& hosts,
                                                     const std::string& local,
@@ -52,7 +52,7 @@ std::shared_ptr<IChannel> DNP3Manager::AddTCPClient(const std::string& id,
 }
 
 std::shared_ptr<IChannel> DNP3Manager::AddTCPServer(const std::string& id,
-                                                    const log4cpp::LogLevels& levels,
+                                                    const LogLevels& levels,
                                                     ServerAcceptMode mode,
                                                     const IPEndpoint& endpoint,
                                                     std::shared_ptr<IChannelListener> listener)
@@ -61,7 +61,7 @@ std::shared_ptr<IChannel> DNP3Manager::AddTCPServer(const std::string& id,
 }
 
 std::shared_ptr<IChannel> DNP3Manager::AddUDPChannel(const std::string& id,
-                                                     const log4cpp::LogLevels& levels,
+                                                     const LogLevels& levels,
                                                      const ChannelRetry& retry,
                                                      const IPEndpoint& localEndpoint,
                                                      const IPEndpoint& remoteEndpoint,
@@ -71,7 +71,7 @@ std::shared_ptr<IChannel> DNP3Manager::AddUDPChannel(const std::string& id,
 }
 
 std::shared_ptr<IChannel> DNP3Manager::AddSerial(const std::string& id,
-                                                 const log4cpp::LogLevels& levels,
+                                                 const LogLevels& levels,
                                                  const ChannelRetry& retry,
                                                  SerialSettings settings,
                                                  std::shared_ptr<IChannelListener> listener)
@@ -80,7 +80,7 @@ std::shared_ptr<IChannel> DNP3Manager::AddSerial(const std::string& id,
 }
 
 std::shared_ptr<IChannel> DNP3Manager::AddTLSClient(const std::string& id,
-                                                    const log4cpp::LogLevels& levels,
+                                                    const LogLevels& levels,
                                                     const ChannelRetry& retry,
                                                     const std::vector<IPEndpoint>& hosts,
                                                     const std::string& local,
@@ -92,7 +92,7 @@ std::shared_ptr<IChannel> DNP3Manager::AddTLSClient(const std::string& id,
 }
 
 std::shared_ptr<IChannel> DNP3Manager::AddTLSServer(const std::string& id,
-                                                    const log4cpp::LogLevels& levels,
+                                                    const LogLevels& levels,
                                                     ServerAcceptMode mode,
                                                     const IPEndpoint& endpoint,
                                                     const TLSConfig& config,
@@ -103,7 +103,7 @@ std::shared_ptr<IChannel> DNP3Manager::AddTLSServer(const std::string& id,
 }
 
 std::shared_ptr<IListener> DNP3Manager::CreateListener(std::string loggerid,
-                                                       const log4cpp::LogLevels& loglevel,
+                                                       const LogLevels& loglevel,
                                                        const IPEndpoint& endpoint,
                                                        const std::shared_ptr<IListenCallbacks>& callbacks,
                                                        std::error_code& ec)
@@ -112,7 +112,7 @@ std::shared_ptr<IListener> DNP3Manager::CreateListener(std::string loggerid,
 }
 
 std::shared_ptr<IListener> DNP3Manager::CreateListener(std::string loggerid,
-                                                       const log4cpp::LogLevels& loglevel,
+                                                       const LogLevels& loglevel,
                                                        const IPEndpoint& endpoint,
                                                        const TLSConfig& config,
                                                        const std::shared_ptr<IListenCallbacks>& callbacks,

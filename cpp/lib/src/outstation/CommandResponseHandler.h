@@ -24,7 +24,7 @@
 #include "app/parsing/IAPDUHandler.h"
 #include "outstation/ICommandAction.h"
 
-#include <log4cpp/Logger.h>
+#include "opendnp3/logging/Logger.h"
 
 namespace opendnp3
 {

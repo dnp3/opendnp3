@@ -33,12 +33,12 @@ class DNP3Channel final : public IChannel, public std::enable_shared_from_this<D
 {
 
 public:
-    DNP3Channel(const log4cpp::Logger& logger,
+    DNP3Channel(const Logger& logger,
                 const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                 std::shared_ptr<IOHandler> iohandler,
                 std::shared_ptr<IResourceManager> manager);
 
-    static std::shared_ptr<DNP3Channel> Create(const log4cpp::Logger& logger,
+    static std::shared_ptr<DNP3Channel> Create(const Logger& logger,
                                                const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                                const std::shared_ptr<IOHandler>& iohandler,
                                                const std::shared_ptr<IResourceManager>& manager)
@@ -54,9 +54,9 @@ public:
 
     LinkStatistics GetStatistics() final;
 
-    log4cpp::LogLevels GetLogFilters() const final;
+    opendnp3::LogLevels GetLogFilters() const final;
 
-    void SetLogFilters(const log4cpp::LogLevels& filters) final;
+    void SetLogFilters(const opendnp3::LogLevels& filters) final;
 
     std::shared_ptr<IMaster> AddMaster(const std::string& id,
                                        std::shared_ptr<ISOEHandler> SOEHandler,
@@ -74,7 +74,7 @@ private:
     // ----- generic method for adding a stack ------
     template<class T> std::shared_ptr<T> AddStack(const LinkConfig& link, const std::shared_ptr<T>& stack);
 
-    log4cpp::Logger logger;
+    Logger logger;
     const std::shared_ptr<exe4cpp::StrandExecutor> executor;
     std::shared_ptr<IMasterScheduler> scheduler;
 

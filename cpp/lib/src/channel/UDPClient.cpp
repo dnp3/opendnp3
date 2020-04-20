@@ -28,7 +28,7 @@
 namespace opendnp3
 {
 
-UDPClient::UDPClient(const log4cpp::Logger& logger,
+UDPClient::UDPClient(const Logger& logger,
                      const std::shared_ptr<exe4cpp::StrandExecutor>& executor)
     : condition(logger),
       executor(executor),

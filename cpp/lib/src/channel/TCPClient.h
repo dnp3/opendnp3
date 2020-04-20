@@ -38,14 +38,14 @@ public:
         const std::shared_ptr<exe4cpp::StrandExecutor>& executor, asio::ip::tcp::socket, const std::error_code& ec)>
         connect_callback_t;
 
-    static std::shared_ptr<TCPClient> Create(const log4cpp::Logger& logger,
+    static std::shared_ptr<TCPClient> Create(const Logger& logger,
                                              const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                              const std::string& adapter)
     {
         return std::make_shared<TCPClient>(logger, executor, adapter);
     }
 
-    TCPClient(const log4cpp::Logger& logger,
+    TCPClient(const Logger& logger,
               const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
               std::string adapter);
 

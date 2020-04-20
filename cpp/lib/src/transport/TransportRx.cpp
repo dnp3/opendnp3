@@ -22,18 +22,18 @@
 #include "TransportConstants.h"
 #include "TransportHeader.h"
 
-#include "opendnp3/LogLevels.h"
+#include "opendnp3/logging/LogLevels.h"
 
 #include <ser4cpp/util/HexConversions.h>
 
-#include <log4cpp/LogMacros.h>
+#include "logging/LogMacros.h"
 
 #include <cstring>
 
 namespace opendnp3
 {
 
-TransportRx::TransportRx(const log4cpp::Logger& logger, uint32_t maxRxFragSize)
+TransportRx::TransportRx(const Logger& logger, uint32_t maxRxFragSize)
     : logger(logger), rxBuffer(maxRxFragSize), numBytesRead(0)
 {
 }

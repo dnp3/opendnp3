@@ -20,12 +20,12 @@
 #include "ObjectHeaderParser.h"
 
 #include "app/GroupVariationRecord.h"
+#include "logging/LogMacros.h"
 
-#include "opendnp3/LogLevels.h"
+#include "opendnp3/logging/LogLevels.h"
 
 #include <ser4cpp/serialization/LittleEndian.h>
 
-#include <log4cpp/LogMacros.h>
 
 namespace opendnp3
 {
@@ -34,7 +34,7 @@ ObjectHeader::ObjectHeader() : group(0), variation(0), qualifier(0) {}
 
 ParseResult ObjectHeaderParser::ParseObjectHeader(ObjectHeader& header,
                                                   ser4cpp::rseq_t& buffer,
-                                                  log4cpp::Logger* pLogger)
+                                                  Logger* pLogger)
 {
     if (buffer.length() < 3)
     {

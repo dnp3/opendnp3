@@ -23,12 +23,12 @@
 #include "app/parsing/IAPDUHandler.h"
 #include "decoder/Indent.h"
 
-#include "opendnp3/LogLevels.h"
+#include "opendnp3/logging/LogLevels.h"
 #include "opendnp3/decoder/IDecoderCallbacks.h"
 #include "opendnp3/gen/Attributes.h"
 
-#include <log4cpp/LogMacros.h>
-#include <log4cpp/Logger.h>
+#include "logging/LogMacros.h"
+#include "opendnp3/logging/Logger.h"
 
 #include <cstdint>
 #include <sstream>
@@ -39,14 +39,14 @@ namespace opendnp3
 class LoggingHandler final : public IAPDUHandler
 {
 public:
-    LoggingHandler(const log4cpp::Logger& logger, IDecoderCallbacks& callbacks);
+    LoggingHandler(const Logger& logger, IDecoderCallbacks& callbacks);
 
 private:
     virtual void OnHeaderResult(const HeaderRecord& record, const IINField& result) override;
 
     static std::string ToUTCString(const DNPTime& time);
 
-    log4cpp::Logger logger;
+    Logger logger;
     IDecoderCallbacks* callbacks;
 
     static const char* GetStringValue(bool value)

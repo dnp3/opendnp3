@@ -23,7 +23,7 @@
 #include <ser4cpp/util/HexConversions.h>
 
 #include <opendnp3/ConsoleLogger.h>
-#include <opendnp3/LogLevels.h>
+#include <opendnp3/logging/LogLevels.h>
 #include <app/parsing/APDUParser.h>
 
 #include <catch.hpp>

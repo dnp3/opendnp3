@@ -17,10 +17,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <opendnp3/LogLevels.h>
 
 #include <opendnp3/ConsoleLogger.h>
 #include <opendnp3/DNP3Manager.h>
+#include <opendnp3/logging/LogLevels.h>
 #include <opendnp3/master/DefaultListenCallbacks.h>
 
 #include <iostream>

@@ -20,19 +20,19 @@
 #ifndef OPENDNP3_LOG_HANDLER_ADAPTER_H
 #define OPENDNP3_LOG_HANDLER_ADAPTER_H
 
-#include <log4cpp/ILogHandler.h>
+#include "opendnp3/logging/ILogHandler.h"
 
 #include "GlobalRef.h"
 #include "../jni/JNIWrappers.h"
 
-class LogHandlerAdapter final : public log4cpp::ILogHandler
+class LogHandlerAdapter final : public opendnp3::ILogHandler
 {
 public:
     LogHandlerAdapter(jni::JLogHandler);
 
-    void log(log4cpp::ModuleId module,
+    void log(opendnp3::ModuleId module,
              const char* id,
-             log4cpp::LogLevel level,
+             opendnp3::LogLevel level,
              char const* location,
              char const* message) override;
 

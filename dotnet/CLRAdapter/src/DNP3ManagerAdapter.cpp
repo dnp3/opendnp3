@@ -81,7 +81,7 @@ namespace Automatak
                     ? std::shared_ptr<opendnp3::IChannelListener>(new ChannelListenerAdapter(listener))
                     : nullptr;
 
-                auto channel = this->manager->AddTCPClient(stdName.c_str(), log4cpp::LogLevel(filters), Convert(retry), endpoints, "", listenAdapter);
+                auto channel = this->manager->AddTCPClient(stdName.c_str(), opendnp3::LogLevel(filters), Convert(retry), endpoints, "", listenAdapter);
 
                 return channel ? gcnew ChannelAdapter(channel) : nullptr;
             }
@@ -96,7 +96,7 @@ namespace Automatak
                     : nullptr;
 
 				auto channel
-                    = this->manager->AddTCPServer(stdName.c_str(), log4cpp::LogLevel(filters), (opendnp3::ServerAcceptMode)mode, stdEndpoint, listenAdapter);
+                    = this->manager->AddTCPServer(stdName.c_str(), opendnp3::LogLevel(filters), (opendnp3::ServerAcceptMode)mode, stdEndpoint, listenAdapter);
 
 				return channel ? gcnew ChannelAdapter(channel) : nullptr;
 			}
@@ -111,7 +111,7 @@ namespace Automatak
                     ? std::shared_ptr<opendnp3::IChannelListener>(new ChannelListenerAdapter(listener))
                     : nullptr;
 
-                auto channel = this->manager->AddUDPChannel(stdName.c_str(), log4cpp::LogLevel(filters), Convert(retry), stdLocalEndpoint, stdRemoteEndpoint, listenAdapter);
+                auto channel = this->manager->AddUDPChannel(stdName.c_str(), opendnp3::LogLevel(filters), Convert(retry), stdLocalEndpoint, stdRemoteEndpoint, listenAdapter);
 
                 return channel ? gcnew ChannelAdapter(channel) : nullptr;
             }
@@ -131,7 +131,7 @@ namespace Automatak
                     : nullptr;
 
                 std::error_code ec;
-                auto channel = this->manager->AddTLSClient(stdName.c_str(), log4cpp::LogLevel(filters), Convert(retry), endpoints, "", Conversions::Convert(config), listenAdapter, ec);
+                auto channel = this->manager->AddTLSClient(stdName.c_str(), opendnp3::LogLevel(filters), Convert(retry), endpoints, "", Conversions::Convert(config), listenAdapter, ec);
                 if (ec)
                 {
                     throw gcnew System::Exception(Conversions::ConvertString(ec.message()));
@@ -152,7 +152,7 @@ namespace Automatak
                     : nullptr;
 				
 				std::error_code ec;
-                auto channel = this->manager->AddTLSServer(stdName.c_str(), log4cpp::LogLevel(filters), (opendnp3::ServerAcceptMode) mode, stdEndpoint, Conversions::Convert(config), listenAdapter, ec);
+                auto channel = this->manager->AddTLSServer(stdName.c_str(), opendnp3::LogLevel(filters), (opendnp3::ServerAcceptMode) mode, stdEndpoint, Conversions::Convert(config), listenAdapter, ec);
 				if (ec)
 				{
 					throw gcnew System::Exception(Conversions::ConvertString(ec.message()));
@@ -172,7 +172,7 @@ namespace Automatak
                     ? std::shared_ptr<opendnp3::IChannelListener>(new ChannelListenerAdapter(listener))
                     : nullptr;
 				
-				auto channel = this->manager->AddSerial(stdName.c_str(), log4cpp::LogLevel(filters), Convert(retry), s, listenAdapter);
+				auto channel = this->manager->AddSerial(stdName.c_str(), opendnp3::LogLevel(filters), Convert(retry), s, listenAdapter);
 				
 				return channel ? gcnew ChannelAdapter(channel) : nullptr;				
 			}
@@ -180,7 +180,7 @@ namespace Automatak
 			Interface::IListener^ DNP3ManagerAdapter::CreateListener(System::String^ loggerid, System::UInt32 filters, Interface::IPEndpoint^ endpoint, IListenCallbacks^ callbacks)
 			{
 				auto id = Conversions::ConvertString(loggerid);
-                auto levels = log4cpp::LogLevel(filters);
+                auto levels = opendnp3::LogLevel(filters);
 				auto ep = Conversions::Convert(endpoint);
 				auto cb = std::shared_ptr<opendnp3::IListenCallbacks>(new ListenCallbacksAdapter(callbacks));
 
@@ -198,7 +198,7 @@ namespace Automatak
 			Interface::IListener^ DNP3ManagerAdapter::CreateListener(System::String^ loggerid, System::UInt32 filters, Interface::IPEndpoint^ endpoint, Interface::TLSConfig^ config, IListenCallbacks^ callbacks)
 			{
 				auto id = Conversions::ConvertString(loggerid);
-                auto levels = log4cpp::LogLevel(filters);
+                auto levels = opendnp3::LogLevel(filters);
 				auto ep = Conversions::Convert(endpoint);
 				auto tlsConfig = Conversions::Convert(config);
 				auto cb = std::shared_ptr<opendnp3::IListenCallbacks>(new ListenCallbacksAdapter(callbacks));

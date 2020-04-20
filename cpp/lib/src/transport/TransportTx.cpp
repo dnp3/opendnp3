@@ -21,18 +21,18 @@
 
 #include "TransportHeader.h"
 
-#include "opendnp3/LogLevels.h"
+#include "opendnp3/logging/LogLevels.h"
 
 #include <ser4cpp/serialization/LittleEndian.h>
 
-#include <log4cpp/LogMacros.h>
+#include "logging/LogMacros.h"
 
 #include <cassert>
 
 namespace opendnp3
 {
 
-TransportTx::TransportTx(const log4cpp::Logger& logger) : logger(logger) {}
+TransportTx::TransportTx(const Logger& logger) : logger(logger) {}
 
 void TransportTx::Configure(const Message& message)
 {

@@ -36,7 +36,7 @@ class TCPClientIOHandler final : public IOHandler
 {
 
 public:
-    static std::shared_ptr<TCPClientIOHandler> Create(const log4cpp::Logger& logger,
+    static std::shared_ptr<TCPClientIOHandler> Create(const Logger& logger,
                                                       const std::shared_ptr<IChannelListener>& listener,
                                                       const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                                       const ChannelRetry& retry,
@@ -46,7 +46,7 @@ public:
         return std::make_shared<TCPClientIOHandler>(logger, listener, executor, retry, remotes, adapter);
     }
 
-    TCPClientIOHandler(const log4cpp::Logger& logger,
+    TCPClientIOHandler(const Logger& logger,
                        const std::shared_ptr<IChannelListener>& listener,
                        const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                        const ChannelRetry& retry,

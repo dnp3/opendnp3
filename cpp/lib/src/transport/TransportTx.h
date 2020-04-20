@@ -30,7 +30,7 @@
 #include <ser4cpp/container/Settable.h>
 #include <ser4cpp/container/StaticBuffer.h>
 
-#include <log4cpp/Logger.h>
+#include "opendnp3/logging/Logger.h"
 
 namespace opendnp3
 {
@@ -42,7 +42,7 @@ class TransportTx final : public ITransportSegment
 {
 
 public:
-    TransportTx(const log4cpp::Logger& logger);
+    TransportTx(const Logger& logger);
 
     void Configure(const Message& message);
 
@@ -72,7 +72,7 @@ private:
     // Static buffer where we store tpdus that are being transmitted
     ser4cpp::StaticBuffer<MAX_TPDU_LENGTH> tpduBuffer;
 
-    log4cpp::Logger logger;
+    Logger logger;
     StackStatistics::Transport::Tx statistics;
     TransportSeqNum sequence;
     uint32_t tpduCount = 0;
