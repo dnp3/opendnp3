@@ -125,8 +125,8 @@ namespace flags
     const LogLevel EVENT = LogLevel(1);
     const LogLevel ERR = EVENT.next();
     const LogLevel WARN = ERR.next();
-    const LogLevel INFO = INFO.next();
-    const LogLevel DBG = DBG.next();
+    const LogLevel INFO = WARN.next();
+    const LogLevel DBG = INFO.next();
 
     // up-shift the custom dnp3 filters
 

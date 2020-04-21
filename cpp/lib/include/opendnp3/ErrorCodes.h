@@ -41,11 +41,11 @@ struct ErrorSpec
     {
         switch (err)
         {
-        case (static_cast<int>(Error::SHUTTING_DOWN)):
+        case Error::SHUTTING_DOWN:
             return "The operation was requested while the resource was shutting down";
-        case (static_cast<int>(Error::NO_TLS_SUPPORT)):
+        case Error::NO_TLS_SUPPORT:
             return "Not built with TLS support";
-        case (static_cast<int>(Error::UNABLE_TO_BIND_SERVER)):
+        case Error::UNABLE_TO_BIND_SERVER:
             return "Unable to bind server to the specified port";
         default:
             return "unknown error";
