@@ -64,6 +64,7 @@ namespace jni
     cache::ControlRelayOutputBlock JCache::ControlRelayOutputBlock;
     cache::Counter JCache::Counter;
     cache::CounterConfig JCache::CounterConfig;
+    cache::DNP3Exception JCache::DNP3Exception;
     cache::DNPTime JCache::DNPTime;
     cache::Database JCache::Database;
     cache::DatabaseConfig JCache::DatabaseConfig;
@@ -174,6 +175,7 @@ namespace jni
         && ControlRelayOutputBlock.init(env)
         && Counter.init(env)
         && CounterConfig.init(env)
+        && DNP3Exception.init(env)
         && DNPTime.init(env)
         && Database.init(env)
         && DatabaseConfig.init(env)
@@ -286,6 +288,7 @@ namespace jni
         ControlRelayOutputBlock.cleanup(env);
         Counter.cleanup(env);
         CounterConfig.cleanup(env);
+        DNP3Exception.cleanup(env);
         DNPTime.cleanup(env);
         Database.cleanup(env);
         DatabaseConfig.cleanup(env);

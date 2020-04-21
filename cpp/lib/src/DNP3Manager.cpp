@@ -85,10 +85,9 @@ std::shared_ptr<IChannel> DNP3Manager::AddTLSClient(const std::string& id,
                                                     const std::vector<IPEndpoint>& hosts,
                                                     const std::string& local,
                                                     const TLSConfig& config,
-                                                    std::shared_ptr<IChannelListener> listener,
-                                                    std::error_code& ec)
+                                                    std::shared_ptr<IChannelListener> listener)
 {
-    return this->impl->AddTLSClient(id, levels, retry, hosts, local, config, std::move(listener), ec);
+    return this->impl->AddTLSClient(id, levels, retry, hosts, local, config, std::move(listener));
 }
 
 std::shared_ptr<IChannel> DNP3Manager::AddTLSServer(const std::string& id,
@@ -96,29 +95,26 @@ std::shared_ptr<IChannel> DNP3Manager::AddTLSServer(const std::string& id,
                                                     ServerAcceptMode mode,
                                                     const IPEndpoint& endpoint,
                                                     const TLSConfig& config,
-                                                    std::shared_ptr<IChannelListener> listener,
-                                                    std::error_code& ec)
+                                                    std::shared_ptr<IChannelListener> listener)
 {
-    return this->impl->AddTLSServer(id, levels, mode, endpoint, config, std::move(listener), ec);
+    return this->impl->AddTLSServer(id, levels, mode, endpoint, config, std::move(listener));
 }
 
 std::shared_ptr<IListener> DNP3Manager::CreateListener(std::string loggerid,
                                                        const LogLevels& loglevel,
                                                        const IPEndpoint& endpoint,
-                                                       const std::shared_ptr<IListenCallbacks>& callbacks,
-                                                       std::error_code& ec)
+                                                       const std::shared_ptr<IListenCallbacks>& callbacks)
 {
-    return impl->CreateListener(std::move(loggerid), loglevel, endpoint, callbacks, ec);
+    return impl->CreateListener(std::move(loggerid), loglevel, endpoint, callbacks);
 }
 
 std::shared_ptr<IListener> DNP3Manager::CreateListener(std::string loggerid,
                                                        const LogLevels& loglevel,
                                                        const IPEndpoint& endpoint,
                                                        const TLSConfig& config,
-                                                       const std::shared_ptr<IListenCallbacks>& callbacks,
-                                                       std::error_code& ec)
+                                                       const std::shared_ptr<IListenCallbacks>& callbacks)
 {
-    return impl->CreateListener(std::move(loggerid), loglevel, endpoint, config, callbacks, ec);
+    return impl->CreateListener(std::move(loggerid), loglevel, endpoint, config, callbacks);
 }
 
 } // namespace opendnp3

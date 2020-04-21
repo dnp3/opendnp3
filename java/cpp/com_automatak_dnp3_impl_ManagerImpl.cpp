@@ -99,9 +99,17 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
     };
     JNI::Iterate<jni::JIPEndpoint>(env, jni::JIterable(jremotes), process);
 
-    auto channel = manager->AddTCPClient(id.str(), LogLevel(jlevels), retry, endpoints, adapter.str(), listener);
-
-    return (jlong) new std::shared_ptr<IChannel>(channel);
+    try
+    {
+        auto channel = manager->AddTCPClient(id.str(), LogLevel(jlevels), retry, endpoints, adapter.str(), listener);
+        return (jlong) new std::shared_ptr<IChannel>(channel);
+    }
+    catch(DNP3Error& e)
+    {
+        auto exception = jni::JCache::DNP3Exception.construct(env, LocalJString(env, e.what()));
+        env->Throw(exception.as<jthrowable>());
+        return 0;
+    }
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1server(JNIEnv* env,
@@ -120,9 +128,17 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
     auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
 
-    auto channel = manager->AddTCPServer(id.str(), LogLevel(jlevels), static_cast<ServerAcceptMode>(jmode), endpoint, listener);
-
-    return (jlong) new std::shared_ptr<IChannel>(channel);
+    try
+    {
+        auto channel = manager->AddTCPServer(id.str(), LogLevel(jlevels), static_cast<ServerAcceptMode>(jmode), endpoint, listener);
+        return (jlong) new std::shared_ptr<IChannel>(channel);
+    }
+    catch(DNP3Error& e)
+    {
+        auto exception = jni::JCache::DNP3Exception.construct(env, LocalJString(env, e.what()));
+        env->Throw(exception.as<jthrowable>());
+        return 0;
+    }
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1udp
@@ -136,9 +152,17 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
     ChannelRetry retry(TimeDuration::Milliseconds(jminRetry), TimeDuration::Milliseconds(jmaxRetry));
     auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
 
-    auto channel = manager->AddUDPChannel(id.str(), LogLevel(jlevels), retry, localEndpoint, remoteEndpoint, listener);
-
-    return (jlong) new std::shared_ptr<IChannel>(channel);
+    try
+    {
+        auto channel = manager->AddUDPChannel(id.str(), LogLevel(jlevels), retry, localEndpoint, remoteEndpoint, listener);
+        return (jlong) new std::shared_ptr<IChannel>(channel);
+    }
+    catch(DNP3Error& e)
+    {
+        auto exception = jni::JCache::DNP3Exception.construct(env, LocalJString(env, e.what()));
+        env->Throw(exception.as<jthrowable>());
+        return 0;
+    }
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tls_1client(JNIEnv* env,
@@ -169,11 +193,17 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
     };
     JNI::Iterate<jni::JIPEndpoint>(env, jni::JIterable(jremotes), process);
 
-    std::error_code ec;
-
-    auto channel = manager->AddTLSClient(id.str(), LogLevel(jlevels), retry, endpoints, adapter.str(), tlsconf, listener, ec);
-
-    return (jlong) new std::shared_ptr<IChannel>(channel);
+    try
+    {
+        auto channel = manager->AddTLSClient(id.str(), LogLevel(jlevels), retry, endpoints, adapter.str(), tlsconf, listener);
+        return (jlong) new std::shared_ptr<IChannel>(channel);
+    }
+    catch(DNP3Error& e)
+    {
+        auto exception = jni::JCache::DNP3Exception.construct(env, LocalJString(env, e.what()));
+        env->Throw(exception.as<jthrowable>());
+        return 0;
+    }
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tls_1server(JNIEnv* env,
@@ -195,11 +225,17 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
     auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
 
-    std::error_code ec;
-
-    auto channel = manager->AddTLSServer(id.str(), LogLevel(jlevels), static_cast<ServerAcceptMode>(jmode), endpoint, tlsconf, listener, ec);
-
-    return ec ? 0 : (jlong) new std::shared_ptr<IChannel>(channel);
+    try
+    {
+        auto channel = manager->AddTLSServer(id.str(), LogLevel(jlevels), static_cast<ServerAcceptMode>(jmode), endpoint, tlsconf, listener);
+        return (jlong) new std::shared_ptr<IChannel>(channel);
+    }
+    catch(DNP3Error& e)
+    {
+        auto exception = jni::JCache::DNP3Exception.construct(env, LocalJString(env, e.what()));
+        env->Throw(exception.as<jthrowable>());
+        return 0;
+    }
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1serial(JNIEnv* env,
@@ -235,7 +271,15 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
     auto listener = jlistener ? std::make_shared<ChannelListenerAdapter>(jlistener) : nullptr;
 
-    auto channel = manager->AddSerial(id.str(), LogLevel(jlevels), retry, settings, listener);
-
-    return (jlong) new std::shared_ptr<IChannel>(channel);
+    try
+    {
+        auto channel = manager->AddSerial(id.str(), LogLevel(jlevels), retry, settings, listener);
+        return (jlong) new std::shared_ptr<IChannel>(channel);
+    }
+    catch(DNP3Error& e)
+    {
+        auto exception = jni::JCache::DNP3Exception.construct(env, LocalJString(env, e.what()));
+        env->Throw(exception.as<jthrowable>());
+        return 0;
+    }
 }

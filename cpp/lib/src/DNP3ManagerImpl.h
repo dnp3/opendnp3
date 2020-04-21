@@ -85,29 +85,25 @@ public:
                                            const std::vector<IPEndpoint>& hosts,
                                            const std::string& local,
                                            const TLSConfig& config,
-                                           std::shared_ptr<IChannelListener> listener,
-                                           std::error_code& ec);
+                                           std::shared_ptr<IChannelListener> listener);
 
     std::shared_ptr<IChannel> AddTLSServer(const std::string& id,
                                            const opendnp3::LogLevels& levels,
                                            ServerAcceptMode mode,
                                            const IPEndpoint& endpoint,
                                            const TLSConfig& config,
-                                           std::shared_ptr<IChannelListener> listener,
-                                           std::error_code& ec);
+                                           std::shared_ptr<IChannelListener> listener);
 
     std::shared_ptr<IListener> CreateListener(std::string loggerid,
                                               const opendnp3::LogLevels& levels,
                                               const IPEndpoint& endpoint,
-                                              const std::shared_ptr<IListenCallbacks>& callbacks,
-                                              std::error_code& ec);
+                                              const std::shared_ptr<IListenCallbacks>& callbacks);
 
     std::shared_ptr<IListener> CreateListener(std::string loggerid,
                                               const opendnp3::LogLevels& levels,
                                               const IPEndpoint& endpoint,
                                               const TLSConfig& config,
-                                              const std::shared_ptr<IListenCallbacks>& callbacks,
-                                              std::error_code& ec);
+                                              const std::shared_ptr<IListenCallbacks>& callbacks);
 
 private:
     Logger logger;

@@ -21,6 +21,7 @@
 #ifndef OPENDNP3_ERRORCODES_H
 #define OPENDNP3_ERRORCODES_H
 
+#include <stdexcept>
 #include <string>
 #include <system_error>
 
@@ -31,45 +32,39 @@ enum class Error : int
 {
     SHUTTING_DOWN,
     NO_TLS_SUPPORT,
-    NO_SERIAL_SUPPORT
+    UNABLE_TO_BIND_SERVER
 };
 
-class ErrorCategory final : public std::error_category
+struct ErrorSpec
+{
+    static std::string to_string(Error err)
+    {
+        switch (err)
+        {
+        case (static_cast<int>(Error::SHUTTING_DOWN)):
+            return "The operation was requested while the resource was shutting down";
+        case (static_cast<int>(Error::NO_TLS_SUPPORT)):
+            return "Not built with TLS support";
+        case (static_cast<int>(Error::UNABLE_TO_BIND_SERVER)):
+            return "Unable to bind server to the specified port";
+        default:
+            return "unknown error";
+        };
+    }
+};
+
+class DNP3Error final : public std::runtime_error
 {
 public:
-    static const std::error_category& Instance()
-    {
-        return instance;
-    }
+    explicit DNP3Error(Error err)
+        : std::runtime_error(ErrorSpec::to_string(err))
+    {}
 
-    virtual const char* name() const noexcept
-    {
-        return "dnp3";
-    }
-
-    virtual std::string message(int ev) const;
-
-private:
-    ErrorCategory() {}
-    ErrorCategory(const ErrorCategory&) = delete;
-
-    static ErrorCategory instance;
+    DNP3Error(Error err, std::error_code& ec)
+        : std::runtime_error(ErrorSpec::to_string(err) + ": " + ec.message())
+    {}
 };
-
-inline std::error_code make_error_code(Error err)
-{
-    return std::error_code(static_cast<int>(err), ErrorCategory::Instance());
-}
 
 } // namespace opendnp3
-
-namespace std
-{
-
-template<> struct is_error_code_enum<opendnp3::Error> : public true_type
-{
-};
-
-} // namespace std
 
 #endif

@@ -56,12 +56,7 @@ public:
         if (ec)
             return nullptr;
 
-        ret->StartAccept(ec);
-
-        if (ec)
-        {
-            return nullptr;
-        }
+        ret->StartAccept();
 
         return ret;
     }

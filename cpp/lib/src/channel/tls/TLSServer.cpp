@@ -88,8 +88,10 @@ std::error_code TLSServer::ConfigureListener(const std::string& adapter, std::er
     return ec;
 }
 
-void TLSServer::StartAccept(std::error_code& ec)
+void TLSServer::StartAccept()
 {
+    std::error_code ec;
+
     const auto ID = this->session_id;
     ++this->session_id;
 
@@ -129,12 +131,12 @@ void TLSServer::StartAccept(std::error_code& ec)
         // We simply ignore it.
         if (!stream->lowest_layer().is_open())
         {
-            self->StartAccept(ec);
+            self->StartAccept();
             return;
         }
 
         // begin accepting another session
-        self->StartAccept(ec);
+        self->StartAccept();
 
         if (!self->AcceptConnection(ID, stream->lowest_layer().remote_endpoint()))
         {

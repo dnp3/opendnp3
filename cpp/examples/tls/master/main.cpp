@@ -51,18 +51,10 @@ int main(int argc, char* argv[])
     // send log messages to the console
     DNP3Manager manager(1, ConsoleLogger::Create());
 
-    std::error_code ec;
-
     // Connect via a TCPClient socket to a outstation
     auto channel = manager.AddTLSClient(
         "tls-client", logLevels, ChannelRetry::Default(), {IPEndpoint("127.0.0.1", 20001)}, "0.0.0.0",
-        TLSConfig(peerCertificate, privateKey, privateKey), PrintingChannelListener::Create(), ec);
-
-    if (ec)
-    {
-        std::cout << "Unable to create tls client: " << ec.message() << std::endl;
-        return ec.value();
-    }
+        TLSConfig(peerCertificate, privateKey, privateKey), PrintingChannelListener::Create());
 
     // The master config object for a master. The default are
     // useable, but understanding the options are important.

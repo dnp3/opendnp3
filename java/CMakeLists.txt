@@ -106,6 +106,8 @@ set(all_sources
     ./cpp/jni/JNIDatabase.h
     ./cpp/jni/JNIDatabaseImpl.cpp
     ./cpp/jni/JNIDatabaseImpl.h
+    ./cpp/jni/JNIDNP3Exception.cpp
+    ./cpp/jni/JNIDNP3Exception.h
     ./cpp/jni/JNIDatabaseConfig.cpp
     ./cpp/jni/JNIDatabaseConfig.h
     ./cpp/jni/JNIDNPTime.cpp

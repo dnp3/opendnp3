@@ -49,10 +49,10 @@ class TLSServerIOHandler final : public IOHandler
         {
         }
 
-        void StartAcceptingConnection(const callback_t& callback, std::error_code& ec)
+        void StartAcceptingConnection(const callback_t& callback)
         {
             this->callback = callback;
-            this->StartAccept(ec);
+            this->StartAccept();
         }
 
     private:

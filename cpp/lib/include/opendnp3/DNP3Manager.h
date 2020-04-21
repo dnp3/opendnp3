@@ -20,6 +20,7 @@
 #ifndef OPENDNP3_DNP3MANAGER_H
 #define OPENDNP3_DNP3MANAGER_H
 
+#include "opendnp3/ErrorCodes.h"
 #include "opendnp3/channel/ChannelRetry.h"
 #include "opendnp3/channel/IChannel.h"
 #include "opendnp3/channel/IChannelListener.h"
@@ -97,6 +98,7 @@ public:
      * @param mode Describes how new connections are treated when another session already exists
      * @param endpoint Network adapter to listen on (i.e. 127.0.0.1 or 0.0.0.0) and port
      * @param listener optional callback interface (can be nullptr) for info about the running channel
+     * @throw DNP3Error if the manager was already shutdown or if the server could not be binded properly
      * @return shared_ptr to a channel interface
      */
     std::shared_ptr<IChannel> AddTCPServer(const std::string& id,
@@ -114,6 +116,7 @@ public:
      * @param localEndpoint Local endpoint from which datagrams will be received
      * @param remoteEndpoint Remote endpoint where datagrams will be sent to
      * @param listener optional callback interface (can be nullptr) for info about the running channel
+     * @throw DNP3Error if the manager was already shutdown
      * @return shared_ptr to a channel interface
      */
     std::shared_ptr<IChannel> AddUDPChannel(const std::string& id,
@@ -131,6 +134,7 @@ public:
      * @param retry Retry parameters for failed channels
      * @param settings settings object that fully parameterizes the serial port
      * @param listener optional callback interface (can be nullptr) for info about the running channel
+     * @throw DNP3Error if the manager was already shutdown
      * @return shared_ptr to a channel interface
      */
     std::shared_ptr<IChannel> AddSerial(const std::string& id,
@@ -151,7 +155,7 @@ public:
      * @param local adapter address on which to attempt the connection (use 0.0.0.0 for all adapters)
      * @param config TLS configuration information
      * @param listener optional callback interface (can be nullptr) for info about the running channel
-     * @param ec An error code. If set, a nullptr will be returned
+     * @throw DNP3Error if the manager was already shutdown or if the library was compiled without TLS support
      * @return shared_ptr to a channel interface
      */
     std::shared_ptr<IChannel> AddTLSClient(const std::string& id,
@@ -160,8 +164,7 @@ public:
                                            const std::vector<IPEndpoint>& hosts,
                                            const std::string& local,
                                            const TLSConfig& config,
-                                           std::shared_ptr<IChannelListener> listener,
-                                           std::error_code& ec);
+                                           std::shared_ptr<IChannelListener> listener);
 
     /**
      * Add a TLS server channel
@@ -174,7 +177,8 @@ public:
      * @param endpoint Network adapter to listen on (i.e. 127.0.0.1 or 0.0.0.0) and port
      * @param config TLS configuration information
      * @param listener optional callback interface (can be nullptr) for info about the running channel
-     * @param ec An error code. If set, a nullptr will be returned
+     * @throw DNP3Error if the manager was already shutdown, if the library was compiled without TLS support
+     *                  or if the server could not be binded properly
      * @return shared_ptr to a channel interface
      */
     std::shared_ptr<IChannel> AddTLSServer(const std::string& id,
@@ -182,27 +186,27 @@ public:
                                            ServerAcceptMode mode,
                                            const IPEndpoint& endpoint,
                                            const TLSConfig& config,
-                                           std::shared_ptr<IChannelListener> listener,
-                                           std::error_code& ec);
+                                           std::shared_ptr<IChannelListener> listener);
 
     /**
      * Create a TCP listener that will be used to accept incoming connections
+     * @throw DNP3Error if the manager was already shutdown or if the server could not be binded properly
      */
     std::shared_ptr<IListener> CreateListener(std::string loggerid,
                                               const opendnp3::LogLevels& loglevel,
                                               const IPEndpoint& endpoint,
-                                              const std::shared_ptr<IListenCallbacks>& callbacks,
-                                              std::error_code& ec);
+                                              const std::shared_ptr<IListenCallbacks>& callbacks);
 
     /**
      * Create a TLS listener that will be used to accept incoming connections
+     * @throw DNP3Error if the manager was already shutdown, if the library was compiled without TLS support
+     *                  or if the server could not be binded properly
      */
     std::shared_ptr<IListener> CreateListener(std::string loggerid,
                                               const opendnp3::LogLevels& loglevel,
                                               const IPEndpoint& endpoint,
                                               const TLSConfig& config,
-                                              const std::shared_ptr<IListenCallbacks>& callbacks,
-                                              std::error_code& ec);
+                                              const std::shared_ptr<IListenCallbacks>& callbacks);
 
 private:
     std::unique_ptr<DNP3ManagerImpl> impl;

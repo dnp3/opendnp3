@@ -17,6 +17,7 @@ add_library(DNP3CLRInterface SHARED
     ./src/CommandTypes.cs
     ./src/DefaultListenCallbacks.cs
     ./src/DNPTime.cs
+    ./src/DNP3Exception.cs
     ./src/Extensions.cs
     ./src/Flags.cs
     ./src/Header.cs

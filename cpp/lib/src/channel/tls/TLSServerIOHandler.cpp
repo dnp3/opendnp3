@@ -75,8 +75,7 @@ void TLSServerIOHandler::BeginChannelAccept()
     }
     else
     {
-        this->server->StartAcceptingConnection(callback, ec);
-        FORMAT_LOG_BLOCK(this->logger, flags::ERR, "Unable to begin accepting connections: %s", ec.message().c_str());
+        this->server->StartAcceptingConnection(callback);
     }
 }
 

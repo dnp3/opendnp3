@@ -33,11 +33,14 @@ namespace Automatak.DNP3.Interface
         /// <summary>
         /// Force a blocking shutdown. All channels and stacks are invalidated.
         /// </summary>
-        void Shutdown();        
+        void Shutdown();
 
         /// <summary>
         /// Add a TCP client channel. The channel does not try to connect until you add a stack.
-		/// </summary>
+        /// </summary>
+        /// 
+        /// <exception cref="DNP3Exception">if an error occurs creating the channel</exception>
+        /// 
         /// <param name="id">An id used for logging purposes</param>
         /// <param name="filters">The starting level for logging output</param>
         /// <param name="retry">Retry configuration for the channel</param>
@@ -49,6 +52,9 @@ namespace Automatak.DNP3.Interface
         /// <summary>
         /// Add a TCP server channel. The channel does not try to listen until you add a stack.
         /// </summary>
+        /// 
+        /// <exception cref="DNP3Exception">if an error occurs creating the channel</exception>
+        /// 
         /// <param name="id">An id used for logging purposes</param>
         /// <param name="filters">The starting level for logging output</param>
         /// <param name="mode">Describes how new connections are handled when an active connection already exists</param>
@@ -60,6 +66,9 @@ namespace Automatak.DNP3.Interface
         /// <summary>
         /// Add a UDP channel.
 		/// </summary>
+        /// 
+        /// <exception cref="DNP3Exception">if an error occurs creating the channel</exception>
+        /// 
         /// <param name="id">An id used for logging purposes</param>
         /// <param name="filters">The starting level for logging output</param>
         /// <param name="retry">Retry configuration for the channel</param>
@@ -73,7 +82,7 @@ namespace Automatak.DNP3.Interface
         /// Add a TLS client channel. The channel does not try to connect until you add a stack.
         /// </summary>
         /// 
-        /// <exception cref="System.ArgumentException">If the TLS certificate/key information is invalid</exception>
+        /// <exception cref="DNP3Exception">if an error occurs creating the channel</exception>
         /// 
         /// <param name="id">An id used for logging purposes</param>
         /// <param name="filters">The starting level for logging output</param>
@@ -88,7 +97,7 @@ namespace Automatak.DNP3.Interface
         /// Add a TLS server channel. The channel does not try to listen until you add a stack.
         /// </summary>
         /// 
-        /// <exception cref="System.ArgumentException">If the TLS certificate/key information is invalid</exception>
+        /// <exception cref="DNP3Exception">if an error occurs creating the channel</exception>
         /// 
         /// <param name="id">An id used for logging purposes</param>
         /// <param name="filters">The starting level for logging output</param>
@@ -102,6 +111,9 @@ namespace Automatak.DNP3.Interface
         /// <summary>
         /// Add a serial channel. The port does not try to open until you add a stack.
         /// </summary>
+        /// 
+        /// <exception cref="DNP3Exception">if an error occurs creating the channel</exception>
+        /// 
         /// <param name="id">An id used for logging purposes</param>
         /// <param name="filters">The starting level for logging output</param>
         /// <param name="retry">Retry configuration for the channel</param>
@@ -113,6 +125,9 @@ namespace Automatak.DNP3.Interface
         /// <summary>
         /// Create a new TCP listener an bind it to the specified callback interface
         /// </summary>
+        /// 
+        /// <exception cref="DNP3Exception">if an error occurs creating the channel</exception>
+        /// 
         /// <param name="loggerid"></param>
         /// <param name="filters"></param>
         /// <param name="endpoint"></param>
@@ -123,6 +138,9 @@ namespace Automatak.DNP3.Interface
         /// <summary>
         /// Create a new TLS listener an bind it to the specified callback interface
         /// </summary>
+        /// 
+        /// <exception cref="DNP3Exception">if an error occurs creating the channel</exception>
+        /// 
         /// <param name="loggerid"></param>
         /// <param name="filters"></param>
         /// <param name="endpoint"></param>

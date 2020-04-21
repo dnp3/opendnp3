@@ -80,7 +80,14 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPClient(const std::string& id,
         return DNP3Channel::Create(clogger, executor, iohandler, this->resources);
     };
 
-    return this->resources->Bind<IChannel>(create);
+    auto channel = this->resources->Bind<IChannel>(create);
+
+    if (!channel)
+    {
+        throw DNP3Error(Error::SHUTTING_DOWN);
+    }
+
+    return channel;
 }
 
 std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPServer(const std::string& id,
@@ -94,10 +101,21 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPServer(const std::string& id,
         auto clogger = this->logger.detach(id, levels);
         auto executor = exe4cpp::StrandExecutor::create(this->io);
         auto iohandler = TCPServerIOHandler::Create(clogger, mode, listener, executor, endpoint, ec);
-        return ec ? nullptr : DNP3Channel::Create(clogger, executor, iohandler, this->resources);
+        if(ec)
+        {
+            throw DNP3Error(Error::UNABLE_TO_BIND_SERVER, ec);
+        }
+        return DNP3Channel::Create(clogger, executor, iohandler, this->resources);
     };
 
-    return this->resources->Bind<IChannel>(create);
+    auto channel = this->resources->Bind<IChannel>(create);
+
+    if (!channel)
+    {
+        throw DNP3Error(Error::SHUTTING_DOWN);
+    }
+
+    return channel;
 }
 
 std::shared_ptr<IChannel> DNP3ManagerImpl::AddUDPChannel(const std::string& id,
@@ -114,7 +132,14 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddUDPChannel(const std::string& id,
         return DNP3Channel::Create(clogger, executor, iohandler, this->resources);
     };
 
-    return this->resources->Bind<IChannel>(create);
+    auto channel = this->resources->Bind<IChannel>(create);
+
+    if (!channel)
+    {
+        throw DNP3Error(Error::SHUTTING_DOWN);
+    }
+
+    return channel;
 }
 
 std::shared_ptr<IChannel> DNP3ManagerImpl::AddSerial(const std::string& id,
@@ -130,7 +155,14 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddSerial(const std::string& id,
         return DNP3Channel::Create(clogger, executor, iohandler, this->resources);
     };
 
-    return this->resources->Bind<IChannel>(create);
+    auto channel = this->resources->Bind<IChannel>(create);
+
+    if (!channel)
+    {
+        throw DNP3Error(Error::SHUTTING_DOWN);
+    }
+
+    return channel;
 }
 
 std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSClient(const std::string& id,
@@ -139,8 +171,7 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSClient(const std::string& id,
                                                         const std::vector<IPEndpoint>& hosts,
                                                         const std::string& local,
                                                         const TLSConfig& config,
-                                                        std::shared_ptr<IChannelListener> listener,
-                                                        std::error_code& ec)
+                                                        std::shared_ptr<IChannelListener> listener)
 {
 
 #ifdef OPENDNP3_USE_TLS
@@ -155,13 +186,12 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSClient(const std::string& id,
 
     if (!channel)
     {
-        ec = Error::SHUTTING_DOWN;
+        throw DNP3Error(Error::SHUTTING_DOWN);
     }
 
     return channel;
 #else
-    ec = Error::NO_TLS_SUPPORT;
-    return nullptr;
+    throw DNP3Error(Error::NO_TLS_SUPPORT);
 #endif
 }
 
@@ -170,8 +200,7 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSServer(const std::string& id,
                                                         ServerAcceptMode mode,
                                                         const IPEndpoint& endpoint,
                                                         const TLSConfig& config,
-                                                        std::shared_ptr<IChannelListener> listener,
-                                                        std::error_code& ec)
+                                                        std::shared_ptr<IChannelListener> listener)
 {
 
 #ifdef OPENDNP3_USE_TLS
@@ -180,40 +209,48 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSServer(const std::string& id,
         auto clogger = this->logger.detach(id, levels);
         auto executor = exe4cpp::StrandExecutor::create(this->io);
         auto iohandler = TLSServerIOHandler::Create(clogger, mode, listener, executor, endpoint, config, ec);
-        return ec ? nullptr : DNP3Channel::Create(clogger, executor, iohandler, this->resources);
+        if(ec)
+        {
+            throw DNP3Error(Error::UNABLE_TO_BIND_SERVER, ec);
+        }
+        return DNP3Channel::Create(clogger, executor, iohandler, this->resources);
     };
 
     auto channel = this->resources->Bind<IChannel>(create);
 
     if (!channel)
     {
-        ec = Error::SHUTTING_DOWN;
+        throw DNP3Error(Error::SHUTTING_DOWN);
     }
 
     return channel;
 
 #else
-    ec = Error::NO_TLS_SUPPORT;
-    return nullptr;
+    throw DNP3Error(Error::NO_TLS_SUPPORT);
 #endif
 }
 
 std::shared_ptr<IListener> DNP3ManagerImpl::CreateListener(std::string loggerid,
                                                            const LogLevels& levels,
                                                            const IPEndpoint& endpoint,
-                                                           const std::shared_ptr<IListenCallbacks>& callbacks,
-                                                           std::error_code& ec)
+                                                           const std::shared_ptr<IListenCallbacks>& callbacks)
 {
     auto create = [&]() -> std::shared_ptr<IListener> {
-        return MasterTCPServer::Create(this->logger.detach(loggerid, levels), exe4cpp::StrandExecutor::create(this->io),
+        std::error_code ec;
+        auto server = MasterTCPServer::Create(this->logger.detach(loggerid, levels), exe4cpp::StrandExecutor::create(this->io),
                                        endpoint, callbacks, this->resources, ec);
+        if(ec)
+        {
+            throw DNP3Error(Error::UNABLE_TO_BIND_SERVER, ec);
+        }
+        return server;
     };
 
     auto listener = this->resources->Bind<IListener>(create);
 
     if (!listener)
     {
-        ec = Error::SHUTTING_DOWN;
+        throw DNP3Error(Error::SHUTTING_DOWN);
     }
 
     return listener;
@@ -223,31 +260,33 @@ std::shared_ptr<IListener> DNP3ManagerImpl::CreateListener(std::string loggerid,
                                                            const LogLevels& levels,
                                                            const IPEndpoint& endpoint,
                                                            const TLSConfig& config,
-                                                           const std::shared_ptr<IListenCallbacks>& callbacks,
-                                                           std::error_code& ec)
+                                                           const std::shared_ptr<IListenCallbacks>& callbacks)
 {
 
 #ifdef OPENDNP3_USE_TLS
 
     auto create = [&]() -> std::shared_ptr<IListener> {
-        return MasterTLSServer::Create(this->logger.detach(loggerid, levels), exe4cpp::StrandExecutor::create(this->io),
+        std::error_code ec;
+        auto server = MasterTLSServer::Create(this->logger.detach(loggerid, levels), exe4cpp::StrandExecutor::create(this->io),
                                        endpoint, config, callbacks, this->resources, ec);
+        if(ec)
+        {
+            throw DNP3Error(Error::UNABLE_TO_BIND_SERVER, ec);
+        }
+        return server;
     };
 
     auto listener = this->resources->Bind<IListener>(create);
 
     if (!listener)
     {
-        ec = Error::SHUTTING_DOWN;
+        throw DNP3Error(Error::SHUTTING_DOWN);
     }
 
     return listener;
 
 #else
-
-    ec = Error::NO_TLS_SUPPORT;
-    return nullptr;
-
+    throw DNP3Error(Error::NO_TLS_SUPPORT);
 #endif
 }
 

@@ -51,10 +51,7 @@ public:
         if (ec)
             return nullptr;
 
-        server->StartAccept(ec);
-
-        if (ec)
-            return nullptr;
+        server->StartAccept();
 
         return server;
     }

@@ -437,7 +437,6 @@ set(opendnp3_src
     ./src/ConsoleLogger.cpp
     ./src/DNP3Manager.cpp
     ./src/DNP3ManagerImpl.cpp
-    ./src/ErrorCodes.cpp
     ./src/ResourceManager.cpp
 
     ./src/app/AnalogCommandEvent.cpp

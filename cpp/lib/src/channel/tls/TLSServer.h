@@ -61,7 +61,7 @@ protected:
         = 0;
     virtual void OnShutdown() = 0;
 
-    void StartAccept(std::error_code& ec);
+    void StartAccept();
 
     Logger logger;
     std::shared_ptr<exe4cpp::StrandExecutor> executor;
