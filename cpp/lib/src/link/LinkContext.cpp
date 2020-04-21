@@ -37,12 +37,9 @@ LinkContext::LinkContext(const Logger& logger,
       config(config),
       pSegments(nullptr),
       txMode(LinkTransmitMode::Idle),
-      numRetryRemaining(0),
       executor(executor),
       nextReadFCB(false),
-      nextWriteFCB(false),
       isOnline(false),
-      isRemoteReset(false),
       keepAliveTimeout(false),
       lastMessageTimestamp(executor->get_time()),
       pPriState(&PLLS_Idle::Instance()),
@@ -85,7 +82,6 @@ bool LinkContext::OnLowerLayerDown()
 
     isOnline = false;
     keepAliveTimeout = false;
-    isRemoteReset = false;
     pSegments = nullptr;
     txMode = LinkTransmitMode::Idle;
     pendingPriTx.clear();
@@ -149,17 +145,6 @@ bool LinkContext::OnTxReady()
     return true;
 }
 
-ser4cpp::rseq_t LinkContext::FormatPrimaryBufferWithConfirmed(const Addresses& addr,
-                                                              const ser4cpp::rseq_t& tpdu,
-                                                              bool FCB)
-{
-    auto dest = this->priTxBuffer.as_wseq();
-    auto output
-        = LinkFrame::FormatConfirmedUserData(dest, config.IsMaster, FCB, addr.destination, addr.source, tpdu, &logger);
-    FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, output, 10, 18);
-    return output;
-}
-
 ser4cpp::rseq_t LinkContext::FormatPrimaryBufferWithUnconfirmed(const Addresses& addr, const ser4cpp::rseq_t& tpdu)
 {
     auto buffer = this->priTxBuffer.as_wseq();
@@ -206,14 +191,6 @@ void LinkContext::QueueLinkStatus(uint16_t destination)
     this->QueueTransmit(buffer, false);
 }
 
-void LinkContext::QueueResetLinks(uint16_t destination)
-{
-    auto dest = priTxBuffer.as_wseq();
-    auto buffer = LinkFrame::FormatResetLinkStates(dest, config.IsMaster, destination, this->config.LocalAddr, &logger);
-    FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
-    this->QueueTransmit(buffer, true);
-}
-
 void LinkContext::QueueRequestLinkStatus(uint16_t destination)
 {
     auto dest = priTxBuffer.as_wseq();
@@ -221,22 +198,6 @@ void LinkContext::QueueRequestLinkStatus(uint16_t destination)
         = LinkFrame::FormatRequestLinkStatus(dest, config.IsMaster, destination, this->config.LocalAddr, &logger);
     FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
     this->QueueTransmit(buffer, true);
-}
-
-void LinkContext::ResetRetry()
-{
-    this->numRetryRemaining = config.NumRetry;
-}
-
-bool LinkContext::Retry()
-{
-    if (numRetryRemaining > 0)
-    {
-        --numRetryRemaining;
-        return true;
-    }
-
-    return false;
 }
 
 void LinkContext::PushDataUp(const Message& message)
@@ -262,8 +223,7 @@ void LinkContext::TryStartTransmission()
 
     if (this->pSegments)
     {
-        this->pPriState = (this->config.UseConfirms) ? &pPriState->TrySendConfirmed(*this, *pSegments)
-                                                     : &pPriState->TrySendUnconfirmed(*this, *pSegments);
+        this->pPriState = &pPriState->TrySendUnconfirmed(*this, *pSegments);
     }
 }
 

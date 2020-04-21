@@ -32,21 +32,6 @@ public class LinkLayerConfig {
     public boolean isMaster;
 
     /**
-     * If true, the link layer will send data requesting confirmation. This is generally NEVER
-     * set for a TCP connection and only sometimes set for serial.
-     *
-     * defaults to false
-     */
-    public boolean useConfirms = false;
-
-    /**
-     * The number of retry attempts the link will attempt after the initial try if using confirms
-     *
-     * defaults to 0
-     */
-    public int numRetry = 0;
-
-    /**
      * dnp3 address of the local device as a 16-bit unsigned integer
      */
     public int localAddr;

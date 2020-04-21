@@ -78,7 +78,7 @@ if(DNP3_TLS)
     find_package(OpenSSL REQUIRED)
 endif()
 
-if(DNP3_TESTS)
+if(DNP3_TESTS OR DNP3_FUZZING)
     include(./deps/catch.cmake)
 endif()
 

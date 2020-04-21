@@ -33,23 +33,17 @@ namespace Automatak.DNP3.Interface
         /// Full constructor
         /// </summary>
         /// <param name="isMaster">true if this layer will be used with a master, false otherwise</param>
-        /// <param name="useConfirms">true to use link layer confirmations for all data, false otherwise</param>
-        /// <param name="numRetry">The number of retry attempts the link will attempt after the initial try</param>
         /// <param name="localAddr">dnp3 address of the local device</param>
         /// <param name="remoteAddr">dnp3 address of the remote device</param>
         /// <param name="responseTimeout">the response timeout for confirmed requests</param>
         /// <param name="keepAliveTimeout">the keep-alive timeout interval</param>
         public LinkConfig(  bool isMaster,
-                            bool useConfirms,
-                            System.UInt32 numRetry,
                             System.UInt16 localAddr,
                             System.UInt16 remoteAddr,
                             TimeSpan responseTimeout,
                             TimeSpan keepAliveTimeout)
         {
             this.isMaster = isMaster;
-            this.useConfirms = useConfirms;
-            this.numRetry = numRetry;
             this.localAddr = localAddr;
             this.remoteAddr = remoteAddr;
             this.responseTimeout = responseTimeout;
@@ -64,8 +58,6 @@ namespace Automatak.DNP3.Interface
         public LinkConfig(bool isMaster, bool useConfirms)
             : this(
                 isMaster,
-                useConfirms,
-                DefaultNumRetries,
                 GetDefaultSourceAddress(isMaster),
                 GetDefaultDestinationAddress(isMaster),
                 DefaultResponseTimeout,
@@ -97,14 +89,6 @@ namespace Automatak.DNP3.Interface
             get
             {
                 return 1;
-            }
-        }
-
-        public static System.UInt32 DefaultNumRetries
-        {
-            get
-            {
-                return 0;
             }
         }
 
@@ -143,16 +127,6 @@ namespace Automatak.DNP3.Interface
         /// The master/outstation bit set on all messages
         /// </summary>
         public bool isMaster;
-
-        /// <summary>
-        /// If true, the link layer will send data requesting confirmation
-        /// </summary> 
-        public bool useConfirms;
-
-        /// <summary>
-        /// The number of retry attempts the link will attempt after the initial try
-        /// </summary>
-        public System.UInt32 numRetry;
 
         /// <summary>
         /// dnp3 address of the local device

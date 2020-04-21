@@ -68,17 +68,9 @@ public:
     {
         nextReadFCB = true;
     }
-    void ResetWriteFCB()
-    {
-        nextWriteFCB = true;
-    }
     void ToggleReadFCB()
     {
         nextReadFCB = !nextReadFCB;
-    }
-    void ToggleWriteFCB()
-    {
-        nextWriteFCB = !nextWriteFCB;
     }
 
     // --- helpers for dealing with layer state transitations ---
@@ -89,20 +81,16 @@ public:
 
     // --- helpers for formatting user data messages ---
     ser4cpp::rseq_t FormatPrimaryBufferWithUnconfirmed(const Addresses& addr, const ser4cpp::rseq_t& tpdu);
-    ser4cpp::rseq_t FormatPrimaryBufferWithConfirmed(const Addresses& addr, const ser4cpp::rseq_t& tpdu, bool FCB);
 
     // --- Helpers for queueing frames ---
     void QueueAck(uint16_t destination);
     void QueueLinkStatus(uint16_t destination);
-    void QueueResetLinks(uint16_t destination);
     void QueueRequestLinkStatus(uint16_t destination);
 
     void QueueTransmit(const ser4cpp::rseq_t& buffer, bool primary);
 
     // --- public members ----
 
-    void ResetRetry();
-    bool Retry();
     void PushDataUp(const Message& message);
     void CompleteSendOperation();
     void TryStartTransmission();
@@ -127,16 +115,13 @@ public:
     const LinkLayerConfig config;
     ITransportSegment* pSegments;
     LinkTransmitMode txMode;
-    uint32_t numRetryRemaining;
 
     const std::shared_ptr<exe4cpp::IExecutor> executor;
 
     exe4cpp::Timer rspTimeoutTimer;
     exe4cpp::Timer keepAliveTimer;
     bool nextReadFCB;
-    bool nextWriteFCB;
     bool isOnline;
-    bool isRemoteReset;
     bool keepAliveTimeout;
     Timestamp lastMessageTimestamp;
     StackStatistics::Link statistics;
