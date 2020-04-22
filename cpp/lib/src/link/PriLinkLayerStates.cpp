@@ -82,7 +82,7 @@ PriStateBase& PriStateBase::TrySendRequestLinkStatus(LinkContext& /*unused*/)
 }
 
 ////////////////////////////////////////////////////////
-//	Class PLLS_SecNotResetIdle
+// Class PLLS_SecNotResetIdle
 ////////////////////////////////////////////////////////
 
 PLLS_Idle PLLS_Idle::instance;
@@ -100,11 +100,12 @@ PriStateBase& PLLS_Idle::TrySendRequestLinkStatus(LinkContext& ctx)
     ctx.keepAliveTimeout = false;
     ctx.QueueRequestLinkStatus(ctx.config.RemoteAddr);
     ctx.listener->OnKeepAliveInitiated();
-    return PLLS_RequestLinkStatusTransmitWait::Instance();
+    ctx.StartResponseTimer();
+    return PLLS_RequestLinkStatusWait::Instance();
 }
 
 ////////////////////////////////////////////////////////
-//	Class SendUnconfirmedTransmitWait
+// Class SendUnconfirmedTransmitWait
 ////////////////////////////////////////////////////////
 
 PLLS_SendUnconfirmedTransmitWait PLLS_SendUnconfirmedTransmitWait::instance;
@@ -124,24 +125,18 @@ PriStateBase& PLLS_SendUnconfirmedTransmitWait::OnTxReady(LinkContext& ctx)
     return PLLS_Idle::Instance();
 }
 
-/////////////////////////////////////////////////////////////////////////////
-//  Wait for the link layer to transmit the request link status
-/////////////////////////////////////////////////////////////////////////////
-
-PLLS_RequestLinkStatusTransmitWait PLLS_RequestLinkStatusTransmitWait::instance;
-
-PriStateBase& PLLS_RequestLinkStatusTransmitWait::OnTxReady(LinkContext& ctx)
-{
-    // now we're waiting on a LINK_STATUS
-    ctx.StartResponseTimer();
-    return PLLS_RequestLinkStatusWait::Instance();
-}
-
 ////////////////////////////////////////////////////////
-//	Class PLLS_RequestLinkStatusWait
+// Class PLLS_RequestLinkStatusWait
 ////////////////////////////////////////////////////////
 
 PLLS_RequestLinkStatusWait PLLS_RequestLinkStatusWait::instance;
+
+PriStateBase& PLLS_RequestLinkStatusWait::OnAck(LinkContext& ctx, bool /*receiveBuffFull*/)
+{
+    ctx.CancelTimer();
+    ctx.FailKeepAlive(false);
+    return PLLS_Idle::Instance();
+}
 
 PriStateBase& PLLS_RequestLinkStatusWait::OnNack(LinkContext& ctx, bool /*receiveBuffFull*/)
 {
@@ -162,6 +157,12 @@ PriStateBase& PLLS_RequestLinkStatusWait::OnNotSupported(LinkContext& ctx, bool 
     ctx.CancelTimer();
     ctx.FailKeepAlive(false);
     return PLLS_Idle::Instance();
+}
+
+PriStateBase& PLLS_RequestLinkStatusWait::OnTxReady(LinkContext& ctx)
+{
+    // The request link status was successfully sent
+    return *this;
 }
 
 PriStateBase& PLLS_RequestLinkStatusWait::OnTimeout(LinkContext& ctx)

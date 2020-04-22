@@ -54,12 +54,12 @@ class PLLS_Idle final : public PriStateBase
 {
     MACRO_STATE_SINGLETON_INSTANCE(PLLS_Idle);
 
-    virtual PriStateBase& TrySendUnconfirmed(LinkContext&, ITransportSegment& segments) override;
-    virtual PriStateBase& TrySendRequestLinkStatus(LinkContext&) override;
+    PriStateBase& TrySendUnconfirmed(LinkContext&, ITransportSegment& segments) override;
+    PriStateBase& TrySendRequestLinkStatus(LinkContext&) override;
 };
 
 /////////////////////////////////////////////////////////////////////////////
-//  template wait state for send unconfirmed data
+// Wait state for send unconfirmed data
 /////////////////////////////////////////////////////////////////////////////
 
 class PLLS_SendUnconfirmedTransmitWait final : public PriStateBase
@@ -70,18 +70,7 @@ class PLLS_SendUnconfirmedTransmitWait final : public PriStateBase
 };
 
 /////////////////////////////////////////////////////////////////////////////
-//  Waiting for a link status transmission
-/////////////////////////////////////////////////////////////////////////////
-
-class PLLS_RequestLinkStatusTransmitWait : public PriStateBase
-{
-    MACRO_STATE_SINGLETON_INSTANCE(PLLS_RequestLinkStatusTransmitWait);
-
-    virtual PriStateBase& OnTxReady(LinkContext& ctx) override;
-};
-
-/////////////////////////////////////////////////////////////////////////////
-//  Waiting for a link status response
+// Waiting for a link status response
 /////////////////////////////////////////////////////////////////////////////
 
 //	@section desc As soon as we get an ACK, send the delayed pri frame
@@ -89,9 +78,11 @@ class PLLS_RequestLinkStatusWait final : public PriStateBase
 {
     MACRO_STATE_SINGLETON_INSTANCE(PLLS_RequestLinkStatusWait);
 
+    PriStateBase& OnAck(LinkContext& ctx, bool) override;
     PriStateBase& OnNack(LinkContext& ctx, bool) override;
     PriStateBase& OnLinkStatus(LinkContext& ctx, bool) override;
     PriStateBase& OnNotSupported(LinkContext& ctx, bool) override;
+    PriStateBase& OnTxReady(LinkContext&) override;
     PriStateBase& OnTimeout(LinkContext&) override;
 };
 
