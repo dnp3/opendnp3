@@ -75,7 +75,7 @@ jobs:
           -DDNP3_TLS=ON
           -DDNP3_TESTS=ON
           -DDNP3_COVERAGE=ON
-          -DCMAKE_BUILD_TYPE=DEBUG
+          -DCMAKE_BUILD_TYPE=Debug
           ..
       - name: Build and run tests with code coverage
         if: ${{ matrix.coverage }} == "ON"
