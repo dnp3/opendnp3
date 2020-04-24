@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type='text/xsl' href='DNP3DeviceProfileJuly2012.xslt' media='screen'?>
+<?xml-stylesheet type='text/xsl' href='DNP3DeviceProfileNovember2014.xslt' media='screen'?>
 <!--DNP3 Device Profile-->
-<DNP3DeviceProfileDocument schemaVersion="2.08.00" xmlns="http://www.dnp3.org/DNP3/DeviceProfile/July2012">
+<DNP3DeviceProfileDocument schemaVersion="2.10.00" xmlns="http://www.dnp3.org/DNP3/DeviceProfile/November2014">
   <!--Document Header-->
   <documentHeader>
     <documentName>OpenDNP3 profile</documentName>
-    <documentDescription>DNP3 Device Profile for the OpenDNP3 library (master / outstation)</documentDescription>
+    <documentDescription>DNP3 Device Profile for the OpenDNP3 library</documentDescription>
   </documentHeader>
   <!--Reference Device-->
   <referenceDevice>
@@ -138,6 +138,13 @@
             <proprietaryFileViaOtherTransportMechanism />
           </methods>
         </connectionsSupported>
+        <!--1.1.14) Conformance Testing-->
+        <conformanceTesting>
+          <!--1.14.1) Self Tested-->
+          <selfTested>
+            <version>3.0.0</version>
+          </selfTested>
+        </conformanceTesting>
       </deviceConfig>
       <!--1.2) Serial Connection Capabilities-->
       <serialConfig>
@@ -717,6 +724,31 @@
             <proprietaryFileViaOtherTransportMechanism />
           </methods>
         </supportsMixedObjectGroupsInControlRequest>
+        <!--1.5.9) Control Status Codes Supported-->
+        <controlStatusCodesSupported>
+          <capabilities>
+            <code1 />
+            <code2 />
+            <code3 />
+            <code4 />
+            <code5 />
+            <code6 />
+            <code7 />
+            <code8 />
+            <code9 />
+            <code10 />
+            <code11 />
+            <code12 />
+            <code13 />
+            <code14 />
+            <code15 />
+            <code16 />
+            <code17 />
+            <code18 />
+            <code126 />
+            <code127 />
+          </capabilities>
+        </controlStatusCodesSupported>
       </applConfig>
       <!--1.7) Outstation Configuration-->
       <outstationConfig>
@@ -793,8 +825,12 @@
         </eventBufferOverflowBehavior>
         <!--1.7.6) Event Buffer Organization-->
         <eventBufferOrganization>
-          <capabilities>Max events is configured per object group</capabilities>
-          <currentValue>Max events is configured per object group</currentValue>
+          <capabilities>
+            <perObjectGroup />
+          </capabilities>
+          <currentValue>
+            <perObjectGroup />
+          </currentValue>
           <!--Configuration Methods-->
           <methods>
             <proprietaryFileViaOtherTransportMechanism />
@@ -840,6 +876,38 @@
           <!--Configuration Methods-->
           <methods />
         </settingsPreservedThroughDeviceRestart>
+        <!--1.7.10) Configuration Signature Supported-->
+        <configurationSignatureSupported>
+          <capabilities>
+            <notSupported />
+          </capabilities>
+          <currentValue>
+            <notSupported />
+          </currentValue>
+          <!--Configuration Methods-->
+          <methods />
+        </configurationSignatureSupported>
+        <!--1.7.11) Requests Application Confirmation-->
+        <requestsApplicationConfirmation>
+          <capabilities>
+            <eventResponses>
+              <yes />
+            </eventResponses>
+            <nonFinalFragments>
+              <yes />
+            </nonFinalFragments>
+          </capabilities>
+          <currentValue>
+            <eventResponses>
+              <yes />
+            </eventResponses>
+            <nonFinalFragments>
+              <yes />
+            </nonFinalFragments>
+          </currentValue>
+          <!--Configuration Methods-->
+          <methods />
+        </requestsApplicationConfirmation>
       </outstationConfig>
       <!--1.8) Outstation Unsolicited Response Support-->
       <unsolicitedConfig>
@@ -1488,6 +1556,22 @@
             <!--Configuration Methods-->
             <methods />
           </class0ResponseMode>
+          <!--3.1.5) Binary Inputs Event Buffer Organization-->
+          <eventBufferPerObjectGroup>
+            <capabilities>
+              <range>
+                <minimum>0</minimum>
+                <maximum>65535</maximum>
+              </range>
+            </capabilities>
+            <currentValue>
+              <numEvents>200</numEvents>
+            </currentValue>
+            <!--Configuration Methods-->
+            <methods>
+              <proprietaryFileViaOtherTransportMechanism />
+            </methods>
+          </eventBufferPerObjectGroup>
         </configuration>
       </binaryInputGroup>
       <!--3.2) Double Bit Input Points-->
@@ -1547,6 +1631,22 @@
             <!--Configuration Methods-->
             <methods />
           </class0ResponseMode>
+          <!--3.2.5) Double-bit Inputs Event Buffer Organization-->
+          <eventBufferPerObjectGroup>
+            <capabilities>
+              <range>
+                <minimum>0</minimum>
+                <maximum>65535</maximum>
+              </range>
+            </capabilities>
+            <currentValue>
+              <numEvents>200</numEvents>
+            </currentValue>
+            <!--Configuration Methods-->
+            <methods>
+              <proprietaryFileViaOtherTransportMechanism />
+            </methods>
+          </eventBufferPerObjectGroup>
         </configuration>
       </doubleBitInputGroup>
       <!--3.3) Binary Output Status/Control Relay Output Block Points-->
@@ -1674,6 +1774,29 @@
               <proprietaryFileViaOtherTransportMechanism />
             </methods>
           </maxTimeBetweenSelectAndOperate>
+          <!--3.3.11) Binary Outputs Event Buffer Organization-->
+          <eventBufferPerObjectGroup>
+            <capabilities>
+              <range>
+                <minimum>0</minimum>
+                <maximum>65535</maximum>
+              </range>
+            </capabilities>
+            <currentValue>
+              <numEvents>200</numEvents>
+            </currentValue>
+            <!--Configuration Methods-->
+            <methods>
+              <proprietaryFileViaOtherTransportMechanism />
+            </methods>
+          </eventBufferPerObjectGroup>
+          <!--3.3.12) Binary Output Commands Event Buffer Organization-->
+          <commandEventBufferPerObjectGroup>
+            <capabilities />
+            <currentValue />
+            <!--Configuration Methods-->
+            <methods />
+          </commandEventBufferPerObjectGroup>
         </configuration>
       </binaryOutputGroup>
       <!--3.4) Counters/Frozen Counters-->
@@ -1827,6 +1950,49 @@
               <proprietaryFileViaOtherTransportMechanism />
             </methods>
           </countersFrozen>
+          <!--3.4.11) Counters Event Buffer Organization-->
+          <eventBufferPerObjectGroup>
+            <capabilities>
+              <range>
+                <minimum>0</minimum>
+                <maximum>65535</maximum>
+              </range>
+            </capabilities>
+            <currentValue>
+              <numEvents>200</numEvents>
+            </currentValue>
+            <!--Configuration Methods-->
+            <methods />
+          </eventBufferPerObjectGroup>
+          <!--3.4.12) Frozen Counters Event Buffer Organization-->
+          <frozenEventBufferPerObjectGroup>
+            <capabilities>
+              <range>
+                <minimum>0</minimum>
+                <maximum>65535</maximum>
+              </range>
+            </capabilities>
+            <currentValue>
+              <numEvents>200</numEvents>
+            </currentValue>
+            <!--Configuration Methods-->
+            <methods />
+          </frozenEventBufferPerObjectGroup>
+          <!--3.4.13) Reports Counter Events for Change of Value-->
+          <reportValueChangeCounterEvents>
+            <capabilities>
+              <no />
+              <yes />
+              <basedOnPointIndex />
+            </capabilities>
+            <currentValue>
+              <basedOnPointIndex />
+            </currentValue>
+            <!--Configuration Methods-->
+            <methods>
+              <proprietaryFileViaOtherTransportMechanism />
+            </methods>
+          </reportValueChangeCounterEvents>
         </configuration>
       </counterGroup>
       <!--3.5) Analog Input Points-->
@@ -1953,6 +2119,29 @@
             <!--Configuration Methods-->
             <methods />
           </frozenAnalogEventReportingMode>
+          <!--3.5.11) Analog Inputs Event Buffer Organization-->
+          <eventBufferPerObjectGroup>
+            <capabilities>
+              <range>
+                <minimum>0</minimum>
+                <maximum>65535</maximum>
+              </range>
+            </capabilities>
+            <currentValue>
+              <numEvents>200</numEvents>
+            </currentValue>
+            <!--Configuration Methods-->
+            <methods>
+              <proprietaryFileViaOtherTransportMechanism />
+            </methods>
+          </eventBufferPerObjectGroup>
+          <!--3.5.12) Frozen Analog Inputs Event Buffer Organization-->
+          <frozenEventBufferPerObjectGroup>
+            <capabilities />
+            <currentValue />
+            <!--Configuration Methods-->
+            <methods />
+          </frozenEventBufferPerObjectGroup>
         </configuration>
       </analogInputGroup>
       <!--3.6) Analog Output Status/Analog Output Control Block-->
@@ -2060,6 +2249,29 @@
               <proprietaryFileViaOtherTransportMechanism />
             </methods>
           </maxTimeBetweenSelectAndOperate>
+          <!--3.6.9) Analog Outputs Event Buffer Organization-->
+          <eventBufferPerObjectGroup>
+            <capabilities>
+              <range>
+                <minimum>0</minimum>
+                <maximum>65535</maximum>
+              </range>
+            </capabilities>
+            <currentValue>
+              <numEvents>200</numEvents>
+            </currentValue>
+            <!--Configuration Methods-->
+            <methods>
+              <proprietaryFileViaOtherTransportMechanism />
+            </methods>
+          </eventBufferPerObjectGroup>
+          <!--3.6.10) Analog Output Commands Event Buffer Organization-->
+          <commandEventBufferPerObjectGroup>
+            <capabilities />
+            <currentValue />
+            <!--Configuration Methods-->
+            <methods />
+          </commandEventBufferPerObjectGroup>
         </configuration>
       </analogOutputGroup>
       <!--3.7) Sequential File Transfer-->
@@ -2164,6 +2376,31 @@
             <!--Configuration Methods-->
             <methods />
           </class0ResponseMode>
+          <!--3.8.3) Octet Strings Event Buffer Organization-->
+          <eventBufferPerObjectGroup>
+            <capabilities>
+              <range>
+                <minimum>0</minimum>
+                <maximum>65535</maximum>
+              </range>
+            </capabilities>
+            <currentValue>
+              <numEvents>200</numEvents>
+            </currentValue>
+            <!--Configuration Methods-->
+            <methods />
+          </eventBufferPerObjectGroup>
+          <!--3.8.4) Object Group Selection-->
+          <objectGroupSelection>
+            <capabilities>
+              <fixedGroup110 />
+            </capabilities>
+            <currentValue>
+              <fixedGroup110 />
+            </currentValue>
+            <!--Configuration Methods-->
+            <methods />
+          </objectGroupSelection>
         </configuration>
       </octetStringGroup>
       <!--3.9) Virtual Terminal Points not supported-->
