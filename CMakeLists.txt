@@ -141,16 +141,7 @@ endif()
 if(WIN32 AND DNP3_DOTNET)
 
   message("The .NET framework version is: ${DNP3_DOTNET_FRAMEWORK_VERSION}")
-
-  add_subdirectory(./dotnet/CLRInterface)
-  add_subdirectory(./dotnet/CLRAdapter)
-
-  if(DNP3_EXAMPLES)
-    add_subdirectory(./dotnet/examples/master)
-    add_subdirectory(./dotnet/examples/master-gprs)
-    add_subdirectory(./dotnet/examples/master-gprs-tls)
-    add_subdirectory(./dotnet/examples/outstation)
-  endif()
+  add_subdirectory(./dotnet)
 
 endif()
 
@@ -163,8 +154,9 @@ endif()
 # Packaging
 set(CPACK_PACKAGE_NAME opendnp3)
 set(CPACK_PACKAGE_VENDOR "Automatak LLC")
-set(CPACK_PACKAGE_DESCRIPTION "DNP3 (IEEE-1815) protocol stack")
-set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/dnp3/opendnp3")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "DNP3 (IEEE-1815) protocol stack")
+set(CPACK_PACKAGE_DESCRIPTION "OpenDNP3 is the de facto reference implementation of IEEE-1815 (DNP3), a standards-based SCADA protocol.")
+set(CPACK_PACKAGE_HOMEPAGE_URL "https://dnp3.github.io/")
 set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_CURRENT_LIST_DIR}/LICENSE)
 set(CPACK_RESOURCE_FILE_README ${CMAKE_CURRENT_LIST_DIR}/README.md)
 set(CPACK_PACKAGE_VERSION_MAJOR ${OPENDNP3_MAJOR_VERSION})

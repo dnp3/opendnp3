@@ -54,3 +54,7 @@ src/UpdateAdapter.h
 set_target_properties(DNP3CLRAdapter PROPERTIES FOLDER "dotnet/libs" COMMON_LANGUAGE_RUNTIME "")
 set_property(TARGET DNP3CLRAdapter PROPERTY VS_DOTNET_TARGET_FRAMEWORK_VERSION ${DNP3_DOTNET_FRAMEWORK_VERSION})
 target_link_libraries(DNP3CLRAdapter DNP3CLRInterface opendnp3)
+install(TARGETS DNP3CLRAdapter
+    RUNTIME DESTINATION lib/${framework_folder_name}
+    LIBRARY DESTINATION lib/${framework_folder_name}
+)

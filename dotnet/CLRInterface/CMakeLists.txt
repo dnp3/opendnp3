@@ -141,4 +141,7 @@ set_target_properties(DNP3CLRInterface PROPERTIES FOLDER "dotnet/libs")
 set_property(TARGET DNP3CLRInterface PROPERTY VS_DOTNET_REFERENCES "System.Xml")
 set_property(TARGET DNP3CLRInterface PROPERTY VS_DOTNET_TARGET_FRAMEWORK_VERSION ${DNP3_DOTNET_FRAMEWORK_VERSION})
 target_compile_options(DNP3CLRInterface PRIVATE "/langversion:6")
-file(COPY ../nuget/opendnp3.nuspec DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Release)
+install(TARGETS DNP3CLRInterface
+    RUNTIME DESTINATION lib/${framework_folder_name}
+    LIBRARY DESTINATION lib/${framework_folder_name}
+)

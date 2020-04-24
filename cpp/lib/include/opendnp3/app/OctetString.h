@@ -37,11 +37,6 @@ public:
     OctetString() : OctetData() {}
 
     /**
-     * Copy construct from another OctetString
-     */
-    OctetString(const OctetString& data) : OctetData(data) {}
-
-    /**
      * Construct from a c-style string
      *
      * strlen() is used internally to determine the length
