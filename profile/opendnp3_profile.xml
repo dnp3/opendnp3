@@ -1066,8 +1066,11 @@
         <retriggerHoldTimer>
           <capabilities>
             <note>Hold-Time is not supported.</note>
+            <notRetriggeredForEachNewEvent />
           </capabilities>
-          <currentValue />
+          <currentValue>
+            <notRetriggeredForEachNewEvent />
+          </currentValue>
           <!--Configuration Methods-->
           <methods />
         </retriggerHoldTimer>
