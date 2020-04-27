@@ -26,8 +26,7 @@
 
 #include "opendnp3/channel/IChannelListener.h"
 #include "opendnp3/link/Addresses.h"
-
-#include <log4cpp/Logger.h>
+#include "opendnp3/logging/Logger.h"
 
 #include <deque>
 #include <vector>
@@ -44,7 +43,7 @@ class IOHandler : private IFrameSink, public IChannelCallbacks, public std::enab
 {
 
 public:
-    IOHandler(const log4cpp::Logger& logger, bool close_existing, std::shared_ptr<IChannelListener> listener);
+    IOHandler(const Logger& logger, bool close_existing, std::shared_ptr<IChannelListener> listener);
 
     virtual ~IOHandler() = default;
 
@@ -99,7 +98,7 @@ protected:
     void OnNewChannel(const std::shared_ptr<IAsyncChannel>& channel);
 
     const bool close_existing;
-    log4cpp::Logger logger;
+    Logger logger;
     const std::shared_ptr<IChannelListener> listener;
     LinkStatistics::Channel statistics;
 

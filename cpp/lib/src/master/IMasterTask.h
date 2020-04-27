@@ -25,13 +25,12 @@
 #include "master/TaskBehavior.h"
 #include "master/TaskContext.h"
 
+#include "opendnp3/logging/Logger.h"
 #include "opendnp3/master/IMasterApplication.h"
 #include "opendnp3/master/TaskConfig.h"
 
 #include <exe4cpp/IExecutor.h>
 #include <exe4cpp/Typedefs.h>
-
-#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {
@@ -62,7 +61,7 @@ public:
     IMasterTask(std::shared_ptr<TaskContext> context,
                 IMasterApplication& app,
                 TaskBehavior behavior,
-                const log4cpp::Logger& logger,
+                const Logger& logger,
                 TaskConfig config);
 
     virtual ~IMasterTask();
@@ -171,7 +170,7 @@ protected:
 
     const std::shared_ptr<TaskContext> context;
     IMasterApplication* const application;
-    log4cpp::Logger logger;
+    Logger logger;
 
     // Validation helpers for various behaviors to avoid deep inheritance
     bool ValidateSingleResponse(const APDUResponseHeader& header);

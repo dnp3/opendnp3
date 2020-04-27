@@ -21,9 +21,9 @@
 #define OPENDNP3_ICHANNEL_H
 
 #include "opendnp3/IResource.h"
-#include "opendnp3/LogLevels.h"
 #include "opendnp3/gen/ChannelState.h"
 #include "opendnp3/link/LinkStatistics.h"
+#include "opendnp3/logging/LogLevels.h"
 #include "opendnp3/master/IMaster.h"
 #include "opendnp3/master/IMasterApplication.h"
 #include "opendnp3/master/ISOEHandler.h"
@@ -54,12 +54,12 @@ public:
     /**
      *  @return The current logger settings for this channel
      */
-    virtual log4cpp::LogLevels GetLogFilters() const = 0;
+    virtual opendnp3::LogLevels GetLogFilters() const = 0;
 
     /**
      *  @param filters Adjust the filters to this value
      */
-    virtual void SetLogFilters(const log4cpp::LogLevels& filters) = 0;
+    virtual void SetLogFilters(const opendnp3::LogLevels& filters) = 0;
 
     /**
      * Add a master to the channel

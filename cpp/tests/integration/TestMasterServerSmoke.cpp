@@ -18,17 +18,17 @@
  * limitations under the License.
  */
 
+#include "mocks/NullSOEHandler.h"
+
 #include <opendnp3/ConsoleLogger.h>
 #include <opendnp3/DNP3Manager.h>
-#include <opendnp3/LogLevels.h>
+#include <opendnp3/logging/LogLevels.h>
 #include <opendnp3/master/DefaultListenCallbacks.h>
 #include <opendnp3/master/DefaultMasterApplication.h>
 #include <opendnp3/master/ISOEHandler.h>
 #include <opendnp3/master/PrintingSOEHandler.h>
 #include <opendnp3/outstation/DefaultOutstationApplication.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
-
-#include "mocks/NullSOEHandler.h"
 
 #include <dnp3mocks/DatabaseHelpers.h>
 
@@ -43,13 +43,14 @@ using namespace opendnp3;
 
 struct TestComponents
 {
-    TestComponents(DNP3Manager& manager, int numOutstations, std::error_code& ec)
+    TestComponents(DNP3Manager& manager, int numOutstations)
         : listener(manager.CreateListener(
-              "listener", levels::ALL, IPEndpoint::Localhost(20000), std::make_shared<DefaultListenCallbacks>(), ec))
+              "listener", levels::ALL, IPEndpoint::Localhost(20000), std::make_shared<DefaultListenCallbacks>()))
     {
         for (int i = 0; i < numOutstations; ++i)
         {
-            auto channel = manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(), { IPEndpoint("127.0.0.1", 20000) }, "0.0.0.0", nullptr);
+            auto channel = manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(),
+                                                {IPEndpoint("127.0.0.1", 20000)}, "0.0.0.0", nullptr);
             auto outstation = channel->AddOutstation("outstation", SuccessCommandHandler::Create(),
                                                      DefaultOutstationApplication::Create(), GetConfig());
 
@@ -86,10 +87,7 @@ TEST_CASE(SUITE("ConstructionDestruction"))
     for (int i = 0; i < ITERATIONS; ++i)
     {
         DNP3Manager manager(std::thread::hardware_concurrency());
-        std::error_code ec;
-        TestComponents components(manager, NUM_OUTSTATIONS, ec);
-        if (ec)
-            throw std::logic_error(ec.message());
+        TestComponents components(manager, NUM_OUTSTATIONS);
         components.Enable();
     }
 }
@@ -150,15 +148,14 @@ TEST_CASE(SUITE("Double BeginShutdown"))
     DNP3Manager manager(std::thread::hardware_concurrency());
 
     // Master listener creation
-    std::error_code ec;
     auto listenCallbacks = std::make_shared<DoubleShutdownListenCallbacks>();
-    auto listener = manager.CreateListener("listener", levels::ALL, IPEndpoint::Localhost(20000), listenCallbacks, ec);
+    auto listener = manager.CreateListener("listener", levels::ALL, IPEndpoint::Localhost(20000), listenCallbacks);
 
     // Outstation
     OutstationStackConfig outstationConfig(configure::by_count_of::all_types(0));
     outstationConfig.outstation.params.allowUnsolicited = true;
-    auto channel
-        = manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(), {IPEndpoint("127.0.0.1", 20000) }, "", nullptr);
+    auto channel = manager.AddTCPClient("client", levels::ALL, ChannelRetry::Default(),
+                                        {IPEndpoint("127.0.0.1", 20000)}, "", nullptr);
     auto outstation = channel->AddOutstation("outstation", SuccessCommandHandler::Create(),
                                              DefaultOutstationApplication::Create(), outstationConfig);
 

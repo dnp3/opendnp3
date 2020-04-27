@@ -18,12 +18,12 @@
  * limitations under the License.
  */
 
-#include "opendnp3/LogLevels.h"
+#include "opendnp3/logging/LogLevels.h"
 
 namespace opendnp3
 {
 
-const char* LogFlagToString(const log4cpp::LogLevel& flag)
+const char* LogFlagToString(const LogLevel& flag)
 {
     if (flag == flags::EVENT)
         return "EVENT  ";

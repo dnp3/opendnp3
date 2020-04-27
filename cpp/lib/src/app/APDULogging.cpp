@@ -22,29 +22,29 @@
 
 #include "app/parsing/APDUHeaderParser.h"
 #include "app/parsing/APDUParser.h"
-
-#include <log4cpp/LogMacros.h>
+#include "logging/LogMacros.h"
 
 namespace opendnp3
 {
 namespace logging
 {
 
-    void LogHeader(log4cpp::Logger& logger, const log4cpp::LogLevel& flags, const APDUHeader& header)
+    void LogHeader(Logger& logger, const LogLevel& flags, const APDUHeader& header)
     {
         FORMAT_LOG_BLOCK(logger, flags, "FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s", header.control.FIR,
                          header.control.FIN, header.control.CON, header.control.UNS, header.control.SEQ,
                          FunctionCodeSpec::to_human_string(header.function));
     }
 
-    void LogHeader(log4cpp::Logger& logger, const log4cpp::LogLevel& flags, const APDUResponseHeader& header)
+    void LogHeader(Logger& logger, const LogLevel& flags, const APDUResponseHeader& header)
     {
         FORMAT_LOG_BLOCK(logger, flags, "FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
                          header.control.FIR, header.control.FIN, header.control.CON, header.control.UNS,
-                         header.control.SEQ, FunctionCodeSpec::to_human_string(header.function), header.IIN.LSB, header.IIN.MSB);
+                         header.control.SEQ, FunctionCodeSpec::to_human_string(header.function), header.IIN.LSB,
+                         header.IIN.MSB);
     }
 
-    void ParseAndLogRequestTx(log4cpp::Logger& logger, const ser4cpp::rseq_t& apdu)
+    void ParseAndLogRequestTx(Logger& logger, const ser4cpp::rseq_t& apdu)
     {
         FORMAT_HEX_BLOCK(logger, flags::APP_HEX_TX, apdu, 18, 18);
 
@@ -65,7 +65,7 @@ namespace logging
         }
     }
 
-    void ParseAndLogResponseTx(log4cpp::Logger& logger, const ser4cpp::rseq_t& apdu)
+    void ParseAndLogResponseTx(Logger& logger, const ser4cpp::rseq_t& apdu)
     {
         FORMAT_HEX_BLOCK(logger, flags::APP_HEX_TX, apdu, 18, 18);
 

@@ -17,12 +17,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "utils/OutstationTestObject.h"
 #include "utils/APDUHexBuilders.h"
-
-#include <dnp3mocks/DatabaseHelpers.h>
+#include "utils/OutstationTestObject.h"
 
 #include <ser4cpp/util/HexConversions.h>
+
+#include <dnp3mocks/DatabaseHelpers.h>
 
 #include <catch.hpp>
 

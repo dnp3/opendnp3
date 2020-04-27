@@ -75,7 +75,7 @@ TEST_CASE(SUITE("CROBWithQUSetReturnsNotSupported"))
     REQUIRE(t.lower->PopWriteAsHex()
             == "C0 81 80 04 0C 01 17 01 03 51 01 01 00 00 00 01 00 00 00 04"); // 0x04 status ==
                                                                                // CommandStatus::NOT_SUPPORTED
-                                                                               
+
     REQUIRE(t.cmdHandler->NumInvocations() == 0);
 }
 

@@ -362,9 +362,8 @@ namespace DNP3
 
         opendnp3::LinkConfig Conversions::ConvertConfig(LinkConfig ^ config)
         {
-            return opendnp3::LinkConfig(config->isMaster, config->useConfirms, config->numRetry, config->localAddr,
-                                        config->remoteAddr, ConvertTimespan(config->responseTimeout),
-                                        ConvertTimespan(config->keepAliveTimeout));
+            return opendnp3::LinkConfig(config->isMaster, config->localAddr, config->remoteAddr,
+                                        ConvertTimespan(config->responseTimeout), ConvertTimespan(config->keepAliveTimeout));
         }
 
         opendnp3::EventBufferConfig Conversions::ConvertConfig(EventBufferConfig ^ cm)

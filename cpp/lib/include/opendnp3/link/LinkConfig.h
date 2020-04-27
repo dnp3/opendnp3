@@ -20,8 +20,8 @@
 #ifndef OPENDNP3_LINKCONFIG_H
 #define OPENDNP3_LINKCONFIG_H
 
-#include "opendnp3/util/TimeDuration.h"
 #include "opendnp3/link/Addresses.h"
+#include "opendnp3/util/TimeDuration.h"
 
 namespace opendnp3
 {
@@ -34,8 +34,6 @@ struct LinkConfig
     LinkConfig() = delete;
 
     LinkConfig(bool isMaster,
-               bool useConfirms,
-               uint32_t numRetry,
                uint16_t localAddr,
                uint16_t remoteAddr,
                TimeDuration timeout,
@@ -43,8 +41,6 @@ struct LinkConfig
         :
 
           IsMaster(isMaster),
-          UseConfirms(useConfirms),
-          NumRetry(numRetry),
           LocalAddr(localAddr),
           RemoteAddr(remoteAddr),
           Timeout(timeout),
@@ -56,8 +52,6 @@ struct LinkConfig
         :
 
           IsMaster(isMaster),
-          UseConfirms(useConfirms),
-          NumRetry(0),
           LocalAddr(isMaster ? 1 : 1024),
           RemoteAddr(isMaster ? 1024 : 1),
           Timeout(TimeDuration::Seconds(1)),
@@ -72,12 +66,6 @@ struct LinkConfig
 
     /// The master/outstation bit set on all messages
     bool IsMaster;
-
-    /// If true, the link layer will send data requesting confirmation
-    bool UseConfirms;
-
-    /// The number of retry attempts the link will attempt after the initial try
-    uint32_t NumRetry;
 
     /// dnp3 address of the local device
     uint16_t LocalAddr;

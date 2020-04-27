@@ -23,7 +23,8 @@
 namespace opendnp3
 {
 
-UDPSocketChannel::UDPSocketChannel(const std::shared_ptr<exe4cpp::StrandExecutor>& executor, asio::ip::udp::socket socket)
+UDPSocketChannel::UDPSocketChannel(const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
+                                   asio::ip::udp::socket socket)
     : IAsyncChannel(executor), socket(std::move(socket))
 {
 }

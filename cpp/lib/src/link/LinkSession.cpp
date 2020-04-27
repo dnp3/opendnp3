@@ -20,18 +20,17 @@
 
 #include "link/LinkSession.h"
 
+#include "logging/LogMacros.h"
 #include "master/MasterSchedulerBackend.h"
 
-#include "opendnp3/LogLevels.h"
-
-#include <log4cpp/LogMacros.h>
+#include "opendnp3/logging/LogLevels.h"
 
 #include <utility>
 
 namespace opendnp3
 {
 
-LinkSession::LinkSession(const log4cpp::Logger& logger,
+LinkSession::LinkSession(const Logger& logger,
                          uint64_t sessionid,
                          std::shared_ptr<IResourceManager> manager,
                          std::shared_ptr<IListenCallbacks> callbacks,
@@ -76,7 +75,7 @@ void LinkSession::ShutdownImpl()
     this->channel->executor->post(detach);
 }
 
-void LinkSession::SetLogFilters(const log4cpp::LogLevels& filters)
+void LinkSession::SetLogFilters(const LogLevels& filters)
 {
     this->logger.set_levels(filters);
 }

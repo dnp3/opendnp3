@@ -17,10 +17,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include <opendnp3/logging/LogLevels.h>
+
 #include <exe4cpp/asio/StrandExecutor.h>
 #include <exe4cpp/asio/ThreadPool.h>
-
-#include <opendnp3/LogLevels.h>
 
 #include <catch.hpp>
 

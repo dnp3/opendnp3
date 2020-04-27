@@ -31,7 +31,7 @@ namespace opendnp3
 
 SerialTimeSyncTask::SerialTimeSyncTask(const std::shared_ptr<TaskContext>& context,
                                        IMasterApplication& app,
-                                       const log4cpp::Logger& logger)
+                                       const Logger& logger)
     : IMasterTask(context, app, TaskBehavior::ReactsToIINOnly(), logger, TaskConfig::Default()), delay(-1)
 {
 }

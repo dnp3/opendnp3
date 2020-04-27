@@ -38,7 +38,7 @@ class TLSClientIOHandler final : public IOHandler
 {
 
 public:
-    static std::shared_ptr<TLSClientIOHandler> Create(const log4cpp::Logger& logger,
+    static std::shared_ptr<TLSClientIOHandler> Create(const Logger& logger,
                                                       const std::shared_ptr<IChannelListener>& listener,
                                                       const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                                       const TLSConfig& config,
@@ -49,7 +49,7 @@ public:
         return std::make_shared<TLSClientIOHandler>(logger, listener, executor, config, retry, remotes, adapter);
     }
 
-    TLSClientIOHandler(const log4cpp::Logger& logger,
+    TLSClientIOHandler(const Logger& logger,
                        const std::shared_ptr<IChannelListener>& listener,
                        const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                        TLSConfig config,

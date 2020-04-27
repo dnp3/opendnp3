@@ -62,7 +62,6 @@ public:
             CTOEventWriter<T, Group51Var2> handler(value, writer, serializer);
             return items.WriteSome(handler);
         }
-        
     }
 
     static uint16_t Write(uint8_t firstSize, HeaderWriter& writer, IEventCollection<OctetString>& items);

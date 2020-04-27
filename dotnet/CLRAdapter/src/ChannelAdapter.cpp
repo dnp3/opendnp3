@@ -66,7 +66,7 @@ namespace Automatak
 
 			void ChannelAdapter::SetLogFilters(LogFilter filters)
 			{				
-                (*channel)->SetLogFilters(log4cpp::LogLevel(filters.Flags));
+                (*channel)->SetLogFilters(opendnp3::LogLevel(filters.Flags));
 			}
 
 			void CallbackListener(gcroot < System::Action<ChannelState> ^ >* listener, opendnp3::ChannelState aState)

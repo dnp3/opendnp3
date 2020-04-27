@@ -19,7 +19,7 @@
  */
 #include "WriteHandler.h"
 
-#include <log4cpp/LogMacros.h>
+#include "logging/LogMacros.h"
 
 namespace opendnp3
 {

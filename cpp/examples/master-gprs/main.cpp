@@ -21,7 +21,7 @@
 
 #include <opendnp3/ConsoleLogger.h>
 #include <opendnp3/DNP3Manager.h>
-#include <opendnp3/LogLevels.h>
+#include <opendnp3/logging/LogLevels.h>
 #include <opendnp3/master/PrintingSOEHandler.h>
 
 #include <functional>
@@ -56,14 +56,7 @@ int main(int argc, char* argv[])
     // This is the main point of interaction with the stack
     DNP3Manager manager(numThreads, ConsoleLogger::Create());
 
-    std::error_code ec;
-    const auto server1 = manager.CreateListener("server-20000", logFilters, IPEndpoint::AllAdapters(20000), callbacks, ec);
-
-    if (ec)
-    {
-        std::cout << ec.message() << std::endl;
-        return ec.value();
-    }
+    const auto server1 = manager.CreateListener("server-20000", logFilters, IPEndpoint::AllAdapters(20000), callbacks);
 
     std::cout << "Type 'help' for a list of commands" << std::endl;
     do

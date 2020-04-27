@@ -45,12 +45,6 @@ namespace jni
             this->isMasterField = env->GetFieldID(this->clazz, "isMaster", "Z");
             if(!this->isMasterField) return false;
 
-            this->useConfirmsField = env->GetFieldID(this->clazz, "useConfirms", "Z");
-            if(!this->useConfirmsField) return false;
-
-            this->numRetryField = env->GetFieldID(this->clazz, "numRetry", "I");
-            if(!this->numRetryField) return false;
-
             this->localAddrField = env->GetFieldID(this->clazz, "localAddr", "I");
             if(!this->localAddrField) return false;
 
@@ -86,11 +80,6 @@ namespace jni
             return env->GetIntField(instance, this->localAddrField);
         }
 
-        jint LinkLayerConfig::getnumRetry(JNIEnv* env, JLinkLayerConfig instance)
-        {
-            return env->GetIntField(instance, this->numRetryField);
-        }
-
         jint LinkLayerConfig::getremoteAddr(JNIEnv* env, JLinkLayerConfig instance)
         {
             return env->GetIntField(instance, this->remoteAddrField);
@@ -99,11 +88,6 @@ namespace jni
         LocalRef<JDuration> LinkLayerConfig::getresponseTimeout(JNIEnv* env, JLinkLayerConfig instance)
         {
             return LocalRef<JDuration>(env, env->GetObjectField(instance, this->responseTimeoutField));
-        }
-
-        jboolean LinkLayerConfig::getuseConfirms(JNIEnv* env, JLinkLayerConfig instance)
-        {
-            return env->GetBooleanField(instance, this->useConfirmsField);
         }
     }
 }

@@ -22,17 +22,16 @@
 
 #include "channel/tls/TLSStreamChannel.h"
 #include "link/LinkSession.h"
+#include "logging/LogMacros.h"
 
-#include "opendnp3/LogLevels.h"
-
-#include <log4cpp/LogMacros.h>
+#include "opendnp3/logging/LogLevels.h"
 
 #include <utility>
 
 namespace opendnp3
 {
 
-MasterTLSServer::MasterTLSServer(const log4cpp::Logger& logger,
+MasterTLSServer::MasterTLSServer(const Logger& logger,
                                  const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                  const IPEndpoint& endpoint,
                                  const TLSConfig& config,

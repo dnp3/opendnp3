@@ -19,11 +19,11 @@
  */
 #include "NumParser.h"
 
-#include "opendnp3/LogLevels.h"
+#include "logging/LogMacros.h"
+
+#include "opendnp3/logging/LogLevels.h"
 
 #include <ser4cpp/serialization/LittleEndian.h>
-
-#include <log4cpp/LogMacros.h>
 
 namespace opendnp3
 {
@@ -35,7 +35,7 @@ uint8_t NumParser::NumBytes() const
     return size;
 }
 
-ParseResult NumParser::ParseCount(ser4cpp::rseq_t& buffer, uint16_t& count, log4cpp::Logger* pLogger) const
+ParseResult NumParser::ParseCount(ser4cpp::rseq_t& buffer, uint16_t& count, Logger* pLogger) const
 {
     if (this->Read(count, buffer))
     {
@@ -54,7 +54,7 @@ ParseResult NumParser::ParseCount(ser4cpp::rseq_t& buffer, uint16_t& count, log4
     }
 }
 
-ParseResult NumParser::ParseRange(ser4cpp::rseq_t& buffer, Range& range, log4cpp::Logger* pLogger) const
+ParseResult NumParser::ParseRange(ser4cpp::rseq_t& buffer, Range& range, Logger* pLogger) const
 {
     if (buffer.length() < (2 * static_cast<size_t>(size)))
     {

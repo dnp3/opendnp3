@@ -31,7 +31,7 @@ class LinkLayer final : public ILinkLayer, public ILinkSession
 {
 
 public:
-    LinkLayer(const log4cpp::Logger& logger,
+    LinkLayer(const Logger& logger,
               const std::shared_ptr<exe4cpp::IExecutor>&,
               const std::shared_ptr<IUpperLayer>& upper,
               const std::shared_ptr<ILinkListener>&,

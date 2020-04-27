@@ -26,18 +26,17 @@
 #include "app/parsing/FreeFormatParser.h"
 #include "app/parsing/ObjectHeaderParser.h"
 #include "app/parsing/RangeParser.h"
+#include "logging/LogMacros.h"
 
-#include "opendnp3/LogLevels.h"
 #include "opendnp3/gen/QualifierCode.h"
-
-#include <log4cpp/LogMacros.h>
+#include "opendnp3/logging/LogLevels.h"
 
 namespace opendnp3
 {
 
 ParseResult APDUParser::Parse(const ser4cpp::rseq_t& buffer,
                               IAPDUHandler& handler,
-                              log4cpp::Logger& logger,
+                              Logger& logger,
                               ParserSettings settings)
 {
     return Parse(buffer, handler, &logger, settings);
@@ -45,7 +44,7 @@ ParseResult APDUParser::Parse(const ser4cpp::rseq_t& buffer,
 
 ParseResult APDUParser::Parse(const ser4cpp::rseq_t& buffer,
                               IAPDUHandler& handler,
-                              log4cpp::Logger* pLogger,
+                              Logger* pLogger,
                               ParserSettings settings)
 {
     // do two state parsing process with logging and white-listing first but no handling on the first pass
@@ -54,13 +53,13 @@ ParseResult APDUParser::Parse(const ser4cpp::rseq_t& buffer,
     return (result == ParseResult::OK) ? ParseSinglePass(buffer, nullptr, &handler, nullptr, settings) : result;
 }
 
-ParseResult APDUParser::ParseAndLogAll(const ser4cpp::rseq_t& buffer, log4cpp::Logger* pLogger, ParserSettings settings)
+ParseResult APDUParser::ParseAndLogAll(const ser4cpp::rseq_t& buffer, Logger* pLogger, ParserSettings settings)
 {
     return ParseSinglePass(buffer, pLogger, nullptr, nullptr, settings);
 }
 
 ParseResult APDUParser::ParseSinglePass(const ser4cpp::rseq_t& buffer,
-                                        log4cpp::Logger* pLogger,
+                                        Logger* pLogger,
                                         IAPDUHandler* pHandler,
                                         IWhiteList* pWhiteList,
                                         const ParserSettings& settings)
@@ -80,7 +79,7 @@ ParseResult APDUParser::ParseSinglePass(const ser4cpp::rseq_t& buffer,
 }
 
 ParseResult APDUParser::ParseHeader(ser4cpp::rseq_t& buffer,
-                                    log4cpp::Logger* pLogger,
+                                    Logger* pLogger,
                                     uint32_t count,
                                     const ParserSettings& settings,
                                     IAPDUHandler* pHandler,
@@ -114,7 +113,7 @@ ParseResult APDUParser::ParseHeader(ser4cpp::rseq_t& buffer,
 }
 
 ParseResult APDUParser::ParseQualifier(ser4cpp::rseq_t& buffer,
-                                       log4cpp::Logger* pLogger,
+                                       Logger* pLogger,
                                        const HeaderRecord& record,
                                        const ParserSettings& settings,
                                        IAPDUHandler* pHandler)
@@ -151,13 +150,14 @@ ParseResult APDUParser::ParseQualifier(ser4cpp::rseq_t& buffer,
     }
 }
 
-ParseResult APDUParser::HandleAllObjectsHeader(log4cpp::Logger* pLogger,
+ParseResult APDUParser::HandleAllObjectsHeader(Logger* pLogger,
                                                const HeaderRecord& record,
                                                const ParserSettings& settings,
                                                IAPDUHandler* pHandler)
 {
-    FORMAT_LOGGER_BLOCK(pLogger, settings.LogLevel(), "%03u,%03u - %s - %s", record.group, record.variation,
-                        GroupVariationSpec::to_human_string(record.enumeration), QualifierCodeSpec::to_human_string(QualifierCode::ALL_OBJECTS));
+    FORMAT_LOGGER_BLOCK(pLogger, settings.LoggingLevel(), "%03u,%03u - %s - %s", record.group, record.variation,
+                        GroupVariationSpec::to_human_string(record.enumeration),
+                        QualifierCodeSpec::to_human_string(QualifierCode::ALL_OBJECTS));
 
     if (pHandler)
     {

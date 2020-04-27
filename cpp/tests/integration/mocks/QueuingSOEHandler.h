@@ -44,20 +44,20 @@ class QueuingSOEHandler final : public opendnp3::ISOEHandler
 public:
     SynchronizedQueue<ExpectedValue> values;
 
-	void begin_fragment(const opendnp3::ResponseInfo& info) override 
-	{
+    void begin_fragment(const opendnp3::ResponseInfo& info) override
+    {
         mutex.lock();
-	}
+    }
 
     void end_fragment(const opendnp3::ResponseInfo& info) override
-	{
+    {
         values.AddMany(temp);
         temp.clear();
         mutex.unlock();
-	}
+    }
 
     void Process(const opendnp3::HeaderInfo& info,
-		         const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Binary>>& values) override
+                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Binary>>& values) override
     {
         this->ProcessAny(values);
     }
@@ -98,9 +98,7 @@ public:
         this->ProcessAny(values);
     }
 
-    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::DNPTime>& values) override
-    {
-    }
+    void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::DNPTime>& values) override {}
 
     void Process(const opendnp3::HeaderInfo& info,
                  const opendnp3::ICollection<opendnp3::Indexed<opendnp3::OctetString>>& values) override

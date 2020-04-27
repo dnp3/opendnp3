@@ -40,7 +40,7 @@ class LinkSession;
 class MasterSessionStack final : public IMasterSession, public std::enable_shared_from_this<MasterSessionStack>
 {
 public:
-    static std::shared_ptr<MasterSessionStack> Create(const log4cpp::Logger& logger,
+    static std::shared_ptr<MasterSessionStack> Create(const Logger& logger,
                                                       const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                                       const std::shared_ptr<ISOEHandler>& SOEHandler,
                                                       const std::shared_ptr<IMasterApplication>& application,
@@ -57,7 +57,7 @@ public:
 
     void OnTxReady();
 
-    void SetLogFilters(const log4cpp::LogLevels& filters) final;
+    void SetLogFilters(const opendnp3::LogLevels& filters) final;
 
     /// --- IGPRSMaster ---
 
@@ -90,9 +90,7 @@ public:
     void ScanAllObjects(GroupVariationID gvId,
                         std::shared_ptr<ISOEHandler> soe_handler,
                         const TaskConfig& config) final;
-    void ScanClasses(const ClassField& field,
-                     std::shared_ptr<ISOEHandler> soe_handler,
-                     const TaskConfig& config) final;
+    void ScanClasses(const ClassField& field, std::shared_ptr<ISOEHandler> soe_handler, const TaskConfig& config) final;
     void ScanRange(GroupVariationID gvId,
                    uint16_t start,
                    uint16_t stop,
@@ -112,7 +110,7 @@ public:
                           const TaskConfig& config) final;
     void DirectOperate(CommandSet&& commands, const CommandResultCallbackT& callback, const TaskConfig& config) final;
 
-    MasterSessionStack(const log4cpp::Logger& logger,
+    MasterSessionStack(const Logger& logger,
                        const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                        const std::shared_ptr<ISOEHandler>& SOEHandler,
                        const std::shared_ptr<IMasterApplication>& application,

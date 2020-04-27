@@ -36,6 +36,7 @@
 
 #include "opendnp3/gen/SecurityStatIndex.h"
 #include "opendnp3/link/Addresses.h"
+#include "opendnp3/logging/Logger.h"
 #include "opendnp3/outstation/ICommandHandler.h"
 #include "opendnp3/outstation/IOutstationApplication.h"
 #include "opendnp3/outstation/OutstationConfig.h"
@@ -44,8 +45,6 @@
 #include <ser4cpp/container/Settable.h>
 
 #include <exe4cpp/IExecutor.h>
-
-#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {
@@ -64,7 +63,7 @@ public:
     OContext(const Addresses& addresses,
              const OutstationConfig& config,
              const DatabaseConfig& db_config,
-             const log4cpp::Logger& logger,
+             const Logger& logger,
              const std::shared_ptr<exe4cpp::IExecutor>& executor,
              std::shared_ptr<ILowerLayer> lower,
              std::shared_ptr<ICommandHandler> commandHandler,
@@ -84,7 +83,7 @@ public:
 
     void HandleNewEvents();
 
-    IUpdateHandler& GetUpdateHandler();    
+    IUpdateHandler& GetUpdateHandler();
 
     void SetRestartIIN();
 
@@ -179,7 +178,7 @@ private:
 
     // ------ resources --------
     const Addresses addresses;
-    log4cpp::Logger logger;
+    Logger logger;
     const std::shared_ptr<exe4cpp::IExecutor> executor;
     const std::shared_ptr<ILowerLayer> lower;
     const std::shared_ptr<ICommandHandler> commandHandler;

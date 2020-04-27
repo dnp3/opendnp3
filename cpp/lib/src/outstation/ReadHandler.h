@@ -24,9 +24,8 @@
 #include "outstation/IEventSelector.h"
 #include "outstation/IStaticSelector.h"
 
+#include "opendnp3/logging/Logger.h"
 #include "opendnp3/outstation/StaticTypeBitfield.h"
-
-#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {

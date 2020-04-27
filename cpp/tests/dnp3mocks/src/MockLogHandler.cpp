@@ -20,16 +20,18 @@
 
 #include "dnp3mocks/MockLogHandler.h"
 
-#include <opendnp3/LogLevels.h>
+#include <opendnp3/logging/LogLevels.h>
 
 #include <iostream>
 
-LogRecord::LogRecord(log4cpp::ModuleId module, const char* id, log4cpp::LogLevel level, char const* location, char const* message)
+using namespace opendnp3;
+
+LogRecord::LogRecord(ModuleId module, const char* id, LogLevel level, char const* location, char const* message)
     : module(module), id(id), level(level), location(location), message(message)
 {
 }
 
-void MockLogHandlerImpl::log(log4cpp::ModuleId module, const char* id, log4cpp::LogLevel level, char const* location, char const* message)
+void MockLogHandlerImpl::log(ModuleId module, const char* id, LogLevel level, char const* location, char const* message)
 {
     std::lock_guard<std::mutex> lock(this->mutex);
 
@@ -48,7 +50,7 @@ void MockLogHandler::ClearLog()
 
 void MockLogHandler::Log(const std::string& location, const std::string& message)
 {
-    this->impl->log(log4cpp::ModuleId(), "test", opendnp3::flags::EVENT, location.c_str(), message.c_str());
+    this->impl->log(ModuleId(), "test", opendnp3::flags::EVENT, location.c_str(), message.c_str());
 }
 
 void MockLogHandler::WriteToStdIo()

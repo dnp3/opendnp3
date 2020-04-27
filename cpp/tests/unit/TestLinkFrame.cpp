@@ -17,18 +17,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "utils/BufferHelpers.h"
 #include "utils/DNPHelpers.h"
 
 #include <ser4cpp/container/Buffer.h>
 #include <ser4cpp/util/HexConversions.h>
 
+#include <catch.hpp>
 #include <link/CRC.h>
 #include <link/LinkFrame.h>
 #include <link/LinkHeader.h>
-
-#include "utils/BufferHelpers.h"
-
-#include <catch.hpp>
 
 using namespace opendnp3;
 using namespace ser4cpp;
@@ -44,7 +42,8 @@ std::string FormatUserData(
 
     if (aIsConfirmed)
     {
-        return HexConversions::to_hex(LinkFrame::FormatConfirmedUserData(wrapper, aIsMaster, aFcb, aDest, aSrc, hs, nullptr));
+        return HexConversions::to_hex(
+            LinkFrame::FormatConfirmedUserData(wrapper, aIsMaster, aFcb, aDest, aSrc, hs, nullptr));
     }
 
     return HexConversions::to_hex(LinkFrame::FormatUnconfirmedUserData(wrapper, aIsMaster, aDest, aSrc, hs, nullptr));

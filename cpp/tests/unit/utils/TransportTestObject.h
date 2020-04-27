@@ -20,15 +20,16 @@
 #ifndef OPENDNP3_UNITTESTS_TRANSPORT_TEST_OBJECT_H
 #define OPENDNP3_UNITTESTS_TRANSPORT_TEST_OBJECT_H
 
-
-#include <opendnp3/LogLevels.h>
 #include <opendnp3/app/AppConstants.h>
-#include <transport/TransportLayer.h>
+#include <opendnp3/logging/LogLevels.h>
 
 #include <exe4cpp/MockExecutor.h>
+
 #include "dnp3mocks/MockLinkLayer.h"
 #include "dnp3mocks/MockLogHandler.h"
 #include "dnp3mocks/MockUpperLayer.h"
+
+#include <transport/TransportLayer.h>
 
 #include <string>
 #include <vector>

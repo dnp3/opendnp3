@@ -25,9 +25,8 @@
 
 #include "opendnp3/channel/IPEndpoint.h"
 #include "opendnp3/channel/TLSConfig.h"
+#include "opendnp3/logging/Logger.h"
 #include "opendnp3/master/IListenCallbacks.h"
-
-#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {
@@ -36,7 +35,7 @@ class MasterTLSServer final : public TLSServer
 {
 
 public:
-    MasterTLSServer(const log4cpp::Logger& logger,
+    MasterTLSServer(const Logger& logger,
                     const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                     const IPEndpoint& endpoint,
                     const TLSConfig& tlsConfig,
@@ -44,7 +43,7 @@ public:
                     std::shared_ptr<ResourceManager> manager,
                     std::error_code& ec);
 
-    static std::shared_ptr<MasterTLSServer> Create(const log4cpp::Logger& logger,
+    static std::shared_ptr<MasterTLSServer> Create(const Logger& logger,
                                                    const std::shared_ptr<exe4cpp::StrandExecutor> executor,
                                                    const IPEndpoint endpoint,
                                                    const TLSConfig& tlsConfig,
@@ -57,12 +56,7 @@ public:
         if (ec)
             return nullptr;
 
-        ret->StartAccept(ec);
-
-        if (ec)
-        {
-            return nullptr;
-        }
+        ret->StartAccept();
 
         return ret;
     }

@@ -25,8 +25,8 @@
 #include "outstation/IEventReceiver.h"
 #include "outstation/StaticDataCell.h"
 
-#include "opendnp3/util/Uncopyable.h"
 #include "opendnp3/gen/EventMode.h"
+#include "opendnp3/util/Uncopyable.h"
 
 #include <iterator>
 #include <map>
@@ -354,13 +354,13 @@ template<class Spec> Range StaticDataMap<Spec>::assign_class(PointClass clazz)
 }
 
 template<class Spec> Range StaticDataMap<Spec>::assign_class(PointClass clazz, const Range& range)
-{        
+{
     for (auto iter = this->map.lower_bound(range.start); iter != this->map.end() && range.Contains(iter->first); iter++)
     {
-        iter->second.config.clazz = clazz;	
+        iter->second.config.clazz = clazz;
     }
 
-	return range.Intersection(this->get_full_range());
+    return range.Intersection(this->get_full_range());
 }
 
 template<class Spec> typename StaticDataMap<Spec>::iterator StaticDataMap<Spec>::begin()

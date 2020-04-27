@@ -68,8 +68,6 @@ LinkConfig ConfigReader::Convert(JNIEnv* env, jni::JLinkLayerConfig jlinkcfg)
     auto& ref = jni::JCache::LinkLayerConfig;
 
     cfg.IsMaster = !(ref.getisMaster(env, jlinkcfg) == 0u);
-    cfg.UseConfirms = !(ref.getuseConfirms(env, jlinkcfg) == 0u);
-    cfg.NumRetry = ref.getnumRetry(env, jlinkcfg);
     cfg.LocalAddr = static_cast<uint16_t>(ref.getlocalAddr(env, jlinkcfg));
     cfg.RemoteAddr = static_cast<uint16_t>(ref.getremoteAddr(env, jlinkcfg));
     cfg.Timeout

@@ -66,7 +66,7 @@ namespace Automatak
 
 				static TaskInfo^ Convert(const opendnp3::TaskInfo& info);
 
-				static opendnp3::ITaskCallback* CreateTaskCallback(ITaskCallback^ callback);
+				static std::shared_ptr<opendnp3::ITaskCallback> CreateTaskCallback(ITaskCallback^ callback);
 			
 			};
 

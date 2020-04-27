@@ -22,10 +22,9 @@
 
 #include "link/LinkContext.h"
 #include "link/Singleton.h"
+#include "logging/LogMacros.h"
 
-#include "opendnp3/LogLevels.h"
-
-#include <log4cpp/LogMacros.h>
+#include "opendnp3/logging/LogLevels.h"
 
 namespace opendnp3
 {
@@ -39,7 +38,9 @@ public:
     virtual SecStateBase& OnRequestLinkStatus(LinkContext&, uint16_t source) = 0;
 
     virtual SecStateBase& OnTestLinkStatus(LinkContext&, uint16_t source, bool fcb) = 0;
-    virtual SecStateBase& OnConfirmedUserData(LinkContext&, uint16_t source, bool fcb, bool isBroadcast, const Message& message) = 0;
+    virtual SecStateBase& OnConfirmedUserData(
+        LinkContext&, uint16_t source, bool fcb, bool isBroadcast, const Message& message)
+        = 0;
 
     virtual SecStateBase& OnTxReady(LinkContext& ctx);
 
@@ -62,11 +63,8 @@ public:
     virtual SecStateBase& OnResetLinkStates(LinkContext&, uint16_t source) override final;
     virtual SecStateBase& OnRequestLinkStatus(LinkContext&, uint16_t source) override final;
     virtual SecStateBase& OnTestLinkStatus(LinkContext&, uint16_t source, bool fcb) override final;
-    virtual SecStateBase& OnConfirmedUserData(LinkContext&,
-                                              uint16_t source,
-                                              bool fcb,
-                                              bool isBroadcast,
-                                              const Message& message) override final;
+    virtual SecStateBase& OnConfirmedUserData(
+        LinkContext&, uint16_t source, bool fcb, bool isBroadcast, const Message& message) override final;
 };
 
 template<class NextState> SecStateBase& SLLS_TransmitWaitBase<NextState>::OnTxReady(LinkContext& ctx)
@@ -96,11 +94,8 @@ SecStateBase& SLLS_TransmitWaitBase<NextState>::OnTestLinkStatus(LinkContext& ct
 }
 
 template<class NextState>
-SecStateBase& SLLS_TransmitWaitBase<NextState>::OnConfirmedUserData(LinkContext& ctx,
-                                                                    uint16_t source,
-                                                                    bool fcb,
-                                                                    bool isBroadcast,
-                                                                    const Message& message)
+SecStateBase& SLLS_TransmitWaitBase<NextState>::OnConfirmedUserData(
+    LinkContext& ctx, uint16_t source, bool fcb, bool isBroadcast, const Message& message)
 {
     SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Ignoring link frame, remote is flooding");
     return *this;
@@ -114,7 +109,8 @@ class SLLS_NotReset final : public SecStateBase
 public:
     MACRO_STATE_SINGLETON_INSTANCE(SLLS_NotReset);
 
-    virtual SecStateBase& OnConfirmedUserData(LinkContext&, uint16_t source, bool fcb, bool isBroadcast, const Message& message) override;
+    virtual SecStateBase& OnConfirmedUserData(
+        LinkContext&, uint16_t source, bool fcb, bool isBroadcast, const Message& message) override;
     virtual SecStateBase& OnResetLinkStates(LinkContext&, uint16_t source) override;
     virtual SecStateBase& OnRequestLinkStatus(LinkContext&, uint16_t source) override;
     virtual SecStateBase& OnTestLinkStatus(LinkContext&, uint16_t source, bool fcb) override;
@@ -127,7 +123,8 @@ class SLLS_Reset final : public SecStateBase
 {
     MACRO_STATE_SINGLETON_INSTANCE(SLLS_Reset);
 
-    virtual SecStateBase& OnConfirmedUserData(LinkContext&, uint16_t source, bool fcb, bool isBroadcast, const Message& message) override;
+    virtual SecStateBase& OnConfirmedUserData(
+        LinkContext&, uint16_t source, bool fcb, bool isBroadcast, const Message& message) override;
     virtual SecStateBase& OnResetLinkStates(LinkContext&, uint16_t source) override;
     virtual SecStateBase& OnRequestLinkStatus(LinkContext&, uint16_t source) override;
     virtual SecStateBase& OnTestLinkStatus(LinkContext&, uint16_t source, bool fcb) override;

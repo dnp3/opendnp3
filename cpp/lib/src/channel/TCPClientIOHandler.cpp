@@ -27,7 +27,7 @@
 namespace opendnp3
 {
 
-TCPClientIOHandler::TCPClientIOHandler(const log4cpp::Logger& logger,
+TCPClientIOHandler::TCPClientIOHandler(const Logger& logger,
                                        const std::shared_ptr<IChannelListener>& listener,
                                        const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                        const ChannelRetry& retry,

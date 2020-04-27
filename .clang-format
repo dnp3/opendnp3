@@ -74,6 +74,8 @@ IncludeCategories:
     Priority:        13
   - Regex:           '^(<|")testlib/'
     Priority:        14
+  - Regex:           '^(<|")catch.hpp/'
+    Priority:        15
   - Regex:           '<(.+)\.(h|hpp)' # Other external includes
     Priority:        50
   - Regex:           '<[([:alnum:]|_).]+>' # System include

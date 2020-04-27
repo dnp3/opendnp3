@@ -20,9 +20,9 @@
 #ifndef OPENDNP3_UNITTESTS_MOCK_TRANSPORT_SEGMENT_H
 #define OPENDNP3_UNITTESTS_MOCK_TRANSPORT_SEGMENT_H
 
-#include <link/ITransportSegment.h>
-
 #include "utils/BufferHelpers.h"
+
+#include <link/ITransportSegment.h>
 
 #include <string>
 

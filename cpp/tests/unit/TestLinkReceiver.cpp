@@ -17,12 +17,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "utils/BufferHelpers.h"
 #include "utils/DNPHelpers.h"
 #include "utils/LinkParserTest.h"
 
 #include <ser4cpp/container/Buffer.h>
-
-#include "utils/BufferHelpers.h"
 
 #include <catch.hpp>
 

@@ -28,7 +28,7 @@ namespace opendnp3
 DisableUnsolicitedTask::DisableUnsolicitedTask(const std::shared_ptr<TaskContext>& context,
                                                IMasterApplication& application,
                                                const TaskBehavior& behavior,
-                                               const log4cpp::Logger& logger)
+                                               const Logger& logger)
     : IMasterTask(context, application, behavior, logger, TaskConfig::Default())
 {
 }

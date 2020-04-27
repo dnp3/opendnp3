@@ -1,17 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<?xml-stylesheet type='text/xsl' href='DNP3DeviceProfileJuly2012.xslt' media='screen'?>
+<?xml-stylesheet type='text/xsl' href='DNP3DeviceProfileNovember2014.xslt' media='screen'?>
 <!--DNP3 Device Profile-->
-<DNP3DeviceProfileDocument schemaVersion="2.08.00" xmlns="http://www.dnp3.org/DNP3/DeviceProfile/July2012">
+<DNP3DeviceProfileDocument schemaVersion="2.10.00" xmlns="http://www.dnp3.org/DNP3/DeviceProfile/November2014">
   <!--Document Header-->
   <documentHeader>
-    <documentName>Opendnp3 profile</documentName>
-    <documentDescription>DNP3 Device Profile for the opendnp3 library (master / outstation)</documentDescription>
-    <!--Revision History-->
-    <revisionHistory version="1">
-      <date>2014-09-07</date>
-      <author>Adam Crain</author>
-      <reason>Initial version of 2012 schema</reason>
-    </revisionHistory>
+    <documentName>OpenDNP3 profile</documentName>
+    <documentDescription>DNP3 Device Profile for the OpenDNP3 library</documentDescription>
   </documentHeader>
   <!--Reference Device-->
   <referenceDevice>
@@ -30,7 +24,8 @@
           </currentValue>
           <!--Configuration Methods-->
           <methods>
-            <note>Opendnp3 is a source code library for implementing masters and outstations. Implementers integrating the library should supply their own device profile specific to their device.</note>
+            <note>OpenDNP3 is a source code library for implementing masters and outstations. Implementers integrating the library should supply their own device profile specific to their device.</note>
+            <proprietaryFileViaOtherTransportMechanism />
           </methods>
         </deviceFunction>
         <!--1.1.2) Vendor Name-->
@@ -42,7 +37,7 @@
         <!--1.1.3) Device Name-->
         <deviceName>
           <currentValue>
-            <value>Opendnp3</value>
+            <value>OpenDNP3</value>
           </currentValue>
         </deviceName>
         <!--1.1.4) Hardware Version-->
@@ -54,7 +49,7 @@
         <!--1.1.5) Software Version-->
         <softwareVersion>
           <currentValue>
-            <value>2.0.0</value>
+            <value>3.0.0</value>
           </currentValue>
         </softwareVersion>
         <!--1.1.6) Document Version Number-->
@@ -105,7 +100,7 @@
           <capabilities>
             <proprietaryFileViaOtherTransportMechanism />
             <other>
-              <explanation>source code library is configurable via configuration structures. Configuration via file is done by the integrator.</explanation>
+              <explanation>Source code library is configurable via configuration structures. Configuration via file is done by the integrator.</explanation>
             </other>
           </capabilities>
           <currentValue>
@@ -135,7 +130,6 @@
             <network />
           </capabilities>
           <currentValue>
-            <note>C++ library supports arbitrary physical layers by implementing IPhysicalLayer interface.</note>
             <serial />
             <network />
           </currentValue>
@@ -144,12 +138,20 @@
             <proprietaryFileViaOtherTransportMechanism />
           </methods>
         </connectionsSupported>
+        <!--1.1.14) Conformance Testing-->
+        <conformanceTesting>
+          <!--1.14.1) Self Tested-->
+          <selfTested>
+            <version>3.0.0</version>
+          </selfTested>
+        </conformanceTesting>
       </deviceConfig>
       <!--1.2) Serial Connection Capabilities-->
       <serialConfig>
         <!--1.2.1) Port Name-->
         <portName>
           <currentValue>
+            <note>Depends on target hardware.</note>
             <value>COM1</value>
           </currentValue>
         </portName>
@@ -186,7 +188,6 @@
         <flowControl>
           <capabilities>
             <note>Type of serial support depends on target platform. </note>
-            <none />
             <rs232Options>
               <requiresCTSBeforeTx />
               <requiresDCDBeforeTx />
@@ -196,6 +197,9 @@
               <requiresDCDBeforeRx />
               <requiresDSRBeforeRx />
               <requiresRIBeforeRx />
+              <other>
+                <explanation>Software-based, depends on hardware support.</explanation>
+              </other>
             </rs232Options>
             <rs422Options />
             <rs485Options />
@@ -204,18 +208,9 @@
             </other>
           </capabilities>
           <currentValue>
-            <none />
-            <rs232Options>
-              <other>
-                <explanation />
-              </other>
-            </rs232Options>
+            <rs232Options />
             <rs422Options />
-            <rs485Options>
-              <other>
-                <explanation />
-              </other>
-            </rs485Options>
+            <rs485Options />
           </currentValue>
           <!--Configuration Methods-->
           <methods />
@@ -223,10 +218,13 @@
         <!--1.2.5) Link Status Interval-->
         <linkStatusInterval>
           <capabilities>
-            <notSupported />
+            <range>
+              <minimum>0</minimum>
+              <maximum>2147483647</maximum>
+            </range>
           </capabilities>
           <currentValue>
-            <notSupported />
+            <value>60</value>
           </currentValue>
           <!--Configuration Methods-->
           <methods>
@@ -280,10 +278,12 @@
           <capabilities>
             <tcpInitiating />
             <tcpListening />
+            <udpDatagram />
           </capabilities>
           <currentValue>
             <tcpInitiating />
             <tcpListening />
+            <udpDatagram />
           </currentValue>
           <!--Configuration Methods-->
           <methods>
@@ -296,7 +296,9 @@
             <address>*.*.*.*</address>
           </currentValue>
           <!--Configuration Methods-->
-          <methods />
+          <methods>
+            <proprietaryFileViaOtherTransportMechanism />
+          </methods>
         </ipAddress>
         <!--1.3.4) Subnet Mask-->
         <subnetMask>
@@ -383,7 +385,10 @@
         <!--1.3.11) Local UDP port-->
         <localUDPPort>
           <capabilities>
-            <note>Opendnp3 does not support UDP.  UDP is only useful for small DNP3 messages inconjunction with BROADCAST functionality.</note>
+            <range>
+              <minimum>0</minimum>
+              <maximum>65535</maximum>
+            </range>
           </capabilities>
           <currentValue>
             <value>20000</value>
@@ -393,7 +398,12 @@
         </localUDPPort>
         <!--1.3.12) Destination UDP port for DNP3 Requests-->
         <destinationUDPPort>
-          <capabilities />
+          <capabilities>
+            <range>
+              <minimum>0</minimum>
+              <maximum>65535</maximum>
+            </range>
+          </capabilities>
           <currentValue>
             <value>20000</value>
           </currentValue>
@@ -402,7 +412,13 @@
         </destinationUDPPort>
         <!--1.3.13) Destination UDP port for unsolicited null responses-->
         <udpPortForUnsolicitedNullResponses>
-          <capabilities />
+          <capabilities>
+            <note>OpenDNP3 only supports sending unsolicited null responses to the response port.</note>
+            <range>
+              <minimum>0</minimum>
+              <maximum>65535</maximum>
+            </range>
+          </capabilities>
           <currentValue>
             <value>20000</value>
           </currentValue>
@@ -411,7 +427,12 @@
         </udpPortForUnsolicitedNullResponses>
         <!--1.3.14) Destination UDP port for responses-->
         <udpPortForResponses>
-          <capabilities />
+          <capabilities>
+            <range>
+              <minimum>0</minimum>
+              <maximum>65535</maximum>
+            </range>
+          </capabilities>
           <currentValue>
             <value>20000</value>
           </currentValue>
@@ -421,7 +442,7 @@
         <!--1.3.15) Multiple Outstation Connections-->
         <multipleOutstationConnections>
           <capabilities>
-            <note>Opendnp3 is extremely scalable.  The number of connections supported depends on your OS and OS configuration.</note>
+            <note>OpenDNP3 is extremely scalable.  The number of connections supported depends on your OS and OS configuration.</note>
             <supportsMultipleOutstations>true</supportsMultipleOutstations>
           </capabilities>
           <currentValue>
@@ -444,15 +465,15 @@
         <!--1.3.17) Time Synchronization Support-->
         <timeSynchronization>
           <capabilities>
+            <dnpLANProcedure />
             <dnpWriteTimeProcedure />
           </capabilities>
           <currentValue>
+            <dnpLANProcedure />
             <dnpWriteTimeProcedure />
           </currentValue>
           <!--Configuration Methods-->
-          <methods>
-            <proprietaryFileViaOtherTransportMechanism />
-          </methods>
+          <methods />
         </timeSynchronization>
       </networkConfig>
       <!--1.4) Data Link Layer Capabilities-->
@@ -478,6 +499,9 @@
         <sourceAddressValidation>
           <capabilities>
             <alwaysSingleAddress />
+            <sometimes>
+              <explanation>Outstation can be configured to respond to any source address.</explanation>
+            </sometimes>
           </capabilities>
           <currentValue>
             <alwaysSingleAddress />
@@ -490,13 +514,11 @@
         <!--1.4.3) DNP3 Source Address Expected When Validation is Enabled-->
         <expectedSourceAddress>
           <capabilities>
-            <range>
-              <minimum>0</minimum>
-              <maximum>65519</maximum>
-            </range>
+            <note>Only for outstations.</note>
+            <anyDataLinkAddress />
           </capabilities>
           <currentValue>
-            <value>1024</value>
+            <anyDataLinkAddress />
           </currentValue>
           <!--Configuration Methods-->
           <methods>
@@ -520,15 +542,9 @@
         <sendsConfirmedUserDataFrames>
           <capabilities>
             <never />
-            <always />
-            <sometimes>
-              <explanation>configurable</explanation>
-            </sometimes>
           </capabilities>
           <currentValue>
-            <sometimes>
-              <explanation>configurable</explanation>
-            </sometimes>
+            <never />
           </currentValue>
           <!--Configuration Methods-->
           <methods />
@@ -536,13 +552,10 @@
         <!--1.4.6) Data Link Layer Confirmation Timeout-->
         <linkLayerConfirmTimeout>
           <capabilities>
-            <range>
-              <minimum>0</minimum>
-              <maximum>2147483647</maximum>
-            </range>
+            <none />
           </capabilities>
           <currentValue>
-            <value>1000</value>
+            <none />
           </currentValue>
           <!--Configuration Methods-->
           <methods>
@@ -552,13 +565,10 @@
         <!--1.4.7) Maximum Data Link Retries-->
         <maxDataLinkRetries>
           <capabilities>
-            <range>
-              <minimum>0</minimum>
-              <maximum>65535</maximum>
-            </range>
+            <none />
           </capabilities>
           <currentValue>
-            <value>0</value>
+            <none />
           </currentValue>
           <!--Configuration Methods-->
           <methods>
@@ -613,6 +623,7 @@
         <!--1.5.2) Maximum number of octets Transmitted in an Application Layer Fragment containing File Transfer-->
         <maxFileTransferTransmittedFragmentSize>
           <capabilities>
+            <note>File Transfer is not supported.</note>
             <range>
               <minimum>249</minimum>
               <maximum>65535</maximum>
@@ -673,6 +684,7 @@
         <!--1.5.6) Maximum Number of Objects Allowed in a Single Control Request for Analog Outputs-->
         <maxObjectsInAnalogOutputControlRequest>
           <capabilities>
+            <note>Outstation supports multiple CROB/AO. Master does not.</note>
             <range>
               <minimum>1</minimum>
               <maximum>255</maximum>
@@ -689,6 +701,7 @@
         <!--1.5.7) Maximum Number of Objects Allowed in a Single Control Request for Data Sets-->
         <maxObjectsInDataSetsControlRequest>
           <capabilities>
+            <note>Data Sets are not supported.</note>
             <fixed>0</fixed>
           </capabilities>
           <currentValue>
@@ -700,6 +713,7 @@
         <!--1.5.8) Supports Mixing Object Groups (AOBs, CROBs, and Data Sets) in the Same Control Request-->
         <supportsMixedObjectGroupsInControlRequest>
           <capabilities>
+            <note>Outstation supports multiple CROB/AO. Master does not.</note>
             <yes />
           </capabilities>
           <currentValue>
@@ -710,129 +724,32 @@
             <proprietaryFileViaOtherTransportMechanism />
           </methods>
         </supportsMixedObjectGroupsInControlRequest>
-        <!--User Data-->
-        <userData />
+        <!--1.5.9) Control Status Codes Supported-->
+        <controlStatusCodesSupported>
+          <capabilities>
+            <code1 />
+            <code2 />
+            <code3 />
+            <code4 />
+            <code5 />
+            <code6 />
+            <code7 />
+            <code8 />
+            <code9 />
+            <code10 />
+            <code11 />
+            <code12 />
+            <code13 />
+            <code14 />
+            <code15 />
+            <code16 />
+            <code17 />
+            <code18 />
+            <code126 />
+            <code127 />
+          </capabilities>
+        </controlStatusCodesSupported>
       </applConfig>
-      <!--1.6) Master Configuration-->
-      <masterConfig>
-        <!--1.6.1) Timeout Waiting for Complete Application Layer Response-->
-        <responseTimeout>
-          <capabilities>
-            <range>
-              <minimum>0</minimum>
-              <maximum>4294967295</maximum>
-            </range>
-          </capabilities>
-          <currentValue>
-            <value>5000</value>
-          </currentValue>
-          <!--Configuration Methods-->
-          <methods />
-        </responseTimeout>
-        <!--1.6.2) Maximum Application Layer Retries for Request Messages-->
-        <applicationLayerRetries>
-          <capabilities>
-            <none />
-          </capabilities>
-          <currentValue>
-            <none />
-          </currentValue>
-          <!--Configuration Methods-->
-          <methods />
-        </applicationLayerRetries>
-        <!--1.6.3) Incremental Timeout Waiting for First or Next Fragment of an Application Layer Response-->
-        <responseIncrementalTimeout>
-          <capabilities>
-            <note>Incremental timeout shares the same response timeout. The timeout timer begins after reception of a confirm frame.</note>
-            <range>
-              <minimum>0</minimum>
-              <maximum>4294967295</maximum>
-            </range>
-          </capabilities>
-          <currentValue>
-            <value>5000</value>
-          </currentValue>
-          <!--Configuration Methods-->
-          <methods />
-        </responseIncrementalTimeout>
-        <!--1.6.4) Issues controls to off-line devices-->
-        <issuesControlsToOfflineDevices>
-          <capabilities>
-            <note>Immediately times out requests for off-line devices with a distinct result code independent of the command codes.</note>
-            <no />
-          </capabilities>
-          <currentValue>
-            <no />
-          </currentValue>
-          <!--Configuration Methods-->
-          <methods />
-        </issuesControlsToOfflineDevices>
-        <!--1.6.5) Issues controls to off-scan devices-->
-        <issuesControlsToOffscanDevices>
-          <capabilities>
-            <note>Master library has no special distinction for "off-scan".</note>
-            <yes />
-          </capabilities>
-          <currentValue>
-            <yes />
-          </currentValue>
-          <!--Configuration Methods-->
-          <methods />
-        </issuesControlsToOffscanDevices>
-        <!--1.6.6) Max control retries same sequence number-->
-        <maxControlRetriesSameSN>
-          <capabilities>
-            <note>Control retries are not supported.  These can be implemented as different sequence # requests at the user layer.</note>
-            <none />
-          </capabilities>
-          <currentValue>
-            <none />
-          </currentValue>
-          <!--Configuration Methods-->
-          <methods />
-        </maxControlRetriesSameSN>
-        <!--1.6.7) Max control retries new sequence number-->
-        <maxControlRetriesNewSN>
-          <capabilities>
-            <none />
-          </capabilities>
-          <currentValue>
-            <none />
-          </currentValue>
-          <!--Configuration Methods-->
-          <methods />
-        </maxControlRetriesNewSN>
-        <!--1.6.8) Maximum error in the time that the Master issues scheduled freeze requests-->
-        <maxTimeErrorScheduledFreezes>
-          <currentValue>
-            <time />
-          </currentValue>
-          <!--Configuration Methods-->
-          <methods />
-        </maxTimeErrorScheduledFreezes>
-        <!--1.6.9) Maximum error in the time that the Master issues repetitive freeze requests-->
-        <maxTimeErrorRepetitiveFreezes>
-          <currentValue>
-            <time />
-          </currentValue>
-          <!--Configuration Methods-->
-          <methods />
-        </maxTimeErrorRepetitiveFreezes>
-        <!--1.6.10) Scheduled actions that may affect the accuracy of freeze requests-->
-        <actionsAffectingFreezeRequests>
-          <capabilities />
-          <currentValue />
-          <!--Configuration Methods-->
-          <methods />
-        </actionsAffectingFreezeRequests>
-        <!--1.6.11) Scheduling algorithm-->
-        <schedulingAlgorithm>
-          <capabilities />
-          <currentValue />
-          <!--Configuration Methods-->
-          <methods />
-        </schedulingAlgorithm>
-      </masterConfig>
       <!--1.7) Outstation Configuration-->
       <outstationConfig>
         <!--1.7.1) Timeout Waiting for Application Confirm of Solicited Response Message (ms)-->
@@ -854,7 +771,7 @@
         <!--1.7.2) How often is Time Synchronization Required from the Master-->
         <timeSyncRequired>
           <capabilities>
-            <note>Scheduling the time bit is an outstaion application concern. A method is provided to set the IIN bit, and callbacks are there to receive time write requsts.</note>
+            <note>Scheduling the time bit is an user code concern. A method is provided to set the IIN bit, and callbacks are there to receive time write requests.</note>
             <never />
           </capabilities>
           <currentValue>
@@ -908,8 +825,12 @@
         </eventBufferOverflowBehavior>
         <!--1.7.6) Event Buffer Organization-->
         <eventBufferOrganization>
-          <capabilities>Max events is configured per object group</capabilities>
-          <currentValue>Max events is configured per object group</currentValue>
+          <capabilities>
+            <perObjectGroup />
+          </capabilities>
+          <currentValue>
+            <perObjectGroup />
+          </currentValue>
           <!--Configuration Methods-->
           <methods>
             <proprietaryFileViaOtherTransportMechanism />
@@ -923,7 +844,7 @@
             <yes />
           </capabilities>
           <currentValue>
-            <no />
+            <yes />
           </currentValue>
           <!--Configuration Methods-->
           <methods>
@@ -948,12 +869,45 @@
         <!--1.7.9) DNP Command Settings Preserved Through a Device Restart-->
         <settingsPreservedThroughDeviceRestart>
           <capabilities>
-            <note>None of these function blocks are supported yet.</note>
+            <note>Recording class assignments is a user code concern.</note>
+            <assignClass />
           </capabilities>
           <currentValue />
           <!--Configuration Methods-->
           <methods />
         </settingsPreservedThroughDeviceRestart>
+        <!--1.7.10) Configuration Signature Supported-->
+        <configurationSignatureSupported>
+          <capabilities>
+            <notSupported />
+          </capabilities>
+          <currentValue>
+            <notSupported />
+          </currentValue>
+          <!--Configuration Methods-->
+          <methods />
+        </configurationSignatureSupported>
+        <!--1.7.11) Requests Application Confirmation-->
+        <requestsApplicationConfirmation>
+          <capabilities>
+            <eventResponses>
+              <yes />
+            </eventResponses>
+            <nonFinalFragments>
+              <yes />
+            </nonFinalFragments>
+          </capabilities>
+          <currentValue>
+            <eventResponses>
+              <yes />
+            </eventResponses>
+            <nonFinalFragments>
+              <yes />
+            </nonFinalFragments>
+          </currentValue>
+          <!--Configuration Methods-->
+          <methods />
+        </requestsApplicationConfirmation>
       </outstationConfig>
       <!--1.8) Outstation Unsolicited Response Support-->
       <unsolicitedConfig>
@@ -973,6 +927,7 @@
         <!--1.8.2) Master Data Link Address-->
         <masterDataLinkAddress>
           <capabilities>
+            <note>Same value used for solicited responses (1.4.3)</note>
             <range>
               <minimum>0</minimum>
               <maximum>65519</maximum>
@@ -1005,18 +960,20 @@
         <!--1.8.4) Number of Unsolicited Retries-->
         <maxUnsolicitedRetries>
           <capabilities>
-            <none />
+            <range>
+              <minimum>0</minimum>
+              <maximum>2147483647</maximum>
+            </range>
+            <infinite />
           </capabilities>
           <currentValue>
-            <none />
+            <infinite />
           </currentValue>
           <!--Configuration Methods-->
           <methods>
             <proprietaryFileViaOtherTransportMechanism />
           </methods>
         </maxUnsolicitedRetries>
-        <!--User Data-->
-        <userData />
       </unsolicitedConfig>
       <!--1.9) Outstation Unsolicited Response Trigger Conditions-->
       <unsolicitedResponseTriggerConditions>
@@ -1100,10 +1057,10 @@
         <!--1.9.8) Hold Time After Event Assigned to Any Class-->
         <holdTimeAfterAnyEvent>
           <capabilities>
-            <notUsedToTriggerEvents />
+            <fixed>0</fixed>
           </capabilities>
           <currentValue>
-            <notUsedToTriggerEvents />
+            <value>0</value>
           </currentValue>
           <!--Configuration Methods-->
           <methods />
@@ -1111,11 +1068,9 @@
         <!--1.9.9) Retrigger Hold Timer-->
         <retriggerHoldTimer>
           <capabilities>
-            <retriggeredForEachNewEvent />
+            <note>Hold-Time is not supported.</note>
           </capabilities>
-          <currentValue>
-            <retriggeredForEachNewEvent />
-          </currentValue>
+          <currentValue />
           <!--Configuration Methods-->
           <methods />
         </retriggerHoldTimer>
@@ -1141,20 +1096,19 @@
           <!--Configuration Methods-->
           <methods />
         </maxTimeBaseDrift>
-        <!--1.10.2) When Does Outstation Set IIN 1.4?-->
+        <!--1.10.2) When Does Outstation Set IIN 1.4-->
         <outstationSetsIIN14>
           <capabilities>
+            <note>Asserting IIN1.4 is a user code concern. The libary allows setting/unsetting the bit as required.</note>
             <never />
           </capabilities>
-          <currentValue>
-            <afterLastTimeSync>108000</afterLastTimeSync>
-          </currentValue>
+          <currentValue />
           <!--Configuration Methods-->
           <methods>
             <proprietaryFileViaOtherTransportMechanism />
           </methods>
         </outstationSetsIIN14>
-        <!--1.10.3) Maximum Internal Time Reference Error When et Via DNP (ms)-->
+        <!--1.10.3) Maximum Internal Time Reference Error When set Via DNP (ms)-->
         <referenceErrorViaDNP>
           <capabilities>
             <note>Depends on target hardware and implementation.</note>
@@ -1262,144 +1216,14 @@
           </methods>
         </deviceSerialNumber>
       </fieldConfig>
-      <!--1.12) Security Configuration-->
-      <securityConfig>
-        <!--1.12.1) DNP3 device support for secure authentication-->
-        <secureAuthenticationSupported>
-          <capabilities>
-            <notSupported />
-          </capabilities>
-          <currentValue>
-            <notSupported />
-          </currentValue>
-          <!--Configuration Methods-->
-          <methods>
-            <proprietaryFileViaOtherTransportMechanism />
-          </methods>
-        </secureAuthenticationSupported>
-        <!--1.12.2) Maximum number of users-->
-        <maxNumberUsers>
-          <capabilities />
-          <currentValue />
-          <!--Configuration Methods-->
-          <methods />
-        </maxNumberUsers>
-        <!--1.12.3) Security message response timeout-->
-        <securityResponseTimeout>
-          <capabilities />
-          <currentValue />
-          <!--Configuration Methods-->
-          <methods />
-        </securityResponseTimeout>
-        <!--1.12.4) Aggressive mode of operation (receive)-->
-        <acceptsAggressiveMode>
-          <currentValue>
-            <yes />
-          </currentValue>
-          <!--Configuration Methods-->
-          <methods />
-        </acceptsAggressiveMode>
-        <!--1.12.5) Aggressive mode of operation (issuing)-->
-        <issuesAggressiveMode>
-          <currentValue>
-            <yes />
-          </currentValue>
-          <!--Configuration Methods-->
-          <methods />
-        </issuesAggressiveMode>
-        <!--1.12.6) Session key change interval-->
-        <sessionKeyChangeInterval>
-          <capabilities />
-          <currentValue />
-          <!--Configuration Methods-->
-          <methods />
-        </sessionKeyChangeInterval>
-        <!--1.12.7) Session key change message count-->
-        <sessionKeyChangeMessageCount>
-          <capabilities />
-          <currentValue />
-          <!--Configuration Methods-->
-          <methods />
-        </sessionKeyChangeMessageCount>
-        <!--1.12.8) Maximum error count-->
-        <maxErrorCount>
-          <capabilities />
-          <currentValue />
-          <!--Configuration Methods-->
-          <methods />
-        </maxErrorCount>
-        <!--1.12.9) MAC algorithm requested in a challenge exchange-->
-        <macAlgorithmRequested>
-          <capabilities />
-          <currentValue />
-          <!--Configuration Methods-->
-          <methods />
-        </macAlgorithmRequested>
-        <!--1.12.10) Key wrap algorithm-->
-        <keyWrapAlgorithm>
-          <capabilities />
-          <currentValue />
-          <!--Configuration Methods-->
-          <methods />
-        </keyWrapAlgorithm>
-        <!--1.12.11) Cipher Suites used with DNP implementations using TLS-->
-        <TLSCipherSuites>
-          <capabilities />
-          <currentValue />
-          <!--Configuration Methods-->
-          <methods />
-        </TLSCipherSuites>
-        <!--1.12.12) Change cipher request timeout-->
-        <changeCipherRequestTimeout>
-          <capabilities />
-          <currentValue />
-          <!--Configuration Methods-->
-          <methods />
-        </changeCipherRequestTimeout>
-        <!--1.12.13) Number of Certificate Authorities supported-->
-        <numberCASupported>
-          <currentValue />
-          <!--Configuration Methods-->
-          <methods />
-        </numberCASupported>
-        <!--1.12.14) Certificate Revocation check time-->
-        <certificateRevocationCheckTime>
-          <capabilities />
-          <currentValue />
-          <!--Configuration Methods-->
-          <methods />
-        </certificateRevocationCheckTime>
-        <!--1.12.15) Additional critical function codes-->
-        <additionalCriticalFCs>
-          <capabilities />
-          <currentValue />
-          <!--Configuration Methods-->
-          <methods />
-        </additionalCriticalFCs>
-        <!--1.12.16) Other Critical Fragments-->
-        <otherCriticalFragments>
-          <capabilities />
-          <currentValue />
-          <!--Configuration Methods-->
-          <methods />
-        </otherCriticalFragments>
-        <!--1.12.17) Support for remote update key changes-->
-        <remoteUpdateKeyChangeSupported>
-          <capabilities />
-          <currentValue />
-          <!--Configuration Methods-->
-          <methods />
-        </remoteUpdateKeyChangeSupported>
-      </securityConfig>
       <!--1.13) Broadcast Configuration-->
       <broadcastConfig>
-        <!--1.13.1) Support for broadcast functionality-->
         <broadcastFunctionalitySupported>
           <capabilities>
-            <disabled />
+            <enabled />
           </capabilities>
           <currentValue>
-            <disabled />
+            <enabled />
           </currentValue>
           <!--Configuration Methods-->
           <methods />
@@ -1407,146 +1231,213 @@
         <!--1.13.2) Write functions (FC = 2) supported with broadcast requests-->
         <broadcastFunctionalityFC2Supported>
           <writeClock>
-            <capabilities />
-            <currentValue />
+            <capabilities>
+              <enabled />
+            </capabilities>
+            <currentValue>
+              <enabled />
+            </currentValue>
             <!--Configuration Methods-->
-            <methods />
+            <methods>
+              <proprietaryFileViaOtherTransportMechanism />
+            </methods>
           </writeClock>
           <writeLastRecordedTime>
-            <capabilities />
-            <currentValue />
+            <capabilities>
+              <enabled />
+            </capabilities>
+            <currentValue>
+              <enabled />
+            </currentValue>
             <!--Configuration Methods-->
             <methods />
           </writeLastRecordedTime>
           <clearRestart>
-            <capabilities />
-            <currentValue />
+            <capabilities>
+              <enabled />
+            </capabilities>
+            <currentValue>
+              <enabled />
+            </currentValue>
             <!--Configuration Methods-->
             <methods />
           </clearRestart>
           <writeAnyOther>
             <capabilities />
-            <currentValue />
+            <currentValue>
+              <disabled />
+            </currentValue>
             <!--Configuration Methods-->
             <methods />
           </writeAnyOther>
         </broadcastFunctionalityFC2Supported>
-        <!--1.13.3) Direct operate functions (FC = 5) supported with broadcast requests-->
         <broadcastFunctionalityFC5Supported>
-          <capabilities />
-          <currentValue />
+          <capabilities>
+            <disabled />
+          </capabilities>
+          <currentValue>
+            <disabled />
+          </currentValue>
           <!--Configuration Methods-->
           <methods />
         </broadcastFunctionalityFC5Supported>
-        <!--1.13.4) Direct operate, no acknowledgement functions (FC = 6) supported with broadcast requests-->
         <broadcastFunctionalityFC6Supported>
-          <capabilities />
-          <currentValue />
+          <capabilities>
+            <enabled />
+          </capabilities>
+          <currentValue>
+            <enabled />
+          </currentValue>
           <!--Configuration Methods-->
           <methods />
         </broadcastFunctionalityFC6Supported>
-        <!--1.13.5) Immediate freeze functions (FC = 7) supported with broadcast requests-->
         <broadcastFunctionalityFC7Supported>
-          <capabilities />
-          <currentValue />
+          <capabilities>
+            <disabled />
+          </capabilities>
+          <currentValue>
+            <disabled />
+          </currentValue>
           <!--Configuration Methods-->
           <methods />
         </broadcastFunctionalityFC7Supported>
-        <!--1.13.6) Immediate freeze, no acknowledgement functions (FC = 8) supported with broadcast requests-->
         <broadcastFunctionalityFC8Supported>
-          <capabilities />
-          <currentValue />
+          <capabilities>
+            <enabled />
+          </capabilities>
+          <currentValue>
+            <enabled />
+          </currentValue>
           <!--Configuration Methods-->
           <methods />
         </broadcastFunctionalityFC8Supported>
-        <!--1.13.7) Freeze and clear functions (FC = 9) supported with broadcast requests-->
         <broadcastFunctionalityFC9Supported>
-          <capabilities />
-          <currentValue />
+          <capabilities>
+            <disabled />
+          </capabilities>
+          <currentValue>
+            <disabled />
+          </currentValue>
           <!--Configuration Methods-->
           <methods />
         </broadcastFunctionalityFC9Supported>
-        <!--1.13.8) Freeze and clear, no acknowledgement functions (FC = 10) supported with broadcast requests-->
         <broadcastFunctionalityFC10Supported>
-          <capabilities />
-          <currentValue />
+          <capabilities>
+            <enabled />
+          </capabilities>
+          <currentValue>
+            <enabled />
+          </currentValue>
           <!--Configuration Methods-->
           <methods />
         </broadcastFunctionalityFC10Supported>
-        <!--1.13.9) Freeze at time functions (FC = 11) supported with broadcast requests-->
         <broadcastFunctionalityFC11Supported>
-          <capabilities />
-          <currentValue />
+          <capabilities>
+            <disabled />
+          </capabilities>
+          <currentValue>
+            <disabled />
+          </currentValue>
           <!--Configuration Methods-->
           <methods />
         </broadcastFunctionalityFC11Supported>
-        <!--1.13.10) Freeze at time, no acknowledgement functions (FC = 12) supported with broadcast requests-->
         <broadcastFunctionalityFC12Supported>
-          <capabilities />
-          <currentValue />
+          <capabilities>
+            <disabled />
+          </capabilities>
+          <currentValue>
+            <disabled />
+          </currentValue>
           <!--Configuration Methods-->
           <methods />
         </broadcastFunctionalityFC12Supported>
-        <!--1.13.11) Cold restart functions (FC = 13) supported with broadcast requests-->
         <broadcastFunctionalityFC13Supported>
-          <capabilities />
-          <currentValue />
+          <capabilities>
+            <enabled />
+          </capabilities>
+          <currentValue>
+            <enabled />
+          </currentValue>
           <!--Configuration Methods-->
           <methods />
         </broadcastFunctionalityFC13Supported>
-        <!--1.13.12) Warm restart functions (FC = 14) supported with broadcast requests-->
         <broadcastFunctionalityFC14Supported>
-          <capabilities />
-          <currentValue />
+          <capabilities>
+            <enabled />
+          </capabilities>
+          <currentValue>
+            <enabled />
+          </currentValue>
           <!--Configuration Methods-->
           <methods />
         </broadcastFunctionalityFC14Supported>
-        <!--1.13.13) Initialize data functions (FC = 15) supported with broadcast requests-->
         <broadcastFunctionalityFC15Supported>
-          <capabilities />
-          <currentValue />
+          <capabilities>
+            <disabled />
+          </capabilities>
+          <currentValue>
+            <disabled />
+          </currentValue>
           <!--Configuration Methods-->
           <methods />
         </broadcastFunctionalityFC15Supported>
-        <!--1.13.14) Initialize application functions (FC = 16) supported with broadcast requests-->
         <broadcastFunctionalityFC16Supported>
-          <capabilities />
-          <currentValue />
+          <capabilities>
+            <disabled />
+          </capabilities>
+          <currentValue>
+            <disabled />
+          </currentValue>
           <!--Configuration Methods-->
           <methods />
         </broadcastFunctionalityFC16Supported>
-        <!--1.13.15) Start application functions (FC = 17) supported with broadcast requests-->
         <broadcastFunctionalityFC17Supported>
-          <capabilities />
-          <currentValue />
+          <capabilities>
+            <disabled />
+          </capabilities>
+          <currentValue>
+            <disabled />
+          </currentValue>
           <!--Configuration Methods-->
           <methods />
         </broadcastFunctionalityFC17Supported>
-        <!--1.13.16) Stop application functions (FC = 18) supported with broadcast requests-->
         <broadcastFunctionalityFC18Supported>
-          <capabilities />
-          <currentValue />
+          <capabilities>
+            <disabled />
+          </capabilities>
+          <currentValue>
+            <disabled />
+          </currentValue>
           <!--Configuration Methods-->
           <methods />
         </broadcastFunctionalityFC18Supported>
-        <!--1.13.17) Save configuration functions (FC = 19) supported with broadcast requests-->
         <broadcastFunctionalityFC19Supported>
-          <capabilities />
-          <currentValue />
+          <capabilities>
+            <disabled />
+          </capabilities>
+          <currentValue>
+            <disabled />
+          </currentValue>
           <!--Configuration Methods-->
           <methods />
         </broadcastFunctionalityFC19Supported>
         <!--1.13.18) Enable unsolicited functions (FC = 20) supported with broadcast requests-->
         <broadcastFunctionalityFC20Supported>
           <byEventClass>
-            <capabilities />
-            <currentValue />
+            <capabilities>
+              <enabled />
+            </capabilities>
+            <currentValue>
+              <enabled />
+            </currentValue>
             <!--Configuration Methods-->
             <methods />
           </byEventClass>
           <byAnyOther>
             <capabilities />
-            <currentValue />
+            <currentValue>
+              <disabled />
+            </currentValue>
             <!--Configuration Methods-->
             <methods />
           </byAnyOther>
@@ -1554,36 +1445,51 @@
         <!--1.13.19) Disable unsolicited functions (FC = 21) supported with broadcast requests-->
         <broadcastFunctionalityFC21Supported>
           <byEventClass>
-            <capabilities />
-            <currentValue />
+            <capabilities>
+              <enabled />
+            </capabilities>
+            <currentValue>
+              <enabled />
+            </currentValue>
             <!--Configuration Methods-->
             <methods />
           </byEventClass>
           <byAnyOther>
-            <capabilities />
-            <currentValue />
+            <capabilities>
+              <disabled />
+            </capabilities>
+            <currentValue>
+              <disabled />
+            </currentValue>
             <!--Configuration Methods-->
             <methods />
           </byAnyOther>
         </broadcastFunctionalityFC21Supported>
-        <!--1.13.20) Assign class functions (FC = 22) supported with broadcast requests-->
         <broadcastFunctionalityFC22Supported>
-          <capabilities />
-          <currentValue />
+          <capabilities>
+            <enabled />
+          </capabilities>
+          <currentValue>
+            <enabled />
+          </currentValue>
           <!--Configuration Methods-->
           <methods />
         </broadcastFunctionalityFC22Supported>
-        <!--1.13.21) Record current time functions (FC = 24) supported with broadcast requests-->
         <broadcastFunctionalityFC24Supported>
-          <capabilities />
-          <currentValue />
+          <capabilities>
+            <enabled />
+          </capabilities>
+          <currentValue>
+            <enabled />
+          </currentValue>
           <!--Configuration Methods-->
           <methods />
         </broadcastFunctionalityFC24Supported>
-        <!--1.13.22) Activate configuration functions (FC = 31) supported with broadcast requests-->
         <broadcastFunctionalityFC31Supported>
           <capabilities />
-          <currentValue />
+          <currentValue>
+            <disabled />
+          </currentValue>
           <!--Configuration Methods-->
           <methods />
         </broadcastFunctionalityFC31Supported>
@@ -1600,12 +1506,12 @@
           <!--3.1.1) Static Variation Reported When Variation 0 Requested-->
           <defaultStaticVariation>
             <capabilities>
-              <note>Default variation supported is configurable by object group.</note>
               <one />
               <two />
+              <basedOnPointIndex />
             </capabilities>
             <currentValue>
-              <two />
+              <basedOnPointIndex />
             </currentValue>
             <!--Configuration Methods-->
             <methods>
@@ -1615,13 +1521,13 @@
           <!--3.1.2) Event Variation Reported When Variation 0 Requested-->
           <defaultEventVariation>
             <capabilities>
-              <note>Default variation supported is configurable by object group.</note>
               <one />
               <two />
               <three />
+              <basedOnPointIndex />
             </capabilities>
             <currentValue>
-              <two />
+              <basedOnPointIndex />
             </currentValue>
             <!--Configuration Methods-->
             <methods>
@@ -1637,9 +1543,7 @@
               <allEvents />
             </currentValue>
             <!--Configuration Methods-->
-            <methods>
-              <proprietaryFileViaOtherTransportMechanism />
-            </methods>
+            <methods />
           </eventReportingMode>
           <!--3.1.4) Binary Inputs Included In Class 0 Response-->
           <class0ResponseMode>
@@ -1650,10 +1554,24 @@
               <always />
             </currentValue>
             <!--Configuration Methods-->
+            <methods />
+          </class0ResponseMode>
+          <!--3.1.5) Binary Inputs Event Buffer Organization-->
+          <eventBufferPerObjectGroup>
+            <capabilities>
+              <range>
+                <minimum>0</minimum>
+                <maximum>65535</maximum>
+              </range>
+            </capabilities>
+            <currentValue>
+              <numEvents>200</numEvents>
+            </currentValue>
+            <!--Configuration Methods-->
             <methods>
               <proprietaryFileViaOtherTransportMechanism />
             </methods>
-          </class0ResponseMode>
+          </eventBufferPerObjectGroup>
         </configuration>
       </binaryInputGroup>
       <!--3.2) Double Bit Input Points-->
@@ -1663,12 +1581,12 @@
           <!--3.2.1) Static Variation Reported When Variation 0 Requested-->
           <defaultStaticVariation>
             <capabilities>
-              <note>Default variation supported is configurable by object group.</note>
               <one />
               <two />
+              <basedOnPointIndex />
             </capabilities>
             <currentValue>
-              <two />
+              <basedOnPointIndex />
             </currentValue>
             <!--Configuration Methods-->
             <methods>
@@ -1678,13 +1596,13 @@
           <!--3.2.2) Event Variation Reported When Variation 0 Requested-->
           <defaultEventVariation>
             <capabilities>
-              <note>Default variation supported is configurable by object group.</note>
               <one />
               <two />
               <three />
+              <basedOnPointIndex />
             </capabilities>
             <currentValue>
-              <two />
+              <basedOnPointIndex />
             </currentValue>
             <!--Configuration Methods-->
             <methods>
@@ -1694,33 +1612,41 @@
           <!--3.2.3) Event Reporting Mode-->
           <eventReportingMode>
             <capabilities>
-              <mostRecent />
               <allEvents />
             </capabilities>
             <currentValue>
               <allEvents />
             </currentValue>
             <!--Configuration Methods-->
-            <methods>
-              <proprietaryFileViaOtherTransportMechanism />
-            </methods>
+            <methods />
           </eventReportingMode>
           <!--3.2.4) Double Bit Inputs Included In Class 0 Response-->
           <class0ResponseMode>
             <capabilities>
               <always />
-              <never />
-              <onlyWhenAssignedToClass123 />
-              <basedOnPointIndex />
             </capabilities>
             <currentValue>
               <always />
             </currentValue>
             <!--Configuration Methods-->
+            <methods />
+          </class0ResponseMode>
+          <!--3.2.5) Double-bit Inputs Event Buffer Organization-->
+          <eventBufferPerObjectGroup>
+            <capabilities>
+              <range>
+                <minimum>0</minimum>
+                <maximum>65535</maximum>
+              </range>
+            </capabilities>
+            <currentValue>
+              <numEvents>200</numEvents>
+            </currentValue>
+            <!--Configuration Methods-->
             <methods>
               <proprietaryFileViaOtherTransportMechanism />
             </methods>
-          </class0ResponseMode>
+          </eventBufferPerObjectGroup>
         </configuration>
       </doubleBitInputGroup>
       <!--3.3) Binary Output Status/Control Relay Output Block Points-->
@@ -1777,33 +1703,28 @@
               <never />
             </currentValue>
             <!--Configuration Methods-->
-            <methods>
-              <proprietaryFileViaOtherTransportMechanism />
-            </methods>
+            <methods />
           </outputCommandEventObjects>
           <!--3.3.5) Static Variation Reported When Variation 0 Requested-->
           <defaultStaticVariation>
             <capabilities>
-              <note>Integrator defined.</note>
               <two />
             </capabilities>
             <currentValue>
               <two />
             </currentValue>
             <!--Configuration Methods-->
-            <methods>
-              <proprietaryFileViaOtherTransportMechanism />
-            </methods>
+            <methods />
           </defaultStaticVariation>
           <!--3.3.6) Event Variation Reported When Variation 0 Requested-->
           <defaultEventVariation>
             <capabilities>
-              <note>Integrator defined.</note>
               <one />
               <two />
+              <basedOnPointIndex />
             </capabilities>
             <currentValue>
-              <two />
+              <basedOnPointIndex />
             </currentValue>
             <!--Configuration Methods-->
             <methods>
@@ -1813,9 +1734,7 @@
           <!--3.3.7) Command Event Variation Reported When Variation 0 Requested-->
           <defaultCommandEventVariation>
             <capabilities />
-            <currentValue>
-              <one />
-            </currentValue>
+            <currentValue />
             <!--Configuration Methods-->
             <methods>
               <proprietaryFileViaOtherTransportMechanism />
@@ -1830,20 +1749,14 @@
               <allEvents />
             </currentValue>
             <!--Configuration Methods-->
-            <methods>
-              <proprietaryFileViaOtherTransportMechanism />
-            </methods>
+            <methods />
           </changeEventReportingMode>
           <!--3.3.9) Command Event Reporting Mode-->
           <commandEventReportingMode>
             <capabilities />
-            <currentValue>
-              <allEvents />
-            </currentValue>
+            <currentValue />
             <!--Configuration Methods-->
-            <methods>
-              <proprietaryFileViaOtherTransportMechanism />
-            </methods>
+            <methods />
           </commandEventReportingMode>
           <!--3.3.10) Maximum Time Between Select and Operate-->
           <maxTimeBetweenSelectAndOperate>
@@ -1854,13 +1767,36 @@
               </range>
             </capabilities>
             <currentValue>
-              <value>5</value>
+              <value>10</value>
             </currentValue>
             <!--Configuration Methods-->
             <methods>
               <proprietaryFileViaOtherTransportMechanism />
             </methods>
           </maxTimeBetweenSelectAndOperate>
+          <!--3.3.11) Binary Outputs Event Buffer Organization-->
+          <eventBufferPerObjectGroup>
+            <capabilities>
+              <range>
+                <minimum>0</minimum>
+                <maximum>65535</maximum>
+              </range>
+            </capabilities>
+            <currentValue>
+              <numEvents>200</numEvents>
+            </currentValue>
+            <!--Configuration Methods-->
+            <methods>
+              <proprietaryFileViaOtherTransportMechanism />
+            </methods>
+          </eventBufferPerObjectGroup>
+          <!--3.3.12) Binary Output Commands Event Buffer Organization-->
+          <commandEventBufferPerObjectGroup>
+            <capabilities />
+            <currentValue />
+            <!--Configuration Methods-->
+            <methods />
+          </commandEventBufferPerObjectGroup>
         </configuration>
       </binaryOutputGroup>
       <!--3.4) Counters/Frozen Counters-->
@@ -1874,9 +1810,10 @@
               <two />
               <five />
               <six />
+              <basedOnPointIndex />
             </capabilities>
             <currentValue>
-              <one />
+              <basedOnPointIndex />
             </currentValue>
             <!--Configuration Methods-->
             <methods>
@@ -1890,9 +1827,10 @@
               <two />
               <five />
               <six />
+              <basedOnPointIndex />
             </capabilities>
             <currentValue>
-              <one />
+              <basedOnPointIndex />
             </currentValue>
             <!--Configuration Methods-->
             <methods>
@@ -1908,9 +1846,7 @@
               <always />
             </currentValue>
             <!--Configuration Methods-->
-            <methods>
-              <proprietaryFileViaOtherTransportMechanism />
-            </methods>
+            <methods />
           </counterClass0ResponseMode>
           <!--3.4.4) Counter Change Event Reporting Mode-->
           <counterEventReportingMode>
@@ -1921,9 +1857,7 @@
               <allEvents />
             </currentValue>
             <!--Configuration Methods-->
-            <methods>
-              <proprietaryFileViaOtherTransportMechanism />
-            </methods>
+            <methods />
           </counterEventReportingMode>
           <!--3.4.5) Static Frozen Counter Variation Reported When Variation 0 Requested-->
           <defaultFrozenCounterStaticVariation>
@@ -1934,9 +1868,10 @@
               <six />
               <nine />
               <ten />
+              <basedOnPointIndex />
             </capabilities>
             <currentValue>
-              <one />
+              <basedOnPointIndex />
             </currentValue>
             <!--Configuration Methods-->
             <methods>
@@ -1950,9 +1885,10 @@
               <two />
               <five />
               <six />
+              <basedOnPointIndex />
             </capabilities>
             <currentValue>
-              <one />
+              <basedOnPointIndex />
             </currentValue>
             <!--Configuration Methods-->
             <methods>
@@ -1981,14 +1917,12 @@
               <allEvents />
             </currentValue>
             <!--Configuration Methods-->
-            <methods>
-              <proprietaryFileViaOtherTransportMechanism />
-            </methods>
+            <methods />
           </frozenCounterEventReportingMode>
           <!--3.4.9) Counters Roll Over At-->
           <counterRollOver>
             <capabilities>
-              <note>roll-over is defined by the user application. default rollover is 32-bit representation.</note>
+              <note>Roll-over is defined by the user application. Default rollover is 32-bit representation.</note>
               <sixteenBits />
               <thirtyTwoBits />
               <basedOnPointIndex />
@@ -1997,11 +1931,14 @@
               <basedOnPointIndex />
             </currentValue>
             <!--Configuration Methods-->
-            <methods />
+            <methods>
+              <proprietaryFileViaOtherTransportMechanism />
+            </methods>
           </counterRollOver>
           <!--3.4.10) Counters Frozen By Means Of-->
           <countersFrozen>
             <capabilities>
+              <masterRequest />
               <localFreezeWithoutTimeOfDay />
               <localFreezeRequiredTimeOfDay />
             </capabilities>
@@ -2009,8 +1946,53 @@
               <localFreezeWithoutTimeOfDay />
             </currentValue>
             <!--Configuration Methods-->
-            <methods />
+            <methods>
+              <proprietaryFileViaOtherTransportMechanism />
+            </methods>
           </countersFrozen>
+          <!--3.4.11) Counters Event Buffer Organization-->
+          <eventBufferPerObjectGroup>
+            <capabilities>
+              <range>
+                <minimum>0</minimum>
+                <maximum>65535</maximum>
+              </range>
+            </capabilities>
+            <currentValue>
+              <numEvents>200</numEvents>
+            </currentValue>
+            <!--Configuration Methods-->
+            <methods />
+          </eventBufferPerObjectGroup>
+          <!--3.4.12) Frozen Counters Event Buffer Organization-->
+          <frozenEventBufferPerObjectGroup>
+            <capabilities>
+              <range>
+                <minimum>0</minimum>
+                <maximum>65535</maximum>
+              </range>
+            </capabilities>
+            <currentValue>
+              <numEvents>200</numEvents>
+            </currentValue>
+            <!--Configuration Methods-->
+            <methods />
+          </frozenEventBufferPerObjectGroup>
+          <!--3.4.13) Reports Counter Events for Change of Value-->
+          <reportValueChangeCounterEvents>
+            <capabilities>
+              <no />
+              <yes />
+              <basedOnPointIndex />
+            </capabilities>
+            <currentValue>
+              <basedOnPointIndex />
+            </currentValue>
+            <!--Configuration Methods-->
+            <methods>
+              <proprietaryFileViaOtherTransportMechanism />
+            </methods>
+          </reportValueChangeCounterEvents>
         </configuration>
       </counterGroup>
       <!--3.5) Analog Input Points-->
@@ -2026,9 +2008,10 @@
               <four />
               <five />
               <six />
+              <basedOnPointIndex />
             </capabilities>
             <currentValue>
-              <one />
+              <basedOnPointIndex />
             </currentValue>
             <!--Configuration Methods-->
             <methods>
@@ -2046,9 +2029,10 @@
               <six />
               <seven />
               <eight />
+              <basedOnPointIndex />
             </capabilities>
             <currentValue>
-              <one />
+              <basedOnPointIndex />
             </currentValue>
             <!--Configuration Methods-->
             <methods>
@@ -2064,9 +2048,7 @@
               <allEvents />
             </currentValue>
             <!--Configuration Methods-->
-            <methods>
-              <proprietaryFileViaOtherTransportMechanism />
-            </methods>
+            <methods />
           </analogEventReportingMode>
           <!--3.5.4) Analog Inputs Included In Class 0 Response-->
           <analogInputClass0ResponseMode>
@@ -2077,9 +2059,7 @@
               <always />
             </currentValue>
             <!--Configuration Methods-->
-            <methods>
-              <proprietaryFileViaOtherTransportMechanism />
-            </methods>
+            <methods />
           </analogInputClass0ResponseMode>
           <!--3.5.5) Analog Deadband Assignments-->
           <analogDeadbandAssignments>
@@ -2105,9 +2085,7 @@
               <simple />
             </currentValue>
             <!--Configuration Methods-->
-            <methods>
-              <proprietaryFileViaOtherTransportMechanism />
-            </methods>
+            <methods />
           </analogDeadbandAlgorithm>
           <!--3.5.7) Static Frozen Analog Input Variation Reported When Variation 0 Requested-->
           <defaultFrozenAnalogInputStaticVariation>
@@ -2141,6 +2119,29 @@
             <!--Configuration Methods-->
             <methods />
           </frozenAnalogEventReportingMode>
+          <!--3.5.11) Analog Inputs Event Buffer Organization-->
+          <eventBufferPerObjectGroup>
+            <capabilities>
+              <range>
+                <minimum>0</minimum>
+                <maximum>65535</maximum>
+              </range>
+            </capabilities>
+            <currentValue>
+              <numEvents>200</numEvents>
+            </currentValue>
+            <!--Configuration Methods-->
+            <methods>
+              <proprietaryFileViaOtherTransportMechanism />
+            </methods>
+          </eventBufferPerObjectGroup>
+          <!--3.5.12) Frozen Analog Inputs Event Buffer Organization-->
+          <frozenEventBufferPerObjectGroup>
+            <capabilities />
+            <currentValue />
+            <!--Configuration Methods-->
+            <methods />
+          </frozenEventBufferPerObjectGroup>
         </configuration>
       </analogInputGroup>
       <!--3.6) Analog Output Status/Analog Output Control Block-->
@@ -2154,9 +2155,10 @@
               <two />
               <three />
               <four />
+              <basedOnPointIndex />
             </capabilities>
             <currentValue>
-              <one />
+              <basedOnPointIndex />
             </currentValue>
             <!--Configuration Methods-->
             <methods>
@@ -2172,9 +2174,7 @@
               <always />
             </currentValue>
             <!--Configuration Methods-->
-            <methods>
-              <proprietaryFileViaOtherTransportMechanism />
-            </methods>
+            <methods />
           </class0ResponseMode>
           <!--3.6.3) Reports Output Command Event Objects-->
           <outputCommandEventObjects>
@@ -2198,34 +2198,22 @@
               <six />
               <seven />
               <eight />
+              <basedOnPointIndex />
             </capabilities>
             <currentValue>
-              <one />
+              <basedOnPointIndex />
             </currentValue>
             <!--Configuration Methods-->
             <methods>
               <proprietaryFileViaOtherTransportMechanism />
             </methods>
           </defaultChangeEventVariation>
-          <!--3.6.4) Event Variation Reported When Variation 0 Requested-->
+          <!--3.6.5) Command Event Variation Reported When Variation 0 Requested-->
           <defaultCommandEventVariation>
-            <capabilities>
-              <one />
-              <two />
-              <three />
-              <four />
-              <five />
-              <six />
-              <seven />
-              <eight />
-            </capabilities>
-            <currentValue>
-              <one />
-            </currentValue>
+            <capabilities />
+            <currentValue />
             <!--Configuration Methods-->
-            <methods>
-              <proprietaryFileViaOtherTransportMechanism />
-            </methods>
+            <methods />
           </defaultCommandEventVariation>
           <!--3.6.6) Change Event Reporting Mode-->
           <changeEventReportingMode>
@@ -2236,20 +2224,14 @@
               <allEvents />
             </currentValue>
             <!--Configuration Methods-->
-            <methods>
-              <proprietaryFileViaOtherTransportMechanism />
-            </methods>
+            <methods />
           </changeEventReportingMode>
           <!--3.6.7) Command Event Reporting Mode-->
           <commandEventReportingMode>
             <capabilities />
-            <currentValue>
-              <allEvents />
-            </currentValue>
+            <currentValue />
             <!--Configuration Methods-->
-            <methods>
-              <proprietaryFileViaOtherTransportMechanism />
-            </methods>
+            <methods />
           </commandEventReportingMode>
           <!--3.6.8) Maximum Time Between Select and Operate-->
           <maxTimeBetweenSelectAndOperate>
@@ -2260,13 +2242,36 @@
               </range>
             </capabilities>
             <currentValue>
-              <value>5</value>
+              <value>10</value>
             </currentValue>
             <!--Configuration Methods-->
             <methods>
               <proprietaryFileViaOtherTransportMechanism />
             </methods>
           </maxTimeBetweenSelectAndOperate>
+          <!--3.6.9) Analog Outputs Event Buffer Organization-->
+          <eventBufferPerObjectGroup>
+            <capabilities>
+              <range>
+                <minimum>0</minimum>
+                <maximum>65535</maximum>
+              </range>
+            </capabilities>
+            <currentValue>
+              <numEvents>200</numEvents>
+            </currentValue>
+            <!--Configuration Methods-->
+            <methods>
+              <proprietaryFileViaOtherTransportMechanism />
+            </methods>
+          </eventBufferPerObjectGroup>
+          <!--3.6.10) Analog Output Commands Event Buffer Organization-->
+          <commandEventBufferPerObjectGroup>
+            <capabilities />
+            <currentValue />
+            <!--Configuration Methods-->
+            <methods />
+          </commandEventBufferPerObjectGroup>
         </configuration>
       </analogOutputGroup>
       <!--3.7) Sequential File Transfer-->
@@ -2352,33 +2357,53 @@
           <!--3.8.1) Event Reporting Mode-->
           <eventReportingMode>
             <capabilities>
-              <note>Octet strings are supported by the master.  They are NOT supported by the outstation.</note>
+              <allEvents />
             </capabilities>
             <currentValue>
               <allEvents />
             </currentValue>
             <!--Configuration Methods-->
-            <methods>
-              <proprietaryFileViaOtherTransportMechanism />
-            </methods>
+            <methods />
           </eventReportingMode>
           <!--3.8.2) Octet Strings Included In Class 0 Response-->
           <class0ResponseMode>
             <capabilities>
-              <never />
+              <always />
             </capabilities>
             <currentValue>
-              <never />
+              <always />
             </currentValue>
             <!--Configuration Methods-->
-            <methods>
-              <proprietaryFileViaOtherTransportMechanism />
-            </methods>
+            <methods />
           </class0ResponseMode>
+          <!--3.8.3) Octet Strings Event Buffer Organization-->
+          <eventBufferPerObjectGroup>
+            <capabilities>
+              <range>
+                <minimum>0</minimum>
+                <maximum>65535</maximum>
+              </range>
+            </capabilities>
+            <currentValue>
+              <numEvents>200</numEvents>
+            </currentValue>
+            <!--Configuration Methods-->
+            <methods />
+          </eventBufferPerObjectGroup>
+          <!--3.8.4) Object Group Selection-->
+          <objectGroupSelection>
+            <capabilities>
+              <fixedGroup110 />
+            </capabilities>
+            <currentValue>
+              <fixedGroup110 />
+            </currentValue>
+            <!--Configuration Methods-->
+            <methods />
+          </objectGroupSelection>
         </configuration>
       </octetStringGroup>
-      <!--3.9) Virtual Terminal Points-->
-      <virtualTerminalGroup />
+      <!--3.9) Virtual Terminal Points not supported-->
       <!--3.10) Dataset Prototypes-->
       <datasetPrototype />
       <!--3.11) Dataset Descriptor-->
@@ -2387,17 +2412,17 @@
     <!--4) Implementation Table-->
     <implementationTable>
       <!--Table-->
-      <table>        
+      <table>
         <supportedVariation>
           <objectGroup>1</objectGroup>
           <variation>0</variation>
           <description>Binary Input - any variation</description>
           <request>
-            <functionCode>1</functionCode>            
+            <functionCode>1</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>            
-          </request>          
+            <qualifierCode>6</qualifierCode>
+          </request>
         </supportedVariation>
         <supportedVariation>
           <objectGroup>1</objectGroup>
@@ -2418,7 +2443,7 @@
             <functionCode>1</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>            
+            <qualifierCode>6</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
@@ -2439,7 +2464,7 @@
           <response>
             <functionCode>129</functionCode>
             <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>            
+            <qualifierCode>1</qualifierCode>
           </response>
         </supportedVariation>
         <supportedVariation>
@@ -2539,7 +2564,7 @@
             <functionCode>1</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>            
+            <qualifierCode>6</qualifierCode>
           </request>
         </supportedVariation>
         <supportedVariation>
@@ -2561,12 +2586,12 @@
             <functionCode>1</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>            
+            <qualifierCode>6</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
             <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>            
+            <qualifierCode>1</qualifierCode>
           </response>
         </supportedVariation>
         <supportedVariation>
@@ -2577,7 +2602,7 @@
             <functionCode>1</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>            
+            <qualifierCode>6</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
@@ -2682,7 +2707,7 @@
             <functionCode>1</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>            
+            <qualifierCode>6</qualifierCode>
           </request>
         </supportedVariation>
         <supportedVariation>
@@ -2704,12 +2729,12 @@
             <functionCode>1</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>            
+            <qualifierCode>6</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
             <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>            
+            <qualifierCode>1</qualifierCode>
           </response>
         </supportedVariation>
         <supportedVariation>
@@ -2781,12 +2806,12 @@
           <description>Binary Output Command (CROB) - control relay output block</description>
           <request>
             <functionCode>3</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -2796,12 +2821,12 @@
           <description>Binary Output Command (CROB) - control relay output block</description>
           <request>
             <functionCode>4</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -2811,12 +2836,12 @@
           <description>Binary Output Command (CROB) - control relay output block</description>
           <request>
             <functionCode>5</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -2826,12 +2851,12 @@
           <description>Binary Output Command (CROB) - control relay output block</description>
           <request>
             <functionCode>6</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -2859,18 +2884,62 @@
         </supportedVariation>
         <supportedVariation>
           <objectGroup>20</objectGroup>
+          <variation>0</variation>
+          <description>Counter - any variation</description>
+          <request>
+            <functionCode>7</functionCode>
+            <qualifierCode>0</qualifierCode>
+            <qualifierCode>1</qualifierCode>
+            <qualifierCode>6</qualifierCode>
+          </request>
+        </supportedVariation>
+        <supportedVariation>
+          <objectGroup>20</objectGroup>
+          <variation>0</variation>
+          <description>Counter - any variation</description>
+          <request>
+            <functionCode>8</functionCode>
+            <qualifierCode>0</qualifierCode>
+            <qualifierCode>1</qualifierCode>
+            <qualifierCode>6</qualifierCode>
+          </request>
+        </supportedVariation>
+        <supportedVariation>
+          <objectGroup>20</objectGroup>
+          <variation>0</variation>
+          <description>Counter - any variation</description>
+          <request>
+            <functionCode>9</functionCode>
+            <qualifierCode>0</qualifierCode>
+            <qualifierCode>1</qualifierCode>
+            <qualifierCode>6</qualifierCode>
+          </request>
+        </supportedVariation>
+        <supportedVariation>
+          <objectGroup>20</objectGroup>
+          <variation>0</variation>
+          <description>Counter - any variation</description>
+          <request>
+            <functionCode>10</functionCode>
+            <qualifierCode>0</qualifierCode>
+            <qualifierCode>1</qualifierCode>
+            <qualifierCode>6</qualifierCode>
+          </request>
+        </supportedVariation>
+        <supportedVariation>
+          <objectGroup>20</objectGroup>
           <variation>1</variation>
           <description>Counter - 32-bit with flag</description>
           <request>
             <functionCode>1</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>            
+            <qualifierCode>6</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
             <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>            
+            <qualifierCode>1</qualifierCode>
           </response>
         </supportedVariation>
         <supportedVariation>
@@ -2881,7 +2950,7 @@
             <functionCode>1</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>           
+            <qualifierCode>6</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
@@ -2929,7 +2998,7 @@
             <functionCode>1</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>           
+            <qualifierCode>6</qualifierCode>
           </request>
         </supportedVariation>
         <supportedVariation>
@@ -2967,7 +3036,7 @@
             <functionCode>1</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>            
+            <qualifierCode>6</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
@@ -3605,7 +3674,7 @@
             <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
-        </supportedVariation>        
+        </supportedVariation>
         <supportedVariation>
           <objectGroup>40</objectGroup>
           <variation>0</variation>
@@ -3691,19 +3760,19 @@
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
           </response>
-        </supportedVariation>       
+        </supportedVariation>
         <supportedVariation>
           <objectGroup>41</objectGroup>
           <variation>1</variation>
           <description>Analog Output Block - 32-bit</description>
           <request>
             <functionCode>3</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3713,12 +3782,12 @@
           <description>Analog Output Block - 32-bit</description>
           <request>
             <functionCode>4</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3728,12 +3797,12 @@
           <description>Analog Output Block - 32-bit</description>
           <request>
             <functionCode>5</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3743,12 +3812,12 @@
           <description>Analog Output Block - 32-bit</description>
           <request>
             <functionCode>6</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3775,12 +3844,12 @@
           <description>Analog Output Block - 16-bit</description>
           <request>
             <functionCode>4</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3790,12 +3859,12 @@
           <description>Analog Output Block - 16-bit</description>
           <request>
             <functionCode>5</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3805,12 +3874,12 @@
           <description>Analog Output Block - 16-bit</description>
           <request>
             <functionCode>6</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3820,12 +3889,12 @@
           <description>Analog Output Block - single-precision, floating-point</description>
           <request>
             <functionCode>3</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3835,12 +3904,12 @@
           <description>Analog Output Block - single-precision, floating-point</description>
           <request>
             <functionCode>4</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3850,12 +3919,12 @@
           <description>Analog Output Block - single-precision, floating-point</description>
           <request>
             <functionCode>5</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3865,12 +3934,12 @@
           <description>Analog Output Block - single-precision, floating-point</description>
           <request>
             <functionCode>6</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3880,12 +3949,12 @@
           <description>Analog Output Block - double-precision, floating-point</description>
           <request>
             <functionCode>3</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3895,12 +3964,12 @@
           <description>Analog Output Block - double-precision, floating-point</description>
           <request>
             <functionCode>4</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3910,12 +3979,12 @@
           <description>Analog Output Block - double-precision, floating-point</description>
           <request>
             <functionCode>5</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3925,12 +3994,12 @@
           <description>Analog Output Block - double-precision, floating-point</description>
           <request>
             <functionCode>6</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>            
+            <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -4152,7 +4221,7 @@
             <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
-        </supportedVariation>                  
+        </supportedVariation>
         <supportedVariation>
           <objectGroup>50</objectGroup>
           <variation>1</variation>
@@ -4161,7 +4230,16 @@
             <functionCode>2</functionCode>
             <qualifierCode>7</qualifierCode>
           </request>
-        </supportedVariation>        
+        </supportedVariation>
+        <supportedVariation>
+          <objectGroup>50</objectGroup>
+          <variation>3</variation>
+          <description>Time and Date - absolute time at last recorded time</description>
+          <request>
+            <functionCode>2</functionCode>
+            <qualifierCode>7</qualifierCode>
+          </request>
+        </supportedVariation>
         <supportedVariation>
           <objectGroup>51</objectGroup>
           <variation>1</variation>
@@ -4356,21 +4434,21 @@
             <functionCode>2</functionCode>
             <qualifierCode>0</qualifierCode>
           </request>
-        </supportedVariation>        
+        </supportedVariation>
         <supportedVariation>
           <objectGroup>110</objectGroup>
           <variation>255</variation>
-          <description>Octet String</description>          
+          <description>Octet String</description>
           <response>
             <functionCode>129</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
           </response>
-        </supportedVariation>        
+        </supportedVariation>
         <supportedVariation>
           <objectGroup>111</objectGroup>
           <variation>255</variation>
-          <description>Octet String Change Event</description>          
+          <description>Octet String Change Event</description>
           <response>
             <functionCode>129</functionCode>
             <qualifierCode>23</qualifierCode>
@@ -4386,27 +4464,7 @@
             <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
-        </supportedVariation>        
-        <supportedVariation>
-          <objectGroup>113</objectGroup>
-          <variation>255</variation>
-          <description>Virtual Terminal Event Data</description>          
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
         </supportedVariation>
-        <supportedVariation>
-          <objectGroup>113</objectGroup>
-          <variation>255</variation>
-          <description>Virtual Terminal Event Data</description>
-          <response>
-            <functionCode>130</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
-        </supportedVariation>        
       </table>
     </implementationTable>
     <!--5) Data Points List-->

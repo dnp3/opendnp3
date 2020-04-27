@@ -24,9 +24,7 @@
 namespace opendnp3
 {
 
-Decoder::Decoder(IDecoderCallbacks& callbacks, const log4cpp::Logger& logger) : impl(new DecoderImpl(callbacks, logger))
-{
-}
+Decoder::Decoder(IDecoderCallbacks& callbacks, const Logger& logger) : impl(new DecoderImpl(callbacks, logger)) {}
 
 void Decoder::DecodeLPDU(const Buffer& data)
 {

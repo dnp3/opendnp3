@@ -22,6 +22,7 @@
 
 #include <opendnp3/app/EventType.h>
 #include <opendnp3/app/MeasurementInfo.h>
+
 #include <outstation/event/IEventWriteHandler.h>
 
 #include <deque>

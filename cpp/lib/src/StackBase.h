@@ -38,7 +38,7 @@ class StackBase
 {
 
 protected:
-    StackBase(const log4cpp::Logger& logger,
+    StackBase(const Logger& logger,
               const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
               const std::shared_ptr<ILinkListener>& listener,
               const std::shared_ptr<IOHandler>& iohandler,
@@ -60,7 +60,7 @@ protected:
 
     template<class T> void PerformShutdown(const std::shared_ptr<T>& self);
 
-    log4cpp::Logger logger;
+    Logger logger;
     const std::shared_ptr<exe4cpp::StrandExecutor> executor;
     const std::shared_ptr<IOHandler> iohandler;
     const std::shared_ptr<IResourceManager> manager;

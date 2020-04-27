@@ -20,11 +20,11 @@
 #ifndef OPENDNP3_OUTSTATIONPARAMS_H
 #define OPENDNP3_OUTSTATIONPARAMS_H
 
-#include "opendnp3/util/TimeDuration.h"
 #include "opendnp3/app/AppConstants.h"
 #include "opendnp3/app/ClassField.h"
 #include "opendnp3/outstation/NumRetries.h"
 #include "opendnp3/outstation/StaticTypeBitfield.h"
+#include "opendnp3/util/TimeDuration.h"
 
 namespace opendnp3
 {

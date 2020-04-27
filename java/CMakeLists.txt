@@ -106,6 +106,8 @@ set(all_sources
     ./cpp/jni/JNIDatabase.h
     ./cpp/jni/JNIDatabaseImpl.cpp
     ./cpp/jni/JNIDatabaseImpl.h
+    ./cpp/jni/JNIDNP3Exception.cpp
+    ./cpp/jni/JNIDNP3Exception.h
     ./cpp/jni/JNIDatabaseConfig.cpp
     ./cpp/jni/JNIDatabaseConfig.h
     ./cpp/jni/JNIDNPTime.cpp
@@ -266,4 +268,7 @@ target_compile_features(opendnp3java PUBLIC cxx_std_14)
 target_link_libraries(opendnp3java PUBLIC opendnp3)
 target_include_directories(opendnp3java PRIVATE ${JNI_INCLUDE_DIRS})
 set_target_properties(opendnp3java PROPERTIES FOLDER java)
-install(TARGETS opendnp3java)
+install(TARGETS opendnp3java
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+)

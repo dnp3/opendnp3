@@ -24,22 +24,21 @@
 #include "app/parsing/APDUHeaderParser.h"
 #include "gen/objects/Group12.h"
 #include "gen/objects/Group41.h"
+#include "logging/LogMacros.h"
 #include "master/CommandTask.h"
 #include "master/EmptyResponseTask.h"
 #include "master/MeasurementHandler.h"
 #include "master/RestartOperationTask.h"
 #include "master/UserPollTask.h"
 
-#include "opendnp3/LogLevels.h"
-
-#include <log4cpp/LogMacros.h>
+#include "opendnp3/logging/LogLevels.h"
 
 #include <utility>
 
 namespace opendnp3
 {
 MContext::MContext(const Addresses& addresses,
-                   const log4cpp::Logger& logger,
+                   const Logger& logger,
                    const std::shared_ptr<exe4cpp::IExecutor>& executor,
                    std::shared_ptr<ILowerLayer> lower,
                    const std::shared_ptr<ISOEHandler>& SOEHandler,
@@ -338,9 +337,7 @@ std::shared_ptr<IMasterTask> MContext::AddRangeScan(GroupVariationID gvId,
     return this->AddScan(period, build, soe_handler, config);
 }
 
-void MContext::Scan(const HeaderBuilderT& builder,
-                    std::shared_ptr<ISOEHandler> soe_handler,
-                    TaskConfig config)
+void MContext::Scan(const HeaderBuilderT& builder, std::shared_ptr<ISOEHandler> soe_handler, TaskConfig config)
 {
     const auto timeout = Timestamp(this->executor->get_time()) + params.taskStartTimeout;
 
@@ -351,28 +348,21 @@ void MContext::Scan(const HeaderBuilderT& builder,
     this->ScheduleAdhocTask(task);
 }
 
-void MContext::ScanClasses(const ClassField& field,
-                           std::shared_ptr<ISOEHandler> soe_handler,
-                           TaskConfig config)
+void MContext::ScanClasses(const ClassField& field, std::shared_ptr<ISOEHandler> soe_handler, TaskConfig config)
 {
     auto configure = [field](HeaderWriter& writer) -> bool { return build::WriteClassHeaders(writer, field); };
     this->Scan(configure, soe_handler, config);
 }
 
-void MContext::ScanAllObjects(GroupVariationID gvId,
-                              std::shared_ptr<ISOEHandler> soe_handler,
-                              TaskConfig config)
+void MContext::ScanAllObjects(GroupVariationID gvId, std::shared_ptr<ISOEHandler> soe_handler, TaskConfig config)
 {
     auto configure
         = [gvId](HeaderWriter& writer) -> bool { return writer.WriteHeader(gvId, QualifierCode::ALL_OBJECTS); };
     this->Scan(configure, soe_handler, config);
 }
 
-void MContext::ScanRange(GroupVariationID gvId,
-                         uint16_t start,
-                         uint16_t stop,
-                         std::shared_ptr<ISOEHandler> soe_handler,
-                         TaskConfig config)
+void MContext::ScanRange(
+    GroupVariationID gvId, uint16_t start, uint16_t stop, std::shared_ptr<ISOEHandler> soe_handler, TaskConfig config)
 {
     auto configure = [gvId, start, stop](HeaderWriter& writer) -> bool {
         return writer.WriteRangeHeader<ser4cpp::UInt16>(QualifierCode::UINT16_START_STOP, gvId, start, stop);

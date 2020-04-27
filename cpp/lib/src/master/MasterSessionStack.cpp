@@ -27,7 +27,7 @@
 
 namespace opendnp3
 {
-std::shared_ptr<MasterSessionStack> MasterSessionStack::Create(const log4cpp::Logger& logger,
+std::shared_ptr<MasterSessionStack> MasterSessionStack::Create(const Logger& logger,
                                                                const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                                                const std::shared_ptr<ISOEHandler>& SOEHandler,
                                                                const std::shared_ptr<IMasterApplication>& application,
@@ -40,7 +40,7 @@ std::shared_ptr<MasterSessionStack> MasterSessionStack::Create(const log4cpp::Lo
                                                 config);
 }
 
-MasterSessionStack::MasterSessionStack(const log4cpp::Logger& logger,
+MasterSessionStack::MasterSessionStack(const Logger& logger,
                                        const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                        const std::shared_ptr<ISOEHandler>& SOEHandler,
                                        const std::shared_ptr<IMasterApplication>& application,
@@ -85,7 +85,7 @@ void MasterSessionStack::OnTxReady()
     this->stack.link->OnTxReady();
 }
 
-void MasterSessionStack::SetLogFilters(const log4cpp::LogLevels& filters)
+void MasterSessionStack::SetLogFilters(const LogLevels& filters)
 {
     auto set = [this, filters]() { this->session->SetLogFilters(filters); };
 
@@ -170,7 +170,9 @@ void MasterSessionStack::Scan(const std::vector<Header>& headers,
                               const TaskConfig& config)
 {
     auto builder = ConvertToLambda(headers);
-    auto action = [self = shared_from_this(), soe_handler, builder, config]() -> void { self->context.Scan(builder, std::move(soe_handler), config); };
+    auto action = [self = shared_from_this(), soe_handler, builder, config]() -> void {
+        self->context.Scan(builder, std::move(soe_handler), config);
+    };
     return executor->post(action);
 }
 
@@ -178,7 +180,9 @@ void MasterSessionStack::ScanAllObjects(GroupVariationID gvId,
                                         std::shared_ptr<ISOEHandler> soe_handler,
                                         const TaskConfig& config)
 {
-    auto action = [self = shared_from_this(), soe_handler, gvId, config]() -> void { self->context.ScanAllObjects(gvId, std::move(soe_handler), config); };
+    auto action = [self = shared_from_this(), soe_handler, gvId, config]() -> void {
+        self->context.ScanAllObjects(gvId, std::move(soe_handler), config);
+    };
     return executor->post(action);
 }
 
@@ -186,7 +190,9 @@ void MasterSessionStack::ScanClasses(const ClassField& field,
                                      std::shared_ptr<ISOEHandler> soe_handler,
                                      const TaskConfig& config)
 {
-    auto action = [self = shared_from_this(), soe_handler, field, config]() -> void { self->context.ScanClasses(field, std::move(soe_handler), config); };
+    auto action = [self = shared_from_this(), soe_handler, field, config]() -> void {
+        self->context.ScanClasses(field, std::move(soe_handler), config);
+    };
     return executor->post(action);
 }
 

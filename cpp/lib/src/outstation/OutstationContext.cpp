@@ -24,19 +24,18 @@
 #include "app/Functions.h"
 #include "app/parsing/APDUHeaderParser.h"
 #include "app/parsing/APDUParser.h"
+#include "logging/LogMacros.h"
 #include "outstation/AssignClassHandler.h"
 #include "outstation/ClassBasedRequestHandler.h"
 #include "outstation/CommandActionAdapter.h"
 #include "outstation/CommandResponseHandler.h"
 #include "outstation/ConstantCommandAction.h"
-#include "outstation/IINHelpers.h"
 #include "outstation/FreezeRequestHandler.h"
+#include "outstation/IINHelpers.h"
 #include "outstation/ReadHandler.h"
 #include "outstation/WriteHandler.h"
 
-#include "opendnp3/LogLevels.h"
-
-#include <log4cpp/LogMacros.h>
+#include "opendnp3/logging/LogLevels.h"
 
 #include <utility>
 
@@ -46,7 +45,7 @@ namespace opendnp3
 OContext::OContext(const Addresses& addresses,
                    const OutstationConfig& config,
                    const DatabaseConfig& db_config,
-                   const log4cpp::Logger& logger,
+                   const Logger& logger,
                    const std::shared_ptr<exe4cpp::IExecutor>& executor,
                    std::shared_ptr<ILowerLayer> lower,
                    std::shared_ptr<ICommandHandler> commandHandler,
@@ -185,7 +184,7 @@ OutstationState& OContext::ProcessNewRequest(const ParsedRequest& request)
 
 bool OContext::ProcessObjects(const ParsedRequest& request)
 {
-    if(request.addresses.IsBroadcast())
+    if (request.addresses.IsBroadcast())
     {
         this->state = &this->state->OnBroadcastMessage(*this, request);
         return true;
@@ -282,7 +281,7 @@ void OContext::CheckForTaskStart()
     // do these checks in order of priority
     this->CheckForDeferredRequest();
     this->CheckForUnsolicitedNull();
-    if(this->shouldCheckForUnsolicited)
+    if (this->shouldCheckForUnsolicited)
     {
         this->CheckForUnsolicited();
     }
@@ -307,7 +306,9 @@ void OContext::CheckForUnsolicitedNull()
             auto response = this->unsol.tx.Start();
             build::NullUnsolicited(response, this->unsol.seq.num, this->GetResponseIIN());
             this->RestartUnsolConfirmTimer();
-            this->state = this->params.noDefferedReadDuringUnsolicitedNullResponse ? &StateNullUnsolicitedConfirmWait::Inst() : &StateUnsolicitedConfirmWait::Inst();
+            this->state = this->params.noDefferedReadDuringUnsolicitedNullResponse
+                ? &StateNullUnsolicitedConfirmWait::Inst()
+                : &StateUnsolicitedConfirmWait::Inst();
             this->BeginUnsolTx(response);
         }
     }
@@ -315,7 +316,8 @@ void OContext::CheckForUnsolicitedNull()
 
 void OContext::CheckForUnsolicited()
 {
-    if (this->shouldCheckForUnsolicited && this->CanTransmit() && this->state->IsIdle() && this->params.allowUnsolicited)
+    if (this->shouldCheckForUnsolicited && this->CanTransmit() && this->state->IsIdle()
+        && this->params.allowUnsolicited)
     {
         this->shouldCheckForUnsolicited = false;
 
@@ -455,7 +457,7 @@ IINField OContext::GetDynamicIIN()
 
 void OContext::UpdateLastBroadcastMessageReceived(uint16_t destination)
 {
-    switch(destination)
+    switch (destination)
     {
     case LinkBroadcastAddress::DontConfirm:
         lastBroadcastMessageReceived.set(LinkBroadcastAddress::DontConfirm);
@@ -473,11 +475,11 @@ void OContext::UpdateLastBroadcastMessageReceived(uint16_t destination)
 
 void OContext::CheckForBroadcastConfirmation(APDUResponse& response)
 {
-    if(lastBroadcastMessageReceived.is_set())
+    if (lastBroadcastMessageReceived.is_set())
     {
         response.SetIIN(response.GetIIN() | IINField(IINBit::BROADCAST));
 
-        if(lastBroadcastMessageReceived.get() != LinkBroadcastAddress::ShallConfirm)
+        if (lastBroadcastMessageReceived.get() != LinkBroadcastAddress::ShallConfirm)
         {
             lastBroadcastMessageReceived.clear();
         }
@@ -507,7 +509,7 @@ bool OContext::ProcessMessage(const Message& message)
 
     FORMAT_HEX_BLOCK(this->logger, flags::APP_HEX_RX, message.payload, 18, 18);
 
-    if(message.addresses.IsBroadcast())
+    if (message.addresses.IsBroadcast())
     {
         UpdateLastBroadcastMessageReceived(message.addresses.destination);
     }
@@ -571,7 +573,7 @@ bool OContext::ProcessBroadcastRequest(const ParsedRequest& request)
         return true;
     case (FunctionCode::ASSIGN_CLASS):
     {
-        if(this->application->SupportsAssignClass())
+        if (this->application->SupportsAssignClass())
         {
             this->HandleAssignClass(request.objects);
             return true;
@@ -583,7 +585,7 @@ bool OContext::ProcessBroadcastRequest(const ParsedRequest& request)
     }
     case (FunctionCode::RECORD_CURRENT_TIME):
     {
-        if(request.objects.is_not_empty())
+        if (request.objects.is_not_empty())
         {
             this->HandleRecordCurrentTime();
             return true;
@@ -592,11 +594,10 @@ bool OContext::ProcessBroadcastRequest(const ParsedRequest& request)
         {
             return false;
         }
-        
     }
     case (FunctionCode::DISABLE_UNSOLICITED):
     {
-        if(this->params.allowUnsolicited)
+        if (this->params.allowUnsolicited)
         {
             this->HandleDisableUnsolicited(request.objects, nullptr);
             return true;
@@ -608,7 +609,7 @@ bool OContext::ProcessBroadcastRequest(const ParsedRequest& request)
     }
     case (FunctionCode::ENABLE_UNSOLICITED):
     {
-        if(this->params.allowUnsolicited)
+        if (this->params.allowUnsolicited)
         {
             this->HandleEnableUnsolicited(request.objects, nullptr);
             return true;
@@ -619,7 +620,8 @@ bool OContext::ProcessBroadcastRequest(const ParsedRequest& request)
         }
     }
     default:
-        FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring broadcast on function code: %s", FunctionCodeSpec::to_string(request.header.function));
+        FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring broadcast on function code: %s",
+                         FunctionCodeSpec::to_string(request.header.function));
         return false;
     }
 }

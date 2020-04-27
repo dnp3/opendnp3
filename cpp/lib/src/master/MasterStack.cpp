@@ -26,7 +26,7 @@
 namespace opendnp3
 {
 
-MasterStack::MasterStack(const log4cpp::Logger& logger,
+MasterStack::MasterStack(const Logger& logger,
                          const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                          const std::shared_ptr<ISOEHandler>& SOEHandler,
                          const std::shared_ptr<IMasterApplication>& application,
@@ -76,7 +76,7 @@ StackStatistics MasterStack::GetStackStatistics()
     return this->executor->return_from<StackStatistics>(get);
 }
 
-void MasterStack::SetLogFilters(const log4cpp::LogLevels& filters)
+void MasterStack::SetLogFilters(const LogLevels& filters)
 {
     auto set = [self = this->shared_from_this(), filters]() { self->logger.set_levels(filters); };
 
@@ -90,7 +90,9 @@ std::shared_ptr<IMasterScan> MasterStack::AddScan(TimeDuration period,
 {
     auto builder = ConvertToLambda(headers);
     auto self = shared_from_this();
-    auto add = [self, soe_handler, builder, period, config]() { return self->mcontext.AddScan(period, builder, std::move(soe_handler), config); };
+    auto add = [self, soe_handler, builder, period, config]() {
+        return self->mcontext.AddScan(period, builder, std::move(soe_handler), config);
+    };
     return MasterScan::Create(executor->return_from<std::shared_ptr<IMasterTask>>(add), mcontext.scheduler);
 }
 
@@ -100,7 +102,9 @@ std::shared_ptr<IMasterScan> MasterStack::AddAllObjectsScan(GroupVariationID gvI
                                                             const TaskConfig& config)
 {
     auto self = shared_from_this();
-    auto add = [self, soe_handler, gvId, period, config]() { return self->mcontext.AddAllObjectsScan(gvId, period, std::move(soe_handler), config); };
+    auto add = [self, soe_handler, gvId, period, config]() {
+        return self->mcontext.AddAllObjectsScan(gvId, period, std::move(soe_handler), config);
+    };
     return MasterScan::Create(executor->return_from<std::shared_ptr<IMasterTask>>(add), mcontext.scheduler);
 }
 
@@ -110,7 +114,9 @@ std::shared_ptr<IMasterScan> MasterStack::AddClassScan(const ClassField& field,
                                                        const TaskConfig& config)
 {
     auto self = shared_from_this();
-    auto add = [self, soe_handler, field, period, config]() { return self->mcontext.AddClassScan(field, period, std::move(soe_handler), config); };
+    auto add = [self, soe_handler, field, period, config]() {
+        return self->mcontext.AddClassScan(field, period, std::move(soe_handler), config);
+    };
     return MasterScan::Create(executor->return_from<std::shared_ptr<IMasterTask>>(add), mcontext.scheduler);
 }
 
@@ -141,8 +147,9 @@ void MasterStack::ScanAllObjects(GroupVariationID gvId,
                                  std::shared_ptr<ISOEHandler> soe_handler,
                                  const TaskConfig& config)
 {
-    auto add
-        = [self = this->shared_from_this(), soe_handler, gvId, config]() { return self->mcontext.ScanAllObjects(gvId, std::move(soe_handler), config); };
+    auto add = [self = this->shared_from_this(), soe_handler, gvId, config]() {
+        return self->mcontext.ScanAllObjects(gvId, std::move(soe_handler), config);
+    };
     return this->executor->post(add);
 }
 
@@ -150,7 +157,9 @@ void MasterStack::ScanClasses(const ClassField& field,
                               std::shared_ptr<ISOEHandler> soe_handler,
                               const TaskConfig& config)
 {
-    auto add = [self = this->shared_from_this(), soe_handler, field, config]() { return self->mcontext.ScanClasses(field, std::move(soe_handler), config); };
+    auto add = [self = this->shared_from_this(), soe_handler, field, config]() {
+        return self->mcontext.ScanClasses(field, std::move(soe_handler), config);
+    };
     return this->executor->post(add);
 }
 

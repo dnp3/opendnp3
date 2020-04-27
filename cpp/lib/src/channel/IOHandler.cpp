@@ -20,16 +20,16 @@
 
 #include "channel/IOHandler.h"
 
-#include "opendnp3/LogLevels.h"
+#include "logging/LogMacros.h"
 
-#include <log4cpp/LogMacros.h>
+#include "opendnp3/logging/LogLevels.h"
 
 #include <utility>
 
 namespace opendnp3
 {
 
-IOHandler::IOHandler(const log4cpp::Logger& logger, bool close_existing, std::shared_ptr<IChannelListener> listener)
+IOHandler::IOHandler(const Logger& logger, bool close_existing, std::shared_ptr<IChannelListener> listener)
     : close_existing(close_existing), logger(logger), listener(std::move(listener)), parser(logger)
 {
 }
@@ -244,7 +244,8 @@ bool IOHandler::OnFrame(const LinkHeaderFields& header, const ser4cpp::rseq_t& u
         return true;
     }
 
-    FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Frame w/ unknown route, source: %i, dest %i", header.addresses.source, header.addresses.destination);
+    FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Frame w/ unknown route, source: %i, dest %i", header.addresses.source,
+                     header.addresses.destination);
     return false;
 }
 

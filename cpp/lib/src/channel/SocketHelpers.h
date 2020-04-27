@@ -38,10 +38,7 @@ public:
      * Bind a socket object to a local endpoint given an address. If the address is empty, 0.0.0.0 is used
      */
     template<typename proto_t, typename socket_t>
-    static void BindToLocalAddress(const std::string& address,
-                                   uint16_t port,
-                                   socket_t& socket,
-                                   std::error_code& ec)
+    static void BindToLocalAddress(const std::string& address, uint16_t port, socket_t& socket, std::error_code& ec)
     {
         typename proto_t::endpoint endpoint;
         auto string = address.empty() ? "0.0.0.0" : address;

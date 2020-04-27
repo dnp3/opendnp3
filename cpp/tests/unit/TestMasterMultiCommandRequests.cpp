@@ -17,15 +17,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "utils/APDUHexBuilders.h"
+#include "utils/CommandCallbackQueue.h"
 #include "utils/MasterTestFixture.h"
 #include "utils/MeasurementComparisons.h"
 
 #include <app/APDUBuilders.h>
 #include <app/APDUResponse.h>
-
-#include "utils/APDUHexBuilders.h"
-#include "utils/CommandCallbackQueue.h"
-
 #include <catch.hpp>
 
 using namespace opendnp3;

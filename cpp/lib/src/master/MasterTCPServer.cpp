@@ -22,10 +22,9 @@
 
 #include "channel/TCPSocketChannel.h"
 #include "link/LinkSession.h"
+#include "logging/LogMacros.h"
 
-#include "opendnp3/LogLevels.h"
-
-#include <log4cpp/LogMacros.h>
+#include "opendnp3/logging/LogLevels.h"
 
 #include <sstream>
 #include <utility>
@@ -33,7 +32,7 @@
 namespace opendnp3
 {
 
-MasterTCPServer::MasterTCPServer(const log4cpp::Logger& logger,
+MasterTCPServer::MasterTCPServer(const Logger& logger,
                                  const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                  const IPEndpoint& endpoint,
                                  std::shared_ptr<IListenCallbacks> callbacks,

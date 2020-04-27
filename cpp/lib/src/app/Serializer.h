@@ -28,8 +28,8 @@ namespace opendnp3
 template<class T> class Serializer
 {
 public:
-    using read_func_t =  bool (*)(ser4cpp::rseq_t& buffer, T& output);
-    using write_func_t =  bool (*)(const T& value, ser4cpp::wseq_t& buffer);
+    using read_func_t = bool (*)(ser4cpp::rseq_t& buffer, T& output);
+    using write_func_t = bool (*)(const T& value, ser4cpp::wseq_t& buffer);
 
     Serializer() = default;
 

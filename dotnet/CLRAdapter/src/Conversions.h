@@ -21,13 +21,14 @@
 #define OPENDNP3CLR_CONVERSIONS_H
 
 #include <opendnp3/StackStatistics.h>
-#include <opendnp3/LogLevels.h>
 
 #include <opendnp3/gen/ChannelState.h>
 #include <opendnp3/gen/LinkStatus.h>
 
 #include <opendnp3/link/LinkStatistics.h>
 #include <opendnp3/link/LinkHeaderFields.h>
+
+#include <opendnp3/logging/LogLevels.h>
 
 #include <opendnp3/app/MeasurementTypes.h>
 #include <opendnp3/app/ControlRelayOutputBlock.h>

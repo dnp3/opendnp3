@@ -20,11 +20,11 @@
 #ifndef OPENDNP3_MASTERPARAMS_H
 #define OPENDNP3_MASTERPARAMS_H
 
-#include "opendnp3/util/TimeDuration.h"
 #include "opendnp3/app/AppConstants.h"
 #include "opendnp3/app/ClassField.h"
 #include "opendnp3/gen/IndexQualifierMode.h"
 #include "opendnp3/gen/TimeSyncMode.h"
+#include "opendnp3/util/TimeDuration.h"
 
 namespace opendnp3
 {

@@ -19,20 +19,19 @@
  */
 #include "channel/DNP3Channel.h"
 
+#include "logging/LogMacros.h"
 #include "master/MasterSchedulerBackend.h"
 #include "master/MasterStack.h"
 #include "outstation/OutstationStack.h"
 
-#include "opendnp3/LogLevels.h"
-
-#include <log4cpp/LogMacros.h>
+#include "opendnp3/logging/LogLevels.h"
 
 #include <utility>
 
 namespace opendnp3
 {
 
-DNP3Channel::DNP3Channel(const log4cpp::Logger& logger,
+DNP3Channel::DNP3Channel(const Logger& logger,
                          const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                          std::shared_ptr<IOHandler> iohandler,
                          std::shared_ptr<IResourceManager> manager)
@@ -92,13 +91,13 @@ LinkStatistics DNP3Channel::GetStatistics()
     return this->executor->return_from<LinkStatistics>(get);
 }
 
-log4cpp::LogLevels DNP3Channel::GetLogFilters() const
+LogLevels DNP3Channel::GetLogFilters() const
 {
     auto get = [this]() { return this->logger.get_levels(); };
-    return this->executor->return_from<log4cpp::LogLevels>(get);
+    return this->executor->return_from<LogLevels>(get);
 }
 
-void DNP3Channel::SetLogFilters(const log4cpp::LogLevels& filters)
+void DNP3Channel::SetLogFilters(const LogLevels& filters)
 {
     auto set = [self = this->shared_from_this(), filters]() { self->logger.set_levels(filters); };
     this->executor->post(set);

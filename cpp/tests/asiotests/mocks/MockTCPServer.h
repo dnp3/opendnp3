@@ -22,8 +22,8 @@
 #define OPENDNP3_ASIOTESTS_MOCKTCPSERVER_H
 
 #include "channel/IAsyncChannel.h"
-#include "channel/TCPSocketChannel.h"
 #include "channel/TCPServer.h"
+#include "channel/TCPSocketChannel.h"
 
 #include <deque>
 
@@ -31,7 +31,7 @@ class MockTCPServer final : public opendnp3::TCPServer
 {
 
 public:
-    MockTCPServer(const log4cpp::Logger& logger,
+    MockTCPServer(const opendnp3::Logger& logger,
                   std::shared_ptr<exe4cpp::StrandExecutor> executor,
                   opendnp3::IPEndpoint endpoint,
                   std::error_code& ec)
@@ -39,7 +39,7 @@ public:
     {
     }
 
-    static std::shared_ptr<MockTCPServer> Create(const log4cpp::Logger& logger,
+    static std::shared_ptr<MockTCPServer> Create(const opendnp3::Logger& logger,
                                                  std::shared_ptr<exe4cpp::StrandExecutor> executor,
                                                  opendnp3::IPEndpoint endpoint,
                                                  std::error_code& ec)

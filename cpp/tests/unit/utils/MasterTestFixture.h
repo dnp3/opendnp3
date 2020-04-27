@@ -20,17 +20,17 @@
 #ifndef OPENDNP3_UNITTESTS_MASTERTESTFIXTURE_H
 #define OPENDNP3_UNITTESTS_MASTERTESTFIXTURE_H
 
-#include <opendnp3/LogLevels.h>
-#include <master/MasterContext.h>
-#include <master/MasterSchedulerBackend.h>
-
-#include "dnp3mocks/MockLowerLayer.h"
-#include "dnp3mocks/MockMasterApplication.h"
-#include "dnp3mocks/MockSOEHandler.h"
+#include <opendnp3/logging/LogLevels.h>
 
 #include <exe4cpp/MockExecutor.h>
 
 #include "dnp3mocks/MockLogHandler.h"
+#include "dnp3mocks/MockLowerLayer.h"
+#include "dnp3mocks/MockMasterApplication.h"
+#include "dnp3mocks/MockSOEHandler.h"
+
+#include <master/MasterContext.h>
+#include <master/MasterSchedulerBackend.h>
 
 opendnp3::MasterParams NoStartupTasks();
 
@@ -40,7 +40,7 @@ public:
     MasterTestFixture(const opendnp3::MasterParams& param,
                       const opendnp3::Addresses& = opendnp3::Addresses(1, 1024),
                       const std::string& id = "test",
-                      const std::shared_ptr<log4cpp::ILogHandler>& log = nullptr,
+                      const std::shared_ptr<opendnp3::ILogHandler>& log = nullptr,
                       const std::shared_ptr<exe4cpp::MockExecutor>& executor = nullptr,
                       const std::shared_ptr<opendnp3::IMasterScheduler>& scheduler = nullptr);
     virtual ~MasterTestFixture();
@@ -49,7 +49,7 @@ public:
 
     const opendnp3::Addresses addresses;
 
-    const std::shared_ptr<log4cpp::ILogHandler> log;
+    const std::shared_ptr<opendnp3::ILogHandler> log;
     const std::shared_ptr<exe4cpp::MockExecutor> exe;
     const std::shared_ptr<MockSOEHandler> meas;
     const std::shared_ptr<MockLowerLayer> lower;

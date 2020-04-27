@@ -19,9 +19,9 @@
  */
 #include "utils/MasterTestFixture.h"
 
-#include <opendnp3/master/DefaultMasterApplication.h>
-
 #include "utils/BufferHelpers.h"
+
+#include <opendnp3/master/DefaultMasterApplication.h>
 
 using namespace opendnp3;
 
@@ -37,7 +37,7 @@ MasterParams NoStartupTasks()
 MasterTestFixture::MasterTestFixture(const MasterParams& params,
                                      const Addresses& addresses,
                                      const std::string& id,
-                                     const std::shared_ptr<log4cpp::ILogHandler>& log,
+                                     const std::shared_ptr<ILogHandler>& log,
                                      const std::shared_ptr<exe4cpp::MockExecutor>& executor,
                                      const std::shared_ptr<IMasterScheduler>& scheduler)
     : addresses(addresses),
@@ -47,8 +47,14 @@ MasterTestFixture::MasterTestFixture(const MasterParams& params,
       lower(std::make_shared<MockLowerLayer>()),
       application(std::make_shared<MockMasterApplication>()),
       scheduler(scheduler ? scheduler : std::make_shared<MasterSchedulerBackend>(exe)),
-      context(std::make_shared<MContext>(
-          addresses, log4cpp::Logger(log, log4cpp::ModuleId(), id, log4cpp::LogLevels::everything()), exe, lower, meas, application, this->scheduler, params))
+      context(std::make_shared<MContext>(addresses,
+                                         Logger(log, ModuleId(), id, LogLevels::everything()),
+                                         exe,
+                                         lower,
+                                         meas,
+                                         application,
+                                         this->scheduler,
+                                         params))
 {
 }
 

@@ -315,6 +315,15 @@ namespace jni
         jobject value;
     };
 
+    struct JDNP3Exception
+    {
+        JDNP3Exception(jobject value) : value(value) {}
+
+        operator jobject() const { return value; }
+
+        jobject value;
+    };
+
     struct JDNPTime
     {
         JDNPTime(jobject value) : value(value) {}

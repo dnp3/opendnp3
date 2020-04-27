@@ -17,8 +17,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "utils/OutstationTestObject.h"
 #include "utils/APDUHexBuilders.h"
+#include "utils/OutstationTestObject.h"
 
 #include <dnp3mocks/DatabaseHelpers.h>
 
@@ -93,9 +93,7 @@ TEST_CASE(SUITE("ReadClass1WithSOEWithTimeoutInBetween"))
     t.LowerLayerUp();
 
     // Generate event
-    t.Transaction([](IUpdateHandler& db) {
-        db.Update(Binary(true), 0);
-    });
+    t.Transaction([](IUpdateHandler& db) { db.Update(Binary(true), 0); });
 
     // Read and expect the event
     t.SendToOutstation(hex::ClassPoll(0, PointClass::Class1));
@@ -109,9 +107,7 @@ TEST_CASE(SUITE("ReadClass1WithSOEWithTimeoutInBetween"))
     t.SendToOutstation(hex::SolicitedConfirm(0));
 
     // Generate another event
-    t.Transaction([](IUpdateHandler& db) {
-        db.Update(Binary(false), 0);
-    });
+    t.Transaction([](IUpdateHandler& db) { db.Update(Binary(false), 0); });
 
     // Read again and expect two events
     t.SendToOutstation(hex::ClassPoll(1, PointClass::Class1));
@@ -150,7 +146,7 @@ TEST_CASE(SUITE("MultipleClasses"))
     OutstationConfig config;
     config.eventBufferConfig = EventBufferConfig::AllTypes(10);
 
-	auto database = configure::by_count_of::all_types(100);
+    auto database = configure::by_count_of::all_types(100);
     database.binary_input[0].clazz = PointClass::Class1;
     database.analog_input[0].clazz = PointClass::Class2;
     database.counter[0].clazz = PointClass::Class3;
@@ -198,10 +194,10 @@ void TestEventRead(const std::string& request,
     OutstationConfig config;
     config.eventBufferConfig = EventBufferConfig::AllTypes(10);
 
-	DatabaseConfig database = configure::by_count_of::all_types(5);
+    DatabaseConfig database = configure::by_count_of::all_types(5);
     configure(database);
 
-    OutstationTestObject t(config, std::move(database));    
+    OutstationTestObject t(config, std::move(database));
 
     t.LowerLayerUp();
 
@@ -268,8 +264,7 @@ TEST_CASE(SUITE("reports g22v5 correctly"))
 {
     auto update = [](IUpdateHandler& db) { db.Update(Counter(23, Flags(0x01), DNPTime(1512595515000)), 0); };
 
-    auto configure
-        = [](DatabaseConfig& db) { db.counter[0].evariation = EventCounterVariation::Group22Var5; };
+    auto configure = [](DatabaseConfig& db) { db.counter[0].evariation = EventCounterVariation::Group22Var5; };
 
     TestEventRead("C0 01 3C 02 06", "E0 81 80 00 16 05 28 01 00 00 00 01 17 00 00 00 78 E6 B7 2D 60 01", update,
                   configure);
@@ -279,8 +274,7 @@ TEST_CASE(SUITE("reports g22v6 correctly"))
 {
     auto update = [](IUpdateHandler& db) { db.Update(Counter(23, Flags(0x01), DNPTime(1512595515000)), 0); };
 
-    auto configure
-        = [](DatabaseConfig& db) { db.counter[0].evariation = EventCounterVariation::Group22Var6; };
+    auto configure = [](DatabaseConfig& db) { db.counter[0].evariation = EventCounterVariation::Group22Var6; };
 
     TestEventRead("C0 01 3C 02 06", "E0 81 80 00 16 06 28 01 00 00 00 01 17 00 78 E6 B7 2D 60 01", update, configure);
 }

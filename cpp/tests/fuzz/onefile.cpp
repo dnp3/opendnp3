@@ -22,8 +22,8 @@
 #include <cstdlib>
 
 #ifdef _MSC_VER
-#pragma warning( push )
-#pragma warning( disable : 4996) // don't care about fopen vs fopen_s here
+#pragma warning(push)
+#pragma warning(disable : 4996) // don't care about fopen vs fopen_s here
 #endif
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t* Data, size_t Size);
@@ -79,5 +79,5 @@ int main(int argc, char** argv)
 }
 
 #ifdef _MSC_VER
-#pragma warning( pop )
+#pragma warning(pop)
 #endif

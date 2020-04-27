@@ -74,7 +74,7 @@ TEST_CASE(SUITE("update returns false for values that don't exist"))
 {
     StaticDataMap<BinarySpec> map;
 
-	EventReceiver receiver;
+    EventReceiver receiver;
     REQUIRE_FALSE(map.update(Binary(true), 0, EventMode::Detect, receiver));
     REQUIRE(receiver.count == 0);
 }
@@ -89,7 +89,7 @@ TEST_CASE(SUITE("can detect events on existing point"))
 {
     StaticDataMap<BinarySpec> map{{{0, {}}}};
 
-	EventReceiver receiver;
+    EventReceiver receiver;
     REQUIRE(map.update(Binary(true), 0, EventMode::Detect, receiver));
     REQUIRE(receiver.count == 1);
     REQUIRE(map.update(Binary(true), 0, EventMode::Detect, receiver));

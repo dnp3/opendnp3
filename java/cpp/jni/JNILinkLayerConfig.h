@@ -55,10 +55,8 @@ namespace jni
             jboolean getisMaster(JNIEnv* env, JLinkLayerConfig instance);
             LocalRef<JDuration> getkeepAliveTimeout(JNIEnv* env, JLinkLayerConfig instance);
             jint getlocalAddr(JNIEnv* env, JLinkLayerConfig instance);
-            jint getnumRetry(JNIEnv* env, JLinkLayerConfig instance);
             jint getremoteAddr(JNIEnv* env, JLinkLayerConfig instance);
             LocalRef<JDuration> getresponseTimeout(JNIEnv* env, JLinkLayerConfig instance);
-            jboolean getuseConfirms(JNIEnv* env, JLinkLayerConfig instance);
 
             private:
 
@@ -66,8 +64,6 @@ namespace jni
 
             // field ids
             jfieldID isMasterField = nullptr;
-            jfieldID useConfirmsField = nullptr;
-            jfieldID numRetryField = nullptr;
             jfieldID localAddrField = nullptr;
             jfieldID remoteAddrField = nullptr;
             jfieldID responseTimeoutField = nullptr;

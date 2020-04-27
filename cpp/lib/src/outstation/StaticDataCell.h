@@ -50,7 +50,7 @@ template<class Spec> struct StaticDataCell
     typename Spec::event_cell_t event; // event cell
     SelectedValue<Spec> selection;     // selected value
 
-	StaticDataCell() = default;
+    StaticDataCell() = default;
     StaticDataCell(const typename Spec::meas_t& value, const typename Spec::config_t& config)
         : value(value), config(config)
     {

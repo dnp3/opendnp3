@@ -24,11 +24,10 @@
 #include "outstation/IClassAssigner.h"
 
 #include "opendnp3/gen/AssignClassType.h"
+#include "opendnp3/logging/Logger.h"
 #include "opendnp3/outstation/IOutstationApplication.h"
 
 #include <exe4cpp/IExecutor.h>
-
-#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {

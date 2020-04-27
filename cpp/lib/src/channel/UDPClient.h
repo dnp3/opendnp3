@@ -22,8 +22,8 @@
 
 #include "channel/LoggingConnectionCondition.h"
 
-#include "opendnp3/util/Uncopyable.h"
 #include "opendnp3/channel/IPEndpoint.h"
+#include "opendnp3/util/Uncopyable.h"
 
 #include <exe4cpp/asio/StrandExecutor.h>
 
@@ -38,14 +38,13 @@ public:
         const std::shared_ptr<exe4cpp::StrandExecutor>& executor, asio::ip::udp::socket, const std::error_code& ec)>
         connect_callback_t;
 
-    static std::shared_ptr<UDPClient> Create(const log4cpp::Logger& logger,
+    static std::shared_ptr<UDPClient> Create(const Logger& logger,
                                              const std::shared_ptr<exe4cpp::StrandExecutor>& executor)
     {
         return std::make_shared<UDPClient>(logger, executor);
     }
 
-    UDPClient(const log4cpp::Logger& logger,
-              const std::shared_ptr<exe4cpp::StrandExecutor>& executor);
+    UDPClient(const Logger& logger, const std::shared_ptr<exe4cpp::StrandExecutor>& executor);
 
     bool Cancel();
 

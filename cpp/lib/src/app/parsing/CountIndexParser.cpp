@@ -31,16 +31,12 @@
 #include "gen/objects/Group41.h"
 #include "gen/objects/Group42.h"
 #include "gen/objects/Group43.h"
-
-#include <log4cpp/LogMacros.h>
+#include "logging/LogMacros.h"
 
 namespace opendnp3
 {
 
-CountIndexParser::CountIndexParser(uint16_t count,
-                                   size_t requiredSize,
-                                   const NumParser& numparser,
-                                   HandleFun handler)
+CountIndexParser::CountIndexParser(uint16_t count, size_t requiredSize, const NumParser& numparser, HandleFun handler)
     : count(count), requiredSize(requiredSize), numparser(numparser), handler(handler)
 {
 }
@@ -49,14 +45,14 @@ ParseResult CountIndexParser::ParseHeader(ser4cpp::rseq_t& buffer,
                                           const NumParser& numparser,
                                           const ParserSettings& settings,
                                           const HeaderRecord& record,
-                                          log4cpp::Logger* pLogger,
+                                          Logger* pLogger,
                                           IAPDUHandler* pHandler)
 {
     uint16_t count;
     auto res = numparser.ParseCount(buffer, count, pLogger);
     if (res == ParseResult::OK)
     {
-        FORMAT_LOGGER_BLOCK(pLogger, settings.LogLevel(), "%03u,%03u %s, %s [%u]", record.group, record.variation,
+        FORMAT_LOGGER_BLOCK(pLogger, settings.LoggingLevel(), "%03u,%03u %s, %s [%u]", record.group, record.variation,
                             GroupVariationSpec::to_human_string(record.enumeration),
                             QualifierCodeSpec::to_human_string(record.GetQualifierCode()), count);
 
@@ -69,7 +65,7 @@ ParseResult CountIndexParser::ParseHeader(ser4cpp::rseq_t& buffer,
 ParseResult CountIndexParser::Process(const HeaderRecord& record,
                                       ser4cpp::rseq_t& buffer,
                                       IAPDUHandler* pHandler,
-                                      log4cpp::Logger* pLogger) const
+                                      Logger* pLogger) const
 {
     if (buffer.length() < requiredSize)
     {
@@ -89,7 +85,7 @@ ParseResult CountIndexParser::ParseCountOfObjects(ser4cpp::rseq_t& buffer,
                                                   const HeaderRecord& record,
                                                   const NumParser& numparser,
                                                   uint16_t count,
-                                                  log4cpp::Logger* pLogger,
+                                                  Logger* pLogger,
                                                   IAPDUHandler* pHandler)
 {
     switch (record.enumeration)
@@ -211,7 +207,8 @@ ParseResult CountIndexParser::ParseCountOfObjects(ser4cpp::rseq_t& buffer,
     default:
 
         FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unsupported qualifier/object - %s - %i / %i",
-                            QualifierCodeSpec::to_human_string(record.GetQualifierCode()), record.group, record.variation);
+                            QualifierCodeSpec::to_human_string(record.GetQualifierCode()), record.group,
+                            record.variation);
 
         return ParseResult::INVALID_OBJECT_QUALIFIER;
     }
@@ -221,7 +218,7 @@ ParseResult CountIndexParser::ParseIndexPrefixedOctetData(ser4cpp::rseq_t& buffe
                                                           const HeaderRecord& record,
                                                           const NumParser& numparser,
                                                           uint32_t count,
-                                                          log4cpp::Logger* pLogger,
+                                                          Logger* pLogger,
                                                           IAPDUHandler* pHandler)
 {
     if (record.variation == 0)

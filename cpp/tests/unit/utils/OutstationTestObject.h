@@ -20,17 +20,18 @@
 #ifndef OPENDNP3_UNITTESTS_OUTSTATION_TEST_OBJECT_H
 #define OPENDNP3_UNITTESTS_OUTSTATION_TEST_OBJECT_H
 
-#include <opendnp3/LogLevels.h>
-#include <link/LinkLayerConstants.h>
-#include <outstation/Database.h>
-#include <outstation/OutstationContext.h>
+#include <opendnp3/logging/LogLevels.h>
+
+#include <exe4cpp/MockExecutor.h>
 
 #include "dnp3mocks/MockCommandHandler.h"
 #include "dnp3mocks/MockLogHandler.h"
 #include "dnp3mocks/MockLowerLayer.h"
 #include "dnp3mocks/MockOutstationApplication.h"
 
-#include <exe4cpp/MockExecutor.h>
+#include <link/LinkLayerConstants.h>
+#include <outstation/Database.h>
+#include <outstation/OutstationContext.h>
 
 #include <functional>
 
@@ -38,7 +39,8 @@ class OutstationTestObject
 {
 
 public:
-    OutstationTestObject(const opendnp3::OutstationConfig& config, const opendnp3::DatabaseConfig& db_config = opendnp3::DatabaseConfig());
+    OutstationTestObject(const opendnp3::OutstationConfig& config,
+                         const opendnp3::DatabaseConfig& db_config = opendnp3::DatabaseConfig());
 
     size_t SendToOutstation(const std::string& hex);
 

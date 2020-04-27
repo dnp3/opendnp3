@@ -31,7 +31,7 @@ class MockTLSServer final : public opendnp3::TLSServer
 {
 
 public:
-    MockTLSServer(const log4cpp::Logger& logger,
+    MockTLSServer(const opendnp3::Logger& logger,
                   std::shared_ptr<exe4cpp::StrandExecutor> executor,
                   opendnp3::IPEndpoint endpoint,
                   const opendnp3::TLSConfig& config,
@@ -40,7 +40,7 @@ public:
     {
     }
 
-    static std::shared_ptr<MockTLSServer> Create(const log4cpp::Logger& logger,
+    static std::shared_ptr<MockTLSServer> Create(const opendnp3::Logger& logger,
                                                  std::shared_ptr<exe4cpp::StrandExecutor> executor,
                                                  opendnp3::IPEndpoint endpoint,
                                                  const opendnp3::TLSConfig& config,
@@ -51,10 +51,7 @@ public:
         if (ec)
             return nullptr;
 
-        server->StartAccept(ec);
-
-        if (ec)
-            return nullptr;
+        server->StartAccept();
 
         return server;
     }

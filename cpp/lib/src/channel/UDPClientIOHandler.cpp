@@ -27,7 +27,7 @@
 namespace opendnp3
 {
 
-UDPClientIOHandler::UDPClientIOHandler(const log4cpp::Logger& logger,
+UDPClientIOHandler::UDPClientIOHandler(const Logger& logger,
                                        const std::shared_ptr<IChannelListener>& listener,
                                        const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                        const ChannelRetry& retry,
@@ -81,9 +81,7 @@ bool UDPClientIOHandler::TryOpen(const TimeDuration& delay)
 
             if (client)
             {
-                auto retry_cb = [self, newDelay, this]() {
-                    this->TryOpen(newDelay);
-                };
+                auto retry_cb = [self, newDelay, this]() { this->TryOpen(newDelay); };
 
                 this->retrytimer = this->executor->start(delay.value, retry_cb);
             }
@@ -91,8 +89,8 @@ bool UDPClientIOHandler::TryOpen(const TimeDuration& delay)
         else
         {
             FORMAT_LOG_BLOCK(this->logger, flags::INFO, "UDP socket binded to: %s, port %u, sending to %s, port %u",
-                             localEndpoint.address.c_str(), localEndpoint.port,
-                             remoteEndpoint.address.c_str(), remoteEndpoint.port);
+                             localEndpoint.address.c_str(), localEndpoint.port, remoteEndpoint.address.c_str(),
+                             remoteEndpoint.port);
 
             if (client)
             {
@@ -102,8 +100,8 @@ bool UDPClientIOHandler::TryOpen(const TimeDuration& delay)
     };
 
     FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Binding UDP socket to: %s, port %u, resolving address: %s, port %u",
-                     localEndpoint.address.c_str(), localEndpoint.port,
-                     remoteEndpoint.address.c_str(), remoteEndpoint.port);
+                     localEndpoint.address.c_str(), localEndpoint.port, remoteEndpoint.address.c_str(),
+                     remoteEndpoint.port);
 
     this->client->Open(localEndpoint, remoteEndpoint, cb);
 

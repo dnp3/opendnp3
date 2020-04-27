@@ -24,10 +24,9 @@
 #include "app/parsing/IAPDUHandler.h"
 
 #include "opendnp3/gen/IndexQualifierMode.h"
+#include "opendnp3/logging/Logger.h"
 #include "opendnp3/master/CommandResultCallbackT.h"
 #include "opendnp3/master/CommandSet.h"
-
-#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {
@@ -74,16 +73,14 @@ public:
      *
      * @return true if every object in every header was correctly selected, false otherwise
      */
-    static SelectResult ProcessSelectResponse(CommandSet& set, const ser4cpp::rseq_t& headers, log4cpp::Logger* logger);
+    static SelectResult ProcessSelectResponse(CommandSet& set, const ser4cpp::rseq_t& headers, Logger* logger);
 
     /**
      * parses a response to an operate (or DO), applying each received header to the command set
      *
      * @return true if parsing was successful, the results are left in the set
      */
-    static OperateResult ProcessOperateResponse(CommandSet& set,
-                                                const ser4cpp::rseq_t& headers,
-                                                log4cpp::Logger* logger);
+    static OperateResult ProcessOperateResponse(CommandSet& set, const ser4cpp::rseq_t& headers, Logger* logger);
 
 private:
     virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override;

@@ -22,12 +22,11 @@
 
 #include "app/GroupVariationRecord.h"
 #include "app/parsing/ObjectHeaderParser.h"
+#include "logging/LogMacros.h"
 
-#include "opendnp3/LogLevels.h"
+#include "opendnp3/logging/LogLevels.h"
 
 #include <ser4cpp/serialization/LittleEndian.h>
-
-#include <log4cpp/LogMacros.h>
 
 namespace opendnp3
 {
@@ -35,7 +34,7 @@ namespace opendnp3
 ParseResult FreeFormatParser::ParseHeader(ser4cpp::rseq_t& buffer,
                                           const ParserSettings& settings,
                                           const HeaderRecord& record,
-                                          log4cpp::Logger* pLogger,
+                                          Logger* pLogger,
                                           IAPDUHandler* pHandler)
 {
     if (buffer.length() < 3)
@@ -49,7 +48,7 @@ ParseResult FreeFormatParser::ParseHeader(ser4cpp::rseq_t& buffer,
     uint16_t freeFormatSize;
     ser4cpp::UInt16::read_from(buffer, freeFormatSize);
 
-    FORMAT_LOGGER_BLOCK(pLogger, settings.LogLevel(), "%03u,%03u %s, %s, count: %u size: %u", record.group,
+    FORMAT_LOGGER_BLOCK(pLogger, settings.LoggingLevel(), "%03u,%03u %s, %s, count: %u size: %u", record.group,
                         record.variation, GroupVariationSpec::to_human_string(record.enumeration),
                         QualifierCodeSpec::to_human_string(record.GetQualifierCode()), freeFormatCount, freeFormatSize);
 
@@ -114,7 +113,8 @@ ParseResult FreeFormatParser::ParseHeader(ser4cpp::rseq_t& buffer,
 
     default:
         FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unsupported qualifier/object - %s - %i / %i",
-                            QualifierCodeSpec::to_human_string(record.GetQualifierCode()), record.group, record.variation);
+                            QualifierCodeSpec::to_human_string(record.GetQualifierCode()), record.group,
+                            record.variation);
 
         return ParseResult::INVALID_OBJECT_QUALIFIER;
     }
@@ -125,7 +125,7 @@ ParseResult FreeFormatParser::ParseFreeFormat(FreeFormatHandler parser,
                                               uint16_t /*size*/,
                                               ser4cpp::rseq_t& objects,
                                               IAPDUHandler* pHandler,
-                                              log4cpp::Logger* pLogger)
+                                              Logger* pLogger)
 {
     if (parser(header, objects, pHandler))
     {

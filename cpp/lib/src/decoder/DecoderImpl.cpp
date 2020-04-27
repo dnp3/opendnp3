@@ -25,13 +25,12 @@
 #include "app/parsing/APDUParser.h"
 #include "decoder/Indent.h"
 #include "decoder/LoggingHandler.h"
-
-#include <log4cpp/LogMacros.h>
+#include "logging/LogMacros.h"
 
 namespace opendnp3
 {
 
-DecoderImpl::DecoderImpl(IDecoderCallbacks& callbacks, const log4cpp::Logger& logger)
+DecoderImpl::DecoderImpl(IDecoderCallbacks& callbacks, const Logger& logger)
     : callbacks(&callbacks), logger(logger), link(logger), transportRx(logger, 2048)
 {
 }

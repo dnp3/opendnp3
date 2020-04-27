@@ -32,7 +32,7 @@ EmptyResponseTask::EmptyResponseTask(const std::shared_ptr<TaskContext>& context
                                      FunctionCode func,
                                      std::function<bool(HeaderWriter&)> format,
                                      Timestamp startExpiration,
-                                     const log4cpp::Logger& logger,
+                                     const Logger& logger,
                                      const TaskConfig& config)
     : IMasterTask(context, app, TaskBehavior::SingleExecutionNoRetry(startExpiration), logger, config),
       name(std::move(name)),

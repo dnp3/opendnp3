@@ -19,9 +19,9 @@
  */
 #include "IMasterTask.h"
 
-#include "opendnp3/LogLevels.h"
+#include "logging/LogMacros.h"
 
-#include <log4cpp/LogMacros.h>
+#include "opendnp3/logging/LogLevels.h"
 
 #include <utility>
 
@@ -31,7 +31,7 @@ namespace opendnp3
 IMasterTask::IMasterTask(std::shared_ptr<TaskContext> context,
                          IMasterApplication& app,
                          TaskBehavior behavior,
-                         const log4cpp::Logger& logger,
+                         const Logger& logger,
                          TaskConfig config)
     : context(std::move(context)), application(&app), logger(logger), config(config), behavior(std::move(behavior))
 {

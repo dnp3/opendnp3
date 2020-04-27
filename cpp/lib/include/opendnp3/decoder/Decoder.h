@@ -20,10 +20,9 @@
 #ifndef OPENDNP3_DECODER_H
 #define OPENDNP3_DECODER_H
 
-#include "opendnp3/util/Buffer.h"
 #include "opendnp3/decoder/IDecoderCallbacks.h"
-
-#include <log4cpp/Logger.h>
+#include "opendnp3/logging/Logger.h"
+#include "opendnp3/util/Buffer.h"
 
 namespace opendnp3
 {
@@ -34,7 +33,7 @@ class DecoderImpl;
 class Decoder
 {
 public:
-    Decoder(IDecoderCallbacks& callbacks, const log4cpp::Logger& logger);
+    Decoder(IDecoderCallbacks& callbacks, const Logger& logger);
     ~Decoder();
 
     void DecodeLPDU(const Buffer& data);

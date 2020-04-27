@@ -24,6 +24,7 @@
 
 #include <app/APDURequest.h>
 #include <app/APDUResponse.h>
+#include <catch.hpp>
 #include <gen/objects/Group1.h>
 #include <gen/objects/Group12.h>
 #include <gen/objects/Group2.h>
@@ -32,8 +33,6 @@
 #include <gen/objects/Group50.h>
 #include <gen/objects/Group51.h>
 #include <gen/objects/Group60.h>
-
-#include <catch.hpp>
 
 #include <cassert>
 
@@ -176,7 +175,8 @@ TEST_CASE(SUITE("PrefixWriteIteratorWithSingleCROB"))
         auto iter = writer.IterateOverCountWithPrefix<UInt8, ControlRelayOutputBlock>(
             QualifierCode::UINT8_CNT_UINT8_INDEX, Group12Var1::Inst());
         REQUIRE(iter.IsValid());
-        ControlRelayOutputBlock crob(OperationType::LATCH_ON, TripCloseCode::NUL, false, 0x1F, 0x10, 0xAA, CommandStatus::LOCAL);
+        ControlRelayOutputBlock crob(OperationType::LATCH_ON, TripCloseCode::NUL, false, 0x1F, 0x10, 0xAA,
+                                     CommandStatus::LOCAL);
         REQUIRE(iter.Write(crob, 0x21));
     }
 
@@ -220,7 +220,8 @@ TEST_CASE(SUITE("PrefixWriteIteratorCTOSpaceForOnly1Value"))
         REQUIRE(!iter.Write(Binary(true, Flags(0x01), DNPTime(0x0C, TimestampQuality::SYNCHRONIZED)), 7));
     }
 
-    REQUIRE("C0 81 00 00 33 01 07 01 AA 00 00 00 00 00 02 03 28 01 00 06 00 81 0B 00" == HexConversions::to_hex(response.ToRSeq()));
+    REQUIRE("C0 81 00 00 33 01 07 01 AA 00 00 00 00 00 02 03 28 01 00 06 00 81 0B 00"
+            == HexConversions::to_hex(response.ToRSeq()));
 }
 
 TEST_CASE(SUITE("PrefixWriteIteratorNotEnoughSpaceForAValue"))
@@ -245,7 +246,8 @@ TEST_CASE(SUITE("SingleValueWithIndexCROBLatchOn"))
     APDURequest request(APDUHelpers::Request(FunctionCode::SELECT));
     auto writer = request.GetWriter();
 
-    ControlRelayOutputBlock crob(OperationType::LATCH_ON, TripCloseCode::NUL, false, 0x1F, 0x10, 0xAA, CommandStatus::LOCAL);
+    ControlRelayOutputBlock crob(OperationType::LATCH_ON, TripCloseCode::NUL, false, 0x1F, 0x10, 0xAA,
+                                 CommandStatus::LOCAL);
 
     REQUIRE(writer.WriteSingleIndexedValue<UInt16>(QualifierCode::UINT16_CNT, Group12Var1::Inst(), crob, 0x21));
 
@@ -257,7 +259,8 @@ TEST_CASE(SUITE("SingleValueWithIndexCROBLatchOff"))
     APDURequest request(APDUHelpers::Request(FunctionCode::SELECT));
     auto writer = request.GetWriter();
 
-    ControlRelayOutputBlock crob(OperationType::LATCH_OFF, TripCloseCode::NUL, false, 0x1F, 0x10, 0xAA, CommandStatus::LOCAL);
+    ControlRelayOutputBlock crob(OperationType::LATCH_OFF, TripCloseCode::NUL, false, 0x1F, 0x10, 0xAA,
+                                 CommandStatus::LOCAL);
 
     REQUIRE(writer.WriteSingleIndexedValue<UInt16>(QualifierCode::UINT16_CNT, Group12Var1::Inst(), crob, 0x21));
 

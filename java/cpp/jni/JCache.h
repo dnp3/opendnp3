@@ -65,6 +65,7 @@
 #include "JNIControlRelayOutputBlock.h"
 #include "JNICounter.h"
 #include "JNICounterConfig.h"
+#include "JNIDNP3Exception.h"
 #include "JNIDNPTime.h"
 #include "JNIDatabase.h"
 #include "JNIDatabaseConfig.h"
@@ -180,6 +181,7 @@ namespace jni
         static cache::ControlRelayOutputBlock ControlRelayOutputBlock;
         static cache::Counter Counter;
         static cache::CounterConfig CounterConfig;
+        static cache::DNP3Exception DNP3Exception;
         static cache::DNPTime DNPTime;
         static cache::Database Database;
         static cache::DatabaseConfig DatabaseConfig;

@@ -26,10 +26,9 @@
 #include "link/ShiftableBuffer.h"
 
 #include "opendnp3/link/LinkStatistics.h"
+#include "opendnp3/logging/Logger.h"
 
 #include <ser4cpp/container/SequenceTypes.h>
-
-#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {
@@ -48,7 +47,7 @@ class LinkLayerParser
 public:
     /// @param logger_ Logger that the receiver is to use.
     /// @param pSink_ Completely parsed frames are sent to this interface
-    LinkLayerParser(const log4cpp::Logger& logger);
+    LinkLayerParser(const Logger& logger);
 
     /// Called when valid data has been written to the current buffer write position
     /// Parses the new data and calls the specified frame sink
@@ -83,7 +82,7 @@ private:
 
     void TransferUserData();
 
-    log4cpp::Logger logger;
+    Logger logger;
     LinkStatistics::Parser statistics;
 
     LinkHeader header;

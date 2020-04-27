@@ -27,9 +27,9 @@
 #include "app/parsing/ParseResult.h"
 #include "app/parsing/ParserSettings.h"
 
-#include <ser4cpp/container/SequenceTypes.h>
+#include "opendnp3/logging/Logger.h"
 
-#include <log4cpp/Logger.h>
+#include <ser4cpp/container/SequenceTypes.h>
 
 namespace opendnp3
 {
@@ -46,7 +46,7 @@ public:
                                    const NumParser& numparser,
                                    const ParserSettings& settings,
                                    const HeaderRecord& record,
-                                   log4cpp::Logger* pLogger,
+                                   Logger* pLogger,
                                    IAPDUHandler* pHandler);
 
 private:
@@ -54,16 +54,13 @@ private:
     ParseResult Process(const HeaderRecord& record,
                         ser4cpp::rseq_t& buffer,
                         IAPDUHandler* pHandler,
-                        log4cpp::Logger* pLogger) const;
+                        Logger* pLogger) const;
 
     // Create a count handler from a fixed size descriptor
     template<class Descriptor> static CountParser From(uint16_t count);
 
-    static ParseResult ParseCountOfObjects(ser4cpp::rseq_t& buffer,
-                                           const HeaderRecord& record,
-                                           uint16_t count,
-                                           log4cpp::Logger* pLogger,
-                                           IAPDUHandler* pHandler);
+    static ParseResult ParseCountOfObjects(
+        ser4cpp::rseq_t& buffer, const HeaderRecord& record, uint16_t count, Logger* pLogger, IAPDUHandler* pHandler);
 
     template<class Descriptor>
     static void InvokeCountOf(const HeaderRecord& record,

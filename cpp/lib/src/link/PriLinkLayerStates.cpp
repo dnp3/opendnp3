@@ -20,10 +20,9 @@
 #include "PriLinkLayerStates.h"
 
 #include "link/LinkLayer.h"
+#include "logging/LogMacros.h"
 
-#include "opendnp3/LogLevels.h"
-
-#include <log4cpp/LogMacros.h>
+#include "opendnp3/logging/LogLevels.h"
 
 namespace opendnp3
 {
@@ -72,11 +71,6 @@ PriStateBase& PriStateBase::OnTimeout(LinkContext& ctx)
     return *this;
 }
 
-PriStateBase& PriStateBase::TrySendConfirmed(LinkContext& /*ctx*/, ITransportSegment& /*unused*/)
-{
-    return *this;
-}
-
 PriStateBase& PriStateBase::TrySendUnconfirmed(LinkContext& /*ctx*/, ITransportSegment& /*unused*/)
 {
     return *this;
@@ -88,7 +82,7 @@ PriStateBase& PriStateBase::TrySendRequestLinkStatus(LinkContext& /*unused*/)
 }
 
 ////////////////////////////////////////////////////////
-//	Class PLLS_SecNotResetIdle
+// Class PLLS_SecNotResetIdle
 ////////////////////////////////////////////////////////
 
 PLLS_Idle PLLS_Idle::instance;
@@ -101,32 +95,17 @@ PriStateBase& PLLS_Idle::TrySendUnconfirmed(LinkContext& ctx, ITransportSegment&
     return PLLS_SendUnconfirmedTransmitWait::Instance();
 }
 
-PriStateBase& PLLS_Idle::TrySendConfirmed(LinkContext& ctx, ITransportSegment& segments)
-{
-    if (ctx.isRemoteReset)
-    {
-        ctx.ResetRetry();
-        auto buffer
-            = ctx.FormatPrimaryBufferWithConfirmed(segments.GetAddresses(), segments.GetSegment(), ctx.nextWriteFCB);
-        ctx.QueueTransmit(buffer, true);
-        return PLLS_ConfUserDataTransmitWait::Instance();
-    }
-
-    ctx.ResetRetry();
-    ctx.QueueResetLinks(segments.GetAddresses().destination);
-    return PLLS_LinkResetTransmitWait::Instance();
-}
-
 PriStateBase& PLLS_Idle::TrySendRequestLinkStatus(LinkContext& ctx)
 {
     ctx.keepAliveTimeout = false;
     ctx.QueueRequestLinkStatus(ctx.config.RemoteAddr);
     ctx.listener->OnKeepAliveInitiated();
-    return PLLS_RequestLinkStatusTransmitWait::Instance();
+    ctx.StartResponseTimer();
+    return PLLS_RequestLinkStatusWait::Instance();
 }
 
 ////////////////////////////////////////////////////////
-//	Class SendUnconfirmedTransmitWait
+// Class SendUnconfirmedTransmitWait
 ////////////////////////////////////////////////////////
 
 PLLS_SendUnconfirmedTransmitWait PLLS_SendUnconfirmedTransmitWait::instance;
@@ -146,153 +125,18 @@ PriStateBase& PLLS_SendUnconfirmedTransmitWait::OnTxReady(LinkContext& ctx)
     return PLLS_Idle::Instance();
 }
 
-/////////////////////////////////////////////////////////////////////////////
-//  Wait for the link layer to transmit the reset links
-/////////////////////////////////////////////////////////////////////////////
-
-PLLS_LinkResetTransmitWait PLLS_LinkResetTransmitWait::instance;
-
-PriStateBase& PLLS_LinkResetTransmitWait::OnTxReady(LinkContext& ctx)
-{
-    // now we're waiting for an ACK
-    ctx.StartResponseTimer();
-    return PLLS_ResetLinkWait::Instance();
-}
-
-/////////////////////////////////////////////////////////////////////////////
-//  Wait for the link layer to transmit confirmed user data
-/////////////////////////////////////////////////////////////////////////////
-
-PLLS_ConfUserDataTransmitWait PLLS_ConfUserDataTransmitWait::instance;
-
-PriStateBase& PLLS_ConfUserDataTransmitWait::OnTxReady(LinkContext& ctx)
-{
-    // now we're waiting on an ACK
-    ctx.StartResponseTimer();
-    return PLLS_ConfDataWait::Instance();
-}
-
-/////////////////////////////////////////////////////////////////////////////
-//  Wait for the link layer to transmit the request link status
-/////////////////////////////////////////////////////////////////////////////
-
-PLLS_RequestLinkStatusTransmitWait PLLS_RequestLinkStatusTransmitWait::instance;
-
-PriStateBase& PLLS_RequestLinkStatusTransmitWait::OnTxReady(LinkContext& ctx)
-{
-    // now we're waiting on a LINK_STATUS
-    ctx.StartResponseTimer();
-    return PLLS_RequestLinkStatusWait::Instance();
-}
-
 ////////////////////////////////////////////////////////
-//	Class PLLS_ResetLinkWait
-////////////////////////////////////////////////////////
-
-PLLS_ResetLinkWait PLLS_ResetLinkWait::instance;
-
-PriStateBase& PLLS_ResetLinkWait::OnAck(LinkContext& ctx, bool /*rxBuffFull*/)
-{
-    ctx.isRemoteReset = true;
-    ctx.ResetWriteFCB();
-    ctx.CancelTimer();
-    auto buffer = ctx.FormatPrimaryBufferWithConfirmed(ctx.pSegments->GetAddresses(), ctx.pSegments->GetSegment(),
-                                                       ctx.nextWriteFCB);
-    ctx.QueueTransmit(buffer, true);
-    ctx.listener->OnStateChange(LinkStatus::RESET);
-    return PLLS_ConfUserDataTransmitWait::Instance();
-}
-
-PriStateBase& PLLS_ResetLinkWait::OnTimeout(LinkContext& ctx)
-{
-    if (ctx.Retry())
-    {
-        FORMAT_LOG_BLOCK(ctx.logger, flags::WARN, "Link reset timeout, retrying %i remaining", ctx.numRetryRemaining);
-        ctx.QueueResetLinks(ctx.config.RemoteAddr);
-        return PLLS_LinkResetTransmitWait::Instance();
-    }
-
-    SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Link reset final timeout, no retries remain");
-    ctx.CompleteSendOperation();
-    return PLLS_Idle::Instance();
-}
-
-PriStateBase& PLLS_ResetLinkWait::Failure(LinkContext& ctx)
-{
-    ctx.CancelTimer();
-    ctx.CompleteSendOperation();
-    return PLLS_Idle::Instance();
-}
-
-////////////////////////////////////////////////////////
-//	Class PLLS_ConfDataWait
-////////////////////////////////////////////////////////
-
-PLLS_ConfDataWait PLLS_ConfDataWait::instance;
-
-PriStateBase& PLLS_ConfDataWait::OnAck(LinkContext& ctx, bool /*rxBuffFull*/)
-{
-    ctx.ToggleWriteFCB();
-    ctx.CancelTimer();
-
-    if (ctx.pSegments->Advance())
-    {
-        auto buffer = ctx.FormatPrimaryBufferWithConfirmed(ctx.pSegments->GetAddresses(), ctx.pSegments->GetSegment(),
-                                                           ctx.nextWriteFCB);
-        ctx.QueueTransmit(buffer, true);
-        return PLLS_ConfUserDataTransmitWait::Instance();
-    }
-    // we're done!
-
-    ctx.CompleteSendOperation();
-    return PLLS_Idle::Instance();
-}
-
-PriStateBase& PLLS_ConfDataWait::OnNack(LinkContext& ctx, bool rxBuffFull)
-{
-    ctx.listener->OnStateChange(LinkStatus::UNRESET);
-
-    if (rxBuffFull)
-    {
-        return Failure(ctx);
-    }
-
-    ctx.ResetRetry();
-    ctx.CancelTimer();
-    ctx.QueueResetLinks(ctx.pSegments->GetAddresses().destination);
-    return PLLS_LinkResetTransmitWait::Instance();
-}
-
-PriStateBase& PLLS_ConfDataWait::Failure(LinkContext& ctx)
-{
-    ctx.isRemoteReset = false;
-    ctx.CancelTimer();
-    ctx.CompleteSendOperation();
-    return PLLS_Idle::Instance();
-}
-
-PriStateBase& PLLS_ConfDataWait::OnTimeout(LinkContext& ctx)
-{
-    if (ctx.Retry())
-    {
-        FORMAT_LOG_BLOCK(ctx.logger, flags::WARN, "confirmed data timeout, retrying %u remaining",
-                         ctx.numRetryRemaining);
-        auto buffer = ctx.FormatPrimaryBufferWithConfirmed(ctx.pSegments->GetAddresses(), ctx.pSegments->GetSegment(),
-                                                           ctx.nextWriteFCB);
-        ctx.QueueTransmit(buffer, true);
-        return PLLS_ConfUserDataTransmitWait::Instance();
-    }
-
-    SIMPLE_LOG_BLOCK(ctx.logger, flags::WARN, "Confirmed data final timeout, no retries remain");
-    ctx.listener->OnStateChange(LinkStatus::UNRESET);
-    return Failure(ctx);
-}
-
-////////////////////////////////////////////////////////
-//	Class PLLS_RequestLinkStatusWait
+// Class PLLS_RequestLinkStatusWait
 ////////////////////////////////////////////////////////
 
 PLLS_RequestLinkStatusWait PLLS_RequestLinkStatusWait::instance;
+
+PriStateBase& PLLS_RequestLinkStatusWait::OnAck(LinkContext& ctx, bool /*receiveBuffFull*/)
+{
+    ctx.CancelTimer();
+    ctx.FailKeepAlive(false);
+    return PLLS_Idle::Instance();
+}
 
 PriStateBase& PLLS_RequestLinkStatusWait::OnNack(LinkContext& ctx, bool /*receiveBuffFull*/)
 {
@@ -313,6 +157,12 @@ PriStateBase& PLLS_RequestLinkStatusWait::OnNotSupported(LinkContext& ctx, bool 
     ctx.CancelTimer();
     ctx.FailKeepAlive(false);
     return PLLS_Idle::Instance();
+}
+
+PriStateBase& PLLS_RequestLinkStatusWait::OnTxReady(LinkContext& ctx)
+{
+    // The request link status was successfully sent
+    return *this;
 }
 
 PriStateBase& PLLS_RequestLinkStatusWait::OnTimeout(LinkContext& ctx)

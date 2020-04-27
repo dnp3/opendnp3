@@ -27,19 +27,14 @@
 namespace opendnp3
 {
 
-FreezeRequestHandler::FreezeRequestHandler(bool clear, Database& database)
-    : clear(clear),
-      database(database)
-{
-
-}
+FreezeRequestHandler::FreezeRequestHandler(bool clear, Database& database) : clear(clear), database(database) {}
 
 bool FreezeRequestHandler::IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc)
 {
-    if(gv != GroupVariation::Group20Var0)
+    if (gv != GroupVariation::Group20Var0)
         return false;
-    
-    switch(qc)
+
+    switch (qc)
     {
     case QualifierCode::ALL_OBJECTS:
     case QualifierCode::UINT8_START_STOP:

@@ -22,13 +22,13 @@
 
 #include "channel/SocketHelpers.h"
 
-#include <utility>
 #include <sstream>
+#include <utility>
 
 namespace opendnp3
 {
 
-TCPClient::TCPClient(const log4cpp::Logger& logger,
+TCPClient::TCPClient(const Logger& logger,
                      const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                      std::string adapter)
     : condition(logger),

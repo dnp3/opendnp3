@@ -22,18 +22,14 @@
 
 #include "channel/SocketHelpers.h"
 
-#include <utility>
 #include <sstream>
+#include <utility>
 
 namespace opendnp3
 {
 
-UDPClient::UDPClient(const log4cpp::Logger& logger,
-                     const std::shared_ptr<exe4cpp::StrandExecutor>& executor)
-    : condition(logger),
-      executor(executor),
-      socket(*executor->get_context()),
-      resolver(*executor->get_context())
+UDPClient::UDPClient(const Logger& logger, const std::shared_ptr<exe4cpp::StrandExecutor>& executor)
+    : condition(logger), executor(executor), socket(*executor->get_context()), resolver(*executor->get_context())
 {
 }
 
@@ -79,7 +75,8 @@ bool UDPClient::Open(const IPEndpoint& localEndpoint, const IPEndpoint& remoteEn
         std::stringstream portstr;
         portstr << remoteEndpoint.port;
 
-        resolver.async_resolve(asio::ip::udp::resolver::query(remoteEndpoint.address, portstr.str()), executor->wrap(cb));
+        resolver.async_resolve(asio::ip::udp::resolver::query(remoteEndpoint.address, portstr.str()),
+                               executor->wrap(cb));
 
         return true;
     }

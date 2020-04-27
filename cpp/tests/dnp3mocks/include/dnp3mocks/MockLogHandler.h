@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_UNITTESTS_MOCKLOGHANDLER_H
 #define OPENDNP3_UNITTESTS_MOCKLOGHANDLER_H
 
-#include <log4cpp/Logger.h>
+#include "opendnp3/logging/Logger.h"
 
 #include <mutex>
 #include <queue>
@@ -31,18 +31,23 @@ class LogRecord
 {
 public:
     LogRecord() = default;
-    LogRecord(log4cpp::ModuleId module, const char* id, log4cpp::LogLevel level, char const* location, char const* message);
+    LogRecord(
+        opendnp3::ModuleId module, const char* id, opendnp3::LogLevel level, char const* location, char const* message);
 
-    log4cpp::ModuleId module;
+    opendnp3::ModuleId module;
     std::string id;
-    log4cpp::LogLevel level;
+    opendnp3::LogLevel level;
     std::string location;
     std::string message;
 };
 
-struct MockLogHandlerImpl : public log4cpp::ILogHandler
+struct MockLogHandlerImpl : public opendnp3::ILogHandler
 {
-    virtual void log(log4cpp::ModuleId module, const char* id, log4cpp::LogLevel level, char const* location, char const* message) override;
+    virtual void log(opendnp3::ModuleId module,
+                     const char* id,
+                     opendnp3::LogLevel level,
+                     char const* location,
+                     char const* message) override;
 
     std::mutex mutex;
     bool outputToStdIO = false;
@@ -53,7 +58,11 @@ class MockLogHandler
 {
 
 public:
-    MockLogHandler() : impl(std::make_shared<MockLogHandlerImpl>()), logger(impl, log4cpp::ModuleId(), "test", log4cpp::LogLevels::everything()) {}
+    MockLogHandler()
+        : impl(std::make_shared<MockLogHandlerImpl>()),
+          logger(impl, opendnp3::ModuleId(), "test", opendnp3::LogLevels::everything())
+    {
+    }
 
     void WriteToStdIo();
 
@@ -67,7 +76,7 @@ private:
     std::shared_ptr<MockLogHandlerImpl> impl;
 
 public:
-    log4cpp::Logger logger;
+    opendnp3::Logger logger;
 };
 
 #endif

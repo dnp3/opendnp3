@@ -75,7 +75,7 @@ jobs:
           -DDNP3_TLS=ON
           -DDNP3_TESTS=ON
           -DDNP3_COVERAGE=ON
-          -DCMAKE_BUILD_TYPE=DEBUG
+          -DCMAKE_BUILD_TYPE=Debug
           ..
       - name: Build and run tests with code coverage
         if: ${{ matrix.coverage }} == "ON"
@@ -97,7 +97,7 @@ jobs:
       - name: Install system dependencies
         run: >
           if("${{ matrix.architecture }}" -eq "x86") { $flag = "--x86" } else { $flag = "" };
-          choco install --no-progress "$flag" openssl; mkdir build
+          choco install --no-progress "$flag" cmake.portable nuget.commandline openssl; mkdir build
       - name: Install Java
         uses: emgre/setup-java@master
         with:
@@ -127,6 +127,16 @@ jobs:
         with:
           name: opendnp3-win-${{ matrix.architecture }}-msvc-${{ matrix.build-type }}-${{ github.sha }}
           path: build/opendnp3-package
+      - name: NuGet package
+        if: ${{ matrix.build-type == 'Release' }}
+        working-directory: build
+        run: cpack -G NuGet . -C ${{ matrix.build-type }}
+      - name: Upload NuGet package
+        if: ${{ matrix.build-type == 'Release' }}
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: opendnp3-win-${{ matrix.architecture }}-${{ github.sha }}-nuget
+          path: build/*.nupkg
       - name: Build and test Java bindings
         working-directory: java
         run: >

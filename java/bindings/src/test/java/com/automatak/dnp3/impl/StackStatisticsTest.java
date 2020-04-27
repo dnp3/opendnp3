@@ -42,11 +42,12 @@ import com.automatak.dnp3.*;
 import com.automatak.dnp3.impl.mocks.NullLogHandler;
 import com.automatak.dnp3.mock.*;
 import junit.framework.TestCase;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
 
-public class StackStatisticsTest extends TestCase {
+public class StackStatisticsTest {
 
     @Test
     public void testGetMasterStatistics() throws DNP3Exception {
@@ -67,8 +68,8 @@ public class StackStatisticsTest extends TestCase {
         );
 
         // This used to return nullptr, see issue #268
-        assertNotNull(master.getStatistics().link);
-        assertNotNull(master.getStatistics().transport);
+        Assert.assertNotNull(master.getStatistics().link);
+        Assert.assertNotNull(master.getStatistics().transport);
     }
 
     @Test
@@ -90,8 +91,8 @@ public class StackStatisticsTest extends TestCase {
         );
 
         // This used to return nullptr, see issue #268
-        assertNotNull(outstation.getStatistics().link);
-        assertNotNull(outstation.getStatistics().transport);
+        Assert.assertNotNull(outstation.getStatistics().link);
+        Assert.assertNotNull(outstation.getStatistics().transport);
     }
 
     @Test
@@ -108,8 +109,8 @@ public class StackStatisticsTest extends TestCase {
         );
 
         // This used to return nullptr, see issue #268
-        assertNotNull(channel.getStatistics().channel);
-        assertNotNull(channel.getStatistics().parser);
+        Assert.assertNotNull(channel.getStatistics().channel);
+        Assert.assertNotNull(channel.getStatistics().parser);
     }
 }
 

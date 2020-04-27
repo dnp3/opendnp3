@@ -22,11 +22,10 @@
 
 #include "app/APDUHeader.h"
 
+#include "opendnp3/logging/Logger.h"
 #include "opendnp3/util/StaticOnly.h"
 
 #include <ser4cpp/container/SequenceTypes.h>
-
-#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {
@@ -58,9 +57,9 @@ public:
         Result() : success(false) {}
     };
 
-    static Result<APDUHeader> ParseRequest(const ser4cpp::rseq_t& apdu, log4cpp::Logger* logger = nullptr);
+    static Result<APDUHeader> ParseRequest(const ser4cpp::rseq_t& apdu, Logger* logger = nullptr);
 
-    static Result<APDUResponseHeader> ParseResponse(const ser4cpp::rseq_t& apdu, log4cpp::Logger* logger = nullptr);
+    static Result<APDUResponseHeader> ParseResponse(const ser4cpp::rseq_t& apdu, Logger* logger = nullptr);
 };
 
 } // namespace opendnp3

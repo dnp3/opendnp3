@@ -71,7 +71,7 @@ void CommandSetOps::InvokeCallback(const CommandSet& set, TaskCompletion result,
 
 CommandSetOps::SelectResult CommandSetOps::ProcessSelectResponse(CommandSet& set,
                                                                  const ser4cpp::rseq_t& headers,
-                                                                 log4cpp::Logger* logger)
+                                                                 Logger* logger)
 {
     CommandSetOps handler(Mode::Select, set);
     const auto result = APDUParser::Parse(headers, handler, logger);
@@ -87,7 +87,7 @@ CommandSetOps::SelectResult CommandSetOps::ProcessSelectResponse(CommandSet& set
 
 CommandSetOps::OperateResult CommandSetOps::ProcessOperateResponse(CommandSet& set,
                                                                    const ser4cpp::rseq_t& headers,
-                                                                   log4cpp::Logger* logger)
+                                                                   Logger* logger)
 {
     CommandSetOps handler(Mode::Operate, set);
     return (APDUParser::Parse(headers, handler, logger) == ParseResult::OK) ? OperateResult::OK

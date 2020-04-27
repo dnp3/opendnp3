@@ -24,13 +24,13 @@ namespace opendnp3
 {
 
 /**
-* provides basic information about an APDU response
-*/
+ * provides basic information about an APDU response
+ */
 struct ResponseInfo
 {
     ResponseInfo(bool unsolicited, bool fir, bool fin) : unsolicited(unsolicited), fir(fir), fin(fin) {}
 
-	// true if the response is unsolicited
+    // true if the response is unsolicited
     bool unsolicited;
     // true if this is the first fragment in a multi-fragment response
     bool fir;

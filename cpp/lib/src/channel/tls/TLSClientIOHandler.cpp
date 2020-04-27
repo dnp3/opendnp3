@@ -22,14 +22,14 @@
 
 #include "channel/tls/TLSStreamChannel.h"
 
-#include "opendnp3/LogLevels.h"
+#include "opendnp3/logging/LogLevels.h"
 
 #include <utility>
 
 namespace opendnp3
 {
 
-TLSClientIOHandler::TLSClientIOHandler(const log4cpp::Logger& logger,
+TLSClientIOHandler::TLSClientIOHandler(const Logger& logger,
                                        const std::shared_ptr<IChannelListener>& listener,
                                        const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                        TLSConfig config,

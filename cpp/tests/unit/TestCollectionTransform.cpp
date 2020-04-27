@@ -18,7 +18,6 @@
  * limitations under the License.
  */
 #include <app/parsing/Collections.h>
-
 #include <catch.hpp>
 
 #include <vector>

@@ -25,11 +25,10 @@
 #include "transport/TransportSeqNum.h"
 
 #include "opendnp3/StackStatistics.h"
+#include "opendnp3/logging/Logger.h"
 
 #include <ser4cpp/container/Buffer.h>
 #include <ser4cpp/container/SequenceTypes.h>
-
-#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {
@@ -41,7 +40,7 @@ class TransportRx
 {
 
 public:
-    TransportRx(const log4cpp::Logger&, uint32_t maxRxFragSize);
+    TransportRx(const Logger&, uint32_t maxRxFragSize);
 
     Message ProcessReceive(const Message& segment);
 
@@ -57,7 +56,7 @@ private:
 
     void ClearRxBuffer();
 
-    log4cpp::Logger logger;
+    Logger logger;
     StackStatistics::Transport::Rx statistics;
 
     ser4cpp::Buffer rxBuffer;

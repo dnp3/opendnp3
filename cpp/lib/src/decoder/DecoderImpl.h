@@ -25,10 +25,9 @@
 #include "transport/TransportRx.h"
 
 #include "opendnp3/decoder/IDecoderCallbacks.h"
+#include "opendnp3/logging/Logger.h"
 
 #include <ser4cpp/container/SequenceTypes.h>
-
-#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {
@@ -39,7 +38,7 @@ class DecoderImpl;
 class DecoderImpl final : private IFrameSink
 {
 public:
-    DecoderImpl(IDecoderCallbacks& callbacks, const log4cpp::Logger& logger);
+    DecoderImpl(IDecoderCallbacks& callbacks, const Logger& logger);
 
     void DecodeLPDU(const ser4cpp::rseq_t& data);
     void DecodeTPDU(const ser4cpp::rseq_t& data);
@@ -52,7 +51,7 @@ private:
     virtual bool OnFrame(const LinkHeaderFields& header, const ser4cpp::rseq_t& userdata) override;
 
     IDecoderCallbacks* callbacks;
-    log4cpp::Logger logger;
+    Logger logger;
     LinkLayerParser link;
     TransportRx transportRx;
 };

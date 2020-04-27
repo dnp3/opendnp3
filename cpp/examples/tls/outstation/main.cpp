@@ -19,8 +19,8 @@
  */
 #include <opendnp3/ConsoleLogger.h>
 #include <opendnp3/DNP3Manager.h>
-#include <opendnp3/LogLevels.h>
 #include <opendnp3/channel/PrintingChannelListener.h>
+#include <opendnp3/logging/LogLevels.h>
 #include <opendnp3/outstation/DefaultOutstationApplication.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
 #include <opendnp3/outstation/UpdateBuilder.h>
@@ -77,18 +77,10 @@ int main(int argc, char* argv[])
     // Allocate a single thread to the pool since this is a single outstation
     DNP3Manager manager(1, ConsoleLogger::Create());
 
-    std::error_code ec;
-
     // Create a TCP server (listener)
     auto channel = manager.AddTLSServer("server", logLevels, ServerAcceptMode::CloseExisting, IPEndpoint("0.0.0.0", 20001),
                                         TLSConfig(caCertificate, certificateChain, privateKey, 2),
-                                        PrintingChannelListener::Create(), ec);
-
-    if (ec)
-    {
-        std::cout << "Unable to create tls server: " << ec.message() << std::endl;
-        return ec.value();
-    }
+                                        PrintingChannelListener::Create());
 
     // The main object for a outstation. The defaults are useable,
     // but understanding the options are important.

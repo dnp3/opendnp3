@@ -47,7 +47,7 @@ public:
                  bool recurring,
                  IMasterApplication& app,
                  std::shared_ptr<ISOEHandler> soeHandler,
-                 const log4cpp::Logger& logger,
+                 const Logger& logger,
                  TaskConfig config);
 
     virtual int Priority() const override

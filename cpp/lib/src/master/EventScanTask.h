@@ -40,7 +40,7 @@ public:
                   IMasterApplication& application,
                   std::shared_ptr<ISOEHandler> soeHandler,
                   ClassField classes,
-                  const log4cpp::Logger& logger);
+                  const Logger& logger);
 
     virtual bool IsRecurring() const override
     {

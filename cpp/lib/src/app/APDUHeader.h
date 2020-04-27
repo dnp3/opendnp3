@@ -61,9 +61,9 @@ struct APDUResponseHeader : public APDUHeader
     }
 
     ResponseInfo as_response_info() const
-	{
+    {
         return ResponseInfo(this->function == FunctionCode::UNSOLICITED_RESPONSE, control.FIR, control.FIN);
-	}
+    }
 
     IINField IIN;
 };

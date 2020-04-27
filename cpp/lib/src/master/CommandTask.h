@@ -25,11 +25,10 @@
 
 #include "opendnp3/gen/FunctionCode.h"
 #include "opendnp3/gen/IndexQualifierMode.h"
+#include "opendnp3/logging/Logger.h"
 #include "opendnp3/master/CommandSet.h"
 #include "opendnp3/master/ICommandProcessor.h"
 #include "opendnp3/master/ITaskCallback.h"
-
-#include <log4cpp/Logger.h>
 
 #include <assert.h>
 
@@ -51,7 +50,7 @@ public:
                 CommandResultCallbackT callback,
                 const Timestamp& startExpiration,
                 const TaskConfig& config,
-                const log4cpp::Logger& logger);
+                const Logger& logger);
 
     static std::shared_ptr<IMasterTask> CreateDirectOperate(const std::shared_ptr<TaskContext>& context,
                                                             CommandSet&& set,
@@ -60,7 +59,7 @@ public:
                                                             const CommandResultCallbackT& callback,
                                                             const Timestamp& startExpiration,
                                                             const TaskConfig& config,
-                                                            log4cpp::Logger logger);
+                                                            Logger logger);
     static std::shared_ptr<IMasterTask> CreateSelectAndOperate(const std::shared_ptr<TaskContext>& context,
                                                                CommandSet&& set,
                                                                IndexQualifierMode mode,
@@ -68,7 +67,7 @@ public:
                                                                const CommandResultCallbackT& callback,
                                                                const Timestamp& startExpiration,
                                                                const TaskConfig& config,
-                                                               log4cpp::Logger logger);
+                                                               Logger logger);
 
     virtual char const* Name() const override final
     {

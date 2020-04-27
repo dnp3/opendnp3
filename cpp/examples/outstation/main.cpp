@@ -19,8 +19,8 @@
  */
 #include <opendnp3/ConsoleLogger.h>
 #include <opendnp3/DNP3Manager.h>
-#include <opendnp3/LogLevels.h>
 #include <opendnp3/channel/PrintingChannelListener.h>
+#include <opendnp3/logging/LogLevels.h>
 #include <opendnp3/outstation/DefaultOutstationApplication.h>
 #include <opendnp3/outstation/IUpdateHandler.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
@@ -70,8 +70,17 @@ int main(int argc, char* argv[])
     DNP3Manager manager(1, ConsoleLogger::Create());
 
     // Create a TCP server (listener)
-    auto channel = manager.AddTCPServer("server", logLevels, ServerAcceptMode::CloseExisting, IPEndpoint("0.0.0.0", 20000),
-                                        PrintingChannelListener::Create());
+    auto channel = std::shared_ptr<IChannel>(nullptr);
+    try
+    {
+        channel = manager.AddTCPServer("server", logLevels, ServerAcceptMode::CloseExisting, IPEndpoint("asdf", 20000),
+                                       PrintingChannelListener::Create());
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        return -1;
+    }
 
     // The main object for a outstation. The defaults are useable,
     // but understanding the options are important.

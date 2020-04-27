@@ -21,19 +21,18 @@
 #define OPENDNP3_IMASTEROPERATIONS_H
 
 #include "opendnp3/StackStatistics.h"
-#include "opendnp3/util/TimeDuration.h"
 #include "opendnp3/app/ClassField.h"
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/gen/FunctionCode.h"
 #include "opendnp3/gen/RestartType.h"
+#include "opendnp3/logging/LogLevels.h"
 #include "opendnp3/master/HeaderTypes.h"
 #include "opendnp3/master/ICommandProcessor.h"
 #include "opendnp3/master/IMasterScan.h"
-#include "opendnp3/master/RestartOperationResult.h"
 #include "opendnp3/master/ISOEHandler.h"
+#include "opendnp3/master/RestartOperationResult.h"
 #include "opendnp3/master/TaskConfig.h"
-
-#include <log4cpp/LogLevels.h>
+#include "opendnp3/util/TimeDuration.h"
 
 #include <memory>
 #include <string>
@@ -53,7 +52,7 @@ public:
     /**
      *  @param filters Adjust the filters to this value
      */
-    virtual void SetLogFilters(const log4cpp::LogLevels& filters) = 0;
+    virtual void SetLogFilters(const opendnp3::LogLevels& filters) = 0;
 
     /**
      * Add a recurring user-defined scan from a vector of headers

@@ -41,7 +41,7 @@ public:
                  IMasterApplication& application,
                  std::shared_ptr<ISOEHandler> handler,
                  const TaskBehavior& behavior,
-                 const log4cpp::Logger& logger,
+                 const Logger& logger,
                  TaskConfig config);
 
     virtual const char* Name() const override

@@ -22,7 +22,7 @@
 namespace opendnp3
 {
 
-OutstationStack::OutstationStack(const log4cpp::Logger& logger,
+OutstationStack::OutstationStack(const Logger& logger,
                                  const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                  const std::shared_ptr<ICommandHandler>& commandHandler,
                                  const std::shared_ptr<IOutstationApplication>& application,
@@ -38,7 +38,7 @@ OutstationStack::OutstationStack(const log4cpp::Logger& logger,
                 manager,
                 config.outstation.params.maxRxFragSize,
                 LinkLayerConfig(config.link, config.outstation.params.respondToAnyMaster)),
-               ocontext(Addresses(config.link.LocalAddr, config.link.RemoteAddr),
+      ocontext(Addresses(config.link.LocalAddr, config.link.RemoteAddr),
                config.outstation,
                config.database,
                logger,
@@ -47,7 +47,7 @@ OutstationStack::OutstationStack(const log4cpp::Logger& logger,
                commandHandler,
                application)
 {
-    this->tstack.transport->SetAppLayer(ocontext);    
+    this->tstack.transport->SetAppLayer(ocontext);
 }
 
 bool OutstationStack::Enable()
@@ -73,7 +73,7 @@ StackStatistics OutstationStack::GetStackStatistics()
     return this->executor->return_from<StackStatistics>(get);
 }
 
-void OutstationStack::SetLogFilters(const log4cpp::LogLevels& filters)
+void OutstationStack::SetLogFilters(const LogLevels& filters)
 {
     auto set = [self = this->shared_from_this(), filters]() { self->logger.set_levels(filters); };
     this->executor->post(set);

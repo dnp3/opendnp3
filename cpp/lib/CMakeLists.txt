@@ -5,7 +5,6 @@ set(opendnp3_public_headers
     ./include/opendnp3/ErrorCodes.h
     ./include/opendnp3/IResource.h
     ./include/opendnp3/IStack.h
-    ./include/opendnp3/LogLevels.h
     ./include/opendnp3/StackStatistics.h
 
     ./include/opendnp3/app/AnalogCommandEvent.h
@@ -117,6 +116,10 @@ set(opendnp3_public_headers
     ./include/opendnp3/link/LinkConfig.h
     ./include/opendnp3/link/LinkHeaderFields.h
     ./include/opendnp3/link/LinkStatistics.h
+
+    ./include/opendnp3/logging/ILogHandler.h
+    ./include/opendnp3/logging/LogLevels.h
+    ./include/opendnp3/logging/Logger.h
 
     ./include/opendnp3/master/CommandPointResult.h
     ./include/opendnp3/master/CommandResultCallbackT.h
@@ -326,6 +329,12 @@ set(opendnp3_private_headers
     ./src/link/ShiftableBuffer.h
     ./src/link/Singleton.h
 
+    ./src/logging/ConsolePrettyPrinter.h
+    ./src/logging/HexLogging.h
+    ./src/logging/Location.h
+    ./src/logging/LogMacros.h
+    ./src/logging/Strings.h
+
     ./src/master/AssignClassTask.h
     ./src/master/ClearRestartTask.h
     ./src/master/CommandSetOps.h
@@ -428,9 +437,7 @@ set(opendnp3_src
     ./src/ConsoleLogger.cpp
     ./src/DNP3Manager.cpp
     ./src/DNP3ManagerImpl.cpp
-    ./src/ErrorCodes.cpp
-    ./src/LogLevels.cpp
-    ./src/ResourceManager.cpp    
+    ./src/ResourceManager.cpp
 
     ./src/app/AnalogCommandEvent.cpp
     ./src/app/AnalogOutput.cpp
@@ -593,6 +600,8 @@ set(opendnp3_src
     ./src/link/SecLinkLayerStates.cpp
     ./src/link/ShiftableBuffer.cpp
 
+    ./src/logging/LogLevels.cpp
+
     ./src/master/AssignClassTask.cpp
     ./src/master/ClearRestartTask.cpp
     ./src/master/CommandSet.cpp
@@ -669,7 +678,7 @@ set(opendnp3_src
     ./src/transport/TransportStack.cpp
     ./src/transport/TransportTx.cpp
 
-	./src/util/TimeDuration.cpp
+    ./src/util/TimeDuration.cpp
     ./src/util/Timestamp.cpp
 )
 
@@ -702,15 +711,11 @@ source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${all_sources})
 
 add_library(opendnp3 ${all_sources})
 target_compile_features(opendnp3 PUBLIC cxx_std_14)
-target_link_libraries(opendnp3
-    PUBLIC log4cpp
-    PRIVATE ser4cpp exe4cpp asio
-)
-target_include_directories(opendnp3
-    PUBLIC
-        $<INSTALL_INTERFACE:include>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
+target_link_libraries(opendnp3 PRIVATE
+    $<BUILD_INTERFACE:ser4cpp>
+    $<BUILD_INTERFACE:exe4cpp>
+    $<BUILD_INTERFACE:asio>
+    $<$<BOOL:${DNP3_TLS}>:OpenSSL::SSL>
 )
 target_include_directories(opendnp3
     PUBLIC
@@ -721,7 +726,6 @@ target_include_directories(opendnp3
 set_target_properties(opendnp3 PROPERTIES FOLDER cpp/lib)
 
 if(DNP3_TLS)
-    target_link_libraries(opendnp3 PRIVATE OpenSSL::SSL)
     target_compile_definitions(opendnp3 PRIVATE OPENDNP3_USE_TLS)
 endif()
 
@@ -730,6 +734,10 @@ install(TARGETS opendnp3
     RUNTIME DESTINATION bin
     ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib
+)
+install(EXPORT opendnp3-export
+    NAMESPACE opendnp3::
+    DESTINATION lib/cmake
 )
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
     DESTINATION include

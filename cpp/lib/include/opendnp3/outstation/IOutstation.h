@@ -21,9 +21,8 @@
 #define OPENDNP3_IOUTSTATION_H
 
 #include "opendnp3/IStack.h"
+#include "opendnp3/logging/LogLevels.h"
 #include "opendnp3/outstation/Updates.h"
-
-#include <log4cpp/LogLevels.h>
 
 namespace opendnp3
 {
@@ -40,7 +39,7 @@ public:
     /**
      *  @param filters Adjust the filters to this value
      */
-    virtual void SetLogFilters(const log4cpp::LogLevels& filters) = 0;
+    virtual void SetLogFilters(const opendnp3::LogLevels& filters) = 0;
 
     /**
      * Sets the restart IIN bit. Normally applications should not

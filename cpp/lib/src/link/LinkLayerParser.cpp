@@ -21,15 +21,14 @@
 
 #include "link/CRC.h"
 #include "link/IFrameSink.h"
+#include "logging/LogMacros.h"
 
-#include "opendnp3/LogLevels.h"
-
-#include <log4cpp/LogMacros.h>
+#include "opendnp3/logging/LogLevels.h"
 
 namespace opendnp3
 {
 
-LinkLayerParser::LinkLayerParser(const log4cpp::Logger& logger)
+LinkLayerParser::LinkLayerParser(const Logger& logger)
     : logger(logger), state(State::FindSync), frameSize(0), buffer(rxBuffer, LPDU_MAX_FRAME_SIZE)
 {
 }
@@ -216,7 +215,8 @@ bool LinkLayerParser::ValidateHeaderParameters()
     if (should_have_payload && !has_payload)
     {
         ++statistics.numBadLength;
-        FORMAT_LOG_BLOCK(logger, flags::ERR, "User data with no payload. FUNCTION: %s", LinkFunctionSpec::to_human_string(func));
+        FORMAT_LOG_BLOCK(logger, flags::ERR, "User data with no payload. FUNCTION: %s",
+                         LinkFunctionSpec::to_human_string(func));
         return false;
     }
 

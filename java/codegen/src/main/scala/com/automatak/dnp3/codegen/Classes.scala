@@ -156,7 +156,8 @@ object Classes {
     ClassConfig(classOf[IPEndpoint], Set(Features.Fields)),
     ClassConfig(classOf[NumRetries], Set(Features.Fields)),
     ClassConfig(classOf[CommandHeaders], Set.empty),
-    ClassConfig(classOf[impl.DatabaseImpl], Set(Features.Constructors))
+    ClassConfig(classOf[impl.DatabaseImpl], Set(Features.Constructors)),
+    ClassConfig(classOf[DNP3Exception], Set(Features.Constructors))
   )
 
 

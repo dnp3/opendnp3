@@ -20,23 +20,22 @@
 #include "APDUHeaderParser.h"
 
 #include "app/APDUHeader.h"
+#include "logging/LogMacros.h"
 
-#include "opendnp3/LogLevels.h"
+#include "opendnp3/logging/LogLevels.h"
 #include "opendnp3/util/Uncopyable.h"
 
 #include <ser4cpp/container/SequenceTypes.h>
 
-#include <log4cpp/LogMacros.h>
-
 namespace opendnp3
 {
 
-APDUHeaderParser::Result<APDUHeader> APDUHeaderParser::ParseRequest(const ser4cpp::rseq_t& apdu,
-                                                                    log4cpp::Logger* logger)
+APDUHeaderParser::Result<APDUHeader> APDUHeaderParser::ParseRequest(const ser4cpp::rseq_t& apdu, Logger* logger)
 {
     if (apdu.length() < APDUHeader::REQUEST_SIZE)
     {
-        FORMAT_LOGGER_BLOCK(logger, flags::WARN, "Request fragment  with insufficient size of %zu bytes", apdu.length());
+        FORMAT_LOGGER_BLOCK(logger, flags::WARN, "Request fragment  with insufficient size of %zu bytes",
+                            apdu.length());
         return Result<APDUHeader>::Error();
     }
 
@@ -45,11 +44,12 @@ APDUHeaderParser::Result<APDUHeader> APDUHeaderParser::ParseRequest(const ser4cp
 }
 
 APDUHeaderParser::Result<APDUResponseHeader> APDUHeaderParser::ParseResponse(const ser4cpp::rseq_t& apdu,
-                                                                             log4cpp::Logger* logger)
+                                                                             Logger* logger)
 {
     if (apdu.length() < APDUHeader::RESPONSE_SIZE)
     {
-        FORMAT_LOGGER_BLOCK(logger, flags::WARN, "Response fragment  with insufficient size of %zu bytes", apdu.length());
+        FORMAT_LOGGER_BLOCK(logger, flags::WARN, "Response fragment  with insufficient size of %zu bytes",
+                            apdu.length());
         return Result<APDUResponseHeader>::Error();
     }
 

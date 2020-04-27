@@ -20,16 +20,16 @@
 
 #include "channel/tls/TLSServer.h"
 
-#include "opendnp3/LogLevels.h"
+#include "logging/LogMacros.h"
 
-#include <log4cpp/LogMacros.h>
+#include "opendnp3/logging/LogLevels.h"
 
 #include <sstream>
 
 namespace opendnp3
 {
 
-TLSServer::TLSServer(const log4cpp::Logger& logger,
+TLSServer::TLSServer(const Logger& logger,
                      const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                      const IPEndpoint& endpoint,
                      const TLSConfig& config,
@@ -48,7 +48,7 @@ TLSServer::TLSServer(const log4cpp::Logger& logger,
 
 void TLSServer::Shutdown()
 {
-    if(this->isShutdown)
+    if (this->isShutdown)
         return;
 
     this->isShutdown = true;
@@ -88,8 +88,10 @@ std::error_code TLSServer::ConfigureListener(const std::string& adapter, std::er
     return ec;
 }
 
-void TLSServer::StartAccept(std::error_code& ec)
+void TLSServer::StartAccept()
 {
+    std::error_code ec;
+
     const auto ID = this->session_id;
     ++this->session_id;
 
@@ -120,7 +122,7 @@ void TLSServer::StartAccept(std::error_code& ec)
         // With epoll, even if the acceptor was closed, if a socket was accepted
         // and put in ASIO handler queue, it will survive up to here.
         // So we need to make sure we are still alive before really accepting the connection.
-        if(self->isShutdown)
+        if (self->isShutdown)
         {
             return;
         }
@@ -129,12 +131,12 @@ void TLSServer::StartAccept(std::error_code& ec)
         // We simply ignore it.
         if (!stream->lowest_layer().is_open())
         {
-            self->StartAccept(ec);
+            self->StartAccept();
             return;
         }
 
         // begin accepting another session
-        self->StartAccept(ec);
+        self->StartAccept();
 
         if (!self->AcceptConnection(ID, stream->lowest_layer().remote_endpoint()))
         {

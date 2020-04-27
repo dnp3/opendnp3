@@ -21,13 +21,12 @@
 #ifndef OPENDNP3_ASIOTESTS_MOCKTCPPAIR_H
 #define OPENDNP3_ASIOTESTS_MOCKTCPPAIR_H
 
+#include "channel/TCPClient.h"
 #include "mocks/MockIO.h"
 #include "mocks/MockTCPClientHandler.h"
 #include "mocks/MockTCPServer.h"
 
-#include "channel/TCPClient.h"
-
-#include <log4cpp/MockLogHandler.h>
+#include <dnp3mocks/MockLogHandler.h>
 
 class MockTCPPair
 {
@@ -42,7 +41,7 @@ public:
     bool NumConnectionsEqual(size_t num) const;
 
 private:
-    log4cpp::MockLogHandler log;
+    MockLogHandler log;
     std::shared_ptr<MockIO> io;
     uint16_t port;
     std::shared_ptr<MockTCPClientHandler> chandler;

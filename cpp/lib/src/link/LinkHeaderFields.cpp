@@ -26,8 +26,7 @@ LinkHeaderFields::LinkHeaderFields()
 {
 }
 
-LinkHeaderFields::LinkHeaderFields(
-    LinkFunction func_, bool isMaster_, bool fcb_, bool fcvdfc_, Addresses addresses_)
+LinkHeaderFields::LinkHeaderFields(LinkFunction func_, bool isMaster_, bool fcb_, bool fcvdfc_, Addresses addresses_)
     : func(func_), isFromMaster(isMaster_), fcb(fcb_), fcvdfc(fcvdfc_), addresses(addresses_)
 {
 }

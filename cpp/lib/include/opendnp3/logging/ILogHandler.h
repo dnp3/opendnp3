@@ -17,27 +17,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#ifndef OPENDNP3_ILOGHANDLER_H
+#define OPENDNP3_ILOGHANDLER_H
 
-#include "opendnp3/ErrorCodes.h"
+#include "opendnp3/logging/LogLevels.h"
 
 namespace opendnp3
 {
 
-ErrorCategory ErrorCategory::instance;
-
-std::string ErrorCategory::message(int ev) const
+/**
+ * Callback interface for log messages
+ */
+class ILogHandler
 {
-    switch (ev)
-    {
-    case (static_cast<int>(Error::SHUTTING_DOWN)):
-        return "The operation was requested while the resource was shutting down";
-    case (static_cast<int>(Error::NO_TLS_SUPPORT)):
-        return "Not built with TLS support";
-    case (static_cast<int>(Error::NO_SERIAL_SUPPORT)):
-        return "Not built with serial support";
-    default:
-        return "unknown error";
-    };
-}
+public:
+    virtual ~ILogHandler() {}
+
+    /**
+     * Callback method for log messages
+     *
+     * @param module ModuleId of the logger
+     * @param id string id of the logger
+     * @param level bitfield LogLevel of the logger
+     * @param location location in the source of the log call
+     * @param message message of the log call
+     */
+    virtual void log(ModuleId module, const char* id, LogLevel level, char const* location, char const* message) = 0;
+};
 
 } // namespace opendnp3
+
+#endif // OPENDNP3_ILOGHANDLER_H

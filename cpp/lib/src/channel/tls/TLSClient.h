@@ -42,7 +42,7 @@ public:
                                const std::error_code& ec)>
         connect_callback_t;
 
-    static std::shared_ptr<TLSClient> Create(const log4cpp::Logger& logger,
+    static std::shared_ptr<TLSClient> Create(const Logger& logger,
                                              const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                              const std::string& adapter,
                                              const TLSConfig& config,
@@ -52,7 +52,7 @@ public:
         return ec ? nullptr : ret;
     }
 
-    TLSClient(const log4cpp::Logger& logger,
+    TLSClient(const Logger& logger,
               const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
               std::string adapter,
               const TLSConfig& config,
@@ -76,7 +76,7 @@ private:
 
     bool canceled = false;
 
-    log4cpp::Logger logger;
+    Logger logger;
     LoggingConnectionCondition condition;
     const std::shared_ptr<exe4cpp::StrandExecutor> executor;
     const std::string adapter;

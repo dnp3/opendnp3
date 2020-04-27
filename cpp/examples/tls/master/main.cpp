@@ -17,11 +17,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <opendnp3/LogLevels.h>
 
 #include <opendnp3/ConsoleLogger.h>
 #include <opendnp3/DNP3Manager.h>
 #include <opendnp3/channel/PrintingChannelListener.h>
+#include <opendnp3/logging/LogLevels.h>
 #include <opendnp3/master/DefaultMasterApplication.h>
 #include <opendnp3/master/PrintingCommandResultCallback.h>
 #include <opendnp3/master/PrintingSOEHandler.h>
@@ -51,18 +51,10 @@ int main(int argc, char* argv[])
     // send log messages to the console
     DNP3Manager manager(1, ConsoleLogger::Create());
 
-    std::error_code ec;
-
     // Connect via a TCPClient socket to a outstation
     auto channel = manager.AddTLSClient(
         "tls-client", logLevels, ChannelRetry::Default(), {IPEndpoint("127.0.0.1", 20001)}, "0.0.0.0",
-        TLSConfig(peerCertificate, privateKey, privateKey), PrintingChannelListener::Create(), ec);
-
-    if (ec)
-    {
-        std::cout << "Unable to create tls client: " << ec.message() << std::endl;
-        return ec.value();
-    }
+        TLSConfig(peerCertificate, privateKey, privateKey), PrintingChannelListener::Create());
 
     // The master config object for a master. The default are
     // useable, but understanding the options are important.

@@ -21,10 +21,9 @@
 #include "channel/tls/TLSServerIOHandler.h"
 
 #include "channel/tls/TLSStreamChannel.h"
+#include "logging/LogMacros.h"
 
-#include "opendnp3/LogLevels.h"
-
-#include <log4cpp/LogMacros.h>
+#include "opendnp3/logging/LogLevels.h"
 
 #include <utility>
 
@@ -38,7 +37,7 @@ void TLSServerIOHandler::Server::AcceptStream(uint64_t /*sessionid*/,
     this->callback(TLSStreamChannel::Create(executor, stream));
 }
 
-TLSServerIOHandler::TLSServerIOHandler(const log4cpp::Logger& logger,
+TLSServerIOHandler::TLSServerIOHandler(const Logger& logger,
                                        ServerAcceptMode mode,
                                        const std::shared_ptr<IChannelListener>& listener,
                                        std::shared_ptr<exe4cpp::StrandExecutor> executor,
@@ -76,8 +75,7 @@ void TLSServerIOHandler::BeginChannelAccept()
     }
     else
     {
-        this->server->StartAcceptingConnection(callback, ec);
-        FORMAT_LOG_BLOCK(this->logger, flags::ERR, "Unable to begin accepting connections: %s", ec.message().c_str());
+        this->server->StartAcceptingConnection(callback);
     }
 }
 

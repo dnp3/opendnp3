@@ -19,6 +19,10 @@
  */
 #include "utils/APDUHexBuilders.h"
 
+#include "utils/BufferHelpers.h"
+
+#include <opendnp3/app/AppConstants.h>
+
 #include <ser4cpp/container/Buffer.h>
 #include <ser4cpp/util/HexConversions.h>
 
@@ -27,9 +31,6 @@
 #include <app/APDUResponse.h>
 #include <gen/objects/Group12.h>
 #include <gen/objects/Group120.h>
-#include <opendnp3/app/AppConstants.h>
-
-#include "utils/BufferHelpers.h"
 
 using namespace opendnp3;
 using namespace ser4cpp;

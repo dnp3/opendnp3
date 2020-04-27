@@ -20,17 +20,16 @@
 #include "TransportLayer.h"
 
 #include "TransportConstants.h"
+#include "logging/LogMacros.h"
 
-#include "opendnp3/LogLevels.h"
-
-#include <log4cpp/LogMacros.h>
+#include "opendnp3/logging/LogLevels.h"
 
 #include <cassert>
 
 namespace opendnp3
 {
 
-TransportLayer::TransportLayer(const log4cpp::Logger& logger, uint32_t maxRxFragSize)
+TransportLayer::TransportLayer(const Logger& logger, uint32_t maxRxFragSize)
     : logger(logger), receiver(logger, maxRxFragSize), transmitter(logger)
 {
 }

@@ -29,7 +29,9 @@ class MockTCPClientHandler final
 {
 
 public:
-    void OnConnect(const std::shared_ptr<exe4cpp::StrandExecutor>& executor, asio::ip::tcp::socket socket, const std::error_code& ec);
+    void OnConnect(const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
+                   asio::ip::tcp::socket socket,
+                   const std::error_code& ec);
 
     ~MockTCPClientHandler();
 

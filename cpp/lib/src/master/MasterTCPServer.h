@@ -24,9 +24,8 @@
 #include "channel/TCPServer.h"
 
 #include "opendnp3/channel/IPEndpoint.h"
+#include "opendnp3/logging/Logger.h"
 #include "opendnp3/master/IListenCallbacks.h"
-
-#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {
@@ -39,14 +38,14 @@ class MasterTCPServer final : public TCPServer
 {
 
 public:
-    MasterTCPServer(const log4cpp::Logger& logger,
+    MasterTCPServer(const Logger& logger,
                     const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                     const IPEndpoint& endpoint,
                     std::shared_ptr<IListenCallbacks> callbacks,
                     std::shared_ptr<ResourceManager> manager,
                     std::error_code& ec);
 
-    static std::shared_ptr<MasterTCPServer> Create(const log4cpp::Logger& logger,
+    static std::shared_ptr<MasterTCPServer> Create(const Logger& logger,
                                                    const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                                    const IPEndpoint& endpoint,
                                                    const std::shared_ptr<IListenCallbacks>& callbacks,

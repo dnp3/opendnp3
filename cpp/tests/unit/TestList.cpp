@@ -17,9 +17,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <outstation/event/List.h>
-
 #include <catch.hpp>
+#include <outstation/event/List.h>
 
 using namespace opendnp3;
 

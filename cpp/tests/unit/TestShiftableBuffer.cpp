@@ -19,9 +19,8 @@
  */
 #include <ser4cpp/container/Buffer.h>
 
-#include <link/ShiftableBuffer.h>
-
 #include <catch.hpp>
+#include <link/ShiftableBuffer.h>
 
 #include <cstring>
 

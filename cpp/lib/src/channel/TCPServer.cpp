@@ -20,16 +20,16 @@
 
 #include "channel/TCPServer.h"
 
-#include "opendnp3/LogLevels.h"
+#include "logging/LogMacros.h"
 
-#include <log4cpp/LogMacros.h>
+#include "opendnp3/logging/LogLevels.h"
 
 #include <sstream>
 
 namespace opendnp3
 {
 
-TCPServer::TCPServer(const log4cpp::Logger& logger,
+TCPServer::TCPServer(const Logger& logger,
                      const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                      const IPEndpoint& endpoint,
                      std::error_code& ec)
@@ -44,7 +44,7 @@ TCPServer::TCPServer(const log4cpp::Logger& logger,
 
 void TCPServer::Shutdown()
 {
-    if(this->isShutdown)
+    if (this->isShutdown)
         return;
 
     this->isShutdown = true;
@@ -113,11 +113,11 @@ void TCPServer::StartAccept()
             // With epoll, even if the acceptor was closed, if a socket was accepted
             // and put in ASIO handler queue, it will survive up to here.
             // So we need to make sure we are still alive before really accepting the connection.
-            if(self->isShutdown)
+            if (self->isShutdown)
             {
                 return;
             }
-            
+
             // For an unknown reason, the socket may not be properly opened when accepted.
             // We simply ignore it.
             if (!self->socket.is_open())

@@ -19,12 +19,12 @@
  */
 #include "utils/TransportTestObject.h"
 
-#include <ser4cpp/util/HexConversions.h>
+#include "transport/TransportHeader.h"
+#include "utils/BufferHelpers.h"
 
 #include "opendnp3/app/AppConstants.h"
-#include "transport/TransportHeader.h"
 
-#include "utils/BufferHelpers.h"
+#include <ser4cpp/util/HexConversions.h>
 
 #include <memory>
 #include <sstream>

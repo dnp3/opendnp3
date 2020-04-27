@@ -17,12 +17,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "utils/OutstationTestObject.h"
 #include "utils/APDUHexBuilders.h"
-
-#include <dnp3mocks/DatabaseHelpers.h>
+#include "utils/OutstationTestObject.h"
 
 #include <ser4cpp/util/HexConversions.h>
+
+#include <dnp3mocks/DatabaseHelpers.h>
 
 #include <catch.hpp>
 
@@ -58,7 +58,8 @@ void TestFreezeOperation(std::string func, std::function<std::string(uint8_t)> f
 
     // Read all frozen counters
     t.SendToOutstation("C1 01 15 00 06");
-    REQUIRE(t.lower->PopWriteAsHex() == "C1 81 80 00 15 05 00 00 00 01 00 00 00 00 00 00 00 00 00 00"); // Frozen value at 0
+    REQUIRE(t.lower->PopWriteAsHex()
+            == "C1 81 80 00 15 05 00 00 00 01 00 00 00 00 00 00 00 00 00 00"); // Frozen value at 0
     t.OnTxReady();
 
     // Update the counters
@@ -66,7 +67,8 @@ void TestFreezeOperation(std::string func, std::function<std::string(uint8_t)> f
 
     // Read all frozen counters
     t.SendToOutstation("C2 01 15 00 06");
-    REQUIRE(t.lower->PopWriteAsHex() == "C2 81 80 00 15 05 00 00 00 01 00 00 00 00 00 00 00 00 00 00"); // Frozen value still at 0
+    REQUIRE(t.lower->PopWriteAsHex()
+            == "C2 81 80 00 15 05 00 00 00 01 00 00 00 00 00 00 00 00 00 00"); // Frozen value still at 0
     t.OnTxReady();
 
     // Change time of application
@@ -79,14 +81,17 @@ void TestFreezeOperation(std::string func, std::function<std::string(uint8_t)> f
 
     // Read all frozen counters
     t.SendToOutstation("C4 01 15 00 06");
-    REQUIRE(t.lower->PopWriteAsHex() == "C4 81 80 00 15 05 00 00 00 01 29 00 00 00 " + freezeTimestampHex); // Frozen value now at 41
+    REQUIRE(t.lower->PopWriteAsHex()
+            == "C4 81 80 00 15 05 00 00 00 01 29 00 00 00 " + freezeTimestampHex); // Frozen value now at 41
     t.OnTxReady();
 
     std::string expectedCounterValue = clear ? "00" : counterValueHex;
 
     // Read all counters
     t.SendToOutstation("C5 01 14 00 06");
-    REQUIRE(t.lower->PopWriteAsHex() == "C5 81 80 00 14 01 00 00 00 01 " + expectedCounterValue + " 00 00 00"); // Check if counter value is reset (if necessary)
+    REQUIRE(t.lower->PopWriteAsHex()
+            == "C5 81 80 00 14 01 00 00 00 01 " + expectedCounterValue
+                + " 00 00 00"); // Check if counter value is reset (if necessary)
     t.OnTxReady();
 }
 
@@ -139,7 +144,8 @@ TEST_CASE(SUITE("Broadcast Support"))
 
     // Read all frozen counters
     t.SendToOutstation("C1 01 15 00 06");
-    REQUIRE(t.lower->PopWriteAsHex() == "C1 81 81 00 15 05 00 00 00 01 00 00 00 00 00 00 00 00 00 00"); // Frozen value at 0
+    REQUIRE(t.lower->PopWriteAsHex()
+            == "C1 81 81 00 15 05 00 00 00 01 00 00 00 00 00 00 00 00 00 00"); // Frozen value at 0
     t.OnTxReady();
 
     // Update the counters
@@ -147,7 +153,8 @@ TEST_CASE(SUITE("Broadcast Support"))
 
     // Read all frozen counters
     t.SendToOutstation("C2 01 15 00 06");
-    REQUIRE(t.lower->PopWriteAsHex() == "C2 81 80 00 15 05 00 00 00 01 00 00 00 00 00 00 00 00 00 00"); // Frozen value still at 0
+    REQUIRE(t.lower->PopWriteAsHex()
+            == "C2 81 80 00 15 05 00 00 00 01 00 00 00 00 00 00 00 00 00 00"); // Frozen value still at 0
     t.OnTxReady();
 
     // Change time of application
@@ -160,7 +167,8 @@ TEST_CASE(SUITE("Broadcast Support"))
 
     // Read all frozen counters
     t.SendToOutstation("C4 01 15 00 06");
-    REQUIRE(t.lower->PopWriteAsHex() == "C4 81 81 00 15 05 00 00 00 01 29 00 00 00 " + freezeTimestampHex); // Frozen value now at 41
+    REQUIRE(t.lower->PopWriteAsHex()
+            == "C4 81 81 00 15 05 00 00 00 01 29 00 00 00 " + freezeTimestampHex); // Frozen value now at 41
     t.OnTxReady();
 
     // Read all counters
@@ -184,15 +192,16 @@ TEST_CASE(SUITE("Range freeze"))
 
     // Read all frozen counters
     t.SendToOutstation("C0 01 15 00 06");
-    REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 15 01 00 00 09 "
-        "01 00 00 00 00 01 00 00 00 00 "
-        "01 00 00 00 00 01 00 00 00 00 01 00 00 00 00 01 00 00 00 00 01 00 00 00 00 "
-        "01 00 00 00 00 01 00 00 00 00 01 00 00 00 00"); // Frozen value at 0
+    REQUIRE(t.lower->PopWriteAsHex()
+            == "C0 81 80 00 15 01 00 00 09 "
+               "01 00 00 00 00 01 00 00 00 00 "
+               "01 00 00 00 00 01 00 00 00 00 01 00 00 00 00 01 00 00 00 00 01 00 00 00 00 "
+               "01 00 00 00 00 01 00 00 00 00 01 00 00 00 00"); // Frozen value at 0
     t.OnTxReady();
 
     // Update the counters
     t.Transaction([=](IUpdateHandler& db) {
-        for(uint16_t i = 0; i < num_counters; ++i)
+        for (uint16_t i = 0; i < num_counters; ++i)
         {
             db.Update(Counter(counterValue), i);
         }
@@ -205,9 +214,10 @@ TEST_CASE(SUITE("Range freeze"))
 
     // Read all frozen counters
     t.SendToOutstation("C2 01 15 00 06");
-    REQUIRE(t.lower->PopWriteAsHex() == "C2 81 80 00 15 01 00 00 09 "
-        "01 00 00 00 00 01 00 00 00 00 "
-        "01 29 00 00 00 01 29 00 00 00 01 29 00 00 00 01 29 00 00 00 01 29 00 00 00 "
-        "01 00 00 00 00 01 00 00 00 00 01 00 00 00 00"); // Frozen values are updated
+    REQUIRE(t.lower->PopWriteAsHex()
+            == "C2 81 80 00 15 01 00 00 09 "
+               "01 00 00 00 00 01 00 00 00 00 "
+               "01 29 00 00 00 01 29 00 00 00 01 29 00 00 00 01 29 00 00 00 01 29 00 00 00 "
+               "01 00 00 00 00 01 00 00 00 00 01 00 00 00 00"); // Frozen values are updated
     t.OnTxReady();
 }

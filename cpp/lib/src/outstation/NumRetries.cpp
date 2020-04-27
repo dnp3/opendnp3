@@ -24,11 +24,8 @@ namespace opendnp3
 {
 
 NumRetries::NumRetries(std::size_t maxNumRetries, bool isInfinite)
-    : numRetries(0),
-      maxNumRetries(maxNumRetries),
-      isInfinite(isInfinite)
+    : numRetries(0), maxNumRetries(maxNumRetries), isInfinite(isInfinite)
 {
-
 }
 
 NumRetries NumRetries::Fixed(std::size_t maxNumRetries)

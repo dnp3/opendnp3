@@ -35,7 +35,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_set_1log_1level_1
                                                                                        jint levels)
 {
     const auto master = (std::shared_ptr<opendnp3::IMaster>*)native;
-    (*master)->SetLogFilters(log4cpp::LogLevel(levels));
+    (*master)->SetLogFilters(opendnp3::LogLevel(levels));
 }
 
 JNIEXPORT jobject JNICALL Java_com_automatak_dnp3_impl_MasterImpl_get_1statistics_1native(JNIEnv* env,

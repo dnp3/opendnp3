@@ -35,7 +35,7 @@ class ClearRestartTask final : public IMasterTask
 public:
     ClearRestartTask(const std::shared_ptr<TaskContext>& context,
                      IMasterApplication& application,
-                     const log4cpp::Logger& logger);
+                     const Logger& logger);
 
     virtual char const* Name() const override
     {

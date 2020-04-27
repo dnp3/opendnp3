@@ -23,20 +23,20 @@
 
 #include "app/APDUHeader.h"
 
-#include <ser4cpp/container/SequenceTypes.h>
+#include "opendnp3/logging/Logger.h"
 
-#include <log4cpp/Logger.h>
+#include <ser4cpp/container/SequenceTypes.h>
 
 namespace opendnp3
 {
 namespace logging
 {
 
-    void LogHeader(log4cpp::Logger& logger, const log4cpp::LogLevel& flags, const APDUHeader& header);
-    void LogHeader(log4cpp::Logger& logger, const log4cpp::LogLevel& flags, const APDUResponseHeader& header);
+    void LogHeader(Logger& logger, const opendnp3::LogLevel& flags, const APDUHeader& header);
+    void LogHeader(Logger& logger, const opendnp3::LogLevel& flags, const APDUResponseHeader& header);
 
-    void ParseAndLogRequestTx(log4cpp::Logger& logger, const ser4cpp::rseq_t& apdu);
-    void ParseAndLogResponseTx(log4cpp::Logger& logger, const ser4cpp::rseq_t& apdu);
+    void ParseAndLogRequestTx(Logger& logger, const ser4cpp::rseq_t& apdu);
+    void ParseAndLogResponseTx(Logger& logger, const ser4cpp::rseq_t& apdu);
 
 } // namespace logging
 } // namespace opendnp3

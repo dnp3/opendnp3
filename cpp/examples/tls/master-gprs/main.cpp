@@ -17,10 +17,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <opendnp3/LogLevels.h>
 
 #include <opendnp3/ConsoleLogger.h>
 #include <opendnp3/DNP3Manager.h>
+#include <opendnp3/logging/LogLevels.h>
 #include <opendnp3/master/DefaultListenCallbacks.h>
 
 #include <iostream>
@@ -56,15 +56,8 @@ int main(int argc, char* argv[])
     // This is the main point of interaction with the stack
     DNP3Manager manager(numThread, ConsoleLogger::Create());
 
-    std::error_code ec;
     auto server1 = manager.CreateListener("server-20001", logLevels, IPEndpoint::AllAdapters(20001),
-                                          TLSConfig(caCertificate, certificateChain, privateKey, 2), callbacks, ec);
-
-    if (ec)
-    {
-        std::cout << ec.message() << std::endl;
-        return ec.value();
-    }
+                                          TLSConfig(caCertificate, certificateChain, privateKey, 2), callbacks);
 
     do
     {

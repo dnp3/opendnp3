@@ -39,7 +39,7 @@ public:
                          const Timestamp& startTimeout,
                          RestartType operationType,
                          RestartOperationCallbackT callback,
-                         const log4cpp::Logger& logger,
+                         const Logger& logger,
                          const TaskConfig& config);
 
     bool BuildRequest(APDURequest& request, uint8_t seq) override;

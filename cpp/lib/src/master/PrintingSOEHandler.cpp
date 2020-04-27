@@ -24,7 +24,7 @@ namespace opendnp3
 
 std::ostream& operator<<(std::ostream& os, const ResponseInfo& info)
 {
-    os << "unsolicited: " << info.unsolicited << " fir: " << info.fir << " fin: " << info.fin;    
+    os << "unsolicited: " << info.unsolicited << " fir: " << info.fir << " fin: " << info.fin;
     return os;
 }
 

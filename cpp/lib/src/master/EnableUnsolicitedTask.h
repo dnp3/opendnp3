@@ -40,7 +40,7 @@ public:
                           IMasterApplication& app,
                           const TaskBehavior& behavior,
                           ClassField enabledClasses,
-                          const log4cpp::Logger& logger);
+                          const Logger& logger);
 
     virtual bool IsRecurring() const override
     {

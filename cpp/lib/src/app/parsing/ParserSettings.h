@@ -20,7 +20,7 @@
 #ifndef OPENDNP3_PARSERSETTINGS_H
 #define OPENDNP3_PARSERSETTINGS_H
 
-#include "opendnp3/LogLevels.h"
+#include "opendnp3/logging/LogLevels.h"
 
 namespace opendnp3
 {
@@ -28,17 +28,17 @@ namespace opendnp3
 class ParserSettings
 {
 public:
-    static ParserSettings NoContents(log4cpp::LogLevel logLevel = flags::APP_OBJECT_RX)
+    static ParserSettings NoContents(LogLevel logLevel = flags::APP_OBJECT_RX)
     {
         return ParserSettings(false, logLevel);
     }
 
-    static ParserSettings Default(log4cpp::LogLevel logLevel = flags::APP_OBJECT_RX)
+    static ParserSettings Default(LogLevel logLevel = flags::APP_OBJECT_RX)
     {
         return ParserSettings(true, logLevel);
     }
 
-    static ParserSettings Create(bool expectContents = true, log4cpp::LogLevel logLevel = flags::APP_OBJECT_RX)
+    static ParserSettings Create(bool expectContents = true, LogLevel logLevel = flags::APP_OBJECT_RX)
     {
         return ParserSettings(expectContents, logLevel);
     }
@@ -48,19 +48,19 @@ public:
         return expectContents;
     }
 
-    inline log4cpp::LogLevel LogLevel() const
+    inline LogLevel LoggingLevel() const
     {
         return logLevel;
     }
 
 private:
-    ParserSettings(bool expectContents_ = true, log4cpp::LogLevel logLevel_ = flags::APP_OBJECT_RX)
+    ParserSettings(bool expectContents_ = true, LogLevel logLevel_ = flags::APP_OBJECT_RX)
         : expectContents(expectContents_), logLevel(logLevel_)
     {
     }
 
     const bool expectContents;
-    const log4cpp::LogLevel logLevel;
+    const LogLevel logLevel;
 };
 } // namespace opendnp3
 

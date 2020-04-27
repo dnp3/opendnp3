@@ -20,9 +20,9 @@
 #ifndef OPENDNP3_DNP3SERIALIZER_H
 #define OPENDNP3_DNP3SERIALIZER_H
 
-#include "opendnp3/app/GroupVariationID.h"
-
 #include "Serializer.h"
+
+#include "opendnp3/app/GroupVariationID.h"
 
 namespace opendnp3
 {

@@ -34,7 +34,7 @@ RestartOperationTask::RestartOperationTask(const std::shared_ptr<TaskContext>& c
                                            const Timestamp& startTimeout,
                                            RestartType operationType,
                                            RestartOperationCallbackT callback,
-                                           const log4cpp::Logger& logger,
+                                           const Logger& logger,
                                            const TaskConfig& config)
     : IMasterTask(context, app, TaskBehavior::SingleExecutionNoRetry(startTimeout), logger, config),
       function((operationType == RestartType::COLD) ? FunctionCode::COLD_RESTART : FunctionCode::WARM_RESTART),

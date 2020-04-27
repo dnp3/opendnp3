@@ -20,13 +20,12 @@
 #ifndef OPENDNP3_LINKFRAME_H
 #define OPENDNP3_LINKFRAME_H
 
-#include "opendnp3/util/StaticOnly.h"
 #include "opendnp3/gen/FunctionCode.h"
 #include "opendnp3/gen/LinkFunction.h"
+#include "opendnp3/logging/Logger.h"
+#include "opendnp3/util/StaticOnly.h"
 
 #include <ser4cpp/container/SequenceTypes.h>
-
-#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {
@@ -39,54 +38,38 @@ public:
     //	Functions for formatting outgoing Sec to Pri frames
     ////////////////////////////////////////////////
 
-    static ser4cpp::rseq_t FormatAck(ser4cpp::wseq_t& buffer,
-                                     bool aIsMaster,
-                                     bool aIsRcvBuffFull,
-                                     uint16_t aDest,
-                                     uint16_t aSrc,
-                                     log4cpp::Logger* pLogger);
-    static ser4cpp::rseq_t FormatNack(ser4cpp::wseq_t& buffer,
-                                      bool aIsMaster,
-                                      bool aIsRcvBuffFull,
-                                      uint16_t aDest,
-                                      uint16_t aSrc,
-                                      log4cpp::Logger* pLogger);
-    static ser4cpp::rseq_t FormatLinkStatus(ser4cpp::wseq_t& buffer,
-                                            bool aIsMaster,
-                                            bool aIsRcvBuffFull,
-                                            uint16_t aDest,
-                                            uint16_t aSrc,
-                                            log4cpp::Logger* pLogger);
-    static ser4cpp::rseq_t FormatNotSupported(ser4cpp::wseq_t& buffer,
-                                              bool aIsMaster,
-                                              bool aIsRcvBuffFull,
-                                              uint16_t aDest,
-                                              uint16_t aSrc,
-                                              log4cpp::Logger* pLogger);
+    static ser4cpp::rseq_t FormatAck(
+        ser4cpp::wseq_t& buffer, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, Logger* pLogger);
+    static ser4cpp::rseq_t FormatNack(
+        ser4cpp::wseq_t& buffer, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, Logger* pLogger);
+    static ser4cpp::rseq_t FormatLinkStatus(
+        ser4cpp::wseq_t& buffer, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, Logger* pLogger);
+    static ser4cpp::rseq_t FormatNotSupported(
+        ser4cpp::wseq_t& buffer, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, Logger* pLogger);
 
     ////////////////////////////////////////////////
     //	Functions for formatting outgoing Pri to Sec frames
     ////////////////////////////////////////////////
 
     static ser4cpp::rseq_t FormatTestLinkStatus(
-        ser4cpp::wseq_t& buffer, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, log4cpp::Logger* pLogger);
+        ser4cpp::wseq_t& buffer, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, Logger* pLogger);
     static ser4cpp::rseq_t FormatResetLinkStates(
-        ser4cpp::wseq_t& buffer, bool aIsMaster, uint16_t aDest, uint16_t aSrc, log4cpp::Logger* pLogger);
+        ser4cpp::wseq_t& buffer, bool aIsMaster, uint16_t aDest, uint16_t aSrc, Logger* pLogger);
     static ser4cpp::rseq_t FormatRequestLinkStatus(
-        ser4cpp::wseq_t& buffer, bool aIsMaster, uint16_t aDest, uint16_t aSrc, log4cpp::Logger* pLogger);
+        ser4cpp::wseq_t& buffer, bool aIsMaster, uint16_t aDest, uint16_t aSrc, Logger* pLogger);
     static ser4cpp::rseq_t FormatConfirmedUserData(ser4cpp::wseq_t& buffer,
                                                    bool aIsMaster,
                                                    bool aFcb,
                                                    uint16_t aDest,
                                                    uint16_t aSrc,
                                                    ser4cpp::rseq_t user_data,
-                                                   log4cpp::Logger* pLogger);
+                                                   Logger* pLogger);
     static ser4cpp::rseq_t FormatUnconfirmedUserData(ser4cpp::wseq_t& buffer,
                                                      bool aIsMaster,
                                                      uint16_t aDest,
                                                      uint16_t aSrc,
                                                      ser4cpp::rseq_t user_data,
-                                                     log4cpp::Logger* pLogger);
+                                                     Logger* pLogger);
 
     ////////////////////////////////////////////////
     //	Reusable static formatting functions to any buffer
@@ -127,7 +110,7 @@ private:
                                         LinkFunction aFuncCode,
                                         uint16_t aDest,
                                         uint16_t aSrc,
-                                        log4cpp::Logger* pLogger);
+                                        Logger* pLogger);
 };
 
 } // namespace opendnp3

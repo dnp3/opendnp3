@@ -18,11 +18,9 @@
  * limitations under the License.
  */
 
-#include <log4cpp/Logger.h>
-
 #include <opendnp3/ConsoleLogger.h>
-#include <opendnp3/LogLevels.h>
 #include <opendnp3/decoder/Decoder.h>
+#include <opendnp3/logging/LogLevels.h>
 
 #include <array>
 
@@ -53,7 +51,7 @@ Mode GetMode(const std::string& mode)
 
 int main(int argc, char* argv[])
 {
-    log4cpp::Logger logger(ConsoleLogger::Create(), log4cpp::ModuleId(), "decoder", log4cpp::LogLevels::everything());
+    Logger logger(ConsoleLogger::Create(), ModuleId(), "decoder", LogLevels::everything());
     IDecoderCallbacks callback;
     Decoder decoder(callback, logger);
 

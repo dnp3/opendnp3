@@ -55,14 +55,14 @@ TEST_CASE(SUITE("rejects with ParamError if type doesn't exist"))
 }
 
 TEST_CASE(SUITE("accepts assign class via all objects header"))
-{   
+{
     OutstationTestObject t(OutstationConfig(), configure::by_count_of::binary_input(5));
     t.application->supportsAssignClass = true;
     t.LowerLayerUp();
 
     // assign binaries to class 2
     t.SendToOutstation("C0 16 3C 03 06 01 00 06");
-    REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00");    
+    REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00");
 
     REQUIRE(t.application->classAssignments.size() == 1);
     auto assignment = t.application->classAssignments.front();
@@ -70,7 +70,7 @@ TEST_CASE(SUITE("accepts assign class via all objects header"))
 }
 
 TEST_CASE(SUITE("RejectsAssignClassWithParamErrorIfRangeIsInvalid"))
-{  
+{
     OutstationConfig config;
     OutstationTestObject t(config, configure::by_count_of::binary_input(5));
     t.application->supportsAssignClass = true;
@@ -79,13 +79,12 @@ TEST_CASE(SUITE("RejectsAssignClassWithParamErrorIfRangeIsInvalid"))
     // assign binaries 0 -> 5 (invalid range) to class 2
     t.SendToOutstation("C0 16 3C 03 06 01 00 01 00 00 05 00");
     REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 04");
-   
 
     REQUIRE(t.application->classAssignments.size() == 1);
 }
 
 TEST_CASE(SUITE("AcceptsAssignClassViaStartStop"))
-{    
+{
     OutstationConfig config;
     OutstationTestObject t(config, configure::by_count_of::binary_input(5));
     t.application->supportsAssignClass = true;
@@ -93,7 +92,7 @@ TEST_CASE(SUITE("AcceptsAssignClassViaStartStop"))
 
     // assign binaries 2 - 3 to class 2
     t.SendToOutstation("C0 16 3C 03 06 01 00 01 02 00 03 00");
-    REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00");   
+    REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00");
 
     REQUIRE(t.application->classAssignments.size() == 1);
     auto assignment = t.application->classAssignments.front();

@@ -20,19 +20,18 @@
 #include "TransportTx.h"
 
 #include "TransportHeader.h"
+#include "logging/LogMacros.h"
 
-#include "opendnp3/LogLevels.h"
+#include "opendnp3/logging/LogLevels.h"
 
 #include <ser4cpp/serialization/LittleEndian.h>
-
-#include <log4cpp/LogMacros.h>
 
 #include <cassert>
 
 namespace opendnp3
 {
 
-TransportTx::TransportTx(const log4cpp::Logger& logger) : logger(logger) {}
+TransportTx::TransportTx(const Logger& logger) : logger(logger) {}
 
 void TransportTx::Configure(const Message& message)
 {
@@ -78,7 +77,8 @@ ser4cpp::rseq_t TransportTx::GetSegment()
 bool TransportTx::Advance()
 {
     txSegment.clear();
-    size_t numToSend = this->message.payload.length() < MAX_TPDU_PAYLOAD ? this->message.payload.length() : MAX_TPDU_PAYLOAD;
+    size_t numToSend
+        = this->message.payload.length() < MAX_TPDU_PAYLOAD ? this->message.payload.length() : MAX_TPDU_PAYLOAD;
     this->message.payload.advance(numToSend);
     ++tpduCount;
     sequence.Increment();

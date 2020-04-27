@@ -20,9 +20,10 @@
 #ifndef OPENDNP3_UNITTESTS_MOCKFRAMESINK_H
 #define OPENDNP3_UNITTESTS_MOCKFRAMESINK_H
 
+#include <opendnp3/gen/LinkFunction.h>
+
 #include "dnp3mocks/DataSink.h"
 
-#include <opendnp3/gen/LinkFunction.h>
 #include <link/ILinkSession.h>
 #include <link/LinkLayerConstants.h>
 
@@ -45,7 +46,8 @@ public:
 
     bool CheckLast(opendnp3::LinkFunction func, bool aIsMaster, uint16_t aDest, uint16_t aSrc);
     bool CheckLastWithFCB(opendnp3::LinkFunction func, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc);
-    bool CheckLastWithDFC(opendnp3::LinkFunction func, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
+    bool CheckLastWithDFC(
+        opendnp3::LinkFunction func, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
 
     // Last frame information
     size_t m_num_frames;

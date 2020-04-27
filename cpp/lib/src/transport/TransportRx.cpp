@@ -21,19 +21,18 @@
 
 #include "TransportConstants.h"
 #include "TransportHeader.h"
+#include "logging/LogMacros.h"
 
-#include "opendnp3/LogLevels.h"
+#include "opendnp3/logging/LogLevels.h"
 
 #include <ser4cpp/util/HexConversions.h>
-
-#include <log4cpp/LogMacros.h>
 
 #include <cstring>
 
 namespace opendnp3
 {
 
-TransportRx::TransportRx(const log4cpp::Logger& logger, uint32_t maxRxFragSize)
+TransportRx::TransportRx(const Logger& logger, uint32_t maxRxFragSize)
     : logger(logger), rxBuffer(maxRxFragSize), numBytesRead(0)
 {
 }
@@ -68,8 +67,8 @@ Message TransportRx::ProcessReceive(const Message& segment)
 
     const auto payload = segment.payload.skip(1);
 
-    FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_RX, "FIR: %d FIN: %d SEQ: %u LEN: %zu", header.fir, header.fin, header.seq,
-                     payload.length());
+    FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_RX, "FIR: %d FIN: %d SEQ: %u LEN: %zu", header.fir, header.fin,
+                     header.seq, payload.length());
 
     if (header.fir && this->numBytesRead > 0)
     {

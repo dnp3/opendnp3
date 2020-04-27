@@ -53,7 +53,7 @@ struct DoubleBitBinaryConfig : public EventConfig<DoubleBitBinaryInfo>
 };
 
 struct AnalogConfig : public DeadbandConfig<AnalogInfo>
-{    
+{
 };
 
 struct CounterConfig : public DeadbandConfig<CounterInfo>

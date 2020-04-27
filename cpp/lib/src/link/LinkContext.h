@@ -27,16 +27,15 @@
 #include "link/LinkLayerConstants.h"
 
 #include "opendnp3/StackStatistics.h"
-#include "opendnp3/util/Timestamp.h"
 #include "opendnp3/gen/LinkStatus.h"
 #include "opendnp3/link/ILinkListener.h"
+#include "opendnp3/logging/Logger.h"
+#include "opendnp3/util/Timestamp.h"
 
 #include <ser4cpp/container/Settable.h>
 #include <ser4cpp/container/StaticBuffer.h>
 
 #include <exe4cpp/IExecutor.h>
-
-#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {
@@ -56,7 +55,7 @@ class LinkContext
 {
 
 public:
-    LinkContext(const log4cpp::Logger& logger,
+    LinkContext(const Logger& logger,
                 const std::shared_ptr<exe4cpp::IExecutor>&,
                 std::shared_ptr<IUpperLayer>,
                 std::shared_ptr<ILinkListener>,
@@ -69,17 +68,9 @@ public:
     {
         nextReadFCB = true;
     }
-    void ResetWriteFCB()
-    {
-        nextWriteFCB = true;
-    }
     void ToggleReadFCB()
     {
         nextReadFCB = !nextReadFCB;
-    }
-    void ToggleWriteFCB()
-    {
-        nextWriteFCB = !nextWriteFCB;
     }
 
     // --- helpers for dealing with layer state transitations ---
@@ -90,20 +81,16 @@ public:
 
     // --- helpers for formatting user data messages ---
     ser4cpp::rseq_t FormatPrimaryBufferWithUnconfirmed(const Addresses& addr, const ser4cpp::rseq_t& tpdu);
-    ser4cpp::rseq_t FormatPrimaryBufferWithConfirmed(const Addresses& addr, const ser4cpp::rseq_t& tpdu, bool FCB);
 
     // --- Helpers for queueing frames ---
     void QueueAck(uint16_t destination);
     void QueueLinkStatus(uint16_t destination);
-    void QueueResetLinks(uint16_t destination);
     void QueueRequestLinkStatus(uint16_t destination);
 
     void QueueTransmit(const ser4cpp::rseq_t& buffer, bool primary);
 
     // --- public members ----
 
-    void ResetRetry();
-    bool Retry();
     void PushDataUp(const Message& message);
     void CompleteSendOperation();
     void TryStartTransmission();
@@ -124,20 +111,17 @@ public:
     ser4cpp::Settable<ser4cpp::rseq_t> pendingPriTx;
     ser4cpp::Settable<ser4cpp::rseq_t> pendingSecTx;
 
-    log4cpp::Logger logger;
+    Logger logger;
     const LinkLayerConfig config;
     ITransportSegment* pSegments;
     LinkTransmitMode txMode;
-    uint32_t numRetryRemaining;
 
     const std::shared_ptr<exe4cpp::IExecutor> executor;
 
     exe4cpp::Timer rspTimeoutTimer;
     exe4cpp::Timer keepAliveTimer;
     bool nextReadFCB;
-    bool nextWriteFCB;
     bool isOnline;
-    bool isRemoteReset;
     bool keepAliveTimeout;
     Timestamp lastMessageTimestamp;
     StackStatistics::Link statistics;

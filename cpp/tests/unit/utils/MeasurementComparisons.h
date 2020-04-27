@@ -22,6 +22,7 @@
 
 #include <opendnp3/app/Indexed.h>
 #include <opendnp3/app/MeasurementTypes.h>
+
 #include <outstation/Event.h>
 
 template<class T> bool Equals(const opendnp3::TypedMeasurement<T>& lhs, const opendnp3::TypedMeasurement<T>& rhs)

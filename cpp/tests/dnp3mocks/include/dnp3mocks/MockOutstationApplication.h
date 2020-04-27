@@ -73,7 +73,9 @@ public:
 
     bool WriteTimeAndInterval(const opendnp3::ICollection<opendnp3::Indexed<opendnp3::TimeAndInterval>>& meas) final
     {
-        auto push = [this](const opendnp3::Indexed<opendnp3::TimeAndInterval>& value) { this->timeAndIntervals.push_back(value); };
+        auto push = [this](const opendnp3::Indexed<opendnp3::TimeAndInterval>& value) {
+            this->timeAndIntervals.push_back(value);
+        };
 
         meas.ForeachItem(push);
         return true;
@@ -85,9 +87,9 @@ public:
     }
 
     void RecordClassAssignment(opendnp3::AssignClassType type,
-                                       opendnp3::PointClass clazz,
-                                       uint16_t start,
-                                       uint16_t stop) final
+                               opendnp3::PointClass clazz,
+                               uint16_t start,
+                               uint16_t stop) final
     {
         this->classAssignments.push_back(std::make_tuple(type, clazz, start, stop));
     }

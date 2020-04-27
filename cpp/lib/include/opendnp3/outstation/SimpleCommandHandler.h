@@ -42,7 +42,10 @@ public:
     virtual void end() override;
 
     CommandStatus Select(const ControlRelayOutputBlock& command, uint16_t index) override;
-    CommandStatus Operate(const ControlRelayOutputBlock& command, uint16_t index, IUpdateHandler& handler, OperateType opType) override;
+    CommandStatus Operate(const ControlRelayOutputBlock& command,
+                          uint16_t index,
+                          IUpdateHandler& handler,
+                          OperateType opType) override;
 
     CommandStatus Select(const AnalogOutputInt16& command, uint16_t index) override;
     CommandStatus Operate(const AnalogOutputInt16& command,

@@ -25,11 +25,10 @@
 #include "app/parsing/ParseResult.h"
 #include "app/parsing/ParserSettings.h"
 
+#include "opendnp3/logging/Logger.h"
 #include "opendnp3/util/StaticOnly.h"
 
 #include <ser4cpp/container/SequenceTypes.h>
-
-#include <log4cpp/Logger.h>
 
 namespace opendnp3
 {
@@ -43,7 +42,7 @@ public:
     static ParseResult ParseHeader(ser4cpp::rseq_t& buffer,
                                    const ParserSettings& settings,
                                    const HeaderRecord& record,
-                                   log4cpp::Logger* pLogger,
+                                   Logger* pLogger,
                                    IAPDUHandler* pHandler);
 
 private:
@@ -56,7 +55,7 @@ private:
                                        uint16_t size,
                                        ser4cpp::rseq_t& objects,
                                        IAPDUHandler* pHandler,
-                                       log4cpp::Logger* pLogger);
+                                       Logger* pLogger);
 
     // Free format handlers
 

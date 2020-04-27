@@ -28,8 +28,7 @@
 #include "gen/objects/Group30.h"
 #include "gen/objects/Group40.h"
 #include "gen/objects/Group50.h"
-
-#include <log4cpp/LogMacros.h>
+#include "logging/LogMacros.h"
 
 namespace opendnp3
 {
@@ -43,7 +42,7 @@ ParseResult RangeParser::ParseHeader(ser4cpp::rseq_t& buffer,
                                      const NumParser& numparser,
                                      const ParserSettings& settings,
                                      const HeaderRecord& record,
-                                     log4cpp::Logger* pLogger,
+                                     Logger* pLogger,
                                      IAPDUHandler* pHandler)
 {
     Range range;
@@ -53,9 +52,9 @@ ParseResult RangeParser::ParseHeader(ser4cpp::rseq_t& buffer,
         return res;
     }
 
-    FORMAT_LOGGER_BLOCK(pLogger, settings.LogLevel(), "%03u,%03u %s, %s [%u, %u]", record.group, record.variation,
-                        GroupVariationSpec::to_human_string(record.enumeration), QualifierCodeSpec::to_human_string(record.GetQualifierCode()),
-                        range.start, range.stop);
+    FORMAT_LOGGER_BLOCK(pLogger, settings.LoggingLevel(), "%03u,%03u %s, %s [%u, %u]", record.group, record.variation,
+                        GroupVariationSpec::to_human_string(record.enumeration),
+                        QualifierCodeSpec::to_human_string(record.GetQualifierCode()), range.start, range.stop);
 
     if (settings.ExpectsContents())
     {
@@ -72,7 +71,7 @@ ParseResult RangeParser::ParseHeader(ser4cpp::rseq_t& buffer,
 ParseResult RangeParser::Process(const HeaderRecord& record,
                                  ser4cpp::rseq_t& buffer,
                                  IAPDUHandler* pHandler,
-                                 log4cpp::Logger* pLogger) const
+                                 Logger* pLogger) const
 {
     if (buffer.length() < requiredSize)
     {
@@ -92,11 +91,8 @@ ParseResult RangeParser::Process(const HeaderRecord& record,
     case (GroupVariation::descriptor):                                                                                 \
         return RangeParser::FromFixedSize<descriptor>(range).Process(record, buffer, pHandler, pLogger);
 
-ParseResult RangeParser::ParseRangeOfObjects(ser4cpp::rseq_t& buffer,
-                                             const HeaderRecord& record,
-                                             const Range& range,
-                                             log4cpp::Logger* pLogger,
-                                             IAPDUHandler* pHandler)
+ParseResult RangeParser::ParseRangeOfObjects(
+    ser4cpp::rseq_t& buffer, const HeaderRecord& record, const Range& range, Logger* pLogger, IAPDUHandler* pHandler)
 {
     switch (record.enumeration)
     {
@@ -150,17 +146,15 @@ ParseResult RangeParser::ParseRangeOfObjects(ser4cpp::rseq_t& buffer,
 
     default:
         FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unsupported qualifier/object - %s - %i / %i",
-                            QualifierCodeSpec::to_human_string(record.GetQualifierCode()), record.group, record.variation);
+                            QualifierCodeSpec::to_human_string(record.GetQualifierCode()), record.group,
+                            record.variation);
 
         return ParseResult::INVALID_OBJECT_QUALIFIER;
     }
 }
 
-ParseResult RangeParser::ParseRangeOfOctetData(ser4cpp::rseq_t& buffer,
-                                               const HeaderRecord& record,
-                                               const Range& range,
-                                               log4cpp::Logger* pLogger,
-                                               IAPDUHandler* pHandler)
+ParseResult RangeParser::ParseRangeOfOctetData(
+    ser4cpp::rseq_t& buffer, const HeaderRecord& record, const Range& range, Logger* pLogger, IAPDUHandler* pHandler)
 {
     if (record.variation > 0)
     {

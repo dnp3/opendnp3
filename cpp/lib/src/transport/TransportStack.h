@@ -32,7 +32,7 @@ class TransportStack
 {
 
 public:
-    TransportStack(const log4cpp::Logger& logger,
+    TransportStack(const Logger& logger,
                    const std::shared_ptr<exe4cpp::IExecutor>& executor,
                    const std::shared_ptr<ILinkListener>& listener,
                    uint32_t maxRxFragSize,

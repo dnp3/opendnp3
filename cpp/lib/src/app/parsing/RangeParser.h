@@ -28,9 +28,9 @@
 #include "app/parsing/ParseResult.h"
 #include "app/parsing/ParserSettings.h"
 
-#include <ser4cpp/container/SequenceTypes.h>
+#include "opendnp3/logging/Logger.h"
 
-#include <log4cpp/Logger.h>
+#include <ser4cpp/container/SequenceTypes.h>
 
 namespace opendnp3
 {
@@ -47,7 +47,7 @@ public:
                                    const NumParser& numparser,
                                    const ParserSettings& settings,
                                    const HeaderRecord& record,
-                                   log4cpp::Logger* pLogger,
+                                   Logger* pLogger,
                                    IAPDUHandler* pHandler);
 
 private:
@@ -55,7 +55,7 @@ private:
     ParseResult Process(const HeaderRecord& record,
                         ser4cpp::rseq_t& buffer,
                         IAPDUHandler* pHandler,
-                        log4cpp::Logger* pLogger) const;
+                        Logger* pLogger) const;
 
     // Create a range parser from a fixed size descriptor
     template<class Descriptor> static RangeParser FromFixedSize(const Range& range);
@@ -70,13 +70,13 @@ private:
     static ParseResult ParseRangeOfObjects(ser4cpp::rseq_t& buffer,
                                            const HeaderRecord& record,
                                            const Range& range,
-                                           log4cpp::Logger* pLogger,
+                                           Logger* pLogger,
                                            IAPDUHandler* pHandler);
 
     static ParseResult ParseRangeOfOctetData(ser4cpp::rseq_t& buffer,
                                              const HeaderRecord& record,
                                              const Range& range,
-                                             log4cpp::Logger* pLogger,
+                                             Logger* pLogger,
                                              IAPDUHandler* pHandler);
 
     template<class Descriptor>

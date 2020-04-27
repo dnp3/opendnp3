@@ -17,14 +17,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include <master/MeasurementHandler.h>
-
 #include "utils/BufferHelpers.h"
 
 #include "dnp3mocks/MockLogHandler.h"
 #include "dnp3mocks/MockSOEHandler.h"
 
 #include <catch.hpp>
+#include <master/MeasurementHandler.h>
 
 #include <functional>
 
@@ -131,7 +130,8 @@ ParseResult TestObjectHeaders(const std::string& objects,
 
     HexSequence hex(objects);
 
-    auto result = MeasurementHandler::ProcessMeasurements(ResponseInfo(true, true, true),  hex.ToRSeq(), log.logger, &soe);
+    auto result
+        = MeasurementHandler::ProcessMeasurements(ResponseInfo(true, true, true), hex.ToRSeq(), log.logger, &soe);
     REQUIRE(result == expectedResult);
     verify(soe);
     return result;

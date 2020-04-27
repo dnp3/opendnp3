@@ -19,7 +19,9 @@
  */
 #include "opendnp3/ConsoleLogger.h"
 
-#include "opendnp3/LogLevels.h"
+#include "logging/ConsolePrettyPrinter.h"
+
+#include "opendnp3/logging/LogLevels.h"
 
 #include <cassert>
 #include <chrono>
@@ -29,8 +31,7 @@
 namespace opendnp3
 {
 
-void ConsoleLogger::log(
-    log4cpp::ModuleId module, const char* id, log4cpp::LogLevel level, char const* location, char const* message)
+void ConsoleLogger::log(ModuleId module, const char* id, LogLevel level, char const* location, char const* message)
 {
     auto time = std::chrono::high_resolution_clock::now();
     auto num = std::chrono::duration_cast<std::chrono::milliseconds>(time.time_since_epoch()).count();

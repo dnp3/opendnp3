@@ -20,6 +20,7 @@
 #ifndef OPENDNP3_UNITTESTS_MOCK_COMMAND_HANDLER_H
 #define OPENDNP3_UNITTESTS_MOCK_COMMAND_HANDLER_H
 
+#include <opendnp3/app/Indexed.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
 
 #include <vector>
@@ -27,7 +28,10 @@
 template<class T> class Operation : public opendnp3::Indexed<T>
 {
 public:
-    Operation(T value, uint16_t index, opendnp3::OperateType opType_) : opendnp3::Indexed<T>(value, index), opType(opType_) {}
+    Operation(T value, uint16_t index, opendnp3::OperateType opType_)
+        : opendnp3::Indexed<T>(value, index), opType(opType_)
+    {
+    }
 
     opendnp3::OperateType opType;
 };
@@ -35,7 +39,10 @@ public:
 class MockCommandHandler final : public opendnp3::SimpleCommandHandler
 {
 public:
-    MockCommandHandler(opendnp3::CommandStatus status = opendnp3::CommandStatus::SUCCESS) : opendnp3::SimpleCommandHandler(status) {}
+    MockCommandHandler(opendnp3::CommandStatus status = opendnp3::CommandStatus::SUCCESS)
+        : opendnp3::SimpleCommandHandler(status)
+    {
+    }
 
     void SetResponse(opendnp3::CommandStatus status_)
     {
@@ -58,27 +65,37 @@ public:
     }
 
 protected:
-    virtual void DoOperate(const opendnp3::ControlRelayOutputBlock& command, uint16_t index, opendnp3::OperateType opType) override
+    virtual void DoOperate(const opendnp3::ControlRelayOutputBlock& command,
+                           uint16_t index,
+                           opendnp3::OperateType opType) override
     {
         this->crobOps.push_back(Operation<opendnp3::ControlRelayOutputBlock>(command, index, opType));
     }
 
-    virtual void DoOperate(const opendnp3::AnalogOutputInt16& command, uint16_t index, opendnp3::OperateType opType) override
+    virtual void DoOperate(const opendnp3::AnalogOutputInt16& command,
+                           uint16_t index,
+                           opendnp3::OperateType opType) override
     {
         this->aoInt16Ops.push_back(Operation<opendnp3::AnalogOutputInt16>(command, index, opType));
     }
 
-    virtual void DoOperate(const opendnp3::AnalogOutputInt32& command, uint16_t index, opendnp3::OperateType opType) override
+    virtual void DoOperate(const opendnp3::AnalogOutputInt32& command,
+                           uint16_t index,
+                           opendnp3::OperateType opType) override
     {
         this->aoInt32Ops.push_back(Operation<opendnp3::AnalogOutputInt32>(command, index, opType));
     }
 
-    virtual void DoOperate(const opendnp3::AnalogOutputFloat32& command, uint16_t index, opendnp3::OperateType opType) override
+    virtual void DoOperate(const opendnp3::AnalogOutputFloat32& command,
+                           uint16_t index,
+                           opendnp3::OperateType opType) override
     {
         this->aoFloat32Ops.push_back(Operation<opendnp3::AnalogOutputFloat32>(command, index, opType));
     }
 
-    virtual void DoOperate(const opendnp3::AnalogOutputDouble64& command, uint16_t index, opendnp3::OperateType opType) override
+    virtual void DoOperate(const opendnp3::AnalogOutputDouble64& command,
+                           uint16_t index,
+                           opendnp3::OperateType opType) override
     {
         this->aoDouble64Ops.push_back(Operation<opendnp3::AnalogOutputDouble64>(command, index, opType));
     }

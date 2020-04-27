@@ -63,7 +63,7 @@ bool ClassField::IsEmpty() const
 
 bool ClassField::Intersects(const ClassField& other) const
 {
-    return (bitfield & other.bitfield) > 0;
+    return (bitfield & other.bitfield) != 0;
 }
 
 ClassField ClassField::OnlyEventClasses() const

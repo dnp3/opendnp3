@@ -17,12 +17,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "utils/OutstationTestObject.h"
 #include "utils/APDUHexBuilders.h"
-
-#include <dnp3mocks/DatabaseHelpers.h>
+#include "utils/OutstationTestObject.h"
 
 #include <ser4cpp/util/HexConversions.h>
+
+#include <dnp3mocks/DatabaseHelpers.h>
 
 #include <catch.hpp>
 
@@ -114,9 +114,7 @@ TEST_CASE(SUITE("Receiving a broadcast should assume confirmation failed"))
     t.LowerLayerUp();
 
     // Generate an event
-    t.Transaction([](IUpdateHandler& handler) {
-        handler.Update(Binary(true), 0);
-    });
+    t.Transaction([](IUpdateHandler& handler) { handler.Update(Binary(true), 0); });
 
     // When reading, check that we receive a response with a confirmation
     t.SendToOutstation(hex::ClassPoll(0, PointClass::Class1));
@@ -179,9 +177,7 @@ TEST_CASE(SUITE("Unsolicited responses should advertise BROADCAST IIN"))
     REQUIRE(t.lower->HasNoData());
 
     // Generate an event
-    t.Transaction([](IUpdateHandler& handler) {
-        handler.Update(Binary(true), 0);
-    });
+    t.Transaction([](IUpdateHandler& handler) { handler.Update(Binary(true), 0); });
 
     // Should send unsolicited with BROADCAST IIN set
     REQUIRE(t.lower->PopWriteAsHex().substr(0, 11) == "F1 82 01 00");
@@ -189,9 +185,7 @@ TEST_CASE(SUITE("Unsolicited responses should advertise BROADCAST IIN"))
 
     // Timeout and generate another unsolicited
     t.AdvanceToNextTimer();
-    t.Transaction([](IUpdateHandler& handler) {
-        handler.Update(Binary(false), 0);
-    });
+    t.Transaction([](IUpdateHandler& handler) { handler.Update(Binary(false), 0); });
 
     // Next unsolicited shouldn't have BROADCAST IIN set
     REQUIRE(t.lower->PopWriteAsHex().substr(0, 11) == "F2 82 00 00");
@@ -221,9 +215,7 @@ TEST_CASE(SUITE("ShallConfirm: Unsolicited responses should clear BROADCAST when
     REQUIRE(t.lower->HasNoData());
 
     // Generate an event
-    t.Transaction([](IUpdateHandler& handler) {
-        handler.Update(Binary(true), 0);
-    });
+    t.Transaction([](IUpdateHandler& handler) { handler.Update(Binary(true), 0); });
 
     // Should send unsolicited with BROADCAST IIN set
     REQUIRE(t.lower->PopWriteAsHex().substr(0, 11) == "F1 82 01 00");
@@ -231,9 +223,7 @@ TEST_CASE(SUITE("ShallConfirm: Unsolicited responses should clear BROADCAST when
 
     // Timeout and generate another unsolicited
     t.AdvanceToNextTimer();
-    t.Transaction([](IUpdateHandler& handler) {
-        handler.Update(Binary(false), 0);
-    });
+    t.Transaction([](IUpdateHandler& handler) { handler.Update(Binary(false), 0); });
 
     // Next unsolicited should still have BROADCAST IIN set
     REQUIRE(t.lower->PopWriteAsHex().substr(0, 11) == "F2 82 01 00");
@@ -243,9 +233,7 @@ TEST_CASE(SUITE("ShallConfirm: Unsolicited responses should clear BROADCAST when
     t.SendToOutstation(hex::UnsolConfirm(2));
 
     // Generate an event
-    t.Transaction([](IUpdateHandler& handler) {
-        handler.Update(Binary(true), 0);
-    });
+    t.Transaction([](IUpdateHandler& handler) { handler.Update(Binary(true), 0); });
 
     REQUIRE(t.lower->PopWriteAsHex().substr(0, 11) == "F3 82 00 00");
 }

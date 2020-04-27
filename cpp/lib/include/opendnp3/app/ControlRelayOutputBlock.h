@@ -70,14 +70,15 @@ public:
     /// The raw code in bytes
     uint8_t rawCode;
 
-    bool IsQUFlagSet() const {
+    bool IsQUFlagSet() const
+    {
         return (rawCode & 0x10) != 0;
     }
 
     bool ValuesEqual(const ControlRelayOutputBlock& lhs) const
     {
-        return (opType == lhs.opType) && (tcc == lhs.tcc) && (clear == lhs.clear)
-               && (count == lhs.count) && (onTimeMS == lhs.onTimeMS) && (offTimeMS == lhs.offTimeMS);
+        return (opType == lhs.opType) && (tcc == lhs.tcc) && (clear == lhs.clear) && (count == lhs.count)
+            && (onTimeMS == lhs.onTimeMS) && (offTimeMS == lhs.offTimeMS);
     }
 
     bool operator==(const ControlRelayOutputBlock& lhs) const

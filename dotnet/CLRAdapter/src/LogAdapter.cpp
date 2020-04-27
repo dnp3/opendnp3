@@ -31,17 +31,17 @@ namespace Automatak
 			LogAdapter::LogAdapter(Automatak::DNP3::Interface::ILogHandler^ proxy) : proxy(proxy)
 			{}
 
-			std::shared_ptr<log4cpp::ILogHandler> LogAdapter::Create(Automatak::DNP3::Interface::ILogHandler^ proxy)
+			std::shared_ptr<opendnp3::ILogHandler> LogAdapter::Create(Automatak::DNP3::Interface::ILogHandler ^ proxy)
 			{
-                return std::shared_ptr<log4cpp::ILogHandler>(new LogAdapter(proxy));
+                return std::shared_ptr<opendnp3::ILogHandler>(new LogAdapter(proxy));
 			}
 
 			// logging error messages, etc
-            void LogAdapter::log(log4cpp::ModuleId module,
-                                          const char* id,
-                                          log4cpp::LogLevel level,
-                                          char const* location,
-                                          char const* message)
+            void LogAdapter::log(opendnp3::ModuleId module,
+                                 const char* id,
+                                 opendnp3::LogLevel level,
+                                 char const* location,
+                                 char const* message)
 			{								
 				proxy->Log(gcnew Automatak::DNP3::Interface::LogEntry(level.value, Conversions::ConvertString(id),
                                                                       Conversions::ConvertString(location),

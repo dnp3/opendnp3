@@ -90,5 +90,6 @@ TEST_CASE(SUITE("TestEventIntegration"))
 
     const auto rate = (total_events_transferred * 1000) / milliseconds.count();
 
-    std::cout << total_events_transferred << " in " << milliseconds.count() << " ms == " << rate << " events per/sec" << std::endl;
+    std::cout << total_events_transferred << " in " << milliseconds.count() << " ms == " << rate << " events per/sec"
+              << std::endl;
 }

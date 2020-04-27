@@ -31,9 +31,7 @@ class SerialTimeSyncTask : public IMasterTask
 {
 
 public:
-    SerialTimeSyncTask(const std::shared_ptr<TaskContext>& context,
-                       IMasterApplication& app,
-                       const log4cpp::Logger& logger);
+    SerialTimeSyncTask(const std::shared_ptr<TaskContext>& context, IMasterApplication& app, const Logger& logger);
 
     virtual char const* Name() const override final
     {

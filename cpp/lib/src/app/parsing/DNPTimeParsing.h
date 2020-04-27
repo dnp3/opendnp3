@@ -20,30 +20,28 @@
 #ifndef OPENDNP3_DNPTIMEPARSING_H
 #define OPENDNP3_DNPTIMEPARSING_H
 
-#include <ser4cpp/serialization/LittleEndian.h>
-
 #include "opendnp3/app/DNPTime.h"
+
+#include <ser4cpp/serialization/LittleEndian.h>
 
 namespace ser4cpp
 {
 namespace serializers
 {
 
-// To use LittleEndian::write(...)
-template<>
-inline bool write_one(wseq_t& dest, const opendnp3::DNPTime& value)
-{
-    return UInt48::write_to(dest, UInt48Type(value.value));
-}
+    // To use LittleEndian::write(...)
+    template<> inline bool write_one(wseq_t& dest, const opendnp3::DNPTime& value)
+    {
+        return UInt48::write_to(dest, UInt48Type(value.value));
+    }
 
-template<>
-inline bool read_one(rseq_t& input, opendnp3::DNPTime& out)
-{
-    UInt48Type temp;
-    bool result = UInt48::read_from(input, temp);
-    out.value = temp.Get();
-    return result;
-}
+    template<> inline bool read_one(rseq_t& input, opendnp3::DNPTime& out)
+    {
+        UInt48Type temp;
+        bool result = UInt48::read_from(input, temp);
+        out.value = temp.Get();
+        return result;
+    }
 
 } // namespace serializers
 } // namespace ser4cpp

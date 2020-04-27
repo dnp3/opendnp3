@@ -19,11 +19,10 @@
  */
 #include "PollTaskBase.h"
 
+#include "logging/LogMacros.h"
 #include "master/MeasurementHandler.h"
 
-#include "opendnp3/LogLevels.h"
-
-#include <log4cpp/LogMacros.h>
+#include "opendnp3/logging/LogLevels.h"
 
 namespace opendnp3
 {
@@ -32,7 +31,7 @@ PollTaskBase::PollTaskBase(const std::shared_ptr<TaskContext>& context,
                            IMasterApplication& application,
                            std::shared_ptr<ISOEHandler> handler,
                            const TaskBehavior& behavior,
-                           const log4cpp::Logger& logger,
+                           const Logger& logger,
                            TaskConfig config)
     : IMasterTask(context, application, behavior, logger, config), handler(std::move(handler))
 {
@@ -73,7 +72,8 @@ IMasterTask::ResponseResult PollTaskBase::ProcessMeasurements(const APDUResponse
 {
     ++rxCount;
 
-    if (MeasurementHandler::ProcessMeasurements(header.as_response_info(), objects, logger, handler.get()) == ParseResult::OK)
+    if (MeasurementHandler::ProcessMeasurements(header.as_response_info(), objects, logger, handler.get())
+        == ParseResult::OK)
     {
         return header.control.FIN ? ResponseResult::OK_FINAL : ResponseResult::OK_CONTINUE;
     }
