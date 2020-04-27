@@ -1074,7 +1074,11 @@
         <!--1.9.10) Other Unsolicited Response Trigger Conditions-->
         <otherTriggerConditions>
           <capabilities />
-          <currentValue />
+          <currentValue>
+            <other>
+              <explanation />
+            </other>
+          </currentValue>
           <!--Configuration Methods-->
           <methods />
         </otherTriggerConditions>
@@ -1084,7 +1088,7 @@
         <!--1.10.1) Maximum Time Base Drift (milliseconds per minute)-->
         <maxTimeBaseDrift>
           <capabilities>
-            <note>Depends on target hardware and implementation</note>
+            <note>Software implementation only. Depends on target hardware and operating system.</note>
             <fixed>0</fixed>
           </capabilities>
           <currentValue>
@@ -1099,7 +1103,9 @@
             <note>Asserting IIN1.4 is a user code concern. The libary allows setting/unsetting the bit as required.</note>
             <never />
           </capabilities>
-          <currentValue />
+          <currentValue>
+            <note>Reference implementation never requests time. Underlying library gives full control to the implementor.</note>
+          </currentValue>
           <!--Configuration Methods-->
           <methods>
             <proprietaryFileViaOtherTransportMechanism />
@@ -1108,7 +1114,7 @@
         <!--1.10.3) Maximum Internal Time Reference Error When set Via DNP (ms)-->
         <referenceErrorViaDNP>
           <capabilities>
-            <note>Depends on target hardware and implementation.</note>
+            <note>Software implementation only. Depends on target hardware and operating system.</note>
             <fixed>0</fixed>
           </capabilities>
           <currentValue>
@@ -1120,7 +1126,7 @@
         <!--1.10.4) Maximum Delay Measurement Error (ms)-->
         <delayMeasurementError>
           <capabilities>
-            <note>Depends on target hardware and implementation.</note>
+            <note>Depends on target hardware and operating system.</note>
             <fixed>0</fixed>
           </capabilities>
           <currentValue>
