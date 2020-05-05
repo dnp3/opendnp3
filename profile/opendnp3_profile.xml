@@ -4486,7 +4486,170 @@
           </pointListDefinition>
         </configuration>
         <!--Data Points-->
-        <dataPoints />
+        <dataPoints>
+          <!--BI #0-->
+          <binaryInput>
+            <index>0</index>
+            <name>BI #0</name>
+            <description />
+            <!--User Data-->
+            <userData />
+            <changeEventClass>one</changeEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <nameState0 />
+            <nameState1 />
+          </binaryInput>
+          <!--BI #1-->
+          <binaryInput>
+            <index>1</index>
+            <name>BI #1</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <nameState0 />
+            <nameState1 />
+          </binaryInput>
+          <!--BI #2-->
+          <binaryInput>
+            <index>2</index>
+            <name>BI #2</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <nameState0 />
+            <nameState1 />
+          </binaryInput>
+          <!--BI #3-->
+          <binaryInput>
+            <index>3</index>
+            <name>BI #3</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <nameState0 />
+            <nameState1 />
+          </binaryInput>
+          <!--BI #4-->
+          <binaryInput>
+            <index>4</index>
+            <name>BI #4</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <nameState0 />
+            <nameState1 />
+          </binaryInput>
+          <!--BI #5-->
+          <binaryInput>
+            <index>5</index>
+            <name>BI #5</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <nameState0 />
+            <nameState1 />
+          </binaryInput>
+          <!--BI #6-->
+          <binaryInput>
+            <index>6</index>
+            <name>BI #6</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <nameState0 />
+            <nameState1 />
+          </binaryInput>
+          <!--BI #7-->
+          <binaryInput>
+            <index>7</index>
+            <name>BI #7</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <nameState0 />
+            <nameState1 />
+          </binaryInput>
+          <!--BI #8-->
+          <binaryInput>
+            <index>8</index>
+            <name>BI #8</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <nameState0 />
+            <nameState1 />
+          </binaryInput>
+          <!--BI #9-->
+          <binaryInput>
+            <index>9</index>
+            <name>BI #9</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <nameState0 />
+            <nameState1 />
+          </binaryInput>
+        </dataPoints>
       </binaryInputPoints>
       <!--5.2)  Double Bit Input Points-->
       <doubleBitInputPoints>
@@ -4499,7 +4662,188 @@
           </pointListDefinition>
         </configuration>
         <!--Data Points-->
-        <dataPoints />
+        <dataPoints>
+          <!--DI #0-->
+          <doubleBitInput>
+            <index>0</index>
+            <name>DI #0</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <includedInClass0Response>never</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <nameState0 />
+            <nameState1 />
+            <nameState2 />
+            <nameState3 />
+          </doubleBitInput>
+          <!--DI #1-->
+          <doubleBitInput>
+            <index>1</index>
+            <name>DI #1</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <includedInClass0Response>never</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <nameState0 />
+            <nameState1 />
+            <nameState2 />
+            <nameState3 />
+          </doubleBitInput>
+          <!--DI #2-->
+          <doubleBitInput>
+            <index>2</index>
+            <name>DI #2</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <includedInClass0Response>never</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <nameState0 />
+            <nameState1 />
+            <nameState2 />
+            <nameState3 />
+          </doubleBitInput>
+          <!--DI #3-->
+          <doubleBitInput>
+            <index>3</index>
+            <name>DI #3</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <includedInClass0Response>never</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <nameState0 />
+            <nameState1 />
+            <nameState2 />
+            <nameState3 />
+          </doubleBitInput>
+          <!--DI #4-->
+          <doubleBitInput>
+            <index>4</index>
+            <name>DI #4</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <includedInClass0Response>never</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <nameState0 />
+            <nameState1 />
+            <nameState2 />
+            <nameState3 />
+          </doubleBitInput>
+          <!--DI #5-->
+          <doubleBitInput>
+            <index>5</index>
+            <name>DI #5</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <includedInClass0Response>never</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <nameState0 />
+            <nameState1 />
+            <nameState2 />
+            <nameState3 />
+          </doubleBitInput>
+          <!--DI #6-->
+          <doubleBitInput>
+            <index>6</index>
+            <name>DI #6</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <includedInClass0Response>never</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <nameState0 />
+            <nameState1 />
+            <nameState2 />
+            <nameState3 />
+          </doubleBitInput>
+          <!--DI #7-->
+          <doubleBitInput>
+            <index>7</index>
+            <name>DI #7</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <includedInClass0Response>never</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <nameState0 />
+            <nameState1 />
+            <nameState2 />
+            <nameState3 />
+          </doubleBitInput>
+          <!--DI #8-->
+          <doubleBitInput>
+            <index>8</index>
+            <name>DI #8</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <includedInClass0Response>never</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <nameState0 />
+            <nameState1 />
+            <nameState2 />
+            <nameState3 />
+          </doubleBitInput>
+          <!--DI #9-->
+          <doubleBitInput>
+            <index>9</index>
+            <name>DI #9</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <includedInClass0Response>never</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <nameState0 />
+            <nameState1 />
+            <nameState2 />
+            <nameState3 />
+          </doubleBitInput>
+        </dataPoints>
       </doubleBitInputPoints>
       <!--5.3) Binary Output Status/Control Relay Output Block Points-->
       <binaryOutputPoints>
@@ -4512,7 +4856,607 @@
           </pointListDefinition>
         </configuration>
         <!--Data Points-->
-        <dataPoints />
+        <dataPoints>
+          <!--BO #0-->
+          <binaryOutput>
+            <index>0</index>
+            <name>BO #0</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+              <supportLatchOn />
+            </supportedControlOperations>
+            <nameState0 />
+            <nameState1 />
+            <dnpData>
+              <status>SUCCESS</status>
+            </dnpData>
+          </binaryOutput>
+          <!--BO #1-->
+          <binaryOutput>
+            <index>1</index>
+            <name>BO #1</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+              <supportPulseOn />
+              <supportTrip />
+              <countGreaterThanOne />
+            </supportedControlOperations>
+            <nameState0 />
+            <nameState1 />
+            <dnpData>
+              <status>SUCCESS</status>
+            </dnpData>
+          </binaryOutput>
+          <!--BO #2-->
+          <binaryOutput>
+            <index>2</index>
+            <name>BO #2</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+              <supportLatchOn />
+              <supportLatchOff />
+              <countGreaterThanOne />
+            </supportedControlOperations>
+            <nameState0 />
+            <nameState1 />
+            <dnpData>
+              <status>SUCCESS</status>
+            </dnpData>
+          </binaryOutput>
+          <!--BO #3-->
+          <binaryOutput>
+            <index>3</index>
+            <name>BO #3</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+              <supportPulseOn />
+              <supportTrip />
+              <supportClose />
+              <countGreaterThanOne />
+            </supportedControlOperations>
+            <nameState0 />
+            <nameState1 />
+            <dnpData>
+              <status>SUCCESS</status>
+            </dnpData>
+          </binaryOutput>
+          <!--BO #4-->
+          <binaryOutput>
+            <index>4</index>
+            <name>BO #4</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+              <supportPulseOn />
+              <supportLatchOn />
+              <supportLatchOff />
+              <supportTrip />
+              <supportClose />
+              <countGreaterThanOne />
+            </supportedControlOperations>
+            <nameState0 />
+            <nameState1 />
+            <dnpData>
+              <status>SUCCESS</status>
+            </dnpData>
+          </binaryOutput>
+          <!--BO #5-->
+          <binaryOutput>
+            <index>5</index>
+            <name>BO #5</name>
+            <description />
+            <changeEventClass>two</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+              <supportPulseOn />
+              <countGreaterThanOne />
+            </supportedControlOperations>
+            <nameState0 />
+            <nameState1 />
+            <dnpData>
+              <status>SUCCESS</status>
+            </dnpData>
+          </binaryOutput>
+          <!--BO #6-->
+          <binaryOutput>
+            <index>6</index>
+            <name>BO #6</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+              <supportLatchOn />
+              <countGreaterThanOne />
+            </supportedControlOperations>
+            <nameState0 />
+            <nameState1 />
+            <dnpData>
+              <status>SUCCESS</status>
+            </dnpData>
+          </binaryOutput>
+          <!--BO #7-->
+          <binaryOutput>
+            <index>7</index>
+            <name>BO #7</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+              <supportLatchOff />
+              <countGreaterThanOne />
+            </supportedControlOperations>
+            <nameState0 />
+            <nameState1 />
+            <dnpData>
+              <status>SUCCESS</status>
+            </dnpData>
+          </binaryOutput>
+          <!--BO #8-->
+          <binaryOutput>
+            <index>8</index>
+            <name>BO #8</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+              <supportPulseOn />
+              <supportClose />
+              <countGreaterThanOne />
+            </supportedControlOperations>
+            <nameState0 />
+            <nameState1 />
+            <dnpData>
+              <status>SUCCESS</status>
+            </dnpData>
+          </binaryOutput>
+          <!--BO #9-->
+          <binaryOutput>
+            <index>9</index>
+            <name>BO #9</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+              <supportPulseOn />
+              <supportTrip />
+              <countGreaterThanOne />
+            </supportedControlOperations>
+            <nameState0 />
+            <nameState1 />
+            <dnpData>
+              <status>FORMAT_ERROR</status>
+            </dnpData>
+          </binaryOutput>
+          <!--BO #10-->
+          <binaryOutput>
+            <index>10</index>
+            <name>BO #10</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+              <supportLatchOn />
+            </supportedControlOperations>
+            <nameState0 />
+            <nameState1 />
+            <dnpData>
+              <status>SUCCESS</status>
+            </dnpData>
+          </binaryOutput>
+          <!--BO #11-->
+          <binaryOutput>
+            <index>11</index>
+            <name>BO #11</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+              <supportLatchOn />
+            </supportedControlOperations>
+            <nameState0 />
+            <nameState1 />
+            <dnpData>
+              <status>SUCCESS</status>
+            </dnpData>
+          </binaryOutput>
+          <!--BO #12-->
+          <binaryOutput>
+            <index>12</index>
+            <name>BO #12</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+              <supportLatchOn />
+            </supportedControlOperations>
+            <nameState0 />
+            <nameState1 />
+            <dnpData>
+              <status>SUCCESS</status>
+            </dnpData>
+          </binaryOutput>
+          <!--BO #13-->
+          <binaryOutput>
+            <index>13</index>
+            <name>BO #13</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+              <supportLatchOn />
+            </supportedControlOperations>
+            <nameState0 />
+            <nameState1 />
+            <dnpData>
+              <status>SUCCESS</status>
+            </dnpData>
+          </binaryOutput>
+          <!--BO #14-->
+          <binaryOutput>
+            <index>14</index>
+            <name>BO #14</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+              <supportLatchOn />
+            </supportedControlOperations>
+            <nameState0 />
+            <nameState1 />
+            <dnpData>
+              <status>SUCCESS</status>
+            </dnpData>
+          </binaryOutput>
+          <!--BO #15-->
+          <binaryOutput>
+            <index>15</index>
+            <name>BO #15</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+              <supportLatchOn />
+            </supportedControlOperations>
+            <nameState0 />
+            <nameState1 />
+            <dnpData>
+              <status>SUCCESS</status>
+            </dnpData>
+          </binaryOutput>
+          <!--BO #16-->
+          <binaryOutput>
+            <index>16</index>
+            <name>BO #16</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+              <supportLatchOn />
+            </supportedControlOperations>
+            <nameState0 />
+            <nameState1 />
+            <dnpData>
+              <status>SUCCESS</status>
+            </dnpData>
+          </binaryOutput>
+          <!--BO #17-->
+          <binaryOutput>
+            <index>17</index>
+            <name>BO #17</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+              <supportLatchOn />
+            </supportedControlOperations>
+            <nameState0 />
+            <nameState1 />
+            <dnpData>
+              <status>SUCCESS</status>
+            </dnpData>
+          </binaryOutput>
+          <!--BO #18-->
+          <binaryOutput>
+            <index>18</index>
+            <name>BO #18</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+              <supportLatchOn />
+            </supportedControlOperations>
+            <nameState0 />
+            <nameState1 />
+            <dnpData>
+              <status>SUCCESS</status>
+            </dnpData>
+          </binaryOutput>
+          <!--BO #19-->
+          <binaryOutput>
+            <index>19</index>
+            <name>BO #19</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+              <supportLatchOn />
+            </supportedControlOperations>
+            <nameState0 />
+            <nameState1 />
+            <dnpData>
+              <status>SUCCESS</status>
+            </dnpData>
+          </binaryOutput>
+        </dataPoints>
       </binaryOutputPoints>
       <!--5.4) Counters/Frozen Counters-->
       <counterPoints>
@@ -4525,7 +5469,248 @@
           </pointListDefinition>
         </configuration>
         <!--Data Points-->
-        <dataPoints />
+        <dataPoints>
+          <!--CI #0-->
+          <counter>
+            <index>0</index>
+            <name>CI #0</name>
+            <description />
+            <defaultCounterStaticVariation>
+              <two />
+            </defaultCounterStaticVariation>
+            <defaultCounterEventVariation>
+              <one />
+            </defaultCounterEventVariation>
+            <countersIncludedInClass0>always</countersIncludedInClass0>
+            <counterEventClass>two</counterEventClass>
+            <frozenCounterExists>true</frozenCounterExists>
+            <defaultFrozenCounterStaticVariation>
+              <two />
+            </defaultFrozenCounterStaticVariation>
+            <defaultFrozenCounterEventVariation>
+              <one />
+            </defaultFrozenCounterEventVariation>
+            <frozenCountersIncludedInClass0>always</frozenCountersIncludedInClass0>
+            <frozenCounterEventClass>one</frozenCounterEventClass>
+            <counterRollOver>65535</counterRollOver>
+          </counter>
+          <!--CI #1-->
+          <counter>
+            <index>1</index>
+            <name>CI #1</name>
+            <description />
+            <defaultCounterStaticVariation>
+              <two />
+            </defaultCounterStaticVariation>
+            <defaultCounterEventVariation>
+              <one />
+            </defaultCounterEventVariation>
+            <countersIncludedInClass0>always</countersIncludedInClass0>
+            <counterEventClass>two</counterEventClass>
+            <frozenCounterExists>true</frozenCounterExists>
+            <defaultFrozenCounterStaticVariation>
+              <two />
+            </defaultFrozenCounterStaticVariation>
+            <defaultFrozenCounterEventVariation>
+              <one />
+            </defaultFrozenCounterEventVariation>
+            <frozenCountersIncludedInClass0>always</frozenCountersIncludedInClass0>
+            <frozenCounterEventClass>one</frozenCounterEventClass>
+            <counterRollOver>65535</counterRollOver>
+          </counter>
+          <!--CI #2-->
+          <counter>
+            <index>2</index>
+            <name>CI #2</name>
+            <description />
+            <defaultCounterStaticVariation>
+              <two />
+            </defaultCounterStaticVariation>
+            <defaultCounterEventVariation>
+              <one />
+            </defaultCounterEventVariation>
+            <countersIncludedInClass0>always</countersIncludedInClass0>
+            <counterEventClass>two</counterEventClass>
+            <frozenCounterExists>true</frozenCounterExists>
+            <defaultFrozenCounterStaticVariation>
+              <two />
+            </defaultFrozenCounterStaticVariation>
+            <defaultFrozenCounterEventVariation>
+              <one />
+            </defaultFrozenCounterEventVariation>
+            <frozenCountersIncludedInClass0>always</frozenCountersIncludedInClass0>
+            <frozenCounterEventClass>one</frozenCounterEventClass>
+            <counterRollOver>65535</counterRollOver>
+          </counter>
+          <!--CI #3-->
+          <counter>
+            <index>3</index>
+            <name>CI #3</name>
+            <description />
+            <defaultCounterStaticVariation>
+              <two />
+            </defaultCounterStaticVariation>
+            <defaultCounterEventVariation>
+              <one />
+            </defaultCounterEventVariation>
+            <countersIncludedInClass0>always</countersIncludedInClass0>
+            <counterEventClass>two</counterEventClass>
+            <frozenCounterExists>true</frozenCounterExists>
+            <defaultFrozenCounterStaticVariation>
+              <two />
+            </defaultFrozenCounterStaticVariation>
+            <defaultFrozenCounterEventVariation>
+              <one />
+            </defaultFrozenCounterEventVariation>
+            <frozenCountersIncludedInClass0>always</frozenCountersIncludedInClass0>
+            <frozenCounterEventClass>one</frozenCounterEventClass>
+            <counterRollOver>65535</counterRollOver>
+          </counter>
+          <!--CI #4-->
+          <counter>
+            <index>4</index>
+            <name>CI #4</name>
+            <description />
+            <defaultCounterStaticVariation>
+              <two />
+            </defaultCounterStaticVariation>
+            <defaultCounterEventVariation>
+              <one />
+            </defaultCounterEventVariation>
+            <countersIncludedInClass0>always</countersIncludedInClass0>
+            <counterEventClass>two</counterEventClass>
+            <frozenCounterExists>true</frozenCounterExists>
+            <defaultFrozenCounterStaticVariation>
+              <two />
+            </defaultFrozenCounterStaticVariation>
+            <defaultFrozenCounterEventVariation>
+              <one />
+            </defaultFrozenCounterEventVariation>
+            <frozenCountersIncludedInClass0>always</frozenCountersIncludedInClass0>
+            <frozenCounterEventClass>one</frozenCounterEventClass>
+            <counterRollOver>65535</counterRollOver>
+          </counter>
+          <!--CI #5-->
+          <counter>
+            <index>5</index>
+            <name>CI #5</name>
+            <description />
+            <defaultCounterStaticVariation>
+              <two />
+            </defaultCounterStaticVariation>
+            <defaultCounterEventVariation>
+              <one />
+            </defaultCounterEventVariation>
+            <countersIncludedInClass0>always</countersIncludedInClass0>
+            <counterEventClass>two</counterEventClass>
+            <frozenCounterExists>true</frozenCounterExists>
+            <defaultFrozenCounterStaticVariation>
+              <two />
+            </defaultFrozenCounterStaticVariation>
+            <defaultFrozenCounterEventVariation>
+              <one />
+            </defaultFrozenCounterEventVariation>
+            <frozenCountersIncludedInClass0>always</frozenCountersIncludedInClass0>
+            <frozenCounterEventClass>one</frozenCounterEventClass>
+            <counterRollOver>65535</counterRollOver>
+          </counter>
+          <!--CI #6-->
+          <counter>
+            <index>6</index>
+            <name>CI #6</name>
+            <description />
+            <defaultCounterStaticVariation>
+              <two />
+            </defaultCounterStaticVariation>
+            <defaultCounterEventVariation>
+              <one />
+            </defaultCounterEventVariation>
+            <countersIncludedInClass0>always</countersIncludedInClass0>
+            <counterEventClass>two</counterEventClass>
+            <frozenCounterExists>true</frozenCounterExists>
+            <defaultFrozenCounterStaticVariation>
+              <two />
+            </defaultFrozenCounterStaticVariation>
+            <defaultFrozenCounterEventVariation>
+              <one />
+            </defaultFrozenCounterEventVariation>
+            <frozenCountersIncludedInClass0>always</frozenCountersIncludedInClass0>
+            <frozenCounterEventClass>one</frozenCounterEventClass>
+            <counterRollOver>65535</counterRollOver>
+          </counter>
+          <!--CI #7-->
+          <counter>
+            <index>7</index>
+            <name>CI #7</name>
+            <description />
+            <defaultCounterStaticVariation>
+              <two />
+            </defaultCounterStaticVariation>
+            <defaultCounterEventVariation>
+              <one />
+            </defaultCounterEventVariation>
+            <countersIncludedInClass0>always</countersIncludedInClass0>
+            <counterEventClass>two</counterEventClass>
+            <frozenCounterExists>true</frozenCounterExists>
+            <defaultFrozenCounterStaticVariation>
+              <two />
+            </defaultFrozenCounterStaticVariation>
+            <defaultFrozenCounterEventVariation>
+              <one />
+            </defaultFrozenCounterEventVariation>
+            <frozenCountersIncludedInClass0>always</frozenCountersIncludedInClass0>
+            <frozenCounterEventClass>one</frozenCounterEventClass>
+            <counterRollOver>65535</counterRollOver>
+          </counter>
+          <!--CI #8-->
+          <counter>
+            <index>8</index>
+            <name>CI #8</name>
+            <description />
+            <defaultCounterStaticVariation>
+              <two />
+            </defaultCounterStaticVariation>
+            <defaultCounterEventVariation>
+              <one />
+            </defaultCounterEventVariation>
+            <countersIncludedInClass0>always</countersIncludedInClass0>
+            <counterEventClass>two</counterEventClass>
+            <frozenCounterExists>true</frozenCounterExists>
+            <defaultFrozenCounterStaticVariation>
+              <two />
+            </defaultFrozenCounterStaticVariation>
+            <defaultFrozenCounterEventVariation>
+              <one />
+            </defaultFrozenCounterEventVariation>
+            <frozenCountersIncludedInClass0>always</frozenCountersIncludedInClass0>
+            <frozenCounterEventClass>one</frozenCounterEventClass>
+            <counterRollOver>65535</counterRollOver>
+          </counter>
+          <!--CI #9-->
+          <counter>
+            <index>9</index>
+            <name>CI #9</name>
+            <description />
+            <defaultCounterStaticVariation>
+              <two />
+            </defaultCounterStaticVariation>
+            <defaultCounterEventVariation>
+              <one />
+            </defaultCounterEventVariation>
+            <countersIncludedInClass0>always</countersIncludedInClass0>
+            <counterEventClass>two</counterEventClass>
+            <frozenCounterExists>true</frozenCounterExists>
+            <defaultFrozenCounterStaticVariation>
+              <two />
+            </defaultFrozenCounterStaticVariation>
+            <defaultFrozenCounterEventVariation>
+              <one />
+            </defaultFrozenCounterEventVariation>
+            <frozenCountersIncludedInClass0>always</frozenCountersIncludedInClass0>
+            <frozenCounterEventClass>one</frozenCounterEventClass>
+            <counterRollOver>65535</counterRollOver>
+          </counter>
+        </dataPoints>
       </counterPoints>
       <!--5.5) Analog Input Points-->
       <analogInputPoints>
@@ -4538,7 +5723,178 @@
           </pointListDefinition>
         </configuration>
         <!--Data Points-->
-        <dataPoints />
+        <dataPoints>
+          <!--AI #0-->
+          <analogInput>
+            <index>0</index>
+            <name>AI #0</name>
+            <description />
+            <changeEventClass>three</changeEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <analogDeadbandAlgorithm>
+              <simple />
+            </analogDeadbandAlgorithm>
+          </analogInput>
+          <!--AI #1-->
+          <analogInput>
+            <index>1</index>
+            <name>AI #1</name>
+            <description />
+            <changeEventClass>three</changeEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <analogDeadbandAlgorithm>
+              <simple />
+            </analogDeadbandAlgorithm>
+          </analogInput>
+          <!--AI #2-->
+          <analogInput>
+            <index>2</index>
+            <name>AI #2</name>
+            <description />
+            <changeEventClass>three</changeEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <analogDeadbandAlgorithm>
+              <simple />
+            </analogDeadbandAlgorithm>
+          </analogInput>
+          <!--AI #3-->
+          <analogInput>
+            <index>3</index>
+            <name>AI #3</name>
+            <description />
+            <changeEventClass>three</changeEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <analogDeadbandAlgorithm>
+              <simple />
+            </analogDeadbandAlgorithm>
+          </analogInput>
+          <!--AI #4-->
+          <analogInput>
+            <index>4</index>
+            <name>AI #4</name>
+            <description />
+            <changeEventClass>three</changeEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <analogDeadbandAlgorithm>
+              <simple />
+            </analogDeadbandAlgorithm>
+          </analogInput>
+          <!--AI #5-->
+          <analogInput>
+            <index>5</index>
+            <name>AI #5</name>
+            <description />
+            <changeEventClass>three</changeEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <analogDeadbandAlgorithm>
+              <simple />
+            </analogDeadbandAlgorithm>
+          </analogInput>
+          <!--AI #6-->
+          <analogInput>
+            <index>6</index>
+            <name>AI #6</name>
+            <description />
+            <changeEventClass>three</changeEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <analogDeadbandAlgorithm>
+              <simple />
+            </analogDeadbandAlgorithm>
+          </analogInput>
+          <!--AI #7-->
+          <analogInput>
+            <index>7</index>
+            <name>AI #7</name>
+            <description />
+            <changeEventClass>three</changeEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <analogDeadbandAlgorithm>
+              <simple />
+            </analogDeadbandAlgorithm>
+          </analogInput>
+          <!--AI #8-->
+          <analogInput>
+            <index>8</index>
+            <name>AI #8</name>
+            <description />
+            <changeEventClass>three</changeEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <analogDeadbandAlgorithm>
+              <simple />
+            </analogDeadbandAlgorithm>
+          </analogInput>
+          <!--AI #9-->
+          <analogInput>
+            <index>9</index>
+            <name>AI #9</name>
+            <description />
+            <changeEventClass>three</changeEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultEventVariation>
+              <one />
+            </defaultEventVariation>
+            <analogDeadbandAlgorithm>
+              <simple />
+            </analogDeadbandAlgorithm>
+          </analogInput>
+        </dataPoints>
       </analogInputPoints>
       <!--5.6) Analog Output Status/Analog Output Control Block Points-->
       <analogOutputPoints>
@@ -4551,7 +5907,488 @@
           </pointListDefinition>
         </configuration>
         <!--Data Points-->
-        <dataPoints />
+        <dataPoints>
+          <!--AO #0-->
+          <analogOutput>
+            <index>0</index>
+            <name>AO #0</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+            </supportedControlOperations>
+            <dnpData />
+          </analogOutput>
+          <!--AO #1-->
+          <analogOutput>
+            <index>1</index>
+            <name>AO #1</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+            </supportedControlOperations>
+            <dnpData />
+          </analogOutput>
+          <!--AO #2-->
+          <analogOutput>
+            <index>2</index>
+            <name>AO #2</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+            </supportedControlOperations>
+            <dnpData />
+          </analogOutput>
+          <!--AO #3-->
+          <analogOutput>
+            <index>3</index>
+            <name>AO #3</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+            </supportedControlOperations>
+            <dnpData />
+          </analogOutput>
+          <!--AO #4-->
+          <analogOutput>
+            <index>4</index>
+            <name>AO #4</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+            </supportedControlOperations>
+            <dnpData />
+          </analogOutput>
+          <!--AO #5-->
+          <analogOutput>
+            <index>5</index>
+            <name>AO #5</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+            </supportedControlOperations>
+            <dnpData />
+          </analogOutput>
+          <!--AO #6-->
+          <analogOutput>
+            <index>6</index>
+            <name>AO #6</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+            </supportedControlOperations>
+            <dnpData />
+          </analogOutput>
+          <!--AO #7-->
+          <analogOutput>
+            <index>7</index>
+            <name>AO #7</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+            </supportedControlOperations>
+            <dnpData />
+          </analogOutput>
+          <!--AO #8-->
+          <analogOutput>
+            <index>8</index>
+            <name>AO #8</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+            </supportedControlOperations>
+            <dnpData />
+          </analogOutput>
+          <!--AO #9-->
+          <analogOutput>
+            <index>9</index>
+            <name>AO #9</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+            </supportedControlOperations>
+            <dnpData />
+          </analogOutput>
+          <!--AO #10-->
+          <analogOutput>
+            <index>10</index>
+            <name>AO #10</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+            </supportedControlOperations>
+            <dnpData />
+          </analogOutput>
+          <!--AO #11-->
+          <analogOutput>
+            <index>11</index>
+            <name>AO #11</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+            </supportedControlOperations>
+            <dnpData />
+          </analogOutput>
+          <!--AO #12-->
+          <analogOutput>
+            <index>12</index>
+            <name>AO #12</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+            </supportedControlOperations>
+            <dnpData />
+          </analogOutput>
+          <!--AO #13-->
+          <analogOutput>
+            <index>13</index>
+            <name>AO #13</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+            </supportedControlOperations>
+            <dnpData />
+          </analogOutput>
+          <!--AO #14-->
+          <analogOutput>
+            <index>14</index>
+            <name>AO #14</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+            </supportedControlOperations>
+            <dnpData />
+          </analogOutput>
+          <!--AO #15-->
+          <analogOutput>
+            <index>15</index>
+            <name>AO #15</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+            </supportedControlOperations>
+            <dnpData />
+          </analogOutput>
+          <!--AO #16-->
+          <analogOutput>
+            <index>16</index>
+            <name>AO #16</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+            </supportedControlOperations>
+            <dnpData />
+          </analogOutput>
+          <!--AO #17-->
+          <analogOutput>
+            <index>17</index>
+            <name>AO #17</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+            </supportedControlOperations>
+            <dnpData />
+          </analogOutput>
+          <!--AO #18-->
+          <analogOutput>
+            <index>18</index>
+            <name>AO #18</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+            </supportedControlOperations>
+            <dnpData />
+          </analogOutput>
+          <!--AO #19-->
+          <analogOutput>
+            <index>19</index>
+            <name>AO #19</name>
+            <description />
+            <changeEventClass>one</changeEventClass>
+            <commandEventClass>none</commandEventClass>
+            <includedInClass0Response>always</includedInClass0Response>
+            <defaultStaticVariation>
+              <two />
+            </defaultStaticVariation>
+            <defaultChangeEventVariation>
+              <one />
+            </defaultChangeEventVariation>
+            <defaultCommandEventVariation>
+              <one />
+            </defaultCommandEventVariation>
+            <supportedControlOperations>
+              <supportSelectOperate />
+              <supportDirectOperate />
+              <supportDirectOperateNoAck />
+            </supportedControlOperations>
+            <dnpData />
+          </analogOutput>
+        </dataPoints>
       </analogOutputPoints>
       <!--5.7) Sequential File Transfer Support-->
       <sequentialFiles>
