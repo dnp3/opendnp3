@@ -188,48 +188,73 @@ namespace Automatak
 
 					static opendnp3::DatabaseConfig Convert(DatabaseTemplate^ lhs);
 
-					template <class Info, class Source, class Target>
-					static void InitializeDefaults(Source^ source, Target& target)
+                    static opendnp3::BinaryConfig ConvertPointConfig(BinaryConfig^ config) {
+                        return ConvertEventConfig<opendnp3::BinaryInfo, opendnp3::BinaryConfig>(config);
+                    }
+
+                    static opendnp3::DoubleBitBinaryConfig ConvertPointConfig(DoubleBinaryConfig^ config) {
+                        return ConvertEventConfig<opendnp3::DoubleBitBinaryInfo, opendnp3::DoubleBitBinaryConfig>(config);
+                    }
+
+                    static opendnp3::BOStatusConfig ConvertPointConfig(BinaryOutputStatusConfig^ config) {
+                        return ConvertEventConfig<opendnp3::BinaryOutputStatusInfo, opendnp3::BOStatusConfig>(config);
+                    }
+
+                    static opendnp3::AnalogConfig ConvertPointConfig(AnalogConfig^ config) {
+                        return ConvertDeadbandConfig<opendnp3::AnalogInfo, opendnp3::AnalogConfig>(config);
+                    }
+
+                    static opendnp3::CounterConfig ConvertPointConfig(CounterConfig^ config) {
+                        return ConvertDeadbandConfig<opendnp3::CounterInfo, opendnp3::CounterConfig>(config);
+                    }
+
+                    static opendnp3::FrozenCounterConfig ConvertPointConfig(FrozenCounterConfig^ config) {
+                        return ConvertDeadbandConfig<opendnp3::FrozenCounterInfo, opendnp3::FrozenCounterConfig>(config);
+                    }
+
+                    static opendnp3::AOStatusConfig ConvertPointConfig(AnalogOutputStatusConfig^ config) {
+                        return ConvertDeadbandConfig<opendnp3::AnalogOutputStatusInfo, opendnp3::AOStatusConfig>(config);
+                    }
+
+                    static opendnp3::TimeAndIntervalConfig ConvertPointConfig(TimeAndIntervalConfig^ config) {
+                        opendnp3::TimeAndIntervalConfig ret;
+                        ret.svariation = static_cast<opendnp3::StaticTimeAndIntervalVariation>(config->staticVariation);
+                        return ret;
+                    }
+
+                    static opendnp3::OctetStringConfig ConvertPointConfig(OctetStringConfig^ config) {                        
+                        return ConvertEventConfig<opendnp3::OctetStringInfo, opendnp3::OctetStringConfig>(config);
+                    }
+
+                    template <class Info, class Target, class Source>
+                    static typename Target ConvertEventConfig(Source^ config) {
+                        Target ret;
+                        ret.clazz = static_cast<opendnp3::PointClass>(config->clazz);
+                        ret.evariation = static_cast<Info::event_variation_t>(config->eventVariation);
+                        ret.svariation = static_cast<Info::static_variation_t>(config->staticVariation);
+                        return ret;
+
+                    }
+
+                    template <class Info, class Target, class Source>
+                    static typename Target ConvertDeadbandConfig(Source^ config) {
+                        Target ret;
+                        ret.clazz = static_cast<opendnp3::PointClass>(config->clazz);
+                        ret.evariation = static_cast<Info::event_variation_t>(config->eventVariation);
+                        ret.svariation = static_cast<Info::static_variation_t>(config->staticVariation);
+                        return ret;
+
+                    }
+
+					template <class Target, class Source>
+                    static std::map<uint16_t, Target> ConvertConfigMap(System::Collections::Generic::Dictionary<System::UInt16, Source^>^ source)
 					{
-						for (int i = 0; i < source->Count; ++i)
-						{
-                            target[i] = {};
-						}
-					}
-
-					template <class Info, class Source, class Target>
-					static void ConvertStaticConfig(Source^ source, Target& target)
-					{
-                        InitializeDefaults<Info>(source, target);
-
-						for (int i = 0; i < source->Count; ++i)
-						{
-							target[i].svariation = (typename Info::static_variation_t) source[i]->staticVariation;
-						}
-					}
-
-					template <class Info, class Source, class Target>
-					static void ConvertEventConfig(Source^ source, Target& target)
-					{
-						ConvertStaticConfig<Info>(source, target);
-
-						for (int i = 0; i < source->Count; ++i)
-						{
-                            target[i].clazz = Convert(source[i]->clazz);
-							target[i].evariation = (typename Info::event_variation_t) source[i]->eventVariation;
-						}
-					}
-
-					template <class Info, class Source, class Target>
-					static void ConvertDeadbandConfig(Source^ source, Target& target)
-					{
-						ConvertEventConfig<Info>(source, target);
-
-						for (int i = 0; i < source->Count; ++i)
-						{
-							target[i].deadband = source[i]->deadband;
-						}
-					}
+                        std::map<uint16_t, Target> ret;
+                        for each(KeyValuePair<System::UInt16, Source^>^ kvp in source) {
+                            ret[kvp->Key] = ConvertPointConfig(kvp->Value);                            
+                        }
+                        return ret;
+					}					
 			};
 
 		}

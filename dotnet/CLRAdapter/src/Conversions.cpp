@@ -462,15 +462,15 @@ namespace DNP3
         {
             opendnp3::DatabaseConfig config;
 
-            ConvertEventConfig<opendnp3::BinaryInfo>(lhs->binary, config.binary_input);
-            ConvertEventConfig<opendnp3::DoubleBitBinaryInfo>(lhs->doubleBinary, config.double_binary);
-            ConvertDeadbandConfig<opendnp3::AnalogInfo>(lhs->analog, config.analog_input);
-            ConvertDeadbandConfig<opendnp3::CounterInfo>(lhs->counter, config.counter);
-            ConvertDeadbandConfig<opendnp3::FrozenCounterInfo>(lhs->frozenCounter, config.frozen_counter);
-            ConvertEventConfig<opendnp3::BinaryOutputStatusInfo>(lhs->binaryOutputStatus, config.binary_output_status);
-            ConvertDeadbandConfig<opendnp3::AnalogOutputStatusInfo>(lhs->analogOutputStatus, config.analog_output_status);
-            ConvertStaticConfig<opendnp3::TimeAndIntervalInfo>(lhs->timeAndInterval, config.time_and_interval);
-            ConvertEventConfig<opendnp3::OctetStringInfo>(lhs->octetString, config.octet_string);
+            config.binary_input = Conversions::ConvertConfigMap<opendnp3::BinaryConfig>(lhs->binary);
+            config.double_binary = Conversions::ConvertConfigMap<opendnp3::DoubleBitBinaryConfig>(lhs->doubleBinary);
+            config.analog_input = Conversions::ConvertConfigMap<opendnp3::AnalogConfig>(lhs->analog);
+            config.counter = Conversions::ConvertConfigMap<opendnp3::CounterConfig>(lhs->counter);
+            config.frozen_counter = Conversions::ConvertConfigMap<opendnp3::FrozenCounterConfig>(lhs->frozenCounter);
+            config.binary_output_status = Conversions::ConvertConfigMap<opendnp3::BOStatusConfig>(lhs->binaryOutputStatus);
+            config.analog_output_status = Conversions::ConvertConfigMap<opendnp3::AOStatusConfig>(lhs->analogOutputStatus);
+            config.time_and_interval = Conversions::ConvertConfigMap<opendnp3::TimeAndIntervalConfig>(lhs->timeAndInterval);
+            config.octet_string = Conversions::ConvertConfigMap<opendnp3::OctetStringConfig>(lhs->octetString);            
 
             return config;
         }
