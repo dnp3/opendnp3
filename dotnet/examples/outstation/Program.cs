@@ -36,8 +36,7 @@ namespace DotNetOutstationDemo
 
             var config = new OutstationStackConfig();
 
-            // configure the various measurements in our database
-            config.databaseTemplate = new DatabaseTemplate();
+            // configure the various measurements in our database            
             config.databaseTemplate.binary.Add(3, new BinaryConfig());
             config.databaseTemplate.binary.Add(7, new BinaryConfig());
             // ....           

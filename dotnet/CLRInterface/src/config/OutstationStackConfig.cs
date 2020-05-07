@@ -29,12 +29,12 @@ namespace Automatak.DNP3.Interface
     public class OutstationStackConfig
     {
         /// <summary>
-        /// Constructor with reasonable defaults
+        /// Constructor with reasonable defaults and an empty database
         /// </summary>
         public OutstationStackConfig()
         {
             this.outstation = new OutstationConfig();            
-            this.databaseTemplate = new DatabaseTemplate(10);
+            this.databaseTemplate = new DatabaseTemplate();
             this.link = new LinkConfig(false, false);
         }
       
