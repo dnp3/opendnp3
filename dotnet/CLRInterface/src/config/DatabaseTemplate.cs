@@ -111,38 +111,38 @@ namespace Automatak.DNP3.Interface
         /// <summary>
         /// Modify individual binary configuration here
         /// </summary>
-        public Dictionary<ushort, BinaryConfig> binary = new Dictionary<ushort, BinaryConfig>();
+        public IDictionary<ushort, BinaryConfig> binary = new Dictionary<ushort, BinaryConfig>();
         /// <summary>
         /// Modify individual double binary configuration here
         /// </summary>
-        public Dictionary<ushort, DoubleBinaryConfig> doubleBinary = new Dictionary<ushort, DoubleBinaryConfig>();
+        public IDictionary<ushort, DoubleBinaryConfig> doubleBinary = new Dictionary<ushort, DoubleBinaryConfig>();
         /// <summary>
         /// Modify individual analog configuration here
         /// </summary>
-        public Dictionary<ushort, CounterConfig> counter = new Dictionary<ushort, CounterConfig>();
+        public IDictionary<ushort, CounterConfig> counter = new Dictionary<ushort, CounterConfig>();
         /// <summary>
         /// Modify individual analog configuration here
         /// </summary>
-        public Dictionary<ushort, FrozenCounterConfig> frozenCounter = new Dictionary<ushort, FrozenCounterConfig>();
+        public IDictionary<ushort, FrozenCounterConfig> frozenCounter = new Dictionary<ushort, FrozenCounterConfig>();
         /// <summary>
         /// Modify individual counter configuration here
         /// </summary>
-        public Dictionary<ushort, AnalogConfig> analog = new Dictionary<ushort, AnalogConfig>();
+        public IDictionary<ushort, AnalogConfig> analog = new Dictionary<ushort, AnalogConfig>();
         /// <summary>
         /// Modify individual binary output status configuration here
         /// </summary>
-        public Dictionary<ushort, BinaryOutputStatusConfig> binaryOutputStatus = new Dictionary<ushort, BinaryOutputStatusConfig>();
+        public IDictionary<ushort, BinaryOutputStatusConfig> binaryOutputStatus = new Dictionary<ushort, BinaryOutputStatusConfig>();
         /// <summary>
         /// Modify individual analog output status configuration here
         /// </summary>
-        public Dictionary<ushort, AnalogOutputStatusConfig> analogOutputStatus = new Dictionary<ushort, AnalogOutputStatusConfig>();
+        public IDictionary<ushort, AnalogOutputStatusConfig> analogOutputStatus = new Dictionary<ushort, AnalogOutputStatusConfig>();
         /// <summary>
         ///  Modify individual time and interval configuration here
         /// </summary>
-        public Dictionary<ushort, TimeAndIntervalConfig> timeAndInterval = new Dictionary<ushort, TimeAndIntervalConfig>();
+        public IDictionary<ushort, TimeAndIntervalConfig> timeAndInterval = new Dictionary<ushort, TimeAndIntervalConfig>();
         /// <summary>
         ///  Modify individual OctetStrings configuration here
         /// </summary>
-        public Dictionary<ushort, OctetStringConfig> octetString = new Dictionary<ushort, OctetStringConfig>();
+        public IDictionary<ushort, OctetStringConfig> octetString = new Dictionary<ushort, OctetStringConfig>();
     };    
 }

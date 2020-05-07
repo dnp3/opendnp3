@@ -247,7 +247,7 @@ namespace Automatak
                     }
 
 					template <class Target, class Source>
-                    static std::map<uint16_t, Target> ConvertConfigMap(System::Collections::Generic::Dictionary<System::UInt16, Source^>^ source)
+                    static std::map<uint16_t, Target> ConvertConfigMap(System::Collections::Generic::IDictionary<System::UInt16, Source^>^ source)
 					{
                         std::map<uint16_t, Target> ret;
                         for each(KeyValuePair<System::UInt16, Source^>^ kvp in source) {
