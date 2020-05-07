@@ -38,7 +38,7 @@ namespace DotNetOutstationDemo
 
             // configure the various measurements in our database
             config.databaseTemplate = new DatabaseTemplate(4, 1, 1, 1, 1, 1, 1, 0, 0);
-            config.databaseTemplate.binaries[0].clazz = PointClass.Class2;               
+            config.databaseTemplate.binary[0].clazz = PointClass.Class2;               
             // ....           
             config.outstation.config.allowUnsolicited = true;            
 

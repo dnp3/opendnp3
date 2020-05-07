@@ -29,7 +29,7 @@ namespace Automatak.DNP3.Interface
     public class DatabaseTemplate
     {
         /// <summary>
-        /// Constructor that sets up the size of the types
+        /// Constructor that sets up a number of contigous values for each type using default settings
         /// </summary>
         /// <param name="numBinary">numer of binary values starting at index 0</param>
         /// <param name="numAnalog">numer of analog values starting at index 0</param>
@@ -48,74 +48,101 @@ namespace Automatak.DNP3.Interface
                                 System.UInt16 numAnalogOutputStatus,
                                 System.UInt16 numTimeAndInterval,
                                 System.UInt16 numOctetString
-            )
+            ) : this()
         {
-            this.binaries = Enumerable.Range(0, numBinary).Select(i => new BinaryRecord(Convert.ToUInt16(i))).ToList();
+            foreach(ushort index in Enumerable.Range(0, numBinary))
+            {
+                this.binary.Add(index, new BinaryConfig());
+            }
 
-            this.doubleBinaries = Enumerable.Range(0, numDoubleBinary).Select(i => new DoubleBinaryRecord(Convert.ToUInt16(i))).ToList();
+            foreach (ushort index in Enumerable.Range(0, numDoubleBinary))
+            {
+                this.doubleBinary.Add(index, new DoubleBinaryConfig());
+            }
 
-            this.counters = Enumerable.Range(0, numCounter).Select(i => new CounterRecord(Convert.ToUInt16(i))).ToList();
+            foreach (ushort index in Enumerable.Range(0, numAnalog))
+            {
+                this.analog.Add(index, new AnalogConfig());
+            }
 
-            this.frozenCounters = Enumerable.Range(0, numFrozenCounter).Select(i => new FrozenCounterRecord(Convert.ToUInt16(i))).ToList();
+            foreach (ushort index in Enumerable.Range(0, numCounter))
+            {
+                this.counter.Add(index, new CounterConfig());
+            }
 
-            this.analogs = Enumerable.Range(0, numAnalog).Select(i => new AnalogRecord(Convert.ToUInt16(i))).ToList();
+            foreach (ushort index in Enumerable.Range(0, numFrozenCounter))
+            {
+                this.frozenCounter.Add(index, new FrozenCounterConfig());
+            }
 
-            this.binaryOutputStatii = Enumerable.Range(0, numBinaryOutputStatus).Select(i => new BinaryOutputStatusRecord(Convert.ToUInt16(i))).ToList();
+            foreach (ushort index in Enumerable.Range(0, numBinaryOutputStatus))
+            {
+                this.binaryOutputStatus.Add(index, new BinaryOutputStatusConfig());
+            }
 
-            this.analogOutputStatii = Enumerable.Range(0, numAnalogOutputStatus).Select(i => new AnalogOutputStatusRecord(Convert.ToUInt16(i))).ToList();
+            foreach (ushort index in Enumerable.Range(0, numAnalogOutputStatus))
+            {
+                this.analogOutputStatus.Add(index, new AnalogOutputStatusConfig());
+            }
 
-            this.timeAndIntervals = Enumerable.Range(0, numTimeAndInterval).Select(i => new TimeAndIntervalRecord(Convert.ToUInt16(i))).ToList();
+            foreach (ushort index in Enumerable.Range(0, numTimeAndInterval))
+            {
+                this.timeAndInterval.Add(index, new TimeAndIntervalConfig());
+            }
 
-            this.octetStrings = Enumerable.Range(0, numOctetString).Select(i => new OctetStringRecord(Convert.ToUInt16(i))).ToList();
+            foreach (ushort index in Enumerable.Range(0, numOctetString))
+            {
+                this.octetString.Add(index, new OctetStringConfig());
+            }
         }        
 
         /// <summary>
-        /// Default constructor that sets every value to the same count
+        /// Constructor that creates a contigous default count for every type of measurement
         /// </summary>
         public DatabaseTemplate(System.UInt16 count) : this(count, count, count, count, count, count, count, count, count)
         { }
 
         /// <summary>
-        /// Default constructor that sets up 10 of every type
+        /// Default constructor that creates empty dictionaries for each type allowing full customization
         /// </summary>
-        public DatabaseTemplate() : this(0)
-        { }
+        public DatabaseTemplate()
+        {}
 
         /// <summary>
         /// Modify individual binary configuration here
         /// </summary>
-        public List<BinaryRecord> binaries;
+        public Dictionary<ushort, BinaryConfig> binary = new Dictionary<ushort, BinaryConfig>();
         /// <summary>
         /// Modify individual double binary configuration here
         /// </summary>
-        public List<DoubleBinaryRecord> doubleBinaries;
+        public Dictionary<ushort, DoubleBinaryConfig> doubleBinary = new Dictionary<ushort, DoubleBinaryConfig>();
         /// <summary>
         /// Modify individual analog configuration here
         /// </summary>
-        public List<CounterRecord> counters;
+        public Dictionary<ushort, CounterConfig> counter = new Dictionary<ushort, CounterConfig>();
         /// <summary>
         /// Modify individual analog configuration here
         /// </summary>
-        public List<FrozenCounterRecord> frozenCounters;
+        public Dictionary<ushort, FrozenCounterConfig> frozenCounter = new Dictionary<ushort, FrozenCounterConfig>();
         /// <summary>
         /// Modify individual counter configuration here
         /// </summary>
-        public List<AnalogRecord> analogs;
+        public Dictionary<ushort, AnalogConfig> analog = new Dictionary<ushort, AnalogConfig>();
         /// <summary>
         /// Modify individual binary output status configuration here
         /// </summary>
-        public List<BinaryOutputStatusRecord> binaryOutputStatii;
+        public Dictionary<ushort, BinaryOutputStatusConfig> binaryOutputStatus = new Dictionary<ushort, BinaryOutputStatusConfig>();
         /// <summary>
         /// Modify individual analog output status configuration here
         /// </summary>
-        public List<AnalogOutputStatusRecord> analogOutputStatii;
+        public Dictionary<ushort, AnalogOutputStatusConfig> analogOutputStatus = new Dictionary<ushort, AnalogOutputStatusConfig>();
         /// <summary>
         ///  Modify individual time and interval configuration here
         /// </summary>
-        public List<TimeAndIntervalRecord> timeAndIntervals;
+        public Dictionary<ushort, TimeAndIntervalConfig> timeAndInterval = new Dictionary<ushort, TimeAndIntervalConfig>();
         /// <summary>
         ///  Modify individual OctetStrings configuration here
         /// </summary>
-        public List<OctetStringRecord> octetStrings;
+        public Dictionary<ushort, OctetStringConfig> octetString = new Dictionary<ushort, OctetStringConfig>();
     };    
 }

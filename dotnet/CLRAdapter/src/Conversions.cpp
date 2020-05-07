@@ -462,16 +462,15 @@ namespace DNP3
         {
             opendnp3::DatabaseConfig config;
 
-            ConvertEventConfig<opendnp3::BinaryInfo>(lhs->binaries, config.binary_input);
-            ConvertEventConfig<opendnp3::DoubleBitBinaryInfo>(lhs->doubleBinaries, config.double_binary);
-            ConvertDeadbandConfig<opendnp3::AnalogInfo>(lhs->analogs, config.analog_input);
-            ConvertDeadbandConfig<opendnp3::CounterInfo>(lhs->counters, config.counter);
-            ConvertDeadbandConfig<opendnp3::FrozenCounterInfo>(lhs->frozenCounters, config.frozen_counter);
-            ConvertEventConfig<opendnp3::BinaryOutputStatusInfo>(lhs->binaryOutputStatii, config.binary_output_status);
-            ConvertDeadbandConfig<opendnp3::AnalogOutputStatusInfo>(lhs->analogOutputStatii,
-                                                                    config.analog_output_status);
-            ConvertStaticConfig<opendnp3::TimeAndIntervalInfo>(lhs->timeAndIntervals, config.time_and_interval);
-            ConvertEventConfig<opendnp3::OctetStringInfo>(lhs->octetStrings, config.octet_string);
+            ConvertEventConfig<opendnp3::BinaryInfo>(lhs->binary, config.binary_input);
+            ConvertEventConfig<opendnp3::DoubleBitBinaryInfo>(lhs->doubleBinary, config.double_binary);
+            ConvertDeadbandConfig<opendnp3::AnalogInfo>(lhs->analog, config.analog_input);
+            ConvertDeadbandConfig<opendnp3::CounterInfo>(lhs->counter, config.counter);
+            ConvertDeadbandConfig<opendnp3::FrozenCounterInfo>(lhs->frozenCounter, config.frozen_counter);
+            ConvertEventConfig<opendnp3::BinaryOutputStatusInfo>(lhs->binaryOutputStatus, config.binary_output_status);
+            ConvertDeadbandConfig<opendnp3::AnalogOutputStatusInfo>(lhs->analogOutputStatus, config.analog_output_status);
+            ConvertStaticConfig<opendnp3::TimeAndIntervalInfo>(lhs->timeAndInterval, config.time_and_interval);
+            ConvertEventConfig<opendnp3::OctetStringInfo>(lhs->octetString, config.octet_string);
 
             return config;
         }

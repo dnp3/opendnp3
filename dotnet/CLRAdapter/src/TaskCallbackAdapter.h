@@ -26,6 +26,7 @@
 #include <opendnp3/master/ITaskCallback.h>
 
 #include <vcclr.h>
+#include <memory>
 
 using namespace Automatak::DNP3::Interface;
 

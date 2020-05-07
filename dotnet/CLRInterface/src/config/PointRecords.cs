@@ -22,55 +22,29 @@ using System.Linq;
 using System.Text;
 
 namespace Automatak.DNP3.Interface
-{
-    public class PointRecord
-    {
-        public PointRecord(System.UInt16 index)
-        {
-            this.index = index;
-        }
-
-        public System.UInt16 index;
-    }
-    
+{     
     /// <summary>
-    /// Point record type that is assigned an event class 
+    /// All types are assigned to a class
     /// </summary>
-    public class EventRecord : PointRecord
-    {
-        public EventRecord(System.UInt16 index) : base(index)
+    public class EventConfig
+    {      
+        public EventConfig()            
         {
-            this.clazz = PointClass.Class1;
-        }
-
-        public EventRecord(System.UInt16 index, PointClass clazz)
-            : base(index)
-        {
-            this.clazz = clazz;            
+            this.clazz = PointClass.Class1;         
         }        
 
         public PointClass clazz;        
     };
 
     /// <summary>
-    /// Point record type that is assigned an event class and deadband tolerance
+    /// Config type that is assigned an event class and deadband tolerance
     /// </summary>
-    public class DeadbandRecord<T> : EventRecord
+    public class DeadbandConfig<T> : EventConfig
     {
-        public DeadbandRecord(System.UInt16 index, PointClass pointClass, T deadband) : base(index, pointClass)
-        {
-            this.deadband = deadband;
-        }
-
-        public DeadbandRecord(System.UInt16 index, PointClass pointClass) : base(index, pointClass)
+        public DeadbandConfig() : base()
         {
             this.deadband = default(T);
-        }
-        
-        public DeadbandRecord(System.UInt16 index) : base(index)
-        {
-            this.deadband = default(T);
-        }
+        }      
 
         /// <summary>
         /// Value can change within this tolerance without producing an event
@@ -78,9 +52,9 @@ namespace Automatak.DNP3.Interface
         public T deadband;
     };
 
-    public class BinaryRecord : EventRecord
+    public class BinaryConfig : EventConfig
     {
-        public BinaryRecord(System.UInt16 index) : base(index)
+        public BinaryConfig() : base()
         {
             this.eventVariation = EventBinaryVariation.Group2Var1;
             this.staticVariation = StaticBinaryVariation.Group1Var2;         
@@ -90,9 +64,9 @@ namespace Automatak.DNP3.Interface
         public StaticBinaryVariation staticVariation;        
     };
 
-    public class DoubleBinaryRecord : EventRecord
+    public class DoubleBinaryConfig : EventConfig
     {
-        public DoubleBinaryRecord(System.UInt16 index) : base(index)
+        public DoubleBinaryConfig() : base()
         {
             this.eventVariation = EventDoubleBinaryVariation.Group4Var1;
             this.staticVariation = StaticDoubleBinaryVariation.Group3Var2;
@@ -102,9 +76,9 @@ namespace Automatak.DNP3.Interface
         public StaticDoubleBinaryVariation staticVariation;
     };
 
-    public class BinaryOutputStatusRecord : EventRecord
+    public class BinaryOutputStatusConfig : EventConfig
     {
-        public BinaryOutputStatusRecord(System.UInt16 index) : base(index)
+        public BinaryOutputStatusConfig() : base()
         {
             this.eventVariation = EventBinaryOutputStatusVariation.Group11Var1;
             this.staticVariation = StaticBinaryOutputStatusVariation.Group10Var2;
@@ -114,9 +88,9 @@ namespace Automatak.DNP3.Interface
         public StaticBinaryOutputStatusVariation staticVariation;
     };
 
-    public class CounterRecord : DeadbandRecord<System.UInt32>
+    public class CounterConfig : DeadbandConfig<System.UInt32>
     {
-        public CounterRecord(System.UInt16 index) : base(index)
+        public CounterConfig() : base()
         {
             this.eventVariation = EventCounterVariation.Group22Var1;
             this.staticVariation = StaticCounterVariation.Group20Var1;
@@ -126,9 +100,9 @@ namespace Automatak.DNP3.Interface
         public StaticCounterVariation staticVariation;
     };
 
-    public class FrozenCounterRecord : DeadbandRecord<System.UInt32>
+    public class FrozenCounterConfig : DeadbandConfig<System.UInt32>
     {
-        public FrozenCounterRecord(System.UInt16 index) : base(index)
+        public FrozenCounterConfig() : base()
         {
             this.eventVariation = EventFrozenCounterVariation.Group23Var1;
             this.staticVariation = StaticFrozenCounterVariation.Group21Var1;
@@ -138,9 +112,9 @@ namespace Automatak.DNP3.Interface
         public StaticFrozenCounterVariation staticVariation;
     };
 
-    public class AnalogRecord : DeadbandRecord<double>
+    public class AnalogConfig : DeadbandConfig<double>
     {
-        public AnalogRecord(System.UInt16 index) : base(index)
+        public AnalogConfig() : base()
         {
             this.eventVariation = EventAnalogVariation.Group32Var1;
             this.staticVariation = StaticAnalogVariation.Group30Var1;
@@ -150,9 +124,9 @@ namespace Automatak.DNP3.Interface
         public StaticAnalogVariation staticVariation;
     };
 
-    public class AnalogOutputStatusRecord : DeadbandRecord<double>
+    public class AnalogOutputStatusConfig : DeadbandConfig<double>
     {
-        public AnalogOutputStatusRecord(System.UInt16 index) : base(index)
+        public AnalogOutputStatusConfig() : base()
         {
             this.eventVariation = EventAnalogOutputStatusVariation.Group42Var1;
             this.staticVariation = StaticAnalogOutputStatusVariation.Group40Var1;
@@ -162,9 +136,9 @@ namespace Automatak.DNP3.Interface
         public StaticAnalogOutputStatusVariation staticVariation;
     };
 
-    public class TimeAndIntervalRecord : PointRecord
+    public class TimeAndIntervalConfig
     {
-        public TimeAndIntervalRecord(System.UInt16 index) : base(index)
+        public TimeAndIntervalConfig()
         {
             this.staticVariation = StaticTimeAndIntervalVariation.Group50Var4;
         }
@@ -172,9 +146,9 @@ namespace Automatak.DNP3.Interface
         public StaticTimeAndIntervalVariation staticVariation;
     };
 
-    public class OctetStringRecord : EventRecord
+    public class OctetStringConfig : EventConfig
     {
-        public OctetStringRecord(System.UInt16 index) : base(index)
+        public OctetStringConfig() : base()
         {
             this.eventVariation = EventOctetStringVariation.Group111Var0;
             this.staticVariation = StaticOctetStringVariation.Group110Var0;
