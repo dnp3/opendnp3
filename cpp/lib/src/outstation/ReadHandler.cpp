@@ -50,4 +50,9 @@ IINField ReadHandler::ProcessHeader(const CountHeader& header)
     return pEventSelector->SelectCount(header.enumeration, header.count);
 }
 
+IINField ReadHandler::ProcessHeader(const PrefixHeader& header, const ICollection<uint16_t>& indices)
+{
+    return pStaticSelector->SelectIndices(header.enumeration, indices);
+}
+
 } // namespace opendnp3

@@ -30,22 +30,24 @@
 namespace opendnp3
 {
 
-class ReadHandler : public IAPDUHandler
+class ReadHandler final : public IAPDUHandler
 {
 public:
     ReadHandler(IStaticSelector& staticSelector, IEventSelector& eventSelector);
 
-    virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final
+    bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final
     {
         return true;
     }
 
 private:
-    virtual IINField ProcessHeader(const AllObjectsHeader& header) override final;
+    IINField ProcessHeader(const AllObjectsHeader& header) override;
 
-    virtual IINField ProcessHeader(const RangeHeader& header) override final;
+    IINField ProcessHeader(const RangeHeader& header) override;
 
-    virtual IINField ProcessHeader(const CountHeader& header) override final;
+    IINField ProcessHeader(const CountHeader& header) override;
+
+    IINField ProcessHeader(const PrefixHeader& header, const ICollection<uint16_t>& indices) override;
 
     IStaticSelector* pStaticSelector;
     IEventSelector* pEventSelector;

@@ -47,6 +47,7 @@ public:
     // ------- IStaticSelector -------------
     IINField SelectAll(GroupVariation gv) override;
     IINField SelectRange(GroupVariation gv, const Range& range) override;
+    IINField SelectIndices(GroupVariation gv, const ICollection<uint16_t>& indices) override;
     void Unselect() override;
 
     // ------- IClassAssigner -------------
@@ -101,6 +102,7 @@ private:
     static IINField select_range(StaticDataMap<Spec>& map,
                                  const Range& range,
                                  typename Spec::static_variation_t variation);
+    
 };
 
 } // namespace opendnp3

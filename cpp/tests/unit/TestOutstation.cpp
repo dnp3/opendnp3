@@ -668,3 +668,25 @@ TEST_CASE(SUITE("ReadGrp40Var4"))
     TestStaticAnalogOutputStatus(StaticAnalogOutputStatusVariation::Group40Var4, -20.0,
                                  "C0 81 80 00 28 04 00 00 00 01 00 00 00 00 00 00 34 C0");
 }
+
+TEST_CASE(SUITE("read g1v2 using qualifer 0x17"))
+{
+    OutstationConfig config;
+    config.params.allowUnsolicited = false;
+    OutstationTestObject t(config, configure::database_by_sizes(3, 0, 0, 0, 0, 0, 0, 0, 0));
+
+    t.LowerLayerUp();
+    t.SendToOutstation("C0 01 01 02 17 02 00 02"); // Read g1v2 indices 0 and 2
+    REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 01 02 00 00 00 02 01 02 00 02 02 02");
+}
+
+TEST_CASE(SUITE("read g1v2 using qualifer 0x28"))
+{
+    OutstationConfig config;
+    config.params.allowUnsolicited = false;
+    OutstationTestObject t(config, configure::database_by_sizes(3, 0, 0, 0, 0, 0, 0, 0, 0));
+
+    t.LowerLayerUp();
+    t.SendToOutstation("C0 01 01 02 28 02 00 00 00 02 00"); // Read g1v2 indices 0 and 2
+    REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 01 02 00 00 00 02 01 02 00 02 02 02");
+}
