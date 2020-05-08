@@ -39,6 +39,7 @@ namespace DotNetOutstationDemo
             // configure the various measurements in our database            
             config.databaseTemplate.binary.Add(3, new BinaryConfig());
             config.databaseTemplate.binary.Add(7, new BinaryConfig());
+            config.databaseTemplate.analog.Add(0, new AnalogConfig());
             // ....           
             config.outstation.config.allowUnsolicited = true;            
 
@@ -74,7 +75,7 @@ namespace DotNetOutstationDemo
                             analogFlags.Set(AnalogQuality.ONLINE);
 
 
-                            changeset.Update(new Binary(binaryValue, binaryFlags, DNPTime.Now), 0);
+                            changeset.Update(new Binary(binaryValue, binaryFlags, new DNPTime(DateTime.UtcNow)), 3);
                             changeset.Update(new Analog(analogValue, analogFlags, DNPTime.Now), 0);
                             outstation.Load(changeset);
                         }

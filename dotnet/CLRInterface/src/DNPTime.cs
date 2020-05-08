@@ -23,9 +23,13 @@ namespace Automatak.DNP3.Interface
     public class DNPTime
     {
         public static DNPTime Unset = new DNPTime(DateTime.MinValue, TimestampQuality.INVALID);
-        public static DNPTime Now = new DNPTime(DateTime.Now, TimestampQuality.INVALID);
-
         private static DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+        public static DNPTime Now
+        {
+            get { return new DNPTime(DateTime.Now, TimestampQuality.INVALID); }
+        }
+
         public static DNPTime FromEpoch(Int64 epochTime, TimestampQuality quality)
         {
             var ms = TimeSpan.FromMilliseconds(epochTime);
@@ -39,9 +43,8 @@ namespace Automatak.DNP3.Interface
             }
         }
 
-        public DNPTime(DateTime time)
+        public DNPTime(DateTime time) : this(time, TimestampQuality.INVALID)
         {
-            new DNPTime(time, TimestampQuality.INVALID);
         }
 
         public DNPTime(DateTime time, TimestampQuality quality)
@@ -64,6 +67,11 @@ namespace Automatak.DNP3.Interface
         {
             var ticks = (UInt64)this.value.ToUniversalTime().Subtract(Epoch).Ticks;
             return ticks / TimeSpan.TicksPerMillisecond;
+        }
+
+        public override string ToString()
+        {
+            return this.value.ToUniversalTime().ToString() + " [" + this.quality.ToString() +"]";
         }
 
         private DateTime value;
