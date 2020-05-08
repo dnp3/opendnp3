@@ -111,6 +111,9 @@ public:
     void OnHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values);
     void OnHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values);
 
+    // adhoc read by index
+    void OnHeader(const PrefixHeader& header, const ICollection<uint16_t>& values);
+
     // commands
 
     void OnHeader(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& values);
@@ -215,6 +218,9 @@ protected:
     virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values);
     virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values);
     virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values);
+
+    // adhoc read by index
+    virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<uint16_t>& values);
 
     virtual IINField ProcessHeader(const PrefixHeader& header,
                                    const ICollection<Indexed<ControlRelayOutputBlock>>& values);

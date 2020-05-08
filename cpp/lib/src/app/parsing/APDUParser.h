@@ -61,6 +61,8 @@ private:
         return true;
     }
 
+  
+
     static ParseResult ParseHeaders(const ser4cpp::rseq_t& buffer,
                                     Logger* pLogger,
                                     const ParserSettings& settings,
@@ -83,6 +85,13 @@ private:
                                               const HeaderRecord& record,
                                               const ParserSettings& settings,
                                               IAPDUHandler* pHandler);
+
+    static ParseResult ParseCountOfIndices(ser4cpp::rseq_t& buffer,
+        const HeaderRecord& record,
+        const NumParser& numparser,
+        uint16_t count,
+        Logger* pLogger,
+        IAPDUHandler* pHandler);
 };
 
 } // namespace opendnp3

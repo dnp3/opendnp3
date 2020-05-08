@@ -56,7 +56,12 @@ ParseResult CountIndexParser::ParseHeader(ser4cpp::rseq_t& buffer,
                             GroupVariationSpec::to_human_string(record.enumeration),
                             QualifierCodeSpec::to_human_string(record.GetQualifierCode()), count);
 
-        return ParseCountOfObjects(buffer, record, numparser, count, pLogger, pHandler);
+        if (settings.ExpectsContents()) {
+            return ParseCountOfObjects(buffer, record, numparser, count, pLogger, pHandler);
+        }
+        else {
+            return ParseCountOfIndices(buffer, record, numparser, count, pLogger, pHandler);
+        }
     }
 
     return res;
@@ -212,6 +217,34 @@ ParseResult CountIndexParser::ParseCountOfObjects(ser4cpp::rseq_t& buffer,
 
         return ParseResult::INVALID_OBJECT_QUALIFIER;
     }
+}
+
+ParseResult CountIndexParser::ParseCountOfIndices(ser4cpp::rseq_t& buffer,
+    const HeaderRecord& record,
+    const NumParser& numparser,
+    uint16_t count,
+    Logger* pLogger,
+    IAPDUHandler* pHandler)
+{
+    const auto SIZE = static_cast<size_t>(count) * static_cast<size_t>(numparser.NumBytes());
+
+    if (buffer.length() < SIZE) {
+        SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for specified sequence of indices");
+        return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
+    }
+
+    if (pHandler)
+    {
+        auto read = [&numparser, record](ser4cpp::rseq_t& buffer, uint32_t pos) -> uint16_t {
+            return numparser.ReadNum(buffer);
+        };
+
+        auto collection = CreateBufferedCollection<uint16_t>(buffer, count, read);
+        pHandler->OnHeader(PrefixHeader(record, count), collection);
+    }
+   
+    buffer.advance(SIZE);
+    return ParseResult::OK;
 }
 
 ParseResult CountIndexParser::ParseIndexPrefixedOctetData(ser4cpp::rseq_t& buffer,

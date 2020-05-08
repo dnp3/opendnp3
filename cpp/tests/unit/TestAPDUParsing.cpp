@@ -42,13 +42,14 @@ using namespace ser4cpp;
 void TestComplex(const std::string& hex,
                  ParseResult expected,
                  size_t numCalls,
-                 const std::function<void(MockApduHeaderHandler&)>& validate)
+                 const std::function<void(MockApduHeaderHandler&)>& validate,
+                 ParserSettings settings = ParserSettings::Default())
 {
     HexSequence buffer(hex);
     MockApduHeaderHandler mock;
 
     MockLogHandler log;
-    auto result = APDUParser::Parse(buffer.ToRSeq(), mock, &log.logger);
+    auto result = APDUParser::Parse(buffer.ToRSeq(), mock, &log.logger, settings);
 
     REQUIRE((result == expected));
     REQUIRE(numCalls == mock.records.size());
@@ -444,4 +445,19 @@ TEST_CASE(SUITE("Group43Var3CountWithAllIndexSizes"))
     // 886ED0924A01 little endian)
     TestComplex("2B 03 17 01 09 01 32 00 00 00 88 6E D0 92 4A 01", ParseResult::OK, 1, validator);
     TestComplex("2B 03 28 01 00 09 00 01 32 00 00 00 88 6E D0 92 4A 01", ParseResult::OK, 1, validator);
+}
+
+
+TEST_CASE(SUITE("can parse 0x17 and 0x28 qualifers as collection of indices"))
+{
+    auto validator = [](MockApduHeaderHandler& mock) {
+        REQUIRE(2 == mock.indices.size());        
+        REQUIRE(42 == mock.indices[0]);
+        REQUIRE(255 == mock.indices[1]);
+    };
+
+    // g1v1 0x17 (count == 2) addresses == {42, 255}
+    TestComplex("01 02 17 02 2A FF", ParseResult::OK, 1, validator, ParserSettings::NoContents());
+    // g1v1 0x28 (count == 2) address == 42
+    TestComplex("01 02 28 02 00 2A 00 FF 00", ParseResult::OK, 1, validator, ParserSettings::NoContents());
 }

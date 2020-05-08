@@ -155,6 +155,13 @@ public:
         return this->ProcessAny(header, values, analogCommandEvents);
     }
 
+    opendnp3::IINField ProcessHeader(
+        const opendnp3::PrefixHeader& header,
+        const opendnp3::ICollection<uint16_t>& values) final
+    {
+        return this->ProcessAny(header, values, indices);
+    }
+
     /// --- controls ----
 
     opendnp3::IINField ProcessHeader(
@@ -266,6 +273,8 @@ public:
     std::vector<opendnp3::Indexed<opendnp3::BinaryCommandEvent>> binaryCommandEvents;
 
     std::vector<opendnp3::Indexed<opendnp3::AnalogCommandEvent>> analogCommandEvents;
+
+    std::vector<uint16_t> indices;
 
 private:
     template<class T>

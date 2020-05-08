@@ -278,6 +278,11 @@ void IAPDUHandler::OnHeader(const PrefixHeader& header, const ICollection<Indexe
     Record(header, this->ProcessHeader(header, values));
 }
 
+void IAPDUHandler::OnHeader(const PrefixHeader& header, const ICollection<uint16_t>& values)
+{
+    Record(header, this->ProcessHeader(header, values));
+}
+
 // --- controls ----
 
 void IAPDUHandler::OnHeader(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& values)
@@ -589,6 +594,11 @@ IINField IAPDUHandler::ProcessHeader(const PrefixHeader& /*header*/,
 
 IINField IAPDUHandler::ProcessHeader(const PrefixHeader& /*header*/,
                                      const ICollection<Indexed<Group122Var2>>& /*values*/)
+{
+    return ProcessUnsupportedHeader();
+}
+
+IINField IAPDUHandler::ProcessHeader(const PrefixHeader& /*header*/, const ICollection<uint16_t>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
