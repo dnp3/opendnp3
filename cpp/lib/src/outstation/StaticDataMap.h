@@ -142,6 +142,17 @@ public:
         return this->select(range, [](auto var) { return var; }); // use the default
     }
 
+
+    bool select(uint16_t index, typename Spec::static_variation_t variation)
+    {
+        return this->select(Range::From(index, index), variation);
+    }
+
+    bool select(uint16_t index)
+    {
+        return this->select(Range::From(index, index)) == 1;
+    }
+
     size_t select(Range range, typename Spec::static_variation_t variation)
     {
         return this->select(range, [variation](auto var) { return variation; }); // override default

@@ -24,6 +24,8 @@
 #include "app/Range.h"
 
 #include "opendnp3/app/IINField.h"
+#include "opendnp3/app/parsing/ICollection.h"
+
 
 namespace opendnp3
 {
@@ -34,6 +36,8 @@ public:
     virtual IINField SelectAll(GroupVariation gv) = 0;
 
     virtual IINField SelectRange(GroupVariation gv, const Range& range) = 0;
+
+    virtual IINField SelectIndices(GroupVariation gv, const ICollection<uint16_t>& indices) = 0;
 
     virtual void Unselect() = 0;
 };

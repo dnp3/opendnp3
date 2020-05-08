@@ -458,6 +458,6 @@ TEST_CASE(SUITE("can parse 0x17 and 0x28 qualifers as collection of indices"))
 
     // g1v1 0x17 (count == 2) addresses == {42, 255}
     TestComplex("01 02 17 02 2A FF", ParseResult::OK, 1, validator, ParserSettings::NoContents());
-    // g1v1 0x28 (count == 2) address == 42
+    // g1v1 0x28 (count == 2) addresses == {42, 255}
     TestComplex("01 02 28 02 00 2A 00 FF 00", ParseResult::OK, 1, validator, ParserSettings::NoContents());
 }
