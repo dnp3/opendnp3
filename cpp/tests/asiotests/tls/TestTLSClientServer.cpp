@@ -43,10 +43,10 @@ bool exists(const std::string& file)
 
 TEST_CASE(SUITE("client and server can connect"))
 {    
-    const auto key1 = "entity1_key.pem";
-    const auto key2 = "entity2_key.pem";
-    const auto cert1 = "entity1_cert.pem";
-    const auto cert2 = "entity2_cert.pem";
+    const auto key1 = "certs/self_signed/entity1_key.pem";
+    const auto key2 = "certs/self_signed/entity2_key.pem";
+    const auto cert1 = "certs/self_signed/entity1_cert.pem";
+    const auto cert2 = "certs/self_signed/entity2_cert.pem";
 
     const auto all_certs_found = exists(key1) && exists(key2) && exists(cert1) && exists(cert2);
     REQUIRE(all_certs_found);
