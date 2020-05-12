@@ -42,17 +42,14 @@ bool exists(const std::string& file)
 }
 
 TEST_CASE(SUITE("client and server can connect"))
-{
+{    
     const auto key1 = "entity1_key.pem";
     const auto key2 = "entity2_key.pem";
     const auto cert1 = "entity1_cert.pem";
     const auto cert2 = "entity2_cert.pem";
 
-    if (!(exists(key1) && exists(key2) && exists(cert1) && exists(cert2)))
-    {
-        std::cerr << "Could not locate one or more of the test TLS certificates" << std::endl;
-        return;
-    }
+    const auto all_certs_found = exists(key1) && exists(key2) && exists(cert1) && exists(cert2);
+    REQUIRE(all_certs_found);
 
     auto iteration = [=]() {
         auto test = [=](const std::shared_ptr<MockIO>& io) {
