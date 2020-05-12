@@ -41,7 +41,7 @@ bool exists(const std::string& file)
     return infile.good();
 }
 
-TEST_CASE(SUITE("client and server can connect"))
+TEST_CASE(SUITE("client and server can connect using self-signed certificate and peer certifcate for verification"))
 {    
     const auto key1 = "certs/self_signed/entity1_key.pem";
     const auto key2 = "certs/self_signed/entity2_key.pem";
@@ -55,6 +55,37 @@ TEST_CASE(SUITE("client and server can connect"))
         auto test = [=](const std::shared_ptr<MockIO>& io) {
             TLSConfig cfg1(cert2, cert1, key1);
             TLSConfig cfg2(cert1, cert2, key2);
+
+            MockTLSPair pair(io, 20001, cfg1, cfg2);
+
+            pair.Connect(1);
+        };
+
+        WithIO(test);
+    };
+
+    // run multiple times to ensure the test is cleaning up after itself in terms of system resources
+    for (int i = 0; i < 5; ++i)
+    {
+        iteration();
+    }
+}
+
+TEST_CASE(SUITE("client and server can connect using certificates signed by common CA"))
+{
+    const auto key1 = "certs/ca_chain/entity1_key.pem";
+    const auto key2 = "certs/ca_chain/entity2_key.pem";
+    const auto cert1 = "certs/ca_chain/entity1_cert.pem";
+    const auto cert2 = "certs/ca_chain/entity2_cert.pem";    
+    const auto ca_cert = "certs/ca_chain/ca_cert.pem";
+
+    const auto all_certs_found = exists(key1) && exists(key2) && exists(cert1) && exists(cert2) && exists(ca_cert);
+    REQUIRE(all_certs_found);
+
+    auto iteration = [=]() {
+        auto test = [=](const std::shared_ptr<MockIO>& io) {
+            TLSConfig cfg1(ca_cert, cert1, key1);
+            TLSConfig cfg2(ca_cert, cert2, key2);
 
             MockTLSPair pair(io, 20001, cfg1, cfg2);
 
