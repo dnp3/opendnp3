@@ -55,6 +55,7 @@ namespace jni
             jboolean getallowTLSv10(JNIEnv* env, JTLSConfig instance);
             jboolean getallowTLSv11(JNIEnv* env, JTLSConfig instance);
             jboolean getallowTLSv12(JNIEnv* env, JTLSConfig instance);
+            jboolean getallowTLSv13(JNIEnv* env, JTLSConfig instance);
             LocalRef<JString> getcipherList(JNIEnv* env, JTLSConfig instance);
             LocalRef<JString> getlocalCertFilePath(JNIEnv* env, JTLSConfig instance);
             LocalRef<JString> getpeerCertFilePath(JNIEnv* env, JTLSConfig instance);
@@ -71,6 +72,7 @@ namespace jni
             jfieldID allowTLSv10Field = nullptr;
             jfieldID allowTLSv11Field = nullptr;
             jfieldID allowTLSv12Field = nullptr;
+            jfieldID allowTLSv13Field = nullptr;
             jfieldID cipherListField = nullptr;
         };
     }
