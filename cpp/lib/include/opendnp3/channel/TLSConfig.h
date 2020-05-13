@@ -50,8 +50,7 @@ struct TLSConfig
      */
     TLSConfig(const std::string& peerCertFilePath,
               const std::string& localCertFilePath,
-              const std::string& privateKeyFilePath,
-              int maxVerifyDepth = 0,
+              const std::string& privateKeyFilePath,              
               bool allowTLSv10 = false,
               bool allowTLSv11 = false,
               bool allowTLSv12 = true,
