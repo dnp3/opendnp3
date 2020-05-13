@@ -54,7 +54,7 @@ TEST_CASE(SUITE("client and server can connect using self-signed certificate and
     auto iteration = [=]() {
         auto test = [=](const std::shared_ptr<MockIO>& io) {
             TLSConfig cfg1(cert2, cert1, key1);
-            TLSConfig cfg2(cert1, cert2, key2);
+            TLSConfig cfg2(cert1, cert2, key2);            
 
             MockTLSPair pair(io, 20001, cfg1, cfg2);
 

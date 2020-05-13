@@ -54,6 +54,7 @@ struct TLSConfig
               bool allowTLSv10 = false,
               bool allowTLSv11 = false,
               bool allowTLSv12 = true,
+              bool allowTLSv13 = true,
               const std::string& cipherList = "")
         : peerCertFilePath(peerCertFilePath),
           localCertFilePath(localCertFilePath),
@@ -61,6 +62,7 @@ struct TLSConfig
           allowTLSv10(allowTLSv10),
           allowTLSv11(allowTLSv11),
           allowTLSv12(allowTLSv12),
+          allowTLSv13(allowTLSv13),
           cipherList(cipherList)
     {
     }
@@ -84,6 +86,9 @@ struct TLSConfig
 
     /// Allow TLS version 1.2 (default true)
     bool allowTLSv12;
+
+    /// Allow TLS version 1.3 (default true)
+    bool allowTLSv13;
 
     /// openssl format cipher list
     std::string cipherList;

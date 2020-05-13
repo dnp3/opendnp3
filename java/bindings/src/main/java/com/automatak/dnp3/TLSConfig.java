@@ -33,6 +33,7 @@ public class TLSConfig
      * @param allowTLSv10 Allow TLS version 1.0 (default false)
      * @param allowTLSv11 Allow TLS version 1.1 (default false)
      * @param allowTLSv12 Allow TLS version 1.2 (default true)
+     * @param allowTLSv13 Allow TLS version 1.3 (default true)
      * @param cipherList The openssl cipher-list, defaults to "" which does not modify the default cipher list
      *
      * localCertFilePath and privateKeyFilePath can optionally be the same file, i.e. a PEM that contains both pieces of data.
@@ -45,6 +46,7 @@ public class TLSConfig
         boolean allowTLSv10,
         boolean allowTLSv11,
         boolean allowTLSv12,
+        boolean allowTLSv13,
 	    String cipherList
     )
     {
@@ -54,6 +56,7 @@ public class TLSConfig
         this.allowTLSv10 = allowTLSv10;
         this.allowTLSv11 = allowTLSv11;
         this.allowTLSv12 = allowTLSv12;
+        this.allowTLSv13 = allowTLSv13;
         this.cipherList = cipherList;
     }
 
@@ -74,6 +77,9 @@ public class TLSConfig
 
     /// Allow TLS version 1.2 (default true)
     public final boolean allowTLSv12;
+
+    /// Allow TLS version 1.3 (default true)
+    public final boolean allowTLSv13;
 
     /// openssl format cipher list
     public final String cipherList;

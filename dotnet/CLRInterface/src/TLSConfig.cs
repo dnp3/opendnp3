@@ -24,7 +24,7 @@ using System.Threading.Tasks;
 namespace Automatak.DNP3.Interface
 {
     public class TLSConfig
-    {     
+    {
         /// <summary>
         /// Construct a TLS configuration. All files are in PEM format.	    
         /// </summary>
@@ -34,8 +34,9 @@ namespace Automatak.DNP3.Interface
         /// <param name="allowTLSv10">Allow TLS version 1.0 (default true)</param>
         /// <param name="allowTLSv11">Allow TLS version 1.1 (default true)</param>
         /// <param name="allowTLSv12">Allow TLS version 1.2 (default true)</param>
+        /// <param name="allowTLSv13">Allow TLS version 1.3 (default true)</param>
         /// <param name="cipherList">List of ciphers in openssl's format. Defaults to empty string which will use the default cipher list</param>
-        
+
         public TLSConfig(
             string peerCertFilePath,
             string localCertFilePath,
@@ -43,6 +44,7 @@ namespace Automatak.DNP3.Interface
             bool allowTLSv10 = false,
             bool allowTLSv11 = false,
             bool allowTLSv12 = true,
+            bool allowTLSv13 = true,
             string cipherList = ""
         )
         {
@@ -52,6 +54,7 @@ namespace Automatak.DNP3.Interface
             this.allowTLSv10 = allowTLSv10;
             this.allowTLSv11 = allowTLSv11;
             this.allowTLSv12 = allowTLSv12;
+            this.allowTLSv13 = allowTLSv13;
             this.cipherList = cipherList;            
         }
 
@@ -67,6 +70,9 @@ namespace Automatak.DNP3.Interface
 
         /// Allow TLS version 1.2 (default true)
         public readonly bool allowTLSv12;
+
+        /// Allow TLS version 1.3 (default true)
+        public readonly bool allowTLSv13;
 
         public readonly string cipherList;
     }
