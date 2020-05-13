@@ -43,12 +43,12 @@ public:
     /**
      * called when a command APDU begins processing
      */
-    virtual void begin() = 0;
+    virtual void Begin() = 0;
 
     /**
      * called when a command APDU ends processing
      */
-    virtual void end() = 0;
+    virtual void End() = 0;
 
     /**
      * Ask if the application supports a ControlRelayOutputBlock - group 12 variation 1

@@ -33,9 +33,9 @@ class SOEHandlerAdapter final : public opendnp3::ISOEHandler
 public:
     SOEHandlerAdapter(jni::JSOEHandler proxy) : proxy(proxy) {}
 
-    void begin_fragment(const opendnp3::ResponseInfo& info) override;
+    void BeginFragment(const opendnp3::ResponseInfo& info) override;
 
-    void end_fragment(const opendnp3::ResponseInfo& info) override;
+    void EndFragment(const opendnp3::ResponseInfo& info) override;
 
     void Process(const opendnp3::HeaderInfo& info,
                          const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Binary>>& values) override;

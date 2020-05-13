@@ -41,8 +41,8 @@ namespace Automatak
 
 				SOEHandlerAdapter(Automatak::DNP3::Interface::ISOEHandler^ proxy);
 
-				virtual void begin_fragment(const opendnp3::ResponseInfo& info) override final;
-                virtual void end_fragment(const opendnp3::ResponseInfo& info) override final;
+				virtual void BeginFragment(const opendnp3::ResponseInfo& info) override final;
+                virtual void EndFragment(const opendnp3::ResponseInfo& info) override final;
 
 				virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Binary>>& values) override final;
 				virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::DoubleBitBinary>>& values) override final;

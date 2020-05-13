@@ -47,7 +47,7 @@ MeasurementHandler::~MeasurementHandler()
 {
     if (txInitiated && pSOEHandler)
     {
-        this->pSOEHandler->end_fragment(this->info);
+        this->pSOEHandler->EndFragment(this->info);
     }
 }
 
@@ -61,7 +61,7 @@ void MeasurementHandler::CheckForTxStart()
     if (!txInitiated && pSOEHandler)
     {
         txInitiated = true;
-        this->pSOEHandler->begin_fragment(this->info);
+        this->pSOEHandler->BeginFragment(this->info);
     }
 }
 

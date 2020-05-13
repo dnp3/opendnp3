@@ -47,8 +47,8 @@ class ISOEHandler
 public:
     virtual ~ISOEHandler() = default;
 
-    virtual void begin_fragment(const ResponseInfo& info) = 0;
-    virtual void end_fragment(const ResponseInfo& info) = 0;
+    virtual void BeginFragment(const ResponseInfo& info) = 0;
+    virtual void EndFragment(const ResponseInfo& info) = 0;
 
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) = 0;
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values) = 0;

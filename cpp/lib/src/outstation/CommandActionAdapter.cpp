@@ -34,7 +34,7 @@ CommandActionAdapter::~CommandActionAdapter()
 {
     if (this->is_started)
     {
-        handler.end();
+        handler.End();
     }
 }
 
@@ -43,7 +43,7 @@ void CommandActionAdapter::CheckStart()
     if (!this->is_started)
     {
         this->is_started = true;
-        handler.begin();
+        handler.Begin();
     }
 }
 

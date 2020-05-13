@@ -46,9 +46,9 @@ public:
 
     MockSOEHandler() : soeCount(0) {}
 
-    void begin_fragment(const opendnp3::ResponseInfo& info) override {}
+    void BeginFragment(const opendnp3::ResponseInfo& info) override {}
 
-    void end_fragment(const opendnp3::ResponseInfo& info) override {}
+    void EndFragment(const opendnp3::ResponseInfo& info) override {}
 
     uint32_t TotalReceived() const
     {

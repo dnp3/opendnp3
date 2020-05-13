@@ -31,8 +31,8 @@ using namespace opendnp3;
 
 class TestSOEHandler : public ISOEHandler
 {
-    virtual void begin_fragment(const ResponseInfo& info) {};
-    virtual void end_fragment(const ResponseInfo& info) {};
+    virtual void BeginFragment(const ResponseInfo& info){};
+    virtual void EndFragment(const ResponseInfo& info){};
 
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) {};
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values) {};

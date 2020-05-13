@@ -43,12 +43,12 @@ namespace Automatak
 			SOEHandlerAdapter::SOEHandlerAdapter(Automatak::DNP3::Interface::ISOEHandler^ aProxy) : proxy(aProxy)
 			{}
                         
-            void SOEHandlerAdapter::begin_fragment(const opendnp3::ResponseInfo& info)
+            void SOEHandlerAdapter::BeginFragment(const opendnp3::ResponseInfo& info)
 			{
 				proxy->BeginFragment(ConvertResponseInfo(info));
 			}
 
-			void SOEHandlerAdapter::end_fragment(const opendnp3::ResponseInfo& info)
+			void SOEHandlerAdapter::EndFragment(const opendnp3::ResponseInfo& info)
 			{
                 proxy->EndFragment(ConvertResponseInfo(info));
 			}

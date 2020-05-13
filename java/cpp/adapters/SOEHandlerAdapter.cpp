@@ -25,13 +25,13 @@
 
 using namespace opendnp3;
 
-void SOEHandlerAdapter::begin_fragment(const ResponseInfo& info)
+void SOEHandlerAdapter::BeginFragment(const ResponseInfo& info)
 {
     const auto env = JNI::GetEnv();	
     jni::JCache::SOEHandler.beginFragment(env, proxy, jni::JCache::ResponseInfo.construct(env, info.unsolicited, info.fir, info.fin));
 }
 
-void SOEHandlerAdapter::end_fragment(const ResponseInfo& info)
+void SOEHandlerAdapter::EndFragment(const ResponseInfo& info)
 {
     const auto env = JNI::GetEnv();
     jni::JCache::SOEHandler.endFragment(env, proxy, jni::JCache::ResponseInfo.construct(env, info.unsolicited, info.fir, info.fin));

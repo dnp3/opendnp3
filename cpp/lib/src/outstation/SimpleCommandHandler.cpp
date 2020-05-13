@@ -27,12 +27,12 @@ SimpleCommandHandler::SimpleCommandHandler(CommandStatus status)
 {
 }
 
-void SimpleCommandHandler::begin()
+void SimpleCommandHandler::Begin()
 {
     ++numStart;
 }
 
-void SimpleCommandHandler::end()
+void SimpleCommandHandler::End()
 {
     ++numEnd;
 }

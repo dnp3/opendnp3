@@ -38,8 +38,8 @@ public:
      */
     SimpleCommandHandler(CommandStatus status);
 
-    virtual void begin() override;
-    virtual void end() override;
+    virtual void Begin() override;
+    virtual void End() override;
 
     CommandStatus Select(const ControlRelayOutputBlock& command, uint16_t index) override;
     CommandStatus Operate(const ControlRelayOutputBlock& command,

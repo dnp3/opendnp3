@@ -31,8 +31,8 @@ class CommandHandlerAdapter final : public opendnp3::ICommandHandler
 public:
     CommandHandlerAdapter(jni::JCommandHandler proxy) : proxy(proxy) {}
 
-    virtual void begin() override;
-    virtual void end() override;
+    virtual void Begin() override;
+    virtual void End() override;
 
     opendnp3::CommandStatus Select(const opendnp3::ControlRelayOutputBlock& command, uint16_t index) override;
 

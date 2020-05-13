@@ -45,12 +45,12 @@ public:
         count -= num;
     }
 
-    void begin_fragment(const opendnp3::ResponseInfo&) override
+    void BeginFragment(const opendnp3::ResponseInfo&) override
     {
         mutex.lock();
     }
 
-    void end_fragment(const opendnp3::ResponseInfo&) override
+    void EndFragment(const opendnp3::ResponseInfo&) override
     {
         mutex.unlock();
         cv.notify_all();

@@ -35,7 +35,7 @@ using namespace opendnp3;
 
 DatabaseConfig ConfigureDatabase()
 {
-    DatabaseConfig config(10); // 10 of each type
+    DatabaseConfig config(10); // 10 of each type with default settings
             
     config.analog_input[0].clazz = PointClass::Class2;
     config.analog_input[0].svariation = StaticAnalogVariation::Group30Var5;

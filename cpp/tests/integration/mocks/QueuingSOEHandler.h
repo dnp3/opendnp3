@@ -44,12 +44,12 @@ class QueuingSOEHandler final : public opendnp3::ISOEHandler
 public:
     SynchronizedQueue<ExpectedValue> values;
 
-    void begin_fragment(const opendnp3::ResponseInfo& info) override
+    void BeginFragment(const opendnp3::ResponseInfo& info) override
     {
         mutex.lock();
     }
 
-    void end_fragment(const opendnp3::ResponseInfo& info) override
+    void EndFragment(const opendnp3::ResponseInfo& info) override
     {
         values.AddMany(temp);
         temp.clear();

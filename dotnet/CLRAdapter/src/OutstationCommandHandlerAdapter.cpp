@@ -30,12 +30,12 @@ namespace DNP3
     namespace Adapter
     {
 
-        void OutstationCommandHandlerAdapter::begin()
+        void OutstationCommandHandlerAdapter::Begin()
         {
             proxy->Begin();
         }
 
-        void OutstationCommandHandlerAdapter::end()
+        void OutstationCommandHandlerAdapter::End()
         {
             proxy->End();
         }

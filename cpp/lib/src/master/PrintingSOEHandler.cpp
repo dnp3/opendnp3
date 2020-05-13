@@ -28,12 +28,12 @@ std::ostream& operator<<(std::ostream& os, const ResponseInfo& info)
     return os;
 }
 
-void PrintingSOEHandler::begin_fragment(const ResponseInfo& info)
+void PrintingSOEHandler::BeginFragment(const ResponseInfo& info)
 {
     std::cout << "begin response: " << info << std::endl;
 }
 
-void PrintingSOEHandler::end_fragment(const ResponseInfo& info)
+void PrintingSOEHandler::EndFragment(const ResponseInfo& info)
 {
     std::cout << "end response: " << info << std::endl;
 }

@@ -42,8 +42,8 @@ namespace DNP3
         public:
             OutstationCommandHandlerAdapter(Automatak::DNP3::Interface::ICommandHandler ^ proxy);
 
-            void begin() override final;
-            void end() override final;
+            void Begin() override final;
+            void End() override final;
 
             opendnp3::CommandStatus Select(const opendnp3::ControlRelayOutputBlock& command,
                                            uint16_t index) override final;

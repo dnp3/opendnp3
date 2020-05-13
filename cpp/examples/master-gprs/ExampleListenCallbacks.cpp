@@ -40,12 +40,12 @@ class ExampleSOEHandler : public ISOEHandler
 public:
     explicit ExampleSOEHandler(const uint16_t address) : address(address) {}
 
-	void begin_fragment(const ResponseInfo& info) override
+	void BeginFragment(const ResponseInfo& info) override
     {
         std::cout << "Begin receiving measurement data for outstation: " << address << std::endl;
     }
 
-    void end_fragment(const ResponseInfo& info) override
+    void EndFragment(const ResponseInfo& info) override
     {
         std::cout << "End receiving measurement data for outstation: " << address << std::endl;
     }

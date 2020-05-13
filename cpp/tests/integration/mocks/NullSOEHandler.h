@@ -35,9 +35,9 @@ public:
         return std::make_shared<NullSOEHandler>();
     }
 
-    void begin_fragment(const opendnp3::ResponseInfo& info) override {}
+    void BeginFragment(const opendnp3::ResponseInfo& info) override {}
 
-    void end_fragment(const opendnp3::ResponseInfo& info) override {}
+    void EndFragment(const opendnp3::ResponseInfo& info) override {}
 
     void Process(const opendnp3::HeaderInfo& info,
                  const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Binary>>& values) override
