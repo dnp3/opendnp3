@@ -41,6 +41,7 @@ opendnp3::TLSConfig ConvertTLSConfig(JNIEnv* env, jobject jconfig)
                               ref.getallowTLSv10(env, jconfig) != 0,
                               ref.getallowTLSv11(env, jconfig) != 0,
                               ref.getallowTLSv12(env, jconfig) != 0,
+                              ref.getallowTLSv13(env, jconfig) != 0,
                               cipher_list.str());
 }
 

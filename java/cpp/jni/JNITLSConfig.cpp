@@ -60,6 +60,9 @@ namespace jni
             this->allowTLSv12Field = env->GetFieldID(this->clazz, "allowTLSv12", "Z");
             if(!this->allowTLSv12Field) return false;
 
+            this->allowTLSv13Field = env->GetFieldID(this->clazz, "allowTLSv13", "Z");
+            if(!this->allowTLSv13Field) return false;
+
             this->cipherListField = env->GetFieldID(this->clazz, "cipherList", "Ljava/lang/String;");
             if(!this->cipherListField) return false;
 
@@ -84,6 +87,11 @@ namespace jni
         jboolean TLSConfig::getallowTLSv12(JNIEnv* env, JTLSConfig instance)
         {
             return env->GetBooleanField(instance, this->allowTLSv12Field);
+        }
+
+        jboolean TLSConfig::getallowTLSv13(JNIEnv* env, JTLSConfig instance)
+        {
+            return env->GetBooleanField(instance, this->allowTLSv13Field);
         }
 
         LocalRef<JString> TLSConfig::getcipherList(JNIEnv* env, JTLSConfig instance)

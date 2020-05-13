@@ -60,6 +60,11 @@ std::error_code SSLContext::ApplyConfig(const TLSConfig& config, bool server, st
         OPTIONS |= asio::ssl::context::no_tlsv1_2;
     }
 
+    if (!config.allowTLSv13)
+    {
+        OPTIONS |= asio::ssl::context::no_tlsv1_3;
+    }    
+
     if (value.set_options(OPTIONS, ec))
     {
         FORMAT_LOG_BLOCK(logger, flags::ERR, "Error calling ssl::context::set_options(..): %s", ec.message().c_str());
