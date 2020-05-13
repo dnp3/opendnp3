@@ -355,7 +355,7 @@ namespace DNP3
         {
             return opendnp3::TLSConfig(Conversions::ConvertString(config->peerCertFilePath),
                                        Conversions::ConvertString(config->localCertFilePath),
-                                       Conversions::ConvertString(config->privateKeyFilePath), config->maxVerifyDepth,
+                                       Conversions::ConvertString(config->privateKeyFilePath),
                                        config->allowTLSv10, config->allowTLSv11, config->allowTLSv12,
                                        Conversions::ConvertString(config->cipherList));
         }

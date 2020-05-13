@@ -30,8 +30,7 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="peerCertFilePath">Certificate file used to verify the server. Can be CA file or a self - signed cert provided by other party</param>
         /// <param name="localCertFilePath">File that contains the certificate that will be presented to the remote side of the connection</param>
-        /// <param name="privateKeyFilePath">File that contains the private key corresponding to the local certificate</param>
-        /// <param name="maxVerifyDepth">Maximum certificate verify depth (defaults 0, self signed)</param>
+        /// <param name="privateKeyFilePath">File that contains the private key corresponding to the local certificate</param>        
         /// <param name="allowTLSv10">Allow TLS version 1.0 (default true)</param>
         /// <param name="allowTLSv11">Allow TLS version 1.1 (default true)</param>
         /// <param name="allowTLSv12">Allow TLS version 1.2 (default true)</param>
@@ -40,8 +39,7 @@ namespace Automatak.DNP3.Interface
         public TLSConfig(
             string peerCertFilePath,
             string localCertFilePath,
-            string privateKeyFilePath,
-            int maxVerifyDepth = 0,
+            string privateKeyFilePath,            
             bool allowTLSv10 = false,
             bool allowTLSv11 = false,
             bool allowTLSv12 = true,
@@ -50,8 +48,7 @@ namespace Automatak.DNP3.Interface
         {
             this.peerCertFilePath = peerCertFilePath;
             this.localCertFilePath = localCertFilePath;
-            this.privateKeyFilePath = privateKeyFilePath;
-            this.maxVerifyDepth = maxVerifyDepth;
+            this.privateKeyFilePath = privateKeyFilePath;            
             this.allowTLSv10 = allowTLSv10;
             this.allowTLSv11 = allowTLSv11;
             this.allowTLSv12 = allowTLSv12;
@@ -60,9 +57,7 @@ namespace Automatak.DNP3.Interface
 
         public readonly string peerCertFilePath;
         public readonly string localCertFilePath;
-        public readonly string privateKeyFilePath;
-        
-        public readonly int maxVerifyDepth;
+        public readonly string privateKeyFilePath;               
 
         /// Allow TLS version 1.0 (default false)
         public readonly bool allowTLSv10;

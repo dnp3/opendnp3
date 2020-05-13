@@ -48,19 +48,19 @@ namespace jni
             this->method1 = env->GetMethodID(this->clazz, "end", "()V");
             if(!this->method1) return false;
 
-            this->method2 = env->GetMethodID(this->clazz, "operate", "(Lcom/automatak/dnp3/AnalogOutputDouble64;ILcom/automatak/dnp3/Database;Lcom/automatak/dnp3/enums/OperateType;)Lcom/automatak/dnp3/enums/CommandStatus;");
+            this->method2 = env->GetMethodID(this->clazz, "operate", "(Lcom/automatak/dnp3/AnalogOutputInt16;ILcom/automatak/dnp3/Database;Lcom/automatak/dnp3/enums/OperateType;)Lcom/automatak/dnp3/enums/CommandStatus;");
             if(!this->method2) return false;
 
-            this->method3 = env->GetMethodID(this->clazz, "operate", "(Lcom/automatak/dnp3/AnalogOutputFloat32;ILcom/automatak/dnp3/Database;Lcom/automatak/dnp3/enums/OperateType;)Lcom/automatak/dnp3/enums/CommandStatus;");
+            this->method3 = env->GetMethodID(this->clazz, "operate", "(Lcom/automatak/dnp3/AnalogOutputInt32;ILcom/automatak/dnp3/Database;Lcom/automatak/dnp3/enums/OperateType;)Lcom/automatak/dnp3/enums/CommandStatus;");
             if(!this->method3) return false;
 
-            this->method4 = env->GetMethodID(this->clazz, "operate", "(Lcom/automatak/dnp3/AnalogOutputInt16;ILcom/automatak/dnp3/Database;Lcom/automatak/dnp3/enums/OperateType;)Lcom/automatak/dnp3/enums/CommandStatus;");
+            this->method4 = env->GetMethodID(this->clazz, "operate", "(Lcom/automatak/dnp3/AnalogOutputFloat32;ILcom/automatak/dnp3/Database;Lcom/automatak/dnp3/enums/OperateType;)Lcom/automatak/dnp3/enums/CommandStatus;");
             if(!this->method4) return false;
 
-            this->method5 = env->GetMethodID(this->clazz, "operate", "(Lcom/automatak/dnp3/AnalogOutputInt32;ILcom/automatak/dnp3/Database;Lcom/automatak/dnp3/enums/OperateType;)Lcom/automatak/dnp3/enums/CommandStatus;");
+            this->method5 = env->GetMethodID(this->clazz, "operate", "(Lcom/automatak/dnp3/ControlRelayOutputBlock;ILcom/automatak/dnp3/Database;Lcom/automatak/dnp3/enums/OperateType;)Lcom/automatak/dnp3/enums/CommandStatus;");
             if(!this->method5) return false;
 
-            this->method6 = env->GetMethodID(this->clazz, "operate", "(Lcom/automatak/dnp3/ControlRelayOutputBlock;ILcom/automatak/dnp3/Database;Lcom/automatak/dnp3/enums/OperateType;)Lcom/automatak/dnp3/enums/CommandStatus;");
+            this->method6 = env->GetMethodID(this->clazz, "operate", "(Lcom/automatak/dnp3/AnalogOutputDouble64;ILcom/automatak/dnp3/Database;Lcom/automatak/dnp3/enums/OperateType;)Lcom/automatak/dnp3/enums/CommandStatus;");
             if(!this->method6) return false;
 
             this->method7 = env->GetMethodID(this->clazz, "select", "(Lcom/automatak/dnp3/AnalogOutputInt32;I)Lcom/automatak/dnp3/enums/CommandStatus;");
@@ -96,27 +96,27 @@ namespace jni
             env->CallVoidMethod(instance, this->method1);
         }
 
-        LocalRef<JCommandStatus> CommandHandler::operate(JNIEnv* env, JCommandHandler instance, JAnalogOutputDouble64 arg0, jint arg1, JDatabase arg2, JOperateType arg3)
+        LocalRef<JCommandStatus> CommandHandler::operate(JNIEnv* env, JCommandHandler instance, JAnalogOutputInt16 arg0, jint arg1, JDatabase arg2, JOperateType arg3)
         {
             return LocalRef<JCommandStatus>(env, env->CallObjectMethod(instance, this->method2, arg0, arg1, arg2, arg3));
         }
 
-        LocalRef<JCommandStatus> CommandHandler::operate(JNIEnv* env, JCommandHandler instance, JAnalogOutputFloat32 arg0, jint arg1, JDatabase arg2, JOperateType arg3)
+        LocalRef<JCommandStatus> CommandHandler::operate(JNIEnv* env, JCommandHandler instance, JAnalogOutputInt32 arg0, jint arg1, JDatabase arg2, JOperateType arg3)
         {
             return LocalRef<JCommandStatus>(env, env->CallObjectMethod(instance, this->method3, arg0, arg1, arg2, arg3));
         }
 
-        LocalRef<JCommandStatus> CommandHandler::operate(JNIEnv* env, JCommandHandler instance, JAnalogOutputInt16 arg0, jint arg1, JDatabase arg2, JOperateType arg3)
+        LocalRef<JCommandStatus> CommandHandler::operate(JNIEnv* env, JCommandHandler instance, JAnalogOutputFloat32 arg0, jint arg1, JDatabase arg2, JOperateType arg3)
         {
             return LocalRef<JCommandStatus>(env, env->CallObjectMethod(instance, this->method4, arg0, arg1, arg2, arg3));
         }
 
-        LocalRef<JCommandStatus> CommandHandler::operate(JNIEnv* env, JCommandHandler instance, JAnalogOutputInt32 arg0, jint arg1, JDatabase arg2, JOperateType arg3)
+        LocalRef<JCommandStatus> CommandHandler::operate(JNIEnv* env, JCommandHandler instance, JControlRelayOutputBlock arg0, jint arg1, JDatabase arg2, JOperateType arg3)
         {
             return LocalRef<JCommandStatus>(env, env->CallObjectMethod(instance, this->method5, arg0, arg1, arg2, arg3));
         }
 
-        LocalRef<JCommandStatus> CommandHandler::operate(JNIEnv* env, JCommandHandler instance, JControlRelayOutputBlock arg0, jint arg1, JDatabase arg2, JOperateType arg3)
+        LocalRef<JCommandStatus> CommandHandler::operate(JNIEnv* env, JCommandHandler instance, JAnalogOutputDouble64 arg0, jint arg1, JDatabase arg2, JOperateType arg3)
         {
             return LocalRef<JCommandStatus>(env, env->CallObjectMethod(instance, this->method6, arg0, arg1, arg2, arg3));
         }

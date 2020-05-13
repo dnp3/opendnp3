@@ -37,8 +37,7 @@ opendnp3::TLSConfig ConvertTLSConfig(JNIEnv* env, jobject jconfig)
     CString private_key_file_path(env, ref.getprivateKeyFilePath(env, jconfig));
     CString cipher_list(env, ref.getcipherList(env, jconfig));
 
-    return opendnp3::TLSConfig(peer_cert_file_path.str(), local_cert_file_path.str(), private_key_file_path.str(),
-                              ref.getmaxVerifyDepth(env, jconfig),
+    return opendnp3::TLSConfig(peer_cert_file_path.str(), local_cert_file_path.str(), private_key_file_path.str(),                              
                               ref.getallowTLSv10(env, jconfig) != 0,
                               ref.getallowTLSv11(env, jconfig) != 0,
                               ref.getallowTLSv12(env, jconfig) != 0,

@@ -64,14 +64,7 @@ std::error_code SSLContext::ApplyConfig(const TLSConfig& config, bool server, st
     {
         FORMAT_LOG_BLOCK(logger, flags::ERR, "Error calling ssl::context::set_options(..): %s", ec.message().c_str());
         return ec;
-    }
-
-    if (value.set_verify_depth(config.maxVerifyDepth, ec))
-    {
-        FORMAT_LOG_BLOCK(logger, flags::ERR, "Error calling ssl::context::set_verify_depth(..): %s",
-                         ec.message().c_str());
-        return ec;
-    }
+    }   
 
     // optionally, configure the cipher-list
     if (!config.cipherList.empty())

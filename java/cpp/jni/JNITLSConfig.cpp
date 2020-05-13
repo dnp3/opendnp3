@@ -51,9 +51,6 @@ namespace jni
             this->privateKeyFilePathField = env->GetFieldID(this->clazz, "privateKeyFilePath", "Ljava/lang/String;");
             if(!this->privateKeyFilePathField) return false;
 
-            this->maxVerifyDepthField = env->GetFieldID(this->clazz, "maxVerifyDepth", "I");
-            if(!this->maxVerifyDepthField) return false;
-
             this->allowTLSv10Field = env->GetFieldID(this->clazz, "allowTLSv10", "Z");
             if(!this->allowTLSv10Field) return false;
 
@@ -97,11 +94,6 @@ namespace jni
         LocalRef<JString> TLSConfig::getlocalCertFilePath(JNIEnv* env, JTLSConfig instance)
         {
             return LocalRef<JString>(env, (jstring) env->GetObjectField(instance, this->localCertFilePathField));
-        }
-
-        jint TLSConfig::getmaxVerifyDepth(JNIEnv* env, JTLSConfig instance)
-        {
-            return env->GetIntField(instance, this->maxVerifyDepthField);
         }
 
         LocalRef<JString> TLSConfig::getpeerCertFilePath(JNIEnv* env, JTLSConfig instance)
