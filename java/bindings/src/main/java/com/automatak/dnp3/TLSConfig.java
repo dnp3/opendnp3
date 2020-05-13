@@ -30,7 +30,6 @@ public class TLSConfig
      * @param peerCertFilePath Certificate file used to verify the peer or server. Can be CA file or a self-signed cert provided by other party.
      * @param localCertFilePath File that contains the certificate (or certificate chain) that will be presented to the remote side of the connection
      * @param privateKeyFilePath File that contains the private key corresponding to the local certificate
-     * @param maxVerifyDepth The maximum certificate chain verification depth (0 == self-signed only)
      * @param allowTLSv10 Allow TLS version 1.0 (default false)
      * @param allowTLSv11 Allow TLS version 1.1 (default false)
      * @param allowTLSv12 Allow TLS version 1.2 (default true)
@@ -43,7 +42,6 @@ public class TLSConfig
 	    String peerCertFilePath,
 	    String localCertFilePath,
 	    String privateKeyFilePath,
-        int maxVerifyDepth,
         boolean allowTLSv10,
         boolean allowTLSv11,
         boolean allowTLSv12,
@@ -53,7 +51,6 @@ public class TLSConfig
         this.peerCertFilePath = peerCertFilePath;
         this.localCertFilePath = localCertFilePath;
         this.privateKeyFilePath = privateKeyFilePath;
-        this.maxVerifyDepth = maxVerifyDepth;
         this.allowTLSv10 = allowTLSv10;
         this.allowTLSv11 = allowTLSv11;
         this.allowTLSv12 = allowTLSv12;
@@ -68,9 +65,6 @@ public class TLSConfig
 
     /// File that contains the private key corresponding to the local certificate
     public final String privateKeyFilePath;
-
-    /// max verification depth (defaults to 0 - peer certificate only)
-    public final int maxVerifyDepth;
 
     /// Allow TLS version 1.0 (default false)
     public final boolean allowTLSv10;
