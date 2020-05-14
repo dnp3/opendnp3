@@ -1,0 +1,6 @@
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target Name="PlatformCheck" BeforeTargets="BuildOnlySettings"
+    Condition="(('$(PlatformTarget)' != 'x86') AND  ('$(PlatformTarget)' != 'x64'))">
+    <Error  Text="$(MSBuildThisFileName) does not work correctly on '$(PlatformTarget)' platform. You need to specify platform (x86 or x64)." />
+  </Target>
+</Project>

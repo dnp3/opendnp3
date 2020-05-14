@@ -126,6 +126,18 @@ jobs:
         with:
           name: opendnp3-win-${{ matrix.architecture }}-msvc-${{ matrix.build-type }}-${{ github.sha }}
           path: build/opendnp3-package
+      - name: Copy NuGet stuff
+        if: ${{ matrix.build-type == 'Release' }}
+        run: >
+          New-Item -ItemType Directory -Force -Path build/opendnp3-nuget/runtime/${{ matrix.architecture }};
+          Copy-Item build/dotnet/nuget/* -Destination build/opendnp3-nuget -Recurse -Force;
+          Copy-Item build/opendnp3-package/lib/45/* -Destination build/opendnp3-nuget/runtime/${{ matrix.architecture }} -Recurse -Force
+      - name: Upload NuGet stuff
+        if: ${{ matrix.build-type == 'Release' }}
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: nuget-${{ github.sha }}
+          path: build/opendnp3-nuget/*
       - name: NuGet package
         if: ${{ matrix.build-type == 'Release' }}
         working-directory: build
@@ -142,6 +154,32 @@ jobs:
           refreshenv;
           $env:Path += ";${{ github.workspace }}\build\java\${{ matrix.build-type }}";
           mvn --batch-mode verify
+  nuget:
+    needs: ci-windows
+    runs-on: windows-latest
+    steps:
+      - name: Install NuGet
+        uses: nuget/setup-nuget@v1
+        with:
+          nuget-version: latest
+          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
+      - name: Download NuGet stuff
+        uses: actions/download-artifact@v2-preview
+        with:
+          name: nuget-${{ github.sha }}
+          path: opendnp3-nuget
+      - name: Generate NuGet package
+        working-directory: opendnp3-nuget
+        run: nuget pack
+      - name: Upload NuGet package as artifact
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: opendnp3-nuget-${{ github.sha }}
+          path: opendnp3-nuget/*.nupkg
+      - name: Publish NuGet package
+        if: startsWith(github.ref, 'refs/tags/')
+        working-directory: opendnp3-nuget
+        run: "nuget push *.nupkg -NoSymbols -Source https://api.nuget.org/v3/index.json"
   conformance:
     needs: ci-linux
     runs-on: ubuntu-latest

@@ -83,9 +83,10 @@ void TLSClientIOHandler::OnChannelShutdown()
 
 void TLSClientIOHandler::StartConnect(const TimeDuration& delay)
 {
-    if (!this->client) false;
+    if (!this->client) return;
 
-	auto cb = [=, self = shared_from_this()](const std::shared_ptr<exe4cpp::StrandExecutor>& executor,                                             const std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>>& stream,
+	auto cb = [=, self = shared_from_this()](const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
+                                             const std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>>& stream,
                                              const std::error_code& ec) -> void {
         if (ec)
         {

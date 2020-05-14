@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <!-- Required elements-->
+        <id>@CPACK_PACKAGE_NAME@</id>
+        <version>@PROJECT_VERSION@</version>
+        <summary>@CPACK_PACKAGE_DESCRIPTION_SUMMARY@</summary>
+        <description>@CPACK_PACKAGE_DESCRIPTION@</description>
+        <authors>@CPACK_PACKAGE_VENDOR@</authors>
+        <projectUrl>@CPACK_PACKAGE_HOMEPAGE_URL@</projectUrl>
+        <license type="expression">Apache-2.0</license>
+        <licenseUrl>https://licenses.nuget.org/Apache-2.0</licenseUrl>
+        <releaseNotes>This package includes both x86 and x64 binaries. You must specify the target platform in your IDE (i.e. you cannot use "AnyCPU")
+        
+        This package depends on VC++ 2019 runtime and OpenSSL 1.1.1.
+        </releaseNotes>
+        <tags>dnp3 SCADA protocol</tags>
+    </metadata>
+</package>

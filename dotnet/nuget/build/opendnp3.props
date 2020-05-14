@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Reference Include="DNP3CLRAdapter" Condition="'$(PlatformTarget)' == 'x86'">
+      <HintPath>$(MSBuildThisFileDirectory)..\runtime\x86\DNP3CLRAdapter.dll</HintPath>
+    </Reference>
+    <Reference Include="DNP3CLRInterface" Condition="'$(PlatformTarget)' == 'x86'">
+      <HintPath>$(MSBuildThisFileDirectory)..\runtime\x86\DNP3CLRInterface.dll</HintPath>
+    </Reference>
+    <Reference Include="DNP3CLRAdapter" Condition="'$(PlatformTarget)' == 'x64'">
+      <HintPath>$(MSBuildThisFileDirectory)..\runtime\x64\DNP3CLRAdapter.dll</HintPath>
+    </Reference>
+    <Reference Include="DNP3CLRInterface" Condition="'$(PlatformTarget)' == 'x64'">
+      <HintPath>$(MSBuildThisFileDirectory)..\runtime\x64\DNP3CLRInterface.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>
