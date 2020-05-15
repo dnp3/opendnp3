@@ -28,6 +28,6 @@ Licensed under the terms of the [Apache 2.0 License](http://www.apache.org/licen
 
 Copyright (c) 2010, 2011 Green Energy Corp
 
-Copyright (c) 2013 - 2019 Automatak LLC
+Copyright (c) 2013 - 2020 Automatak LLC
 
-Copyright (c) 2010 - 2019 various contributors
+Copyright (c) 2010 - 2020 various contributors
