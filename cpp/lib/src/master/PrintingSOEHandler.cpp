@@ -116,17 +116,6 @@ void PrintingSOEHandler::Process(const HeaderInfo& /*info*/, const ICollection<I
     values.ForeachItem(print);
 }
 
-void PrintingSOEHandler::Process(const HeaderInfo& /*info*/, const ICollection<Indexed<SecurityStat>>& values)
-{
-    auto print = [](const Indexed<SecurityStat>& pair) {
-        std::cout << "SecurityStat: "
-                  << "[" << pair.index << "] : " << pair.value.time.value << " : " << pair.value.value.count << " : "
-                  << static_cast<int>(pair.value.quality) << " : " << pair.value.value.assocId << std::endl;
-    };
-
-    values.ForeachItem(print);
-}
-
 void PrintingSOEHandler::Process(const HeaderInfo& /*info*/, const ICollection<DNPTime>& values)
 {
     auto print = [](const DNPTime& value) { std::cout << "DNPTime: " << value.value << std::endl; };

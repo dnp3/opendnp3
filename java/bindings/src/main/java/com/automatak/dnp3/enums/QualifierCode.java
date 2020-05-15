@@ -42,7 +42,6 @@ public enum QualifierCode
   UINT16_CNT(0x8),
   UINT8_CNT_UINT8_INDEX(0x17),
   UINT16_CNT_UINT16_INDEX(0x28),
-  UINT16_FREE_FORMAT(0x5B),
   UNDEFINED(0xFF);
 
   private final int id;
@@ -75,8 +74,6 @@ public enum QualifierCode
         return UINT8_CNT_UINT8_INDEX;
       case(0x28):
         return UINT16_CNT_UINT16_INDEX;
-      case(0x5B):
-        return UINT16_FREE_FORMAT;
       default:
         return UNDEFINED;
     }

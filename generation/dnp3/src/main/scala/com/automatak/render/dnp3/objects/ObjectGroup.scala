@@ -51,10 +51,7 @@ object ObjectGroup {
     Group110,
     Group111,
     Group112,
-    Group113,
-    Group120,
-    Group121,
-    Group122
+    Group113
   )
 
 }
@@ -67,5 +64,5 @@ trait ObjectGroup {
   def desc: String
   def isEventGroup: Boolean
 
-  def hasSizedObjects: Boolean = objects.find(x => x.isInstanceOf[FixedSizeField]).isDefined
+  def hasSizedObjects: Boolean = objects.exists(x => x.isInstanceOf[FixedSizeField])
 }

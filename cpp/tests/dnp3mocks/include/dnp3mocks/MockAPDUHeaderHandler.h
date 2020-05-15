@@ -35,13 +35,7 @@ public:
     void OnHeaderResult(const opendnp3::HeaderRecord& record, const opendnp3::IINField& result) final
     {
         records.push_back(record);
-    }
-
-    opendnp3::IINField ProcessHeader(const opendnp3::CountHeader& header,
-                                     const opendnp3::ICollection<opendnp3::Group120Var4>& values) final
-    {
-        return ProcessAny(header, values, authStatusRequests);
-    }
+    }    
 
     opendnp3::IINField ProcessHeader(const opendnp3::RangeHeader& header,
                                      const opendnp3::ICollection<opendnp3::Indexed<opendnp3::IINValue>>& values) final
@@ -198,46 +192,8 @@ public:
     {
         return this->ProcessAny(header, meas, aoDouble64Requests);
     }
-
-    opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header,
-                                     const opendnp3::Group120Var1& value,
-                                     const ser4cpp::rseq_t& object) final
-    {
-        authChallenges.push_back(value);
-        return opendnp3::IINField::Empty();
-    }
-
-    opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header,
-                                     const opendnp3::Group120Var2& value,
-                                     const ser4cpp::rseq_t& object) final
-    {
-        authReplys.push_back(value);
-        return opendnp3::IINField::Empty();
-    }
-
-    opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header,
-                                     const opendnp3::Group120Var5& value,
-                                     const ser4cpp::rseq_t& object) final
-    {
-        authKeyStatusResponses.push_back(value);
-        return opendnp3::IINField::Empty();
-    }
-
-    opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header,
-                                     const opendnp3::Group120Var6& value,
-                                     const ser4cpp::rseq_t& object) final
-    {
-        authChanges.push_back(value);
-        return opendnp3::IINField::Empty();
-    }
-
+   
     std::vector<opendnp3::HeaderRecord> records;
-
-    std::vector<opendnp3::Group120Var1> authChallenges;
-    std::vector<opendnp3::Group120Var2> authReplys;
-    std::vector<opendnp3::Group120Var4> authStatusRequests;
-    std::vector<opendnp3::Group120Var5> authKeyStatusResponses;
-    std::vector<opendnp3::Group120Var6> authChanges;
 
     std::vector<opendnp3::Indexed<opendnp3::IINValue>> iinBits;
 

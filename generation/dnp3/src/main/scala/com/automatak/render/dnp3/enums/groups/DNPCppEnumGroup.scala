@@ -28,33 +28,23 @@ object DNPCppEnumGroup {
   def enums : List[EnumConfig] = List(fullEnums, simpleEnums).flatten
 
   private def fullEnums = List(
-    AuthErrorCode(),
-    CertificateType(),
-    ChallengeReason(),
     CommandStatus(),
     DoubleBit(),
     FlagsType(),
     FlowControl(),
     FunctionCode(),
     GroupVariationEnum(),
-    HMACType(),
     IntervalUnit(),
-    KeyChangeMethod(),
-    KeyStatus(),
-    KeyWrapAlgorithm(),
     LinkFunction(),
     Parity(),
     QualifierCode(),
-    StopBits(),
-    UserOperation(),
-    UserRole()
+    StopBits()
   ).map(x => EnumConfig(x, true, true, true))
 
   private def simpleEnums = (List(
     AssignClassType(),
     ChannelState(),
     CommandPointState(),
-    ConfigAuthMode(),
     EventMode(),
     IndexQualifierMode(),
     LinkStatus(),
@@ -64,7 +54,6 @@ object DNPCppEnumGroup {
     PointClass(),
     RestartMode(),
     RestartType(),
-    SecurityStatIndex(),
     ServerAcceptMode(),
     StaticTypeBitmask(),
     TaskCompletion(),

@@ -118,13 +118,7 @@ namespace Automatak
 				auto enumerable = Conversions::ToIndexedEnumerable<AnalogCommandEvent^>(values);
                 proxy->Process(ConvertHeaderInfo(info), enumerable);
 			}
-
-			void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::SecurityStat>>& values)
-			{
-				auto enumerable = Conversions::ToIndexedEnumerable<SecurityStat^>(values);
-                proxy->Process(ConvertHeaderInfo(info), enumerable);
-			}
-
+		
 		}
 	}
 }

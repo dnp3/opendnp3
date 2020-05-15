@@ -10,12 +10,23 @@
 // 
 // This file is auto-generated. Do not edit manually
 // 
-// Copyright 2013 Automatak LLC
+// Copyright 2013-2019 Automatak, LLC
 // 
-// Automatak LLC (www.automatak.com) licenses this file
-// to you under the the Apache License Version 2.0 (the "License"):
+// Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
+// LLC (www.automatak.com) under one or more contributor license agreements.
+// See the NOTICE file distributed with this work for additional information
+// regarding copyright ownership. Green Energy Corp and Automatak LLC license
+// this file to you under the Apache License, Version 2.0 (the "License"); you
+// may not use this file except in compliance with the License. You may obtain
+// a copy of the License at:
 // 
-// http://www.apache.org/licenses/LICENSE-2.0.html
+//   http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 //
 
 namespace Automatak.DNP3.Interface
@@ -86,7 +97,7 @@ namespace Automatak.DNP3.Interface
     /// </summary>
     WARM_RESTART = 0xE,
     /// <summary>
-    /// Obsolete—Do not use for new designs
+    /// Obsolete-Do not use for new designs
     /// </summary>
     INITIALIZE_DATA = 0xF,
     /// <summary>
@@ -102,7 +113,7 @@ namespace Automatak.DNP3.Interface
     /// </summary>
     STOP_APPLICATION = 0x12,
     /// <summary>
-    /// This code is deprecated—Do not use for new designs
+    /// This code is deprecated-Do not use for new designs
     /// </summary>
     SAVE_CONFIGURATION = 0x13,
     /// <summary>
@@ -150,6 +161,14 @@ namespace Automatak.DNP3.Interface
     /// </summary>
     ABORT_FILE = 0x1E,
     /// <summary>
+    /// The master uses this function code when sending authentication requests to the outstation
+    /// </summary>
+    AUTH_REQUEST = 0x20,
+    /// <summary>
+    /// The master uses this function code when sending authentication requests to the outstation that do no require acknowledgement
+    /// </summary>
+    AUTH_REQUEST_NO_ACK = 0x21,
+    /// <summary>
     /// Master shall interpret this fragment as an Application Layer response to an ApplicationLayer request
     /// </summary>
     RESPONSE = 0x81,
@@ -157,6 +176,10 @@ namespace Automatak.DNP3.Interface
     /// Master shall interpret this fragment as an unsolicited response that was not prompted by an explicit request
     /// </summary>
     UNSOLICITED_RESPONSE = 0x82,
+    /// <summary>
+    /// The outstation uses this function code to issue authentication messages to the master
+    /// </summary>
+    AUTH_RESPONSE = 0x83,
     /// <summary>
     /// Unknown function code. Used internally in opendnp3 to indicate the code didn't match anything known
     /// </summary>

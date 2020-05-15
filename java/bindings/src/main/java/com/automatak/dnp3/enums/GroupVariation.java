@@ -148,26 +148,6 @@ public enum GroupVariation
   Group111Var0(0x6F00),
   Group112Var0(0x7000),
   Group113Var0(0x7100),
-  Group120Var1(0x7801),
-  Group120Var2(0x7802),
-  Group120Var3(0x7803),
-  Group120Var4(0x7804),
-  Group120Var5(0x7805),
-  Group120Var6(0x7806),
-  Group120Var7(0x7807),
-  Group120Var8(0x7808),
-  Group120Var9(0x7809),
-  Group120Var10(0x780A),
-  Group120Var11(0x780B),
-  Group120Var12(0x780C),
-  Group120Var13(0x780D),
-  Group120Var14(0x780E),
-  Group120Var15(0x780F),
-  Group121Var0(0x7900),
-  Group121Var1(0x7901),
-  Group122Var0(0x7A00),
-  Group122Var1(0x7A01),
-  Group122Var2(0x7A02),
   UNKNOWN(0xFFFF);
 
   private final int id;
@@ -412,46 +392,6 @@ public enum GroupVariation
         return Group112Var0;
       case(0x7100):
         return Group113Var0;
-      case(0x7801):
-        return Group120Var1;
-      case(0x7802):
-        return Group120Var2;
-      case(0x7803):
-        return Group120Var3;
-      case(0x7804):
-        return Group120Var4;
-      case(0x7805):
-        return Group120Var5;
-      case(0x7806):
-        return Group120Var6;
-      case(0x7807):
-        return Group120Var7;
-      case(0x7808):
-        return Group120Var8;
-      case(0x7809):
-        return Group120Var9;
-      case(0x780A):
-        return Group120Var10;
-      case(0x780B):
-        return Group120Var11;
-      case(0x780C):
-        return Group120Var12;
-      case(0x780D):
-        return Group120Var13;
-      case(0x780E):
-        return Group120Var14;
-      case(0x780F):
-        return Group120Var15;
-      case(0x7900):
-        return Group121Var0;
-      case(0x7901):
-        return Group121Var1;
-      case(0x7A00):
-        return Group122Var0;
-      case(0x7A01):
-        return Group122Var1;
-      case(0x7A02):
-        return Group122Var2;
       default:
         return UNKNOWN;
     }

@@ -151,11 +151,6 @@ IINField MeasurementHandler::ProcessHeader(const RangeHeader& header,
     return this->LoadValues(header, ModeFromType(header.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Group121Var1>>& values)
-{
-    return this->LoadValuesWithTransformTo<SecurityStat>(header, values);
-}
-
 IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values)
 {
     if (header.enumeration == GroupVariation::Group2Var3)
@@ -220,33 +215,6 @@ IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header,
                                            const ICollection<Indexed<AnalogCommandEvent>>& values)
 {
     return this->LoadValues(header, ModeFromType(header.enumeration), values);
-}
-
-IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values)
-{
-    return this->LoadValuesWithTransformTo<SecurityStat>(header, values);
-}
-
-IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values)
-{
-    return this->LoadValuesWithTransformTo<SecurityStat>(header, values);
-}
-
-// ----------- Conversion routines from DNP3 types to API types -----------
-
-SecurityStat MeasurementHandler::Convert(const Group121Var1& meas)
-{
-    return SecurityStat(meas.flags, meas.assocId, meas.value);
-}
-
-SecurityStat MeasurementHandler::Convert(const Group122Var1& meas)
-{
-    return SecurityStat(meas.flags, meas.assocId, meas.value);
-}
-
-SecurityStat MeasurementHandler::Convert(const Group122Var2& meas)
-{
-    return SecurityStat(meas.flags, meas.assocId, meas.value, meas.time);
 }
 
 } // namespace opendnp3

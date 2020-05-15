@@ -202,12 +202,7 @@ ParseResult CountIndexParser::ParseCountOfObjects(ser4cpp::rseq_t& buffer,
     case (GroupVariation::Group50Var4):
         return CountIndexParser::From<Group50Var4>(count, numparser).Process(record, buffer, pHandler, pLogger);
     case (GroupVariation::Group111Var0):
-        return ParseIndexPrefixedOctetData(buffer, record, numparser, count, pLogger, pHandler);
-
-    case (GroupVariation::Group122Var1):
-        return CountIndexParser::FromType<Group122Var1>(count, numparser).Process(record, buffer, pHandler, pLogger);
-    case (GroupVariation::Group122Var2):
-        return CountIndexParser::FromType<Group122Var2>(count, numparser).Process(record, buffer, pHandler, pLogger);
+        return ParseIndexPrefixedOctetData(buffer, record, numparser, count, pLogger, pHandler);    
 
     default:
 

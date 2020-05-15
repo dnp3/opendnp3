@@ -51,71 +51,6 @@ void IAPDUHandler::OnHeader(const CountHeader& header)
     Record(header, this->ProcessHeader(header));
 }
 
-void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var1& value, const ser4cpp::rseq_t& object)
-{
-    Record(header, this->ProcessHeader(header, value, object));
-}
-
-void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var2& value, const ser4cpp::rseq_t& object)
-{
-    Record(header, this->ProcessHeader(header, value, object));
-}
-
-void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var5& value, const ser4cpp::rseq_t& object)
-{
-    Record(header, this->ProcessHeader(header, value, object));
-}
-
-void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var6& value, const ser4cpp::rseq_t& object)
-{
-    Record(header, this->ProcessHeader(header, value, object));
-}
-
-void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var7& value, const ser4cpp::rseq_t& object)
-{
-    Record(header, this->ProcessHeader(header, value, object));
-}
-
-void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var8& value, const ser4cpp::rseq_t& object)
-{
-    Record(header, this->ProcessHeader(header, value, object));
-}
-
-void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var9& value, const ser4cpp::rseq_t& object)
-{
-    Record(header, this->ProcessHeader(header, value, object));
-}
-
-void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var10& value, const ser4cpp::rseq_t& object)
-{
-    Record(header, this->ProcessHeader(header, value, object));
-}
-
-void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var11& value, const ser4cpp::rseq_t& object)
-{
-    Record(header, this->ProcessHeader(header, value, object));
-}
-
-void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var12& value, const ser4cpp::rseq_t& object)
-{
-    Record(header, this->ProcessHeader(header, value, object));
-}
-
-void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var13& value, const ser4cpp::rseq_t& object)
-{
-    Record(header, this->ProcessHeader(header, value, object));
-}
-
-void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var14& value, const ser4cpp::rseq_t& object)
-{
-    Record(header, this->ProcessHeader(header, value, object));
-}
-
-void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var15& value, const ser4cpp::rseq_t& object)
-{
-    Record(header, this->ProcessHeader(header, value, object));
-}
-
 void IAPDUHandler::OnHeader(const CountHeader& header, const ICollection<Group50Var1>& values)
 {
     Record(header, this->ProcessHeader(header, values));
@@ -142,16 +77,6 @@ void IAPDUHandler::OnHeader(const CountHeader& header, const ICollection<Group52
 }
 
 void IAPDUHandler::OnHeader(const CountHeader& header, const ICollection<Group52Var2>& values)
-{
-    Record(header, this->ProcessHeader(header, values));
-}
-
-void IAPDUHandler::OnHeader(const CountHeader& header, const ICollection<Group120Var3>& values)
-{
-    Record(header, this->ProcessHeader(header, values));
-}
-
-void IAPDUHandler::OnHeader(const CountHeader& header, const ICollection<Group120Var4>& values)
 {
     Record(header, this->ProcessHeader(header, values));
 }
@@ -202,11 +127,6 @@ void IAPDUHandler::OnHeader(const RangeHeader& header, const ICollection<Indexed
 }
 
 void IAPDUHandler::OnHeader(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values)
-{
-    Record(header, this->ProcessHeader(header, values));
-}
-
-void IAPDUHandler::OnHeader(const RangeHeader& header, const ICollection<Indexed<Group121Var1>>& values)
 {
     Record(header, this->ProcessHeader(header, values));
 }
@@ -268,16 +188,6 @@ void IAPDUHandler::OnHeader(const PrefixHeader& header, const ICollection<Indexe
     Record(header, this->ProcessHeader(header, values));
 }
 
-void IAPDUHandler::OnHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values)
-{
-    Record(header, this->ProcessHeader(header, values));
-}
-
-void IAPDUHandler::OnHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values)
-{
-    Record(header, this->ProcessHeader(header, values));
-}
-
 void IAPDUHandler::OnHeader(const PrefixHeader& header, const ICollection<uint16_t>& values)
 {
     Record(header, this->ProcessHeader(header, values));
@@ -325,97 +235,6 @@ IINField IAPDUHandler::ProcessHeader(const CountHeader& /*header*/)
     return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
-                                     const Group120Var1& /*value*/,
-                                     const ser4cpp::rseq_t& /*object*/)
-{
-    return ProcessUnsupportedHeader();
-}
-
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
-                                     const Group120Var2& /*value*/,
-                                     const ser4cpp::rseq_t& /*object*/)
-{
-    return ProcessUnsupportedHeader();
-}
-
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
-                                     const Group120Var5& /*value*/,
-                                     const ser4cpp::rseq_t& /*object*/)
-{
-    return ProcessUnsupportedHeader();
-}
-
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
-                                     const Group120Var6& /*value*/,
-                                     const ser4cpp::rseq_t& /*object*/)
-{
-    return ProcessUnsupportedHeader();
-}
-
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
-                                     const Group120Var7& /*value*/,
-                                     const ser4cpp::rseq_t& /*object*/)
-{
-    return ProcessUnsupportedHeader();
-}
-
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
-                                     const Group120Var8& /*value*/,
-                                     const ser4cpp::rseq_t& /*object*/)
-{
-    return ProcessUnsupportedHeader();
-}
-
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
-                                     const Group120Var9& /*value*/,
-                                     const ser4cpp::rseq_t& /*object*/)
-{
-    return ProcessUnsupportedHeader();
-}
-
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
-                                     const Group120Var10& /*value*/,
-                                     const ser4cpp::rseq_t& /*object*/)
-{
-    return ProcessUnsupportedHeader();
-}
-
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
-                                     const Group120Var11& /*value*/,
-                                     const ser4cpp::rseq_t& /*object*/)
-{
-    return ProcessUnsupportedHeader();
-}
-
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
-                                     const Group120Var12& /*value*/,
-                                     const ser4cpp::rseq_t& /*object*/)
-{
-    return ProcessUnsupportedHeader();
-}
-
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
-                                     const Group120Var13& /*value*/,
-                                     const ser4cpp::rseq_t& /*object*/)
-{
-    return ProcessUnsupportedHeader();
-}
-
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
-                                     const Group120Var14& /*value*/,
-                                     const ser4cpp::rseq_t& /*object*/)
-{
-    return ProcessUnsupportedHeader();
-}
-
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& /*header*/,
-                                     const Group120Var15& /*value*/,
-                                     const ser4cpp::rseq_t& /*object*/)
-{
-    return ProcessUnsupportedHeader();
-}
-
 /// ---- counts -----
 
 IINField IAPDUHandler::ProcessHeader(const CountHeader& /*header*/, const ICollection<Group50Var1>& /*unused*/)
@@ -444,16 +263,6 @@ IINField IAPDUHandler::ProcessHeader(const CountHeader& /*header*/, const IColle
 }
 
 IINField IAPDUHandler::ProcessHeader(const CountHeader& /*header*/, const ICollection<Group52Var2>& /*unused*/)
-{
-    return ProcessUnsupportedHeader();
-}
-
-IINField IAPDUHandler::ProcessHeader(const CountHeader& /*header*/, const ICollection<Group120Var3>& /*unused*/)
-{
-    return ProcessUnsupportedHeader();
-}
-
-IINField IAPDUHandler::ProcessHeader(const CountHeader& /*header*/, const ICollection<Group120Var4>& /*unused*/)
 {
     return ProcessUnsupportedHeader();
 }
@@ -511,12 +320,6 @@ IINField IAPDUHandler::ProcessHeader(const RangeHeader& /*header*/, const IColle
 
 IINField IAPDUHandler::ProcessHeader(const RangeHeader& /*header*/,
                                      const ICollection<Indexed<TimeAndInterval>>& /*values*/)
-{
-    return ProcessUnsupportedHeader();
-}
-
-IINField IAPDUHandler::ProcessHeader(const RangeHeader& /*header*/,
-                                     const ICollection<Indexed<Group121Var1>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }
@@ -582,18 +385,6 @@ IINField IAPDUHandler::ProcessHeader(const PrefixHeader& /*header*/,
 
 IINField IAPDUHandler::ProcessHeader(const PrefixHeader& /*header*/,
                                      const ICollection<Indexed<AnalogCommandEvent>>& /*values*/)
-{
-    return ProcessUnsupportedHeader();
-}
-
-IINField IAPDUHandler::ProcessHeader(const PrefixHeader& /*header*/,
-                                     const ICollection<Indexed<Group122Var1>>& /*values*/)
-{
-    return ProcessUnsupportedHeader();
-}
-
-IINField IAPDUHandler::ProcessHeader(const PrefixHeader& /*header*/,
-                                     const ICollection<Indexed<Group122Var2>>& /*values*/)
 {
     return ProcessUnsupportedHeader();
 }

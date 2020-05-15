@@ -22,16 +22,12 @@ set(unittests_src
     ./main.cpp
 
     ./TestAPDUParsing.cpp
-    ./TestAPDUWriting.cpp
-    ./TestAuthRequestParser.cpp
+    ./TestAPDUWriting.cpp    
     ./TestCollectionTransform.cpp
     ./TestControlRelayOutputBlock.cpp
     ./TestCRC.cpp
     ./TestEventStorage.cpp
-    ./TestFlags.cpp
-    ./TestGroup120Var1.cpp
-    ./TestGroup120Var2.cpp
-    ./TestGroup120Var5.cpp
+    ./TestFlags.cpp    
     ./TestIPEndpointsList.cpp
     ./TestLinkAddresses.cpp
     ./TestLinkFrame.cpp

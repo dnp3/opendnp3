@@ -34,7 +34,6 @@
 #include "outstation/TimeSyncState.h"
 #include "outstation/event/EventBuffer.h"
 
-#include "opendnp3/gen/SecurityStatIndex.h"
 #include "opendnp3/link/Addresses.h"
 #include "opendnp3/logging/Logger.h"
 #include "opendnp3/outstation/ICommandHandler.h"

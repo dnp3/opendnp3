@@ -25,8 +25,7 @@ set(opendnp3_public_headers
     ./include/opendnp3/app/MeasurementInfo.h
     ./include/opendnp3/app/MeasurementTypes.h
     ./include/opendnp3/app/OctetData.h
-    ./include/opendnp3/app/OctetString.h
-    ./include/opendnp3/app/SecurityStat.h
+    ./include/opendnp3/app/OctetString.h    
 
     ./include/opendnp3/app/parsing/ICollection.h
 
@@ -47,15 +46,11 @@ set(opendnp3_public_headers
     ./include/opendnp3/gen/AnalogQuality.h
     ./include/opendnp3/gen/AssignClassType.h
     ./include/opendnp3/gen/Attributes.h
-    ./include/opendnp3/gen/AuthErrorCode.h
     ./include/opendnp3/gen/BinaryOutputStatusQuality.h
     ./include/opendnp3/gen/BinaryQuality.h
-    ./include/opendnp3/gen/CertificateType.h
-    ./include/opendnp3/gen/ChallengeReason.h
     ./include/opendnp3/gen/ChannelState.h
     ./include/opendnp3/gen/CommandPointState.h
     ./include/opendnp3/gen/CommandStatus.h
-    ./include/opendnp3/gen/ConfigAuthMode.h
     ./include/opendnp3/gen/CounterQuality.h
     ./include/opendnp3/gen/DoubleBit.h
     ./include/opendnp3/gen/DoubleBitBinaryQuality.h
@@ -74,12 +69,8 @@ set(opendnp3_public_headers
     ./include/opendnp3/gen/FrozenCounterQuality.h
     ./include/opendnp3/gen/FunctionCode.h
     ./include/opendnp3/gen/GroupVariation.h
-    ./include/opendnp3/gen/HMACType.h
     ./include/opendnp3/gen/IndexQualifierMode.h
-    ./include/opendnp3/gen/IntervalUnits.h
-    ./include/opendnp3/gen/KeyChangeMethod.h
-    ./include/opendnp3/gen/KeyStatus.h
-    ./include/opendnp3/gen/KeyWrapAlgorithm.h
+    ./include/opendnp3/gen/IntervalUnits.h    
     ./include/opendnp3/gen/LinkFunction.h
     ./include/opendnp3/gen/LinkStatus.h
     ./include/opendnp3/gen/MasterTaskType.h
@@ -89,8 +80,7 @@ set(opendnp3_public_headers
     ./include/opendnp3/gen/PointClass.h
     ./include/opendnp3/gen/QualifierCode.h
     ./include/opendnp3/gen/RestartMode.h
-    ./include/opendnp3/gen/RestartType.h
-    ./include/opendnp3/gen/SecurityStatIndex.h
+    ./include/opendnp3/gen/RestartType.h    
     ./include/opendnp3/gen/ServerAcceptMode.h
     ./include/opendnp3/gen/StaticAnalogOutputStatusVariation.h
     ./include/opendnp3/gen/StaticAnalogVariation.h
@@ -108,8 +98,6 @@ set(opendnp3_public_headers
     ./include/opendnp3/gen/TimestampQuality.h
     ./include/opendnp3/gen/TimeSyncMode.h
     ./include/opendnp3/gen/TripCloseCode.h
-    ./include/opendnp3/gen/UserOperation.h
-    ./include/opendnp3/gen/UserRole.h
 
     ./include/opendnp3/link/Addresses.h
     ./include/opendnp3/link/ILinkListener.h
@@ -222,8 +210,7 @@ set(opendnp3_private_headers
     ./src/app/parsing/Collections.h
     ./src/app/parsing/CountIndexParser.h
     ./src/app/parsing/CountParser.h
-    ./src/app/parsing/DNPTimeParsing.h
-    ./src/app/parsing/FreeFormatParser.h
+    ./src/app/parsing/DNPTimeParsing.h    
     ./src/app/parsing/Functions.h
     ./src/app/parsing/IAPDUHandler.h
     ./src/app/parsing/IWhiteList.h
@@ -256,27 +243,18 @@ set(opendnp3_private_headers
     ./src/decoder/DecoderImpl.h
     ./src/decoder/Indent.h
     ./src/decoder/LoggingHandler.h
-
-    ./src/gen/AuthErrorCodeSerialization.h
-    ./src/gen/CertificateTypeSerialization.h
-    ./src/gen/ChallengeReasonSerialization.h
+        
     ./src/gen/CommandStatusSerialization.h
     ./src/gen/DoubleBitSerialization.h
     ./src/gen/FlagsTypeSerialization.h
     ./src/gen/FlowControlSerialization.h
     ./src/gen/FunctionCodeSerialization.h
-    ./src/gen/GroupVariationSerialization.h
-    ./src/gen/HMACTypeSerialization.h
-    ./src/gen/IntervalUnitsSerialization.h
-    ./src/gen/KeyChangeMethodSerialization.h
-    ./src/gen/KeyStatusSerialization.h
-    ./src/gen/KeyWrapAlgorithmSerialization.h
+    ./src/gen/GroupVariationSerialization.h    
+    ./src/gen/IntervalUnitsSerialization.h    
     ./src/gen/LinkFunctionSerialization.h
     ./src/gen/ParitySerialization.h
     ./src/gen/QualifierCodeSerialization.h
-    ./src/gen/StopBitsSerialization.h
-    ./src/gen/UserOperationSerialization.h
-    ./src/gen/UserRoleSerialization.h
+    ./src/gen/StopBitsSerialization.h    
 
     ./src/gen/objects/Group1.h
     ./src/gen/objects/Group2.h
@@ -305,10 +283,7 @@ set(opendnp3_private_headers
     ./src/gen/objects/Group110.h
     ./src/gen/objects/Group111.h
     ./src/gen/objects/Group112.h
-    ./src/gen/objects/Group113.h
-    ./src/gen/objects/Group120.h
-    ./src/gen/objects/Group121.h
-    ./src/gen/objects/Group122.h
+    ./src/gen/objects/Group113.h    
 
     ./src/link/CRC.h
     ./src/link/IFrameSink.h
@@ -459,15 +434,13 @@ set(opendnp3_src
 	./src/app/MeasurementInfo.cpp
 	./src/app/MeasurementTypes.cpp
     ./src/app/OctetData.cpp
-    ./src/app/QualityFlags.cpp
-    ./src/app/SecurityStat.cpp
+    ./src/app/QualityFlags.cpp    
 
     ./src/app/parsing/APDUHeaderParser.cpp
     ./src/app/parsing/APDUParser.cpp
     ./src/app/parsing/BitReader.cpp
     ./src/app/parsing/CountIndexParser.cpp
-    ./src/app/parsing/CountParser.cpp
-    ./src/app/parsing/FreeFormatParser.cpp
+    ./src/app/parsing/CountParser.cpp    
     ./src/app/parsing/IAPDUHandler.cpp
     ./src/app/parsing/NumParser.cpp
     ./src/app/parsing/ObjectHeaderParser.cpp
@@ -497,16 +470,12 @@ set(opendnp3_src
     ./src/gen/AnalogOutputStatusQuality.cpp
     ./src/gen/AnalogQuality.cpp
     ./src/gen/AssignClassType.cpp
-    ./src/gen/Attributes.cpp
-    ./src/gen/AuthErrorCode.cpp
+    ./src/gen/Attributes.cpp    
     ./src/gen/BinaryOutputStatusQuality.cpp
     ./src/gen/BinaryQuality.cpp
-    ./src/gen/CertificateType.cpp
-    ./src/gen/ChallengeReason.cpp
     ./src/gen/ChannelState.cpp
     ./src/gen/CommandPointState.cpp
-    ./src/gen/CommandStatus.cpp
-    ./src/gen/ConfigAuthMode.cpp
+    ./src/gen/CommandStatus.cpp    
     ./src/gen/CounterQuality.cpp
     ./src/gen/DoubleBit.cpp
     ./src/gen/DoubleBitBinaryQuality.cpp
@@ -518,19 +487,14 @@ set(opendnp3_src
     ./src/gen/EventDoubleBinaryVariation.cpp
     ./src/gen/EventFrozenCounterVariation.cpp
     ./src/gen/EventMode.cpp
-    ./src/gen/EventOctetStringVariation.cpp
-    ./src/gen/EventSecurityStatVariation.cpp
+    ./src/gen/EventOctetStringVariation.cpp    
     ./src/gen/FlagsType.cpp
     ./src/gen/FlowControl.cpp
     ./src/gen/FrozenCounterQuality.cpp
     ./src/gen/FunctionCode.cpp
-    ./src/gen/GroupVariation.cpp
-    ./src/gen/HMACType.cpp
+    ./src/gen/GroupVariation.cpp    
     ./src/gen/IndexQualifierMode.cpp
     ./src/gen/IntervalUnits.cpp
-    ./src/gen/KeyChangeMethod.cpp
-    ./src/gen/KeyStatus.cpp
-    ./src/gen/KeyWrapAlgorithm.cpp
     ./src/gen/LinkFunction.cpp
     ./src/gen/LinkStatus.cpp
     ./src/gen/MasterTaskType.cpp
@@ -540,8 +504,7 @@ set(opendnp3_src
     ./src/gen/PointClass.cpp
     ./src/gen/QualifierCode.cpp
     ./src/gen/RestartMode.cpp
-    ./src/gen/RestartType.cpp
-    ./src/gen/SecurityStatIndex.cpp
+    ./src/gen/RestartType.cpp    
     ./src/gen/ServerAcceptMode.cpp
     ./src/gen/StaticAnalogOutputStatusVariation.cpp
     ./src/gen/StaticAnalogVariation.cpp
@@ -550,17 +513,14 @@ set(opendnp3_src
     ./src/gen/StaticCounterVariation.cpp
     ./src/gen/StaticDoubleBinaryVariation.cpp
     ./src/gen/StaticFrozenCounterVariation.cpp
-    ./src/gen/StaticOctetStringVariation.cpp
-    ./src/gen/StaticSecurityStatVariation.cpp
+    ./src/gen/StaticOctetStringVariation.cpp    
     ./src/gen/StaticTimeAndIntervalVariation.cpp
     ./src/gen/StaticTypeBitmask.cpp
     ./src/gen/StopBits.cpp
     ./src/gen/TaskCompletion.cpp
     ./src/gen/TimestampQuality.cpp
     ./src/gen/TimeSyncMode.cpp
-    ./src/gen/TripCloseCode.cpp
-    ./src/gen/UserOperation.cpp
-    ./src/gen/UserRole.cpp
+    ./src/gen/TripCloseCode.cpp    
 
     ./src/gen/objects/Group1.cpp
     ./src/gen/objects/Group2.cpp
@@ -582,10 +542,7 @@ set(opendnp3_src
     ./src/gen/objects/Group43.cpp
     ./src/gen/objects/Group50.cpp
     ./src/gen/objects/Group51.cpp
-    ./src/gen/objects/Group52.cpp
-    ./src/gen/objects/Group120.cpp
-    ./src/gen/objects/Group121.cpp
-    ./src/gen/objects/Group122.cpp
+    ./src/gen/objects/Group52.cpp    
 
     ./src/link/Addresses.cpp
     ./src/link/CRC.cpp

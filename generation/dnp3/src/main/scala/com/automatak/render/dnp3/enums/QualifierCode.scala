@@ -36,8 +36,7 @@ object QualifierCode {
     EnumValue("UINT8_CNT", 0x07, None, Some("8-bit count")),
     EnumValue("UINT16_CNT", 0x08, None, Some("16-bit count")),
     EnumValue("UINT8_CNT_UINT8_INDEX", 0x17, None, Some("8-bit count and prefix")),
-    EnumValue("UINT16_CNT_UINT16_INDEX", 0x28, None, Some("16-bit count and prefix")),
-    EnumValue("UINT16_FREE_FORMAT", 0x5B, None, Some("16-bit free format"))
+    EnumValue("UINT16_CNT_UINT16_INDEX", 0x28, None, Some("16-bit count and prefix"))
   )
 
 }

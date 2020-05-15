@@ -23,7 +23,6 @@
 #include "app/MeasurementFactory.h"
 #include "app/parsing/CountIndexParser.h"
 #include "app/parsing/CountParser.h"
-#include "app/parsing/FreeFormatParser.h"
 #include "app/parsing/ObjectHeaderParser.h"
 #include "app/parsing/RangeParser.h"
 #include "logging/LogMacros.h"
@@ -139,10 +138,7 @@ ParseResult APDUParser::ParseQualifier(ser4cpp::rseq_t& buffer,
         return CountIndexParser::ParseHeader(buffer, NumParser::OneByte(), settings, record, pLogger, pHandler);
 
     case (QualifierCode::UINT16_CNT_UINT16_INDEX):
-        return CountIndexParser::ParseHeader(buffer, NumParser::TwoByte(), settings, record, pLogger, pHandler);
-
-    case (QualifierCode::UINT16_FREE_FORMAT):
-        return FreeFormatParser::ParseHeader(buffer, settings, record, pLogger, pHandler);
+        return CountIndexParser::ParseHeader(buffer, NumParser::TwoByte(), settings, record, pLogger, pHandler);    
 
     default:
         FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unknown qualifier %x", record.qualifier);

@@ -84,8 +84,7 @@ private:
     IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Analog>>& values) override;
     IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values) override;
     IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values) override;
-    IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values) override;
-    IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Group121Var1>>& values) override;
+    IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values) override;    
 
     IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values) override;
     IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values) override;
@@ -96,9 +95,7 @@ private:
     IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values) override;
     IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<OctetString>>& values) override;
     IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryCommandEvent>>& values) override;
-    IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values) override;
-    IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values) override;
-    IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values) override;
+    IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values) override;    
 
     template<class Target, class Source>
     IINField LoadValuesWithTransformTo(const HeaderRecord& record, const ICollection<Indexed<Source>>& values)
@@ -126,11 +123,7 @@ private:
 
     DNPTime commonTimeOccurence;
 
-    void CheckForTxStart();
-
-    static SecurityStat Convert(const Group121Var1& meas);
-    static SecurityStat Convert(const Group122Var1& meas);
-    static SecurityStat Convert(const Group122Var2& meas);
+    void CheckForTxStart();    
 
     template<class T, class U> static Indexed<U> Convert(const Indexed<T>& input)
     {

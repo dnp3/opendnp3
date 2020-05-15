@@ -103,12 +103,7 @@ public:
     void Process(const HeaderInfo& info,
                  const ICollection<Indexed<AnalogCommandEvent>>& values) override
     {
-    }
-
-    void Process(const HeaderInfo& info,
-                 const ICollection<Indexed<SecurityStat>>& values) override
-    {
-    }
+    }    
 
     void Process(const HeaderInfo& info, const ICollection<DNPTime>& values) override {}
 

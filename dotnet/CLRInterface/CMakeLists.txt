@@ -103,9 +103,7 @@ add_library(DNP3CLRInterface SHARED
     ./src/gen/IINField.cs
     ./src/gen/ILinkStatusListener.cs
     ./src/gen/IndexQualifierMode.cs
-    ./src/gen/IntervalUnits.cs
-    ./src/gen/KeyChangeMethod.cs
-    ./src/gen/KeyWrapAlgorithm.cs
+    ./src/gen/IntervalUnits.cs    
     ./src/gen/LinkFunction.cs
     ./src/gen/LinkStatus.cs
     ./src/gen/MasterTaskType.cs
@@ -132,9 +130,7 @@ add_library(DNP3CLRInterface SHARED
     ./src/gen/TaskCompletion.cs
     ./src/gen/TimeSyncMode.cs
     ./src/gen/TimestampQuality.cs
-    ./src/gen/TripCloseCode.cs
-    ./src/gen/UserOperation.cs
-    ./src/gen/UserRole.cs
+    ./src/gen/TripCloseCode.cs    
 )
 
 set_target_properties(DNP3CLRInterface PROPERTIES FOLDER "dotnet/libs")

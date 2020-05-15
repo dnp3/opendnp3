@@ -35,13 +35,12 @@ object CSharpEnumGroup {
     EventMode(),
     FlagsType(),
     FlowControl(),
+    FunctionCode(),
     GroupVariationEnum(),
     IndexQualifierMode(),
     IntervalUnit(),
     LinkFunction(),
     LinkStatus(),
-    KeyChangeMethod(),
-    KeyWrapAlgorithm(),
     MasterTaskType(),
     OperateType(),
     OperationType(),
@@ -56,9 +55,7 @@ object CSharpEnumGroup {
     TaskCompletion(),
     TimestampQuality(),
     TimeSyncMode(),
-    TripCloseCode(),
-    UserOperation(),
-    UserRole()
+    TripCloseCode()
   ) ::: DefaultVariations.enums ::: QualityMasks.enums
 
 

@@ -83,10 +83,7 @@ public:
                  const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogCommandEvent>>& values) override
     {
     }
-    void Process(const opendnp3::HeaderInfo& info,
-                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::SecurityStat>>& values) override
-    {
-    }
+
     void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::DNPTime>& values) override {}
 
 private:

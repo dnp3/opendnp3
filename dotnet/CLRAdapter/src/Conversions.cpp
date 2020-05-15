@@ -221,12 +221,6 @@ namespace DNP3
             return gcnew AnalogCommandEvent(meas.value, ConvertCommandStatus(meas.status), ConvertTime(meas.time));
         }
 
-        SecurityStat ^ Conversions::ConvertMeas(const opendnp3::SecurityStat& meas)
-        {
-            return gcnew SecurityStat(meas.value.count, meas.value.assocId, gcnew Flags(meas.quality),
-                                      ConvertTime(meas.time));
-        }
-
         opendnp3::DNPTime Conversions::ConvertTime(DNPTime^ time)
         {
             return opendnp3::DNPTime(time->ToEpoch(), (opendnp3::TimestampQuality)time->Quality);

@@ -269,46 +269,6 @@ GroupVariation GroupVariationSpec::from_type(uint16_t arg)
       return GroupVariation::Group112Var0;
     case(0x7100):
       return GroupVariation::Group113Var0;
-    case(0x7801):
-      return GroupVariation::Group120Var1;
-    case(0x7802):
-      return GroupVariation::Group120Var2;
-    case(0x7803):
-      return GroupVariation::Group120Var3;
-    case(0x7804):
-      return GroupVariation::Group120Var4;
-    case(0x7805):
-      return GroupVariation::Group120Var5;
-    case(0x7806):
-      return GroupVariation::Group120Var6;
-    case(0x7807):
-      return GroupVariation::Group120Var7;
-    case(0x7808):
-      return GroupVariation::Group120Var8;
-    case(0x7809):
-      return GroupVariation::Group120Var9;
-    case(0x780A):
-      return GroupVariation::Group120Var10;
-    case(0x780B):
-      return GroupVariation::Group120Var11;
-    case(0x780C):
-      return GroupVariation::Group120Var12;
-    case(0x780D):
-      return GroupVariation::Group120Var13;
-    case(0x780E):
-      return GroupVariation::Group120Var14;
-    case(0x780F):
-      return GroupVariation::Group120Var15;
-    case(0x7900):
-      return GroupVariation::Group121Var0;
-    case(0x7901):
-      return GroupVariation::Group121Var1;
-    case(0x7A00):
-      return GroupVariation::Group122Var0;
-    case(0x7A01):
-      return GroupVariation::Group122Var1;
-    case(0x7A02):
-      return GroupVariation::Group122Var2;
     default:
       return GroupVariation::UNKNOWN;
   }
@@ -544,46 +504,6 @@ char const* GroupVariationSpec::to_string(GroupVariation arg)
       return "Group112Var0";
     case(GroupVariation::Group113Var0):
       return "Group113Var0";
-    case(GroupVariation::Group120Var1):
-      return "Group120Var1";
-    case(GroupVariation::Group120Var2):
-      return "Group120Var2";
-    case(GroupVariation::Group120Var3):
-      return "Group120Var3";
-    case(GroupVariation::Group120Var4):
-      return "Group120Var4";
-    case(GroupVariation::Group120Var5):
-      return "Group120Var5";
-    case(GroupVariation::Group120Var6):
-      return "Group120Var6";
-    case(GroupVariation::Group120Var7):
-      return "Group120Var7";
-    case(GroupVariation::Group120Var8):
-      return "Group120Var8";
-    case(GroupVariation::Group120Var9):
-      return "Group120Var9";
-    case(GroupVariation::Group120Var10):
-      return "Group120Var10";
-    case(GroupVariation::Group120Var11):
-      return "Group120Var11";
-    case(GroupVariation::Group120Var12):
-      return "Group120Var12";
-    case(GroupVariation::Group120Var13):
-      return "Group120Var13";
-    case(GroupVariation::Group120Var14):
-      return "Group120Var14";
-    case(GroupVariation::Group120Var15):
-      return "Group120Var15";
-    case(GroupVariation::Group121Var0):
-      return "Group121Var0";
-    case(GroupVariation::Group121Var1):
-      return "Group121Var1";
-    case(GroupVariation::Group122Var0):
-      return "Group122Var0";
-    case(GroupVariation::Group122Var1):
-      return "Group122Var1";
-    case(GroupVariation::Group122Var2):
-      return "Group122Var2";
     default:
       return "UNKNOWN";
   }
@@ -819,46 +739,6 @@ char const* GroupVariationSpec::to_human_string(GroupVariation arg)
       return "Virtual Terminal Output Block - Sized by variation";
     case(GroupVariation::Group113Var0):
       return "Virtual Terminal Event Data - Sized by variation";
-    case(GroupVariation::Group120Var1):
-      return "Authentication - Challenge";
-    case(GroupVariation::Group120Var2):
-      return "Authentication - Reply";
-    case(GroupVariation::Group120Var3):
-      return "Authentication - Aggressive Mode Request";
-    case(GroupVariation::Group120Var4):
-      return "Authentication - Session Key Status Request";
-    case(GroupVariation::Group120Var5):
-      return "Authentication - Session Key Status";
-    case(GroupVariation::Group120Var6):
-      return "Authentication - Session Key Change";
-    case(GroupVariation::Group120Var7):
-      return "Authentication - Error";
-    case(GroupVariation::Group120Var8):
-      return "Authentication - User Certificate";
-    case(GroupVariation::Group120Var9):
-      return "Authentication - HMAC";
-    case(GroupVariation::Group120Var10):
-      return "Authentication - User Status Change";
-    case(GroupVariation::Group120Var11):
-      return "Authentication - Update Key Change Request";
-    case(GroupVariation::Group120Var12):
-      return "Authentication - Update Key Change Reply";
-    case(GroupVariation::Group120Var13):
-      return "Authentication - Update Key Change";
-    case(GroupVariation::Group120Var14):
-      return "Authentication - Update Key Change Signature";
-    case(GroupVariation::Group120Var15):
-      return "Authentication - Update Key Change Confirmation";
-    case(GroupVariation::Group121Var0):
-      return "Security statistic - Any Variation";
-    case(GroupVariation::Group121Var1):
-      return "Security statistic - 32-bit With Flag";
-    case(GroupVariation::Group122Var0):
-      return "Security Statistic event - Any Variation";
-    case(GroupVariation::Group122Var1):
-      return "Security Statistic event - 32-bit With Flag";
-    case(GroupVariation::Group122Var2):
-      return "Security Statistic event - 32-bit With Flag and Time";
     default:
       return "UNKNOWN";
   }
@@ -979,26 +859,6 @@ GroupVariation GroupVariationSpec::from_string(const std::string& arg)
   if(arg == "Group111Var0") return GroupVariation::Group111Var0;
   if(arg == "Group112Var0") return GroupVariation::Group112Var0;
   if(arg == "Group113Var0") return GroupVariation::Group113Var0;
-  if(arg == "Group120Var1") return GroupVariation::Group120Var1;
-  if(arg == "Group120Var2") return GroupVariation::Group120Var2;
-  if(arg == "Group120Var3") return GroupVariation::Group120Var3;
-  if(arg == "Group120Var4") return GroupVariation::Group120Var4;
-  if(arg == "Group120Var5") return GroupVariation::Group120Var5;
-  if(arg == "Group120Var6") return GroupVariation::Group120Var6;
-  if(arg == "Group120Var7") return GroupVariation::Group120Var7;
-  if(arg == "Group120Var8") return GroupVariation::Group120Var8;
-  if(arg == "Group120Var9") return GroupVariation::Group120Var9;
-  if(arg == "Group120Var10") return GroupVariation::Group120Var10;
-  if(arg == "Group120Var11") return GroupVariation::Group120Var11;
-  if(arg == "Group120Var12") return GroupVariation::Group120Var12;
-  if(arg == "Group120Var13") return GroupVariation::Group120Var13;
-  if(arg == "Group120Var14") return GroupVariation::Group120Var14;
-  if(arg == "Group120Var15") return GroupVariation::Group120Var15;
-  if(arg == "Group121Var0") return GroupVariation::Group121Var0;
-  if(arg == "Group121Var1") return GroupVariation::Group121Var1;
-  if(arg == "Group122Var0") return GroupVariation::Group122Var0;
-  if(arg == "Group122Var1") return GroupVariation::Group122Var1;
-  if(arg == "Group122Var2") return GroupVariation::Group122Var2;
   else return GroupVariation::UNKNOWN;
 }
 

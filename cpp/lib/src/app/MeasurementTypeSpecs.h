@@ -153,24 +153,6 @@ struct TimeAndIntervalSpec : public TimeAndIntervalInfo
     typedef EmptyEventCell event_cell_t;
 };
 
-struct SecurityStatSpec : public SecurityStatInfo
-{
-    typedef SecurityStatConfig config_t;
-    typedef EmptyEventCell event_cell_t;
-
-    inline static bool IsEvent(const SecurityStat& old_value, const SecurityStat& new_value, const config_t& config)
-    {
-        if (old_value.quality != new_value.quality)
-        {
-            return true;
-        }
-        else
-        {
-            return measurements::IsEvent<uint32_t, uint64_t>(old_value.value.count, new_value.value.count, 0);
-        }
-    }
-};
-
 } // namespace opendnp3
 
 #endif

@@ -99,55 +99,13 @@ private:
     virtual IINField ProcessHeader(const CountHeader& header) override
     {
         return IINField::Empty();
-    }
-
-    virtual IINField ProcessHeader(const FreeFormatHeader& header,
-                                   const Group120Var1& value,
-                                   const ser4cpp::rseq_t& object) override;
-    virtual IINField ProcessHeader(const FreeFormatHeader& header,
-                                   const Group120Var2& value,
-                                   const ser4cpp::rseq_t& object) override;
-    virtual IINField ProcessHeader(const FreeFormatHeader& header,
-                                   const Group120Var5& value,
-                                   const ser4cpp::rseq_t& object) override;
-    virtual IINField ProcessHeader(const FreeFormatHeader& header,
-                                   const Group120Var6& value,
-                                   const ser4cpp::rseq_t& object) override;
-    virtual IINField ProcessHeader(const FreeFormatHeader& header,
-                                   const Group120Var7& value,
-                                   const ser4cpp::rseq_t& object) override;
-    virtual IINField ProcessHeader(const FreeFormatHeader& header,
-                                   const Group120Var8& value,
-                                   const ser4cpp::rseq_t& object) override;
-    virtual IINField ProcessHeader(const FreeFormatHeader& header,
-                                   const Group120Var9& value,
-                                   const ser4cpp::rseq_t& object) override;
-    virtual IINField ProcessHeader(const FreeFormatHeader& header,
-                                   const Group120Var10& value,
-                                   const ser4cpp::rseq_t& object) override;
-    virtual IINField ProcessHeader(const FreeFormatHeader& header,
-                                   const Group120Var11& value,
-                                   const ser4cpp::rseq_t& object) override;
-    virtual IINField ProcessHeader(const FreeFormatHeader& header,
-                                   const Group120Var12& value,
-                                   const ser4cpp::rseq_t& object) override;
-    virtual IINField ProcessHeader(const FreeFormatHeader& header,
-                                   const Group120Var13& value,
-                                   const ser4cpp::rseq_t& object) override;
-    virtual IINField ProcessHeader(const FreeFormatHeader& header,
-                                   const Group120Var14& value,
-                                   const ser4cpp::rseq_t& object) override;
-    virtual IINField ProcessHeader(const FreeFormatHeader& header,
-                                   const Group120Var15& value,
-                                   const ser4cpp::rseq_t& object) override;
+    }    
 
     virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& values) override;
     virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var1>& values) override;
     virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var2>& values) override;
     virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var1>& values) override;
-    virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& values) override;
-    virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group120Var3>& values) override;
-    virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group120Var4>& values) override;
+    virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& values) override;    
 
     virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values) override;
     virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Binary>>& values) override;
@@ -163,9 +121,7 @@ private:
                                    const ICollection<Indexed<AnalogOutputStatus>>& values) override;
     virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values) override;
     virtual IINField ProcessHeader(const RangeHeader& header,
-                                   const ICollection<Indexed<TimeAndInterval>>& values) override;
-    virtual IINField ProcessHeader(const RangeHeader& header,
-                                   const ICollection<Indexed<Group121Var1>>& values) override;
+                                   const ICollection<Indexed<TimeAndInterval>>& values) override;   
 
     virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values) override;
     virtual IINField ProcessHeader(const PrefixHeader& header,
@@ -185,11 +141,7 @@ private:
     virtual IINField ProcessHeader(const PrefixHeader& header,
                                    const ICollection<Indexed<BinaryCommandEvent>>& values) override;
     virtual IINField ProcessHeader(const PrefixHeader& header,
-                                   const ICollection<Indexed<AnalogCommandEvent>>& values) override;
-    virtual IINField ProcessHeader(const PrefixHeader& header,
-                                   const ICollection<Indexed<Group122Var1>>& values) override;
-    virtual IINField ProcessHeader(const PrefixHeader& header,
-                                   const ICollection<Indexed<Group122Var2>>& values) override;
+                                   const ICollection<Indexed<AnalogCommandEvent>>& values) override;    
 
     virtual IINField ProcessHeader(const PrefixHeader& header,
                                    const ICollection<Indexed<ControlRelayOutputBlock>>& values) override;
@@ -265,22 +217,6 @@ template<class T> IINField LoggingHandler::PrintVQT(GroupVariation gv, const ICo
     };
 
     items.ForeachItem(logItem);
-
-    return IINField::Empty();
-}
-
-template<class T> IINField LoggingHandler::PrintSecStat(const ICollection<Indexed<T>>& values)
-{
-    Indent i(*callbacks);
-    auto logItem = [this](const Indexed<T>& item) {
-        std::ostringstream oss;
-        oss << "[" << item.index << "] - flags: 0x" << ToHex(item.value.flags);
-        oss << " assoc: " << item.value.assocId;
-        oss << " value: " << item.value.value;
-        SIMPLE_LOG_BLOCK(logger, flags::APP_OBJECT_RX, oss.str().c_str());
-    };
-
-    values.ForeachItem(logItem);
 
     return IINField::Empty();
 }
