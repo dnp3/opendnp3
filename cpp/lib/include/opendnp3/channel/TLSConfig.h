@@ -42,6 +42,7 @@ struct TLSConfig
      * @param allowTLSv10 Allow TLS version 1.0 (default false)
      * @param allowTLSv11 Allow TLS version 1.1 (default false)
      * @param allowTLSv12 Allow TLS version 1.2 (default true)
+     * @param allowTLSv13 Allow TLS version 1.3 (default true)
      * @param cipherList The openssl cipher-list, defaults to "" which does not modify the default cipher list
      *
      * localCertFilePath and privateKeyFilePath can optionally be the same file, i.e. a PEM that contains both pieces of

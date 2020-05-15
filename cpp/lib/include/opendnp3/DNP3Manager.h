@@ -151,7 +151,7 @@ public:
      * @param id Alias that will be used for logging purposes with this channel
      * @param levels Bitfield that describes the logging level for this channel and associated sessions
      * @param retry Retry parameters for failed channels
-     * @param host IP address of remote outstation (i.e. 127.0.0.1 or www.google.com)
+     * @param hosts IP address of remote outstation (i.e. 127.0.0.1 or www.google.com)
      * @param local adapter address on which to attempt the connection (use 0.0.0.0 for all adapters)
      * @param config TLS configuration information
      * @param listener optional callback interface (can be nullptr) for info about the running channel

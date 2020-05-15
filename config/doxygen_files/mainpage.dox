@@ -12,10 +12,3 @@ complements the <a href="https://dnp3.github.io/docs/guide/current/">developers 
 
 Please refer to the guide for architecture, supported features, build instructions, and examples.
 */
-
-/**
- * @namespace openpal
- * 
- * Some docs here for openpal
-*/
-namespace openpal {}
