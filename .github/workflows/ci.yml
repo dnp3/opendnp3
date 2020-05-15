@@ -136,18 +136,8 @@ jobs:
         if: ${{ matrix.build-type == 'Release' }}
         uses: actions/upload-artifact@v2-preview
         with:
-          name: nuget-${{ github.sha }}
+          name: temp-nuget-${{ github.sha }}
           path: build/opendnp3-nuget/*
-      - name: NuGet package
-        if: ${{ matrix.build-type == 'Release' }}
-        working-directory: build
-        run: cpack -G NuGet . -C ${{ matrix.build-type }}
-      - name: Upload NuGet package
-        if: ${{ matrix.build-type == 'Release' }}
-        uses: actions/upload-artifact@v2-preview
-        with:
-          name: opendnp3-win-${{ matrix.architecture }}-${{ github.sha }}-nuget
-          path: build/*.nupkg
       - name: Build and test Java bindings
         working-directory: java
         run: >
@@ -166,7 +156,7 @@ jobs:
       - name: Download NuGet stuff
         uses: actions/download-artifact@v2-preview
         with:
-          name: nuget-${{ github.sha }}
+          name: temp-nuget-${{ github.sha }}
           path: opendnp3-nuget
       - name: Generate NuGet package
         working-directory: opendnp3-nuget

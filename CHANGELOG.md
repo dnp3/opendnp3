@@ -1,4 +1,100 @@
-### 2.3.0-RC1 ###
+### 3.0.0 ###
+
+New features:
+* :star: Add support for Immediate Freeze (`0x07`), Immediate Freeze No Ack
+  (`0x08`), Freeze-and-Clear (`0x09`), Freeze-and-Clear No Ack (`0x10`). See PR [#320](https://github.com/dnp3/opendnp3/pull/320).
+* Add support for broadcast. See PR [#312](https://github.com/dnp3/opendnp3/pull/312).
+* :star: Add UDP support. See PR [#314](https://github.com/dnp3/opendnp3/pull/314).
+* :star: Add unsolicited fixed number of retries See PR
+  [#323](https://github.com/dnp3/opendnp3/pull/323).
+* :star: Add support for timestamp quality and g51v2 (CTO Unsynchronized). See
+  PR [#316](https://github.com/dnp3/opendnp3/pull/316).
+* :star: Add support for TLS 1.3 (**requires OpenSSL 1.1.1**). See PR
+  [#372](https://github.com/dnp3/opendnp3/pull/372).
+
+API changes:
+* :star: Complete reorganization of the code to produce a single library.
+  Properly separate the public header files from the private ones. Refactor the
+  CMake to use modern practices.
+* :star: Outstation database points are now specified using a map instead of a
+  sorted array. See PR [#296](https://github.com/dnp3/opendnp3/pull/296).
+* :star: `ICommandHandler` now includes a `Begin` and a `End` callback to know
+  which commands were grouped together in a single APDU. See PR
+  [#341](https://github.com/dnp3/opendnp3/pull/341).
+* :star: `ISOEHandler` now includes a `BeginFragment` and `EndFragment` to help
+  determine if it's a multi-fragment response or an unsolicited response. See PR
+  [#298](https://github.com/dnp3/opendnp3/pull/298).
+* :star: When sending requests, a distinct `SOEHandler` can be specified to help
+  associate the response with the request. To keep the old behaviour, simply
+  pass the same `SOEHandler` on each request. See PR
+  [#339](https://github.com/dnp3/opendnp3/pull/339).
+* :star: All public enumerations used by the library exposes a `to_string` and a
+  `from_string` method. They also expose a `to_type` and a `from_type` method to
+  convert to and from the underlying integer value. See PR
+  [#308](https://github.com/dnp3/opendnp3/pull/308).
+* :star: Control Relay Output Block now expose each field individually. See PR
+  [#349](https://github.com/dnp3/opendnp3/pull/349).
+* :star: Instead of relying on an output parameter, `DNP3Manager` now throws an
+  exception on misconfiguration. This also includes if a server was not able to
+  bind to a port. See issue
+  [#293](https://github.com/dnp3/opendnp3/issues/293) and PR
+  [#367](https://github.com/dnp3/opendnp3/pull/367).
+* :x: Remove sending data-link confirmation support. It still supports
+  receiving confirmed data to interoperability. See issue
+  [#364](https://github.com/dnp3/opendnp3/issues/364) and PR
+  [#367](https://github.com/dnp3/opendnp3/pull/367).
+* :beetle: `TaskConfig` now takes a `std::shared_ptr` instead of a reference. See
+  issue [#238](https://github.com/dnp3/opendnp3/issues/238) and PR
+  [#367](https://github.com/dnp3/opendnp3/pull/367).
+
+Bindings changes:
+* :star: Add typed flag handling in Java and C#. See PR
+  [#342](https://github.com/dnp3/opendnp3/pull/342).
+* :star: In the Java bindings, when `DNP3Manager` fails, an descriptive
+  exception is thrown instead of returning a `null`. See PR
+  [#367](https://github.com/dnp3/opendnp3/pull/367).
+* :star: Published NuGet packages now include both x86 and x64 binaries.
+* :beetle: Provide `IDnpTimeSource` interface in Java and C#. See issue
+  [#353](https://github.com/dnp3/opendnp3/issues/353) and PR
+  [#357](https://github.com/dnp3/opendnp3/pull/357).
+* :beetle: Add `typesAllowedInClass0` in Java bindings. See PR
+  [#360](https://github.com/dnp3/opendnp3/pull/360).
+
+CI:
+* :hammer: Move continuous integration to [GitHub
+  Actions](https://github.com/dnp3/opendnp3/actions).
+* :hammer: Add automated Subset Level 2 conformance testing. The report
+  is available here: https://dnp3.github.io/conformance/report.html
+* :hammer: Add code coverage results using
+  [Codecov](https://codecov.io/gh/dnp3/opendnp3). See PR
+  [#301](https://github.com/dnp3/opendnp3/pull/301).
+
+Other:
+* :beetle: Fix few minor conformance issues. See PR
+  [#356](https://github.com/dnp3/opendnp3/pull/356).
+* :beetle: Fix issue in data-link state machine. See issue
+  [#138](https://github.com/dnp3/opendnp3/issues/138) and PR
+  [#367](https://github.com/dnp3/opendnp3/pull/367).
+* :arrow_double_up: Update ASIO dependency to 1.16. See PR
+  [#365](https://github.com/dnp3/opendnp3/pull/365).
+
+### 2.4.0 ###
+* :star: Added optional reconnection delay parameter to `ChannelRetry`. When a connection is lost, this parameter is used to wait before reattempting to establish a connection. Then, the same reconnection strategy as before is used for retries. See issue [#354](https://github.com/dnp3/opendnp3/issues/354).
+* :beetle: Fix conformance issue with data-link confirmations. See PR [#359](https://github.com/dnp3/opendnp3/pull/359).
+* :beetle: Fix conformance issue select & operate behaviour. See PR [#359](https://github.com/dnp3/opendnp3/pull/359).
+* :beetle: Fix issue when compiling with MingW. See PR [#345](https://github.com/dnp3/opendnp3/pull/345).
+
+### 2.3.3 ###
+* :beetle: Fix C# exception on time conversion upon restart command not supported. See issue [#350](https://github.com/dnp3/opendnp3/issues/350).
+
+### 2.3.2 ###
+* :beetle: Fix C# issue where `EventConfig::clazz` was never set. See issue [#291](https://github.com/dnp3/opendnp3/issues/291).
+
+### 2.3.1 ###
+* :beetle: Fix final case for issue [#216](https://github.com/dnp3/opendnp3/issues/216#issuecomment-500637263). See [PR #310](https://github.com/dnp3/opendnp3/pull/310).
+* :beetle: Add missing include for usage with `ASIO_DYN_LINK` (see [PR #311](https://github.com/dnp3/opendnp3/pull/311))
+
+### 2.3.0 ###
 * :beetle: Fixes for issues [#268](https://github.com/dnp3/opendnp3/issues/268), [#262](https://github.com/dnp3/opendnp3/issues/262), [#259](https://github.com/dnp3/opendnp3/issues/259), [#257](https://github.com/dnp3/opendnp3/issues/257), [#255](https://github.com/dnp3/opendnp3/issues/255), [#251](https://github.com/dnp3/opendnp3/issues/251), [#228](https://github.com/dnp3/opendnp3/issues/228), [#216](https://github.com/dnp3/opendnp3/issues/216).
 * :star: Added overloaded methods for TCP and TLS clients to support outstation redundancy ([#277](https://github.com/dnp3/opendnp3/issues/277)).
 * :star: .NET bindings can now be configured and built using CMake (requires CMake >= 3.8).
@@ -6,7 +102,6 @@
 * :star: Added support for cold/warm restart in Java OutstationApplication interface.
 * :wrench: Migrate default ASIO version to 1-12-2. Older versions may no longer be compatible.
 * :pencil: Added automatic code formating with [clang-format](https://clang.llvm.org/docs/ClangFormat.html).
-
 
 ### 2.3.0-M1 ###
 * :star: Small internal change to support openssl 1.1.x ([pull request](https://github.com/dnp3/opendnp3/pull/207))
