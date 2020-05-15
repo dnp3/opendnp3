@@ -3,7 +3,7 @@
 
     <groupId>com.automatak.dnp3</groupId>
     <artifactId>opendnp3-parent</artifactId>
-    <version>2.3.1-SNAPSHOT</version>
+    <version>3.0.0</version>
     <packaging>pom</packaging>
 
     <modules>
