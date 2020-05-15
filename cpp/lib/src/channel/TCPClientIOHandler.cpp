@@ -59,10 +59,12 @@ void TCPClientIOHandler::SuspendChannelAccept()
 
 void TCPClientIOHandler::OnChannelShutdown()
 {
-    if (!client) return;
+    if (!client)
+        return;
 
     this->retrytimer = this->executor->start(this->retry.reconnectDelay.value, [this, self = shared_from_this()]() {
-        if (!client) return;
+        if (!client)
+            return;
         this->BeginChannelAccept();
     });
 }

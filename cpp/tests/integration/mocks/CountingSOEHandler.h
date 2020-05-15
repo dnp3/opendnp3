@@ -114,7 +114,7 @@ public:
                  const opendnp3::ICollection<opendnp3::Indexed<opendnp3::TimeAndInterval>>& values) override
     {
         count += values.Count();
-    }    
+    }
 
     void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::DNPTime>& values) override
     {

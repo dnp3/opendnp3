@@ -140,7 +140,6 @@ ParseResult RangeParser::ParseRangeOfObjects(
 
     case (GroupVariation::Group110Var0):
         return ParseRangeOfOctetData(buffer, record, range, pLogger, pHandler);
-   
 
     default:
         FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unsupported qualifier/object - %s - %i / %i",

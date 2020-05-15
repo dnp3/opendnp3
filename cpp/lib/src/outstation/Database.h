@@ -102,7 +102,6 @@ private:
     static IINField select_range(StaticDataMap<Spec>& map,
                                  const Range& range,
                                  typename Spec::static_variation_t variation);
-    
 };
 
 } // namespace opendnp3

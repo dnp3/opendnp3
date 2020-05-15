@@ -56,10 +56,12 @@ ParseResult CountIndexParser::ParseHeader(ser4cpp::rseq_t& buffer,
                             GroupVariationSpec::to_human_string(record.enumeration),
                             QualifierCodeSpec::to_human_string(record.GetQualifierCode()), count);
 
-        if (settings.ExpectsContents()) {
+        if (settings.ExpectsContents())
+        {
             return ParseCountOfObjects(buffer, record, numparser, count, pLogger, pHandler);
         }
-        else {
+        else
+        {
             return ParseCountOfIndices(buffer, record, numparser, count, pLogger, pHandler);
         }
     }
@@ -202,7 +204,7 @@ ParseResult CountIndexParser::ParseCountOfObjects(ser4cpp::rseq_t& buffer,
     case (GroupVariation::Group50Var4):
         return CountIndexParser::From<Group50Var4>(count, numparser).Process(record, buffer, pHandler, pLogger);
     case (GroupVariation::Group111Var0):
-        return ParseIndexPrefixedOctetData(buffer, record, numparser, count, pLogger, pHandler);    
+        return ParseIndexPrefixedOctetData(buffer, record, numparser, count, pLogger, pHandler);
 
     default:
 
@@ -215,15 +217,16 @@ ParseResult CountIndexParser::ParseCountOfObjects(ser4cpp::rseq_t& buffer,
 }
 
 ParseResult CountIndexParser::ParseCountOfIndices(ser4cpp::rseq_t& buffer,
-    const HeaderRecord& record,
-    const NumParser& numparser,
-    uint16_t count,
-    Logger* pLogger,
-    IAPDUHandler* pHandler)
+                                                  const HeaderRecord& record,
+                                                  const NumParser& numparser,
+                                                  uint16_t count,
+                                                  Logger* pLogger,
+                                                  IAPDUHandler* pHandler)
 {
     const auto SIZE = static_cast<size_t>(count) * static_cast<size_t>(numparser.NumBytes());
 
-    if (buffer.length() < SIZE) {
+    if (buffer.length() < SIZE)
+    {
         SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for specified sequence of indices");
         return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
     }
@@ -237,7 +240,7 @@ ParseResult CountIndexParser::ParseCountOfIndices(ser4cpp::rseq_t& buffer,
         auto collection = CreateBufferedCollection<uint16_t>(buffer, count, read);
         pHandler->OnHeader(PrefixHeader(record, count), collection);
     }
-   
+
     buffer.advance(SIZE);
     return ParseResult::OK;
 }

@@ -25,9 +25,7 @@
 #include <opendnp3/app/DNPTime.h>
 #include <opendnp3/app/IINField.h>
 #include <opendnp3/gen/FunctionCode.h>
-
 #include <opendnp3/gen/PointClass.h>
-
 
 #include <cstdint>
 #include <string>

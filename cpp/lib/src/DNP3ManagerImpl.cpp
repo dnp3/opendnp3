@@ -101,7 +101,7 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTCPServer(const std::string& id,
         auto clogger = this->logger.detach(id, levels);
         auto executor = exe4cpp::StrandExecutor::create(this->io);
         auto iohandler = TCPServerIOHandler::Create(clogger, mode, listener, executor, endpoint, ec);
-        if(ec)
+        if (ec)
         {
             throw DNP3Error(Error::UNABLE_TO_BIND_SERVER, ec);
         }
@@ -209,7 +209,7 @@ std::shared_ptr<IChannel> DNP3ManagerImpl::AddTLSServer(const std::string& id,
         auto clogger = this->logger.detach(id, levels);
         auto executor = exe4cpp::StrandExecutor::create(this->io);
         auto iohandler = TLSServerIOHandler::Create(clogger, mode, listener, executor, endpoint, config, ec);
-        if(ec)
+        if (ec)
         {
             throw DNP3Error(Error::UNABLE_TO_BIND_SERVER, ec);
         }
@@ -237,9 +237,10 @@ std::shared_ptr<IListener> DNP3ManagerImpl::CreateListener(std::string loggerid,
 {
     auto create = [&]() -> std::shared_ptr<IListener> {
         std::error_code ec;
-        auto server = MasterTCPServer::Create(this->logger.detach(loggerid, levels), exe4cpp::StrandExecutor::create(this->io),
-                                       endpoint, callbacks, this->resources, ec);
-        if(ec)
+        auto server
+            = MasterTCPServer::Create(this->logger.detach(loggerid, levels), exe4cpp::StrandExecutor::create(this->io),
+                                      endpoint, callbacks, this->resources, ec);
+        if (ec)
         {
             throw DNP3Error(Error::UNABLE_TO_BIND_SERVER, ec);
         }
@@ -267,9 +268,10 @@ std::shared_ptr<IListener> DNP3ManagerImpl::CreateListener(std::string loggerid,
 
     auto create = [&]() -> std::shared_ptr<IListener> {
         std::error_code ec;
-        auto server = MasterTLSServer::Create(this->logger.detach(loggerid, levels), exe4cpp::StrandExecutor::create(this->io),
-                                       endpoint, config, callbacks, this->resources, ec);
-        if(ec)
+        auto server
+            = MasterTLSServer::Create(this->logger.detach(loggerid, levels), exe4cpp::StrandExecutor::create(this->io),
+                                      endpoint, config, callbacks, this->resources, ec);
+        if (ec)
         {
             throw DNP3Error(Error::UNABLE_TO_BIND_SERVER, ec);
         }

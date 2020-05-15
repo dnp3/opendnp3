@@ -73,19 +73,22 @@ void TLSClientIOHandler::SuspendChannelAccept()
 
 void TLSClientIOHandler::OnChannelShutdown()
 {
-    if (!client) return;
+    if (!client)
+        return;
 
     this->retrytimer = this->executor->start(this->retry.reconnectDelay.value, [this, self = shared_from_this()]() {
-        if (!client) return;
+        if (!client)
+            return;
         this->BeginChannelAccept();
     });
 }
 
 void TLSClientIOHandler::StartConnect(const TimeDuration& delay)
 {
-    if (!this->client) return;
+    if (!this->client)
+        return;
 
-	auto cb = [=, self = shared_from_this()](const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
+    auto cb = [=, self = shared_from_this()](const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
                                              const std::shared_ptr<asio::ssl::stream<asio::ip::tcp::socket>>& stream,
                                              const std::error_code& ec) -> void {
         if (ec)

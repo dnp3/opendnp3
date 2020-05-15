@@ -35,7 +35,7 @@ public:
     void OnHeaderResult(const opendnp3::HeaderRecord& record, const opendnp3::IINField& result) final
     {
         records.push_back(record);
-    }    
+    }
 
     opendnp3::IINField ProcessHeader(const opendnp3::RangeHeader& header,
                                      const opendnp3::ICollection<opendnp3::Indexed<opendnp3::IINValue>>& values) final
@@ -149,9 +149,8 @@ public:
         return this->ProcessAny(header, values, analogCommandEvents);
     }
 
-    opendnp3::IINField ProcessHeader(
-        const opendnp3::PrefixHeader& header,
-        const opendnp3::ICollection<uint16_t>& values) final
+    opendnp3::IINField ProcessHeader(const opendnp3::PrefixHeader& header,
+                                     const opendnp3::ICollection<uint16_t>& values) final
     {
         return this->ProcessAny(header, values, indices);
     }
@@ -192,7 +191,7 @@ public:
     {
         return this->ProcessAny(header, meas, aoDouble64Requests);
     }
-   
+
     std::vector<opendnp3::HeaderRecord> records;
 
     std::vector<opendnp3::Indexed<opendnp3::IINValue>> iinBits;

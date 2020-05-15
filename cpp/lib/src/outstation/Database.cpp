@@ -26,11 +26,14 @@ namespace opendnp3
 {
 
 template<class Spec>
-IINField select_indices(StaticDataMap<Spec>& map, const ICollection<uint16_t>& indices, typename Spec::static_variation_t variation)
+IINField select_indices(StaticDataMap<Spec>& map,
+                        const ICollection<uint16_t>& indices,
+                        typename Spec::static_variation_t variation)
 {
     auto missing_index = false;
     auto select = [&](uint16_t index) {
-        if (!map.select(index, variation)) {
+        if (!map.select(index, variation))
+        {
             missing_index = true;
         }
     };
@@ -39,12 +42,12 @@ IINField select_indices(StaticDataMap<Spec>& map, const ICollection<uint16_t>& i
     return missing_index ? IINField(IINBit::PARAM_ERROR) : IINField::Empty();
 }
 
-template<class Spec>
-IINField select_indices(StaticDataMap<Spec>& map, const ICollection<uint16_t>& indices)
+template<class Spec> IINField select_indices(StaticDataMap<Spec>& map, const ICollection<uint16_t>& indices)
 {
     auto missing_index = false;
     auto select = [&](uint16_t index) {
-        if (!map.select(index)) {
+        if (!map.select(index))
+        {
             missing_index = true;
         }
     };
@@ -288,88 +291,85 @@ IINField Database::SelectRange(GroupVariation gv, const Range& range)
 
 IINField Database::SelectIndices(GroupVariation gv, const ICollection<uint16_t>& indices)
 {
-    switch (gv) {
-        case(GroupVariation::Group1Var0):
-            return select_indices(this->binary_input, indices);
-        case(GroupVariation::Group1Var1):
-            return select_indices(this->binary_input, indices, StaticBinaryVariation::Group1Var1);
-        case(GroupVariation::Group1Var2):
-            return select_indices(this->binary_input, indices, StaticBinaryVariation::Group1Var2);
+    switch (gv)
+    {
+    case (GroupVariation::Group1Var0):
+        return select_indices(this->binary_input, indices);
+    case (GroupVariation::Group1Var1):
+        return select_indices(this->binary_input, indices, StaticBinaryVariation::Group1Var1);
+    case (GroupVariation::Group1Var2):
+        return select_indices(this->binary_input, indices, StaticBinaryVariation::Group1Var2);
 
-        case (GroupVariation::Group3Var0):
-            return select_indices(this->double_binary, indices);
-        case (GroupVariation::Group3Var2):
-            return select_indices(this->double_binary, indices, StaticDoubleBinaryVariation::Group3Var2);
+    case (GroupVariation::Group3Var0):
+        return select_indices(this->double_binary, indices);
+    case (GroupVariation::Group3Var2):
+        return select_indices(this->double_binary, indices, StaticDoubleBinaryVariation::Group3Var2);
 
-        case (GroupVariation::Group10Var0):
-            return select_indices(this->binary_output_status, indices);
-        case (GroupVariation::Group10Var2):
-            return select_indices(this->binary_output_status, indices, StaticBinaryOutputStatusVariation::Group10Var2);
-        
-        case (GroupVariation::Group20Var0):
-            return select_indices(this->counter, indices);
-        case (GroupVariation::Group20Var1):
-            return select_indices(this->counter, indices, StaticCounterVariation::Group20Var1);
-        case (GroupVariation::Group20Var2):
-            return select_indices(this->counter, indices, StaticCounterVariation::Group20Var2);
-        case (GroupVariation::Group20Var5):
-            return select_indices(this->counter, indices, StaticCounterVariation::Group20Var5);
-        case (GroupVariation::Group20Var6):
-            return select_indices(this->counter, indices, StaticCounterVariation::Group20Var6);
+    case (GroupVariation::Group10Var0):
+        return select_indices(this->binary_output_status, indices);
+    case (GroupVariation::Group10Var2):
+        return select_indices(this->binary_output_status, indices, StaticBinaryOutputStatusVariation::Group10Var2);
 
-        case (GroupVariation::Group21Var0):
-            return select_indices(this->frozen_counter, indices);
-        case (GroupVariation::Group21Var1):
-            return select_indices(this->frozen_counter, indices, StaticFrozenCounterVariation::Group21Var1);
-        case (GroupVariation::Group21Var2):
-            return select_indices(this->frozen_counter, indices, StaticFrozenCounterVariation::Group21Var2);
-        case (GroupVariation::Group21Var5):
-            return select_indices(this->frozen_counter, indices, StaticFrozenCounterVariation::Group21Var5);
-        case (GroupVariation::Group21Var6):
-            return select_indices(this->frozen_counter, indices, StaticFrozenCounterVariation::Group21Var6);
-        case (GroupVariation::Group21Var9):
-            return select_indices(this->frozen_counter, indices, StaticFrozenCounterVariation::Group21Var9);
-        case (GroupVariation::Group21Var10):
-            return select_indices(this->frozen_counter, indices, StaticFrozenCounterVariation::Group21Var10);
+    case (GroupVariation::Group20Var0):
+        return select_indices(this->counter, indices);
+    case (GroupVariation::Group20Var1):
+        return select_indices(this->counter, indices, StaticCounterVariation::Group20Var1);
+    case (GroupVariation::Group20Var2):
+        return select_indices(this->counter, indices, StaticCounterVariation::Group20Var2);
+    case (GroupVariation::Group20Var5):
+        return select_indices(this->counter, indices, StaticCounterVariation::Group20Var5);
+    case (GroupVariation::Group20Var6):
+        return select_indices(this->counter, indices, StaticCounterVariation::Group20Var6);
 
-        case (GroupVariation::Group30Var0):
-            return select_indices<AnalogSpec>(this->analog_input, indices);
-        case (GroupVariation::Group30Var1):
-            return select_indices(this->analog_input, indices, StaticAnalogVariation::Group30Var1);
-        case (GroupVariation::Group30Var2):
-            return select_indices(this->analog_input, indices, StaticAnalogVariation::Group30Var2);
-        case (GroupVariation::Group30Var3):
-            return select_indices(this->analog_input, indices, StaticAnalogVariation::Group30Var3);
-        case (GroupVariation::Group30Var4):
-            return select_indices(this->analog_input, indices, StaticAnalogVariation::Group30Var4);
-        case (GroupVariation::Group30Var5):
-            return select_indices(this->analog_input, indices, StaticAnalogVariation::Group30Var5);
-        case (GroupVariation::Group30Var6):
-            return select_indices(this->analog_input, indices, StaticAnalogVariation::Group30Var6);
+    case (GroupVariation::Group21Var0):
+        return select_indices(this->frozen_counter, indices);
+    case (GroupVariation::Group21Var1):
+        return select_indices(this->frozen_counter, indices, StaticFrozenCounterVariation::Group21Var1);
+    case (GroupVariation::Group21Var2):
+        return select_indices(this->frozen_counter, indices, StaticFrozenCounterVariation::Group21Var2);
+    case (GroupVariation::Group21Var5):
+        return select_indices(this->frozen_counter, indices, StaticFrozenCounterVariation::Group21Var5);
+    case (GroupVariation::Group21Var6):
+        return select_indices(this->frozen_counter, indices, StaticFrozenCounterVariation::Group21Var6);
+    case (GroupVariation::Group21Var9):
+        return select_indices(this->frozen_counter, indices, StaticFrozenCounterVariation::Group21Var9);
+    case (GroupVariation::Group21Var10):
+        return select_indices(this->frozen_counter, indices, StaticFrozenCounterVariation::Group21Var10);
 
-        case (GroupVariation::Group40Var0):
-            return select_indices(this->analog_output_status, indices);
-        case (GroupVariation::Group40Var1):
-            return select_indices(this->analog_output_status, indices,
-                StaticAnalogOutputStatusVariation::Group40Var1);
-        case (GroupVariation::Group40Var2):
-            return select_indices(this->analog_output_status, indices,
-                StaticAnalogOutputStatusVariation::Group40Var2);
-        case (GroupVariation::Group40Var3):
-            return select_indices(this->analog_output_status, indices,
-                StaticAnalogOutputStatusVariation::Group40Var3);
-        case (GroupVariation::Group40Var4):
-            return select_indices(this->analog_output_status, indices,
-                StaticAnalogOutputStatusVariation::Group40Var4);
+    case (GroupVariation::Group30Var0):
+        return select_indices<AnalogSpec>(this->analog_input, indices);
+    case (GroupVariation::Group30Var1):
+        return select_indices(this->analog_input, indices, StaticAnalogVariation::Group30Var1);
+    case (GroupVariation::Group30Var2):
+        return select_indices(this->analog_input, indices, StaticAnalogVariation::Group30Var2);
+    case (GroupVariation::Group30Var3):
+        return select_indices(this->analog_input, indices, StaticAnalogVariation::Group30Var3);
+    case (GroupVariation::Group30Var4):
+        return select_indices(this->analog_input, indices, StaticAnalogVariation::Group30Var4);
+    case (GroupVariation::Group30Var5):
+        return select_indices(this->analog_input, indices, StaticAnalogVariation::Group30Var5);
+    case (GroupVariation::Group30Var6):
+        return select_indices(this->analog_input, indices, StaticAnalogVariation::Group30Var6);
 
-        case (GroupVariation::Group50Var4):
-            return select_indices(this->time_and_interval, indices, StaticTimeAndIntervalVariation::Group50Var4);
+    case (GroupVariation::Group40Var0):
+        return select_indices(this->analog_output_status, indices);
+    case (GroupVariation::Group40Var1):
+        return select_indices(this->analog_output_status, indices, StaticAnalogOutputStatusVariation::Group40Var1);
+    case (GroupVariation::Group40Var2):
+        return select_indices(this->analog_output_status, indices, StaticAnalogOutputStatusVariation::Group40Var2);
+    case (GroupVariation::Group40Var3):
+        return select_indices(this->analog_output_status, indices, StaticAnalogOutputStatusVariation::Group40Var3);
+    case (GroupVariation::Group40Var4):
+        return select_indices(this->analog_output_status, indices, StaticAnalogOutputStatusVariation::Group40Var4);
 
-        case (GroupVariation::Group110Var0):
-            return select_indices(this->octet_string, indices, StaticOctetStringVariation::Group110Var0);
+    case (GroupVariation::Group50Var4):
+        return select_indices(this->time_and_interval, indices, StaticTimeAndIntervalVariation::Group50Var4);
 
-        default:
-            return IINField(IINBit::FUNC_NOT_SUPPORTED);
+    case (GroupVariation::Group110Var0):
+        return select_indices(this->octet_string, indices, StaticOctetStringVariation::Group110Var0);
+
+    default:
+        return IINField(IINBit::FUNC_NOT_SUPPORTED);
     }
 }
 

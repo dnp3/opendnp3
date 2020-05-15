@@ -68,6 +68,4 @@ bool HeaderWriter::WriteHeaderWithReserve(GroupVariationID id, QualifierCode qc,
     return (position->length() < (3 + reserve)) ? false : WriteHeader(id, qc);
 }
 
-
-
 } // namespace opendnp3

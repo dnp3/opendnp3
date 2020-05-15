@@ -33,11 +33,8 @@ struct LinkConfig
 {
     LinkConfig() = delete;
 
-    LinkConfig(bool isMaster,
-               uint16_t localAddr,
-               uint16_t remoteAddr,
-               TimeDuration timeout,
-               TimeDuration keepAliveTimeout)
+    LinkConfig(
+        bool isMaster, uint16_t localAddr, uint16_t remoteAddr, TimeDuration timeout, TimeDuration keepAliveTimeout)
         :
 
           IsMaster(isMaster),

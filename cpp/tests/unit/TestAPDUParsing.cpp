@@ -447,11 +447,10 @@ TEST_CASE(SUITE("Group43Var3CountWithAllIndexSizes"))
     TestComplex("2B 03 28 01 00 09 00 01 32 00 00 00 88 6E D0 92 4A 01", ParseResult::OK, 1, validator);
 }
 
-
 TEST_CASE(SUITE("can parse 0x17 and 0x28 qualifers as collection of indices"))
 {
     auto validator = [](MockApduHeaderHandler& mock) {
-        REQUIRE(2 == mock.indices.size());        
+        REQUIRE(2 == mock.indices.size());
         REQUIRE(42 == mock.indices[0]);
         REQUIRE(255 == mock.indices[1]);
     };

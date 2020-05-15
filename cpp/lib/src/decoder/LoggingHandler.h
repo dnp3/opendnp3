@@ -99,13 +99,13 @@ private:
     virtual IINField ProcessHeader(const CountHeader& header) override
     {
         return IINField::Empty();
-    }    
+    }
 
     virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& values) override;
     virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var1>& values) override;
     virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var2>& values) override;
     virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var1>& values) override;
-    virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& values) override;    
+    virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& values) override;
 
     virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values) override;
     virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Binary>>& values) override;
@@ -121,7 +121,7 @@ private:
                                    const ICollection<Indexed<AnalogOutputStatus>>& values) override;
     virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values) override;
     virtual IINField ProcessHeader(const RangeHeader& header,
-                                   const ICollection<Indexed<TimeAndInterval>>& values) override;   
+                                   const ICollection<Indexed<TimeAndInterval>>& values) override;
 
     virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values) override;
     virtual IINField ProcessHeader(const PrefixHeader& header,
@@ -141,7 +141,7 @@ private:
     virtual IINField ProcessHeader(const PrefixHeader& header,
                                    const ICollection<Indexed<BinaryCommandEvent>>& values) override;
     virtual IINField ProcessHeader(const PrefixHeader& header,
-                                   const ICollection<Indexed<AnalogCommandEvent>>& values) override;    
+                                   const ICollection<Indexed<AnalogCommandEvent>>& values) override;
 
     virtual IINField ProcessHeader(const PrefixHeader& header,
                                    const ICollection<Indexed<ControlRelayOutputBlock>>& values) override;

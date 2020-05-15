@@ -56,13 +56,9 @@ struct ErrorSpec
 class DNP3Error final : public std::runtime_error
 {
 public:
-    explicit DNP3Error(Error err)
-        : std::runtime_error(ErrorSpec::to_string(err))
-    {}
+    explicit DNP3Error(Error err) : std::runtime_error(ErrorSpec::to_string(err)) {}
 
-    DNP3Error(Error err, std::error_code& ec)
-        : std::runtime_error(ErrorSpec::to_string(err) + ": " + ec.message())
-    {}
+    DNP3Error(Error err, std::error_code& ec) : std::runtime_error(ErrorSpec::to_string(err) + ": " + ec.message()) {}
 };
 
 } // namespace opendnp3

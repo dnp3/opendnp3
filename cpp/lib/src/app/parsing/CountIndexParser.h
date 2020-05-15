@@ -70,11 +70,11 @@ private:
                                            IAPDUHandler* pHandler);
 
     static ParseResult ParseCountOfIndices(ser4cpp::rseq_t& buffer,
-        const HeaderRecord& record,
-        const NumParser& numparser,
-        uint16_t count,
-        Logger* pLogger,
-        IAPDUHandler* pHandler);
+                                           const HeaderRecord& record,
+                                           const NumParser& numparser,
+                                           uint16_t count,
+                                           Logger* pLogger,
+                                           IAPDUHandler* pHandler);
 
     static ParseResult ParseIndexPrefixedOctetData(ser4cpp::rseq_t& buffer,
                                                    const HeaderRecord& record,

@@ -59,7 +59,7 @@ public:
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values) = 0;
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<TimeAndInterval>>& values) = 0;
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values) = 0;
-    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) = 0;    
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) = 0;
     virtual void Process(const HeaderInfo& info, const ICollection<DNPTime>& values) = 0;
 };
 

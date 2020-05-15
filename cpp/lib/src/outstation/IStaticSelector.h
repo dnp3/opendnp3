@@ -26,7 +26,6 @@
 #include "opendnp3/app/IINField.h"
 #include "opendnp3/app/parsing/ICollection.h"
 
-
 namespace opendnp3
 {
 

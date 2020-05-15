@@ -142,7 +142,6 @@ public:
         return this->select(range, [](auto var) { return var; }); // use the default
     }
 
-
     bool select(uint16_t index, typename Spec::static_variation_t variation)
     {
         return this->select(Range::From(index, index), variation);

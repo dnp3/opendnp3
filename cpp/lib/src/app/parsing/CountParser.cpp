@@ -104,7 +104,7 @@ ParseResult CountParser::ParseCountOfObjects(
         return CountParser::From<Group52Var1>(count).Process(record, buffer, pHandler, pLogger);
 
     case (GroupVariation::Group52Var2):
-        return CountParser::From<Group52Var2>(count).Process(record, buffer, pHandler, pLogger);   
+        return CountParser::From<Group52Var2>(count).Process(record, buffer, pHandler, pLogger);
 
     default:
         FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unsupported qualifier/object - %s - %i / %i",

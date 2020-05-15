@@ -56,7 +56,7 @@ public:
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values) override;
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<TimeAndInterval>>& values) override;
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values) override;
-    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) override;    
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) override;
     virtual void Process(const HeaderInfo& info, const ICollection<DNPTime>& values) override;
 
 private:
