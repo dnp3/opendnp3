@@ -119,13 +119,7 @@ public:
                  const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogCommandEvent>>& values) final
     {
         this->RecordAny(info, values, this->analogCommandEventSOE);
-    }
-
-    void Process(const opendnp3::HeaderInfo& info,
-                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::SecurityStat>>& values) final
-    {
-        this->RecordAny(info, values, this->securityStatSOE);
-    }
+    }    
 
     void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::DNPTime>& values) final
     {
@@ -149,8 +143,7 @@ public:
         octetStringSOE.clear();
         timeAndIntervalSOE.clear();
         binaryCommandEventSOE.clear();
-        analogCommandEventSOE.clear();
-        securityStatSOE.clear();
+        analogCommandEventSOE.clear();        
         timeSOE.clear();
     }
 
@@ -164,8 +157,7 @@ public:
     std::map<uint16_t, Record<opendnp3::OctetString>> octetStringSOE;
     std::map<uint16_t, Record<opendnp3::TimeAndInterval>> timeAndIntervalSOE;
     std::map<uint16_t, Record<opendnp3::BinaryCommandEvent>> binaryCommandEventSOE;
-    std::map<uint16_t, Record<opendnp3::AnalogCommandEvent>> analogCommandEventSOE;
-    std::map<uint16_t, Record<opendnp3::SecurityStat>> securityStatSOE;
+    std::map<uint16_t, Record<opendnp3::AnalogCommandEvent>> analogCommandEventSOE;    
     std::vector<opendnp3::DNPTime> timeSOE;
 
 private:

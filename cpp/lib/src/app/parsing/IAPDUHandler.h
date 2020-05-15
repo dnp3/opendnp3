@@ -24,9 +24,6 @@
 #include "app/IINValue.h"
 #include "app/Range.h"
 #include "app/parsing/IWhiteList.h"
-#include "gen/objects/Group120.h"
-#include "gen/objects/Group121.h"
-#include "gen/objects/Group122.h"
 #include "gen/objects/Group50.h"
 #include "gen/objects/Group51.h"
 #include "gen/objects/Group52.h"
@@ -60,28 +57,12 @@ public:
     void OnHeader(const RangeHeader& header);
     void OnHeader(const CountHeader& header);
 
-    void OnHeader(const FreeFormatHeader& header, const Group120Var1& value, const ser4cpp::rseq_t& object);
-    void OnHeader(const FreeFormatHeader& header, const Group120Var2& value, const ser4cpp::rseq_t& object);
-    void OnHeader(const FreeFormatHeader& header, const Group120Var5& value, const ser4cpp::rseq_t& object);
-    void OnHeader(const FreeFormatHeader& header, const Group120Var6& value, const ser4cpp::rseq_t& object);
-    void OnHeader(const FreeFormatHeader& header, const Group120Var7& value, const ser4cpp::rseq_t& object);
-    void OnHeader(const FreeFormatHeader& header, const Group120Var8& value, const ser4cpp::rseq_t& object);
-    void OnHeader(const FreeFormatHeader& header, const Group120Var9& value, const ser4cpp::rseq_t& object);
-    void OnHeader(const FreeFormatHeader& header, const Group120Var10& value, const ser4cpp::rseq_t& object);
-    void OnHeader(const FreeFormatHeader& header, const Group120Var11& value, const ser4cpp::rseq_t& object);
-    void OnHeader(const FreeFormatHeader& header, const Group120Var12& value, const ser4cpp::rseq_t& object);
-    void OnHeader(const FreeFormatHeader& header, const Group120Var13& value, const ser4cpp::rseq_t& object);
-    void OnHeader(const FreeFormatHeader& header, const Group120Var14& value, const ser4cpp::rseq_t& object);
-    void OnHeader(const FreeFormatHeader& header, const Group120Var15& value, const ser4cpp::rseq_t& object);
-
     void OnHeader(const CountHeader& header, const ICollection<Group50Var1>& values);
     void OnHeader(const CountHeader& header, const ICollection<Group50Var3>& values);
     void OnHeader(const CountHeader& header, const ICollection<Group51Var1>& values);
     void OnHeader(const CountHeader& header, const ICollection<Group51Var2>& values);
     void OnHeader(const CountHeader& header, const ICollection<Group52Var1>& values);
-    void OnHeader(const CountHeader& header, const ICollection<Group52Var2>& values);
-    void OnHeader(const CountHeader& header, const ICollection<Group120Var3>& values);
-    void OnHeader(const CountHeader& header, const ICollection<Group120Var4>& values);
+    void OnHeader(const CountHeader& header, const ICollection<Group52Var2>& values);    
 
     void OnHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values);
     void OnHeader(const RangeHeader& header, const ICollection<Indexed<Binary>>& values);
@@ -92,8 +73,7 @@ public:
     void OnHeader(const RangeHeader& header, const ICollection<Indexed<Analog>>& values);
     void OnHeader(const RangeHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values);
     void OnHeader(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values);
-    void OnHeader(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values);
-    void OnHeader(const RangeHeader& header, const ICollection<Indexed<Group121Var1>>& values);
+    void OnHeader(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values);    
 
     // events
 
@@ -107,9 +87,7 @@ public:
     void OnHeader(const PrefixHeader& header, const ICollection<Indexed<OctetString>>& values);
     void OnHeader(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values);
     void OnHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryCommandEvent>>& values);
-    void OnHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values);
-    void OnHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values);
-    void OnHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values);
+    void OnHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values);    
 
     // adhoc read by index
     void OnHeader(const PrefixHeader& header, const ICollection<uint16_t>& values);
@@ -144,54 +122,12 @@ protected:
     virtual IINField ProcessHeader(const RangeHeader& header);
     virtual IINField ProcessHeader(const CountHeader& header);
 
-    virtual IINField ProcessHeader(const FreeFormatHeader& header,
-                                   const Group120Var1& value,
-                                   const ser4cpp::rseq_t& object);
-    virtual IINField ProcessHeader(const FreeFormatHeader& header,
-                                   const Group120Var2& value,
-                                   const ser4cpp::rseq_t& object);
-    virtual IINField ProcessHeader(const FreeFormatHeader& header,
-                                   const Group120Var5& value,
-                                   const ser4cpp::rseq_t& object);
-    virtual IINField ProcessHeader(const FreeFormatHeader& header,
-                                   const Group120Var6& value,
-                                   const ser4cpp::rseq_t& object);
-    virtual IINField ProcessHeader(const FreeFormatHeader& header,
-                                   const Group120Var8& value,
-                                   const ser4cpp::rseq_t& object);
-    virtual IINField ProcessHeader(const FreeFormatHeader& header,
-                                   const Group120Var7& value,
-                                   const ser4cpp::rseq_t& object);
-    virtual IINField ProcessHeader(const FreeFormatHeader& header,
-                                   const Group120Var9& value,
-                                   const ser4cpp::rseq_t& object);
-    virtual IINField ProcessHeader(const FreeFormatHeader& header,
-                                   const Group120Var10& value,
-                                   const ser4cpp::rseq_t& object);
-    virtual IINField ProcessHeader(const FreeFormatHeader& header,
-                                   const Group120Var11& value,
-                                   const ser4cpp::rseq_t& object);
-    virtual IINField ProcessHeader(const FreeFormatHeader& header,
-                                   const Group120Var12& value,
-                                   const ser4cpp::rseq_t& object);
-    virtual IINField ProcessHeader(const FreeFormatHeader& header,
-                                   const Group120Var13& value,
-                                   const ser4cpp::rseq_t& object);
-    virtual IINField ProcessHeader(const FreeFormatHeader& header,
-                                   const Group120Var14& value,
-                                   const ser4cpp::rseq_t& object);
-    virtual IINField ProcessHeader(const FreeFormatHeader& header,
-                                   const Group120Var15& value,
-                                   const ser4cpp::rseq_t& object);
-
     virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& values);
     virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var3>& values);
     virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var1>& values);
     virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var2>& values);
     virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var1>& values);
-    virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& values);
-    virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group120Var3>& values);
-    virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group120Var4>& values);
+    virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& values);    
 
     virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values);
     virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Binary>>& values);
@@ -202,8 +138,7 @@ protected:
     virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Analog>>& values);
     virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values);
     virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values);
-    virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values);
-    virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Group121Var1>>& values);
+    virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values);    
 
     virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values);
     virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values);
@@ -215,9 +150,7 @@ protected:
     virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<OctetString>>& values);
     virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values);
     virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryCommandEvent>>& values);
-    virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values);
-    virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values);
-    virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values);
+    virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values);    
 
     // adhoc read by index
     virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<uint16_t>& values);

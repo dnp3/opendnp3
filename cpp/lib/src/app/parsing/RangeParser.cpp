@@ -140,9 +140,7 @@ ParseResult RangeParser::ParseRangeOfObjects(
 
     case (GroupVariation::Group110Var0):
         return ParseRangeOfOctetData(buffer, record, range, pLogger, pHandler);
-
-    case (GroupVariation::Group121Var1):
-        return RangeParser::FromFixedSizeType<Group121Var1>(range).Process(record, buffer, pHandler, pLogger);
+   
 
     default:
         FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unsupported qualifier/object - %s - %i / %i",

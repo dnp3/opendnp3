@@ -116,10 +116,6 @@ public:
                  const opendnp3::ICollection<opendnp3::Indexed<opendnp3::TimeAndInterval>>& values) override
     {
     }
-    void Process(const opendnp3::HeaderInfo& info,
-                 const opendnp3::ICollection<opendnp3::Indexed<opendnp3::SecurityStat>>& values) override
-    {
-    }
 };
 
 #endif

@@ -44,8 +44,7 @@ class TestSOEHandler : public ISOEHandler
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values) {};
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<TimeAndInterval>>& values) {};
     virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values) {};
-    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) {};
-    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values) {};
+    virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) {};    
     virtual void Process(const HeaderInfo& info, const ICollection<DNPTime>& values) {};
 };
 

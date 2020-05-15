@@ -24,16 +24,10 @@
 #include <opendnp3/app/ControlRelayOutputBlock.h>
 #include <opendnp3/app/DNPTime.h>
 #include <opendnp3/app/IINField.h>
-#include <opendnp3/gen/AuthErrorCode.h>
-#include <opendnp3/gen/ChallengeReason.h>
 #include <opendnp3/gen/FunctionCode.h>
-#include <opendnp3/gen/HMACType.h>
-#include <opendnp3/gen/KeyChangeMethod.h>
-#include <opendnp3/gen/KeyStatus.h>
-#include <opendnp3/gen/KeyWrapAlgorithm.h>
+
 #include <opendnp3/gen/PointClass.h>
-#include <opendnp3/gen/UserOperation.h>
-#include <opendnp3/gen/UserRole.h>
+
 
 #include <cstdint>
 #include <string>
@@ -72,8 +66,6 @@ std::string Control(opendnp3::FunctionCode code,
 // ----------- responses --------------
 
 std::string EmptyResponse(uint8_t seq, const opendnp3::IINField& iin = opendnp3::IINField::Empty());
-
-std::string EmptyAuthResponse(uint8_t seq, const opendnp3::IINField& iin = opendnp3::IINField::Empty());
 
 std::string NullUnsolicited(uint8_t seq,
                             const opendnp3::IINField& iin = opendnp3::IINField(opendnp3::IINBit::DEVICE_RESTART));

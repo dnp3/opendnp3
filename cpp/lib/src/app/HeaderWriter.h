@@ -70,8 +70,7 @@ public:
 
     template<class CountType, class ValueType>
     bool WriteSingleValue(QualifierCode qc, const DNP3Serializer<ValueType>& serializer, const ValueType&);
-
-    bool WriteFreeFormat(const IVariableLength&);
+    
 
     template<class CountType, class WriteType> bool WriteSingleValue(QualifierCode qc, const WriteType&);
 

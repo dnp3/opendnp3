@@ -30,7 +30,6 @@
 #include <app/APDURequest.h>
 #include <app/APDUResponse.h>
 #include <gen/objects/Group12.h>
-#include <gen/objects/Group120.h>
 
 using namespace opendnp3;
 using namespace ser4cpp;
@@ -120,16 +119,6 @@ std::string EmptyResponse(uint8_t seq, const opendnp3::IINField& iin)
     Buffer buffer(DEFAULT_MAX_APDU_SIZE);
     APDUResponse response(buffer.as_wslice());
     response.SetFunction(FunctionCode::RESPONSE);
-    response.SetControl(AppControlField(true, true, false, false, seq));
-    response.SetIIN(iin);
-    return HexConversions::to_hex(response.ToRSeq());
-}
-
-std::string EmptyAuthResponse(uint8_t seq, const opendnp3::IINField& iin)
-{
-    Buffer buffer(DEFAULT_MAX_APDU_SIZE);
-    APDUResponse response(buffer.as_wslice());
-    response.SetFunction(FunctionCode::AUTH_RESPONSE);
     response.SetControl(AppControlField(true, true, false, false, seq));
     response.SetIIN(iin);
     return HexConversions::to_hex(response.ToRSeq());

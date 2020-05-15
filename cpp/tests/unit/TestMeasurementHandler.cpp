@@ -46,66 +46,6 @@ TEST_CASE(SUITE("accepts empty response"))
     TestObjectHeaders("", ParseResult::OK, verify);
 }
 
-TEST_CASE(SUITE("parses g121v1 correctly"))
-{
-    auto verify = [](MockSOEHandler& soe) {
-        REQUIRE(soe.TotalReceived() == 1);
-
-        auto& stat = soe.securityStatSOE[2];
-
-        REQUIRE(stat.info.tsquality == TimestampQuality::INVALID);
-        REQUIRE(stat.info.gv == GroupVariation::Group121Var1);
-        REQUIRE_FALSE(stat.info.isEventVariation);
-        REQUIRE(stat.meas.value.count == 8);
-        REQUIRE(stat.meas.value.assocId == 7);
-    };
-
-    // g121v1 - 1 byte start/stop - 2->2 - flags: 0x01, assoc = 0x0007, count = 0x00000008
-    auto header = "79 01 00 02 02 01 07 00 08 00 00 00";
-
-    TestObjectHeaders(header, ParseResult::OK, verify);
-}
-
-TEST_CASE(SUITE("parses g122v1 correctly"))
-{
-    auto verify = [](MockSOEHandler& soe) {
-        REQUIRE(soe.TotalReceived() == 1);
-
-        auto& stat = soe.securityStatSOE[3];
-
-        REQUIRE(stat.info.tsquality == TimestampQuality::INVALID);
-        REQUIRE(stat.info.gv == GroupVariation::Group122Var1);
-        REQUIRE(stat.meas.value.count == 8);
-        REQUIRE(stat.meas.value.assocId == 7);
-    };
-
-    // g122v1 - 1 byte count and prefix - 1 count - index: 3, flags: 0x01, assoc = 7, count = 8
-    auto header = "7A 01 17 01 03 01 07 00 08 00 00 00";
-
-    TestObjectHeaders(header, ParseResult::OK, verify);
-}
-
-TEST_CASE(SUITE("parses g122v2 correctly"))
-{
-    auto verify = [](MockSOEHandler& soe) {
-        REQUIRE(soe.TotalReceived() == 1);
-
-        auto& stat = soe.securityStatSOE[3];
-
-        REQUIRE(stat.info.tsquality == TimestampQuality::SYNCHRONIZED);
-        REQUIRE(stat.info.gv == GroupVariation::Group122Var2);
-        REQUIRE(stat.info.isEventVariation);
-        REQUIRE(stat.meas.value.count == 8);
-        REQUIRE(stat.meas.value.assocId == 7);
-        REQUIRE(stat.meas.time.value == 9);
-    };
-
-    // g122v1 - 1 byte count and prefix - 1 count - index: 3, flags: 0x01, assoc = 7, count = 8, time = 9
-    auto header = "7A 02 17 01 03 01 07 00 08 00 00 00 09 00 00 00 00 00";
-
-    TestObjectHeaders(header, ParseResult::OK, verify);
-}
-
 TEST_CASE(SUITE("parses g50v1 correctly"))
 {
     auto verify = [](MockSOEHandler& soe) {

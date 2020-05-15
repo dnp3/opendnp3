@@ -79,7 +79,7 @@ int main(int argc, char* argv[])
 
     // Create a TCP server (listener)
     auto channel = manager.AddTLSServer("server", logLevels, ServerAcceptMode::CloseExisting, IPEndpoint("0.0.0.0", 20001),
-                                        TLSConfig(caCertificate, certificateChain, privateKey, 2),
+                                        TLSConfig(caCertificate, certificateChain, privateKey),
                                         PrintingChannelListener::Create());
 
     // The main object for a outstation. The defaults are useable,

@@ -23,7 +23,6 @@
 #include "opendnp3/app/EventType.h"
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/OctetString.h"
-#include "opendnp3/app/SecurityStat.h"
 #include "opendnp3/gen/BinaryQuality.h"
 #include "opendnp3/gen/EventAnalogOutputStatusVariation.h"
 #include "opendnp3/gen/EventAnalogVariation.h"
@@ -160,17 +159,6 @@ struct TimeAndIntervalInfo : private StaticOnly
 
     static const StaticTypeBitmask StaticTypeEnum;
     static const StaticTimeAndIntervalVariation DefaultStaticVariation;
-};
-
-struct SecurityStatInfo : private StaticOnly
-{
-    typedef SecurityStat meas_t;
-    typedef SecurityStat::Value value_t;
-    typedef EventSecurityStatVariation event_variation_t;
-    typedef StaticSecurityStatVariation static_variation_t;
-
-    static const event_variation_t DefaultEventVariation;
-    static const static_variation_t DefaultStaticVariation;
 };
 
 } // namespace opendnp3

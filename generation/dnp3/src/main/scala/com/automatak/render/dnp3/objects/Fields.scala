@@ -52,24 +52,6 @@ object FixedSizeField {
   //common flags field
   val flags = FixedSizeField("flags", UInt8Field, Set(FieldAttribute.IsFlags))
 
-  // SA stuff
-  val csq = FixedSizeField("challengeSeqNum", UInt32Field)
-  val ksq = FixedSizeField("keyChangeSeqNum", UInt32Field)
-  val scsq = FixedSizeField("statusChangeSeqNum", UInt32Field)
-  val userNum = FixedSizeField("userNum", UInt16Field)
-  val assocId = FixedSizeField("assocId", UInt16Field)
-  val macAlgo = FixedSizeField("hmacAlgo", EnumFieldType(HMACType()))
-  val keyWrapAlgo = FixedSizeField("keyWrapAlgo", EnumFieldType(KeyWrapAlgorithm()))
-  val keyStatus = FixedSizeField("keyStatus", EnumFieldType(KeyStatus()))
-  val challengeReason = FixedSizeField("challengeReason", EnumFieldType(ChallengeReason()))
-  val errorCode = FixedSizeField("errorCode", EnumFieldType(AuthErrorCode()))
-  val keyChangeMethod = FixedSizeField("keyChangeMethod", EnumFieldType(KeyChangeMethod()))
-  val certificateType = FixedSizeField("certificateType", EnumFieldType(CertificateType()))
-  val userOperation = FixedSizeField("userOperation", EnumFieldType(UserOperation()))
-  val userRole = FixedSizeField("userRole", UInt16Field)
-  val userRoleExpDays = FixedSizeField("userRoleExpDays", UInt16Field)
-
-
   // timestamps
   val time16 = FixedSizeField("time", UInt16Field, Set(FieldAttribute.IsTimeRel))
   val time48 = FixedSizeField("time", UInt48Field, Set(FieldAttribute.IsTimeUTC))

@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
     DNP3Manager manager(numThread, ConsoleLogger::Create());
 
     auto server1 = manager.CreateListener("server-20001", logLevels, IPEndpoint::AllAdapters(20001),
-                                          TLSConfig(caCertificate, certificateChain, privateKey, 2), callbacks);
+                                          TLSConfig(caCertificate, certificateChain, privateKey), callbacks);
 
     do
     {

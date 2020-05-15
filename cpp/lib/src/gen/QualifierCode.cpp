@@ -57,8 +57,6 @@ QualifierCode QualifierCodeSpec::from_type(uint8_t arg)
       return QualifierCode::UINT8_CNT_UINT8_INDEX;
     case(0x28):
       return QualifierCode::UINT16_CNT_UINT16_INDEX;
-    case(0x5B):
-      return QualifierCode::UINT16_FREE_FORMAT;
     default:
       return QualifierCode::UNDEFINED;
   }
@@ -82,8 +80,6 @@ char const* QualifierCodeSpec::to_string(QualifierCode arg)
       return "UINT8_CNT_UINT8_INDEX";
     case(QualifierCode::UINT16_CNT_UINT16_INDEX):
       return "UINT16_CNT_UINT16_INDEX";
-    case(QualifierCode::UINT16_FREE_FORMAT):
-      return "UINT16_FREE_FORMAT";
     default:
       return "UNDEFINED";
   }
@@ -107,8 +103,6 @@ char const* QualifierCodeSpec::to_human_string(QualifierCode arg)
       return "8-bit count and prefix";
     case(QualifierCode::UINT16_CNT_UINT16_INDEX):
       return "16-bit count and prefix";
-    case(QualifierCode::UINT16_FREE_FORMAT):
-      return "16-bit free format";
     default:
       return "unknown";
   }
@@ -123,7 +117,6 @@ QualifierCode QualifierCodeSpec::from_string(const std::string& arg)
   if(arg == "UINT16_CNT") return QualifierCode::UINT16_CNT;
   if(arg == "UINT8_CNT_UINT8_INDEX") return QualifierCode::UINT8_CNT_UINT8_INDEX;
   if(arg == "UINT16_CNT_UINT16_INDEX") return QualifierCode::UINT16_CNT_UINT16_INDEX;
-  if(arg == "UINT16_FREE_FORMAT") return QualifierCode::UINT16_FREE_FORMAT;
   else return QualifierCode::UNDEFINED;
 }
 
