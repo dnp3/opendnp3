@@ -32,7 +32,7 @@ template<class T> struct TypedEventRecord
 {
     TypedEventRecord() = default;
 
-    TypedEventRecord(typename T::meas_t value,
+    TypedEventRecord(const typename T::meas_t& value,
                      typename T::event_variation_t defaultVariation,
                      Node<EventRecord>* record)
         : value(value), defaultVariation(defaultVariation), selectedVariation(defaultVariation), record(record)

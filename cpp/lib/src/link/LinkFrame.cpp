@@ -152,7 +152,7 @@ ser4cpp::rseq_t LinkFrame::FormatConfirmedUserData(ser4cpp::wseq_t& buffer,
 {
     if (user_data.length() > LPDU_MAX_USER_DATA_SIZE)
     {
-        ser4cpp::rseq_t::empty();
+        return ser4cpp::rseq_t::empty();
     }
 
     auto userDataSize = CalcUserDataSize(user_data.length());
@@ -169,7 +169,7 @@ ser4cpp::rseq_t LinkFrame::FormatUnconfirmedUserData(
 {
     if (user_data.length() > LPDU_MAX_USER_DATA_SIZE)
     {
-        ser4cpp::rseq_t::empty();
+        return ser4cpp::rseq_t::empty();
     }
 
     auto userDataSize = CalcUserDataSize(user_data.length());
