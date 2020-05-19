@@ -30,42 +30,42 @@
 
 namespace Automatak
 {
-	namespace DNP3
-	{
-		namespace Adapter
-		{
+    namespace DNP3
+    {
+        namespace Adapter
+        {
 
-			IDNP3Manager^ DNP3ManagerFactory::CreateManager(System::Int32 concurrency, ILogHandler^ logHandler)
-			{
-				return gcnew DNP3ManagerAdapter(concurrency, logHandler);
-			}
+            IDNP3Manager^ DNP3ManagerFactory::CreateManager(System::Int32 concurrency, ILogHandler^ logHandler)
+            {
+                return gcnew DNP3ManagerAdapter(concurrency, logHandler);
+            }
 
-			IDNP3Manager^ DNP3ManagerFactory::CreateManager(ILogHandler^ logHandler)
-			{
-				return gcnew DNP3ManagerAdapter(Environment::ProcessorCount, logHandler);
-			}
+            IDNP3Manager^ DNP3ManagerFactory::CreateManager(ILogHandler^ logHandler)
+            {
+                return gcnew DNP3ManagerAdapter(Environment::ProcessorCount, logHandler);
+            }
 
 
-			DNP3ManagerAdapter::DNP3ManagerAdapter(System::Int32 concurrency, ILogHandler^ logHandler) :
-				manager(new opendnp3::DNP3Manager(concurrency, LogAdapter::Create(logHandler)))				
-			{
+            DNP3ManagerAdapter::DNP3ManagerAdapter(System::Int32 concurrency, ILogHandler^ logHandler) :
+                manager(new opendnp3::DNP3Manager(concurrency, LogAdapter::Create(logHandler)))				
+            {
 
-			}
+            }
 
-			DNP3ManagerAdapter::!DNP3ManagerAdapter()
-			{
-				delete manager;
-			}
+            DNP3ManagerAdapter::!DNP3ManagerAdapter()
+            {
+                delete manager;
+            }
 
-			DNP3ManagerAdapter::~DNP3ManagerAdapter()
-			{
-				this->!DNP3ManagerAdapter();
-			}
+            DNP3ManagerAdapter::~DNP3ManagerAdapter()
+            {
+                this->!DNP3ManagerAdapter();
+            }
 
-			void DNP3ManagerAdapter::Shutdown()
-			{
-				manager->Shutdown();
-			}
+            void DNP3ManagerAdapter::Shutdown()
+            {
+                manager->Shutdown();
+            }
 
             IChannel^ DNP3ManagerAdapter::AddTCPClient(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, System::Collections::Generic::IList<Interface::IPEndpoint^>^ remotes, Automatak::DNP3::Interface::IChannelListener^ listener)
             {
@@ -92,12 +92,12 @@ namespace Automatak
                 }
             }
 
-			IChannel^ DNP3ManagerAdapter::AddTCPServer(System::String^ id, System::UInt32 filters, Interface::ServerAcceptMode mode, Interface::IPEndpoint^ endpoint, Automatak::DNP3::Interface::IChannelListener^ listener)
-			{
-				std::string stdName = Conversions::ConvertString(id);
+            IChannel^ DNP3ManagerAdapter::AddTCPServer(System::String^ id, System::UInt32 filters, Interface::ServerAcceptMode mode, Interface::IPEndpoint^ endpoint, Automatak::DNP3::Interface::IChannelListener^ listener)
+            {
+                std::string stdName = Conversions::ConvertString(id);
                 auto stdEndpoint = Conversions::Convert(endpoint);
 
-				auto listenAdapter = listener
+                auto listenAdapter = listener
                     ? std::shared_ptr<opendnp3::IChannelListener>(new ChannelListenerAdapter(listener))
                     : nullptr;
 
@@ -111,7 +111,7 @@ namespace Automatak
                 {
                     throw gcnew DNP3Exception(Conversions::ConvertString(e.what()));
                 }
-			}
+            }
 
             IChannel^ DNP3ManagerAdapter::AddUDPChannel(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, Interface::IPEndpoint^ localEndpoint, Interface::IPEndpoint^ remoteEndpoint, Interface::IChannelListener^ listener)
             {
@@ -149,7 +149,7 @@ namespace Automatak
                     ? std::shared_ptr<opendnp3::IChannelListener>(new ChannelListenerAdapter(listener))
                     : nullptr;
 
-				try
+                try
                 {
                     auto channel = this->manager->AddTLSClient(stdName.c_str(), opendnp3::LogLevel(filters), Convert(retry),
                                                                endpoints, "", Conversions::Convert(config), listenAdapter);
@@ -158,56 +158,56 @@ namespace Automatak
                 catch (opendnp3::DNP3Error e)
                 {
                     throw gcnew DNP3Exception(Conversions::ConvertString(e.what()));
-				}
+                }
             }
-			
-			IChannel^ DNP3ManagerAdapter::AddTLSServer(System::String^ id, System::UInt32 filters, Interface::ServerAcceptMode mode, Interface::IPEndpoint^ endpoint, Automatak::DNP3::Interface::TLSConfig^ config, Automatak::DNP3::Interface::IChannelListener^ listener)
-			{
-				std::string stdName = Conversions::ConvertString(id);
+            
+            IChannel^ DNP3ManagerAdapter::AddTLSServer(System::String^ id, System::UInt32 filters, Interface::ServerAcceptMode mode, Interface::IPEndpoint^ endpoint, Automatak::DNP3::Interface::TLSConfig^ config, Automatak::DNP3::Interface::IChannelListener^ listener)
+            {
+                std::string stdName = Conversions::ConvertString(id);
                 auto stdEndpoint = Conversions::Convert(endpoint);
 
-				auto listenAdapter = listener
+                auto listenAdapter = listener
                     ? std::shared_ptr<opendnp3::IChannelListener>(new ChannelListenerAdapter(listener))
                     : nullptr;
-				
+                
                 try
                 {
                     auto channel = this->manager->AddTLSServer(stdName.c_str(), opendnp3::LogLevel(filters), (opendnp3::ServerAcceptMode) mode, stdEndpoint, Conversions::Convert(config), listenAdapter);
-					return gcnew ChannelAdapter(channel);
-				}
+                    return gcnew ChannelAdapter(channel);
+                }
                 catch (opendnp3::DNP3Error e)
                 {
                     throw gcnew DNP3Exception(Conversions::ConvertString(e.what()));
                 }
-			}
+            }
 
-			IChannel^ DNP3ManagerAdapter::AddSerial(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, Automatak::DNP3::Interface::SerialSettings^ settings, Automatak::DNP3::Interface::IChannelListener^ listener)
-			{
-				std::string stdName = Conversions::ConvertString(id);
-				auto s = Conversions::ConvertSerialSettings(settings);				
+            IChannel^ DNP3ManagerAdapter::AddSerial(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, Automatak::DNP3::Interface::SerialSettings^ settings, Automatak::DNP3::Interface::IChannelListener^ listener)
+            {
+                std::string stdName = Conversions::ConvertString(id);
+                auto s = Conversions::ConvertSerialSettings(settings);				
 
-				auto listenAdapter = listener
+                auto listenAdapter = listener
                     ? std::shared_ptr<opendnp3::IChannelListener>(new ChannelListenerAdapter(listener))
                     : nullptr;
-				
+                
                 try
                 {
                     auto channel = this->manager->AddSerial(stdName.c_str(), opendnp3::LogLevel(filters),
                                                             Convert(retry), s, listenAdapter);
                     return gcnew ChannelAdapter(channel);
                 }
-				catch (opendnp3::DNP3Error e)
+                catch (opendnp3::DNP3Error e)
                 {
                     throw gcnew DNP3Exception(Conversions::ConvertString(e.what()));
                 }
-			}
+            }
 
-			Interface::IListener^ DNP3ManagerAdapter::CreateListener(System::String^ loggerid, System::UInt32 filters, Interface::IPEndpoint^ endpoint, IListenCallbacks^ callbacks)
-			{
-				auto id = Conversions::ConvertString(loggerid);
+            Interface::IListener^ DNP3ManagerAdapter::CreateListener(System::String^ loggerid, System::UInt32 filters, Interface::IPEndpoint^ endpoint, IListenCallbacks^ callbacks)
+            {
+                auto id = Conversions::ConvertString(loggerid);
                 auto levels = opendnp3::LogLevel(filters);
-				auto ep = Conversions::Convert(endpoint);
-				auto cb = std::shared_ptr<opendnp3::IListenCallbacks>(new ListenCallbacksAdapter(callbacks));
+                auto ep = Conversions::Convert(endpoint);
+                auto cb = std::shared_ptr<opendnp3::IListenCallbacks>(new ListenCallbacksAdapter(callbacks));
 
                 try
                 {
@@ -218,15 +218,15 @@ namespace Automatak
                 {
                     throw gcnew DNP3Exception(Conversions::ConvertString(e.what()));
                 }
-			}
+            }
 
-			Interface::IListener^ DNP3ManagerAdapter::CreateListener(System::String^ loggerid, System::UInt32 filters, Interface::IPEndpoint^ endpoint, Interface::TLSConfig^ config, IListenCallbacks^ callbacks)
-			{
-				auto id = Conversions::ConvertString(loggerid);
+            Interface::IListener^ DNP3ManagerAdapter::CreateListener(System::String^ loggerid, System::UInt32 filters, Interface::IPEndpoint^ endpoint, Interface::TLSConfig^ config, IListenCallbacks^ callbacks)
+            {
+                auto id = Conversions::ConvertString(loggerid);
                 auto levels = opendnp3::LogLevel(filters);
-				auto ep = Conversions::Convert(endpoint);
-				auto tlsConfig = Conversions::Convert(config);
-				auto cb = std::shared_ptr<opendnp3::IListenCallbacks>(new ListenCallbacksAdapter(callbacks));
+                auto ep = Conversions::Convert(endpoint);
+                auto tlsConfig = Conversions::Convert(config);
+                auto cb = std::shared_ptr<opendnp3::IListenCallbacks>(new ListenCallbacksAdapter(callbacks));
 
                 try
                 {
@@ -237,14 +237,14 @@ namespace Automatak
                 {
                     throw gcnew DNP3Exception(Conversions::ConvertString(e.what()));
                 }
-			}
+            }
 
-			opendnp3::ChannelRetry DNP3ManagerAdapter::Convert(Interface::ChannelRetry ^ retry)
-			{
+            opendnp3::ChannelRetry DNP3ManagerAdapter::Convert(Interface::ChannelRetry ^ retry)
+            {
                 return opendnp3::ChannelRetry(Conversions::ConvertTimespan(retry->minRetryDelay),
                                               Conversions::ConvertTimespan(retry->maxRetryDelay),
                                               Conversions::ConvertTimespan(retry->reconnectDelay));
-			}
-		}
-	}
+            }
+        }
+    }
 }

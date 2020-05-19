@@ -34,45 +34,44 @@ using namespace System::Collections::ObjectModel;
 
 namespace Automatak
 {
-	namespace DNP3
-	{
-		namespace Adapter
-		{
+    namespace DNP3
+    {
+        namespace Adapter
+        {
 
-			class TaskCallbackAdapter : public opendnp3::ITaskCallback, opendnp3::Uncopyable
-			{
-			public:
+            class TaskCallbackAdapter : public opendnp3::ITaskCallback, opendnp3::Uncopyable
+            {
+            public:
 
-				static std::shared_ptr<opendnp3::ITaskCallback> Create(Automatak::DNP3::Interface::ITaskCallback^ proxy)
-				{
-					return std::make_shared<TaskCallbackAdapter>(proxy);
-				}
+                static std::shared_ptr<opendnp3::ITaskCallback> Create(Automatak::DNP3::Interface::ITaskCallback^ proxy)
+                {
+                    return std::make_shared<TaskCallbackAdapter>(proxy);
+                }
 
                 TaskCallbackAdapter(Automatak::DNP3::Interface::ITaskCallback ^ proxy) : root(proxy) {}
 
-				virtual void OnStart() sealed
-				{
-					root->OnStart();
-				}
+                virtual void OnStart() sealed
+                {
+                    root->OnStart();
+                }
 
-				virtual void OnComplete(opendnp3::TaskCompletion result) sealed
-				{
-					root->OnComplete((TaskCompletion) result);
-				}
+                virtual void OnComplete(opendnp3::TaskCompletion result) sealed
+                {
+                    root->OnComplete((TaskCompletion) result);
+                }
 
-				virtual void OnDestroyed() sealed
-				{
-					root->OnDestroyed();
-					delete this;
-				}
+                virtual void OnDestroyed() sealed
+                {
+                    root->OnDestroyed();
+                }
 
-			private:
+            private:
 
-				gcroot < Automatak::DNP3::Interface::ITaskCallback^ > root;
-			};
-		
-		}
-	}
+                gcroot < Automatak::DNP3::Interface::ITaskCallback^ > root;
+            };
+        
+        }
+    }
 }
 
 #endif

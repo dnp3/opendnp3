@@ -28,29 +28,29 @@ using namespace Automatak::DNP3::Interface;
 
 namespace Automatak
 {
-	namespace DNP3
-	{
-		namespace Adapter
-		{
+    namespace DNP3
+    {
+        namespace Adapter
+        {
 
-			private class ChannelListenerAdapter final : public opendnp3::IChannelListener
-			{
-			public:
+            private class ChannelListenerAdapter final : public opendnp3::IChannelListener
+            {
+            public:
 
-				ChannelListenerAdapter(Automatak::DNP3::Interface::IChannelListener^ proxy) : proxy(proxy) {}	
+                ChannelListenerAdapter(Automatak::DNP3::Interface::IChannelListener^ proxy) : proxy(proxy) {}	
 
-				virtual void OnStateChange(opendnp3::ChannelState state) override
-				{
-					this->proxy->OnStateChange((Interface::ChannelState) state);
-				}
+                virtual void OnStateChange(opendnp3::ChannelState state) override
+                {
+                    this->proxy->OnStateChange((Interface::ChannelState) state);
+                }
 
-			private:
+            private:
 
-				gcroot < Automatak::DNP3::Interface::IChannelListener^ > proxy;
-			};
+                gcroot < Automatak::DNP3::Interface::IChannelListener^ > proxy;
+            };
 
-		}
-	}
+        }
+    }
 }
 
 #endif

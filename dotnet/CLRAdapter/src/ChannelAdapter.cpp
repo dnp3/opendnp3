@@ -34,74 +34,74 @@ using namespace System::Collections::Generic;
 
 namespace Automatak
 {
-	namespace DNP3
-	{
-		namespace Adapter
-		{
+    namespace DNP3
+    {
+        namespace Adapter
+        {
 
-			ChannelAdapter::ChannelAdapter(const std::shared_ptr<opendnp3::IChannel>& channel)
+            ChannelAdapter::ChannelAdapter(const std::shared_ptr<opendnp3::IChannel>& channel)
                 : channel(new std::shared_ptr<opendnp3::IChannel>(channel))
-			{}
+            {}
 
-			ChannelAdapter::~ChannelAdapter()
-			{
-				this->!ChannelAdapter();
-			}
+            ChannelAdapter::~ChannelAdapter()
+            {
+                this->!ChannelAdapter();
+            }
 
-			ChannelAdapter::!ChannelAdapter()
-			{
-				delete channel;
-			}
+            ChannelAdapter::!ChannelAdapter()
+            {
+                delete channel;
+            }
 
-			LogFilter ChannelAdapter::GetLogFilters()
-			{
-				return LogFilter((*channel)->GetLogFilters().get_value());
-			}
+            LogFilter ChannelAdapter::GetLogFilters()
+            {
+                return LogFilter((*channel)->GetLogFilters().get_value());
+            }
 
-			IChannelStatistics^ ChannelAdapter::GetChannelStatistics()
-			{
-				auto stats = (*channel)->GetStatistics();
-				return Conversions::ConvertChannelStats(stats);
-			}
+            IChannelStatistics^ ChannelAdapter::GetChannelStatistics()
+            {
+                auto stats = (*channel)->GetStatistics();
+                return Conversions::ConvertChannelStats(stats);
+            }
 
-			void ChannelAdapter::SetLogFilters(LogFilter filters)
-			{				
+            void ChannelAdapter::SetLogFilters(LogFilter filters)
+            {				
                 (*channel)->SetLogFilters(opendnp3::LogLevel(filters.Flags));
-			}
+            }
 
-			void CallbackListener(gcroot < System::Action<ChannelState> ^ >* listener, opendnp3::ChannelState aState)
-			{
-				ChannelState state = Conversions::ConvertChannelState(aState);
-				(*listener)->Invoke(state);
-			}
+            void CallbackListener(gcroot < System::Action<ChannelState> ^ >* listener, opendnp3::ChannelState aState)
+            {
+                ChannelState state = Conversions::ConvertChannelState(aState);
+                (*listener)->Invoke(state);
+            }
 
-			IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, ISOEHandler^ handler, IMasterApplication^ application, MasterStackConfig^ config)
-			{
-				std::string stdLoggerId = Conversions::ConvertString(loggerId);				
+            IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, ISOEHandler^ handler, IMasterApplication^ application, MasterStackConfig^ config)
+            {
+                std::string stdLoggerId = Conversions::ConvertString(loggerId);
 
-				auto SOEAdapter = std::shared_ptr<opendnp3::ISOEHandler>(new SOEHandlerAdapter(handler));
-				auto appAdapter = std::shared_ptr<opendnp3::IMasterApplication>(new MasterApplicationAdapter(application));
+                auto SOEAdapter = std::shared_ptr<opendnp3::ISOEHandler>(new SOEHandlerAdapter(handler));
+                auto appAdapter = std::shared_ptr<opendnp3::IMasterApplication>(new MasterApplicationAdapter(application));
 
-				auto master = (*channel)->AddMaster(stdLoggerId.c_str(), SOEAdapter, appAdapter, Conversions::ConvertConfig(config));
-				return master ? gcnew MasterAdapter(master) : nullptr;
-			}
+                auto master = (*channel)->AddMaster(stdLoggerId.c_str(), SOEAdapter, appAdapter, Conversions::ConvertConfig(config));
+                return master ? gcnew MasterAdapter(master) : nullptr;
+            }
 
-			IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, ICommandHandler^ cmdHandler, IOutstationApplication^ application, OutstationStackConfig^ config)
-			{
-				std::string stdLoggerId = Conversions::ConvertString(loggerId);				
+            IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, ICommandHandler^ cmdHandler, IOutstationApplication^ application, OutstationStackConfig^ config)
+            {
+                std::string stdLoggerId = Conversions::ConvertString(loggerId);
 
-				auto commandAdapter = std::shared_ptr<opendnp3::ICommandHandler>(new OutstationCommandHandlerAdapter(cmdHandler));
-				auto appAdapter = std::shared_ptr<opendnp3::IOutstationApplication>(new OutstationApplicationAdapter(application));
+                auto commandAdapter = std::shared_ptr<opendnp3::ICommandHandler>(new OutstationCommandHandlerAdapter(cmdHandler));
+                auto appAdapter = std::shared_ptr<opendnp3::IOutstationApplication>(new OutstationApplicationAdapter(application));
 
-				auto outstation = (*channel)->AddOutstation(stdLoggerId.c_str(), commandAdapter, appAdapter, Conversions::ConvertConfig(config));
-				return outstation ? gcnew OutstationAdapter(outstation) : nullptr;
-			}
+                auto outstation = (*channel)->AddOutstation(stdLoggerId.c_str(), commandAdapter, appAdapter, Conversions::ConvertConfig(config));
+                return outstation ? gcnew OutstationAdapter(outstation) : nullptr;
+            }
 
-			void ChannelAdapter::Shutdown()
-			{
-				(*channel)->Shutdown();
-			}
+            void ChannelAdapter::Shutdown()
+            {
+                (*channel)->Shutdown();
+            }
 
-		}
-	}
+        }
+    }
 }

@@ -29,31 +29,31 @@ using namespace Automatak::DNP3::Interface;
 
 namespace Automatak
 {
-	namespace DNP3
-	{
-		namespace Adapter
-		{
+    namespace DNP3
+    {
+        namespace Adapter
+        {
 
-			private ref class SessionAcceptorAdapter sealed : public ISessionAcceptor
-			{
-			public:
+            private ref class SessionAcceptorAdapter sealed : public ISessionAcceptor
+            {
+            public:
 
-				SessionAcceptorAdapter(opendnp3::ISessionAcceptor& proxy);
-				
-				virtual IMasterSession^ AcceptSession(
-					System::String^ loggerid,
-					ISOEHandler^ SOEHandler,
-					IMasterApplication^ application,
-					MasterStackConfig^ config
-				);
-				
-			private:
+                SessionAcceptorAdapter(opendnp3::ISessionAcceptor& proxy);
+                
+                virtual IMasterSession^ AcceptSession(
+                    System::String^ loggerid,
+                    ISOEHandler^ SOEHandler,
+                    IMasterApplication^ application,
+                    MasterStackConfig^ config
+                );
+                
+            private:
 
-				opendnp3::ISessionAcceptor* proxy;
-			};
+                opendnp3::ISessionAcceptor* proxy;
+            };
 
-		}
-	}
+        }
+    }
 }
 
 #endif

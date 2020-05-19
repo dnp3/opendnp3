@@ -34,39 +34,39 @@ using namespace System::Threading::Tasks;
 
 namespace Automatak
 {
-	namespace DNP3
-	{
-		namespace Adapter
-		{
+    namespace DNP3
+    {
+        namespace Adapter
+        {
 
-			private ref class MasterSessionAdapter sealed : IMasterSession, MasterOperationsAdapter
-			{
-			public:
+            private ref class MasterSessionAdapter sealed : IMasterSession, MasterOperationsAdapter
+            {
+            public:
 
-				MasterSessionAdapter(std::shared_ptr<opendnp3::IMasterSession> proxy);
-				
-				MasterSessionAdapter::~MasterSessionAdapter()
-				{
-					this->!MasterSessionAdapter();
-				}
+                MasterSessionAdapter(std::shared_ptr<opendnp3::IMasterSession> proxy);
+                
+                MasterSessionAdapter::~MasterSessionAdapter()
+                {
+                    this->!MasterSessionAdapter();
+                }
 
-				MasterSessionAdapter::!MasterSessionAdapter()
-				{
-					delete proxy;
-				}
+                MasterSessionAdapter::!MasterSessionAdapter()
+                {
+                    delete proxy;
+                }
 
-				/// --- implement IMasterSession ----
-				virtual void BeginShutdown();
+                /// --- implement IMasterSession ----
+                virtual void BeginShutdown();
 
-				virtual Interface::IStackStatistics^ GetStackStatistics();
+                virtual Interface::IStackStatistics^ GetStackStatistics();
 
-			private:
+            private:
 
-				std::shared_ptr<opendnp3::IMasterSession>* proxy;
-			};
+                std::shared_ptr<opendnp3::IMasterSession>* proxy;
+            };
 
-		}
-	}
+        }
+    }
 }
 
 #endif

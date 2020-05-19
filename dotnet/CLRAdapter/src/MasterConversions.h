@@ -37,41 +37,41 @@ using namespace System::Collections::Generic;
 
 namespace Automatak
 {
-	namespace DNP3
-	{
-		namespace Adapter
-		{
+    namespace DNP3
+    {
+        namespace Adapter
+        {
 
-			private class MasterConversions
-			{
-			public:
+            private class MasterConversions
+            {
+            public:
 
-				static std::vector<opendnp3::Header> ConvertToVectorOfHeaders(IEnumerable<Header^>^ headers);
+                static std::vector<opendnp3::Header> ConvertToVectorOfHeaders(IEnumerable<Header^>^ headers);
 
-				static bool Convert(Header^ header, opendnp3::Header& output);
+                static bool Convert(Header^ header, opendnp3::Header& output);
 
-				static opendnp3::Header Convert(Header^ header);
-				static opendnp3::Header ConvertCount8(CountHeader^ header);
-				static opendnp3::Header ConvertCount16(CountHeader^ header);
-				static opendnp3::Header ConvertRange8(RangeHeader^ header);
-				static opendnp3::Header ConvertRange16(RangeHeader^ header);
+                static opendnp3::Header Convert(Header^ header);
+                static opendnp3::Header ConvertCount8(CountHeader^ header);
+                static opendnp3::Header ConvertCount16(CountHeader^ header);
+                static opendnp3::Header ConvertRange8(RangeHeader^ header);
+                static opendnp3::Header ConvertRange16(RangeHeader^ header);
 
-				static opendnp3::TaskConfig Convert(TaskConfig^ config, ITaskCallback^ wrapper);
-				static opendnp3::TaskConfig Convert(TaskConfig^ config);
+                static opendnp3::TaskConfig Convert(TaskConfig^ config, ITaskCallback^ wrapper);
+                static opendnp3::TaskConfig Convert(TaskConfig^ config);
 
-				static opendnp3::CommandSet Convert(ICommandHeaders^ headers);
-								
-				static opendnp3::TaskId Convert(TaskId^ taskId);
-				static TaskId^ Convert(const opendnp3::TaskId& id);
+                static opendnp3::CommandSet Convert(ICommandHeaders^ headers);
 
-				static TaskInfo^ Convert(const opendnp3::TaskInfo& info);
+                static opendnp3::TaskId Convert(TaskId^ taskId);
+                static TaskId^ Convert(const opendnp3::TaskId& id);
 
-				static std::shared_ptr<opendnp3::ITaskCallback> CreateTaskCallback(ITaskCallback^ callback);
-			
-			};
+                static TaskInfo^ Convert(const opendnp3::TaskInfo& info);
 
-		}
-	}
+                static std::shared_ptr<opendnp3::ITaskCallback> CreateTaskCallback(ITaskCallback^ callback);
+            
+            };
+
+        }
+    }
 }
 
 #endif

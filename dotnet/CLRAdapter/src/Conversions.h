@@ -58,133 +58,133 @@ using namespace System::Collections::Generic;
 
 namespace Automatak
 {
-	namespace DNP3
-	{
-		namespace Adapter
-		{
+    namespace DNP3
+    {
+        namespace Adapter
+        {
 
-			private class Conversions
-			{
-			public:
+            private class Conversions
+            {
+            public:
 
-				static opendnp3::TimeDuration ConvertMilliseconds(System::Int64 ms);
+                static opendnp3::TimeDuration ConvertMilliseconds(System::Int64 ms);
 
-				static opendnp3::TimeDuration ConvertTimespan(System::TimeSpan ts);
+                static opendnp3::TimeDuration ConvertTimespan(System::TimeSpan ts);
 
-				static System::TimeSpan ConvertTimeDuration(const opendnp3::TimeDuration& duration);				
+                static System::TimeSpan ConvertTimeDuration(const opendnp3::TimeDuration& duration);
 
-				static opendnp3::ClassField ConvertClassField(ClassField classField);
+                static opendnp3::ClassField ConvertClassField(ClassField classField);
 
-				static opendnp3::TLSConfig Convert(Automatak::DNP3::Interface::TLSConfig^ config);
+                static opendnp3::TLSConfig Convert(Automatak::DNP3::Interface::TLSConfig^ config);
 
-				// Convert a .NET string to a C++ string
-				static std::string ConvertString(System::String^ s);
-				static System::String^ ConvertString(const std::string& s);
+                // Convert a .NET string to a C++ string
+                static std::string ConvertString(System::String^ s);
+                static System::String^ ConvertString(const std::string& s);
 
-				// Converting channel state enumeration
-				static ChannelState ConvertChannelState(opendnp3::ChannelState aState);
+                // Converting channel state enumeration
+                static ChannelState ConvertChannelState(opendnp3::ChannelState aState);
 
-				static LinkStatus ConvertLinkStatus(opendnp3::LinkStatus aState);
+                static LinkStatus ConvertLinkStatus(opendnp3::LinkStatus aState);
 
-				static IChannelStatistics^ ConvertChannelStats(const opendnp3::LinkStatistics& statistics);
+                static IChannelStatistics^ ConvertChannelStats(const opendnp3::LinkStatistics& statistics);
 
-				static IStackStatistics^ ConvertStackStats(const opendnp3::StackStatistics& statistics);
+                static IStackStatistics^ ConvertStackStats(const opendnp3::StackStatistics& statistics);
 
-				// Convert the command status enumeration
-				static CommandStatus ConvertCommandStatus(opendnp3::CommandStatus status);
-				static opendnp3::CommandStatus ConvertCommandStatus(CommandStatus status);				
+                // Convert the command status enumeration
+                static CommandStatus ConvertCommandStatus(opendnp3::CommandStatus status);
+                static opendnp3::CommandStatus ConvertCommandStatus(CommandStatus status);
 
-				static CommandTaskResult^ ConvertCommandTaskResult(const opendnp3::ICommandTaskResult& result);
+                static CommandTaskResult^ ConvertCommandTaskResult(const opendnp3::ICommandTaskResult& result);
 
-				//functions for Converting binary outputs
+                //functions for Converting binary outputs
 
-				static ControlRelayOutputBlock^ ConvertCommand(const opendnp3::ControlRelayOutputBlock& bo);
-				static opendnp3::ControlRelayOutputBlock ConvertCommand(ControlRelayOutputBlock^ bo);
+                static ControlRelayOutputBlock^ ConvertCommand(const opendnp3::ControlRelayOutputBlock& bo);
+                static opendnp3::ControlRelayOutputBlock ConvertCommand(ControlRelayOutputBlock^ bo);
 
-				//functions for Converting setpoints
+                //functions for Converting setpoints
 
-				static opendnp3::AnalogOutputInt32 ConvertCommand(AnalogOutputInt32^ sp);
-				static AnalogOutputInt32^ ConvertCommand(const opendnp3::AnalogOutputInt32& sp);
+                static opendnp3::AnalogOutputInt32 ConvertCommand(AnalogOutputInt32^ sp);
+                static AnalogOutputInt32^ ConvertCommand(const opendnp3::AnalogOutputInt32& sp);
 
-				static opendnp3::AnalogOutputInt16 ConvertCommand(AnalogOutputInt16^ sp);
-				static AnalogOutputInt16^ ConvertCommand(const opendnp3::AnalogOutputInt16& sp);
+                static opendnp3::AnalogOutputInt16 ConvertCommand(AnalogOutputInt16^ sp);
+                static AnalogOutputInt16^ ConvertCommand(const opendnp3::AnalogOutputInt16& sp);
 
-				static opendnp3::AnalogOutputFloat32 ConvertCommand(AnalogOutputFloat32^ sp);
-				static AnalogOutputFloat32^ ConvertCommand(const opendnp3::AnalogOutputFloat32& sp);
+                static opendnp3::AnalogOutputFloat32 ConvertCommand(AnalogOutputFloat32^ sp);
+                static AnalogOutputFloat32^ ConvertCommand(const opendnp3::AnalogOutputFloat32& sp);
 
-				static opendnp3::AnalogOutputDouble64 ConvertCommand(AnalogOutputDouble64^ sp);
-				static AnalogOutputDouble64^ ConvertCommand(const opendnp3::AnalogOutputDouble64& sp);
+                static opendnp3::AnalogOutputDouble64 ConvertCommand(AnalogOutputDouble64^ sp);
+                static AnalogOutputDouble64^ ConvertCommand(const opendnp3::AnalogOutputDouble64& sp);
 
-				//functions for Converting Measurement types
-				static Binary^ ConvertMeas(opendnp3::Binary meas);
-				static DoubleBitBinary^ ConvertMeas(opendnp3::DoubleBitBinary meas);
-				static Analog^ ConvertMeas(opendnp3::Analog meas);
-				static Counter^ ConvertMeas(opendnp3::Counter meas);
-				static FrozenCounter^ ConvertMeas(opendnp3::FrozenCounter meas);
-				static AnalogOutputStatus^ ConvertMeas(opendnp3::AnalogOutputStatus meas);
-				static BinaryOutputStatus^ ConvertMeas(opendnp3::BinaryOutputStatus meas);
-				static OctetString^ Conversions::ConvertMeas(const opendnp3::OctetString& meas);
-				static TimeAndInterval^ Conversions::ConvertMeas(const opendnp3::TimeAndInterval& meas);
-				static BinaryCommandEvent^ Conversions::ConvertMeas(const opendnp3::BinaryCommandEvent& meas);
-				static AnalogCommandEvent^ Conversions::ConvertMeas(const opendnp3::AnalogCommandEvent& meas);				
+                //functions for Converting Measurement types
+                static Binary^ ConvertMeas(opendnp3::Binary meas);
+                static DoubleBitBinary^ ConvertMeas(opendnp3::DoubleBitBinary meas);
+                static Analog^ ConvertMeas(opendnp3::Analog meas);
+                static Counter^ ConvertMeas(opendnp3::Counter meas);
+                static FrozenCounter^ ConvertMeas(opendnp3::FrozenCounter meas);
+                static AnalogOutputStatus^ ConvertMeas(opendnp3::AnalogOutputStatus meas);
+                static BinaryOutputStatus^ ConvertMeas(opendnp3::BinaryOutputStatus meas);
+                static OctetString^ Conversions::ConvertMeas(const opendnp3::OctetString& meas);
+                static TimeAndInterval^ Conversions::ConvertMeas(const opendnp3::TimeAndInterval& meas);
+                static BinaryCommandEvent^ Conversions::ConvertMeas(const opendnp3::BinaryCommandEvent& meas);
+                static AnalogCommandEvent^ Conversions::ConvertMeas(const opendnp3::AnalogCommandEvent& meas);
 
-				static opendnp3::DNPTime ConvertTime(DNPTime^ time);
+                static opendnp3::DNPTime ConvertTime(DNPTime^ time);
                 static DNPTime^ ConvertTime(opendnp3::DNPTime time);
 
-				static opendnp3::Binary ConvertMeas(Binary^ meas);
-				static opendnp3::DoubleBitBinary ConvertMeas(DoubleBitBinary^ meas);
-				static opendnp3::Analog ConvertMeas(Analog^ meas);
-				static opendnp3::Counter ConvertMeas(Counter^ meas);
-				static opendnp3::FrozenCounter ConvertMeas(FrozenCounter^ meas);
-				static opendnp3::AnalogOutputStatus ConvertMeas(AnalogOutputStatus^ meas);
-				static opendnp3::BinaryOutputStatus ConvertMeas(BinaryOutputStatus^ meas);
-				static opendnp3::TimeAndInterval ConvertMeas(TimeAndInterval^ meas);
-				static opendnp3::OctetString ConvertMeas(OctetString^ meas);
-				static opendnp3::BinaryCommandEvent ConvertMeas(BinaryCommandEvent^ meas);
-				static opendnp3::AnalogCommandEvent ConvertMeas(AnalogCommandEvent^ meas);
+                static opendnp3::Binary ConvertMeas(Binary^ meas);
+                static opendnp3::DoubleBitBinary ConvertMeas(DoubleBitBinary^ meas);
+                static opendnp3::Analog ConvertMeas(Analog^ meas);
+                static opendnp3::Counter ConvertMeas(Counter^ meas);
+                static opendnp3::FrozenCounter ConvertMeas(FrozenCounter^ meas);
+                static opendnp3::AnalogOutputStatus ConvertMeas(AnalogOutputStatus^ meas);
+                static opendnp3::BinaryOutputStatus ConvertMeas(BinaryOutputStatus^ meas);
+                static opendnp3::TimeAndInterval ConvertMeas(TimeAndInterval^ meas);
+                static opendnp3::OctetString ConvertMeas(OctetString^ meas);
+                static opendnp3::BinaryCommandEvent ConvertMeas(BinaryCommandEvent^ meas);
+                static opendnp3::AnalogCommandEvent ConvertMeas(AnalogCommandEvent^ meas);
 
-				static LinkHeader^ Conversions::Convert(const opendnp3::LinkHeaderFields& fields);
-				static opendnp3::IPEndpoint Convert(IPEndpoint^ endpoint);
+                static LinkHeader^ Conversions::Convert(const opendnp3::LinkHeaderFields& fields);
+                static opendnp3::IPEndpoint Convert(IPEndpoint^ endpoint);
 
-				static X509Info^ Convert(const opendnp3::X509Info& info);
+                static X509Info^ Convert(const opendnp3::X509Info& info);
 
-				//Convert the configuration types
-				static opendnp3::SerialSettings ConvertSerialSettings(SerialSettings^ settings);
-				static opendnp3::EventBufferConfig ConvertConfig(EventBufferConfig^ cm);
+                //Convert the configuration types
+                static opendnp3::SerialSettings ConvertSerialSettings(SerialSettings^ settings);
+                static opendnp3::EventBufferConfig ConvertConfig(EventBufferConfig^ cm);
 
-				static opendnp3::LinkConfig ConvertConfig(LinkConfig^ config);
-				static opendnp3::MasterParams ConvertConfig(MasterConfig^ config);
-				static opendnp3::OutstationConfig ConvertConfig(OutstationConfig^ config);
-				static opendnp3::OutstationParams ConvertConfig(OutstationParams^ config);
-				static opendnp3::MasterStackConfig ConvertConfig(MasterStackConfig^ config);
-				static opendnp3::OutstationStackConfig ConvertConfig(OutstationStackConfig^ config);
+                static opendnp3::LinkConfig ConvertConfig(LinkConfig^ config);
+                static opendnp3::MasterParams ConvertConfig(MasterConfig^ config);
+                static opendnp3::OutstationConfig ConvertConfig(OutstationConfig^ config);
+                static opendnp3::OutstationParams ConvertConfig(OutstationParams^ config);
+                static opendnp3::MasterStackConfig ConvertConfig(MasterStackConfig^ config);
+                static opendnp3::OutstationStackConfig ConvertConfig(OutstationStackConfig^ config);
                 static opendnp3::NumRetries ConvertNumRetries(NumRetries^ numRetries);
 
-				static opendnp3::PointClass Convert(PointClass clazz);
-				static array<System::Byte>^ Convert(const opendnp3::Buffer& bytes);
+                static opendnp3::PointClass Convert(PointClass clazz);
+                static array<System::Byte>^ Convert(const opendnp3::Buffer& bytes);
 
-				template <class Target, class Source>
-				static IndexedValue<Target>^ ConvertIndexValue(const opendnp3::Indexed<Source>& pair)
-				{
-					return gcnew IndexedValue<Target>(ConvertMeas(pair.value), pair.index);
-				}
+                template <class Target, class Source>
+                static IndexedValue<Target>^ ConvertIndexValue(const opendnp3::Indexed<Source>& pair)
+                {
+                    return gcnew IndexedValue<Target>(ConvertMeas(pair.value), pair.index);
+                }
 
-				template <class Target, class Source>
-				static IEnumerable<IndexedValue<Target>^>^ ToIndexedEnumerable(const opendnp3::ICollection<opendnp3::Indexed<Source>>& values)
-				{
-					auto convert = [](const opendnp3::Indexed <Source> &value) -> IndexedValue<Target>^ {
-						return ConvertIndexValue<Target, Source>(value);
-					};
+                template <class Target, class Source>
+                static IEnumerable<IndexedValue<Target>^>^ ToIndexedEnumerable(const opendnp3::ICollection<opendnp3::Indexed<Source>>& values)
+                {
+                    auto convert = [](const opendnp3::Indexed <Source> &value) -> IndexedValue<Target>^ {
+                        return ConvertIndexValue<Target, Source>(value);
+                    };
 
-					auto adapter = CreateAdapter<opendnp3::Indexed<Source>, IndexedValue<Target>^>(convert);
+                    auto adapter = CreateAdapter<opendnp3::Indexed<Source>, IndexedValue<Target>^>(convert);
 
-					values.Foreach(adapter);
-					return adapter.GetValues();
-				}
+                    values.Foreach(adapter);
+                    return adapter.GetValues();
+                }
 
-				private:
+                private:
 
-					static opendnp3::DatabaseConfig Convert(DatabaseTemplate^ lhs);
+                    static opendnp3::DatabaseConfig Convert(DatabaseTemplate^ lhs);
 
                     static opendnp3::BinaryConfig ConvertPointConfig(BinaryConfig^ config) {
                         return ConvertEventConfig<opendnp3::BinaryInfo, opendnp3::BinaryConfig>(config);
@@ -220,7 +220,7 @@ namespace Automatak
                         return ret;
                     }
 
-                    static opendnp3::OctetStringConfig ConvertPointConfig(OctetStringConfig^ config) {                        
+                    static opendnp3::OctetStringConfig ConvertPointConfig(OctetStringConfig^ config) {
                         return ConvertEventConfig<opendnp3::OctetStringInfo, opendnp3::OctetStringConfig>(config);
                     }
 
@@ -244,19 +244,19 @@ namespace Automatak
 
                     }
 
-					template <class Target, class Source>
+                    template <class Target, class Source>
                     static std::map<uint16_t, Target> ConvertConfigMap(System::Collections::Generic::IDictionary<System::UInt16, Source^>^ source)
-					{
+                    {
                         std::map<uint16_t, Target> ret;
                         for each(KeyValuePair<System::UInt16, Source^>^ kvp in source) {
-                            ret[kvp->Key] = ConvertPointConfig(kvp->Value);                            
+                            ret[kvp->Key] = ConvertPointConfig(kvp->Value);
                         }
                         return ret;
-					}					
-			};
+                    }
+            };
 
-		}
-	}
+        }
+    }
 }
 
 #endif

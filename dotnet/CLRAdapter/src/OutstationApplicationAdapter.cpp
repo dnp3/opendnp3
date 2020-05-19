@@ -23,112 +23,112 @@
 
 namespace Automatak
 {
-	namespace DNP3
-	{
-		namespace Adapter
-		{
+    namespace DNP3
+    {
+        namespace Adapter
+        {
 
-			OutstationApplicationAdapter::OutstationApplicationAdapter(Automatak::DNP3::Interface::IOutstationApplication^ proxy_) :
-				proxy(proxy_)
-			{
+            OutstationApplicationAdapter::OutstationApplicationAdapter(Automatak::DNP3::Interface::IOutstationApplication^ proxy_) :
+                proxy(proxy_)
+            {
 
-			}
+            }
 
-			void OutstationApplicationAdapter::OnStateChange(opendnp3::LinkStatus value)
-			{
-				proxy->OnStateChange((LinkStatus)value);
-			}
+            void OutstationApplicationAdapter::OnStateChange(opendnp3::LinkStatus value)
+            {
+                proxy->OnStateChange((LinkStatus)value);
+            }
 
-			void OutstationApplicationAdapter::OnUnknownDestinationAddress(uint16_t destination)
-			{
-				proxy->OnUnknownDestinationAddress(destination);
-			}
+            void OutstationApplicationAdapter::OnUnknownDestinationAddress(uint16_t destination)
+            {
+                proxy->OnUnknownDestinationAddress(destination);
+            }
 
-			void OutstationApplicationAdapter::OnUnknownSourceAddress(uint16_t source)
-			{
-				proxy->OnUnknownSourceAddress(source);
-			}
+            void OutstationApplicationAdapter::OnUnknownSourceAddress(uint16_t source)
+            {
+                proxy->OnUnknownSourceAddress(source);
+            }
 
-			void OutstationApplicationAdapter::OnKeepAliveInitiated()
-			{
-				proxy->OnKeepAliveInitiated();
-			}
+            void OutstationApplicationAdapter::OnKeepAliveInitiated()
+            {
+                proxy->OnKeepAliveInitiated();
+            }
 
-			void OutstationApplicationAdapter::OnKeepAliveFailure()
-			{
-				proxy->OnKeepAliveFailure();
-			}
+            void OutstationApplicationAdapter::OnKeepAliveFailure()
+            {
+                proxy->OnKeepAliveFailure();
+            }
 
-			void OutstationApplicationAdapter::OnKeepAliveSuccess()
-			{
-				proxy->OnKeepAliveSuccess();
-			}
+            void OutstationApplicationAdapter::OnKeepAliveSuccess()
+            {
+                proxy->OnKeepAliveSuccess();
+            }
 
-			bool OutstationApplicationAdapter::WriteAbsoluteTime(const opendnp3::UTCTimestamp& timestamp)
-			{
-				return proxy->WriteAbsoluteTime(timestamp.msSinceEpoch);
-			}
+            bool OutstationApplicationAdapter::WriteAbsoluteTime(const opendnp3::UTCTimestamp& timestamp)
+            {
+                return proxy->WriteAbsoluteTime(timestamp.msSinceEpoch);
+            }
 
-			bool OutstationApplicationAdapter::SupportsWriteAbsoluteTime()
-			{
-				return proxy->SupportsWriteAbsoluteTime;
-			}
+            bool OutstationApplicationAdapter::SupportsWriteAbsoluteTime()
+            {
+                return proxy->SupportsWriteAbsoluteTime;
+            }
 
-			bool OutstationApplicationAdapter::SupportsWriteTimeAndInterval()
-			{
-				return proxy->SupportsWriteTimeAndInterval();
-			}
+            bool OutstationApplicationAdapter::SupportsWriteTimeAndInterval()
+            {
+                return proxy->SupportsWriteTimeAndInterval();
+            }
 
-			bool OutstationApplicationAdapter::WriteTimeAndInterval(const opendnp3::ICollection<opendnp3::Indexed<opendnp3::TimeAndInterval>>& values)
-			{
-				auto list = Conversions::ToIndexedEnumerable<TimeAndInterval^>(values);
+            bool OutstationApplicationAdapter::WriteTimeAndInterval(const opendnp3::ICollection<opendnp3::Indexed<opendnp3::TimeAndInterval>>& values)
+            {
+                auto list = Conversions::ToIndexedEnumerable<TimeAndInterval^>(values);
 
-				return proxy->WriteTimeAndInterval(list);
-			}
+                return proxy->WriteTimeAndInterval(list);
+            }
 
-			bool OutstationApplicationAdapter::SupportsAssignClass()
-			{
-				return proxy->SupportsAssignClass();
-			}
+            bool OutstationApplicationAdapter::SupportsAssignClass()
+            {
+                return proxy->SupportsAssignClass();
+            }
 
-			void OutstationApplicationAdapter::RecordClassAssignment(opendnp3::AssignClassType type, opendnp3::PointClass clazz, uint16_t start, uint16_t stop)
-			{
-				proxy->RecordClassAssignment((AssignClassType) type, (PointClass) clazz, start, stop);
-			}
+            void OutstationApplicationAdapter::RecordClassAssignment(opendnp3::AssignClassType type, opendnp3::PointClass clazz, uint16_t start, uint16_t stop)
+            {
+                proxy->RecordClassAssignment((AssignClassType) type, (PointClass) clazz, start, stop);
+            }
 
-			opendnp3::ApplicationIIN OutstationApplicationAdapter::GetApplicationIIN() const
-			{
-				ApplicationIIN indications = proxy->ApplicationIndications;
+            opendnp3::ApplicationIIN OutstationApplicationAdapter::GetApplicationIIN() const
+            {
+                ApplicationIIN indications = proxy->ApplicationIndications;
 
-				opendnp3::ApplicationIIN iin;
-				iin.configCorrupt = indications.configCorrupt;
-				iin.deviceTrouble = indications.deviceTrouble;
-				iin.localControl = indications.localControl;
-				iin.needTime = indications.needTime;
-				iin.eventBufferOverflow = indications.eventBufferOverflow;
-				return iin;
-			}
+                opendnp3::ApplicationIIN iin;
+                iin.configCorrupt = indications.configCorrupt;
+                iin.deviceTrouble = indications.deviceTrouble;
+                iin.localControl = indications.localControl;
+                iin.needTime = indications.needTime;
+                iin.eventBufferOverflow = indications.eventBufferOverflow;
+                return iin;
+            }
 
-			opendnp3::RestartMode OutstationApplicationAdapter::ColdRestartSupport() const
-			{
-				return (opendnp3::RestartMode) proxy->ColdRestartSupport;
-			}
+            opendnp3::RestartMode OutstationApplicationAdapter::ColdRestartSupport() const
+            {
+                return (opendnp3::RestartMode) proxy->ColdRestartSupport;
+            }
 
-			opendnp3::RestartMode OutstationApplicationAdapter::WarmRestartSupport() const
-			{
-				return (opendnp3::RestartMode) proxy->WarmRestartSupport;
-			}
+            opendnp3::RestartMode OutstationApplicationAdapter::WarmRestartSupport() const
+            {
+                return (opendnp3::RestartMode) proxy->WarmRestartSupport;
+            }
 
-			uint16_t OutstationApplicationAdapter::ColdRestart()
-			{
-				return proxy->ColdRestart();
-			}
+            uint16_t OutstationApplicationAdapter::ColdRestart()
+            {
+                return proxy->ColdRestart();
+            }
 
-			uint16_t OutstationApplicationAdapter::WarmRestart()
-			{
-				return proxy->WarmRestart();
-			}
+            uint16_t OutstationApplicationAdapter::WarmRestart()
+            {
+                return proxy->WarmRestart();
+            }
 
-		}
-	}
+        }
+    }
 }

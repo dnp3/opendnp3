@@ -30,41 +30,41 @@ using namespace System::Threading::Tasks;
 
 namespace Automatak
 {
-	namespace DNP3
-	{
-		namespace Adapter
-		{
+    namespace DNP3
+    {
+        namespace Adapter
+        {
 
-			private ref class ListenerAdapter sealed : Interface::IListener
-			{
-			public:
+            private ref class ListenerAdapter sealed : Interface::IListener
+            {
+            public:
 
-				ListenerAdapter(const std::shared_ptr<opendnp3::IListener>& proxy)
+                ListenerAdapter(const std::shared_ptr<opendnp3::IListener>& proxy)
                     : proxy(new std::shared_ptr<opendnp3::IListener>(proxy))
-				{}
+                {}
 
-				ListenerAdapter::~ListenerAdapter()
-				{
-					this->!ListenerAdapter();
-				}
+                ListenerAdapter::~ListenerAdapter()
+                {
+                    this->!ListenerAdapter();
+                }
 
-				ListenerAdapter::!ListenerAdapter()
-				{
-					delete proxy;
-				}
+                ListenerAdapter::!ListenerAdapter()
+                {
+                    delete proxy;
+                }
 
-				virtual void BeginShutdown()
-				{
-					(*proxy)->Shutdown();
-				}
+                virtual void BeginShutdown()
+                {
+                    (*proxy)->Shutdown();
+                }
 
-			private:
-				
-				const std::shared_ptr<opendnp3::IListener>* proxy;
-			};
+            private:
+                
+                const std::shared_ptr<opendnp3::IListener>* proxy;
+            };
 
-		}
-	}
+        }
+    }
 }
 
 #endif
