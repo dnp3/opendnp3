@@ -1,3 +1,7 @@
+### 3.0.1 ###
+* :beetle: Fix double-delete issue in C# adapter. See PR
+  [#376](https://github.com/dnp3/opendnp3/pull/376).
+
 ### 3.0.0 ###
 
 New features:
