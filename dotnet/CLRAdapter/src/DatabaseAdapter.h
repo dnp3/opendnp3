@@ -28,32 +28,32 @@ using namespace Automatak::DNP3::Interface;
 
 namespace Automatak
 {
-	namespace DNP3
-	{
-		namespace Adapter
-		{
+    namespace DNP3
+    {
+        namespace Adapter
+        {
 
             template <class T>
-			private ref class DatabaseAdapter: public Automatak::DNP3::Interface::IDatabase
-			{
-			public:
+            private ref class DatabaseAdapter: public Automatak::DNP3::Interface::IDatabase
+            {
+            public:
 
-				DatabaseAdapter(T* handler);
-				
-				virtual void Update(Binary^ update, System::UInt16 index, EventMode mode);
-				virtual void Update(DoubleBitBinary^ update, System::UInt16 index, EventMode mode);				
-				virtual void Update(Analog^ update, System::UInt16 index, EventMode mode);
-				virtual void Update(Counter^ update, System::UInt16 index, EventMode mode);
+                DatabaseAdapter(T* handler);
+                
+                virtual void Update(Binary^ update, System::UInt16 index, EventMode mode);
+                virtual void Update(DoubleBitBinary^ update, System::UInt16 index, EventMode mode);				
+                virtual void Update(Analog^ update, System::UInt16 index, EventMode mode);
+                virtual void Update(Counter^ update, System::UInt16 index, EventMode mode);
                 virtual void FreezeCounter(System::UInt16 index, System::Boolean clear, EventMode mode);
-				virtual void Update(BinaryOutputStatus^ update, System::UInt16 index, EventMode mode);
-				virtual void Update(AnalogOutputStatus^ update, System::UInt16 index, EventMode mode);
-				virtual void Update(OctetString^ update, System::UInt16 index, EventMode mode);
-				virtual void Update(TimeAndInterval^ update, System::UInt16 index);								
-				
-			protected:
-				
-				T* handler;
-			};
+                virtual void Update(BinaryOutputStatus^ update, System::UInt16 index, EventMode mode);
+                virtual void Update(AnalogOutputStatus^ update, System::UInt16 index, EventMode mode);
+                virtual void Update(OctetString^ update, System::UInt16 index, EventMode mode);
+                virtual void Update(TimeAndInterval^ update, System::UInt16 index);								
+                
+            protected:
+                
+                T* handler;
+            };
 
             template<class T> DatabaseAdapter<T>::DatabaseAdapter(T* handler) : handler(handler) {}
 
@@ -110,8 +110,8 @@ namespace Automatak
                 handler->Update(Conversions::ConvertMeas(update), index);
             }
 
-		}
-	}
+        }
+    }
 }
 
 #endif

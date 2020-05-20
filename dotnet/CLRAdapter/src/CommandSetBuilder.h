@@ -29,30 +29,30 @@ using namespace System::Collections::Generic;
 
 namespace Automatak
 {
-	namespace DNP3
-	{
-		namespace Adapter
-		{
+    namespace DNP3
+    {
+        namespace Adapter
+        {
 
-			private ref class CommandSetBuilder : ICommandBuilder
-			{
-			public:
+            private ref class CommandSetBuilder : ICommandBuilder
+            {
+            public:
 
-				CommandSetBuilder(opendnp3::CommandSet& commands);
+                CommandSetBuilder(opendnp3::CommandSet& commands);
 
-				virtual void Add(IEnumerable<IndexedValue<ControlRelayOutputBlock^>^>^ commands);
-				virtual void Add(IEnumerable<IndexedValue<AnalogOutputInt16^>^>^ commands);
-				virtual void Add(IEnumerable<IndexedValue<AnalogOutputInt32^>^>^ commands);
-				virtual void Add(IEnumerable<IndexedValue<AnalogOutputFloat32^>^>^ commands);
-				virtual void Add(IEnumerable<IndexedValue<AnalogOutputDouble64^>^>^ commands);
+                virtual void Add(IEnumerable<IndexedValue<ControlRelayOutputBlock^>^>^ commands);
+                virtual void Add(IEnumerable<IndexedValue<AnalogOutputInt16^>^>^ commands);
+                virtual void Add(IEnumerable<IndexedValue<AnalogOutputInt32^>^>^ commands);
+                virtual void Add(IEnumerable<IndexedValue<AnalogOutputFloat32^>^>^ commands);
+                virtual void Add(IEnumerable<IndexedValue<AnalogOutputDouble64^>^>^ commands);
 
-			private:
+            private:
 
-				opendnp3::CommandSet* commands;
-			};
+                opendnp3::CommandSet* commands;
+            };
 
-		}
-	}
+        }
+    }
 }
 
 #endif

@@ -28,41 +28,41 @@ using namespace System::Collections::ObjectModel;
 
 namespace Automatak
 {
-	namespace DNP3
-	{
-		namespace Adapter
-		{
+    namespace DNP3
+    {
+        namespace Adapter
+        {
 
-			private ref class OutstationAdapter : IOutstation
-			{
-			public:
+            private ref class OutstationAdapter : IOutstation
+            {
+            public:
 
-				OutstationAdapter(const std::shared_ptr<opendnp3::IOutstation>& outstation);
+                OutstationAdapter(const std::shared_ptr<opendnp3::IOutstation>& outstation);
 
-				~OutstationAdapter() { this ->!OutstationAdapter(); }
-				!OutstationAdapter();
+                ~OutstationAdapter() { this ->!OutstationAdapter(); }
+                !OutstationAdapter();
 
-				virtual void SetLogFilters(LogFilter filters);
+                virtual void SetLogFilters(LogFilter filters);
 
-				virtual void Load(IChangeSet^ changes);
+                virtual void Load(IChangeSet^ changes);
 
-				virtual void SetRestartIIN();
+                virtual void SetRestartIIN();
 
-				virtual void Shutdown();
+                virtual void Shutdown();
 
-				virtual void Enable();
+                virtual void Enable();
 
-				virtual void Disable();
+                virtual void Disable();
 
-				virtual IStackStatistics^ GetStackStatistics();
+                virtual IStackStatistics^ GetStackStatistics();
 
-			private:
+            private:
 
-				std::shared_ptr<opendnp3::IOutstation>* outstation;
-			};
+                std::shared_ptr<opendnp3::IOutstation>* outstation;
+            };
 
-		}
-	}
+        }
+    }
 }
 
 #endif

@@ -24,59 +24,59 @@
 
 namespace Automatak
 {
-	namespace DNP3
-	{
-		namespace Adapter
-		{
+    namespace DNP3
+    {
+        namespace Adapter
+        {
 
-			OutstationAdapter::OutstationAdapter(const std::shared_ptr<opendnp3::IOutstation>& outstation) : 
-				outstation(new std::shared_ptr<opendnp3::IOutstation>(outstation))
-			{}
+            OutstationAdapter::OutstationAdapter(const std::shared_ptr<opendnp3::IOutstation>& outstation) : 
+                outstation(new std::shared_ptr<opendnp3::IOutstation>(outstation))
+            {}
 
-			OutstationAdapter::!OutstationAdapter()
-			{
-				delete outstation;
-			}
+            OutstationAdapter::!OutstationAdapter()
+            {
+                delete outstation;
+            }
 
-			void OutstationAdapter::SetLogFilters(LogFilter filters)
-			{
+            void OutstationAdapter::SetLogFilters(LogFilter filters)
+            {
                 (*outstation)->SetLogFilters(opendnp3::LogLevel(filters.Flags));
-			}
+            }
 
-			void OutstationAdapter::Load(IChangeSet^ changes)
-			{
+            void OutstationAdapter::Load(IChangeSet^ changes)
+            {
                 auto adapter = gcnew UpdateAdapter();
-				changes->Apply(adapter);
-				adapter->Apply(**outstation);
-				delete adapter;
-			}
+                changes->Apply(adapter);
+                adapter->Apply(**outstation);
+                delete adapter;
+            }
 
-			void OutstationAdapter::SetRestartIIN()
-			{
-				(*outstation)->SetRestartIIN();
-			}
+            void OutstationAdapter::SetRestartIIN()
+            {
+                (*outstation)->SetRestartIIN();
+            }
 
-			void OutstationAdapter::Shutdown()
-			{
-				(*outstation)->Shutdown();
-			}
+            void OutstationAdapter::Shutdown()
+            {
+                (*outstation)->Shutdown();
+            }
 
-			void OutstationAdapter::Enable()
-			{
-				(*outstation)->Enable();
-			}
+            void OutstationAdapter::Enable()
+            {
+                (*outstation)->Enable();
+            }
 
-			void OutstationAdapter::Disable()
-			{
-				(*outstation)->Disable();
-			}
+            void OutstationAdapter::Disable()
+            {
+                (*outstation)->Disable();
+            }
 
-			IStackStatistics^ OutstationAdapter::GetStackStatistics()
-			{
-				auto stats = (*outstation)->GetStackStatistics();
-				return Conversions::ConvertStackStats(stats);
-			}
+            IStackStatistics^ OutstationAdapter::GetStackStatistics()
+            {
+                auto stats = (*outstation)->GetStackStatistics();
+                return Conversions::ConvertStackStats(stats);
+            }
 
-		}
-	}
+        }
+    }
 }

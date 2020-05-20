@@ -25,47 +25,47 @@
 
 namespace Automatak
 {
-	namespace DNP3
-	{
-		namespace Adapter
-		{
+    namespace DNP3
+    {
+        namespace Adapter
+        {
 
-			ListenCallbacksAdapter::ListenCallbacksAdapter(Interface::IListenCallbacks^ proxy) : 
-				m_proxy(proxy)
-			{}
+            ListenCallbacksAdapter::ListenCallbacksAdapter(Interface::IListenCallbacks^ proxy) : 
+                m_proxy(proxy)
+            {}
 
-			bool ListenCallbacksAdapter::AcceptConnection(uint64_t sessionid, const std::string& ipaddress)
-			{		
-				return m_proxy->AcceptConnection(sessionid, Conversions::ConvertString(ipaddress));
-			}
+            bool ListenCallbacksAdapter::AcceptConnection(uint64_t sessionid, const std::string& ipaddress)
+            {
+                return m_proxy->AcceptConnection(sessionid, Conversions::ConvertString(ipaddress));
+            }
 
-			bool ListenCallbacksAdapter::AcceptCertificate(uint64_t sessionid, const opendnp3::X509Info& info)
-			{
-				return m_proxy->AcceptCertificate(sessionid, Conversions::Convert(info));
-			}
+            bool ListenCallbacksAdapter::AcceptCertificate(uint64_t sessionid, const opendnp3::X509Info& info)
+            {
+                return m_proxy->AcceptCertificate(sessionid, Conversions::Convert(info));
+            }
 
-			opendnp3::TimeDuration ListenCallbacksAdapter::GetFirstFrameTimeout()
-			{
-				return Conversions::ConvertTimespan(m_proxy->GetFirstFrameTimeout());
-			}
+            opendnp3::TimeDuration ListenCallbacksAdapter::GetFirstFrameTimeout()
+            {
+                return Conversions::ConvertTimespan(m_proxy->GetFirstFrameTimeout());
+            }
 
-			void ListenCallbacksAdapter::OnFirstFrame(uint64_t sessionid, const opendnp3::LinkHeaderFields& header, opendnp3::ISessionAcceptor& acceptor)
-			{
-				auto linkheader = Conversions::Convert(header);
-				auto adapter = gcnew SessionAcceptorAdapter(acceptor);
-				m_proxy->OnFirstFrame(sessionid, linkheader, adapter);
-			}
+            void ListenCallbacksAdapter::OnFirstFrame(uint64_t sessionid, const opendnp3::LinkHeaderFields& header, opendnp3::ISessionAcceptor& acceptor)
+            {
+                auto linkheader = Conversions::Convert(header);
+                auto adapter = gcnew SessionAcceptorAdapter(acceptor);
+                m_proxy->OnFirstFrame(sessionid, linkheader, adapter);
+            }
 
-			void ListenCallbacksAdapter::OnConnectionClose(uint64_t sessionid, const std::shared_ptr<opendnp3::IMasterSession>& session)
-			{	
-				m_proxy->OnConnectionClose(sessionid, session ? gcnew MasterSessionAdapter(session) : nullptr);
-			}
+            void ListenCallbacksAdapter::OnConnectionClose(uint64_t sessionid, const std::shared_ptr<opendnp3::IMasterSession>& session)
+            {	
+                m_proxy->OnConnectionClose(sessionid, session ? gcnew MasterSessionAdapter(session) : nullptr);
+            }
 
-			void ListenCallbacksAdapter::OnCertificateError(uint64_t sessionid, const opendnp3::X509Info& info, int error)
-			{
-				m_proxy->OnCertificateError(sessionid, Conversions::Convert(info), error);
-			}
+            void ListenCallbacksAdapter::OnCertificateError(uint64_t sessionid, const opendnp3::X509Info& info, int error)
+            {
+                m_proxy->OnCertificateError(sessionid, Conversions::Convert(info), error);
+            }
 
-		}
-	}
+        }
+    }
 }

@@ -31,39 +31,39 @@ using namespace System::Collections::ObjectModel;
 
 namespace Automatak
 {
-	namespace DNP3
-	{
-		namespace Adapter
-		{
+    namespace DNP3
+    {
+        namespace Adapter
+        {
 
-			ref class ChannelAdapter : IChannel
-			{
-			public:
+            ref class ChannelAdapter : IChannel
+            {
+            public:
 
-				ChannelAdapter(const std::shared_ptr<opendnp3::IChannel>& channel);
+                ChannelAdapter(const std::shared_ptr<opendnp3::IChannel>& channel);
 
-				~ChannelAdapter();
-				!ChannelAdapter();
+                ~ChannelAdapter();
+                !ChannelAdapter();
 
-				virtual LogFilter GetLogFilters() sealed;
+                virtual LogFilter GetLogFilters() sealed;
 
-				virtual IChannelStatistics^ GetChannelStatistics() sealed;
+                virtual IChannelStatistics^ GetChannelStatistics() sealed;
 
-				virtual void SetLogFilters(LogFilter filters) sealed;				
+                virtual void SetLogFilters(LogFilter filters) sealed;
 
-				virtual IMaster^ AddMaster(System::String^ loggerId, ISOEHandler^ publisher, IMasterApplication^ application, MasterStackConfig^ config) sealed;
+                virtual IMaster^ AddMaster(System::String^ loggerId, ISOEHandler^ publisher, IMasterApplication^ application, MasterStackConfig^ config) sealed;
 
-				virtual IOutstation^ AddOutstation(System::String^ loggerId, ICommandHandler^ cmdHandler, IOutstationApplication^ application, OutstationStackConfig^ config) sealed;
+                virtual IOutstation^ AddOutstation(System::String^ loggerId, ICommandHandler^ cmdHandler, IOutstationApplication^ application, OutstationStackConfig^ config) sealed;
 
-				virtual void Shutdown() sealed;
+                virtual void Shutdown() sealed;
 
-			private:
+            private:
 
-				std::shared_ptr<opendnp3::IChannel>* channel;
-			};
+                std::shared_ptr<opendnp3::IChannel>* channel;
+            };
 
-		}
-	}
+        }
+    }
 }
 
 #endif

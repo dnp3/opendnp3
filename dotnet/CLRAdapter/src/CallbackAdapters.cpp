@@ -25,34 +25,34 @@
 
 namespace Automatak
 {
-	namespace DNP3
-	{
-		namespace Adapter
-		{
+    namespace DNP3
+    {
+        namespace Adapter
+        {
 
-			opendnp3::CommandResultCallbackT CallbackAdapters::Get(TaskCompletionSource<CommandTaskResult^>^ tcs)
-			{
-				gcroot<TaskCompletionSource<CommandTaskResult^>^> handle(tcs);
+            opendnp3::CommandResultCallbackT CallbackAdapters::Get(TaskCompletionSource<CommandTaskResult^>^ tcs)
+            {
+                gcroot<TaskCompletionSource<CommandTaskResult^>^> handle(tcs);
 
-				return [handle](const opendnp3::ICommandTaskResult& res) -> void
-				{
-					auto result = Conversions::ConvertCommandTaskResult(res);
-					handle->SetResult(result);
-				};
-			}
+                return [handle](const opendnp3::ICommandTaskResult& res) -> void
+                {
+                    auto result = Conversions::ConvertCommandTaskResult(res);
+                    handle->SetResult(result);
+                };
+            }
 
-			opendnp3::RestartOperationCallbackT CallbackAdapters::Get(TaskCompletionSource<RestartResultType^>^ tcs)
-			{
-				gcroot<TaskCompletionSource<RestartResultType^>^> handle(tcs);
+            opendnp3::RestartOperationCallbackT CallbackAdapters::Get(TaskCompletionSource<RestartResultType^>^ tcs)
+            {
+                gcroot<TaskCompletionSource<RestartResultType^>^> handle(tcs);
 
-				return [handle](const opendnp3::RestartOperationResult& res) -> void
-				{
-					auto result = gcnew RestartResultType((TaskCompletion)res.summary, Conversions::ConvertTimeDuration(res.restartTime));
+                return [handle](const opendnp3::RestartOperationResult& res) -> void
+                {
+                    auto result = gcnew RestartResultType((TaskCompletion)res.summary, Conversions::ConvertTimeDuration(res.restartTime));
 
-					handle->SetResult(result);
-				};
-			}
+                    handle->SetResult(result);
+                };
+            }
 
-		}
-	}
+        }
+    }
 }

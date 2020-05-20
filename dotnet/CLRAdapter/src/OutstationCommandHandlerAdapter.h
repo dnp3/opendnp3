@@ -36,8 +36,7 @@ namespace DNP3
     {
 
         // this object goes into the stack
-    private
-        class OutstationCommandHandlerAdapter : public opendnp3::ICommandHandler
+        private class OutstationCommandHandlerAdapter : public opendnp3::ICommandHandler
         {
         public:
             OutstationCommandHandlerAdapter(Automatak::DNP3::Interface::ICommandHandler ^ proxy);

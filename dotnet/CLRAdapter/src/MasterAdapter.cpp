@@ -23,42 +23,41 @@
 
 namespace Automatak
 {
-	namespace DNP3
-	{
-		namespace Adapter
-		{
+    namespace DNP3
+    {
+        namespace Adapter
+        {
 
-			MasterAdapter::MasterAdapter(const std::shared_ptr<opendnp3::IMaster>& master)
-                : 
-				MasterOperationsAdapter(master.get()), 
-				master(new std::shared_ptr<opendnp3::IMaster>(master))
-			{}
+            MasterAdapter::MasterAdapter(const std::shared_ptr<opendnp3::IMaster>& master)
+                : MasterOperationsAdapter(master.get()),
+                  master(new std::shared_ptr<opendnp3::IMaster>(master))
+            {}
 
-			MasterAdapter::!MasterAdapter()
-			{
-				delete master;
-			}
+            MasterAdapter::!MasterAdapter()
+            {
+                delete master;
+            }
 
-			void MasterAdapter::Enable()
-			{
-				(*master)->Enable();
-			}
+            void MasterAdapter::Enable()
+            {
+                (*master)->Enable();
+            }
 
-			void MasterAdapter::Disable()
-			{
-				(*master)->Disable();
-			}
+            void MasterAdapter::Disable()
+            {
+                (*master)->Disable();
+            }
 
-			void MasterAdapter::Shutdown()
-			{
-				(*master)->Shutdown();
-			}
+            void MasterAdapter::Shutdown()
+            {
+                (*master)->Shutdown();
+            }
 
-			Interface::IStackStatistics^ MasterAdapter::GetStackStatistics()
-			{
-				return Conversions::ConvertStackStats((*master)->GetStackStatistics());
-			}
+            Interface::IStackStatistics^ MasterAdapter::GetStackStatistics()
+            {
+                return Conversions::ConvertStackStats((*master)->GetStackStatistics());
+            }
 
-		}
-	}
+        }
+    }
 }

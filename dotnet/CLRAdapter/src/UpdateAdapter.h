@@ -30,26 +30,25 @@ using namespace Automatak::DNP3::Interface;
 
 namespace Automatak
 {
-	namespace DNP3
-	{
-		namespace Adapter
-		{
+    namespace DNP3
+    {
+        namespace Adapter
+        {
 
-			private ref class UpdateAdapter : public DatabaseAdapter<opendnp3::UpdateBuilder>
+            private ref class UpdateAdapter : public DatabaseAdapter<opendnp3::UpdateBuilder>
             {
-			public:
+            public:
 
-				UpdateAdapter();
+                UpdateAdapter();
 
-				~UpdateAdapter();
-                !UpdateAdapter();				
+                ~UpdateAdapter();
+                !UpdateAdapter();
 
-				void Apply(opendnp3::IOutstation& proxy);					
-                		                               
-			};
+                void Apply(opendnp3::IOutstation& proxy);
+            };
 
-		}
-	}
+        }
+    }
 }
 
 #endif

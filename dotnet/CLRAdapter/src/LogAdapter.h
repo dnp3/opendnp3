@@ -32,32 +32,32 @@ using namespace System::Collections::ObjectModel;
 
 namespace Automatak
 {
-	namespace DNP3
-	{
-		namespace Adapter
-		{
+    namespace DNP3
+    {
+        namespace Adapter
+        {
 
-			private class LogAdapter final : public opendnp3::ILogHandler
-			{
-			public:
+            private class LogAdapter final : public opendnp3::ILogHandler
+            {
+            public:
 
-				LogAdapter(Automatak::DNP3::Interface::ILogHandler^ proxy);
+                LogAdapter(Automatak::DNP3::Interface::ILogHandler^ proxy);
 
-				static std::shared_ptr<opendnp3::ILogHandler> Create(Automatak::DNP3::Interface::ILogHandler ^ proxy);
+                static std::shared_ptr<opendnp3::ILogHandler> Create(Automatak::DNP3::Interface::ILogHandler ^ proxy);
 
-				// logging error messages, etc
+                // logging error messages, etc
                 virtual void log(opendnp3::ModuleId module,
                                  const char* id,
                                  opendnp3::LogLevel level,
                                  char const* location,
                                  char const* message) override;
 
-			private:
-				gcroot < Automatak::DNP3::Interface::ILogHandler^ > proxy;
-			};
+            private:
+                gcroot < Automatak::DNP3::Interface::ILogHandler^ > proxy;
+            };
 
-		}
-	}
+        }
+    }
 }
 
 #endif

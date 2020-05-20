@@ -32,21 +32,21 @@ using namespace System::Threading::Tasks;
 
 namespace Automatak
 {
-	namespace DNP3
-	{
-		namespace Adapter
-		{
+    namespace DNP3
+    {
+        namespace Adapter
+        {
 
-			class CallbackAdapters : private opendnp3::StaticOnly
-			{
-			public:
+            class CallbackAdapters : private opendnp3::StaticOnly
+            {
+            public:
 
-				static opendnp3::CommandResultCallbackT Get(TaskCompletionSource<CommandTaskResult ^> ^ tcs);
-				static opendnp3::RestartOperationCallbackT Get(TaskCompletionSource<RestartResultType^>^ tcs);
-			};
+                static opendnp3::CommandResultCallbackT Get(TaskCompletionSource<CommandTaskResult ^> ^ tcs);
+                static opendnp3::RestartOperationCallbackT Get(TaskCompletionSource<RestartResultType^>^ tcs);
+            };
 
-		}
-	}
+        }
+    }
 }
 
 #endif

@@ -23,102 +23,102 @@
 
 namespace Automatak
 {
-	namespace DNP3
-	{
-		namespace Adapter
-		{
+    namespace DNP3
+    {
+        namespace Adapter
+        {
 
-			HeaderInfo ^ ConvertHeaderInfo(const opendnp3::HeaderInfo& info)
+            HeaderInfo ^ ConvertHeaderInfo(const opendnp3::HeaderInfo& info)
             {
                 return gcnew HeaderInfo((GroupVariation)info.gv, (QualifierCode)info.qualifier,
                                         (TimestampQuality)info.tsquality, info.isEventVariation, info.flagsValid,
                                         info.headerIndex);
             }
 
-			ResponseInfo ^ ConvertResponseInfo(const opendnp3::ResponseInfo& info)
+            ResponseInfo ^ ConvertResponseInfo(const opendnp3::ResponseInfo& info)
             {
                 return gcnew ResponseInfo(info.unsolicited, info.fir, info.fin);
             }
 
-			SOEHandlerAdapter::SOEHandlerAdapter(Automatak::DNP3::Interface::ISOEHandler^ aProxy) : proxy(aProxy)
-			{}
+            SOEHandlerAdapter::SOEHandlerAdapter(Automatak::DNP3::Interface::ISOEHandler^ aProxy) : proxy(aProxy)
+            {}
                         
             void SOEHandlerAdapter::BeginFragment(const opendnp3::ResponseInfo& info)
-			{
-				proxy->BeginFragment(ConvertResponseInfo(info));
-			}
+            {
+                proxy->BeginFragment(ConvertResponseInfo(info));
+            }
 
-			void SOEHandlerAdapter::EndFragment(const opendnp3::ResponseInfo& info)
-			{
+            void SOEHandlerAdapter::EndFragment(const opendnp3::ResponseInfo& info)
+            {
                 proxy->EndFragment(ConvertResponseInfo(info));
-			}
-		
-			void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Binary>>& values)
-			{
-				auto enumerable = Conversions::ToIndexedEnumerable<Binary^>(values);
+            }
+        
+            void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Binary>>& values)
+            {
+                auto enumerable = Conversions::ToIndexedEnumerable<Binary^>(values);
                 proxy->Process(ConvertHeaderInfo(info), enumerable);
-			}
+            }
 
-			void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::DoubleBitBinary>>& values)
-			{
-				auto enumerable = Conversions::ToIndexedEnumerable<DoubleBitBinary^>(values);
+            void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::DoubleBitBinary>>& values)
+            {
+                auto enumerable = Conversions::ToIndexedEnumerable<DoubleBitBinary^>(values);
                 proxy->Process(ConvertHeaderInfo(info), enumerable);
-			}
+            }
 
-			void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Analog>>& values)
-			{
-				auto enumerable = Conversions::ToIndexedEnumerable<Analog^>(values);
+            void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Analog>>& values)
+            {
+                auto enumerable = Conversions::ToIndexedEnumerable<Analog^>(values);
                 proxy->Process(ConvertHeaderInfo(info), enumerable);
-			}
+            }
 
-			void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Counter>>& values)
-			{
-				auto enumerable = Conversions::ToIndexedEnumerable<Counter^>(values);
+            void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Counter>>& values)
+            {
+                auto enumerable = Conversions::ToIndexedEnumerable<Counter^>(values);
                 proxy->Process(ConvertHeaderInfo(info), enumerable);
-			}
+            }
 
-			void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::FrozenCounter>>& values)
-			{
-				auto enumerable = Conversions::ToIndexedEnumerable<FrozenCounter^>(values);
+            void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::FrozenCounter>>& values)
+            {
+                auto enumerable = Conversions::ToIndexedEnumerable<FrozenCounter^>(values);
                 proxy->Process(ConvertHeaderInfo(info), enumerable);
-			}
+            }
 
-			void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryOutputStatus>>& values)
-			{
-				auto enumerable = Conversions::ToIndexedEnumerable<BinaryOutputStatus^>(values);
+            void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryOutputStatus>>& values)
+            {
+                auto enumerable = Conversions::ToIndexedEnumerable<BinaryOutputStatus^>(values);
                 proxy->Process(ConvertHeaderInfo(info), enumerable);
-			}
+            }
 
-			void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogOutputStatus>>& values)
-			{
-				auto enumerable = Conversions::ToIndexedEnumerable<AnalogOutputStatus^>(values);
+            void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogOutputStatus>>& values)
+            {
+                auto enumerable = Conversions::ToIndexedEnumerable<AnalogOutputStatus^>(values);
                 proxy->Process(ConvertHeaderInfo(info), enumerable);
-			}
+            }
 
-			void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::OctetString>>& values)
-			{
-				auto enumerable = Conversions::ToIndexedEnumerable<OctetString^>(values);
+            void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::OctetString>>& values)
+            {
+                auto enumerable = Conversions::ToIndexedEnumerable<OctetString^>(values);
                 proxy->Process(ConvertHeaderInfo(info), enumerable);
-			}
+            }
 
-			void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::TimeAndInterval>>& values)
-			{
-				auto enumerable = Conversions::ToIndexedEnumerable<TimeAndInterval^>(values);
+            void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::TimeAndInterval>>& values)
+            {
+                auto enumerable = Conversions::ToIndexedEnumerable<TimeAndInterval^>(values);
                 proxy->Process(ConvertHeaderInfo(info), enumerable);
-			}
+            }
 
-			void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryCommandEvent>>& values)
-			{
-				auto enumerable = Conversions::ToIndexedEnumerable<BinaryCommandEvent^>(values);
+            void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryCommandEvent>>& values)
+            {
+                auto enumerable = Conversions::ToIndexedEnumerable<BinaryCommandEvent^>(values);
                 proxy->Process(ConvertHeaderInfo(info), enumerable);
-			}
+            }
 
-			void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogCommandEvent>>& values)
-			{
-				auto enumerable = Conversions::ToIndexedEnumerable<AnalogCommandEvent^>(values);
+            void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogCommandEvent>>& values)
+            {
+                auto enumerable = Conversions::ToIndexedEnumerable<AnalogCommandEvent^>(values);
                 proxy->Process(ConvertHeaderInfo(info), enumerable);
-			}
-		
-		}
-	}
+            }
+        
+        }
+    }
 }

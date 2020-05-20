@@ -23,10 +23,10 @@
 
 namespace opendnp3
 {
-	class ICommandHeader
-	{
+    class ICommandHeader
+    {
 
-	};
+    };
 }
 
 #endif
