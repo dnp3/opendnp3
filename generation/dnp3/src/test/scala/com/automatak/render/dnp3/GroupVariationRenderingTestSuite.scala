@@ -1,8 +1,8 @@
-/*
+/**
  * Copyright 2013-2020 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -19,21 +19,20 @@
  */
 package com.automatak.render.dnp3
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{Matchers, FunSuite}
-
+import com.automatak.render.Indentation
 import com.automatak.render.dnp3.objects.ObjectGroup
 import com.automatak.render.dnp3.objects.generators._
 import com.automatak.render.cpp.CppIndentation
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers
 
 
-@RunWith(classOf[JUnitRunner])
-class GroupVariationRenderingTestSuite extends FunSuite with Matchers {
+
+class GroupVariationRenderingTestSuite extends AnyFunSuite with Matchers {
 
   test("Experiment with rendering") {
 
-      implicit val indentation = CppIndentation()
+      implicit val indentation : Indentation = CppIndentation()
 
       for {
         g <- ObjectGroup.all

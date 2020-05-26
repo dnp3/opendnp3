@@ -1,8 +1,8 @@
-/*
+/**
  * Copyright 2013-2020 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -19,17 +19,13 @@
  */
 package com.automatak.render.dnp3
 
-import org.scalatest.FunSuite
-import org.scalatest.Matchers
-import org.scalatest.junit.JUnitRunner
-import org.junit.runner.RunWith
-
 import com.automatak.render.dnp3.objects.GroupVariation.Id
 import com.automatak.render.dnp3.objects.ObjectGroup
 import com.automatak.render.dnp3.objects.groups.Group12Var1
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers
 
-@RunWith(classOf[JUnitRunner])
-class GroupVariationTestSuite extends FunSuite with Matchers {
+class GroupVariationTestSuite extends AnyFunSuite with Matchers {
 
   test("Groups are all unique") {
     ObjectGroup.all.foldLeft(Set.empty[Byte]) { (set, group) =>

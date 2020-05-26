@@ -1,8 +1,8 @@
-/*
+/**
  * Copyright 2013-2020 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -54,7 +54,7 @@ object AuthVariableSizeGenerator {
       val last = all.last
       val front = all.take(count-1)
 
-      def firstArgs : Iterator[String] = front.map(f => "%s %s,".format(f.cppArgument, f.name)).toIterator
+      def firstArgs : Iterator[String] = front.map(f => "%s %s,".format(f.cppArgument, f.name)).iterator
       def lastArg : Iterator[String] = Iterator("%s %s".format(last.cppArgument, last.name))
 
       def constructor = if (count == 1) "explicit %s".format(x.name) else x.name
@@ -105,10 +105,10 @@ object AuthVariableSizeGenerator {
       val last = all.last
       val front = all.take(count-1)
 
-      def firstArgs : Iterator[String] = front.map(f => "%s %s_,".format(f.cppArgument, f.name)).toIterator
+      def firstArgs : Iterator[String] = front.map(f => "%s %s_,".format(f.cppArgument, f.name)).iterator
       def lastArg : Iterator[String] = Iterator("%s %s_".format(last.cppArgument, last.name))
 
-      def firstDefs : Iterator[String] = front.map(f => "%s(%s_),".format(f.name, f.name)).toIterator
+      def firstDefs : Iterator[String] = front.map(f => "%s(%s_),".format(f.name, f.name)).iterator
       def lastDefs : Iterator[String] = Iterator("%s(%s_)".format(last.name, last.name))
 
       Iterator("%s::%s(".format(x.name, x.name)) ++ indent {
