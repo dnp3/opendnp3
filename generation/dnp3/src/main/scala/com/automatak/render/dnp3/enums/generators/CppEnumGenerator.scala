@@ -1,8 +1,8 @@
-/*
+/**
  * Copyright 2013-2020 Automatak, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Automatak LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -45,20 +45,20 @@ object CppEnumGenerator {
 
       val renders = intConversions ::: stringConversions
 
-      def writeHeader() {
+      def writeHeader() : Unit = {
         def license = commented(LicenseHeader())
         def includes = cstdint ++ string
         def enum = EnumModelRenderer.render(cfg.model)
         def spec = struct(f"${cfg.model.name}Spec")(
-          Iterator(f"using enum_type_t = ${cfg.model.name};") ++ space ++ renders.flatMap(c => c.header.render(cfg.model)).toIterator)
+          Iterator(f"using enum_type_t = ${cfg.model.name};") ++ space ++ renders.flatMap(c => c.header.render(cfg.model)).iterator)
         def lines = license ++ space ++ includeGuards(cfg.model.name)(includes ++ space ++ namespace(cppNamespace)(enum ++ space ++ spec))
         writeTo(headerPath(cfg.model))(lines)
         println("Wrote: " + headerPath(cfg.model))
       }
 
-      def writeImpl() {
+      def writeImpl(): Unit = {
         def license = commented(LicenseHeader())
-        def funcs = renders.flatMap(r => r.impl.render(cfg.model) ++ space).toIterator
+        def funcs = renders.flatMap(r => r.impl.render(cfg.model) ++ space).iterator
         def inc = List(quoted(String.format(incFormatString, headerName(cfg.model))), bracketed("stdexcept")).map(i => include(i))
         def lines = license ++ space ++ inc ++ space ++ namespace(cppNamespace)(funcs)
 
@@ -69,7 +69,7 @@ object CppEnumGenerator {
         }
       }
 
-      def writePrivateHeader()  {
+      def writePrivateHeader(): Unit = {
         def license = commented(LicenseHeader())
         def includes = Iterator(include(quoted(String.format(incFormatString, headerName(cfg.model))))) ++ littleEndian
         def funcs = EnumSerialization.render(cfg.model)
