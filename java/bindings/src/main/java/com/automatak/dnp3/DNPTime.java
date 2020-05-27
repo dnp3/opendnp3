@@ -21,14 +21,12 @@ package com.automatak.dnp3;
 
 import com.automatak.dnp3.enums.TimestampQuality;
 
-/**
- * Maps to g50v1
- */
+
 public class DNPTime {
 
     public DNPTime(long msSinceEpoch)
     {
-        this(msSinceEpoch, TimestampQuality.INVALID);
+        this(msSinceEpoch, TimestampQuality.SYNCHRONIZED);
     }
 
     public DNPTime(long msSinceEpoch, TimestampQuality quality)
