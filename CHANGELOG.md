@@ -1,3 +1,7 @@
+### 3.0.2 ###
+* :beetle: Fix discrepancy between `DNPTime::TimestampQuality` and `HeaderInfo::TimestampQuality`
+  [#377](https://github.com/dnp3/opendnp3/issues/377).
+
 ### 3.0.1 ###
 * :beetle: Fix double-delete issue in C# adapter. See PR
   [#376](https://github.com/dnp3/opendnp3/pull/376).
