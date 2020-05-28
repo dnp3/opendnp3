@@ -22,12 +22,12 @@ namespace Automatak.DNP3.Interface
 {
     public class DNPTime
     {
-        public static DNPTime Unset = new DNPTime(DateTime.MinValue, TimestampQuality.INVALID);
-        private static DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        public static readonly DNPTime Unset = new DNPTime(DateTime.MinValue, TimestampQuality.INVALID);
+        private static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         public static DNPTime Now
         {
-            get { return new DNPTime(DateTime.Now, TimestampQuality.INVALID); }
+            get { return new DNPTime(DateTime.Now, TimestampQuality.SYNCHRONIZED); }
         }
 
         public static DNPTime FromEpoch(Int64 epochTime, TimestampQuality quality)
@@ -43,7 +43,7 @@ namespace Automatak.DNP3.Interface
             }
         }
 
-        public DNPTime(DateTime time) : this(time, TimestampQuality.INVALID)
+        public DNPTime(DateTime time) : this(time, TimestampQuality.SYNCHRONIZED)
         {
         }
 

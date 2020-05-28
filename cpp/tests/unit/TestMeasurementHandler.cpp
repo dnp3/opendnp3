@@ -61,6 +61,62 @@ TEST_CASE(SUITE("parses g50v1 correctly"))
     TestObjectHeaders(objects, ParseResult::OK, verify);
 }
 
+TEST_CASE(SUITE("parses g2v1 w/ invalid timestamp quality"))
+{
+    auto verify = [](MockSOEHandler& soe) {
+        const auto record = soe.binarySOE.find(0XAA);
+        REQUIRE(record != soe.binarySOE.end());        
+        REQUIRE(record->second.meas.time.quality == TimestampQuality::INVALID);
+    };
+
+    auto objects = "02 01 17 01 AA 81";
+
+    TestObjectHeaders(objects, ParseResult::OK, verify);
+}
+
+
+TEST_CASE(SUITE("parses g2v2 w/ synchronized timestamp quality"))
+{
+    auto verify = [](MockSOEHandler& soe) {
+        const auto record = soe.binarySOE.find(0XAA);
+        REQUIRE(record != soe.binarySOE.end());
+        REQUIRE(record->second.meas.time.value == 8);
+        REQUIRE(record->second.meas.time.quality == TimestampQuality::SYNCHRONIZED);
+    };
+
+    auto objects = "02 02 17 01 AA 81 08 00 00 00 00 00";
+
+    TestObjectHeaders(objects, ParseResult::OK, verify);
+}
+
+TEST_CASE(SUITE("parses g2v3 w/ synchronized CTO"))
+{
+    auto verify = [](MockSOEHandler& soe) { 
+        const auto record = soe.binarySOE.find(8);
+        REQUIRE(record != soe.binarySOE.end());
+        REQUIRE(record->second.meas.time.value == 8); // 7 + 1
+        REQUIRE(record->second.meas.time.quality == TimestampQuality::SYNCHRONIZED);
+    };
+    
+    auto objects = "33 01 07 01 07 00 00 00 00 00 02 03 17 01 08 81 01 00";
+
+    TestObjectHeaders(objects, ParseResult::OK, verify);
+}
+
+TEST_CASE(SUITE("parses g2v3 w/ unsynchronized CTO"))
+{
+    auto verify = [](MockSOEHandler& soe) {
+        const auto record = soe.binarySOE.find(8);
+        REQUIRE(record != soe.binarySOE.end());
+        REQUIRE(record->second.meas.time.value == 8); // 7 + 1
+        REQUIRE(record->second.meas.time.quality == TimestampQuality::UNSYNCHRONIZED);
+    };
+
+    auto objects = "33 02 07 01 07 00 00 00 00 00 02 03 17 01 08 81 01 00";
+
+    TestObjectHeaders(objects, ParseResult::OK, verify);
+}
+
 ParseResult TestObjectHeaders(const std::string& objects,
                               ParseResult expectedResult,
                               const std::function<void(MockSOEHandler&)>& verify)

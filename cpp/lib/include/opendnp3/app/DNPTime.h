@@ -30,7 +30,7 @@ namespace opendnp3
 struct DNPTime
 {
     DNPTime() : value(0), quality(TimestampQuality::INVALID) {}
-    explicit DNPTime(uint64_t value) : value(value), quality(TimestampQuality::INVALID) {}
+    explicit DNPTime(uint64_t value) : value(value), quality(TimestampQuality::SYNCHRONIZED) {}
     DNPTime(uint64_t value, TimestampQuality quality) : value(value), quality(quality) {}
 
     bool operator==(const DNPTime& rhs) const

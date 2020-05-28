@@ -360,7 +360,7 @@ TEST_CASE(SUITE("ReadGrp2Var2"))
 
 TEST_CASE(SUITE("ReadGrp2Var3SingleValue"))
 {
-    auto update = [](IUpdateHandler& db) { db.Update(Binary(false, Flags(0x01), DNPTime(0x4571)), 3); };
+    auto update = [](IUpdateHandler& db) { db.Update(Binary(false, Flags(0x01), DNPTime(0x4571, TimestampQuality::UNSYNCHRONIZED)), 3); };
 
     TestEventRead("C0 01 02 03 06", "E0 81 80 00 33 02 07 01 71 45 00 00 00 00 02 03 28 01 00 03 00 01 00 00", update);
 }
