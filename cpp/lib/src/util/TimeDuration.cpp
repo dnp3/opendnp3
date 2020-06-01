@@ -39,30 +39,41 @@ TimeDuration TimeDuration::Zero()
     return TimeDuration(std::chrono::milliseconds(0));
 }
 
-TimeDuration TimeDuration::Milliseconds(int64_t milliseconds)
+template<class T> TimeDuration TimeDuration::FromValue(int64_t value)
 {
-    return TimeDuration(std::chrono::milliseconds(milliseconds));
+    // > this will overflow when converting to nanos
+    const auto MAX = std::chrono::duration_cast<T>(std::chrono::steady_clock::duration::max()).count();
+    const auto MIN = std::chrono::duration_cast<T>(std::chrono::steady_clock::duration::min()).count();
+
+    if (value > MAX)
+    {
+        return TimeDuration(std::chrono::steady_clock::duration::max());
+    }
+
+    if (value < MIN)
+    {
+        return TimeDuration(std::chrono::steady_clock::duration::min());
+    }
+
+    return TimeDuration(T(value));
 }
+
+TimeDuration TimeDuration::Milliseconds(int64_t milliseconds)
+{        
+    return FromValue<std::chrono::milliseconds>(milliseconds);
+}
+
 
 TimeDuration TimeDuration::Seconds(int64_t seconds)
 {
-    return TimeDuration(std::chrono::seconds(seconds));
+    return FromValue<std::chrono::seconds>(seconds);
 }
 
 TimeDuration TimeDuration::Minutes(int64_t minutes)
 {
-    return TimeDuration(std::chrono::minutes(minutes));
+    return FromValue<std::chrono::minutes>(minutes);
 }
 
-TimeDuration TimeDuration::Hours(int64_t hours)
-{
-    return TimeDuration(std::chrono::hours(hours));
-}
-
-TimeDuration TimeDuration::Days(int64_t days)
-{
-    return TimeDuration(std::chrono::hours(24) * days);
-}
 
 TimeDuration::TimeDuration() : value(std::chrono::milliseconds(0)) {}
 

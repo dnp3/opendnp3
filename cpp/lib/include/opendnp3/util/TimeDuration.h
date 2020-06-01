@@ -45,11 +45,7 @@ public:
 
     static TimeDuration Seconds(int64_t seconds);
 
-    static TimeDuration Minutes(int64_t minutes);
-
-    static TimeDuration Hours(int64_t hours);
-
-    static TimeDuration Days(int64_t days);
+    static TimeDuration Minutes(int64_t minutes);    
 
     TimeDuration();
 
@@ -68,6 +64,8 @@ public:
     std::chrono::steady_clock::duration value;
 
 private:
+    template<class T> static TimeDuration FromValue(int64_t value);
+
     explicit TimeDuration(std::chrono::steady_clock::duration value);
 };
 

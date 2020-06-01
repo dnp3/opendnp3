@@ -54,6 +54,7 @@ set(unittests_src
     ./TestOutstationUnsolicitedResponses.cpp
     ./TestShiftableBuffer.cpp
 	./TestStaticDataMap.cpp
+    ./TestTimeDuration.cpp
     ./TestTransportLayer.cpp
     ./TestTypedCommandHeader.cpp
     ./TestUpdateBuilder.cpp
