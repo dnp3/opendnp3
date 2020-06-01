@@ -40,29 +40,57 @@ TimeDuration TimeDuration::Zero()
 }
 
 TimeDuration TimeDuration::Milliseconds(int64_t milliseconds)
-{
+{        
+    // > this will overflow when converting to nanos
+    const auto MAX = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::duration::max()).count();
+
+    if (milliseconds > MAX)
+    {
+        return TimeDuration(std::chrono::steady_clock::duration::max());
+    }
+    else
+    {
+        return TimeDuration(std::chrono::milliseconds(milliseconds));
+    }
+    
     return TimeDuration(std::chrono::milliseconds(milliseconds));
 }
 
+
 TimeDuration TimeDuration::Seconds(int64_t seconds)
 {
+    // > this will overflow when converting to nanos
+    const auto MAX = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::duration::max()).count();
+
+    if (seconds > MAX)
+    {
+        return TimeDuration(std::chrono::steady_clock::duration::max());
+    }
+    else
+    {
+        return TimeDuration(std::chrono::seconds(seconds));
+    }
+
     return TimeDuration(std::chrono::seconds(seconds));
 }
 
 TimeDuration TimeDuration::Minutes(int64_t minutes)
 {
-    return TimeDuration(std::chrono::minutes(minutes));
+    // > this will overflow when converting to nanos
+    const auto MAX = std::chrono::duration_cast<std::chrono::minutes>(std::chrono::steady_clock::duration::max()).count();
+
+    if (minutes > MAX)
+    {
+        return TimeDuration(std::chrono::steady_clock::duration::max());
+    }
+    else
+    {
+        return TimeDuration(std::chrono::minutes(minutes));
+    }
+
+    return TimeDuration(std::chrono::seconds(minutes));
 }
 
-TimeDuration TimeDuration::Hours(int64_t hours)
-{
-    return TimeDuration(std::chrono::hours(hours));
-}
-
-TimeDuration TimeDuration::Days(int64_t days)
-{
-    return TimeDuration(std::chrono::hours(24) * days);
-}
 
 TimeDuration::TimeDuration() : value(std::chrono::milliseconds(0)) {}
 
