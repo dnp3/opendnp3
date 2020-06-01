@@ -64,6 +64,8 @@ public:
     std::chrono::steady_clock::duration value;
 
 private:
+    template<class T> static TimeDuration FromValue(int64_t value);
+
     explicit TimeDuration(std::chrono::steady_clock::duration value);
 };
 

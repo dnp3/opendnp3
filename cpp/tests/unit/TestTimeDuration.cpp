@@ -32,5 +32,12 @@ TEST_CASE(SUITE("constructing from maximum values are clamped to prevent overflo
     REQUIRE(TimeDuration::Minutes(std::numeric_limits<int64_t>::max()) == TimeDuration::Max());
 }
 
+TEST_CASE(SUITE("constructing from minimum values are clamped to prevent overflow when converting to nanos"))
+{    
+    REQUIRE(TimeDuration::Milliseconds(std::numeric_limits<int64_t>::min()) == TimeDuration::Min());
+    REQUIRE(TimeDuration::Seconds(std::numeric_limits<int64_t>::min()) == TimeDuration::Min());
+    REQUIRE(TimeDuration::Minutes(std::numeric_limits<int64_t>::min()) == TimeDuration::Min());    
+}
+
 
 

@@ -39,56 +39,39 @@ TimeDuration TimeDuration::Zero()
     return TimeDuration(std::chrono::milliseconds(0));
 }
 
-TimeDuration TimeDuration::Milliseconds(int64_t milliseconds)
-{        
+template<class T> TimeDuration TimeDuration::FromValue(int64_t value)
+{
     // > this will overflow when converting to nanos
-    const auto MAX = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::duration::max()).count();
+    const auto MAX = std::chrono::duration_cast<T>(std::chrono::steady_clock::duration::max()).count();
+    const auto MIN = std::chrono::duration_cast<T>(std::chrono::steady_clock::duration::min()).count();
 
-    if (milliseconds > MAX)
+    if (value > MAX)
     {
         return TimeDuration(std::chrono::steady_clock::duration::max());
     }
-    else
+
+    if (value < MIN)
     {
-        return TimeDuration(std::chrono::milliseconds(milliseconds));
+        return TimeDuration(std::chrono::steady_clock::duration::min());
     }
-    
-    return TimeDuration(std::chrono::milliseconds(milliseconds));
+
+    return TimeDuration(T(value));
+}
+
+TimeDuration TimeDuration::Milliseconds(int64_t milliseconds)
+{        
+    return FromValue<std::chrono::milliseconds>(milliseconds);
 }
 
 
 TimeDuration TimeDuration::Seconds(int64_t seconds)
 {
-    // > this will overflow when converting to nanos
-    const auto MAX = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::steady_clock::duration::max()).count();
-
-    if (seconds > MAX)
-    {
-        return TimeDuration(std::chrono::steady_clock::duration::max());
-    }
-    else
-    {
-        return TimeDuration(std::chrono::seconds(seconds));
-    }
-
-    return TimeDuration(std::chrono::seconds(seconds));
+    return FromValue<std::chrono::seconds>(seconds);
 }
 
 TimeDuration TimeDuration::Minutes(int64_t minutes)
 {
-    // > this will overflow when converting to nanos
-    const auto MAX = std::chrono::duration_cast<std::chrono::minutes>(std::chrono::steady_clock::duration::max()).count();
-
-    if (minutes > MAX)
-    {
-        return TimeDuration(std::chrono::steady_clock::duration::max());
-    }
-    else
-    {
-        return TimeDuration(std::chrono::minutes(minutes));
-    }
-
-    return TimeDuration(std::chrono::seconds(minutes));
+    return FromValue<std::chrono::minutes>(minutes);
 }
 
 
