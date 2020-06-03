@@ -31,16 +31,18 @@ using namespace opendnp3;
 
 int main(int argc, char* argv[])
 {
-    if (argc != 3)
+    if (argc != 4)
     {
-        std::cout << "usage: master-tls-demo <peer certificate> <private key/certificate>" << std::endl;
+        std::cout << "usage: master-tls-demo <peer certificate> <local certificate> <private key>" << std::endl;
         return -1;
     }
 
     std::string peerCertificate(argv[1]);
-    std::string privateKey(argv[2]);
+    std::string localCertificate(argv[2]);
+    std::string privateKey(argv[3]);
 
     std::cout << "Using peer cert: " << peerCertificate << std::endl;
+    std::cout << "Using local cert: " << localCertificate << std::endl;
     std::cout << "Using private key file: " << privateKey << std::endl;
 
     // Specify what log levels to use. NORMAL is warning and above
@@ -54,7 +56,7 @@ int main(int argc, char* argv[])
     // Connect via a TCPClient socket to a outstation
     auto channel = manager.AddTLSClient(
         "tls-client", logLevels, ChannelRetry::Default(), {IPEndpoint("127.0.0.1", 20001)}, "0.0.0.0",
-        TLSConfig(peerCertificate, privateKey, privateKey), PrintingChannelListener::Create());
+        TLSConfig(peerCertificate, localCertificate, privateKey), PrintingChannelListener::Create());
 
     // The master config object for a master. The default are
     // useable, but understanding the options are important.
