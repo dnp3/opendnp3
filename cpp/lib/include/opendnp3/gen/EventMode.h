@@ -48,8 +48,7 @@ enum class EventMode : uint8_t
   Force = 0x1,
   /// Never produce an event regardless of changes
   Suppress = 0x2,
-  /// Force the creation of an event bypassing detection mechanism, but does not
-  /// update the static value
+  /// Force the creation of an event bypassing detection mechanism, but does not update the static value
   EventOnly = 0x3
 };
 
