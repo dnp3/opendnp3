@@ -36,7 +36,7 @@ using namespace opendnp3;
 DatabaseConfig ConfigureDatabase()
 {
     DatabaseConfig config(10); // 10 of each type with default settings
-            
+
     config.analog_input[0].clazz = PointClass::Class2;
     config.analog_input[0].svariation = StaticAnalogVariation::Group30Var5;
     config.analog_input[0].evariation = EventAnalogVariation::Group32Var7;
@@ -73,7 +73,7 @@ int main(int argc, char* argv[])
     auto channel = std::shared_ptr<IChannel>(nullptr);
     try
     {
-        channel = manager.AddTCPServer("server", logLevels, ServerAcceptMode::CloseExisting, IPEndpoint("asdf", 20000),
+        channel = manager.AddTCPServer("server", logLevels, ServerAcceptMode::CloseExisting, IPEndpoint("0.0.0.0", 20000),
                                        PrintingChannelListener::Create());
     }
     catch(const std::exception& e)

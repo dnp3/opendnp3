@@ -57,16 +57,16 @@ int main(int argc, char* argv[])
 {
     if (argc != 4)
     {
-        std::cout << "usage: master-gprs-tls-demo <ca certificate> <certificate chain> <private key>" << std::endl;
+        std::cout << "usage: master-gprs-tls-demo <peer certificate> <local certificate chain> <private key>" << std::endl;
         return -1;
     }
 
-    std::string caCertificate(argv[1]);
-    std::string certificateChain(argv[2]);
+    std::string peerCertificate(argv[1]);
+    std::string localCertificate(argv[2]);
     std::string privateKey(argv[3]);
 
-    std::cout << "Using CA certificate: " << caCertificate << std::endl;
-    std::cout << "Using certificate chain: " << certificateChain << std::endl;
+    std::cout << "Using peer certificate: " << peerCertificate << std::endl;
+    std::cout << "Using local certificate: " << localCertificate << std::endl;
     std::cout << "Using private key file: " << privateKey << std::endl;
 
     // Specify what log levels to use. NORMAL is warning and above
@@ -79,7 +79,7 @@ int main(int argc, char* argv[])
 
     // Create a TCP server (listener)
     auto channel = manager.AddTLSServer("server", logLevels, ServerAcceptMode::CloseExisting, IPEndpoint("0.0.0.0", 20001),
-                                        TLSConfig(caCertificate, certificateChain, privateKey),
+                                        TLSConfig(peerCertificate, localCertificate, privateKey),
                                         PrintingChannelListener::Create());
 
     // The main object for a outstation. The defaults are useable,

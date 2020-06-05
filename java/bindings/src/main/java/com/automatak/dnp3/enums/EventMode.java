@@ -48,7 +48,7 @@ public enum EventMode
   */
   Suppress(0x2),
   /**
-  * Send an event directly to the event buffer, bypassing the static value completely
+  * Force the creation of an event bypassing detection mechanism, but does not update the static value
   */
   EventOnly(0x3);
 

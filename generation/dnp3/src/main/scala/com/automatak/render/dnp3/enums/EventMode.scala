@@ -34,10 +34,7 @@ object EventMode {
     EnumValue("Detect", 0, "Detect events using the specific mechanism for that type"),
     EnumValue("Force", 1, "Force the creation of an event bypassing detection mechanism"),
     EnumValue("Suppress", 2, "Never produce an event regardless of changes"),
-    EnumValue("EventOnly", 3, "Send an event directly to the event buffer, bypassing the static value completely")
+    EnumValue("EventOnly", 3, "Force the creation of an event bypassing detection mechanism, but does not update the static value")
   )
 
 }
-
-
-

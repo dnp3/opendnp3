@@ -165,8 +165,6 @@ public:
 
     iterator end();
 
-    iterator find(uint16_t index);
-
 private:
     map_t map;
     Range selected;
@@ -252,7 +250,7 @@ bool StaticDataMap<Spec>::update(const map_iter_t& iter,
         iter->second.value = new_value;
     }
 
-    if (mode == EventMode::Force || Spec::IsEvent(iter->second.event.lastEvent, new_value, iter->second.config))
+    if (mode == EventMode::Force || mode == EventMode::EventOnly || Spec::IsEvent(iter->second.event.lastEvent, new_value, iter->second.config))
     {
         iter->second.event.lastEvent = new_value;
         if (mode != EventMode::Suppress)

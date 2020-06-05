@@ -88,12 +88,49 @@ TEST_CASE(SUITE("can only add points that aren't already defined"))
 TEST_CASE(SUITE("can detect events on existing point"))
 {
     StaticDataMap<BinarySpec> map{{{0, {}}}};
+    map.select_all();
 
     EventReceiver receiver;
     REQUIRE(map.update(Binary(true), 0, EventMode::Detect, receiver));
     REQUIRE(receiver.count == 1);
     REQUIRE(map.update(Binary(true), 0, EventMode::Detect, receiver));
     REQUIRE(receiver.count == 1);
+}
+
+TEST_CASE(SUITE("can force events on existing point"))
+{
+    StaticDataMap<BinarySpec> map{{{0, {}}}};
+    map.select_all();
+
+    EventReceiver receiver;
+    REQUIRE(map.update(Binary(true), 0, EventMode::Force, receiver));
+    REQUIRE(receiver.count == 1);
+    REQUIRE(map.update(Binary(true), 0, EventMode::Force, receiver));
+    REQUIRE(receiver.count == 2);
+}
+
+TEST_CASE(SUITE("can ignore events on existing point"))
+{
+    StaticDataMap<BinarySpec> map{{{0, {}}}};
+    map.select_all();
+
+    EventReceiver receiver;
+    REQUIRE(map.update(Binary(true), 0, EventMode::Suppress, receiver));
+    REQUIRE(receiver.count == 0);
+    REQUIRE(map.update(Binary(true), 0, EventMode::Suppress, receiver));
+    REQUIRE(receiver.count == 0);
+}
+
+TEST_CASE(SUITE("can generate events on existing point"))
+{
+    StaticDataMap<BinarySpec> map{{{0, {}}}};
+    map.select_all();
+
+    EventReceiver receiver;
+    REQUIRE(map.update(Binary(true), 0, EventMode::EventOnly, receiver));
+    REQUIRE(receiver.count == 1);
+    REQUIRE(map.update(Binary(true), 0, EventMode::EventOnly, receiver));
+    REQUIRE(receiver.count == 2);
 }
 
 TEST_CASE(SUITE("can select all points using default variation and iterate"))
