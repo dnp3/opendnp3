@@ -26,10 +26,12 @@ using namespace opendnp3;
 struct EventReceiver : public IEventReceiver
 {
     size_t count = 0;
+    Event<BinarySpec> latestBinaryEvent;
 
     void Update(const Event<BinarySpec>& evt)
     {
         ++count;
+        latestBinaryEvent = evt;
     }
 
     void Update(const Event<DoubleBitBinarySpec>& evt)
@@ -93,6 +95,7 @@ TEST_CASE(SUITE("can detect events on existing point"))
     EventReceiver receiver;
     REQUIRE(map.update(Binary(true), 0, EventMode::Detect, receiver));
     REQUIRE(receiver.count == 1);
+    REQUIRE(receiver.latestBinaryEvent.value.value == true);
     REQUIRE(map.update(Binary(true), 0, EventMode::Detect, receiver));
     REQUIRE(receiver.count == 1);
 }
@@ -100,11 +103,14 @@ TEST_CASE(SUITE("can detect events on existing point"))
 TEST_CASE(SUITE("can force events on existing point"))
 {
     StaticDataMap<BinarySpec> map{{{0, {}}}};
-    map.select_all();
 
     EventReceiver receiver;
     REQUIRE(map.update(Binary(true), 0, EventMode::Force, receiver));
+    map.select(0, StaticBinaryVariation::Group1Var1);
+    REQUIRE((*map.begin()).second.value.value == true);
     REQUIRE(receiver.count == 1);
+    REQUIRE(receiver.latestBinaryEvent.value.value == true);
+
     REQUIRE(map.update(Binary(true), 0, EventMode::Force, receiver));
     REQUIRE(receiver.count == 2);
 }
@@ -112,11 +118,13 @@ TEST_CASE(SUITE("can force events on existing point"))
 TEST_CASE(SUITE("can ignore events on existing point"))
 {
     StaticDataMap<BinarySpec> map{{{0, {}}}};
-    map.select_all();
 
     EventReceiver receiver;
     REQUIRE(map.update(Binary(true), 0, EventMode::Suppress, receiver));
+    map.select(0, StaticBinaryVariation::Group1Var1);
+    REQUIRE((*map.begin()).second.value.value == true);
     REQUIRE(receiver.count == 0);
+
     REQUIRE(map.update(Binary(true), 0, EventMode::Suppress, receiver));
     REQUIRE(receiver.count == 0);
 }
@@ -128,9 +136,16 @@ TEST_CASE(SUITE("can generate events on existing point"))
 
     EventReceiver receiver;
     REQUIRE(map.update(Binary(true), 0, EventMode::EventOnly, receiver));
+    map.select(0, StaticBinaryVariation::Group1Var1);
+    REQUIRE((*map.begin()).second.value.value == false);
     REQUIRE(receiver.count == 1);
+    REQUIRE(receiver.latestBinaryEvent.value.value == true);
+
     REQUIRE(map.update(Binary(true), 0, EventMode::EventOnly, receiver));
+    map.select(0, StaticBinaryVariation::Group1Var1);
+    REQUIRE((*map.begin()).second.value.value == false);
     REQUIRE(receiver.count == 2);
+    REQUIRE(receiver.latestBinaryEvent.value.value == true);
 }
 
 TEST_CASE(SUITE("can select all points using default variation and iterate"))

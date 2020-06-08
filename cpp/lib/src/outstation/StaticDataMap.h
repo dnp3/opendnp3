@@ -258,7 +258,7 @@ bool StaticDataMap<Spec>::update(const map_iter_t& iter,
             EventClass ec;
             if (convert_to_event_class(iter->second.config.clazz, ec))
             {
-                receiver.Update(Event<Spec>(iter->second.value, iter->first, ec, iter->second.config.evariation));
+                receiver.Update(Event<Spec>(new_value, iter->first, ec, iter->second.config.evariation));
             }
         }
     }
