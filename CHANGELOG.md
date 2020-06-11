@@ -1,6 +1,13 @@
+### 3.0.3 ###
+* :beetle: Fix `TimeDuration` overflow bug. See PR
+  [#382](https://github.com/dnp3/opendnp3/pull/382).
+* :beetle: Revert `EventMode::EventOnly` to 2.x behaviour. See PR
+  [#385](https://github.com/dnp3/opendnp3/pull/385) and PR
+  [#386](https://github.com/dnp3/opendnp3/pull/386).
+
 ### 3.0.2 ###
-* :beetle: Fix discrepancy between `DNPTime::TimestampQuality` and `HeaderInfo::TimestampQuality`
-  [#377](https://github.com/dnp3/opendnp3/issues/377).
+* :beetle: Fix discrepancy between `DNPTime::TimestampQuality` and
+  `HeaderInfo::TimestampQuality`. See PR [#379](https://github.com/dnp3/opendnp3/pull/379).
 
 ### 3.0.1 ###
 * :beetle: Fix double-delete issue in C# adapter. See PR
