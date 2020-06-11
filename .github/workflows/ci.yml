@@ -173,6 +173,7 @@ jobs:
   conformance:
     needs: ci-linux
     runs-on: ubuntu-latest
+    if: "!startsWith(github.ref, 'refs/tags/')"
     steps:
       - name: Download pre-compiled OpenDNP3
         uses: actions/download-artifact@v2-preview
