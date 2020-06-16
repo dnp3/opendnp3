@@ -1,3 +1,6 @@
+### 3.0.4 ###
+* :beetle: Fix regression in 3.0 .NET bindings which causes deadband settings to not be applied. See PR [#387](https://github.com/dnp3/opendnp3/pull/387).
+
 ### 3.0.3 ###
 * :beetle: Fix `TimeDuration` overflow bug. See PR
   [#382](https://github.com/dnp3/opendnp3/pull/382).
