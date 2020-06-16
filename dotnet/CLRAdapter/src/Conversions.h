@@ -240,8 +240,8 @@ namespace Automatak
                         ret.clazz = static_cast<opendnp3::PointClass>(config->clazz);
                         ret.evariation = static_cast<Info::event_variation_t>(config->eventVariation);
                         ret.svariation = static_cast<Info::static_variation_t>(config->staticVariation);
+                        ret.deadband = static_cast<Info::value_t>(config->deadband);
                         return ret;
-
                     }
 
                     template <class Target, class Source>
