@@ -54,8 +54,8 @@ LinkContext::~LinkContext()
 {
     std::weak_ptr<void> weak_tracker = timer_tracker;
     timer_tracker.reset();
-    while(!weak_tracker.expired())
-	  ;
+    if(!weak_tracker.expired())
+	  executor->block_until_and_flush([](){});
 }
 
 bool LinkContext::OnLowerLayerUp()
