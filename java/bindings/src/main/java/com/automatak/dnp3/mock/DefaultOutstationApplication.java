@@ -92,6 +92,11 @@ public class DefaultOutstationApplication implements OutstationApplication
     }
 
     @Override
+    public void onConfirmProcessed(boolean isUnsolicited, long numClass1, long numClass2, long numClass3) {
+        // do nothing in the default implementation
+    }
+
+    @Override
     public DNPTime now()
     {
         return new DNPTime(0, TimestampQuality.INVALID);

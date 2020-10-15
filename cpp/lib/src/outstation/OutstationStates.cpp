@@ -99,6 +99,14 @@ OutstationState& StateSolicitedConfirmWait::OnConfirm(OContext& ctx, const Parse
     ctx.eventBuffer.ClearWritten();
     ctx.lastBroadcastMessageReceived.clear();
 
+    // information the application about the confirm
+    ctx.application->OnConfirmProcessed(
+        false,
+        ctx.eventBuffer.NumEvents(EventClass::EC1),
+        ctx.eventBuffer.NumEvents(EventClass::EC2),
+        ctx.eventBuffer.NumEvents(EventClass::EC3)
+    );
+
     if (ctx.rspContext.HasSelection())
     {
         return ctx.ContinueMultiFragResponse(request.addresses, AppSeqNum(request.header.control.SEQ).Next());
@@ -169,6 +177,14 @@ OutstationState& StateUnsolicitedConfirmWait::OnConfirm(OContext& ctx, const Par
     ctx.history.Reset(); // any time we get a confirm we can treat any request as a new request
     ctx.confirmTimer.cancel();
     ctx.lastBroadcastMessageReceived.clear();
+
+    // information the application about the confirm
+    ctx.application->OnConfirmProcessed(
+        true,
+        ctx.eventBuffer.NumEvents(EventClass::EC1),
+        ctx.eventBuffer.NumEvents(EventClass::EC2),
+        ctx.eventBuffer.NumEvents(EventClass::EC3)
+    );
 
     if (ctx.unsol.completedNull)
     {

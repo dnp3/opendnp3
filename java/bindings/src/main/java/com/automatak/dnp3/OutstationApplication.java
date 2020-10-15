@@ -88,6 +88,18 @@ public interface OutstationApplication extends LinkStatusListener {
     int warmRestart();
 
     /**
+     * This method notifies that application code that an expected CONFIRM has been
+     * received, and events may have cleared from the event buffer. It is informational
+     * only.
+     *
+     * @param isUnsolicited true if the confirm is for an unsolicited response, false for a solicited response
+     * @param numClass1 number of Class 1 events remaining in the event buffer after processing the confirm
+     * @param numClass2 number of Class 2 events remaining in the event buffer after processing the confirm
+     * @param numClass3 number of Class 3 events remaining in the event buffer after processing the confirm
+     */
+    void onConfirmProcessed(boolean isUnsolicited, long numClass1, long numClass2, long numClass3);
+
+    /**
      * Return the current time and the synchronization status.
      * This value is used when freezing counters
      *

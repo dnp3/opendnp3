@@ -129,6 +129,10 @@ namespace Automatak
                 return proxy->WarmRestart();
             }
 
+            void OutstationApplicationAdapter::OnConfirmProcessed(bool is_unsolicited, uint32_t num_class1, uint32_t num_class2, uint32_t num_class3)
+            {
+                proxy->OnConfirmProcessed(is_unsolicited, num_class1, num_class2, num_class3);
+            }
         }
     }
 }

@@ -127,6 +127,16 @@ public:
         return 65535;
     }
 
+    /// This method notifies that application code that an expected CONFIRM has been
+    /// received, and events may have cleared from the event buffer. It is informational
+    /// only.
+    ///
+    /// @param is_unsolicited true, if the confirm is for an unsolicited response, false for a solicited response
+    /// @param num_class1 number of Class 1 events remaining in the event buffer after processing the confirm
+    /// @param num_class2 number of Class 2 events remaining in the event buffer after processing the confirm
+    /// @param num_class3 number of Class 3 events remaining in the event buffer after processing the confirm
+    virtual void OnConfirmProcessed(bool is_unsolicited, uint32_t num_class1, uint32_t num_class2, uint32_t num_class3) {}
+
     virtual ~IOutstationApplication() = default;
 };
 
