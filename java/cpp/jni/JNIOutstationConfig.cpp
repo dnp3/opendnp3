@@ -42,7 +42,7 @@ namespace jni
             this->clazz = (jclass) env->NewGlobalRef(clazzTemp);
             env->DeleteLocalRef(clazzTemp);
 
-            this->maxControlsPerRequestField = env->GetFieldID(this->clazz, "maxControlsPerRequest", "S");
+            this->maxControlsPerRequestField = env->GetFieldID(this->clazz, "maxControlsPerRequest", "J");
             if(!this->maxControlsPerRequestField) return false;
 
             this->selectTimeoutField = env->GetFieldID(this->clazz, "selectTimeout", "Ljava/time/Duration;");
@@ -85,9 +85,9 @@ namespace jni
             return env->GetBooleanField(instance, this->allowUnsolicitedField);
         }
 
-        jshort OutstationConfig::getmaxControlsPerRequest(JNIEnv* env, JOutstationConfig instance)
+        jlong OutstationConfig::getmaxControlsPerRequest(JNIEnv* env, JOutstationConfig instance)
         {
-            return env->GetShortField(instance, this->maxControlsPerRequestField);
+            return env->GetLongField(instance, this->maxControlsPerRequestField);
         }
 
         jint OutstationConfig::getmaxRxFragSize(JNIEnv* env, JOutstationConfig instance)

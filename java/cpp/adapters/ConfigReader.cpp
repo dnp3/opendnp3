@@ -170,7 +170,7 @@ opendnp3::OutstationParams ConfigReader::Convert(JNIEnv* env, jni::JOutstationCo
 
     auto& cfg = jni::JCache::OutstationConfig;
 
-    config.maxControlsPerRequest = static_cast<uint8_t>(cfg.getmaxControlsPerRequest(env, jconfig));
+    config.maxControlsPerRequest = static_cast<uint32_t>(cfg.getmaxControlsPerRequest(env, jconfig));
     config.selectTimeout = Convert(env, cfg.getselectTimeout(env, jconfig));
     config.solConfirmTimeout = Convert(env, cfg.getsolConfirmTimeout(env, jconfig));
     config.unsolConfirmTimeout = Convert(env, cfg.getunsolConfirmTimeout(env, jconfig));

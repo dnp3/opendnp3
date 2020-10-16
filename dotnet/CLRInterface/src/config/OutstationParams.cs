@@ -34,7 +34,7 @@ namespace Automatak.DNP3.Interface
         /// <summary>
         /// The maximum number of controls the outstation will attempt to process from a single APDU
         /// </summary>
-        public System.Byte maxControlsPerRequest = 16;
+        public System.UInt32 maxControlsPerRequest = System.UInt32.MaxValue;
 
         /// <summary>
         ///  How long the outstation will allow an operate to proceed after a prior select

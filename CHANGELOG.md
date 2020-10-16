@@ -1,6 +1,8 @@
 ### 3.1.0 ###
 * :star: Added `IOutstationApplication::OnConfirmProcess`.
   See PR [#403](https://github.com/dnp3/opendnp3/pull/403).
+* :star: `OutstationParams::maxControlsPerRequest` is now a`uint32_t` and its
+  default value is 4,294,967,295. See issue [#390](https://github.com/dnp3/opendnp3/issues/390).
 * :beetle: Fix `FrozenCounter::toString()` in Java bindings.
   See issue [#389](https://github.com/dnp3/opendnp3/pull/389).
 
