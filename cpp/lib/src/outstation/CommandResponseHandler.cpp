@@ -27,7 +27,7 @@
 namespace opendnp3
 {
 
-CommandResponseHandler::CommandResponseHandler(uint8_t maxCommands_,
+CommandResponseHandler::CommandResponseHandler(uint32_t maxCommands_,
                                                ICommandAction* pCommandAction_,
                                                HeaderWriter* pWriter_)
     : pCommandAction(pCommandAction_), numRequests(0), numSuccess(0), maxCommands(maxCommands_), pWriter(pWriter_)

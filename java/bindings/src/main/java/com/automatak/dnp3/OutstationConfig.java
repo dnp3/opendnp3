@@ -31,7 +31,7 @@ public class OutstationConfig {
     /**
      * The maximum number of controls the outstation will attempt to process from a single APDU
      */
-    public short maxControlsPerRequest = 16;
+    public long maxControlsPerRequest = 4294967295L;
 
     /**
      * How long the outstation will allow an operate to proceed after a prior select

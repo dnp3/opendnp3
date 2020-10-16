@@ -35,6 +35,6 @@ public class FrozenCounter extends Measurement
 
     @Override
     public String toString() {
-        return String.format("FrozenCounter(%d, 0x%x, %d)", value, quality, timestamp);
+        return String.format("FrozenCounter(%d, 0x%x, %d)", value, quality.getValue(), timestamp.msSinceEpoch);
     }
 }
