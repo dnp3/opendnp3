@@ -1,3 +1,7 @@
+### 3.1.0 ###
+* :star: Added `IOutstationApplication::OnConfirmProcess`.
+  See PR [#403](https://github.com/dnp3/opendnp3/pull/403).
+
 ### 3.0.4 ###
 * :beetle: Fix regression in 3.0 .NET bindings which causes deadband settings to
   not be applied. See PR [#387](https://github.com/dnp3/opendnp3/pull/387).
