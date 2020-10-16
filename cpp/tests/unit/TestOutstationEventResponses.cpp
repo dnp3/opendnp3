@@ -137,6 +137,13 @@ TEST_CASE(SUITE("EventBufferOverflowAndClear"))
     t.OnTxReady();
     t.SendToOutstation(hex::SolicitedConfirm(1));
 
+    // Check that the confirm is reported to the IOutstationApplication
+    REQUIRE(t.application->confirms.size() == 1);
+    REQUIRE(t.application->confirms[0].is_unsolicited == false);
+    REQUIRE(t.application->confirms[0].num_class1 == 1);
+    REQUIRE(t.application->confirms[0].num_class2 == 0);
+    REQUIRE(t.application->confirms[0].num_class3 == 0);
+
     t.SendToOutstation("C0 01");
     REQUIRE("C0 81 82 00" == t.lower->PopWriteAsHex());
 }

@@ -277,6 +277,13 @@ TEST_CASE(SUITE("UnsolData"))
     t.OnTxReady();
     t.SendToOutstation(hex::UnsolConfirm(0));
 
+    // Check that the confirm is reported to the IOutstationApplication
+    REQUIRE(t.application->confirms.size() == 1);
+    REQUIRE(t.application->confirms[0].is_unsolicited == true);
+    REQUIRE(t.application->confirms[0].num_class1 == 0);
+    REQUIRE(t.application->confirms[0].num_class2 == 0);
+    REQUIRE(t.application->confirms[0].num_class3 == 0);
+
     // do a transaction before the layer comes online to prove that the null transaction
     // is occuring before unsol data is sent
     t.Transaction([](IUpdateHandler& db) { db.Update(Binary(false, Flags(0x01)), 2); });
@@ -287,6 +294,13 @@ TEST_CASE(SUITE("UnsolData"))
     t.OnTxReady();
     t.SendToOutstation(hex::UnsolConfirm(1));
     REQUIRE(t.lower->PopWriteAsHex().empty());
+
+    // Check that the confirm is reported to the IOutstationApplication
+    REQUIRE(t.application->confirms.size() == 2);
+    REQUIRE(t.application->confirms[1].is_unsolicited == true);
+    REQUIRE(t.application->confirms[1].num_class1 == 0);
+    REQUIRE(t.application->confirms[1].num_class2 == 0);
+    REQUIRE(t.application->confirms[1].num_class3 == 0);
 }
 
 TEST_CASE(SUITE("UnsolEventBufferOverflow"))
@@ -315,6 +329,13 @@ TEST_CASE(SUITE("UnsolEventBufferOverflow"))
     REQUIRE(t.lower->PopWriteAsHex() == "F1 82 80 08 02 01 28 02 00 00 00 01 00 00 81");
     t.OnTxReady();
     t.SendToOutstation(hex::UnsolConfirm(1));
+
+    // Check that the confirm is reported to the IOutstationApplication
+    REQUIRE(t.application->confirms.size() == 2);
+    REQUIRE(t.application->confirms[1].is_unsolicited == true);
+    REQUIRE(t.application->confirms[1].num_class1 == 0);
+    REQUIRE(t.application->confirms[1].num_class2 == 0);
+    REQUIRE(t.application->confirms[1].num_class3 == 0);
 
     REQUIRE(t.lower->PopWriteAsHex().empty());
 }
@@ -345,12 +366,26 @@ TEST_CASE(SUITE("UnsolMultiFragments"))
     t.OnTxReady();
     t.SendToOutstation(hex::UnsolConfirm(1));
 
+    // Check that the confirm is reported to the IOutstationApplication
+    REQUIRE(t.application->confirms.size() == 2);
+    REQUIRE(t.application->confirms[1].is_unsolicited == true);
+    REQUIRE(t.application->confirms[1].num_class1 == 1);
+    REQUIRE(t.application->confirms[1].num_class2 == 0);
+    REQUIRE(t.application->confirms[1].num_class3 == 0);
+
     // should immediately try to send another unsol packet
     REQUIRE(t.lower->PopWriteAsHex() == "F2 82 80 00 20 01 28 01 00 03 00 01 0D 00 00 00");
     t.OnTxReady();
     t.SendToOutstation(hex::UnsolConfirm(2));
 
     REQUIRE(t.lower->PopWriteAsHex().empty());
+
+    // Check that the confirm is reported to the IOutstationApplication
+    REQUIRE(t.application->confirms.size() == 3);
+    REQUIRE(t.application->confirms[2].is_unsolicited == true);
+    REQUIRE(t.application->confirms[2].num_class1 == 0);
+    REQUIRE(t.application->confirms[2].num_class2 == 0);
+    REQUIRE(t.application->confirms[2].num_class3 == 0);
 }
 
 void WriteDuringUnsol(bool beforeTx)
