@@ -25,6 +25,14 @@
 #include <deque>
 #include <tuple>
 
+struct ConfirmResult
+{
+    bool is_unsolicited;
+    uint32_t num_class1;
+    uint32_t num_class2;
+    uint32_t num_class3;
+};
+
 class MockOutstationApplication : public opendnp3::IOutstationApplication
 {
 public:
@@ -119,6 +127,16 @@ public:
         return warmRestartTimeDelay;
     }
 
+    void OnConfirmProcessed(bool is_unsolicited, uint32_t num_class1, uint32_t num_class2, uint32_t num_class3) final
+    {
+        ConfirmResult confirm{};
+        confirm.is_unsolicited = is_unsolicited;
+        confirm.num_class1 = num_class1;
+        confirm.num_class2 = num_class2;
+        confirm.num_class3 = num_class3;
+        this->confirms.push_back(confirm);
+    }
+
     void SetTime(opendnp3::DNPTime time)
     {
         this->currentTime = time;
@@ -143,6 +161,7 @@ public:
     std::deque<opendnp3::UTCTimestamp> timestamps;
     std::deque<std::tuple<opendnp3::AssignClassType, opendnp3::PointClass, uint16_t, uint16_t>> classAssignments;
     std::deque<opendnp3::Indexed<opendnp3::TimeAndInterval>> timeAndIntervals;
+    std::deque<ConfirmResult> confirms;
 };
 
 #endif

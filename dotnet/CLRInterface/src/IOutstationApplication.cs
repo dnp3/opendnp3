@@ -84,6 +84,16 @@ namespace Automatak.DNP3.Interface
 	    /// @return number of seconds or milliseconds until restart is complete. The value
 	    /// is interpreted based on the Restart Mode returned from WarmRestartSupport()
         UInt16 WarmRestart();
+
+        /// This method notifies that application code that an expected CONFIRM has been
+        /// received, and events may have cleared from the event buffer. It is informational
+        /// only.
+        ///
+        /// <param name="is_unsolicited">true, if the confirm is for an unsolicited response, false for a solicited response</param>
+        /// <param name="num_class1">number of Class 1 events remaining in the event buffer after processing the confirm</param>
+        /// <param name="num_class2">number of Class 1 events remaining in the event buffer after processing the confirm</param>
+        /// <param name="num_class3">number of Class 3 events remaining in the event buffer after processing the confirm</param>
+        void OnConfirmProcessed(bool is_unsolicited, uint num_class1, uint num_class2, uint num_class3);
     }
 
     public class DefaultOutstationApplication : IOutstationApplication
@@ -176,6 +186,8 @@ namespace Automatak.DNP3.Interface
         {
             return UInt16.MaxValue;
         }
+
+        void IOutstationApplication.OnConfirmProcessed(bool is_unsolicited, uint num_class1, uint num_class2, uint num_class3) {}
 
         DNPTime IDnpTimeSource.Now()
         {

@@ -40,11 +40,11 @@ namespace Automatak
             public:
                 OutstationApplicationAdapter(Automatak::DNP3::Interface::IOutstationApplication^ proxy);
 
-                virtual void OnStateChange(opendnp3::LinkStatus value) override;
+                virtual void OnStateChange(opendnp3::LinkStatus value) override final;
                 
-                virtual void OnUnknownDestinationAddress(uint16_t destination) override;
+                virtual void OnUnknownDestinationAddress(uint16_t destination) override final;
                 
-                virtual void OnUnknownSourceAddress(uint16_t source) override;
+                virtual void OnUnknownSourceAddress(uint16_t source) override final;
 
                 virtual void OnKeepAliveInitiated() override final;
 
@@ -70,9 +70,11 @@ namespace Automatak
 
                 virtual opendnp3::RestartMode WarmRestartSupport() const override final;
 
-                virtual uint16_t ColdRestart();
+                virtual uint16_t ColdRestart() override final;
 
-                virtual uint16_t WarmRestart();
+                virtual uint16_t WarmRestart() override final;
+
+                virtual void OnConfirmProcessed(bool is_unsolicited, uint32_t num_class1, uint32_t num_class2, uint32_t num_class3) override final;
 
             private:
 

@@ -52,6 +52,8 @@ public:
 
     uint16_t WarmRestart() override;
 
+    void OnConfirmProcessed(bool is_unsolicited, uint32_t num_class1, uint32_t num_class2, uint32_t num_class3) override;
+
     opendnp3::DNPTime Now() override;
 
 private:
