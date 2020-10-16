@@ -1,6 +1,8 @@
 ### 3.1.0 ###
 * :star: Added `IOutstationApplication::OnConfirmProcess`.
   See PR [#403](https://github.com/dnp3/opendnp3/pull/403).
+* :beetle: Fix `FrozenCounter::toString()` in Java bindings.
+  See issue [#389](https://github.com/dnp3/opendnp3/pull/389).
 
 ### 3.0.4 ###
 * :beetle: Fix regression in 3.0 .NET bindings which causes deadband settings to
