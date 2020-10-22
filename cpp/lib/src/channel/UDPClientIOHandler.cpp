@@ -59,7 +59,9 @@ void UDPClientIOHandler::SuspendChannelAccept()
 
 void UDPClientIOHandler::OnChannelShutdown()
 {
-    this->BeginChannelAccept();
+    this->retrytimer = this->executor->start(this->retry.reconnectDelay.value, [this, self = shared_from_this()]() {
+        this->BeginChannelAccept();
+    });
 }
 
 bool UDPClientIOHandler::TryOpen(const TimeDuration& delay)
