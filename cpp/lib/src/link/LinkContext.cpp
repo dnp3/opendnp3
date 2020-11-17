@@ -253,12 +253,20 @@ void LinkContext::OnResponseTimeout()
 
 void LinkContext::StartResponseTimer()
 {
-    rspTimeoutTimer = executor->start(config.Timeout.value, [this]() { this->OnResponseTimeout(); });
+    std::weak_ptr<void> guard = this->lifetimeGuard;
+    rspTimeoutTimer = executor->start(config.Timeout.value, [this, guard]() {
+        if (guard.lock())
+            this->OnResponseTimeout();
+    });
 }
 
 void LinkContext::StartKeepAliveTimer(const Timestamp& expiration)
 {
-    this->keepAliveTimer = executor->start(expiration.value, [this]() { this->OnKeepAliveTimeout(); });
+    std::weak_ptr<void> guard = this->lifetimeGuard;
+    this->keepAliveTimer = executor->start(expiration.value, [this, guard]() {
+        if (guard.lock())
+            this->OnKeepAliveTimeout();
+    });
 }
 
 void LinkContext::CancelTimer()
