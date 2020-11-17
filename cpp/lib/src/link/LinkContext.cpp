@@ -239,7 +239,7 @@ void LinkContext::OnKeepAliveTimeout()
         this->keepAliveTimeout = true;
     }
 
-    this->StartKeepAliveTimer(now + config.KeepAliveTimeout);
+    this->StartKeepAliveTimer(this->lastMessageTimestamp + config.KeepAliveTimeout);
 
     this->TryStartTransmission();
 }
