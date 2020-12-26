@@ -47,6 +47,7 @@ namespace Automatak.DNP3.Interface
             this.maxFrozenCounterEvents = count;
             this.maxBinaryOutputStatusEvents = count;
             this.maxAnalogOutputStatusEvents = count;
+            this.maxOctetStringEvents = count;
         }
 
 
@@ -92,6 +93,11 @@ namespace Automatak.DNP3.Interface
         /// The number of analog output status events the outstation will buffer before overflowing
         /// </summary>
         public System.UInt16 maxAnalogOutputStatusEvents;
+
+        /// <summary>
+        /// The number of octet stringevents the outstation will buffer before overflowing
+        /// </summary>
+        public System.UInt16 maxOctetStringEvents;
     }
 
 }
