@@ -187,12 +187,12 @@ namespace Automatak.DNP3.Interface
 
         private static void Print(OctetString value, UInt16 index)
         {            
-            Console.WriteLine("OctetString[" + index + "] lemgth: " + value.Bytes.Length);            
+            Console.WriteLine("OctetString[" + index + "] length: " + value.Bytes.Length);            
         }
 
         private static void Print(TimeAndInterval value, UInt16 index)
-        {            
-            Console.WriteLine(String.Format("TimeAndInterval[{0}] {1}", index, value));           
+        {
+            Console.WriteLine(String.Format("TimeAndInterval[{0}] {1}", index, value));
         }
 
         private static void Print(BinaryCommandEvent value, UInt16 index)

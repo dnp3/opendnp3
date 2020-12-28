@@ -320,6 +320,24 @@ TEST_CASE(SUITE("octet strings can be returned as part of a class 0 scan"))
     REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 6E 01 00 00 02 00 00 00");
 }
 
+TEST_CASE(SUITE("static octet strings switch headers if length differs"))
+{
+    OutstationConfig config;
+    config.params.typesAllowedInClass0 = StaticTypeBitField::AllTypes();
+    OutstationTestObject t(config, configure::by_count_of::octet_string(2));
+
+    OctetString data;
+    REQUIRE(data.Set("a"));
+    REQUIRE(t.context.GetUpdateHandler().Update(data, 0));
+    REQUIRE(data.Set("bb"));
+    REQUIRE(t.context.GetUpdateHandler().Update(data, 1));
+
+    t.LowerLayerUp();
+    t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
+
+    REQUIRE(t.lower->PopWriteAsHex() == "C0 81 80 00 6E 01 00 00 00 61 6E 02 00 01 01 62 62");
+}
+
 TEST_CASE(SUITE("octet strings can be returned by reading g110v0"))
 {
     OutstationConfig config;

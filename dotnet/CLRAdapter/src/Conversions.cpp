@@ -373,6 +373,7 @@ namespace DNP3
             config.maxAnalogEvents = cm->maxAnalogEvents;
             config.maxBinaryOutputStatusEvents = cm->maxBinaryOutputStatusEvents;
             config.maxAnalogOutputStatusEvents = cm->maxAnalogOutputStatusEvents;
+            config.maxOctetStringEvents = cm->maxOctetStringEvents;
             return config;
         }
 
