@@ -251,22 +251,34 @@ static_write_func_t<TimeAndIntervalSpec> StaticWriters::get(StaticTimeAndInterva
 
 template<class Writer> bool write_some_octet_strings(StaticDataMap<OctetStringSpec>& map, Writer& writer)
 {
-    auto next_index = map.get_selected_range().start;
+    bool first = true;
+    uint8_t last_length = 0;
+    uint16_t next_index = 0;
 
     for (const auto& elem : map)
     {
-        if (elem.first != next_index)
-        {
-            // we've loaded all we can with a contiguous range
-            return true;
+
+        if(!first) {
+
+            if(next_index != elem.first) {
+                // discontiguous indices
+                return true;
+            }
+
+            if(last_length != elem.second.value.Size()) {
+                // different lengths
+                return true;
+            }
         }
+
+        first = false;
+        next_index = elem.first + 1;
+        last_length = elem.second.value.Size();
 
         if (!writer.Write(elem.second.value))
         {
             return false;
         }
-
-        ++next_index;
     }
 
     return true;
