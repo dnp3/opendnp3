@@ -1,3 +1,7 @@
+### 3.1.1 ###
+* :beetle: Fix static octet string serilazation bug.
+* :star: Add missing octet string configuration to C# `EventBufferConfig`.
+
 ### 3.1.0 ###
 * :star: Added `IOutstationApplication::OnConfirmProcess`.
   See PR [#403](https://github.com/dnp3/opendnp3/pull/403).
