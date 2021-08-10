@@ -1,3 +1,6 @@
+### Next ###
+* :beetle: Fix `PrintingSOEHandler` octet string size not printing properly.
+
 ### 3.1.1 ###
 * :beetle: Fix static octet string serilazation bug.
 * :star: Add missing octet string configuration to C# `EventBufferConfig`.
