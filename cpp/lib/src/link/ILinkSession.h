@@ -21,6 +21,7 @@
 #define OPENDNP3_ILINKSESSION_H
 
 #include "IFrameSink.h"
+#include <memory>
 
 namespace opendnp3
 {
