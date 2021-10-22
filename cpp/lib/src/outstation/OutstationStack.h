@@ -39,7 +39,6 @@ namespace opendnp3
 class OutstationStack final : public IOutstation,
                               public ILinkSession,
                               public ILinkTx,
-                              public std::enable_shared_from_this<OutstationStack>,
                               public StackBase
 {
 public:
@@ -114,6 +113,12 @@ public:
 
 private:
     OContext ocontext;
+
+private:
+    std::shared_ptr<OutstationStack> shared_from_this()
+    {
+	  return std::static_pointer_cast<OutstationStack>(ILinkSession::shared_from_this());
+    }
 };
 
 } // namespace opendnp3

@@ -33,7 +33,6 @@ namespace opendnp3
 class MasterStack : public IMaster,
                     public ILinkSession,
                     public ILinkTx,
-                    public std::enable_shared_from_this<MasterStack>,
                     public StackBase
 {
 public:
@@ -165,6 +164,12 @@ public:
 
 protected:
     MContext mcontext;
+
+private:
+    std::shared_ptr<MasterStack> shared_from_this()
+    {
+	  return std::static_pointer_cast<MasterStack>(ILinkSession::shared_from_this());
+    }
 };
 
 } // namespace opendnp3

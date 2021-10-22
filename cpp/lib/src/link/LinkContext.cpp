@@ -253,12 +253,22 @@ void LinkContext::OnResponseTimeout()
 
 void LinkContext::StartResponseTimer()
 {
-    rspTimeoutTimer = executor->start(config.Timeout.value, [this]() { this->OnResponseTimeout(); });
+    std::weak_ptr<ILinkSession> weak_session = pSession->shared_from_this();
+    rspTimeoutTimer = executor->start(config.Timeout.value, [this,weak_session]()
+    {
+	  if(auto session = weak_session.lock())
+		this->OnResponseTimeout();
+    });
 }
 
 void LinkContext::StartKeepAliveTimer(const Timestamp& expiration)
 {
-    this->keepAliveTimer = executor->start(expiration.value, [this]() { this->OnKeepAliveTimeout(); });
+    std::weak_ptr<ILinkSession> weak_session = pSession->shared_from_this();
+    this->keepAliveTimer = executor->start(expiration.value, [this,weak_session]()
+    {
+	  if(auto session = weak_session.lock())
+		this->OnKeepAliveTimeout();
+    });
 }
 
 void LinkContext::CancelTimer()

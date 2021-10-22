@@ -26,7 +26,7 @@ namespace opendnp3
 {
 
 // @section DESCRIPTION Interface from the link router to the link layer
-class ILinkSession : public IFrameSink
+class ILinkSession : public IFrameSink, public std::enable_shared_from_this<ILinkSession>
 {
 public:
     virtual ~ILinkSession() {}
