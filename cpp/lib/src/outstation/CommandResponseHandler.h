@@ -32,7 +32,7 @@ namespace opendnp3
 class CommandResponseHandler : public IAPDUHandler
 {
 public:
-    CommandResponseHandler(uint8_t maxCommands_, ICommandAction* pCommandAction_, HeaderWriter* pWriter_);
+    CommandResponseHandler(uint32_t maxCommands_, ICommandAction* pCommandAction_, HeaderWriter* pWriter_);
 
     bool AllCommandsSuccessful() const
     {
@@ -74,7 +74,7 @@ private:
     ICommandAction* pCommandAction;
     uint32_t numRequests;
     uint32_t numSuccess;
-    const uint8_t maxCommands;
+    const uint32_t maxCommands;
     HeaderWriter* pWriter;
 
     template<class T> IINField ProcessAny(const HeaderRecord& record, const ICollection<Indexed<T>>& meas);

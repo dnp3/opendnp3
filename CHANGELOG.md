@@ -1,3 +1,18 @@
+### Next ###
+* :beetle: Fix `PrintingSOEHandler` octet string size not printing properly.
+
+### 3.1.1 ###
+* :beetle: Fix static octet string serilazation bug.
+* :star: Add missing octet string configuration to C# `EventBufferConfig`.
+
+### 3.1.0 ###
+* :star: Added `IOutstationApplication::OnConfirmProcess`.
+  See PR [#403](https://github.com/dnp3/opendnp3/pull/403).
+* :star: `OutstationParams::maxControlsPerRequest` is now a`uint32_t` and its
+  default value is 4,294,967,295. See issue [#390](https://github.com/dnp3/opendnp3/issues/390).
+* :beetle: Fix `FrozenCounter::toString()` in Java bindings.
+  See issue [#389](https://github.com/dnp3/opendnp3/pull/389).
+
 ### 3.0.4 ###
 * :beetle: Fix regression in 3.0 .NET bindings which causes deadband settings to
   not be applied. See PR [#387](https://github.com/dnp3/opendnp3/pull/387).

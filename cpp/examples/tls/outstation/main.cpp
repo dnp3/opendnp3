@@ -97,7 +97,7 @@ int main(int argc, char* argv[])
     // You can override the default link layer settings here
     // in this example we've changed the default link layer addressing
     stackConfig.link.LocalAddr = 10;
-    stackConfig.link.RemoteAddr = 1;    
+    stackConfig.link.RemoteAddr = 1;
 
     // Create a new outstation with a log level, command handler, and
     // config info this	returns a thread-safe interface used for

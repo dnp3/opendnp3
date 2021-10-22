@@ -53,7 +53,7 @@ namespace jni
 
             // field getter methods
             jboolean getallowUnsolicited(JNIEnv* env, JOutstationConfig instance);
-            jshort getmaxControlsPerRequest(JNIEnv* env, JOutstationConfig instance);
+            jlong getmaxControlsPerRequest(JNIEnv* env, JOutstationConfig instance);
             jint getmaxRxFragSize(JNIEnv* env, JOutstationConfig instance);
             jint getmaxTxFragSize(JNIEnv* env, JOutstationConfig instance);
             jboolean getnoDefferedReadDuringUnsolicitedNullResponse(JNIEnv* env, JOutstationConfig instance);

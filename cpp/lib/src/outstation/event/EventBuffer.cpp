@@ -225,4 +225,9 @@ void EventBuffer::ClearWritten()
     this->storage.ClearWritten();
 }
 
+uint32_t EventBuffer::NumEvents(EventClass ec) const
+{
+    return this->storage.NumUnwritten(ec);
+}
+
 } // namespace opendnp3

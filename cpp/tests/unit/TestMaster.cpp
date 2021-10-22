@@ -751,3 +751,31 @@ TEST_CASE(SUITE("Warm restart fails with empty response"))
     REQUIRE(queue.responses[0].summary == TaskCompletion::SUCCESS);
     REQUIRE(queue.responses[0].restartTime == TimeDuration::Milliseconds(0xBBBB));
 }
+
+TEST_CASE(SUITE("IntegrityPollOnBufferOverflowIIN"))
+{
+    MasterParams params;
+    params.disableUnsolOnStartup = false;
+    params.unsolClassMask = ClassField::None();
+    MasterTestFixture t(params);
+    t.context->OnLowerLayerUp();
+
+    t.exe->run_many();
+
+    REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(0));
+    t.context->OnTxReady();
+
+    t.SendToMaster("E0 81 00 08 01 02 00 02 02 81"); // group 2 var 1, index = 2, 0x81 = Online, true, with EVENT_BUFFER_OVERFLOW
+    REQUIRE(t.meas->TotalReceived() == 1);
+    REQUIRE((Binary(true, Flags(0x01)) == t.meas->binarySOE[2].meas));
+
+    t.exe->run_many();
+
+    REQUIRE(t.lower->PopWriteAsHex() == hex::Confirm(0, false));
+    t.context->OnTxReady();
+
+    t.exe->run_many();
+
+    REQUIRE(t.lower->PopWriteAsHex() == hex::IntegrityPoll(1));
+    t.context->OnTxReady();
+}

@@ -82,6 +82,9 @@ public:
 
     void SelectAllByClass(const ClassField& clazz);
 
+    uint32_t NumEvents(EventClass ec) const;
+    
+
 private:
     bool overflow = false;
     EventStorage storage;
