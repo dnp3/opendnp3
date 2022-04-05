@@ -58,13 +58,9 @@ bool LinkContext::OnLowerLayerUp()
         return false;
     }
 
-    const auto now = Timestamp(this->executor->get_time());
-
     this->isOnline = true;
 
-    this->lastMessageTimestamp = now; // no reason to trigger a keep-alive until we've actually expired
-
-    this->StartKeepAliveTimer(now + config.KeepAliveTimeout);
+    this->RestartKeepAliveTimer();
 
     listener->OnStateChange(LinkStatus::UNRESET);
     upper->OnLowerLayerUp();
@@ -230,16 +226,14 @@ void LinkContext::TryStartTransmission()
 void LinkContext::OnKeepAliveTimeout()
 {
     const auto now = Timestamp(this->executor->get_time());
-
-    auto elapsed = now - this->lastMessageTimestamp;
+    const auto elapsed = now - this->lastMessageTimestamp;
 
     if (elapsed >= this->config.KeepAliveTimeout)
     {
-        this->lastMessageTimestamp = now;
         this->keepAliveTimeout = true;
     }
 
-    this->StartKeepAliveTimer(this->lastMessageTimestamp + config.KeepAliveTimeout);
+    this->RestartKeepAliveTimer();
 
     this->TryStartTransmission();
 }
@@ -254,14 +248,19 @@ void LinkContext::OnResponseTimeout()
 void LinkContext::StartResponseTimer()
 {
     std::weak_ptr<void> guard = this->lifetimeGuard;
-    rspTimeoutTimer = executor->start(config.Timeout.value, [this, guard]() {
+    this->rspTimeoutTimer = executor->start(config.Timeout.value, [this, guard]() {
         if (guard.lock())
             this->OnResponseTimeout();
     });
 }
 
-void LinkContext::StartKeepAliveTimer(const Timestamp& expiration)
+void LinkContext::RestartKeepAliveTimer()
 {
+    this->keepAliveTimer.cancel();
+
+    this->lastMessageTimestamp = Timestamp(this->executor->get_time());
+    const auto expiration = this->lastMessageTimestamp + this->config.KeepAliveTimeout;
+
     std::weak_ptr<void> guard = this->lifetimeGuard;
     this->keepAliveTimer = executor->start(expiration.value, [this, guard]() {
         if (guard.lock())
@@ -318,31 +317,19 @@ bool LinkContext::OnFrame(const LinkHeaderFields& header, const ser4cpp::rseq_t&
         return false;
     }
 
-    if (header.addresses.IsBroadcast())
+    // Broadcast addresses can only be used for sending data.
+    // If confirmed data is used, no response is sent back.
+    if (header.addresses.IsBroadcast() &&
+        !(header.func == LinkFunction::PRI_UNCONFIRMED_USER_DATA || header.func == LinkFunction::PRI_CONFIRMED_USER_DATA))
     {
-        // Broadcast addresses can only be used for sending data.
-        // If confirmed data is used, no response is sent back.
-        if (header.func == LinkFunction::PRI_UNCONFIRMED_USER_DATA)
-        {
-            this->PushDataUp(Message(header.addresses, userdata));
-            return true;
-        }
-        else if (header.func == LinkFunction::PRI_CONFIRMED_USER_DATA)
-        {
-            pSecState = &pSecState->OnConfirmedUserData(*this, header.addresses.source, header.fcb, true,
-                                                        Message(header.addresses, userdata));
-        }
-        else
-        {
-            FORMAT_LOG_BLOCK(logger, flags::WARN, "Received invalid function (%s) with broadcast destination address",
-                             LinkFunctionSpec::to_string(header.func));
-            ++statistics.numUnexpectedFrame;
-            return false;
-        }
+        FORMAT_LOG_BLOCK(logger, flags::WARN, "Received invalid function (%s) with broadcast destination address",
+                            LinkFunctionSpec::to_string(header.func));
+        ++statistics.numUnexpectedFrame;
+        return false;
     }
 
     // reset the keep-alive timestamp
-    this->lastMessageTimestamp = Timestamp(this->executor->get_time());
+    this->RestartKeepAliveTimer();
 
     switch (header.func)
     {
@@ -368,7 +355,7 @@ bool LinkContext::OnFrame(const LinkHeaderFields& header, const ser4cpp::rseq_t&
         pSecState = &pSecState->OnRequestLinkStatus(*this, header.addresses.source);
         break;
     case (LinkFunction::PRI_CONFIRMED_USER_DATA):
-        pSecState = &pSecState->OnConfirmedUserData(*this, header.addresses.source, header.fcb, false,
+        pSecState = &pSecState->OnConfirmedUserData(*this, header.addresses.source, header.fcb, header.addresses.IsBroadcast(),
                                                     Message(header.addresses, userdata));
         break;
     case (LinkFunction::PRI_UNCONFIRMED_USER_DATA):

@@ -97,7 +97,7 @@ public:
     void OnKeepAliveTimeout();
     void OnResponseTimeout();
     void StartResponseTimer();
-    void StartKeepAliveTimer(const Timestamp& expiration);
+    void RestartKeepAliveTimer();
     void CancelTimer();
     void FailKeepAlive(bool timeout);
     void CompleteKeepAlive();

@@ -240,7 +240,7 @@ TEST_CASE(SUITE("KeepAliveTimerRestartsWhenFrameIsReceived"))
     t.OnFrame(LinkFunction::SEC_ACK, false, false, false, 1, 1024); // Some activity on the link
 
     t.exe->advance_time(std::chrono::seconds(3)); // The original timer should now expire
-    REQUIRE(t.exe->run_many() > 0);
+    t.exe->run_many();
     REQUIRE(t.PopLastWriteAsHex() == ""); // Nothing sent
 
     t.exe->advance_time(std::chrono::seconds(2)); // The keep-alive should now be sent
