@@ -41,9 +41,9 @@ public:
           lower(std::make_shared<MockLowerLayer>()),
           application(std::make_shared<MockMasterApplication>()),
           scheduler(std::make_shared<opendnp3::MasterSchedulerBackend>(exe)),
-          context(addresses, log.logger, exe, lower, meas, application, this->scheduler, params)
+          context(opendnp3::MContext::Create(addresses, log.logger, exe, lower, meas, application, this->scheduler, params))
     {
-        lower->SetUpperLayer(context);
+        lower->SetUpperLayer(*context);
     }
 
     ~MasterTestObject()
@@ -53,13 +53,13 @@ public:
 
     size_t SendToMaster(const ser4cpp::rseq_t& buffer)
     {
-        context.OnReceive(opendnp3::Message(this->addresses.Reverse(), buffer));
+        context->OnReceive(opendnp3::Message(this->addresses.Reverse(), buffer));
         return exe->run_many();
     }
 
     size_t LowerLayerUp()
     {
-        context.OnLowerLayerUp();
+        context->OnLowerLayerUp();
         return exe->run_many();
     }
 
@@ -72,7 +72,7 @@ private:
     const std::shared_ptr<MockLowerLayer> lower;
     const std::shared_ptr<MockMasterApplication> application;
     const std::shared_ptr<opendnp3::IMasterScheduler> scheduler;
-    opendnp3::MContext context;
+    const std::shared_ptr<opendnp3::MContext> context;
 };
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t* Data, size_t Size)

@@ -27,6 +27,8 @@
 #include "opendnp3/master/IMaster.h"
 #include "opendnp3/master/MasterStackConfig.h"
 
+#include <memory>
+
 namespace opendnp3
 {
 
@@ -164,7 +166,7 @@ public:
                        const TaskConfig& config) override;
 
 protected:
-    MContext mcontext;
+    std::shared_ptr<MContext> mcontext;
 };
 
 } // namespace opendnp3

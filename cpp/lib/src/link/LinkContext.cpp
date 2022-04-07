@@ -50,6 +50,16 @@ LinkContext::LinkContext(const Logger& logger,
 {
 }
 
+std::shared_ptr<LinkContext> LinkContext::Create(const Logger& logger,
+                                                 const std::shared_ptr<exe4cpp::IExecutor>& executor,
+                                                 std::shared_ptr<IUpperLayer> upper,
+                                                 std::shared_ptr<ILinkListener> listener,
+                                                 ILinkSession& session,
+                                                 const LinkLayerConfig& config)
+{
+    return std::shared_ptr<LinkContext>(new LinkContext(logger, executor, upper, listener, session, config));
+}
+
 bool LinkContext::OnLowerLayerUp()
 {
     if (this->isOnline)
@@ -247,10 +257,11 @@ void LinkContext::OnResponseTimeout()
 
 void LinkContext::StartResponseTimer()
 {
-    std::weak_ptr<void> guard = this->lifetimeGuard;
-    this->rspTimeoutTimer = executor->start(config.Timeout.value, [this, guard]() {
-        if (guard.lock())
-            this->OnResponseTimeout();
+    this->rspTimeoutTimer = executor->start(config.Timeout.value, [self = shared_from_this()]() {
+        if (self->isOnline)
+        {
+            self->OnResponseTimeout();
+        }
     });
 }
 
@@ -261,10 +272,11 @@ void LinkContext::RestartKeepAliveTimer()
     this->lastMessageTimestamp = Timestamp(this->executor->get_time());
     const auto expiration = this->lastMessageTimestamp + this->config.KeepAliveTimeout;
 
-    std::weak_ptr<void> guard = this->lifetimeGuard;
-    this->keepAliveTimer = executor->start(expiration.value, [this, guard]() {
-        if (guard.lock())
-            this->OnKeepAliveTimeout();
+    this->keepAliveTimer = executor->start(expiration.value, [self = shared_from_this()]() {
+        if (self->isOnline)
+        {
+            self->OnKeepAliveTimeout();
+        }
     });
 }
 

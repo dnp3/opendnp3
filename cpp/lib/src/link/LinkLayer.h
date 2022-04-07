@@ -23,6 +23,8 @@
 #include "LinkContext.h"
 #include "LinkLayerConfig.h"
 
+#include <memory>
+
 namespace opendnp3
 {
 
@@ -54,7 +56,7 @@ public:
 
 private:
     // The full state
-    LinkContext ctx;
+    std::shared_ptr<LinkContext> ctx;
 };
 
 } // namespace opendnp3
