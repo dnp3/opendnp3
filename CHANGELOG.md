@@ -1,5 +1,9 @@
 ### Next ###
 * :beetle: Fix `PrintingSOEHandler` octet string size not printing properly.
+  See [4372862](https://github.com/dnp3/opendnp3/commit/4372862728851f559a01edcd88bc15ce6ce7f350)
+* :beetle: Fix keep-alive timer not properly calculated. See [#407](https://github.com/dnp3/opendnp3/pull/407).
+* :beetle: Fix `LinkContext` and `MContext` possible lifetime issue.
+  See [#407](https://github.com/dnp3/opendnp3/pull/407).
 
 ### 3.1.1 ###
 * :beetle: Fix static octet string serilazation bug.

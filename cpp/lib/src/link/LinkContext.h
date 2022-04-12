@@ -37,6 +37,8 @@
 
 #include <exe4cpp/IExecutor.h>
 
+#include <memory>
+
 namespace opendnp3
 {
 
@@ -51,16 +53,22 @@ enum class LinkTransmitMode : uint8_t
 };
 
 //	@section desc Implements the contextual state of DNP3 Data Link Layer
-class LinkContext
+class LinkContext : public std::enable_shared_from_this<LinkContext>
 {
-
-public:
     LinkContext(const Logger& logger,
                 const std::shared_ptr<exe4cpp::IExecutor>&,
                 std::shared_ptr<IUpperLayer>,
                 std::shared_ptr<ILinkListener>,
                 ILinkSession& session,
                 const LinkLayerConfig&);
+
+public:
+    static std::shared_ptr<LinkContext> Create(const Logger& logger,
+                                               const std::shared_ptr<exe4cpp::IExecutor>&,
+                                               std::shared_ptr<IUpperLayer>,
+                                               std::shared_ptr<ILinkListener>,
+                                               ILinkSession& session,
+                                               const LinkLayerConfig&);
 
     // ---- helpers for dealing with the FCB bits ----
 
@@ -97,7 +105,7 @@ public:
     void OnKeepAliveTimeout();
     void OnResponseTimeout();
     void StartResponseTimer();
-    void StartKeepAliveTimer(const Timestamp& expiration);
+    void RestartKeepAliveTimer();
     void CancelTimer();
     void FailKeepAlive(bool timeout);
     void CompleteKeepAlive();

@@ -40,14 +40,24 @@
 #include <exe4cpp/asio/StrandExecutor.h>
 
 #include <deque>
+#include <memory>
 
 namespace opendnp3
 {
 /*
     All of the mutable state and configuration for a master
 */
-class MContext final : public IUpperLayer, private IMasterTaskRunner, private Uncopyable
+class MContext final : public IUpperLayer, public std::enable_shared_from_this<MContext>, private IMasterTaskRunner, private Uncopyable
 {
+private:
+    MContext(const Addresses& addresses,
+             const Logger& logger,
+             const std::shared_ptr<exe4cpp::IExecutor>& executor,
+             std::shared_ptr<ILowerLayer> lower,
+             const std::shared_ptr<ISOEHandler>& SOEHandler,
+             const std::shared_ptr<IMasterApplication>& application,
+             std::shared_ptr<IMasterScheduler> scheduler,
+             const MasterParams& params);
 
 public:
     enum class TaskState
@@ -57,14 +67,16 @@ public:
         WAIT_FOR_RESPONSE
     };
 
-    MContext(const Addresses& addresses,
-             const Logger& logger,
-             const std::shared_ptr<exe4cpp::IExecutor>& executor,
-             std::shared_ptr<ILowerLayer> lower,
-             const std::shared_ptr<ISOEHandler>& SOEHandler,
-             const std::shared_ptr<IMasterApplication>& application,
-             std::shared_ptr<IMasterScheduler> scheduler,
-             const MasterParams& params);
+    static std::shared_ptr<MContext> Create(
+        const Addresses& addresses,
+        const Logger& logger,
+        const std::shared_ptr<exe4cpp::IExecutor>& executor,
+        std::shared_ptr<ILowerLayer> lower,
+        const std::shared_ptr<ISOEHandler>& SOEHandler,
+        const std::shared_ptr<IMasterApplication>& application,
+        std::shared_ptr<IMasterScheduler> scheduler,
+        const MasterParams& params
+    );
 
     Logger logger;
     const std::shared_ptr<exe4cpp::IExecutor> executor;

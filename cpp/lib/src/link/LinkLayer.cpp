@@ -27,19 +27,19 @@ LinkLayer::LinkLayer(const Logger& logger,
                      const std::shared_ptr<IUpperLayer>& upper,
                      const std::shared_ptr<ILinkListener>& listener,
                      const LinkLayerConfig& config)
-    : ctx(logger, executor, upper, listener, *this, config)
+    : ctx(LinkContext::Create(logger, executor, upper, listener, *this, config))
 {
 }
 
 const StackStatistics::Link& LinkLayer::GetStatistics() const
 {
-    return this->ctx.statistics;
+    return this->ctx->statistics;
 }
 
 void LinkLayer::SetRouter(ILinkTx& router)
 {
-    assert(!ctx.linktx);
-    ctx.linktx = &router;
+    assert(!ctx->linktx);
+    ctx->linktx = &router;
 }
 
 ////////////////////////////////
@@ -48,12 +48,12 @@ void LinkLayer::SetRouter(ILinkTx& router)
 
 bool LinkLayer::Send(ITransportSegment& segments)
 {
-    if (!ctx.isOnline)
+    if (!ctx->isOnline)
         return false;
 
-    if (ctx.SetTxSegment(segments))
+    if (ctx->SetTxSegment(segments))
     {
-        ctx.TryStartTransmission();
+        ctx->TryStartTransmission();
     }
 
     return true;
@@ -65,21 +65,21 @@ bool LinkLayer::Send(ITransportSegment& segments)
 
 bool LinkLayer::OnLowerLayerUp()
 {
-    return ctx.OnLowerLayerUp();
+    return ctx->OnLowerLayerUp();
 }
 
 bool LinkLayer::OnLowerLayerDown()
 {
-    return ctx.OnLowerLayerDown();
+    return ctx->OnLowerLayerDown();
 }
 
 bool LinkLayer::OnTxReady()
 {
-    auto ret = ctx.OnTxReady();
+    auto ret = ctx->OnTxReady();
 
     if (ret)
     {
-        ctx.TryStartTransmission();
+        ctx->TryStartTransmission();
     }
 
     return true;
@@ -91,11 +91,11 @@ bool LinkLayer::OnTxReady()
 
 bool LinkLayer::OnFrame(const LinkHeaderFields& header, const ser4cpp::rseq_t& userdata)
 {
-    auto ret = this->ctx.OnFrame(header, userdata);
+    auto ret = this->ctx->OnFrame(header, userdata);
 
     if (ret)
     {
-        this->ctx.TryStartTransmission();
+        this->ctx->TryStartTransmission();
     }
 
     return ret;

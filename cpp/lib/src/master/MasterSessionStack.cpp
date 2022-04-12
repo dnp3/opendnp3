@@ -52,17 +52,17 @@ MasterSessionStack::MasterSessionStack(const Logger& logger,
       scheduler(scheduler),
       session(std::move(session)),
       stack(logger, executor, application, config.master.maxRxFragSize, LinkLayerConfig(config.link, false)),
-      context(Addresses(config.link.LocalAddr, config.link.RemoteAddr),
+      context(MContext::Create(Addresses(config.link.LocalAddr, config.link.RemoteAddr),
               logger,
               executor,
               stack.transport,
               SOEHandler,
               application,
               scheduler,
-              config.master)
+              config.master))
 {
     stack.link->SetRouter(linktx);
-    stack.transport->SetAppLayer(context);
+    stack.transport->SetAppLayer(*context);
 }
 
 void MasterSessionStack::OnLowerLayerUp()
@@ -125,7 +125,7 @@ std::shared_ptr<IMasterScan> MasterSessionStack::AddScan(TimeDuration period,
 {
     auto builder = ConvertToLambda(headers);
     auto get = [self = shared_from_this(), soe_handler, period, builder, config]() {
-        return self->context.AddScan(period, builder, std::move(soe_handler), config);
+        return self->context->AddScan(period, builder, std::move(soe_handler), config);
     };
     return MasterScan::Create(executor->return_from<std::shared_ptr<IMasterTask>>(get), this->scheduler);
 }
@@ -136,7 +136,7 @@ std::shared_ptr<IMasterScan> MasterSessionStack::AddAllObjectsScan(GroupVariatio
                                                                    const TaskConfig& config)
 {
     auto get = [self = shared_from_this(), soe_handler, gvId, period, config] {
-        return self->context.AddAllObjectsScan(gvId, period, std::move(soe_handler), config);
+        return self->context->AddAllObjectsScan(gvId, period, std::move(soe_handler), config);
     };
     return MasterScan::Create(executor->return_from<std::shared_ptr<IMasterTask>>(get), this->scheduler);
 }
@@ -147,7 +147,7 @@ std::shared_ptr<IMasterScan> MasterSessionStack::AddClassScan(const ClassField& 
                                                               const TaskConfig& config)
 {
     auto get = [self = shared_from_this(), soe_handler, field, period, config] {
-        return self->context.AddClassScan(field, period, std::move(soe_handler), config);
+        return self->context->AddClassScan(field, period, std::move(soe_handler), config);
     };
     return MasterScan::Create(executor->return_from<std::shared_ptr<IMasterTask>>(get), this->scheduler);
 }
@@ -160,7 +160,7 @@ std::shared_ptr<IMasterScan> MasterSessionStack::AddRangeScan(GroupVariationID g
                                                               const TaskConfig& config)
 {
     auto get = [self = shared_from_this(), soe_handler, gvId, start, stop, period, config] {
-        return self->context.AddRangeScan(gvId, start, stop, period, std::move(soe_handler), config);
+        return self->context->AddRangeScan(gvId, start, stop, period, std::move(soe_handler), config);
     };
     return MasterScan::Create(executor->return_from<std::shared_ptr<IMasterTask>>(get), this->scheduler);
 }
@@ -171,7 +171,7 @@ void MasterSessionStack::Scan(const std::vector<Header>& headers,
 {
     auto builder = ConvertToLambda(headers);
     auto action = [self = shared_from_this(), soe_handler, builder, config]() -> void {
-        self->context.Scan(builder, std::move(soe_handler), config);
+        self->context->Scan(builder, std::move(soe_handler), config);
     };
     return executor->post(action);
 }
@@ -181,7 +181,7 @@ void MasterSessionStack::ScanAllObjects(GroupVariationID gvId,
                                         const TaskConfig& config)
 {
     auto action = [self = shared_from_this(), soe_handler, gvId, config]() -> void {
-        self->context.ScanAllObjects(gvId, std::move(soe_handler), config);
+        self->context->ScanAllObjects(gvId, std::move(soe_handler), config);
     };
     return executor->post(action);
 }
@@ -191,7 +191,7 @@ void MasterSessionStack::ScanClasses(const ClassField& field,
                                      const TaskConfig& config)
 {
     auto action = [self = shared_from_this(), soe_handler, field, config]() -> void {
-        self->context.ScanClasses(field, std::move(soe_handler), config);
+        self->context->ScanClasses(field, std::move(soe_handler), config);
     };
     return executor->post(action);
 }
@@ -203,7 +203,7 @@ void MasterSessionStack::ScanRange(GroupVariationID gvId,
                                    const TaskConfig& config)
 {
     auto action = [self = shared_from_this(), soe_handler, gvId, start, stop, config]() -> void {
-        self->context.ScanRange(gvId, start, stop, std::move(soe_handler), config);
+        self->context->ScanRange(gvId, start, stop, std::move(soe_handler), config);
     };
     return executor->post(action);
 }
@@ -211,14 +211,14 @@ void MasterSessionStack::ScanRange(GroupVariationID gvId,
 void MasterSessionStack::Write(const TimeAndInterval& value, uint16_t index, const TaskConfig& config)
 {
     auto action
-        = [self = shared_from_this(), value, index, config]() -> void { self->context.Write(value, index, config); };
+        = [self = shared_from_this(), value, index, config]() -> void { self->context->Write(value, index, config); };
     return executor->post(action);
 }
 
 void MasterSessionStack::Restart(RestartType op, const RestartOperationCallbackT& callback, TaskConfig config)
 {
     auto action
-        = [self = shared_from_this(), op, callback, config]() -> void { self->context.Restart(op, callback, config); };
+        = [self = shared_from_this(), op, callback, config]() -> void { self->context->Restart(op, callback, config); };
     return executor->post(action);
 }
 
@@ -229,7 +229,7 @@ void MasterSessionStack::PerformFunction(const std::string& name,
 {
     auto builder = ConvertToLambda(headers);
     auto action = [self = shared_from_this(), name, func, builder, config]() -> void {
-        self->context.PerformFunction(name, func, builder, config);
+        self->context->PerformFunction(name, func, builder, config);
     };
     return executor->post(action);
 }
@@ -244,7 +244,7 @@ void MasterSessionStack::SelectAndOperate(CommandSet&& commands,
     auto set = std::make_shared<CommandSet>(std::move(commands));
 
     auto action = [self = shared_from_this(), set, config, callback]() -> void {
-        self->context.SelectAndOperate(std::move(*set), callback, config);
+        self->context->SelectAndOperate(std::move(*set), callback, config);
     };
     executor->post(action);
 }
@@ -257,7 +257,7 @@ void MasterSessionStack::DirectOperate(CommandSet&& commands,
     auto set = std::make_shared<CommandSet>(std::move(commands));
 
     auto action = [self = shared_from_this(), set, config, callback]() -> void {
-        self->context.DirectOperate(std::move(*set), callback, config);
+        self->context->DirectOperate(std::move(*set), callback, config);
     };
     executor->post(action);
 }
