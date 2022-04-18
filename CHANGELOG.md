@@ -4,6 +4,8 @@
 * :beetle: Fix keep-alive timer not properly calculated. See [#407](https://github.com/dnp3/opendnp3/pull/407).
 * :beetle: Fix `LinkContext` and `MContext` possible lifetime issue.
   See [#407](https://github.com/dnp3/opendnp3/pull/407).
+* :coffin: Deprecate the `LinkConfig` constructor with an unused `useConfirms` argument.
+  See [#439](https://github.com/dnp3/opendnp3/pull/439).
 
 ### 3.1.1 ###
 * :beetle: Fix static octet string serilazation bug.

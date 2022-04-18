@@ -34,9 +34,9 @@ namespace opendnp3
 */
 struct OutstationStackConfig
 {
-    OutstationStackConfig() : link(false, false) {}
+    OutstationStackConfig() : link(false) {}
 
-    OutstationStackConfig(const DatabaseConfig& database) : database(database), link(false, false) {}
+    OutstationStackConfig(const DatabaseConfig& database) : database(database), link(false) {}
 
     // Configuration of the database
     DatabaseConfig database;
