@@ -4,6 +4,8 @@
 * :beetle: Fix keep-alive timer not properly calculated. See [#407](https://github.com/dnp3/opendnp3/pull/407).
 * :beetle: Fix `LinkContext` and `MContext` possible lifetime issue.
   See [#407](https://github.com/dnp3/opendnp3/pull/407).
+* :beetle: In Java, `CommandHeader` builder methods now all return `CommandHeaders`.
+  See [#440](https://github.com/dnp3/opendnp3/pull/440).
 
 ### 3.1.1 ###
 * :beetle: Fix static octet string serilazation bug.
