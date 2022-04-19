@@ -4,6 +4,8 @@
 * :beetle: Fix keep-alive timer not properly calculated. See [#407](https://github.com/dnp3/opendnp3/pull/407).
 * :beetle: Fix `LinkContext` and `MContext` possible lifetime issue.
   See [#407](https://github.com/dnp3/opendnp3/pull/407).
+* :beetle: Added extra log when closing a new connection based on `ServerAcceptMode::CloseNew`.
+  See [#442](https://github.com/dnp3/opendnp3/pull/442).
 
 ### 3.1.1 ###
 * :beetle: Fix static octet string serilazation bug.
