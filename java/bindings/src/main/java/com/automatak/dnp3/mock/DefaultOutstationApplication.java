@@ -57,6 +57,16 @@ public class DefaultOutstationApplication implements OutstationApplication
     }
 
     @Override
+    public void onUnknownDestinationAddress(int destination) {
+        // do nothing in the default implementation
+    }
+
+    @Override
+    public  void onUnknownSourceAddress(int source) {
+        // do nothing in the default implementation
+    }
+
+    @Override
     public void onKeepAliveInitiated() {
         // do nothing in the default implementation
     }

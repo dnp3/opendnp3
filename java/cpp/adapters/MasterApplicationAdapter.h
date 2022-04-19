@@ -31,7 +31,19 @@ class MasterApplicationAdapter final : public opendnp3::IMasterApplication
 public:
     MasterApplicationAdapter(jni::JMasterApplication proxy) : proxy(proxy) {}
 
-    virtual opendnp3::UTCTimestamp Now() override;
+    // opendnp3::ILinkListener
+
+    void OnStateChange(opendnp3::LinkStatus value) override;
+    void OnUnknownDestinationAddress(uint16_t destination) override;
+    void OnUnknownSourceAddress(uint16_t source) override;
+    void OnKeepAliveInitiated() override;
+    void OnKeepAliveFailure() override;
+    void OnKeepAliveSuccess() override;
+
+    // opendnp3::IUTCTimeSource
+    opendnp3::UTCTimestamp Now() override;
+
+    // opendnp3::IMasterApplication
 
     void OnReceiveIIN(const opendnp3::IINField& iin) override;
     void OnTaskStart(opendnp3::MasterTaskType type, opendnp3::TaskId id) override;

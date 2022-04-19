@@ -69,7 +69,6 @@ public class OutstationDemo {
         // Create the default outstation configuration
         OutstationStackConfig config = new OutstationStackConfig(DatabaseConfig.allValues(5), EventBufferConfig.allTypes(50));
 
-
         // Create an Outstation instance, pass in a simple a command handler that responds successfully to everything
         Outstation outstation = channel.addOutstation(
                 "outstation",

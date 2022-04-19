@@ -174,6 +174,10 @@ set(all_sources
     ./cpp/jni/JNILinkLayerStatistics.h
     ./cpp/jni/JNILinkStatistics.cpp
     ./cpp/jni/JNILinkStatistics.h
+    ./cpp/jni/JNILinkStatus.cpp
+    ./cpp/jni/JNILinkStatus.h
+    ./cpp/jni/JNILinkStatusListener.cpp
+    ./cpp/jni/JNILinkStatusListener.h
     ./cpp/jni/JNIList.cpp
     ./cpp/jni/JNIList.h
     ./cpp/jni/JNILogEntry.cpp

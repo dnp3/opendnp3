@@ -4,6 +4,9 @@
 * :beetle: Fix keep-alive timer not properly calculated. See [#407](https://github.com/dnp3/opendnp3/pull/407).
 * :beetle: Fix `LinkContext` and `MContext` possible lifetime issue.
   See [#407](https://github.com/dnp3/opendnp3/pull/407).
+* :beetle: In Java, fix `LinkStatusListener` not getting called. Also added the missing
+  `onUnknownDestinationAddress` and `onUnknownSourceAddress` callbacks. All the callbacks
+  now have an empty default implementation. See [#441](https://github.com/dnp3/opendnp3/pull/441).
 
 ### 3.1.1 ###
 * :beetle: Fix static octet string serilazation bug.

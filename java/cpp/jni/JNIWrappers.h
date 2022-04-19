@@ -639,6 +639,24 @@ namespace jni
         jobject value;
     };
 
+    struct JLinkStatus
+    {
+        JLinkStatus(jobject value) : value(value) {}
+
+        operator jobject() const { return value; }
+
+        jobject value;
+    };
+
+    struct JLinkStatusListener
+    {
+        JLinkStatusListener(jobject value) : value(value) {}
+
+        operator jobject() const { return value; }
+
+        jobject value;
+    };
+
     struct JList
     {
         JList(jobject value) : value(value) {}
