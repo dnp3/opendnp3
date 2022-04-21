@@ -13,6 +13,8 @@
 * :beetle: In Java, fix `LinkStatusListener` not getting called. Also added the missing
   `onUnknownDestinationAddress` and `onUnknownSourceAddress` callbacks. All the callbacks
   now have an empty default implementation. See [#441](https://github.com/dnp3/opendnp3/pull/441).
+* :beetle: Added extra log when closing a new connection based on `ServerAcceptMode::CloseNew`.
+  See [#442](https://github.com/dnp3/opendnp3/pull/442).
 
 ### 3.1.1 ###
 * :beetle: Fix static octet string serilazation bug.

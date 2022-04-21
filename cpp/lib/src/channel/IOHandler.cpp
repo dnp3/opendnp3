@@ -212,6 +212,7 @@ void IOHandler::OnNewChannel(const std::shared_ptr<IAsyncChannel>& channel)
     // close the new channel instead
     if (this->channel && !this->close_existing)
     {
+        SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Existing channel, closing new connection");
         channel->Shutdown();
         return;
     }
