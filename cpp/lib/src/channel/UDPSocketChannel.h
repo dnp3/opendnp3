@@ -21,6 +21,7 @@
 #define OPENDNP3_UDPSOCKETCHANNEL_H
 
 #include "channel/IAsyncChannel.h"
+#include "opendnp3/logging/Logger.h"
 
 namespace opendnp3
 {
@@ -30,12 +31,12 @@ class UDPSocketChannel final : public IAsyncChannel
 
 public:
     static std::shared_ptr<IAsyncChannel> Create(std::shared_ptr<exe4cpp::StrandExecutor> executor,
-                                                 asio::ip::udp::socket socket)
+                                                 const Logger& logger, asio::ip::udp::socket socket)
     {
-        return std::make_shared<UDPSocketChannel>(executor, std::move(socket));
+        return std::make_shared<UDPSocketChannel>(executor, logger, std::move(socket));
     }
 
-    UDPSocketChannel(const std::shared_ptr<exe4cpp::StrandExecutor>& executor, asio::ip::udp::socket socket);
+    UDPSocketChannel(const std::shared_ptr<exe4cpp::StrandExecutor>& executor, const Logger& logger, asio::ip::udp::socket socket);
 
 protected:
     void BeginReadImpl(ser4cpp::wseq_t dest) final;
@@ -43,7 +44,10 @@ protected:
     void ShutdownImpl() final;
 
 private:
+    Logger logger;
     asio::ip::udp::socket socket;
+    bool first_successful_read;
+    uint8_t num_first_read_retries;
 };
 
 } // namespace opendnp3
