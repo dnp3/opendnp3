@@ -33,7 +33,7 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         public MasterStackConfig()
         {
-            this.link = new LinkConfig(true, false);
+            this.link = new LinkConfig(true);
             this.master = new MasterConfig();
         }
 

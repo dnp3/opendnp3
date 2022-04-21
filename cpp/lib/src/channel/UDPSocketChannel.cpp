@@ -20,18 +20,46 @@
 
 #include "channel/UDPSocketChannel.h"
 
+#include "logging/LogMacros.h"
+
+static constexpr uint8_t MAX_FIRST_READ_RETRIES = 5;
+
 namespace opendnp3
 {
 
 UDPSocketChannel::UDPSocketChannel(const std::shared_ptr<exe4cpp::StrandExecutor>& executor,
-                                   asio::ip::udp::socket socket)
-    : IAsyncChannel(executor), socket(std::move(socket))
+                                   const Logger& logger, asio::ip::udp::socket socket)
+    : IAsyncChannel(executor), logger(logger), socket(std::move(socket)), first_successful_read(false), num_first_read_retries(0)
 {
 }
 
 void UDPSocketChannel::BeginReadImpl(ser4cpp::wseq_t dest)
 {
-    auto callback = [this](const std::error_code& ec, size_t num) { this->OnReadCallback(ec, num); };
+    auto callback = [this](const std::error_code& ec, size_t num) {
+        if(!this->first_successful_read && this->num_first_read_retries < MAX_FIRST_READ_RETRIES)
+        {
+            if(ec)
+            {
+                FORMAT_LOG_BLOCK(this->logger, flags::WARN, "read error: %s", ec.message().c_str());
+                FORMAT_LOG_BLOCK(this->logger, flags::DBG, "UDP ignoring initial errors (%d of %d)", this->num_first_read_retries + 1, MAX_FIRST_READ_RETRIES);
+
+                // We ignore failed reads until we get a successful one
+                const auto no_ec = std::error_code{};
+                this->OnReadCallback(no_ec, num);
+
+                // Avoid infinite loop
+                ++this->num_first_read_retries;
+
+                return;
+            }
+            else
+            {
+                this->first_successful_read = true;
+            }
+        }
+
+        this->OnReadCallback(ec, num);
+    };
 
     socket.async_receive(asio::buffer(dest, dest.length()), this->executor->wrap(callback));
 }

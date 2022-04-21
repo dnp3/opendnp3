@@ -4,6 +4,10 @@
 * :beetle: Fix keep-alive timer not properly calculated. See [#407](https://github.com/dnp3/opendnp3/pull/407).
 * :beetle: Fix `LinkContext` and `MContext` possible lifetime issue.
   See [#407](https://github.com/dnp3/opendnp3/pull/407).
+* :beetle: Fix UDP reconnect delay not being honoured. Also, initial UDP read errors
+  (due to ICMP packets) do not close the socket immediately. See [#438](https://github.com/dnp3/opendnp3/pull/438).
+* :coffin: Deprecate the `LinkConfig` constructor with an unused `useConfirms` argument.
+  See [#439](https://github.com/dnp3/opendnp3/pull/439).
 * :beetle: In Java, `CommandHeader` builder methods now all return `CommandHeaders`.
   See [#440](https://github.com/dnp3/opendnp3/pull/440).
 
