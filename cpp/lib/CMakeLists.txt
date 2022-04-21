@@ -25,7 +25,7 @@ set(opendnp3_public_headers
     ./include/opendnp3/app/MeasurementInfo.h
     ./include/opendnp3/app/MeasurementTypes.h
     ./include/opendnp3/app/OctetData.h
-    ./include/opendnp3/app/OctetString.h    
+    ./include/opendnp3/app/OctetString.h
 
     ./include/opendnp3/app/parsing/ICollection.h
 
@@ -70,7 +70,7 @@ set(opendnp3_public_headers
     ./include/opendnp3/gen/FunctionCode.h
     ./include/opendnp3/gen/GroupVariation.h
     ./include/opendnp3/gen/IndexQualifierMode.h
-    ./include/opendnp3/gen/IntervalUnits.h    
+    ./include/opendnp3/gen/IntervalUnits.h
     ./include/opendnp3/gen/LinkFunction.h
     ./include/opendnp3/gen/LinkStatus.h
     ./include/opendnp3/gen/MasterTaskType.h
@@ -80,7 +80,7 @@ set(opendnp3_public_headers
     ./include/opendnp3/gen/PointClass.h
     ./include/opendnp3/gen/QualifierCode.h
     ./include/opendnp3/gen/RestartMode.h
-    ./include/opendnp3/gen/RestartType.h    
+    ./include/opendnp3/gen/RestartType.h
     ./include/opendnp3/gen/ServerAcceptMode.h
     ./include/opendnp3/gen/StaticAnalogOutputStatusVariation.h
     ./include/opendnp3/gen/StaticAnalogVariation.h
@@ -161,7 +161,7 @@ set(opendnp3_public_headers
 	./include/opendnp3/util/StaticOnly.h
 	./include/opendnp3/util/TimeDuration.h
     ./include/opendnp3/util/Timestamp.h
-	./include/opendnp3/util/Uncopyable.h	
+	./include/opendnp3/util/Uncopyable.h
     ./include/opendnp3/util/UTCTimestamp.h
 )
 
@@ -210,7 +210,7 @@ set(opendnp3_private_headers
     ./src/app/parsing/Collections.h
     ./src/app/parsing/CountIndexParser.h
     ./src/app/parsing/CountParser.h
-    ./src/app/parsing/DNPTimeParsing.h    
+    ./src/app/parsing/DNPTimeParsing.h
     ./src/app/parsing/Functions.h
     ./src/app/parsing/IAPDUHandler.h
     ./src/app/parsing/IWhiteList.h
@@ -249,12 +249,12 @@ set(opendnp3_private_headers
     ./src/gen/FlagsTypeSerialization.h
     ./src/gen/FlowControlSerialization.h
     ./src/gen/FunctionCodeSerialization.h
-    ./src/gen/GroupVariationSerialization.h    
-    ./src/gen/IntervalUnitsSerialization.h    
+    ./src/gen/GroupVariationSerialization.h
+    ./src/gen/IntervalUnitsSerialization.h
     ./src/gen/LinkFunctionSerialization.h
     ./src/gen/ParitySerialization.h
     ./src/gen/QualifierCodeSerialization.h
-    ./src/gen/StopBitsSerialization.h    
+    ./src/gen/StopBitsSerialization.h
 
     ./src/gen/objects/Group1.h
     ./src/gen/objects/Group2.h
@@ -283,7 +283,7 @@ set(opendnp3_private_headers
     ./src/gen/objects/Group110.h
     ./src/gen/objects/Group111.h
     ./src/gen/objects/Group112.h
-    ./src/gen/objects/Group113.h    
+    ./src/gen/objects/Group113.h
 
     ./src/link/CRC.h
     ./src/link/IFrameSink.h
@@ -362,7 +362,7 @@ set(opendnp3_private_headers
     ./src/outstation/IEventReceiver.h
     ./src/outstation/IEventRecorder.h
     ./src/outstation/IEventSelector.h
-    ./src/outstation/IINHelpers.h    
+    ./src/outstation/IINHelpers.h
     ./src/outstation/IResponseLoader.h
     ./src/outstation/IStaticSelector.h
     ./src/outstation/OctetStringSerializer.h
@@ -434,13 +434,13 @@ set(opendnp3_src
 	./src/app/MeasurementInfo.cpp
 	./src/app/MeasurementTypes.cpp
     ./src/app/OctetData.cpp
-    ./src/app/QualityFlags.cpp    
+    ./src/app/QualityFlags.cpp
 
     ./src/app/parsing/APDUHeaderParser.cpp
     ./src/app/parsing/APDUParser.cpp
     ./src/app/parsing/BitReader.cpp
     ./src/app/parsing/CountIndexParser.cpp
-    ./src/app/parsing/CountParser.cpp    
+    ./src/app/parsing/CountParser.cpp
     ./src/app/parsing/IAPDUHandler.cpp
     ./src/app/parsing/NumParser.cpp
     ./src/app/parsing/ObjectHeaderParser.cpp
@@ -470,12 +470,12 @@ set(opendnp3_src
     ./src/gen/AnalogOutputStatusQuality.cpp
     ./src/gen/AnalogQuality.cpp
     ./src/gen/AssignClassType.cpp
-    ./src/gen/Attributes.cpp    
+    ./src/gen/Attributes.cpp
     ./src/gen/BinaryOutputStatusQuality.cpp
     ./src/gen/BinaryQuality.cpp
     ./src/gen/ChannelState.cpp
     ./src/gen/CommandPointState.cpp
-    ./src/gen/CommandStatus.cpp    
+    ./src/gen/CommandStatus.cpp
     ./src/gen/CounterQuality.cpp
     ./src/gen/DoubleBit.cpp
     ./src/gen/DoubleBitBinaryQuality.cpp
@@ -487,12 +487,12 @@ set(opendnp3_src
     ./src/gen/EventDoubleBinaryVariation.cpp
     ./src/gen/EventFrozenCounterVariation.cpp
     ./src/gen/EventMode.cpp
-    ./src/gen/EventOctetStringVariation.cpp    
+    ./src/gen/EventOctetStringVariation.cpp
     ./src/gen/FlagsType.cpp
     ./src/gen/FlowControl.cpp
     ./src/gen/FrozenCounterQuality.cpp
     ./src/gen/FunctionCode.cpp
-    ./src/gen/GroupVariation.cpp    
+    ./src/gen/GroupVariation.cpp
     ./src/gen/IndexQualifierMode.cpp
     ./src/gen/IntervalUnits.cpp
     ./src/gen/LinkFunction.cpp
@@ -504,7 +504,7 @@ set(opendnp3_src
     ./src/gen/PointClass.cpp
     ./src/gen/QualifierCode.cpp
     ./src/gen/RestartMode.cpp
-    ./src/gen/RestartType.cpp    
+    ./src/gen/RestartType.cpp
     ./src/gen/ServerAcceptMode.cpp
     ./src/gen/StaticAnalogOutputStatusVariation.cpp
     ./src/gen/StaticAnalogVariation.cpp
@@ -513,14 +513,14 @@ set(opendnp3_src
     ./src/gen/StaticCounterVariation.cpp
     ./src/gen/StaticDoubleBinaryVariation.cpp
     ./src/gen/StaticFrozenCounterVariation.cpp
-    ./src/gen/StaticOctetStringVariation.cpp    
+    ./src/gen/StaticOctetStringVariation.cpp
     ./src/gen/StaticTimeAndIntervalVariation.cpp
     ./src/gen/StaticTypeBitmask.cpp
     ./src/gen/StopBits.cpp
     ./src/gen/TaskCompletion.cpp
     ./src/gen/TimestampQuality.cpp
     ./src/gen/TimeSyncMode.cpp
-    ./src/gen/TripCloseCode.cpp    
+    ./src/gen/TripCloseCode.cpp
 
     ./src/gen/objects/Group1.cpp
     ./src/gen/objects/Group2.cpp
@@ -542,7 +542,7 @@ set(opendnp3_src
     ./src/gen/objects/Group43.cpp
     ./src/gen/objects/Group50.cpp
     ./src/gen/objects/Group51.cpp
-    ./src/gen/objects/Group52.cpp    
+    ./src/gen/objects/Group52.cpp
 
     ./src/link/Addresses.cpp
     ./src/link/CRC.cpp
@@ -613,9 +613,9 @@ set(opendnp3_src
     ./src/outstation/OutstationStates.cpp
     ./src/outstation/ReadHandler.cpp
     ./src/outstation/RequestHistory.cpp
-    ./src/outstation/ResponseContext.cpp    
+    ./src/outstation/ResponseContext.cpp
     ./src/outstation/SimpleCommandHandler.cpp
-    ./src/outstation/StaticDataMap.cpp    
+    ./src/outstation/StaticDataMap.cpp
     ./src/outstation/StaticWriters.cpp
     ./src/outstation/UpdateBuilder.cpp
     ./src/outstation/WriteHandler.cpp

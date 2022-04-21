@@ -25,6 +25,42 @@
 using namespace jni;
 using namespace opendnp3;
 
+void OutstationApplicationAdapter::OnStateChange(LinkStatus value)
+{
+    const auto env = JNI::GetEnv();
+    JCache::LinkStatusListener.onStateChange(env, jni::JLinkStatusListener(proxy.get()), JCache::LinkStatus.fromType(env, static_cast<jint>(value)));
+}
+
+void OutstationApplicationAdapter::OnUnknownDestinationAddress(uint16_t destination)
+{
+    const auto env = JNI::GetEnv();
+    JCache::LinkStatusListener.onUnknownDestinationAddress(env, jni::JLinkStatusListener(proxy.get()), destination);
+}
+
+void OutstationApplicationAdapter::OnUnknownSourceAddress(uint16_t source)
+{
+    const auto env = JNI::GetEnv();
+    JCache::LinkStatusListener.onUnknownSourceAddress(env, jni::JLinkStatusListener(proxy.get()), source);
+}
+
+void OutstationApplicationAdapter::OnKeepAliveInitiated()
+{
+    const auto env = JNI::GetEnv();
+    JCache::LinkStatusListener.onKeepAliveInitiated(env, jni::JLinkStatusListener(proxy.get()));
+}
+
+void OutstationApplicationAdapter::OnKeepAliveFailure()
+{
+    const auto env = JNI::GetEnv();
+    JCache::LinkStatusListener.onKeepAliveFailure(env, jni::JLinkStatusListener(proxy.get()));
+}
+
+void OutstationApplicationAdapter::OnKeepAliveSuccess()
+{
+    const auto env = JNI::GetEnv();
+    JCache::LinkStatusListener.onKeepAliveSuccess(env, jni::JLinkStatusListener(proxy.get()));
+}
+
 bool OutstationApplicationAdapter::SupportsWriteAbsoluteTime()
 {
     const auto env = JNI::GetEnv();

@@ -26,10 +26,26 @@
 #include "GlobalRef.h"
 #include "../jni/JNIWrappers.h"
 
-class OutstationApplicationAdapter : public opendnp3::IOutstationApplication
+class OutstationApplicationAdapter final : public opendnp3::IOutstationApplication
 {
 public:
     OutstationApplicationAdapter(jni::JOutstationApplication proxy) : proxy(proxy) {}
+
+    // opendnp3::ILinkListener
+
+    void OnStateChange(opendnp3::LinkStatus value) override;
+
+    void OnUnknownDestinationAddress(uint16_t destination) override;
+
+    void OnUnknownSourceAddress(uint16_t source) override;
+
+    void OnKeepAliveInitiated() override;
+
+    void OnKeepAliveFailure() override;
+
+    void OnKeepAliveSuccess() override;
+
+    // opendnp3::IOutstationApplication
 
     bool SupportsWriteAbsoluteTime() override;
 
@@ -53,6 +69,8 @@ public:
     uint16_t WarmRestart() override;
 
     void OnConfirmProcessed(bool is_unsolicited, uint32_t num_class1, uint32_t num_class2, uint32_t num_class3) override;
+
+    // opendnp3::IDnpTimeSource
 
     opendnp3::DNPTime Now() override;
 

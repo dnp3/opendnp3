@@ -23,6 +23,42 @@
 
 using namespace opendnp3;
 
+void MasterApplicationAdapter::OnStateChange(LinkStatus value)
+{
+    const auto env = JNI::GetEnv();
+    jni::JCache::LinkStatusListener.onStateChange(env, jni::JLinkStatusListener(proxy.get()), jni::JCache::LinkStatus.fromType(env, static_cast<jint>(value)));
+}
+
+void MasterApplicationAdapter::OnUnknownDestinationAddress(uint16_t destination)
+{
+    const auto env = JNI::GetEnv();
+    jni::JCache::LinkStatusListener.onUnknownDestinationAddress(env, jni::JLinkStatusListener(proxy.get()), destination);
+}
+
+void MasterApplicationAdapter::OnUnknownSourceAddress(uint16_t source)
+{
+    const auto env = JNI::GetEnv();
+    jni::JCache::LinkStatusListener.onUnknownSourceAddress(env, jni::JLinkStatusListener(proxy.get()), source);
+}
+
+void MasterApplicationAdapter::OnKeepAliveInitiated()
+{
+    const auto env = JNI::GetEnv();
+    jni::JCache::LinkStatusListener.onKeepAliveInitiated(env, jni::JLinkStatusListener(proxy.get()));
+}
+
+void MasterApplicationAdapter::OnKeepAliveFailure()
+{
+    const auto env = JNI::GetEnv();
+    jni::JCache::LinkStatusListener.onKeepAliveFailure(env, jni::JLinkStatusListener(proxy.get()));
+}
+
+void MasterApplicationAdapter::OnKeepAliveSuccess()
+{
+    const auto env = JNI::GetEnv();
+    jni::JCache::LinkStatusListener.onKeepAliveSuccess(env, jni::JLinkStatusListener(proxy.get()));
+}
+
 opendnp3::UTCTimestamp MasterApplicationAdapter::Now()
 {
     const auto env = JNI::GetEnv();
