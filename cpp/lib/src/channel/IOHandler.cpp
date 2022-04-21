@@ -52,7 +52,7 @@ void IOHandler::OnReadComplete(const std::error_code& ec, size_t num)
 {
     if (ec)
     {
-        SIMPLE_LOG_BLOCK(this->logger, flags::WARN, ec.message().c_str());
+        FORMAT_LOG_BLOCK(this->logger, flags::WARN, "read error: %s", ec.message().c_str());
 
         this->Reset();
 
@@ -73,7 +73,7 @@ void IOHandler::OnWriteComplete(const std::error_code& ec, size_t num)
 
     if (ec)
     {
-        SIMPLE_LOG_BLOCK(this->logger, flags::WARN, ec.message().c_str());
+        FORMAT_LOG_BLOCK(this->logger, flags::WARN, "write error: %s", ec.message().c_str());
         this->Reset();
 
         this->UpdateListener(ChannelState::OPENING);

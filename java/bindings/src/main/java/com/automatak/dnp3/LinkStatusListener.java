@@ -30,20 +30,30 @@ public interface LinkStatusListener
      * Called when a the reset/unreset status of the link layer changes
      * @param value the current state of the link layer
      */
-    void onStateChange(LinkStatus value);
+    default void onStateChange(LinkStatus value) {}
+
+    /**
+     * Called when a link-layer frame is received from an unknown destination address
+     */
+    default void onUnknownDestinationAddress(int destination) {}
+
+    /**
+     * Called when a link-layer frame is received from an unknown source address
+     */
+    default void onUnknownSourceAddress(int source) {}
 
     /**
      * Called when a keep alive message is transmitted
      */
-    void onKeepAliveInitiated();
+    default void onKeepAliveInitiated() {}
 
     /**
      * Called when a keep alive message (request link status) receives no response
      */
-    void onKeepAliveFailure();
+    default void onKeepAliveFailure() {}
 
     /**
      * Called when a keep alive message receives a valid response
      */
-    void onKeepAliveSuccess();
+    default void onKeepAliveSuccess() {}
 }

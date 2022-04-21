@@ -63,7 +63,7 @@ MasterParams ConfigReader::Convert(JNIEnv* env, jni::JMasterConfig jcfg)
 
 LinkConfig ConfigReader::Convert(JNIEnv* env, jni::JLinkLayerConfig jlinkcfg)
 {
-    LinkConfig cfg(true, false);
+    LinkConfig cfg(true);
 
     auto& ref = jni::JCache::LinkLayerConfig;
 

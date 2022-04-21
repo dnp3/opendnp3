@@ -33,15 +33,15 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         public OutstationStackConfig()
         {
-            this.outstation = new OutstationConfig();            
+            this.outstation = new OutstationConfig();
             this.databaseTemplate = new DatabaseTemplate();
-            this.link = new LinkConfig(false, false);
+            this.link = new LinkConfig(false);
         }
       
         /// <summary>
         /// Outstation config
         /// </summary>
-        public OutstationConfig outstation;        
+        public OutstationConfig outstation;
 
         /// <summary>
         /// Device template that specifies database layout, control behavior
