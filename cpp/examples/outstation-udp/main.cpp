@@ -68,8 +68,8 @@ int main(int argc, char* argv[])
     DNP3Manager manager(1, ConsoleLogger::Create());
 
     // Create a UDP socket
-    auto channel = manager.AddUDPChannel("server", logLevels, ChannelRetry::Default(), IPEndpoint("192.168.0.106", 19999),
-                                         IPEndpoint("192.168.0.193", 20000), PrintingChannelListener::Create());
+    auto channel = manager.AddUDPChannel("udpserver", logLevels, ChannelRetry::Default(), IPEndpoint("127.0.0.1", 20001),
+                                         IPEndpoint("127.0.0.1", 20000), PrintingChannelListener::Create());
 
     // The main object for a outstation. The defaults are useable,
     // but understanding the options are important.
