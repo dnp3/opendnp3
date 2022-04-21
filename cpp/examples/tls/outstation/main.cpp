@@ -78,9 +78,18 @@ int main(int argc, char* argv[])
     DNP3Manager manager(1, ConsoleLogger::Create());
 
     // Create a TCP server (listener)
-    auto channel = manager.AddTLSServer("server", logLevels, ServerAcceptMode::CloseExisting, IPEndpoint("0.0.0.0", 20001),
-                                        TLSConfig(peerCertificate, localCertificate, privateKey),
-                                        PrintingChannelListener::Create());
+    auto channel = std::shared_ptr<IChannel>(nullptr);
+    try
+    {
+        channel = manager.AddTLSServer("tlsserver", logLevels, ServerAcceptMode::CloseExisting, IPEndpoint("0.0.0.0", 20001),
+                                            TLSConfig(peerCertificate, localCertificate, privateKey),
+                                            PrintingChannelListener::Create());
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        return -1;
+    }
 
     // The main object for a outstation. The defaults are useable,
     // but understanding the options are important.
