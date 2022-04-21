@@ -15,6 +15,8 @@
   now have an empty default implementation. See [#441](https://github.com/dnp3/opendnp3/pull/441).
 * :beetle: Added extra log when closing a new connection based on `ServerAcceptMode::CloseNew`.
   See [#442](https://github.com/dnp3/opendnp3/pull/442).
+* :beetle: Fix TLS server not throwing exception when a certificate or key file
+  is not valid. See [#443](https://github.com/dnp3/opendnp3/pull/443).
 
 ### 3.1.1 ###
 * :beetle: Fix static octet string serilazation bug.

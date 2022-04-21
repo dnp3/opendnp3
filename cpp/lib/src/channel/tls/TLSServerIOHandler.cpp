@@ -43,11 +43,12 @@ TLSServerIOHandler::TLSServerIOHandler(const Logger& logger,
                                        std::shared_ptr<exe4cpp::StrandExecutor> executor,
                                        IPEndpoint endpoint,
                                        TLSConfig config,
-                                       std::error_code& /*ec*/)
+                                       std::error_code& ec)
     : IOHandler(logger, mode == ServerAcceptMode::CloseExisting, listener),
       executor(std::move(executor)),
       endpoint(std::move(endpoint)),
-      config(std::move(config))
+      config(std::move(config)),
+      server(std::make_shared<Server>(this->logger, this->executor, this->endpoint, this->config, ec))
 {
 }
 
@@ -66,16 +67,25 @@ void TLSServerIOHandler::BeginChannelAccept()
         this->OnNewChannel(channel);
     };
 
-    std::error_code ec;
-    this->server = std::make_shared<Server>(this->logger, this->executor, this->endpoint, this->config, ec);
-
-    if (ec)
+    if (this->server)
     {
-        SIMPLE_LOG_BLOCK(this->logger, flags::ERR, ec.message().c_str());
+        this->server->StartAcceptingConnection(callback);
     }
     else
     {
-        this->server->StartAcceptingConnection(callback);
+        std::error_code ec;
+        this->server = std::make_shared<Server>(this->logger, this->executor, this->endpoint, this->config, ec);
+
+        if (ec)
+        {
+            SIMPLE_LOG_BLOCK(this->logger, flags::ERR, ec.message().c_str());
+
+            // TODO - should we retry?
+        }
+        else
+        {
+            this->server->StartAcceptingConnection(callback);
+        }
     }
 }
 
