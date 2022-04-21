@@ -37,11 +37,11 @@ namespace Automatak.DNP3.Interface
         /// <param name="remoteAddr">dnp3 address of the remote device</param>
         /// <param name="responseTimeout">the response timeout for confirmed requests</param>
         /// <param name="keepAliveTimeout">the keep-alive timeout interval</param>
-        public LinkConfig(  bool isMaster,
-                            System.UInt16 localAddr,
-                            System.UInt16 remoteAddr,
-                            TimeSpan responseTimeout,
-                            TimeSpan keepAliveTimeout)
+        public LinkConfig(bool isMaster,
+                          System.UInt16 localAddr,
+                          System.UInt16 remoteAddr,
+                          TimeSpan responseTimeout,
+                          TimeSpan keepAliveTimeout)
         {
             this.isMaster = isMaster;
             this.localAddr = localAddr;
@@ -54,7 +54,8 @@ namespace Automatak.DNP3.Interface
         /// Defaults constructor
         /// </summary>
         /// <param name="isMaster">true if this layer will be used with a master, false otherwise</param>
-        /// <param name="useConfirms">true to use link layer confirmations for all data, false otherwise</param>
+        /// <param name="useConfirms">obsolete parameter, ignored</param>
+        [Obsolete("This constructor is obsolete, use LinkConfig(bool) instead.")]
         public LinkConfig(bool isMaster, bool useConfirms)
             : this(
                 isMaster,
@@ -63,6 +64,12 @@ namespace Automatak.DNP3.Interface
                 DefaultResponseTimeout,
                 DefaultKeepAliveTimeout
             )
+        {
+
+        }
+
+        public LinkConfig(bool isMaster)
+            : this(isMaster, false)
         {
 
         }
@@ -142,7 +149,7 @@ namespace Automatak.DNP3.Interface
         /// the response timeout for confirmed requests
         /// </summary>
         [XmlIgnore]
-        public TimeSpan responseTimeout;       
+        public TimeSpan responseTimeout;
 
         /// <summary>
         /// the keep-alive timer timeout interval

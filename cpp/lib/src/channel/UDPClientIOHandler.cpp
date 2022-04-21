@@ -59,7 +59,9 @@ void UDPClientIOHandler::SuspendChannelAccept()
 
 void UDPClientIOHandler::OnChannelShutdown()
 {
-    this->BeginChannelAccept();
+    this->retrytimer = this->executor->start(this->retry.reconnectDelay.value, [this, self = shared_from_this()]() {
+        this->BeginChannelAccept();
+    });
 }
 
 bool UDPClientIOHandler::TryOpen(const TimeDuration& delay)
@@ -89,19 +91,19 @@ bool UDPClientIOHandler::TryOpen(const TimeDuration& delay)
         else
         {
             FORMAT_LOG_BLOCK(this->logger, flags::INFO, "UDP socket binded to: %s, port %u, sending to %s, port %u",
-                             localEndpoint.address.c_str(), localEndpoint.port, remoteEndpoint.address.c_str(),
-                             remoteEndpoint.port);
+                             socket.local_endpoint().address().to_string().c_str(), socket.local_endpoint().port(),
+                             socket.remote_endpoint().address().to_string().c_str(), socket.remote_endpoint().port());
 
             if (client)
             {
-                this->OnNewChannel(UDPSocketChannel::Create(executor, std::move(socket)));
+                this->OnNewChannel(UDPSocketChannel::Create(executor, this->logger, std::move(socket)));
             }
         }
     };
 
     FORMAT_LOG_BLOCK(this->logger, flags::INFO, "Binding UDP socket to: %s, port %u, resolving address: %s, port %u",
-                     localEndpoint.address.c_str(), localEndpoint.port, remoteEndpoint.address.c_str(),
-                     remoteEndpoint.port);
+                     localEndpoint.address.c_str(), localEndpoint.port,
+                     remoteEndpoint.address.c_str(), remoteEndpoint.port);
 
     this->client->Open(localEndpoint, remoteEndpoint, cb);
 
