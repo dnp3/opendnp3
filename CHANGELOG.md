@@ -6,6 +6,8 @@
   See [#407](https://github.com/dnp3/opendnp3/pull/407).
 * :beetle: Fix UDP reconnect delay not being honoured. Also, initial UDP read errors
   (due to ICMP packets) do not close the socket immediately. See [#438](https://github.com/dnp3/opendnp3/pull/438).
+* :coffin: Deprecate the `LinkConfig` constructor with an unused `useConfirms` argument.
+  See [#439](https://github.com/dnp3/opendnp3/pull/439).
 
 ### 3.1.1 ###
 * :beetle: Fix static octet string serilazation bug.
