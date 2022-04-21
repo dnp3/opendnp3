@@ -29,8 +29,8 @@
 // limitations under the License.
 //
 
-#ifndef OPENDNP3JAVA_JNICOMMANDHANDLER_H
-#define OPENDNP3JAVA_JNICOMMANDHANDLER_H
+#ifndef OPENDNP3JAVA_JNILINKSTATUSLISTENER_H
+#define OPENDNP3JAVA_JNILINKSTATUSLISTENER_H
 
 #include "../adapters/LocalRef.h"
 
@@ -42,7 +42,7 @@ namespace jni
 
     namespace cache
     {
-        class CommandHandler
+        class LinkStatusListener
         {
             friend struct jni::JCache;
 
@@ -52,18 +52,12 @@ namespace jni
             public:
 
             // methods
-            void begin(JNIEnv* env, JCommandHandler instance);
-            void end(JNIEnv* env, JCommandHandler instance);
-            LocalRef<JCommandStatus> operate(JNIEnv* env, JCommandHandler instance, JAnalogOutputDouble64 arg0, jint arg1, JDatabase arg2, JOperateType arg3);
-            LocalRef<JCommandStatus> operate(JNIEnv* env, JCommandHandler instance, JAnalogOutputFloat32 arg0, jint arg1, JDatabase arg2, JOperateType arg3);
-            LocalRef<JCommandStatus> operate(JNIEnv* env, JCommandHandler instance, JAnalogOutputInt16 arg0, jint arg1, JDatabase arg2, JOperateType arg3);
-            LocalRef<JCommandStatus> operate(JNIEnv* env, JCommandHandler instance, JAnalogOutputInt32 arg0, jint arg1, JDatabase arg2, JOperateType arg3);
-            LocalRef<JCommandStatus> operate(JNIEnv* env, JCommandHandler instance, JControlRelayOutputBlock arg0, jint arg1, JDatabase arg2, JOperateType arg3);
-            LocalRef<JCommandStatus> select(JNIEnv* env, JCommandHandler instance, JAnalogOutputInt32 arg0, jint arg1);
-            LocalRef<JCommandStatus> select(JNIEnv* env, JCommandHandler instance, JAnalogOutputInt16 arg0, jint arg1);
-            LocalRef<JCommandStatus> select(JNIEnv* env, JCommandHandler instance, JAnalogOutputFloat32 arg0, jint arg1);
-            LocalRef<JCommandStatus> select(JNIEnv* env, JCommandHandler instance, JControlRelayOutputBlock arg0, jint arg1);
-            LocalRef<JCommandStatus> select(JNIEnv* env, JCommandHandler instance, JAnalogOutputDouble64 arg0, jint arg1);
+            void onKeepAliveFailure(JNIEnv* env, JLinkStatusListener instance);
+            void onKeepAliveInitiated(JNIEnv* env, JLinkStatusListener instance);
+            void onKeepAliveSuccess(JNIEnv* env, JLinkStatusListener instance);
+            void onStateChange(JNIEnv* env, JLinkStatusListener instance, JLinkStatus arg0);
+            void onUnknownDestinationAddress(JNIEnv* env, JLinkStatusListener instance, jint arg0);
+            void onUnknownSourceAddress(JNIEnv* env, JLinkStatusListener instance, jint arg0);
 
             private:
 
@@ -76,12 +70,6 @@ namespace jni
             jmethodID method3 = nullptr;
             jmethodID method4 = nullptr;
             jmethodID method5 = nullptr;
-            jmethodID method6 = nullptr;
-            jmethodID method7 = nullptr;
-            jmethodID method8 = nullptr;
-            jmethodID method9 = nullptr;
-            jmethodID method10 = nullptr;
-            jmethodID method11 = nullptr;
         };
     }
 }

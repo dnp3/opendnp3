@@ -51,6 +51,7 @@ object Classes {
     classOf[AssignClassType],
     classOf[RestartMode],
     classOf[IndexQualifierMode],
+    classOf[LinkStatus],
 
     classOf[StaticBinaryVariation],
     classOf[StaticDoubleBinaryVariation],
@@ -77,6 +78,7 @@ object Classes {
   private def interfaces : List[ClassConfig] = List(
     classOf[LogHandler],
     classOf[SOEHandler],
+    classOf[LinkStatusListener],
     classOf[MasterApplication],
     classOf[OutstationApplication],
     classOf[CommandProcessor],

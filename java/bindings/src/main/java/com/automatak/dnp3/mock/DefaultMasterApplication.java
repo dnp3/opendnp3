@@ -73,15 +73,21 @@ public class DefaultMasterApplication implements MasterApplication
     }
 
     @Override
-    public void onStateChange(LinkStatus value){}
+    public void onStateChange(LinkStatus value) {}
 
     @Override
-    public void onKeepAliveInitiated(){}
+    public void onUnknownDestinationAddress(int destination) {}
 
     @Override
-    public void onKeepAliveFailure(){}
+    public void onUnknownSourceAddress(int source) {}
 
     @Override
-    public void onKeepAliveSuccess(){}
+    public void onKeepAliveInitiated() {}
+
+    @Override
+    public void onKeepAliveFailure() {}
+
+    @Override
+    public void onKeepAliveSuccess() {}
 
 }

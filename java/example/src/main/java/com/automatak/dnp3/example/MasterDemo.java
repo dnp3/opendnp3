@@ -20,9 +20,7 @@
 package com.automatak.dnp3.example;
 
 import com.automatak.dnp3.*;
-import com.automatak.dnp3.enums.CommandStatus;
-import com.automatak.dnp3.enums.OperationType;
-import com.automatak.dnp3.enums.TripCloseCode;
+import com.automatak.dnp3.enums.*;
 import com.automatak.dnp3.impl.DNP3ManagerFactory;
 import com.automatak.dnp3.mock.DefaultMasterApplication;
 import com.automatak.dnp3.mock.PrintingChannelListener;

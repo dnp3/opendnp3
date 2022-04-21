@@ -10,6 +10,9 @@
   See [#439](https://github.com/dnp3/opendnp3/pull/439).
 * :beetle: In Java, `CommandHeader` builder methods now all return `CommandHeaders`.
   See [#440](https://github.com/dnp3/opendnp3/pull/440).
+* :beetle: In Java, fix `LinkStatusListener` not getting called. Also added the missing
+  `onUnknownDestinationAddress` and `onUnknownSourceAddress` callbacks. All the callbacks
+  now have an empty default implementation. See [#441](https://github.com/dnp3/opendnp3/pull/441).
 
 ### 3.1.1 ###
 * :beetle: Fix static octet string serilazation bug.

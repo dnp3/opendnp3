@@ -101,6 +101,8 @@
 #include "JNILinkLayerConfig.h"
 #include "JNILinkLayerStatistics.h"
 #include "JNILinkStatistics.h"
+#include "JNILinkStatus.h"
+#include "JNILinkStatusListener.h"
 #include "JNIList.h"
 #include "JNILogEntry.h"
 #include "JNILogHandler.h"
@@ -217,6 +219,8 @@ namespace jni
         static cache::LinkLayerConfig LinkLayerConfig;
         static cache::LinkLayerStatistics LinkLayerStatistics;
         static cache::LinkStatistics LinkStatistics;
+        static cache::LinkStatus LinkStatus;
+        static cache::LinkStatusListener LinkStatusListener;
         static cache::List List;
         static cache::LogEntry LogEntry;
         static cache::LogHandler LogHandler;
