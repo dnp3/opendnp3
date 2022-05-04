@@ -29,7 +29,7 @@
 // limitations under the License.
 //
 
-namespace Step Function I/O.DNP3.Interface
+namespace Automatak.DNP3.Interface
 {
   /// <summary>
   /// Enumeration for possible states of a channel

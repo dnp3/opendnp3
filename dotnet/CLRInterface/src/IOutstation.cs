@@ -22,7 +22,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Step Function I/O.DNP3.Interface
+namespace Automatak.DNP3.Interface
 {
     public interface IMeasurementLoader
     {

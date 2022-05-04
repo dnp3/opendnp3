@@ -79,5 +79,5 @@ void LinkLayerTest::BeginTransmit(const ser4cpp::rseq_t& buffer, ILinkSession& /
 
 LinkLayerConfig LinkLayerTest::DefaultConfig()
 {
-    return LinkLayerConfig(LinkConfig(true, false), false);
+    return LinkLayerConfig(LinkConfig(true), false);
 }

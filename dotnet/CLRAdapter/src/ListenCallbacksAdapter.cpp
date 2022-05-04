@@ -23,7 +23,7 @@
 #include "SessionAcceptorAdapter.h"
 #include "MasterSessionAdapter.h"
 
-namespace Step Function I/O
+namespace Automatak
 {
     namespace DNP3
     {

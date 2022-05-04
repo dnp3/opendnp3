@@ -24,11 +24,11 @@
 
 #include <vcclr.h>
 
-using namespace Step Function I/O::DNP3::Interface;
+using namespace Automatak::DNP3::Interface;
 
 using namespace System::Collections::ObjectModel;
 
-namespace Step Function I/O
+namespace Automatak
 {
     namespace DNP3
     {
@@ -39,7 +39,7 @@ namespace Step Function I/O
             {
             public:
 
-                SOEHandlerAdapter(Step Function I/O::DNP3::Interface::ISOEHandler^ proxy);
+                SOEHandlerAdapter(Automatak::DNP3::Interface::ISOEHandler^ proxy);
 
                 virtual void BeginFragment(const opendnp3::ResponseInfo& info) override final;
                 virtual void EndFragment(const opendnp3::ResponseInfo& info) override final;
@@ -59,7 +59,7 @@ namespace Step Function I/O
 
             private:
 
-                gcroot < Step Function I/O::DNP3::Interface::ISOEHandler^ > proxy;
+                gcroot < Automatak::DNP3::Interface::ISOEHandler^ > proxy;
             };
 
         }

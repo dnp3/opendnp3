@@ -29,7 +29,7 @@
 // limitations under the License.
 //
 
-namespace Step Function I/O.DNP3.Interface
+namespace Automatak.DNP3.Interface
 {
   /// <summary>
   /// Determines what the master station does when it sees the NEED_TIME iin bit

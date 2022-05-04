@@ -16,7 +16,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace Step Function I/O.DNP3.Interface
+namespace Automatak.DNP3.Interface
 {
     /// <summary>
     /// Various callbacks that can be received from the link layer

@@ -21,8 +21,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Step Function I/O.DNP3.Interface;
-using Step Function I/O.DNP3.Adapter;
+using Automatak.DNP3.Interface;
+using Automatak.DNP3.Adapter;
 
 namespace DotNetMasterGPRSDemo
 {

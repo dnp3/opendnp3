@@ -24,11 +24,11 @@
 
 #include <vcclr.h>
 
-using namespace Step Function I/O::DNP3::Interface;
+using namespace Automatak::DNP3::Interface;
 
 using namespace System::Collections::ObjectModel;
 
-namespace Step Function I/O
+namespace Automatak
 {
 namespace DNP3
 {
@@ -39,7 +39,7 @@ namespace DNP3
         private class OutstationCommandHandlerAdapter : public opendnp3::ICommandHandler
         {
         public:
-            OutstationCommandHandlerAdapter(Step Function I/O::DNP3::Interface::ICommandHandler ^ proxy);
+            OutstationCommandHandlerAdapter(Automatak::DNP3::Interface::ICommandHandler ^ proxy);
 
             void Begin() override final;
             void End() override final;
@@ -78,11 +78,11 @@ namespace DNP3
                                             opendnp3::OperateType opType) override final;
 
         private:
-            gcroot<Step Function I/O::DNP3::Interface::ICommandHandler ^> proxy;
+            gcroot<Automatak::DNP3::Interface::ICommandHandler ^> proxy;
         };
 
     } // namespace Adapter
 } // namespace DNP3
-} // namespace Step Function I/O
+} // namespace Automatak
 
 #endif

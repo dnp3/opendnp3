@@ -22,11 +22,11 @@
 
 #include <opendnp3/outstation/IOutstation.h>
 
-using namespace Step Function I/O::DNP3::Interface;
+using namespace Automatak::DNP3::Interface;
 
 using namespace System::Collections::ObjectModel;
 
-namespace Step Function I/O
+namespace Automatak
 {
     namespace DNP3
     {

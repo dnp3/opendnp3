@@ -29,7 +29,7 @@
 // limitations under the License.
 //
 
-namespace Step Function I/O.DNP3.Interface
+namespace Automatak.DNP3.Interface
 {
   /// <summary>
   /// List the various states that an individual command object can be in after an SBO or direct operate request

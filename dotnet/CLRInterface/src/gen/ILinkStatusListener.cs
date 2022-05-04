@@ -20,7 +20,7 @@
 // you under the terms of the License.
 //
 
-namespace Step Function I/O.DNP3.Interface
+namespace Automatak.DNP3.Interface
 {
     public interface ILinkListener
     {

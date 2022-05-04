@@ -28,11 +28,11 @@
 #include <vcclr.h>
 #include <memory>
 
-using namespace Step Function I/O::DNP3::Interface;
+using namespace Automatak::DNP3::Interface;
 
 using namespace System::Collections::ObjectModel;
 
-namespace Step Function I/O
+namespace Automatak
 {
     namespace DNP3
     {
@@ -43,12 +43,12 @@ namespace Step Function I/O
             {
             public:
 
-                static std::shared_ptr<opendnp3::ITaskCallback> Create(Step Function I/O::DNP3::Interface::ITaskCallback^ proxy)
+                static std::shared_ptr<opendnp3::ITaskCallback> Create(Automatak::DNP3::Interface::ITaskCallback^ proxy)
                 {
                     return std::make_shared<TaskCallbackAdapter>(proxy);
                 }
 
-                TaskCallbackAdapter(Step Function I/O::DNP3::Interface::ITaskCallback ^ proxy) : root(proxy) {}
+                TaskCallbackAdapter(Automatak::DNP3::Interface::ITaskCallback ^ proxy) : root(proxy) {}
 
                 virtual void OnStart() sealed
                 {
@@ -67,7 +67,7 @@ namespace Step Function I/O
 
             private:
 
-                gcroot < Step Function I/O::DNP3::Interface::ITaskCallback^ > root;
+                gcroot < Automatak::DNP3::Interface::ITaskCallback^ > root;
             };
         
         }

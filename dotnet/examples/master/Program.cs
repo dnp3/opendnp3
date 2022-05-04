@@ -21,8 +21,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using Step Function I/O.DNP3.Adapter;
-using Step Function I/O.DNP3.Interface;
+using Automatak.DNP3.Adapter;
+using Automatak.DNP3.Interface;
 
 namespace DotNetMasterDemo
 {

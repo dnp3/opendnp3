@@ -17,8 +17,8 @@
 // limitations under the License.
 using System;
 
-using Step Function I/O.DNP3.Interface;
-using Step Function I/O.DNP3.Adapter;
+using Automatak.DNP3.Interface;
+using Automatak.DNP3.Adapter;
 
 namespace DotNetMasterGPRSDemo
 {

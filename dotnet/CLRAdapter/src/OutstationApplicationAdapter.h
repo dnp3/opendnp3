@@ -24,11 +24,11 @@
 
 #include <vcclr.h>
 
-using namespace Step Function I/O::DNP3::Interface;
+using namespace Automatak::DNP3::Interface;
 
 using namespace System::Collections::ObjectModel;
 
-namespace Step Function I/O
+namespace Automatak
 {
     namespace DNP3
     {
@@ -38,7 +38,7 @@ namespace Step Function I/O
             private class OutstationApplicationAdapter final : public opendnp3::IOutstationApplication
             {
             public:
-                OutstationApplicationAdapter(Step Function I/O::DNP3::Interface::IOutstationApplication^ proxy);
+                OutstationApplicationAdapter(Automatak::DNP3::Interface::IOutstationApplication^ proxy);
 
                 virtual void OnStateChange(opendnp3::LinkStatus value) override final;
                 
@@ -78,7 +78,7 @@ namespace Step Function I/O
 
             private:
 
-                gcroot < Step Function I/O::DNP3::Interface::IOutstationApplication^ > proxy;
+                gcroot < Automatak::DNP3::Interface::IOutstationApplication^ > proxy;
             };
 
         }

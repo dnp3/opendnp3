@@ -24,7 +24,7 @@
 #include "MasterSessionAdapter.h"
 #include "SOEHandlerAdapter.h"
 
-namespace Step Function I/O
+namespace Automatak
 {
     namespace DNP3
     {

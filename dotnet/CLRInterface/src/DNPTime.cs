@@ -18,7 +18,7 @@
 
 using System;
 
-namespace Step Function I/O.DNP3.Interface
+namespace Automatak.DNP3.Interface
 {
     public class DNPTime
     {

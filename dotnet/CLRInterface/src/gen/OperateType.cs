@@ -29,7 +29,7 @@
 // limitations under the License.
 //
 
-namespace Step Function I/O.DNP3.Interface
+namespace Automatak.DNP3.Interface
 {
   /// <summary>
   /// Various ways that an outstation can receive a request to operate a BO or AO point

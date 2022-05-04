@@ -23,7 +23,7 @@
 #include <opendnp3/channel/ChannelRetry.h>
 #include <opendnp3/channel/TLSConfig.h>
 
-using namespace Step Function I/O::DNP3::Interface;
+using namespace Automatak::DNP3::Interface;
 
 using namespace System;
 
@@ -32,7 +32,7 @@ namespace opendnp3
     class DNP3Manager;
 }
 
-namespace Step Function I/O
+namespace Automatak
 {
     namespace DNP3
     {
@@ -64,7 +64,7 @@ namespace Step Function I/O
                 DNP3ManagerFactory() {}
             };
 
-            ref class DNP3ManagerAdapter : public Step Function I/O::DNP3::Interface::IDNP3Manager
+            ref class DNP3ManagerAdapter : public Automatak::DNP3::Interface::IDNP3Manager
             {
             public:
 
@@ -81,7 +81,7 @@ namespace Step Function I/O
                 virtual IChannel^ AddTLSClient(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, System::Collections::Generic::IList<Interface::IPEndpoint^>^ remotes, Interface::TLSConfig^ config, Interface::IChannelListener^ listener)  sealed;
                 virtual IChannel^ AddTLSServer(System::String^ id, System::UInt32 filters, Interface::ServerAcceptMode mode, Interface::IPEndpoint^ endpoint, Interface::TLSConfig^ config, Interface::IChannelListener^ listener) sealed;
                 
-                virtual IChannel^ AddSerial(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, Step Function I/O::DNP3::Interface::SerialSettings^ settings, Interface::IChannelListener^ listener) sealed;
+                virtual IChannel^ AddSerial(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, Automatak::DNP3::Interface::SerialSettings^ settings, Interface::IChannelListener^ listener) sealed;
 
                 virtual Interface::IListener^ CreateListener(System::String^ loggerid, System::UInt32 filters, Interface::IPEndpoint^ endpoint, IListenCallbacks^ callbacks) sealed;
 

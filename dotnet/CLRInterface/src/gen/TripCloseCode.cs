@@ -29,7 +29,7 @@
 // limitations under the License.
 //
 
-namespace Step Function I/O.DNP3.Interface
+namespace Automatak.DNP3.Interface
 {
   /// <summary>
   /// Used in conjunction with Operation Type in a CROB to describe which output to operate for complementary two-output model

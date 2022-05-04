@@ -26,11 +26,11 @@
 
 #include <vcclr.h>
 
-using namespace Step Function I/O::DNP3::Interface;
+using namespace Automatak::DNP3::Interface;
 
 using namespace System::Collections::ObjectModel;
 
-namespace Step Function I/O
+namespace Automatak
 {
     namespace DNP3
     {
@@ -41,9 +41,9 @@ namespace Step Function I/O
             {
             public:
 
-                LogAdapter(Step Function I/O::DNP3::Interface::ILogHandler^ proxy);
+                LogAdapter(Automatak::DNP3::Interface::ILogHandler^ proxy);
 
-                static std::shared_ptr<opendnp3::ILogHandler> Create(Step Function I/O::DNP3::Interface::ILogHandler ^ proxy);
+                static std::shared_ptr<opendnp3::ILogHandler> Create(Automatak::DNP3::Interface::ILogHandler ^ proxy);
 
                 // logging error messages, etc
                 virtual void log(opendnp3::ModuleId module,
@@ -53,7 +53,7 @@ namespace Step Function I/O
                                  char const* message) override;
 
             private:
-                gcroot < Step Function I/O::DNP3::Interface::ILogHandler^ > proxy;
+                gcroot < Automatak::DNP3::Interface::ILogHandler^ > proxy;
             };
 
         }

@@ -21,17 +21,17 @@
 
 #include "Conversions.h"
 
-namespace Step Function I/O
+namespace Automatak
 {
     namespace DNP3
     {
         namespace Adapter
         {
 
-            LogAdapter::LogAdapter(Step Function I/O::DNP3::Interface::ILogHandler^ proxy) : proxy(proxy)
+            LogAdapter::LogAdapter(Automatak::DNP3::Interface::ILogHandler^ proxy) : proxy(proxy)
             {}
 
-            std::shared_ptr<opendnp3::ILogHandler> LogAdapter::Create(Step Function I/O::DNP3::Interface::ILogHandler ^ proxy)
+            std::shared_ptr<opendnp3::ILogHandler> LogAdapter::Create(Automatak::DNP3::Interface::ILogHandler ^ proxy)
             {
                 return std::shared_ptr<opendnp3::ILogHandler>(new LogAdapter(proxy));
             }
@@ -43,7 +43,7 @@ namespace Step Function I/O
                                  char const* location,
                                  char const* message)
             {
-                proxy->Log(gcnew Step Function I/O::DNP3::Interface::LogEntry(level.value, Conversions::ConvertString(id),
+                proxy->Log(gcnew Automatak::DNP3::Interface::LogEntry(level.value, Conversions::ConvertString(id),
                                                                       Conversions::ConvertString(location),
                                                                       Conversions::ConvertString(message)));
             }

@@ -24,9 +24,9 @@
 
 #include <vcclr.h>
 
-using namespace Step Function I/O::DNP3::Interface;
+using namespace Automatak::DNP3::Interface;
 
-namespace Step Function I/O
+namespace Automatak
 {
     namespace DNP3
     {
@@ -37,7 +37,7 @@ namespace Step Function I/O
             {
             public:
 
-                ChannelListenerAdapter(Step Function I/O::DNP3::Interface::IChannelListener^ proxy) : proxy(proxy) {}	
+                ChannelListenerAdapter(Automatak::DNP3::Interface::IChannelListener^ proxy) : proxy(proxy) {}	
 
                 virtual void OnStateChange(opendnp3::ChannelState state) override
                 {
@@ -46,7 +46,7 @@ namespace Step Function I/O
 
             private:
 
-                gcroot < Step Function I/O::DNP3::Interface::IChannelListener^ > proxy;
+                gcroot < Automatak::DNP3::Interface::IChannelListener^ > proxy;
             };
 
         }

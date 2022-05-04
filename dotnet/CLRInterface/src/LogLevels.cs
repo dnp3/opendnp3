@@ -19,7 +19,7 @@
 
 using System.Text;
 
-namespace Step Function I/O.DNP3.Interface
+namespace Automatak.DNP3.Interface
 {
     /// <summary>
     /// Combinations of the log filters

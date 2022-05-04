@@ -52,11 +52,11 @@
 
 #include "CollectionAdapter.h"
 
-using namespace Step Function I/O::DNP3::Interface;
+using namespace Automatak::DNP3::Interface;
 
 using namespace System::Collections::Generic;
 
-namespace Step Function I/O
+namespace Automatak
 {
     namespace DNP3
     {
@@ -75,7 +75,7 @@ namespace Step Function I/O
 
                 static opendnp3::ClassField ConvertClassField(ClassField classField);
 
-                static opendnp3::TLSConfig Convert(Step Function I/O::DNP3::Interface::TLSConfig^ config);
+                static opendnp3::TLSConfig Convert(Automatak::DNP3::Interface::TLSConfig^ config);
 
                 // Convert a .NET string to a C++ string
                 static std::string ConvertString(System::String^ s);

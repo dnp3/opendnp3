@@ -21,14 +21,14 @@
 
 #include "Conversions.h"
 
-namespace Step Function I/O
+namespace Automatak
 {
     namespace DNP3
     {
         namespace Adapter
         {
 
-            OutstationApplicationAdapter::OutstationApplicationAdapter(Step Function I/O::DNP3::Interface::IOutstationApplication^ proxy_) :
+            OutstationApplicationAdapter::OutstationApplicationAdapter(Automatak::DNP3::Interface::IOutstationApplication^ proxy_) :
                 proxy(proxy_)
             {
 

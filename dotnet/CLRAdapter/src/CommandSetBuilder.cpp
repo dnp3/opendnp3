@@ -21,7 +21,7 @@
 
 #include "Conversions.h"
 
-namespace Step Function I/O
+namespace Automatak
 {
     namespace DNP3
     {

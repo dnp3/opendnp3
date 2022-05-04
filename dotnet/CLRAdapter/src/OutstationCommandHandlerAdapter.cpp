@@ -23,7 +23,7 @@
 #include "DatabaseAdapter.h"
 #include "Conversions.h"
 
-namespace Step Function I/O
+namespace Automatak
 {
 namespace DNP3
 {
@@ -40,7 +40,7 @@ namespace DNP3
             proxy->End();
         }
 
-        OutstationCommandHandlerAdapter::OutstationCommandHandlerAdapter(Step Function I/O::DNP3::Interface::ICommandHandler
+        OutstationCommandHandlerAdapter::OutstationCommandHandlerAdapter(Automatak::DNP3::Interface::ICommandHandler
                                                                          ^ proxy)
             : proxy(proxy)
         {
@@ -139,4 +139,4 @@ namespace DNP3
 
     } // namespace Adapter
 } // namespace DNP3
-} // namespace Step Function I/O
+} // namespace Automatak

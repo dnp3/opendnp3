@@ -24,9 +24,9 @@
 
 #include <vcclr.h>
 
-using namespace Step Function I/O::DNP3::Interface;
+using namespace Automatak::DNP3::Interface;
 
-namespace Step Function I/O
+namespace Automatak
 {
     namespace DNP3
     {
@@ -34,7 +34,7 @@ namespace Step Function I/O
         {
 
             template <class T>
-            private ref class DatabaseAdapter: public Step Function I/O::DNP3::Interface::IDatabase
+            private ref class DatabaseAdapter: public Automatak::DNP3::Interface::IDatabase
             {
             public:
 

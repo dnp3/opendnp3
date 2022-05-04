@@ -27,11 +27,11 @@
 
 #include <vcclr.h>
 
-using namespace Step Function I/O::DNP3::Interface;
+using namespace Automatak::DNP3::Interface;
 
 using namespace System::Collections::ObjectModel;
 
-namespace Step Function I/O
+namespace Automatak
 {
     namespace DNP3
     {
@@ -42,7 +42,7 @@ namespace Step Function I/O
             {
             public:
 
-                MasterApplicationAdapter(Step Function I/O::DNP3::Interface::IMasterApplication^ proxy) : proxy(proxy)
+                MasterApplicationAdapter(Automatak::DNP3::Interface::IMasterApplication^ proxy) : proxy(proxy)
                 {}
 
                 virtual void OnStateChange(opendnp3::LinkStatus value) override
@@ -83,7 +83,7 @@ namespace Step Function I/O
 
                 virtual void OnReceiveIIN(const opendnp3::IINField& iin) override final
                 {
-                    IINField ^iinField = gcnew IINField((Step Function I/O::DNP3::Interface::LSBMask)iin.LSB, (Step Function I/O::DNP3::Interface::MSBMask)iin.MSB);
+                    IINField ^iinField = gcnew IINField((Automatak::DNP3::Interface::LSBMask)iin.LSB, (Automatak::DNP3::Interface::MSBMask)iin.MSB);
                     proxy->OnReceiveIIN(iinField);
                 }
 
@@ -130,7 +130,7 @@ namespace Step Function I/O
 
             private:
 
-                gcroot < Step Function I/O::DNP3::Interface::IMasterApplication^ > proxy;
+                gcroot < Automatak::DNP3::Interface::IMasterApplication^ > proxy;
             };
 
         }

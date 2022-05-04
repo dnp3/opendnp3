@@ -22,13 +22,13 @@
 
 #include <opendnp3/channel/IListener.h>
 
-using namespace Step Function I/O::DNP3::Interface;
+using namespace Automatak::DNP3::Interface;
 
 using namespace System;
 using namespace System::Collections::Generic;
 using namespace System::Threading::Tasks;
 
-namespace Step Function I/O
+namespace Automatak
 {
     namespace DNP3
     {

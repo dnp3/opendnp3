@@ -26,12 +26,12 @@
 
 #include <opendnp3/master/IMasterOperations.h>
 
-using namespace Step Function I/O::DNP3::Interface;
+using namespace Automatak::DNP3::Interface;
 
 using namespace System::Collections::ObjectModel;
 using namespace System::Collections::Generic;
 
-namespace Step Function I/O
+namespace Automatak
 {
     namespace DNP3
     {

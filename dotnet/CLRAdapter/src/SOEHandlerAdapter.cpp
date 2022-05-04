@@ -21,7 +21,7 @@
 
 #include "Conversions.h"
 
-namespace Step Function I/O
+namespace Automatak
 {
     namespace DNP3
     {
@@ -40,7 +40,7 @@ namespace Step Function I/O
                 return gcnew ResponseInfo(info.unsolicited, info.fir, info.fin);
             }
 
-            SOEHandlerAdapter::SOEHandlerAdapter(Step Function I/O::DNP3::Interface::ISOEHandler^ aProxy) : proxy(aProxy)
+            SOEHandlerAdapter::SOEHandlerAdapter(Automatak::DNP3::Interface::ISOEHandler^ aProxy) : proxy(aProxy)
             {}
                         
             void SOEHandlerAdapter::BeginFragment(const opendnp3::ResponseInfo& info)

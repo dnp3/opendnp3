@@ -21,7 +21,7 @@
 
 #include "Conversions.h"
 
-namespace Step Function I/O
+namespace Automatak
 {
 namespace DNP3
 {
@@ -48,4 +48,4 @@ namespace DNP3
 
     } // namespace Adapter
 } // namespace DNP3
-} // namespace Step Function I/O
+} // namespace Automatak
