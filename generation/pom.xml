@@ -8,7 +8,7 @@
     <packaging>pom</packaging>
 
     <name>opendnp3-generation</name>
-    <url>www.automatak.com/opendnp3</url>
+    <url>https://stepfunc.io/opendnp3</url>
     <description>Code generator for opendnp3 project</description>
 
     <modules>

@@ -10,9 +10,9 @@
 // 
 // This file is auto-generated. Do not edit manually
 // 
-// Copyright 2016 Automatak LLC
+// Copyright 2016 Step Function I/O LLC
 // 
-// Automatak LLC (www.automatak.com) licenses this file
+// Step Function I/O LLC (https://stepfunc.io) licenses this file
 // to you under the the Apache License Version 2.0 (the "License"):
 // 
 // http://www.apache.org/licenses/LICENSE-2.0.html
