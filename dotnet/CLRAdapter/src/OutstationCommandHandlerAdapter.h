@@ -1,10 +1,10 @@
 /*
- * Copyright 2013-2020 Automatak, LLC
+ * Copyright 2013-2022 Step Function I/O, LLC
  *
- * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
+ * Licensed to Green Energy Corp (www.greenenergycorp.com) and Step Function I/O
  * LLC (www.automatak.com) under one or more contributor license agreements.
  * See the NOTICE file distributed with this work for additional information
- * regarding copyright ownership. Green Energy Corp and Automatak LLC license
+ * regarding copyright ownership. Green Energy Corp and Step Function I/O LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
  * may not use this file except in compliance with the License. You may obtain
  * a copy of the License at:
@@ -24,11 +24,11 @@
 
 #include <vcclr.h>
 
-using namespace Automatak::DNP3::Interface;
+using namespace Step Function I/O::DNP3::Interface;
 
 using namespace System::Collections::ObjectModel;
 
-namespace Automatak
+namespace Step Function I/O
 {
 namespace DNP3
 {
@@ -39,7 +39,7 @@ namespace DNP3
         private class OutstationCommandHandlerAdapter : public opendnp3::ICommandHandler
         {
         public:
-            OutstationCommandHandlerAdapter(Automatak::DNP3::Interface::ICommandHandler ^ proxy);
+            OutstationCommandHandlerAdapter(Step Function I/O::DNP3::Interface::ICommandHandler ^ proxy);
 
             void Begin() override final;
             void End() override final;
@@ -78,11 +78,11 @@ namespace DNP3
                                             opendnp3::OperateType opType) override final;
 
         private:
-            gcroot<Automatak::DNP3::Interface::ICommandHandler ^> proxy;
+            gcroot<Step Function I/O::DNP3::Interface::ICommandHandler ^> proxy;
         };
 
     } // namespace Adapter
 } // namespace DNP3
-} // namespace Automatak
+} // namespace Step Function I/O
 
 #endif

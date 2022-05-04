@@ -1,10 +1,10 @@
 /*
- * Copyright 2013-2020 Automatak, LLC
+ * Copyright 2013-2022 Step Function I/O, LLC
  *
- * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
+ * Licensed to Green Energy Corp (www.greenenergycorp.com) and Step Function I/O
  * LLC (www.automatak.com) under one or more contributor license agreements. 
  * See the NOTICE file distributed with this work for additional information
- * regarding copyright ownership. Green Energy Corp and Automatak LLC license
+ * regarding copyright ownership. Green Energy Corp and Step Function I/O LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
  * may not use this file except in compliance with the License. You may obtain
  * a copy of the License at:
@@ -28,7 +28,7 @@
 
 #include <opendnp3/DNP3Manager.h>
 
-namespace Automatak
+namespace Step Function I/O
 {
     namespace DNP3
     {
@@ -67,7 +67,7 @@ namespace Automatak
                 manager->Shutdown();
             }
 
-            IChannel^ DNP3ManagerAdapter::AddTCPClient(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, System::Collections::Generic::IList<Interface::IPEndpoint^>^ remotes, Automatak::DNP3::Interface::IChannelListener^ listener)
+            IChannel^ DNP3ManagerAdapter::AddTCPClient(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, System::Collections::Generic::IList<Interface::IPEndpoint^>^ remotes, Step Function I/O::DNP3::Interface::IChannelListener^ listener)
             {
                 std::string stdName = Conversions::ConvertString(id);
 
@@ -92,7 +92,7 @@ namespace Automatak
                 }
             }
 
-            IChannel^ DNP3ManagerAdapter::AddTCPServer(System::String^ id, System::UInt32 filters, Interface::ServerAcceptMode mode, Interface::IPEndpoint^ endpoint, Automatak::DNP3::Interface::IChannelListener^ listener)
+            IChannel^ DNP3ManagerAdapter::AddTCPServer(System::String^ id, System::UInt32 filters, Interface::ServerAcceptMode mode, Interface::IPEndpoint^ endpoint, Step Function I/O::DNP3::Interface::IChannelListener^ listener)
             {
                 std::string stdName = Conversions::ConvertString(id);
                 auto stdEndpoint = Conversions::Convert(endpoint);
@@ -135,7 +135,7 @@ namespace Automatak
                 }
             }
 
-            IChannel^ DNP3ManagerAdapter::AddTLSClient(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, System::Collections::Generic::IList<Interface::IPEndpoint^>^ remotes, Automatak::DNP3::Interface::TLSConfig^ config, Automatak::DNP3::Interface::IChannelListener^ listener)
+            IChannel^ DNP3ManagerAdapter::AddTLSClient(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, System::Collections::Generic::IList<Interface::IPEndpoint^>^ remotes, Step Function I/O::DNP3::Interface::TLSConfig^ config, Step Function I/O::DNP3::Interface::IChannelListener^ listener)
             {
                 std::string stdName = Conversions::ConvertString(id);
 
@@ -161,7 +161,7 @@ namespace Automatak
                 }
             }
             
-            IChannel^ DNP3ManagerAdapter::AddTLSServer(System::String^ id, System::UInt32 filters, Interface::ServerAcceptMode mode, Interface::IPEndpoint^ endpoint, Automatak::DNP3::Interface::TLSConfig^ config, Automatak::DNP3::Interface::IChannelListener^ listener)
+            IChannel^ DNP3ManagerAdapter::AddTLSServer(System::String^ id, System::UInt32 filters, Interface::ServerAcceptMode mode, Interface::IPEndpoint^ endpoint, Step Function I/O::DNP3::Interface::TLSConfig^ config, Step Function I/O::DNP3::Interface::IChannelListener^ listener)
             {
                 std::string stdName = Conversions::ConvertString(id);
                 auto stdEndpoint = Conversions::Convert(endpoint);
@@ -181,7 +181,7 @@ namespace Automatak
                 }
             }
 
-            IChannel^ DNP3ManagerAdapter::AddSerial(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, Automatak::DNP3::Interface::SerialSettings^ settings, Automatak::DNP3::Interface::IChannelListener^ listener)
+            IChannel^ DNP3ManagerAdapter::AddSerial(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, Step Function I/O::DNP3::Interface::SerialSettings^ settings, Step Function I/O::DNP3::Interface::IChannelListener^ listener)
             {
                 std::string stdName = Conversions::ConvertString(id);
                 auto s = Conversions::ConvertSerialSettings(settings);				

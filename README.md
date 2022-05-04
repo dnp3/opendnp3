@@ -50,7 +50,7 @@ Licensed under the terms of the [Apache 2.0 License](http://www.apache.org/licen
 
 Copyright (c) 2010, 2011 Green Energy Corp
 
-Copyright (c) 2013 - 2020 Automatak LLC
+Copyright (c) 2013 - 2020 Step Function I/O LLC
 
 Copyright (c) 2020 - 2022 Step Function I/O LLC
 

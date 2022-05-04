@@ -15,12 +15,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// This file was forked on 01/01/2013 by Automatak, LLC and modifications
-// have been made to this file. Automatak, LLC licenses these modifications to
+// This file was forked on 01/01/2013 by Step Function I/O, LLC and modifications
+// have been made to this file. Step Function I/O, LLC licenses these modifications to
 // you under the terms of the License.
 //
 
-namespace Automatak.DNP3.Interface
+namespace Step Function I/O.DNP3.Interface
 {
     public interface ILinkListener
     {

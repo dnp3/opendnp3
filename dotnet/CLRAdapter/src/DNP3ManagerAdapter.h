@@ -1,10 +1,10 @@
 /*
- * Copyright 2013-2020 Automatak, LLC
+ * Copyright 2013-2022 Step Function I/O, LLC
  *
- * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
+ * Licensed to Green Energy Corp (www.greenenergycorp.com) and Step Function I/O
  * LLC (www.automatak.com) under one or more contributor license agreements. 
  * See the NOTICE file distributed with this work for additional information
- * regarding copyright ownership. Green Energy Corp and Automatak LLC license
+ * regarding copyright ownership. Green Energy Corp and Step Function I/O LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
  * may not use this file except in compliance with the License. You may obtain
  * a copy of the License at:
@@ -23,7 +23,7 @@
 #include <opendnp3/channel/ChannelRetry.h>
 #include <opendnp3/channel/TLSConfig.h>
 
-using namespace Automatak::DNP3::Interface;
+using namespace Step Function I/O::DNP3::Interface;
 
 using namespace System;
 
@@ -32,7 +32,7 @@ namespace opendnp3
     class DNP3Manager;
 }
 
-namespace Automatak
+namespace Step Function I/O
 {
     namespace DNP3
     {
@@ -64,7 +64,7 @@ namespace Automatak
                 DNP3ManagerFactory() {}
             };
 
-            ref class DNP3ManagerAdapter : public Automatak::DNP3::Interface::IDNP3Manager
+            ref class DNP3ManagerAdapter : public Step Function I/O::DNP3::Interface::IDNP3Manager
             {
             public:
 
@@ -81,7 +81,7 @@ namespace Automatak
                 virtual IChannel^ AddTLSClient(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, System::Collections::Generic::IList<Interface::IPEndpoint^>^ remotes, Interface::TLSConfig^ config, Interface::IChannelListener^ listener)  sealed;
                 virtual IChannel^ AddTLSServer(System::String^ id, System::UInt32 filters, Interface::ServerAcceptMode mode, Interface::IPEndpoint^ endpoint, Interface::TLSConfig^ config, Interface::IChannelListener^ listener) sealed;
                 
-                virtual IChannel^ AddSerial(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, Automatak::DNP3::Interface::SerialSettings^ settings, Interface::IChannelListener^ listener) sealed;
+                virtual IChannel^ AddSerial(System::String^ id, System::UInt32 filters, Interface::ChannelRetry^ retry, Step Function I/O::DNP3::Interface::SerialSettings^ settings, Interface::IChannelListener^ listener) sealed;
 
                 virtual Interface::IListener^ CreateListener(System::String^ loggerid, System::UInt32 filters, Interface::IPEndpoint^ endpoint, IListenCallbacks^ callbacks) sealed;
 

@@ -15,7 +15,7 @@ project(opendnp3 VERSION ${OPENDNP3_VERSION})
 
 # Packing variable
 set(CPACK_PACKAGE_NAME opendnp3)
-set(CPACK_PACKAGE_VENDOR "Automatak LLC")
+set(CPACK_PACKAGE_VENDOR "Step Function I/O LLC")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "DNP3 (IEEE-1815) protocol stack")
 set(CPACK_PACKAGE_DESCRIPTION "OpenDNP3 is the de facto reference implementation of IEEE-1815 (DNP3), a standards-based SCADA protocol.")
 set(CPACK_PACKAGE_HOMEPAGE_URL "https://dnp3.github.io/")

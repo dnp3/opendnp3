@@ -7,9 +7,9 @@
 // |_| \_|\___/  |______\__,_|_|\__|_|_| |_|\__, (_|_|_)
 //                                           __/ |
 //                                          |___/
-// Copyright 2013 Automatak LLC
+// Copyright 2013 Step Function I/O LLC
 // 
-// Automatak LLC (www.automatak.com) licenses this file
+// Step Function I/O LLC (www.automatak.com) licenses this file
 // to you under the the Apache License Version 2.0 (the "License"):
 // 
 // http://www.apache.org/licenses/LICENSE-2.0.html
@@ -21,7 +21,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Automatak.DNP3.Interface
+namespace Step Function I/O.DNP3.Interface
 {
     public enum IINBit
     {

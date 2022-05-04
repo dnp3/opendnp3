@@ -1,10 +1,10 @@
 /*
- * Copyright 2013-2020 Automatak, LLC
+ * Copyright 2013-2022 Step Function I/O, LLC
  *
- * Licensed to Green Energy Corp (www.greenenergycorp.com) and Automatak
+ * Licensed to Green Energy Corp (www.greenenergycorp.com) and Step Function I/O
  * LLC (www.automatak.com) under one or more contributor license agreements. 
  * See the NOTICE file distributed with this work for additional information
- * regarding copyright ownership. Green Energy Corp and Automatak LLC license
+ * regarding copyright ownership. Green Energy Corp and Step Function I/O LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
  * may not use this file except in compliance with the License. You may obtain
  * a copy of the License at:
@@ -27,11 +27,11 @@
 
 #include <vcclr.h>
 
-using namespace Automatak::DNP3::Interface;
+using namespace Step Function I/O::DNP3::Interface;
 
 using namespace System::Collections::ObjectModel;
 
-namespace Automatak
+namespace Step Function I/O
 {
     namespace DNP3
     {
@@ -42,7 +42,7 @@ namespace Automatak
             {
             public:
 
-                MasterApplicationAdapter(Automatak::DNP3::Interface::IMasterApplication^ proxy) : proxy(proxy)
+                MasterApplicationAdapter(Step Function I/O::DNP3::Interface::IMasterApplication^ proxy) : proxy(proxy)
                 {}
 
                 virtual void OnStateChange(opendnp3::LinkStatus value) override
@@ -83,7 +83,7 @@ namespace Automatak
 
                 virtual void OnReceiveIIN(const opendnp3::IINField& iin) override final
                 {
-                    IINField ^iinField = gcnew IINField((Automatak::DNP3::Interface::LSBMask)iin.LSB, (Automatak::DNP3::Interface::MSBMask)iin.MSB);
+                    IINField ^iinField = gcnew IINField((Step Function I/O::DNP3::Interface::LSBMask)iin.LSB, (Step Function I/O::DNP3::Interface::MSBMask)iin.MSB);
                     proxy->OnReceiveIIN(iinField);
                 }
 
@@ -130,7 +130,7 @@ namespace Automatak
 
             private:
 
-                gcroot < Automatak::DNP3::Interface::IMasterApplication^ > proxy;
+                gcroot < Step Function I/O::DNP3::Interface::IMasterApplication^ > proxy;
             };
 
         }
