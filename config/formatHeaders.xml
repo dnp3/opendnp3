@@ -8,7 +8,7 @@
     <packaging>pom</packaging>
 
     <name>opendnp3</name>
-    <url>http://www.github.com/automatak/dnp3</url>
+    <url>http://www.github.com/dnp3/opendnp3</url>
     <description>This is a project only for header formatting, nothing more</description>
 
     <build>

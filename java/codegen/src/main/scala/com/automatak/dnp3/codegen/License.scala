@@ -2,7 +2,7 @@
  * Copyright 2013-2022 Step Function I/O, LLC
  *
  * Licensed to Green Energy Corp (www.greenenergycorp.com) and Step Function I/O
- * LLC (www.automatak.com) under one or more contributor license agreements. 
+ * LLC (https://stepfunc.io) under one or more contributor license agreements. 
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership. Green Energy Corp and Step Function I/O LLC license
  * this file to you under the Apache License, Version 2.0 (the "License"); you
@@ -39,7 +39,7 @@ object LicenseHeader {
     """Copyright 2013-2022 Step Function I/O, LLC""",
     "",
     """Licensed to Green Energy Corp (www.greenenergycorp.com) and Step Function I/O""",
-    """LLC (www.automatak.com) under one or more contributor license agreements.""",
+    """LLC (https://stepfunc.io) under one or more contributor license agreements.""",
     """See the NOTICE file distributed with this work for additional information""",
     """regarding copyright ownership. Green Energy Corp and Step Function I/O LLC license""",
     """this file to you under the Apache License, Version 2.0 (the "License"); you""",
