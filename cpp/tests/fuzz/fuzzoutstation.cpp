@@ -22,12 +22,13 @@
 #include <exe4cpp/MockExecutor.h>
 
 #include <dnp3mocks/MockCommandHandler.h>
-#include <dnp3mocks/MockLogHandler.h>
 #include <dnp3mocks/MockLowerLayer.h>
 #include <dnp3mocks/MockOutstationApplication.h>
 
 #include <outstation/Database.h>
 #include <outstation/OutstationContext.h>
+
+#include "NullLogHandler.h"
 
 #include <functional>
 
@@ -36,12 +37,12 @@ class OutstationTestObject
 public:
     OutstationTestObject(const opendnp3::OutstationConfig& config,
                          const opendnp3::DatabaseConfig& database = opendnp3::DatabaseConfig(10))
-        : log(),
+        : logger(),
           exe(std::make_shared<exe4cpp::MockExecutor>()),
           lower(std::make_shared<MockLowerLayer>()),
           cmdHandler(std::make_shared<MockCommandHandler>(opendnp3::CommandStatus::SUCCESS)),
           application(std::make_shared<MockOutstationApplication>()),
-          context(opendnp3::Addresses(), config, database, log.logger, exe, lower, cmdHandler, application)
+          context(opendnp3::Addresses(), config, database, logger.get_logger(), exe, lower, cmdHandler, application)
     {
         lower->SetUpperLayer(context);
     }
@@ -59,7 +60,7 @@ public:
     }
 
 private:
-    MockLogHandler log;
+    const NullLogger logger;
     const std::shared_ptr<exe4cpp::MockExecutor> exe;
     const std::shared_ptr<MockLowerLayer> lower;
     const std::shared_ptr<MockCommandHandler> cmdHandler;

@@ -22,7 +22,6 @@
 
 #include <exe4cpp/MockExecutor.h>
 
-#include <dnp3mocks/MockLogHandler.h>
 #include <dnp3mocks/MockLowerLayer.h>
 #include <dnp3mocks/MockMasterApplication.h>
 #include <dnp3mocks/MockSOEHandler.h>
@@ -30,18 +29,20 @@
 #include <master/MasterContext.h>
 #include <master/MasterSchedulerBackend.h>
 
+#include "NullLogHandler.h"
+
 class MasterTestObject
 {
 public:
     MasterTestObject(const opendnp3::MasterParams& params)
         : addresses(),
-          log(),
+          logger(),
           exe(std::make_shared<exe4cpp::MockExecutor>()),
           meas(std::make_shared<MockSOEHandler>()),
           lower(std::make_shared<MockLowerLayer>()),
           application(std::make_shared<MockMasterApplication>()),
           scheduler(std::make_shared<opendnp3::MasterSchedulerBackend>(exe)),
-          context(opendnp3::MContext::Create(addresses, log.logger, exe, lower, meas, application, this->scheduler, params))
+          context(opendnp3::MContext::Create(addresses, logger.get_logger(), exe, lower, meas, application, this->scheduler, params))
     {
         lower->SetUpperLayer(*context);
     }
@@ -66,7 +67,7 @@ public:
 private:
     const opendnp3::Addresses addresses;
 
-    MockLogHandler log;
+    const NullLogger logger;
     const std::shared_ptr<exe4cpp::MockExecutor> exe;
     const std::shared_ptr<MockSOEHandler> meas;
     const std::shared_ptr<MockLowerLayer> lower;
