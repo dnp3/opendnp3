@@ -25,6 +25,8 @@
 #include "opendnp3/logging/LogLevels.h"
 #include "opendnp3/logging/Logger.h"
 
+#include <system_error>
+
 namespace opendnp3
 {
 

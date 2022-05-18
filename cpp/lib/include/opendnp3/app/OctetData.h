@@ -101,7 +101,7 @@ public:
 private:
     static const Buffer ToSlice(const char* input);
 
-    std::array<uint8_t, MAX_SIZE> buffer = {0x00};
+    std::array<uint8_t, MAX_SIZE> buffer = {{0x00}};
     uint8_t size;
 };
 
